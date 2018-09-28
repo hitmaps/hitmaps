@@ -1,0 +1,26 @@
+#disguises {
+	background: url("../img/map_training1/disguises_.jpg") no-repeat 0 50px;
+}
+
+#disguises-dropdown {
+ 	height: 343px;
+}
+
+.disg-item {
+	background: url("../img/map_training1/disguises.jpg") no-repeat 0 0 #656669;
+}
+
+.disg-item:hover {
+	background-image: url("../img/map_training1/disguises_.jpg");
+}
+
+#disguises.suit, #disg-suit { background-position: 0 -50px; }
+#disguises.mechanic, #disg-mechanic { background-position: 0 -100px; }
+#disguises.security, #disg-security { background-position: 0 -200px; }
+#disguises.yachtcrew, #disg-yachtcrew { background-position: 0 -150px; }
+#disguises.bodyguard, #disg-bodyguard { background-position: 0 -250px; }
+#disguises.norfolk, #disg-norfolk { background-position: 0 -300px; }
+
+.leaflet-map {
+	background: #111213 !important;
+}

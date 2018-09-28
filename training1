@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+	<title>Freeform Training, ICA Facility - Hitman Interactive Maps</title>
+
+	<meta charset="utf-8">
+	<meta name="description" content="Hitman Interactive Maps - Freeform Training, ICA Facility">
+	<meta name="keywords" content="Hitman, hitman map, hitman interactive map, hitman training map, hitman ica facility map">
+    <meta name="viewport" content="width=device-width, initial-scale=0.75" />
+
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+	<link rel="stylesheet" href="scripts/chosen/chosen.min.css">
+	<link type="text/css" rel="stylesheet" href="styles/maps.css">
+	<link type="text/css" rel="stylesheet" href="styles/maps_training_1.css">
+	<link rel="stylesheet" href="leaflet/leaflet.css">
+	<link rel="stylesheet" href="leaflet/leaflet.label.css">
+	<link rel="stylesheet" href="scripts/pace/pace.css">
+
+	<script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+	<script src="scripts/chosen/chosen.jquery.min.js"></script>
+	<script src="scripts/pace/pace.min.js"></script>
+	<script src="scripts/jquery.nicescroll.min.js"></script>
+	<script src="leaflet/leaflet.js"></script>
+	<script src="leaflet/leaflet.label.js"></script>
+	
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-76169796-1', 'auto');
+		ga('send', 'pageview');
+	</script>
+
+</head>
+
+<body>
+
+<div class="loading-block">
+
+	<div class="loading-cont">
+		<div class="loading-title">
+			<h1>Freeform Training</h1>
+			<h2>ICA Facility</h2>
+		</div>
+	</div>
+
+</div>
+
+	<div id="level-change">
+		<div class="change-level" id="level-3">Level 3<div class="marker-count"></div></div>
+		<div class="change-level" id="level-2">Level 2<div class="marker-count"></div></div>
+		<div class="change-level" id="level-1">Level 1<div class="marker-count"></div></div>
+		<div class="change-level" id="level-0">Level 0<div class="marker-count"></div></div>
+	</div>
+
+	<div id="sidebar-hide"></div>
+	
+	<div id="sidebar">
+
+		<a id="site-logo" href="http://hitmanmaps.com/"><img title="Hitman Interactive Maps" src="img/main_logo.png"></a>
+
+		<div class="marker-list">
+
+			<select autocomplete="off" id="searchbar" data-placeholder="SEARCH" style="width: 340px">
+
+				<option value=""></option>
+				
+				<optgroup label="Disguises">
+					<option value="Disguise: Mechanic">Mechanic</option>
+					<option value="Disguise: Yacht Crew">Yacht Crew</option>
+				</optgroup>
+
+				
+				<optgroup label="NPC">
+					<option value="NPC: Terry Norfolk">Terry Norfolk</option>
+				</optgroup>
+
+				<optgroup label="Weapons And Tools">	
+			        <option value="Weapons: Coin">Coin</option>
+			        <option value="Weapons: Emetic Rat Poison">Emetic Rat Poison</option>
+				</optgroup>
+
+				<optgroup label="Weapons: Non-Lethal Melee">	
+			        <option value="Weapons: Bust">Bust</option>
+			        <option value="Weapons: Crowbar">Crowbar</option>
+			        <option value="Weapons: Hammer">Hammer</option>
+			        <option value="Weapons: Wrench">Wrench</option>
+				</optgroup>
+
+				<optgroup label="Weapons: Explosive">	
+			        <option value="Weapons: ICA Remote Explosive">ICA Remote Explosive</option>
+			        <option value="Weapons: Fire Extinguisher">Fire Extinguisher</option>
+				</optgroup>
+
+				<optgroup label="Weapons: Firearm and Ammo">	
+			        <option value="Weapons: Assault Rifle Fusil G2">Assault Rifle: Fusil G2</option>
+			        <option value="Weapons: Shotgun Bartoli 12G">Shotgun: Bartoli 12G</option>
+			        <option value="Weapons: Rifle Ammo">Rifle Ammo</option>
+			        <option value="Weapons: Shotgun Ammo">Shotgun Ammo</option>
+				</optgroup>
+
+				<optgroup label="Sabotage">		
+					<option value="Sabotage: Life Raft">Life Raft</option>
+				</optgroup>
+
+				<optgroup label="Distraction">		
+					<option value="Distraction: Fusebox">Fusebox</option>
+					<option value="Distraction: Generator">Generator</option>
+				</optgroup>
+
+				<optgroup label="Poison">		
+					<option value="Poison: Kalvin Ritter">Kalvin Ritter</option>
+					<option value="Poison: Terry Norfolk">Terry Norfolk</option>
+					<option value="Poison: Yacht Crew">Yacht Crew</option>
+				</optgroup>
+
+			</select>
+
+			<div id="disguises" class="base">
+				<span>Disguises</span>			
+				<div id="disguises-dropdown">
+				    <ul>
+				        <li class="disg-item" id="disg-base">None</li>
+				        <li class="disg-item" id="disg-suit">Training Gear</li>
+				        <li class="disg-item" id="disg-mechanic">Mechanic</li>		
+				        <li class="disg-item" id="disg-yachtcrew">Yacht Crew</li>	
+				        <li class="disg-item" id="disg-security">Yacht Security</li>	
+				        <li class="disg-item" id="disg-bodyguard">Bodyguard</li>	
+				        <li class="disg-item" id="disg-norfolk">Terry Norfolk</li>
+				    </ul>
+			    </div>
+			</div>
+
+			<div id="all-hide">Hide All</div>
+			<div id="all-show">Show All</div>
+
+		    <ul class="marker-category" id="m-poi">
+		    	<h1>Points of Interest</h1>
+		    	<div class="eye"></div>
+
+		        <div id="m-sabotage-wrapper" class="marker-sub-wrapper">
+			        <li id="m-sabotage" class="marker-sub">Sabotage</li>
+		    		<div class="marker-sub-toggle"></div>
+			        <ul class="marker-category-sub" id="m-sabotage-sub">
+			        	<li id="m-sab-liferaft">Life Raft</li>
+			        </ul>  
+		        </div>  
+
+		        <div id="m-distraction-wrapper" class="marker-sub-wrapper">
+			        <li id="m-distraction" class="marker-sub">Distraction</li>
+			    	<div class="marker-sub-toggle"></div>
+			        <ul class="marker-category-sub" id="m-distraction-sub">
+			        	<li id="m-dis-fusebox">Fusebox</li>
+			        	<li id="m-dis-generator">Generator</li>
+			        </ul>     
+		        </div>   
+
+		        <li id="m-poison">Poison</li>
+		        <li id="m-alarm">Alarm</li>
+		        <li id="m-disguise">Disguise</li>
+		        <li id="m-npc">NPC</li>
+		        <li id="m-blend">Blend In</li>
+		        <li id="m-hidingspot">Hiding Spot</li>
+		        <li id="m-conceal">Conceal Item</li>
+		        <li id="m-weaponcrate">Weapon Crate</li>
+		        <li id="m-locked">Locked Door</li>
+		    </ul>
+
+		    <ul class="marker-category" id="m-weapons">
+		    	<h1>Weapons and Tools</h1>
+		    	<div class="eye"></div>
+
+		        <div id="m-nonlethalwea-wrapper" class="marker-sub-wrapper">
+			        <li id="m-nonlethalwea" class="marker-sub">Non-lethal Melee</li>
+			    	<div class="marker-sub-toggle"></div>			    	
+			        <ul class="marker-category-sub" id="m-nonlethalwea-sub">
+				        <li id="m-bust">Bust</li>
+				        <li id="m-crowbar">Crowbar</li>
+				        <li id="m-hammer">Hammer</li>
+				        <li id="m-wrench">Wrench</li>
+			        </ul>     
+		        </div> 
+
+		        <div id="m-explosivewea-wrapper" class="marker-sub-wrapper">
+			        <li id="m-explosivewea" class="marker-sub">Explosive</li>
+			    	<div class="marker-sub-toggle"></div>			    	
+			        <ul class="marker-category-sub" id="m-explosivewea-sub">
+				        <li id="m-extinguisher">Fire Extinguisher</li>
+				        <li id="m-remexpl">Remote Expl.</li>
+			        </ul>     
+		        </div> 
+
+		        <li id="m-coin">Coin</li>
+		        <li id="m-weapoison">Poison</li>
+		        <li id="m-firearm">Firearm</li>
+		        <li id="m-ammo">Ammo</li>
+		    </ul>
+
+		    <ul class="marker-category" id="m-other">
+		    	<h1>Navigation</h1>
+		    	<div class="eye"></div>
+		        <li id="m-enter">Enter Point</li>
+		        <li id="m-exit">Exit Point</li>
+		        <li id="m-icastash">Agency Pickup</li>
+		        <li id="m-stairsupdown">Stairs Up/Down</li>
+		        <li id="m-waysupdown">Ways Up/Down</li>
+		        <li id="m-passage">Passage</li>		
+		        <li id="m-ledge">Ledge</li>	
+		    </ul>
+
+		</div>
+		
+	</div>
+
+	<div id="maptraining1" class="leaflet-map"></div>
+
+	<script src="scripts/maps.js"></script>
+	<script src="scripts/map_training_1.js"></script>
+	<script src="scripts/main.js"></script>
+	
+</body>
+</html>

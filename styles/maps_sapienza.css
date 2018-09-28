@@ -1,0 +1,41 @@
+#disguises {
+	background: url("../img/map_sapienza/disguises_.jpg") no-repeat 0 50px;
+}
+
+.disg-item {
+	background: url("../img/map_sapienza/disguises.jpg") no-repeat 0 0 #656669;
+}
+
+.disg-item:hover {
+	background-image: url("../img/map_sapienza/disguises_.jpg");
+}
+
+#disguises.suit, #disg-suit { background-position: 0 -50px; }
+#disguises.delivery, #disg-delivery { background-position: 0 -100px; }
+#disguises.store, #disg-store { background-position: 0 -150px; }
+#disguises.gardener, #disg-gardener { background-position: 0 -200px; }
+#disguises.plumber, #disg-plumber { background-position: 0 -250px; }
+#disguises.churchstaff, #disg-churchstaff { background-position: 0 -300px; }
+#disguises.priest, #disg-priest { background-position: 0 -350px; }
+#disguises.waiter, #disg-waiter { background-position: 0 -400px; }
+#disguises.kitchen, #disg-kitchen { background-position: 0 -450px; }
+#disguises.chef, #disg-chef { background-position: 0 -500px; }
+#disguises.bodyguard, #disg-bodyguard { background-position: 0 -550px; }
+#disguises.mankeep, #disg-mankeep { background-position: 0 -600px; }
+#disguises.manstaff, #disg-manstaff { background-position: 0 -650px; }
+#disguises.mansec, #disg-mansec { background-position: 0 -700px; }
+#disguises.labtec, #disg-labtec { background-position: 0 -750px; }
+#disguises.labhaz, #disg-labhaz { background-position: 0 -800px; }
+#disguises.labsec, #disg-labsec { background-position: 0 -850px; }
+#disguises.detective, #disg-detective { background-position: 0 -900px; }
+#disguises.oscar, #disg-oscar { background-position: 0 -950px; }
+#disguises.vargas, #disg-vargas { background-position: 0 -1000px; }
+#disguises.cyclist, #disg-cyclist { background-position: 0 -1050px; }
+#disguises.bohem, #disg-bohem { background-position: 0 -1100px; }
+#disguises.perf, #disg-perf { background-position: 0 -1150px; }
+#disguises.plague, #disg-plague { background-position: 0 -1200px; }
+#disguises.butler, #disg-butler { background-position: 0 -1250px; }
+
+.leaflet-map {
+	background: #121315 !important;
+}

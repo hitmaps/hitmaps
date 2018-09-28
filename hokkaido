@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+	<title>Hokkaido, Japan - Hitman Interactive Maps</title>
+
+	<meta charset="utf-8">
+	<meta name="description" content="Hitman Interactive Maps - Hokkaido, Japan">
+	<meta name="keywords" content="Hitman, hitman map, hitman interactive map, hitman hokkaido map, hitman japan map">
+    <meta name="viewport" content="width=device-width, initial-scale=0.75" />
+
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+	<link rel="stylesheet" href="scripts/chosen/chosen.min.css">
+	<link type="text/css" rel="stylesheet" href="styles/maps.css">
+	<link type="text/css" rel="stylesheet" href="styles/maps_hokkaido.css">
+	<link rel="stylesheet" href="leaflet/leaflet.css">
+	<link rel="stylesheet" href="leaflet/leaflet.label.css">
+	<link rel="stylesheet" href="scripts/pace/pace.css">
+
+	<script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+	<script src="scripts/chosen/chosen.jquery.min.js"></script>
+	<script src="scripts/pace/pace.min.js"></script>
+	<script src="scripts/jquery.nicescroll.min.js"></script>
+	<script src="leaflet/leaflet.js"></script>
+	<script src="leaflet/leaflet.label.js"></script>
+	
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-76169796-1', 'auto');
+		ga('send', 'pageview');
+	</script>
+
+</head>
+
+<body>
+
+<div class="loading-block">
+
+	<div class="loading-cont">
+		<div class="loading-title">
+			<h1>Hokkaido</h1>
+			<h2>Japan</h2>
+		</div>
+	</div>
+
+</div>
+
+	<div id="level-change">
+		<div class="change-level" id="level-3">Level 3<div class="marker-count"></div></div>
+		<div class="change-level" id="level-2">Level 2<div class="marker-count"></div></div>
+		<div class="change-level" id="level-1">Level 1<div class="marker-count"></div></div>
+		<div class="change-level" id="level-0">Level 0<div class="marker-count"></div></div>
+	</div>
+
+	<div id="sidebar-hide"></div>
+	
+	<div id="sidebar">
+
+		<a id="site-logo" href="http://hitmanmaps.com/"><img title="Hitman Interactive Maps" src="img/main_logo.png"></a>
+
+		<div class="marker-list">
+
+			<select autocomplete="off" id="searchbar" data-placeholder="SEARCH" style="width: 340px">
+
+				<option value=""></option>
+
+				<optgroup label="Items">
+					<option value="Item: Erich Soders Kill List">Erich Soders' Kill List</option>
+					<option value="Item: Lethal Stem Cells">Lethal Stem Cells</option>
+					<option value="Item: Neurochip Remote Control">Neurochip Remote Control</option>
+					<option value="Item: Nondescript Keycard">Nondescript Keycard</option>
+					<option value="Item: Pack of Cigarettes">Pack of Cigarettes</option>
+					<option value="Item: RFID Master Chip">RFID Master Chip</option>
+				</optgroup>
+				
+				<optgroup label="Disguises">
+					<option value="Disguise: Baseball Player">Baseball Player</option>
+					<option value="Disguise: Motorcyclist">Motorcyclist</option>
+					<option value="Disguise: Patient">Patient</option>
+					<option value="Disguise: Resort Staff">Resort Staff</option>
+					<option value="Disguise: VIP Patient">VIP Patient</option>
+				</optgroup>		
+
+				<optgroup label="NPC">									
+					<option value="NPC: Amos Dexter">Amos Dexter</option>				
+					<option value="NPC: The Curator">The Curator</option>				
+				</optgroup>	
+
+				<optgroup label="Weapons And Tools">	
+			        <option value="Weapon: Coin">Coin</option>
+			        <option value="Weapon: Disposable Scrambler">Disposable Scrambler</option>
+			        <option value="Weapon: Emetic Rat Poison">Emetic Rat Poison</option>
+			        <option value="Weapon: Fugu Fish Poison">Fugu Fish Poison</option>
+			        <option value="Weapon: Botulinum Toxin">Botulinum Toxin</option>
+				</optgroup>
+
+				<optgroup label="Weapons: Lethal Melee">	
+			        <option value="Weapon: Cleaver">Cleaver</option>
+			        <option value="Weapon: Fire Axe">Fire Axe</option>
+			        <option value="Weapon: Katana">Katana</option>
+			        <option value="Weapon: Kitchen Knife">Kitchen Knife</option>
+			        <option value="Weapon: Scalpel">Scalpel</option>
+			        <option value="Weapon: Scissors">Scissors</option>
+			        <option value="Weapon: Screwdriver">Screwdriver</option>
+				</optgroup>
+
+				<optgroup label="Weapons: Non-Lethal Melee">	
+			        <option value="Weapon: Baseball Bat">Baseball Bat</option>
+			        <option value="Weapon: Bust">Bust</option>
+			        <option value="Weapon: Cowboy Bust">Cowboy Bust</option>
+			        <option value="Weapon: Crowbar">Crowbar</option>
+			        <option value="Weapon: Fire Poker">Fire Poker</option>
+			        <option value="Weapon: Hammer">Hammer</option>
+			        <option value="Weapon: Lead Pipe">Lead Pipe</option>
+			        <option value="Weapon: Police Baton">Police Baton</option>
+			        <option value="Weapon: Shovel">Shovel</option>
+			        <option value="Weapon: Soda Can">Soda Can</option>
+			        <option value="Weapon: Wrench">Wrench</option>
+				</optgroup>
+
+				<optgroup label="Weapons: Explosive">	
+			        <option value="Weapon: Fire Extinguisher">Fire Extinguisher</option>
+			        <option value="Weapon: Propane Flask">Propane Flask</option>
+				</optgroup>
+
+				<optgroup label="Weapons: Firearm and Ammo">	
+			        <option value="Weapon: Shotgun Tactical Bartoli 12G">Shotgun: Tactical Bartoli 12G</option>
+			        <option value="Weapon: SMG HX-7">SMG: HX-7</option>
+			        <option value="Weapon: Pistol Ammo">Pistol Ammo</option>
+				</optgroup>
+
+				<optgroup label="Sabotage">		
+					<option value="Sabotage: Block Door">Block Door</option>
+					<option value="Sabotage: Cable Car">Cable Car</option>
+					<option value="Sabotage: Chandelier">Chandelier</option>
+					<option value="Sabotage: Defibrillator">Defibrillator</option>
+					<option value="Sabotage: Dance Mat Power Supply">Dance Mat Power Supply</option>
+					<option value="Sabotage: Destroy Heart">Destroy Heart</option>
+					<option value="Sabotage: Gas Canister">Gas Canister</option>
+					<option value="Sabotage: Gas Heater Lamp">Gas Heater Lamp</option>
+					<option value="Sabotage: Gasoline Drum">Gasoline Drum</option>
+					<option value="Sabotage: Icicle">Icicle</option>
+					<option value="Sabotage: Incinerate">Incinerate</option>
+					<option value="Sabotage: Operate as Chief Surgeon">Operate as Chief Surgeon</option>
+					<option value="Sabotage: Operation Controls">Operation Controls</option>
+					<option value="Sabotage: Respirator">Respirator</option>
+					<option value="Sabotage: Scooter">Scooter</option>
+					<option value="Sabotage: Stem Cell Pump">Stem Cell Pump</option>
+					<option value="Sabotage: Stove">Stove</option>
+					<option value="Sabotage: Wire Plug">Wire Plug</option>
+				</optgroup>
+
+				<optgroup label="Distraction">		
+					<option value="Distraction: Bridge Lights">Bridge Lights</option>
+					<option value="Distraction: Examination Room Spotlight">Examination Room Spotlight</option>
+					<option value="Distraction: Fusebox">Fusebox</option>
+					<option value="Distraction: Generator">Generator</option>
+					<option value="Distraction: Radio">Radio</option>
+					<option value="Distraction: Sink">Sink</option>
+					<option value="Distraction: Toilet Control Panel">Toilet Control Panel</option>
+					<option value="Distraction: TV">TV</option>
+				</optgroup>
+
+				<optgroup label="Poison">		
+					<option value="Poison: Yuki Yamazaki">Yuki Yamazaki</option>
+					<option value="Poison: Hospital Director">Hospital Director</option>
+					<option value="Poison: Chief Surgeon">Chief Surgeon</option>
+					<option value="Poison: Amos Dexter">Amos Dexter</option>
+					<option value="Poison: Yoga Instructor">Yoga Instructor</option>
+					<option value="Poison: Chef">Chef</option>
+					<option value="Poison: Doctor">Doctor</option>
+					<option value="Poison: Resort Security">Resort Security</option>
+					<option value="Poison: Resort Staff">Resort Staff</option>
+					<option value="Poison: Surgeon">Surgeon</option>
+				</optgroup>
+
+				<optgroup label="Intel">	
+					<option value="Intel: Confidential Patient Journal - Amos Dexter">Confidential Patient Journal - Amos Dexter</option>
+					<option value="Intel: Confidential Patient Journal - Jason Portman">Confidential Patient Journal - Jason Portman</option>
+					<option value="Intel: Confidential Patient Journal - Tobias Rieper">Confidential Patient Journal - Tobias Rieper</option>
+					<option value="Intel: Doctors Appointment">Doctors Appointment</option>
+					<option value="Intel: Gama Hospital Pamphlet">Gama Hospital Pamphlet</option>
+					<option value="Intel: Public Patient Journal - Amos Dexter">Public Patient Journal - Amos Dexter</option>
+					<option value="Intel: Public Patient Journal - Jason Portman">Public Patient Journal - Jason Portman</option>
+					<option value="Intel: Public Patient Journal - Tobias Rieper">Public Patient Journal - Tobias Rieper</option>
+					<option value="Intel: KAI">KAI</option>
+					<option value="Intel: KAI Surgical System Manual">KAI Surgical System Manual</option>
+					<option value="Intel: Research Assistants Notes">Research Assistant's Notes</option>
+					<option value="Intel: Right-sided Donor Heart">Right-sided Donor Heart</option>
+					<option value="Intel: Stem Cell Treatment Guide">Stem Cell Treatment Guide</option>
+					<option value="Intel: The Curator">The Curator</option>
+					<option value="Intel: Yamazaki Wants Fugu">Yamazaki Wants Fugu</option>
+					<option value="Intel: Yoga Instructor Down">Yoga Instructor Down</option>
+					<option value="Intel: Yoga Schedule">Yoga Schedule</option>
+				</optgroup>
+
+				<optgroup label="Interactions">			
+					<option value="Interaction: Begin Yoga Session as a Yoga Instructor">Begin Yoga Session as a Yoga Instructor</option>
+					<option value="Interaction: Call for assistance">Call for assistance</option>
+					<option value="Interaction: Do Push-Ups as a Resort Bodyguard">Do Push-Ups as a Resort Bodyguard</option>
+					<option value="Interaction: Empty Pack of Cigarettes">Empty Pack of Cigarettes</option>
+					<option value="Interaction: Game Console">Game Console</option>
+					<option value="Interaction: Initiate Conversation as a Hospital Director">Initiate Conversation as a Hospital Director</option>
+					<option value="Interaction: Lie Down as Amos Dexter">Lie Down as Amos Dexter</option>
+					<option value="Interaction: Lie Down as Tobias Rieper">Lie Down as Tobias Rieper</option>
+					<option value="Interaction: Load Kill List">Load Kill List</option>
+					<option value="Interaction: Mainframe">Mainframe</option>
+					<option value="Interaction: Organ Vault Cooling System">Organ Vault Cooling System</option>
+					<option value="Interaction: Prepare Sushi">Prepare Sushi</option>
+					<option value="Interaction: Refrigerator No 2">Refrigerator No 2</option>
+					<option value="Interaction: Roller Door">Roller Door</option>
+					<option value="Interaction: Safety Module">Safety Module</option>
+					<option value="Interaction: Sauna">Sauna</option>
+					<option value="Interaction: Sit Down as Jason Portman">Sit Down as Jason Portman</option>
+					<option value="Interaction: Stem Cell Pump">Stem Cell Pump</option>
+					<option value="Interaction: Talk to Yuki Yamazaki as a Hospital Director">Talk to Yuki Yamazaki as a Hospital Director</option>
+					<option value="Interaction: Talk to Yuki Yamazaki as a Yoga Instructor">Talk to Yuki Yamazaki as a Yoga Instructor</option>
+					<option value="Interaction: Turn Off Cold Water">Turn Off Cold Water</option>
+				</optgroup>
+
+				<optgroup label="Locations">				
+					<option value="Location: Chief Surgeon and Helicopter Pilot meeting spot">Chief Surgeon and Helicopter Pilot meeting spot</option>
+				</optgroup>
+
+				<optgroup label="Locked Doors">	
+					<option value="Locked: Amos Dexter">Amos Dexter</option>
+					<option value="Locked: Jason Portman">Jason Portman</option>
+					<option value="Locked: Tobias Rieper">Tobias Rieper</option>
+					<option value="Locked: Yuki Yamazaki">Yuki Yamazaki</option>
+					<option value="Locked: Handyman">Handyman</option>
+					<option value="Locked: Hospital Director">Hospital Director</option>
+					<option value="Locked: Kitchen Staff">Kitchen Staff</option>
+					<option value="Locked: Medical Staff">Medical Staff</option>
+					<option value="Locked: Resort Security">Resort Security</option>
+					<option value="Locked: Resort Staff">Resort Staff</option>
+					<option value="Locked: Surgeon">Surgeon</option>
+					<option value="Locked: Chief Surgeon">Chief Surgeon</option>
+				</optgroup>				
+				
+				<optgroup label="Cameras & Recorders">
+					<option value="Camera: Hospital">Cameras</option>
+					<option value="Camera Recorder: Hospital">Camera Recorder</option>
+				</optgroup>	
+				
+				<optgroup label="Agency Pickups">
+					<option value="Small Agency Pickup: Operating Theater Restroom">Small Pickup: Operating Theater Restroom</option>
+					<option value="Small Agency Pickup: Restaurant Restroom">Small Pickup: Restaurant Restroom</option>
+					<option value="Small Agency Pickup: Staff Wardrobe">Small Pickup: Staff Wardrobe</option>
+					<option value="Large Agency Pickup: Garage">Large Pickup: Garage</option>
+					<option value="Large Agency Pickup: Kitchen Food Storage">Large Pickup: Kitchen Food Storage</option>
+					<option value="Large Agency Pickup: Morgue Storage">Large Pickup: Morgue Storage</option>
+					<option value="Large Agency Pickup: Mountain Path">Large Pickup: Mountain Path</option>
+				</optgroup>
+				
+				<optgroup label="Enter Point">
+					<option value="Starting Locaton: Infiltrating Along the Mountain Path">Infiltrating Along the Mountain Path</option>
+					<option value="Starting Locaton: Morgue">Morgue</option>
+					<option value="Starting Locaton: Patient Room">Patient Room</option>
+					<option value="Starting Locaton: Restaurant">Restaurant</option>
+					<option value="Starting Locaton: Spa">Spa</option>
+					<option value="Starting Locaton: Undercover in the Garden">Undercover in the Garden</option>
+					<option value="Starting Locaton: Undercover in the Kitchen">Undercover in the Kitchen</option>
+					<option value="Starting Locaton: Undercover in the Operating Theater">Undercover in the Operating Theater</option>
+					<option value="Starting Locaton: Undercover in the Staff Quarters">Undercover in the Staff Quarters</option>
+				</optgroup>
+				
+				<optgroup label="Exit Point">
+					<option value="Exit Locaton: Cable Car">Cable Car</option>
+					<option value="Exit Locaton: Helicopter">Helicopter</option>
+					<option value="Exit Locaton: Hiking Route">Hiking Route</option>
+					<option value="Exit Locaton: Snowmobile">Snowmobile</option>
+				</optgroup>
+
+			</select>
+
+			<div id="disguises" class="base">
+				<span>Disguises</span>			
+				<div id="disguises-dropdown">
+				    <ul>
+				        <li class="disg-item" id="disg-base">None</li>
+				        <li class="disg-item" id="disg-suit">Agent 47 (VIP Patient)</li>
+				        <li class="disg-class">Resort</li>
+				        <li class="disg-item" id="disg-patient">Patient</li>
+				        <li class="disg-item" id="disg-staff">Resort Staff</li>
+				        <li class="disg-item" id="disg-chef">Chef</li>
+				        <li class="disg-item" id="disg-handyman">Handyman</li>
+				        <li class="disg-item" id="disg-security">Resort Security</li>
+				        <li class="disg-class">Hospital</li>
+				        <li class="disg-item" id="disg-doctor">Doctor</li>
+				        <li class="disg-item" id="disg-morgue">Morgue Doctor</li>
+				        <li class="disg-item" id="disg-surgeon">Surgeon</li>
+				        <li class="disg-item" id="disg-bodyguard">Bodyguard</li>
+				        <li class="disg-class">Personal</li>
+				        <li class="disg-item" id="disg-director">Hospital Director</li>
+				        <li class="disg-item" id="disg-csurgeon">Chief Surgeon</li>
+				        <li class="disg-item" id="disg-portman">VIP Patient (Portman)</li>
+				        <li class="disg-item" id="disg-dexter">VIP Patient (Dexter)</li>
+				        <li class="disg-item" id="disg-yoga">Yoga Instructor</li>
+				        <li class="disg-item" id="disg-pilot">Helicopter Pilot</li>
+				        <li class="disg-class">Other</li>
+				        <li class="disg-item" id="disg-ninja">Ninja</li>
+				        <li class="disg-item" id="disg-motorcyclist">Motorcyclist</li>
+				        <li class="disg-item" id="disg-baseball">Baseball Player</li>
+				    </ul>
+			    </div>
+			</div>
+
+			<div id="all-hide">Hide All</div>
+			<div id="all-show">Show All</div>
+
+		    <ul class="marker-category" id="m-poi">
+		    	<h1>Points of Interest</h1>
+		    	<div class="eye"></div>
+
+		        <div id="m-sabotage-wrapper" class="marker-sub-wrapper">
+			        <li id="m-sabotage" class="marker-sub">Sabotage</li>
+		    		<div class="marker-sub-toggle"></div>
+
+			        <ul class="marker-category-sub" id="m-sabotage-sub">
+			        	<li id="m-sab-door">Block Door</li>
+			        	<li id="m-sab-cablecar">Cable Car</li>
+			        	<li id="m-sab-chandelier">Chandelier</li>
+			        	<li id="m-sab-defibrillator">Defibrillator</li>
+			        	<li id="m-sab-dancemat">Dance Mat Power Supply</li>
+			        	<li id="m-sab-heart">Destroy Heart</li>
+			        	<li id="m-sab-canister">Gas Canister</li>
+			        	<li id="m-sab-heater">Gas Heater Lamp</li>
+			        	<li id="m-sab-drum">Gasoline Drum</li>
+			        	<li id="m-sab-icicle">Icicle</li>
+			        	<li id="m-sab-incinerate">Incinerate</li>
+			        	<li id="m-sab-operate">Operate as Chief Surgeon</li>
+			        	<li id="m-sab-controls">Operation Controls</li>
+			        	<li id="m-sab-respirator">Respirator</li>
+			        	<li id="m-sab-scooter">Scooter</li>
+			        	<li id="m-sab-pump">Stem Cell Pump</li>
+			        	<li id="m-sab-stove">Stove</li>
+			        	<li id="m-sab-wire">Wire Plug</li>
+			        </ul>  
+		        </div>  
+
+		        <div id="m-distraction-wrapper" class="marker-sub-wrapper">
+			        <li id="m-distraction" class="marker-sub">Distraction</li>
+			    	<div class="marker-sub-toggle"></div>
+
+			        <ul class="marker-category-sub" id="m-distraction-sub">
+			        	<li id="m-dis-bridge">Bridge Lights</li>
+			        	<li id="m-dis-spotlight">Examination Room Spotlight</li>
+			        	<li id="m-dis-fusebox">Fusebox</li>
+			        	<li id="m-dis-generator">Generator</li>
+			        	<li id="m-dis-radio">Radio</li>
+			        	<li id="m-dis-sink">Sink</li>
+			        	<li id="m-dis-toilet">Toilet Control Panel</li>
+			        	<li id="m-dis-tv">TV</li>
+			        </ul>     
+		        </div>   
+
+		        <li id="m-poison">Poison</li>
+		        <li id="m-alarm">Alarm</li>
+		        <li id="m-item">Item</li>
+		        <li id="m-intel">Intel</li>
+		        <li id="m-interaction">Interaction</li>
+		        <li id="m-location">Location</li>
+		        <li id="m-disguise">Disguise</li>
+		        <li id="m-npc">NPC</li>
+		        <li id="m-blend">Blend In</li>
+		        <li id="m-hidingspot">Hiding Spot</li>
+		        <li id="m-conceal">Conceal Item</li>
+		        <li id="m-weaponcrate">Weapon Crate</li>
+		        <li id="m-locked">Locked Door</li>
+		        <li id="m-seccheck">Security Check</li>
+		        <li id="m-evidence">Evidence</li>
+		        <li id="m-camera">Camera</li>
+		    </ul>
+
+		    <ul class="marker-category" id="m-weapons">
+		    	<h1>Weapons and Tools</h1>
+		    	<div class="eye"></div>
+
+		        <div id="m-lethalwea-wrapper" class="marker-sub-wrapper">
+			        <li id="m-lethalwea" class="marker-sub">Lethal Melee</li>
+			    	<div class="marker-sub-toggle"></div>
+			        <ul class="marker-category-sub" id="m-lethalwea-sub">
+				        <li id="m-cleaver">Cleaver</li>
+				        <li id="m-fireaxe">Fire Axe</li>
+				        <li id="m-katana">Katana</li>
+				        <li id="m-knife">Kitchen Knife</li>
+				        <li id="m-scalpel">Scalpel</li>
+				        <li id="m-scissors">Scissors</li>
+				        <li id="m-screwdriver">Screwdriver</li>
+			        </ul>     
+		        </div> 
+
+		        <div id="m-nonlethalwea-wrapper" class="marker-sub-wrapper">
+			        <li id="m-nonlethalwea" class="marker-sub">Non-lethal Melee</li>
+			    	<div class="marker-sub-toggle"></div>			    	
+			        <ul class="marker-category-sub" id="m-nonlethalwea-sub">
+				        <li id="m-bust">Bust</li>
+				        <li id="m-cowbust">Cowboy Bust</li>
+				        <li id="m-crowbar">Crowbar</li>
+				        <li id="m-firepoker">Fire Poker</li>
+				        <li id="m-hammer">Hammer</li>
+				        <li id="m-pipe">Lead Pipe</li>
+				        <li id="m-baton">Police Baton</li>
+				        <li id="m-shovel">Shovel</li>
+				        <li id="m-sodacan">Soda Can</li>
+				        <li id="m-wrench">Wrench</li>
+			        </ul>     
+		        </div> 
+
+		        <div id="m-explosivewea-wrapper" class="marker-sub-wrapper">
+			        <li id="m-explosivewea" class="marker-sub">Explosive</li>
+			    	<div class="marker-sub-toggle"></div>			    	
+			        <ul class="marker-category-sub" id="m-explosivewea-sub">
+				        <li id="m-extinguisher">Fire Extinguisher</li>
+				        <li id="m-propane">Propane Flask</li>
+			        </ul>     
+		        </div> 
+
+		        <li id="m-coin">Coin</li>
+		        <li id="m-scrambler">Disposable Scrambler</li>
+		        <li id="m-weapoison">Poison</li>
+		        <li id="m-firearm">Firearm</li>
+		        <li id="m-ammo">Ammo</li>
+		    </ul>
+
+		    <ul class="marker-category" id="m-other">
+		    	<h1>Navigation</h1>
+		    	<div class="eye"></div>
+		        <li id="m-enter">Enter Point</li>
+		        <li id="m-exit">Exit Point</li>
+		        <li id="m-icastash">Agency Pickup</li>
+		        <li id="m-stairsupdown">Stairs Up/Down</li>
+		        <li id="m-waysupdown">Ways Up/Down</li>
+		        <li id="m-passage">Passage</li>		
+		        <li id="m-ledge">Ledge</li>	
+		    </ul>
+
+		</div>
+		
+	</div>
+
+	<div id="maphokkaido" class="leaflet-map"></div>
+
+	<script src="scripts/maps.js"></script>
+	<script src="scripts/map_hokkaido.js"></script>
+	<script src="scripts/main.js"></script>
+	
+</body>
+</html>

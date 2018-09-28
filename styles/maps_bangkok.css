@@ -1,0 +1,28 @@
+#disguises {
+	background: url("../img/map_bangkok/disguises_.jpg") no-repeat 0 50px;
+}
+
+.disg-item {
+	background: url("../img/map_bangkok/disguises.jpg") no-repeat 0 0 #656669;
+}
+
+.disg-item:hover {
+	background-image: url("../img/map_bangkok/disguises_.jpg");
+}
+
+#disguises.suit, #disg-suit { background-position: 0 -50px; }
+#disguises.staff, #disg-staff { background-position: 0 -100px; }
+#disguises.security, #disg-security { background-position: 0 -150px; }
+#disguises.waiter, #disg-waiter { background-position: 0 -200px; }
+#disguises.kitchen, #disg-kitchen { background-position: 0 -250px; }
+#disguises.groundskeeper, #disg-groundskeeper { background-position: 0 -300px; }
+#disguises.exterminator, #disg-exterminator { background-position: 0 -350px; }
+#disguises.crew, #disg-crew { background-position: 0 -400px; }
+#disguises.bodyguard, #disg-bodyguard { background-position: 0 -450px; }
+#disguises.silva, #disg-silva { background-position: 0 -500px; }
+#disguises.morganbodyguard, #disg-morganbodyguard { background-position: 0 -550px; }
+#disguises.stalker, #disg-stalker { background-position: 0 -600px; }
+
+.leaflet-map {
+	background: #121315 !important;
+}

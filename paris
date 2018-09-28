@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+	<title>Paris, France - Hitman Interactive Maps</title>
+
+	<meta charset="utf-8">
+	<meta name="description" content="Hitman Interactive Maps - Paris, France">
+	<meta name="keywords" content="Hitman, hitman map, hitman interactive map, hitman paris map, hitman france map">
+    <meta name="viewport" content="width=device-width, initial-scale=0.75" />
+
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+	<link rel="stylesheet" href="scripts/chosen/chosen.min.css">
+	<link type="text/css" rel="stylesheet" href="styles/maps.css">
+	<link type="text/css" rel="stylesheet" href="styles/maps_paris.css">
+	<link rel="stylesheet" href="leaflet/leaflet.css">
+	<link rel="stylesheet" href="leaflet/leaflet.label.css">
+
+	<script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+	<script src="scripts/chosen/chosen.jquery.min.js"></script>
+	<script src="scripts/jquery.nicescroll.min.js"></script>
+	<script src="leaflet/leaflet.js"></script>
+	<script src="leaflet/leaflet.label.js"></script>
+	
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-76169796-1', 'auto');
+		ga('send', 'pageview');
+	</script>
+
+</head>
+
+<body>
+
+<div class="loading-block">
+
+	<div class="loading-cont">
+		<div class="loading-title">
+			<h1>Paris</h1>
+			<h2>France</h2>
+		</div>
+	</div>
+
+</div>
+
+	<div id="level-change">
+		<div class="change-level" id="level-3">Level 3<div class="marker-count"></div></div>
+		<div class="change-level" id="level-2">Level 2<div class="marker-count"></div></div>
+		<div class="change-level" id="level-1">Level 1<div class="marker-count"></div></div>
+		<div class="change-level" id="level-0">Level 0<div class="marker-count"></div></div>
+	</div>
+
+	<div id="sidebar-hide"></div>
+	
+	<div id="sidebar">
+
+		<a id="site-logo" href="http://hitmanmaps.com/"><img title="Hitman Interactive Maps" src="img/main_logo.png"></a>
+
+		<div class="marker-list">
+
+			<select autocomplete="off" id="searchbar" data-placeholder="SEARCH" style="width: 340px">
+
+				<option value=""></option>
+
+				<optgroup label="Items">				
+					<option value="Item: Camera Lens">Camera Lens</option>
+					<option value="Item: Fireworks Remote Detonator">Fireworks Remote Detonator</option>
+					<option value="Item: IAGO Invitation">IAGO Invitation</option>
+					<option value="Item: Laptop Dongle">Laptop Dongle</option>
+					<option value="Item: Palace Master Key">Palace Master Key</option>
+					<option value="Item: Speedboat Key">Speedboat Key</option>
+				</optgroup>
+
+				<optgroup label="Disguises">				
+					<option value="Disguise: Palace Staff">Palace Staff</option>		
+					<option value="Disguise: Stylist">Stylist</option>		
+					<option value="Disguise: Vampire Magician">Vampire Magician</option>		
+				</optgroup>			
+
+				<optgroup label="NPC">					
+					<option value="NPC: Helmut Kruger">Helmut Kruger</option>			
+					<option value="NPC: Max Decker">Max Decker</option>			
+					<option value="NPC: Sebastian Sato">Sebastian Sato</option>			
+					<option value="NPC: Sheikh">Sheikh</option>			
+				</optgroup>				
+
+				<optgroup label="Weapons and Tools">				
+					<option value="Weapons: Coin">Coin</option>
+					<option value="Weapons: Emetic Rat Poison">Emetic Rat Poison</option>
+					<option value="Weapons: Lethal Poison">Lethal Poison</option>
+				</optgroup>
+
+				<optgroup label="Weapons: Lethal Melee">	
+			        <option value="Weapons: Battle Axe">Battle Axe</option>
+			        <option value="Weapons: Cleaver">Cleaver</option>
+			        <option value="Weapons: Fire Axe">Fire Axe</option>
+			        <option value="Weapons: Hatchet">Hatchet</option>
+			        <option value="Weapons: Kitchen Knife">Kitchen Knife</option>
+			        <option value="Weapons: Letter Opener">Letter Opener</option>
+			        <option value="Weapons: Saber">Saber</option>
+			        <option value="Weapons: Scissors">Scissors</option>
+			        <option value="Weapons: Screwdriver">Screwdriver</option>
+				</optgroup>
+
+				<optgroup label="Weapons: Non-Lethal Melee">	
+			        <option value="Weapons: Brick">Brick</option>
+			        <option value="Weapons: Bust">Bust</option>
+			        <option value="Weapons: Crowbar">Crowbar</option>
+			        <option value="Weapons: Fire Poker">Fire Poker</option>
+			        <option value="Weapons: Golf Club">Golf Club</option>
+			        <option value="Weapons: Hammer">Hammer</option>
+			        <option value="Weapons: Lead Pipe">Lead Pipe</option>
+			        <option value="Weapons: Police Baton">Police Baton</option>
+			        <option value="Weapons: Wrench">Wrench</option>
+				</optgroup>
+
+				<optgroup label="Weapons: Explosive">	
+			        <option value="Weapons: Fire Extinguisher">Fire Extinguisher</option>
+			        <option value="Weapons: Propane Flask">Explosive Propane Flask</option>
+			        <option value="Weapons: Remote Explosive">Remote Explosive</option>
+				</optgroup>
+
+				<optgroup label="Weapons: Firearm and Ammo">	
+			        <option value="Weapons: Pistol Bartoli 75R">Pistol: Bartoli 75R</option>
+			        <option value="Weapons: Shotgun Bartoli 12G">Shotgun: Bartoli 12G</option>
+			        <option value="Weapons: Assault Rifle Fusil G2">Assault Rifle: Fusil G2</option>
+			        <option value="Weapons: Pistol Ammo">Pistol Ammo</option>
+			        <option value="Weapons: Shotgun Ammo">Shotgun Ammo</option>
+			        <option value="Weapons: Rifle Ammo">Rifle Ammo</option>
+				</optgroup>
+
+				<optgroup label="Sabotage">		
+					<option value="Sabotage: Camera">Camera</option>
+					<option value="Sabotage: Chandelier">Chandelier</option>
+					<option value="Sabotage: Gas Canister">Gas Canister</option>
+					<option value="Sabotage: Gas Heater Lamp">Gas Heater Lamp</option>
+					<option value="Sabotage: Gasoline Drum">Gasoline Drum</option>
+					<option value="Sabotage: Light Rig Winch">Light Rig Winch</option>
+					<option value="Sabotage: Loudspeaker">Loudspeaker</option>
+					<option value="Sabotage: Stove">Stove</option>
+					<option value="Sabotage: Wire Plug">Wire Plug</option>
+				</optgroup>
+
+				<optgroup label="Distraction">		
+					<option value="Distraction: Display Case">Display Case</option>
+					<option value="Distraction: Faucet">Faucet</option>
+					<option value="Distraction: Flood Lights">Flood Lights</option>
+					<option value="Distraction: Fusebox">Fusebox</option>
+					<option value="Distraction: Piano">Piano</option>
+					<option value="Distraction: Rack Case">Rack Case</option>
+					<option value="Distraction: Radio">Radio</option>
+					<option value="Distraction: Sink">Sink</option>
+					<option value="Distraction: Vacuum Cleaner">Vacuum Cleaner</option>
+				</optgroup>
+
+				<optgroup label="Poison">		
+					<option value="Poison: Viktor Novikov">Viktor Novikov</option>
+					<option value="Poison: Dalia Margolis">Dalia Margolis</option>
+					<option value="Poison: Kurt Donovan">Kurt Donovan</option>
+					<option value="Poison: Sebastian Sato">Sebastian Sato</option>
+					<option value="Poison: Sheikh">Sheikh</option>
+					<option value="Poison: Bodyguard">Bodyguard</option>
+					<option value="Poison: Chef">Chef</option>
+					<option value="Poison: Crew Member">Crew Member</option>
+					<option value="Poison: Security Guard">Security Guard</option>
+				</optgroup>
+
+				<optgroup label="Intel">	
+					<option value="Intel: A Private Meeting">A Private Meeting</option>
+					<option value="Intel: Cocktail recipe">Cocktail recipe</option>
+					<option value="Intel: Dalia Margolis Laptop">Dalia Margolis' Laptop</option>
+					<option value="Intel: Evacuation Plan">Evacuation Plan</option>
+					<option value="Intel: Fireworks Schedule">Fireworks Schedule</option>
+					<option value="Intel: Helmut Kruger Phone Call">Helmut Kruger's Phone Call</option>
+					<option value="Intel: IAGO Auction VIP List">IAGO Auction VIP List</option>
+					<option value="Intel: Novikov Favorite Cocktail">Novikov's Favorite Cocktail</option>
+					<option value="Intel: Stage Schedule">Stage Schedule</option>
+					<option value="Intel: The Fashion Blogger">The Fashion Blogger</option>
+					<option value="Intel: The Light Rig">The Light Rig</option>
+					<option value="Intel: The Magazine Editor">The Magazine Editor</option>
+					<option value="Intel: The Male Model">The Male Model</option>
+					<option value="Intel: The Meeting Spot">The Meeting Spot</option>
+				</optgroup>
+
+				<optgroup label="Interactions">				
+					<option value="Interaction: Diorama">Diorama</option>
+					<option value="Interaction: Enter Catwalk as Helmut Kruger">Enter Catwalk as Helmut Kruger</option>
+					<option value="Interaction: IAGO Auction Laptop">IAGO Auction Laptop</option>
+					<option value="Interaction: Lana Caprice">Lana Caprice</option>
+					<option value="Interaction: Participate In Auction as Sheikh">Participate In Auction as Sheikh</option>
+					<option value="Interaction: Participate In Auction as Tobias Reaper">Participate In Auction as Tobias Reaper</option>
+					<option value="Interaction: Sit Down as Helmut Kruger">Sit Down as Helmut Kruger</option>
+					<option value="Interaction: Talk to Dalia Margolis">Talk to Dalia Margolis</option>
+					<option value="Interaction: Tend the Bar">Tend the Bar</option>
+				</optgroup>
+
+				<optgroup label="Locations">
+					<option value="Location: Dalia and Viktor Safe Room">Dalia and Viktor Safe Room</option>
+					<option value="Location: Decker and Novikov Meeting Spot">Decker and Novikov Meeting Spot</option>
+					<option value="Location: Viktor Novikov Interview Spot">Viktor Novikov's Interview Spot</option>
+				</optgroup>
+
+				<optgroup label="Locked Doors">				
+					<option value="Locked: Palace Master Key">Palace Master Key</option>
+				</optgroup>		
+				
+				<optgroup label="Cameras & Recorders">
+					<option value="Camera: Palace">Palace Cameras</option>
+					<option value="Camera Recorder: Palace">Palace Camera Recorder</option>
+				</optgroup>
+				
+				<optgroup label="Agency Pickups">
+					<option value="Small Agency Pickup: Pantry">Small: Pantry</option>
+					<option value="Small Agency Pickup: Newspapers">Small: Newspapers</option>
+					<option value="Small Agency Pickup: Toilet Cistern">Small: Toilet Cistern</option>
+					<option value="Large Agency Pickup: Empty Attic Room">Large: Empty Attic Room</option>
+					<option value="Large Agency Pickup: Shed">Large: Shed</option>
+					<option value="Large Agency Pickup: Basement Stairwell">Large: Basement Stairwell</option>
+					<option value="Large Agency Pickup: Logistics Trailer">Large: Logistics Trailer</option>
+				</optgroup>
+				
+				<optgroup label="Enter Point">
+					<option value="Starting Location: Attic">Attic</option>
+					<option value="Starting Location: Main Entrance">Main Entrance</option>
+					<option value="Starting Location: Palace Garden">Palace Garden</option>
+					<option value="Starting Location: Pile-Driver Barge">Pile-Driver Barge</option>
+					<option value="Starting Location: Undercover in AV Center">Undercover in AV Center</option>
+					<option value="Starting Location: Undercover in Dressing Area">Undercover in Dressing Area</option>
+					<option value="Starting Location: Undercover at IAGO Auction">Undercover at IAGO Auction</option>
+					<option value="Starting Location: Undercover in Kitchen">Undercover in Kitchen</option>
+					<option value="Starting Location: Undercover in Locker Room">Undercover in Locker Room</option>
+				</optgroup>
+				
+				<optgroup label="Exit Point">
+					<option value="Exit Location: Basement">Basement</option>
+					<option value="Exit Location: Boat">Boat</option>
+					<option value="Exit Location: Helicopter">Helicopter</option>
+					<option value="Exit Location: Main Gates">Main Gates</option>
+					<option value="Exit Location: North Gates">North Gates</option>
+					<option value="Exit Location: South Gates">South Gates</option>
+				</optgroup>
+
+			</select>
+
+			<div id="disguises" class="base">
+				<span>Disguises</span>			
+				<div id="disguises-dropdown">
+				    <ul>
+				        <li class="disg-item" id="disg-base">None</li>
+				        <li class="disg-item" id="disg-suit">Agent 47 (Tuxedo)</li>
+				        <li class="disg-class">Event Staff</li>
+				        <li class="disg-item" id="disg-chef">Chef</li>	
+				        <li class="disg-item" id="disg-palace">Palace Staff</li>	
+				        <li class="disg-item" id="disg-auction">Auction Staff</li>
+				        <li class="disg-item" id="disg-stylist">Stylist</li>	
+				        <li class="disg-item" id="disg-crew">Crew Member</li>	
+				        <li class="disg-item" id="disg-security">Security Guard</li>
+				        <li class="disg-item" id="disg-cicada">Bodyguard</li>
+				        <li class="disg-class">Personal</li>
+				        <li class="disg-item" id="disg-helmut">Helmut Kruger</li>	
+				        <li class="disg-item" id="disg-sheikh">Sheikh</li>	
+				        <li class="disg-item" id="disg-vampire">Vampire Magician</li>	
+				    </ul>
+			    </div>
+			</div>
+
+			<div id="all-hide">Hide All</div>
+			<div id="all-show">Show All</div>
+
+		    <ul class="marker-category" id="m-poi">
+		    	<h1>Points of Interest</h1>
+		    	<div class="eye"></div>
+
+		        <div id="m-sabotage-wrapper" class="marker-sub-wrapper">
+			        <li id="m-sabotage" class="marker-sub">Sabotage</li>
+		    		<div class="marker-sub-toggle"></div>
+
+			        <ul class="marker-category-sub" id="m-sabotage-sub">
+			        	<li id="m-sab-camera">Camera</li>
+			        	<li id="m-sab-chandelier">Chandelier</li>
+			        	<li id="m-sab-heater">Gas Heater Lamp</li>
+			        	<li id="m-sab-canister">Gas Canister</li>
+			        	<li id="m-sab-drum">Gasoline Drum</li>
+			        	<li id="m-sab-winch">Light Rig Winch</li>
+			        	<li id="m-sab-mounting">Loudspeaker</li>
+			        	<li id="m-sab-leak">Stove</li>
+			        	<li id="m-sab-wire">Wire Plug</li>
+			        </ul>  
+		        </div>  
+
+		        <div id="m-distraction-wrapper" class="marker-sub-wrapper">
+			        <li id="m-distraction" class="marker-sub">Distraction</li>
+			    	<div class="marker-sub-toggle"></div>
+
+			        <ul class="marker-category-sub" id="m-distraction-sub">
+			        	<li id="m-dis-display">Display Case</li>
+			        	<li id="m-dis-faucet">Faucet</li>
+			        	<li id="m-dis-lights">Flood Lights</li>
+			        	<li id="m-dis-fusebox">Fusebox</li>
+			        	<li id="m-dis-piano">Piano</li>
+			        	<li id="m-dis-radio">Radio</li>
+			        	<li id="m-dis-rack">Rack Case</li>
+			        	<li id="m-dis-sink">Sink</li>
+			        	<li id="m-dis-vacuum">Vacuum Cleaner</li>
+			        </ul>     
+		        </div> 
+
+		        <li id="m-poison">Poison</li>
+		        <li id="m-alarm">Alarm</li>
+		        <li id="m-item">Item</li>
+		        <li id="m-intel">Intel</li>
+		        <li id="m-interaction">Interaction</li>
+		        <li id="m-location">Location</li>
+		        <li id="m-disguise">Disguise</li>
+		        <li id="m-npc">NPC</li>
+		        <li id="m-blend">Blend In</li>
+		        <li id="m-hidingspot">Hiding Spot</li>
+		        <li id="m-conceal">Conceal Item</li>
+		        <li id="m-weaponcrate">Weapon Crate</li>
+		        <li id="m-locked">Locked Door</li>
+		        <li id="m-seccheck">Security Check</li>
+		        <li id="m-evidence">Evidence</li>
+		        <li id="m-camera">Camera</li>
+		    </ul>
+
+		    <ul class="marker-category" id="m-weapons">
+		    	<h1>Weapons and Tools</h1>
+		    	<div class="eye"></div>
+
+		        <div id="m-lethalwea-wrapper" class="marker-sub-wrapper">
+			        <li id="m-lethalwea" class="marker-sub">Lethal Melee</li>
+			    	<div class="marker-sub-toggle"></div>
+			        <ul class="marker-category-sub" id="m-lethalwea-sub">		        
+				        <li id="m-battleaxe">Battle Axe</li>
+				        <li id="m-cleaver">Cleaver</li>
+				        <li id="m-fireaxe">Fire Axe</li>
+				        <li id="m-hatchet">Hatchet</li>
+				        <li id="m-knife">Kitchen Knife</li>
+				        <li id="m-opener">Letter Opener</li>
+				        <li id="m-saber">Saber</li>
+				        <li id="m-scissors">Scissors</li>
+				        <li id="m-screwdriver">Screwdriver</li>
+			        </ul>     
+		        </div> 
+
+		        <div id="m-nonlethalwea-wrapper" class="marker-sub-wrapper">
+			        <li id="m-nonlethalwea" class="marker-sub">Non-lethal Melee</li>
+			    	<div class="marker-sub-toggle"></div>			    	
+			        <ul class="marker-category-sub" id="m-nonlethalwea-sub">		        
+				        <li id="m-bust">Bust</li>
+				        <li id="m-brick">Brick</li>
+				        <li id="m-crowbar">Crowbar</li>
+				        <li id="m-firepoker">Fire Poker</li>
+				        <li id="m-hammer">Hammer</li>
+				        <li id="m-golfclub">Golf Club</li>
+				        <li id="m-pipe">Lead Pipe</li>
+				        <li id="m-baton">Police Baton</li>
+				        <li id="m-wrench">Wrench</li>
+			        </ul>     
+		        </div> 
+
+		        <div id="m-explosivewea-wrapper" class="marker-sub-wrapper">
+			        <li id="m-explosivewea" class="marker-sub">Explosive</li>
+			    	<div class="marker-sub-toggle"></div>			    	
+			        <ul class="marker-category-sub" id="m-explosivewea-sub">
+				        <li id="m-extinguisher">Fire Extinguisher</li>
+				        <li id="m-propane">Propane Flask</li>
+				        <li id="m-remexpl">Remote Expl.</li>
+			        </ul>     
+		        </div> 
+
+		        <li id="m-coin">Coin</li>
+		        <li id="m-weapoison">Poison</li>
+		        <li id="m-firearm">Firearm</li>
+		        <li id="m-ammo">Ammo</li>
+		    </ul>
+
+		    <ul class="marker-category" id="m-other">
+		    	<h1>Navigation</h1>
+		    	<div class="eye"></div>
+		        <li id="m-enter">Enter Point</li>
+		        <li id="m-exit">Exit Point</li>
+		        <li id="m-icastash">Agency Pickup</li>
+		        <li id="m-stairsupdown">Stairs Up/Down</li>
+		        <li id="m-waysupdown">Ways Up/Down</li>
+		        <li id="m-passage">Passage</li>		
+		        <li id="m-ledge">Ledge</li>	
+		    </ul>
+
+		</div>
+		
+	</div>
+
+	<div id="mapparis" class="leaflet-map"></div>
+
+	<script src="scripts/maps.js"></script>
+	<script src="scripts/map_paris.js?v2"></script>
+	<script src="scripts/main.js"></script>
+	
+</body>
+</html>
