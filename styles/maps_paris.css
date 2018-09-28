@@ -1,0 +1,23 @@
+#disguises {
+	background: url("../img/map_paris/disguises_.jpg") no-repeat 0 50px;
+}
+
+.disg-item {
+	background: url("../img/map_paris/disguises.jpg") no-repeat 0 0 #656669;
+}
+
+.disg-item:hover {
+	background-image: url("../img/map_paris/disguises_.jpg");
+}
+
+#disguises.suit, #disg-suit { background-position: 0 -50px; }
+#disguises.palace, #disg-palace { background-position: 0 -100px; }
+#disguises.auction, #disg-auction { background-position: 0 -150px; }
+#disguises.chef, #disg-chef { background-position: 0 -200px; }
+#disguises.stylist, #disg-stylist { background-position: 0 -250px; }
+#disguises.crew, #disg-crew { background-position: 0 -300px; }
+#disguises.security, #disg-security { background-position: 0 -350px; }
+#disguises.cicada, #disg-cicada { background-position: 0 -400px; }
+#disguises.helmut, #disg-helmut { background-position: 0 -450px; }
+#disguises.sheikh, #disg-sheikh { background-position: 0 -500px; }
+#disguises.vampire, #disg-vampire { background-position: 0 -550px; }

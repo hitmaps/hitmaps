@@ -1,0 +1,25 @@
+#disguises {
+	background: url("../img/map_bonussapienza/disguises_.jpg") no-repeat 0 50px;
+}
+
+#disguises-dropdown {
+ 	height: 293px;
+}
+
+.disg-item {
+	background: url("../img/map_bonussapienza/disguises.jpg") no-repeat 0 0 #656669;
+}
+
+.disg-item:hover {
+	background-image: url("../img/map_bonussapienza/disguises_.jpg");
+}
+
+#disguises.suit, #disg-suit { background-position: 0 -50px; }
+#disguises.kitchen, #disg-kitchen { background-position: 0 -100px; }
+#disguises.movie, #disg-movie { background-position: 0 -150px; }
+#disguises.sfx, #disg-sfx { background-position: 0 -200px; }
+#disguises.security, #disg-security { background-position: 0 -250px; }
+
+.leaflet-map {
+	background: #121315 !important;
+}

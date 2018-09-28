@@ -1,0 +1,28 @@
+#disguises {
+	background: url("../img/map_bonusmarrakesh/disguises_.jpg") no-repeat 0 50px;
+}
+
+#disguises-dropdown {
+ 	height: 440px;
+}
+
+.disg-item {
+	background: url("../img/map_bonusmarrakesh/disguises.jpg") no-repeat 0 0 #656669;
+}
+
+.disg-item:hover {
+	background-image: url("../img/map_bonusmarrakesh/disguises_.jpg");
+}
+
+#disguises.suit, #disg-suit { background-position: 0 -50px; }
+#disguises.shopkeeper, #disg-shopkeeper { background-position: 0 -100px; }
+#disguises.vendor, #disg-vendor { background-position: 0 -150px; }
+#disguises.waiter, #disg-waiter { background-position: 0 -200px; }
+#disguises.handyman, #disg-handyman { background-position: 0 -250px; }
+#disguises.bodyguard, #disg-bodyguard { background-position: 0 -300px; }
+#disguises.soldier, #disg-soldier { background-position: 0 -350px; }
+#disguises.fortune, #disg-fortune { background-position: 0 -400px; }
+
+.leaflet-map {
+	background: #576b69 !important;
+}

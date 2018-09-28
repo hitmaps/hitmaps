@@ -1,0 +1,34 @@
+#disguises {
+	background: url("../img/map_marrakesh/disguises_.jpg") no-repeat 0 50px;
+}
+
+.disg-item {
+	background: url("../img/map_marrakesh/disguises.jpg") no-repeat 0 0 #656669;
+}
+
+.disg-item:hover {
+	background-image: url("../img/map_marrakesh/disguises_.jpg");
+}
+
+#disguises.suit, #disg-suit { background-position: 0 -50px; }
+#disguises.shopkeeper, #disg-shopkeeper { background-position: 0 -100px; }
+#disguises.vendor, #disg-vendor { background-position: 0 -150px; }
+#disguises.waiter, #disg-waiter { background-position: 0 -200px; }
+#disguises.handyman, #disg-handyman { background-position: 0 -250px; }
+#disguises.printing, #disg-printing { background-position: 0 -300px; }
+#disguises.bodyguard, #disg-bodyguard { background-position: 0 -350px; }
+#disguises.soldier, #disg-soldier { background-position: 0 -400px; }
+#disguises.elite, #disg-elite { background-position: 0 -450px; }
+#disguises.officer, #disg-officer { background-position: 0 -500px; }
+#disguises.janitor, #disg-janitor { background-position: 0 -550px; }
+#disguises.security, #disg-security { background-position: 0 -600px; }
+#disguises.cameraman, #disg-cameraman { background-position: 0 -650px; }
+#disguises.intern, #disg-intern { background-position: 0 -700px; }
+#disguises.headmaster, #disg-headmaster { background-position: 0 -750px; }
+#disguises.masseur, #disg-masseur { background-position: 0 -800px; }
+#disguises.prisoner, #disg-prisoner { background-position: 0 -850px; }
+#disguises.fortune, #disg-fortune { background-position: 0 -900px; }
+
+.leaflet-map {
+	background: #576b69 !important;
+}

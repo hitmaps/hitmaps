@@ -1,0 +1,39 @@
+#disguises {
+	background: url("../img/map_hokkaido/disguises_.jpg") no-repeat 0 50px;
+}
+
+.disg-item {
+	background: url("../img/map_hokkaido/disguises.jpg") no-repeat 0 0 #656669;
+}
+
+.disg-item:hover {
+	background-image: url("../img/map_hokkaido/disguises_.jpg");
+}
+
+#disguises.suit, #disg-suit { background-position: 0 -50px; }
+
+#disguises.patient, #disg-patient { background-position: 0 -100px; }
+#disguises.staff, #disg-staff { background-position: 0 -150px; }
+#disguises.chef, #disg-chef { background-position: 0 -200px; }
+#disguises.handyman, #disg-handyman { background-position: 0 -250px; }
+#disguises.security, #disg-security { background-position: 0 -300px; }
+
+#disguises.doctor, #disg-doctor { background-position: 0 -350px; }
+#disguises.morgue, #disg-morgue { background-position: 0 -400px; }
+#disguises.surgeon, #disg-surgeon { background-position: 0 -450px; }
+#disguises.bodyguard, #disg-bodyguard { background-position: 0 -500px; }
+
+#disguises.portman, #disg-portman { background-position: 0 -550px; }
+#disguises.dexter, #disg-dexter { background-position: 0 -600px; }
+#disguises.yoga, #disg-yoga { background-position: 0 -650px; }
+#disguises.pilot, #disg-pilot { background-position: 0 -700px; }
+#disguises.director, #disg-director { background-position: 0 -750px; }
+#disguises.csurgeon, #disg-csurgeon { background-position: 0 -800px; }
+
+#disguises.ninja, #disg-ninja { background-position: 0 -850px; }
+#disguises.motorcyclist, #disg-motorcyclist { background-position: 0 -900px; }
+#disguises.baseball, #disg-baseball { background-position: 0 -950px; }
+
+.leaflet-map {
+	background: #2f3b39 !important;
+}
