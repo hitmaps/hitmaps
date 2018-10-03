@@ -1,0 +1,38 @@
+<html>
+<head>
+    <title>HITMAN Map Test</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
+          integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
+            integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
+            crossorigin=""></script>
+    <style>
+        #testmap {
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="testmap"></div>
+<script>
+    var map = L.map('testmap', {
+        maxZoom: 4,
+        minZoom: 0,
+        crs: L.CRS.Simple
+    }).setView([0, 0], 2);
+
+    L.tileLayer('/maps/paris/tiles/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; IOI Interactive',
+        maxZoom: 4
+    }).addTo(map);
+
+    /*var southWest = map.unproject([0, 3202], map.getMaxZoom());
+    var northEast = map.unproject([3321, 0], map.getMaxZoom());
+    map.setMaxBounds(new L.LatLngBounds(southWest, northEast));
+
+    L.imageOverlay('/maps/paris/1.png', [[3321, 0],
+        [0, 3202]]).addTo(map);*/
+</script>
+</body>
+</html>
