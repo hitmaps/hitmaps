@@ -1,0 +1,14 @@
+<?php
+
+namespace Config;
+
+
+class Settings {
+    public $databaseHost = 'localhost';
+    public $databaseUser = 'user';
+    public $databasePassword = 'password';
+    public $databaseName = 'dbname';
+    public $accessKey = 'access-key';
+    public $loggingEnvironment = 'development';
+    public $loggingAccessToken = 'token';
+}

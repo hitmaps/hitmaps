@@ -1,0 +1,15 @@
+{
+    "name": "mike-koch/hitman-maps",
+    "description": "Maps for HITMAN (2016) and HITMAN 2 (2018)",
+    "authors": [
+        {
+            "name": "Mike Koch",
+            "email": "mkoch227@gmail.com"
+        }
+    ],
+    "require": {
+        "klein/klein": "^2.1",
+        "twig/twig": "^2.0",
+        "php-di/php-di": "^6.0"
+    }
+}
