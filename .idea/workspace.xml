@@ -1,12 +1,209 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="91b8893e-ca15-4746-8d08-275cf6cd2d2b" name="Default Changelist" comment="" />
+    <list default="true" id="91b8893e-ca15-4746-8d08-275cf6cd2d2b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/0/0/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/0/0/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/1/0/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/1/0/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/1/0/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/1/0/1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/1/1/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/1/1/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/1/1/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/1/1/1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/2/0/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/2/0/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/2/0/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/2/0/1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/2/0/2.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/2/0/2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/2/0/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/2/0/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/2/1/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/2/1/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/2/1/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/2/1/1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/2/1/2.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/2/1/2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/2/1/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/2/1/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/2/2/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/2/2/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/2/2/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/2/2/1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/2/2/2.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/2/2/2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/2/2/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/2/2/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/2/3/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/2/3/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/2/3/2.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/2/3/2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/2/3/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/2/3/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/0/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/0/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/0/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/0/1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/0/2.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/0/2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/0/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/0/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/0/4.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/0/4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/0/5.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/0/5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/0/6.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/0/6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/1/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/1/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/1/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/1/1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/1/2.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/1/2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/1/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/1/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/1/4.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/1/4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/1/5.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/1/5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/1/6.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/1/6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/2/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/2/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/2/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/2/1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/2/2.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/2/2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/2/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/2/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/2/4.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/2/4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/2/5.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/2/5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/2/6.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/2/6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/3/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/3/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/3/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/3/1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/3/2.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/3/2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/3/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/3/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/3/4.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/3/4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/3/5.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/3/5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/3/6.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/3/6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/4/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/4/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/4/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/4/1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/4/2.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/4/2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/4/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/4/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/4/4.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/4/4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/4/5.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/4/5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/4/6.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/4/6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/5/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/5/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/5/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/5/1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/5/2.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/5/2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/5/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/5/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/5/4.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/5/4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/5/5.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/5/5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/5/6.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/5/6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/6/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/6/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/6/5.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/6/5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/3/6/6.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/3/6/6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/0/12.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/0/12.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/0/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/0/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/0/4.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/0/4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/0/5.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/0/5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/0/7.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/0/7.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/0/8.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/0/8.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/1/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/1/1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/1/10.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/1/10.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/1/12.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/1/12.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/1/2.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/1/2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/1/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/1/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/1/4.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/1/4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/1/5.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/1/5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/1/6.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/1/6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/1/7.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/1/7.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/1/8.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/1/8.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/1/9.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/1/9.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/10/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/10/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/10/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/10/1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/10/10.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/10/10.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/10/11.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/10/11.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/10/12.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/10/12.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/10/2.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/10/2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/10/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/10/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/10/9.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/10/9.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/11/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/11/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/11/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/11/1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/11/10.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/11/10.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/11/11.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/11/11.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/11/12.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/11/12.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/11/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/11/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/11/4.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/11/4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/11/5.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/11/5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/11/6.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/11/6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/11/7.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/11/7.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/11/8.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/11/8.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/11/9.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/11/9.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/12/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/12/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/12/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/12/1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/12/10.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/12/10.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/12/11.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/12/11.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/12/12.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/12/12.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/2/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/2/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/2/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/2/1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/2/10.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/2/10.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/2/11.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/2/11.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/2/12.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/2/12.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/2/2.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/2/2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/2/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/2/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/2/4.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/2/4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/2/7.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/2/7.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/2/8.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/2/8.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/2/9.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/2/9.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/3/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/3/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/3/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/3/1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/3/10.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/3/10.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/3/11.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/3/11.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/3/12.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/3/12.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/3/2.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/3/2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/3/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/3/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/3/4.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/3/4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/3/7.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/3/7.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/3/8.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/3/8.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/3/9.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/3/9.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/4/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/4/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/4/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/4/1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/4/10.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/4/10.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/4/11.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/4/11.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/4/12.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/4/12.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/4/2.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/4/2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/4/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/4/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/4/4.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/4/4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/4/5.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/4/5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/4/6.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/4/6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/4/7.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/4/7.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/4/8.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/4/8.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/4/9.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/4/9.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/5/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/5/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/5/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/5/1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/5/10.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/5/10.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/5/11.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/5/11.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/5/12.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/5/12.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/5/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/5/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/5/4.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/5/4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/5/5.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/5/5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/5/6.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/5/6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/5/7.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/5/7.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/5/9.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/5/9.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/6/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/6/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/6/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/6/1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/6/11.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/6/11.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/6/12.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/6/12.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/6/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/6/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/6/4.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/6/4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/6/5.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/6/5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/6/6.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/6/6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/6/7.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/6/7.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/6/9.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/6/9.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/7/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/7/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/7/11.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/7/11.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/7/12.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/7/12.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/7/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/7/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/7/4.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/7/4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/7/5.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/7/5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/7/6.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/7/6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/7/7.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/7/7.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/7/9.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/7/9.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/8/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/8/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/8/11.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/8/11.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/8/12.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/8/12.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/8/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/8/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/8/4.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/8/4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/8/5.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/8/5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/8/6.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/8/6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/8/7.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/8/7.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/8/9.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/8/9.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/9/0.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/9/0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/9/11.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/9/11.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/9/12.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/9/12.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/9/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/9/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/9/4.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/9/4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/9/5.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/9/5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/9/6.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/9/6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/9/7.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/9/7.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/4/9/9.png" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/4/9/9.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maps/paris/tiles/tilemapresource.xml" beforeDir="false" afterPath="$PROJECT_DIR$/maps/paris/tiles/tilemapresource.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test-leaflet.html" beforeDir="false" afterPath="$PROJECT_DIR$/test-leaflet.html" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <executablePath>composer</executablePath>
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="807738981">
@@ -37,14 +234,133 @@
         </counts>
       </usages-collector>
     </session>
+    <session id="-734843708">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.open.time.2" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="example" value="1" />
+          <entry key="gitignore" value="1" />
+          <entry key="json" value="1" />
+          <entry key="php" value="6" />
+          <entry key="twig" value="1" />
+          <entry key="xml" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="JSON" value="1" />
+          <entry key="PHP" value="7" />
+          <entry key="PLAIN_TEXT" value="1" />
+          <entry key="Twig" value="1" />
+          <entry key="XML" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="gitignore" value="26" />
+          <entry key="html" value="5" />
+          <entry key="json" value="30" />
+          <entry key="php" value="775" />
+          <entry key="twig" value="86" />
+          <entry key="txt" value="17" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="HTML" value="5" />
+          <entry key="JSON" value="30" />
+          <entry key="PHP" value="775" />
+          <entry key="PLAIN_TEXT" value="43" />
+          <entry key="Twig" value="86" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.php.composer.actions">
+        <counts>
+          <entry key="install_from_ComposerEditorNotificationPanel" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.php.new.class">
+        <counts>
+          <entry key="PHP Class.type" value="4" />
+        </counts>
+      </usages-collector>
+    </session>
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test-leaflet.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="384">
-              <caret line="24" column="45" selection-start-line="24" selection-start-column="45" selection-end-line="24" selection-end-column="45" />
+            <state relative-caret-position="238">
+              <caret line="20" column="18" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/composer.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/autoload.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="187">
+              <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/index.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret line="13" column="19" selection-start-line="13" selection-start-column="19" selection-end-line="13" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/game-select.twig">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Controllers/Renderer.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="10" column="5" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Config/Settings.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="10" column="36" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="36" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Config/Settings.php.example">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret line="13" column="1" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -57,6 +373,14 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/composer.json" />
+        <option value="$PROJECT_DIR$/Config/Settings.php" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/autoload.php" />
+        <option value="$PROJECT_DIR$/Config/Constants.php" />
+        <option value="$PROJECT_DIR$/Controllers/Renderer.php" />
+        <option value="$PROJECT_DIR$/resources/views/game-select.twig" />
+        <option value="$PROJECT_DIR$/index.php" />
         <option value="$PROJECT_DIR$/test-leaflet.html" />
       </list>
     </option>
@@ -68,9 +392,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-7" />
-    <option name="width" value="974" />
-    <option name="height" value="1047" />
+    <option name="x" value="1912" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -87,6 +412,11 @@
             <path>
               <item name="hitman-maps" type="b2602c69:ProjectViewProjectNode" />
               <item name="hitman-maps" type="462c0819:PsiDirectoryNode" />
+              <item name="Config" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="hitman-maps" type="b2602c69:ProjectViewProjectNode" />
+              <item name="hitman-maps" type="462c0819:PsiDirectoryNode" />
               <item name="maps" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -118,6 +448,11 @@
               <item name="tiles" type="462c0819:PsiDirectoryNode" />
               <item name="0" type="462c0819:PsiDirectoryNode" />
               <item name="0" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="hitman-maps" type="b2602c69:ProjectViewProjectNode" />
+              <item name="hitman-maps" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -131,6 +466,11 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Sandbox\git\php\hitman-maps\Config" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -155,24 +495,20 @@
       <option name="presentableId" value="Default" />
       <updated>1538530650799</updated>
       <workItem from="1538530652132" duration="1410000" />
+      <workItem from="1538584679848" duration="1402000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1410000" />
+    <option name="totallyTimeSpent" value="2812000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25266525" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Terminal" visible="true" weight="0.32936078" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -180,10 +516,15 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Database" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="9" weight="0.32936078" />
+      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.32936078" />
+      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -193,10 +534,79 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/composer.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Settings.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Config/Settings.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="36" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="19" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Config/Settings.php.example">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="1" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/maps/paris/tiles/tilemapresource.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoload.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Config/Constants.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="39" selection-start-line="10" selection-start-column="39" selection-end-line="10" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Controllers/Renderer.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="5" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/game-select.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="19" selection-start-line="13" selection-start-column="19" selection-end-line="13" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/test-leaflet.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="24" column="45" selection-start-line="24" selection-start-column="45" selection-end-line="24" selection-end-column="45" />
+        <state relative-caret-position="238">
+          <caret line="20" column="18" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="18" />
         </state>
       </provider>
     </entry>
