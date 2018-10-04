@@ -11,6 +11,10 @@
         #testmap {
             height: 100%;
         }
+
+        .leaflet-container {
+            background: #464646;
+        }
     </style>
 </head>
 <body>
@@ -20,19 +24,12 @@
         maxZoom: 5,
         minZoom: 3,
         crs: L.CRS.Simple
-    }).setView([0, 0], 2);
+    }).setView([0, 0], 3);
 
     L.tileLayer('/maps/paris/tiles/{z}/{x}/{y}.png', {
         attribution: 'Map data &copy; IOI Interactive',
         maxZoom: 5
     }).addTo(map);
-
-    /*var southWest = map.unproject([0, 3202], map.getMaxZoom());
-    var northEast = map.unproject([3321, 0], map.getMaxZoom());
-    map.setMaxBounds(new L.LatLngBounds(southWest, northEast));
-
-    L.imageOverlay('/maps/paris/1.png', [[3321, 0],
-        [0, 3202]]).addTo(map);*/
 </script>
 </body>
 </html>
