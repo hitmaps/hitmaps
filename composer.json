@@ -10,6 +10,8 @@
     "require": {
         "klein/klein": "^2.1",
         "twig/twig": "^2.0",
-        "php-di/php-di": "^6.0"
+        "php-di/php-di": "^6.0",
+        "rollbar/rollbar": "^1.6",
+        "doctrine/orm": "^2.6"
     }
 }
