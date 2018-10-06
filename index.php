@@ -11,6 +11,21 @@ $klein->respond('GET', '/', function() use ($twig, $applicationContext) {
     return \Controllers\Renderer::render('game-select.twig', $twig);
 });
 
+$klein->respond('GET', '/[:game]', function(\Klein\Request $request) use ($twig, $applicationContext) {
+    if (!in_array($request->game, ['hitman', 'hitman2'])) {
+        return http_response_code(404);
+    }
+
+    /* @var $locationRepository \DataAccess\Repositories\LocationRepository */
+    $locationRepository = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class);
+    $locations = $locationRepository->findByGame($request->game);
+
+    $model = new stdClass();
+    $model->locations = $locations;
+
+    return \Controllers\Renderer::render("game/{$request->game}.twig", $twig, $model);
+});
+
 $klein->respond('GET', '/[:game]/[:location]/[:missionSlug]/[:difficulty]', function(\Klein\Request $request) use ($twig, $applicationContext) {
     $viewModel = new \ViewModels\GameMapViewModel();
     $viewModel->difficulty = $request->difficulty;
