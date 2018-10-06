@@ -1,9 +1,9 @@
-    q<?php
+<?php
 
 
 use Phinx\Migration\AbstractMigration;
 
-class CreateLocationTable extends AbstractMigration {
+class CreateCampaignsTable extends AbstractMigration {
     /**
      * Change Method.
      *
@@ -30,14 +30,8 @@ class CreateLocationTable extends AbstractMigration {
      * with the Table class.
      */
     public function change() {
-        $table = $this->table('locations');
-        $table->addColumn('game', 'string', ['null' => false])
-            ->addColumn('map_folder_name', 'string', ['null' => false])
-            ->addColumn('destination', 'string', ['null' => false])
-            ->addColumn('destination_country', 'string', ['null' => false])
-            ->addColumn('map_center_latitude', 'string', ['null' => false])
-            ->addColumn('map_center_longitude', 'string', ['null' => false])
-            ->addColumn('order', 'integer', ['null' => false])
+        $table = $this->table('campaigns');
+        $table->addColumn('name', 'string')
             ->create();
     }
 }
