@@ -1,0 +1,12 @@
+<html>
+<head>
+    <title>HITMAN&trade; | HITMAN Maps</title>
+</head>
+<body>
+<ul>
+    {% for location in model.locations %}
+        <li>{{ location.destination }}</li>
+    {% endfor %}
+</ul>
+</body>
+</html>

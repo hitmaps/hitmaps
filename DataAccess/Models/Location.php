@@ -1,6 +1,8 @@
 <?php
 
-namespace Models;
+namespace DataAccess\Models;
+
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="DataAccess\Repositories\LocationRepository")
@@ -18,7 +20,7 @@ class Location {
     private $game;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", name="map_folder_name")
      */
     private $mapFolderName;
 
@@ -28,17 +30,17 @@ class Location {
     private $destination;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", name="destination_country")
      */
     private $destinationCountry;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", name="map_center_latitude")
      */
     private $mapCenterLatitude;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", name="map_center_longitude")
      */
     private $mapCenterLongitude;
 
@@ -143,5 +145,19 @@ class Location {
      */
     public function setMapCenterLongitude($mapCenterLongitude): void {
         $this->mapCenterLongitude = $mapCenterLongitude;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrder(): int {
+        return $this->order;
+    }
+
+    /**
+     * @param mixed $order
+     */
+    public function setOrder(int $order) {
+        $this->order = $order;
     }
 }
