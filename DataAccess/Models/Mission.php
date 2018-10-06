@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Mission {
     /**
-     * @ORM\Id @ORM\Column(type="integer) @ORM\GeneratedValue
+     * @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
      */
     private $id;
 
@@ -22,7 +22,7 @@ class Mission {
     private $locationId;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", name="campaign_id")
      */
     private $campaignId;
 

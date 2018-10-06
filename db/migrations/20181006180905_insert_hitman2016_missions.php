@@ -131,21 +131,21 @@ class InsertHitman2016Missions extends AbstractMigration {
             ],
             // Hokkaido
             [
-                'location_id' => 6,
+                'location_id' => 7,
                 'campaign_id' => 1,
                 'name' => 'Situs Inversus',
                 'slug' => 'situs-inversus',
                 'order' => 1
             ],
             [
-                'location_id' => 6,
+                'location_id' => 7,
                 'campaign_id' => 2,
                 'name' => 'The Controller',
                 'slug' => 'the-controller',
                 'order' => 2
             ],
             [
-                'location_id' => 6,
+                'location_id' => 7,
                 'campaign_id' => 3,
                 'name' => 'Patient Zero',
                 'slug' => 'patient-zero',
@@ -154,5 +154,9 @@ class InsertHitman2016Missions extends AbstractMigration {
         ];
 
         $missionsTable->insert($rows)->save();
+    }
+
+    public function down() {
+        $this->execute("DELETE FROM `missions` WHERE `location_id` > 0 AND `location_id` < 8");
     }
 }

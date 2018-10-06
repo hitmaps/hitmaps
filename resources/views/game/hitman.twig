@@ -1,11 +1,24 @@
 <html>
 <head>
-    <title>HITMAN&trade; | HITMAN Maps</title>
+    <title>{{ model.game }} | HITMAN Maps</title>
 </head>
 <body>
 <ul>
     {% for location in model.locations %}
-        <li>{{ location.destination }}</li>
+        <li>
+            <b>{{ location.name }}</b><br>
+            <i>{{ location.country }}</i>
+            <ul>
+                {% for mission in location.missions %}
+                    <li>
+                        <b>{{ mission.name }}</b><br>
+                        {% if mission.campaign %}
+                            <i>{{ mission.campaign }}</i>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </li>
     {% endfor %}
 </ul>
 </body>
