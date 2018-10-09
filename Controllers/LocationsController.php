@@ -58,6 +58,7 @@ class LocationsController {
             foreach ($missions as $mission) {
                 $missionViewModel = new MissionViewModel();
                 $missionViewModel->name = $mission->getName();
+                $missionViewModel->hasProfessionalMode = $mission->isProfessionalMode();
 
                 if ($mission->getCampaignId() !== null) {
                     $missionViewModel->campaign = $keyValueCampaigns[$mission->getCampaignId()];
