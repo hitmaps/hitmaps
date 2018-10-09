@@ -11,6 +11,9 @@
             <ul>
                 {% for mission in location.missions %}
                     <li>
+                        {% if mission.hasProfessionalMode %}
+                            <b style="color: red">*</b>
+                        {% endif %}
                         <b>{{ mission.name }}</b><br>
                         {% if mission.campaign %}
                             <i>{{ mission.campaign }}</i>

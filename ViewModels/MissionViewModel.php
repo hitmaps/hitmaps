@@ -12,4 +12,7 @@ class MissionViewModel {
 
     /* @var $slug string */
     public $slug;
+
+    /* @var $hasProfessionalMode bool */
+    public $hasProfessionalMode;
 }

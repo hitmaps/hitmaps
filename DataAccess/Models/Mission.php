@@ -42,6 +42,11 @@ class Mission {
     private $order;
 
     /**
+     * @ORM\Column(type="boolean", name="professional_mode")
+     */
+    private $professionalMode;
+
+    /**
      * @return mixed
      */
     public function getId(): int {
@@ -123,5 +128,19 @@ class Mission {
      */
     public function setOrder(int $order): void {
         $this->order = $order;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function isProfessionalMode(): bool {
+        return $this->professionalMode;
+    }
+
+    /**
+     * @param mixed $professionalMode
+     */
+    public function setProfessionalMode(bool $professionalMode): void {
+        $this->professionalMode = $professionalMode;
     }
 }
