@@ -12,6 +12,10 @@ class AddNodeTable extends AbstractMigration {
             ->addColumn('name', 'string')
             ->addColumn('target', 'string', ['null' => true])
             ->addColumn('image', 'binary', ['null' => true])
+            ->addColumn('level', 'integer')
+            ->addColumn('latitude', 'string')
+            ->addColumn('longitude', 'string')
+            ->addColumn('difficulty', 'string')
             ->create();
     }
 }

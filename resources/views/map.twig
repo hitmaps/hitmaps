@@ -66,6 +66,10 @@
         attribution: 'Map data &copy; IOI Interactive',
         maxZoom: 5
     }).addTo(map);
+
+    map.addEventListener('click', function(e) {
+        alert(e.latlng.lat + ", " + e.latlng.lng);
+    });
 </script>
 </body>
 </html>
