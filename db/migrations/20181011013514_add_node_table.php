@@ -5,7 +5,7 @@ use Phinx\Migration\AbstractMigration;
 
 class AddNodeTable extends AbstractMigration {
     public function change() {
-        $table = $this->table('node');
+        $table = $this->table('nodes');
         $table->addColumn('mission_id', 'integer')
             ->addColumn('type', 'string')
             ->addColumn('icon', 'string')
