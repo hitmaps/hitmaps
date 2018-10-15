@@ -7,6 +7,10 @@
     <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
             integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
             crossorigin=""></script>
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
     <style>
         #map {
             z-index: 0;
@@ -70,6 +74,22 @@
     map.addEventListener('click', function(e) {
         alert(e.latlng.lat + ", " + e.latlng.lng);
     });
+
+    $.ajax({
+        url: '/api/nodes?missionId={{ model.missionId }}&difficulty={{ model.difficulty }}',
+        method: 'GET',
+        success: function(data) {
+            json = JSON.parse(data);
+            console.log(json);
+
+            for (var i in json) {
+                L.marker([json[i].latitude, json[i].longitude]).bindPopup("I'm a thing!").addTo(map);
+            }
+        },
+        error: function() {
+            alert('An error occurred when trying to get map nodes');
+        }
+    })
 </script>
 </body>
 </html>

@@ -26,6 +26,7 @@ $klein->respond('GET', '/[:game]/[:location]/[:missionSlug]/[:difficulty]', func
     $viewModel->difficulty = $request->difficulty;
     $viewModel->game = $request->game;
     // TODO Get real mission name
+    $viewModel->missionId = 2;
     $viewModel->mission = $request->missionSlug;
     // TODO Get real location information
     $viewModel->locationNameOne = $request->location;
@@ -34,6 +35,10 @@ $klein->respond('GET', '/[:game]/[:location]/[:missionSlug]/[:difficulty]', func
     $viewModel->mapCenterLongitude = 104.25;
 
     return \Controllers\Renderer::render('map.twig', $twig, $viewModel);
+});
+
+$klein->respond('GET', '/api/nodes', function() use ($applicationContext) {
+    return json_encode($applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($_GET['missionId'], $_GET['difficulty']));
 });
 
 $klein->dispatch();

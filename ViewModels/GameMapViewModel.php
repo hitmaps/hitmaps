@@ -8,6 +8,7 @@ class GameMapViewModel {
     public $locationNameOne;
     public $locationNameTwo;
     public $mapFolderName;
+    public $missionId;
     public $mission;
     public $difficulty;
 
