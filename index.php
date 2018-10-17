@@ -37,6 +37,13 @@ $klein->respond('GET', '/[:game]/[:location]/[:missionSlug]/[:difficulty]', func
     return \Controllers\Renderer::render('map.twig', $twig, $viewModel);
 });
 
+$klein->respond('POST', '/api/nodes', function(\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext) {
+
+    // TODO Add node
+
+    return $response->code(204);
+});
+
 $klein->respond('GET', '/api/nodes', function() use ($applicationContext) {
     return json_encode($applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($_GET['missionId'], $_GET['difficulty']));
 });
