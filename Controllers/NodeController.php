@@ -4,6 +4,7 @@ namespace Controllers;
 
 
 use DataAccess\Models\Node;
+use DataAccess\Models\NodeNote;
 use DataAccess\Repositories\NodeRepository;
 use Doctrine\ORM\EntityManager;
 
@@ -36,6 +37,25 @@ class NodeController {
         $node->setType($postData['type']);
 
         $this->entityManager->persist($node);
+        $this->entityManager->flush();
+
+        $nodeId = $node->getId();
+
+        $i = 0;
+        foreach ($postData['note-type'] as $noteType) {
+            $noteText = $postData['note-text'][$i++];
+
+            if (trim($noteText) === '') {
+                continue;
+            }
+
+            $nodeNote = new NodeNote();
+            $nodeNote->setNodeId($nodeId);
+            $nodeNote->setType($noteType);
+            $nodeNote->setText($noteText);
+
+            $this->entityManager->persist($nodeNote);
+        }
         $this->entityManager->flush();
     }
 }
