@@ -1,16 +1,21 @@
 <html>
 <head>
     <title>{{ model.mission }}/{{ model.locationNameOne }} | HITMAN Maps</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
           integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
           crossorigin=""/>
+
     <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
             integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
             crossorigin=""></script>
-    <script
-            src="https://code.jquery.com/jquery-3.3.1.min.js"
-            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <style>
         #map {
             z-index: 0;
@@ -58,6 +63,95 @@
     Hiiiiii
 </div>
 <div id="map"></div>
+<div class="modal" id="suggest-edit-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Suggest Edit</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/api/nodes" method="post">
+                <div class="modal-body">
+                        <h3>General Info</h3>
+                        <div class="form-group row">
+                            <label for="type" class="col-sm-2 col-form-label">Type</label>
+                            <div class="col-sm-10">
+                                <select name="type" class="form-control">
+                                    <option value="sabotage">Sabotage</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="icon" class="col-sm-2 col-form-label">Icon</label>
+                            <div class="col-sm-10">
+                                <select name="icon" class="form-control">
+                                    <option value="explosion">Explosion</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="name" class="col-sm-2 col-form-label">Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="name" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="target" class="col-sm-2 col-form-label">Target</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="target" class="form-control">
+                            </div>
+                        </div>
+                        <h3>Notes</h3>
+                        <div id="suggest-notes">
+                            <div class="form-group row">
+                                <label for="note-type[]" class="col-sm-2 col-form-label">Type</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" name="note-type[]">
+                                        <option value="requirement">Requirement</option>
+                                        <option value="warning">Warning</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="note-text[]" class="col-sm-2 col-form-label">Text</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="note-text[]" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="note-template" style="display: none">
+                            <div class="form-group row">
+                                <label for="note-type[]" class="col-sm-2 col-form-label">Type</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" name="note-type[]">
+                                        <option value="requirement">Requirement</option>
+                                        <option value="warning">Warning</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="note-text[]" class="col-sm-2 col-form-label">Text</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="note-text[]" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="mission-id" value="{{ model.missionId }}">
+                        <input type="hidden" name="level" value="0">
+                        <input type="hidden" name="latitude">
+                        <input type="hidden" name="longitude">
+                        <input type="hidden" name="difficulty" value="{{ model.difficulty }}">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script>
     var map = L.map('map', {
         maxZoom: 5,
@@ -73,6 +167,11 @@
 
     map.addEventListener('click', function(e) {
         alert(e.latlng.lat + ", " + e.latlng.lng);
+
+        $('#suggest-edit-modal')
+            .find('input[name="latitude"]').val(e.latlng.lat).end()
+            .find('input[name="longitude"]').val(e.latlng.lng).end()
+            .modal('show');
     });
 
     $.ajax({
@@ -89,6 +188,44 @@
         error: function() {
             alert('An error occurred when trying to get map nodes');
         }
+    });
+
+    $('#suggest-notes').on('change', 'input[name="note-text[]"]', function() {
+        var fields = $('#suggest-notes').find('input[name="note-text[]"]');
+        var shouldAddNewRow = true;
+        $.each(fields, function() {
+            if (shouldAddNewRow && $(this).val() === '') {
+                shouldAddNewRow = false;
+            }
+        });
+
+        if (shouldAddNewRow) {
+            var template = $('.note-template').html();
+            $('#suggest-notes').append(template);
+        }
+    });
+
+    $('form[action="/api/nodes"]').submit(function(e) {
+        var $form = $(this);
+
+        $.ajax({
+            url: '/api/nodes',
+            method: 'POST',
+            data: $(this).serialize(),
+            success: function() {
+                L.marker([$form.find('input[name="latitude"]').val(), $form.find('input[name="longitude"]').val()]).bindPopup("I'm a thing!").addTo(map);
+                $('#suggest-edit-modal').modal('hide');
+            },
+            error: function() {
+                alert('Error!');
+            }
+        });
+
+        e.preventDefault();
+
+        console.log(e);
+
+        return false;
     })
 </script>
 </body>
