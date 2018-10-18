@@ -79,7 +79,10 @@
                             <label for="type" class="col-sm-2 col-form-label">Type</label>
                             <div class="col-sm-10">
                                 <select name="type" class="form-control">
-                                    <option value="sabotage">Sabotage</option>
+                                    <option value="point-of-interest">Point of Interest</option>
+                                    <optgroup label="Weapons and Tools">
+                                        <option value="lethal-melee">Lethal Melee</option>
+                                    </optgroup>
                                 </select>
                             </div>
                         </div>
@@ -87,7 +90,22 @@
                             <label for="icon" class="col-sm-2 col-form-label">Icon</label>
                             <div class="col-sm-10">
                                 <select name="icon" class="form-control">
-                                    <option value="explosion">Explosion</option>
+                                    <optgroup label="Point of Interest">
+                                        <option value="explosion">Explosion</option>
+                                        <option value="distraction">Distraction</option>
+                                        <option value="poison">Poison</option>
+                                        <option value="misc-item">Misc Item</option>
+                                        <option value="intel">Intel</option>
+                                        <option value="disguise">Disguise</option>
+                                        <option value="blend-in">Blend In</option>
+                                        <option value="conceal-item">Conceal Item</option>
+                                        <option value="weapon-crate">Weapon Crate</option>
+                                        <option value="locked-door">Locked Door</option>
+                                        <option value="destroy-evidence">Destroy Evidence</option>
+                                    </optgroup>
+                                    <optgroup label="item">
+                                        <option value="-"
+                                    </optgroup>
                                 </select>
                             </div>
                         </div>
@@ -111,6 +129,7 @@
                                     <select class="form-control" name="note-type[]">
                                         <option value="requirement">Requirement</option>
                                         <option value="warning">Warning</option>
+                                        <option value="description">Description</option>
                                     </select>
                                 </div>
                             </div>
@@ -128,6 +147,7 @@
                                     <select class="form-control" name="note-type[]">
                                         <option value="requirement">Requirement</option>
                                         <option value="warning">Warning</option>
+                                        <option value="description">Description</option>
                                     </select>
                                 </div>
                             </div>
@@ -166,8 +186,6 @@
     }).addTo(map);
 
     map.addEventListener('click', function(e) {
-        alert(e.latlng.lat + ", " + e.latlng.lng);
-
         $('#suggest-edit-modal')
             .find('input[name="latitude"]').val(e.latlng.lat).end()
             .find('input[name="longitude"]').val(e.latlng.lng).end()
