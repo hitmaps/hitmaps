@@ -27,7 +27,7 @@
         }
 
         .leaflet-container {
-            background: #464646;
+            background: lime;
         }
 
         .leaflet-control-zoom-in {
@@ -196,37 +196,34 @@
         success: function(data) {
             json = JSON.parse(data);
 
+            var overlays = {};
+            var allLayerGroups = [];
             for (var i in json) {
                 var node = json[i];
-                var icon = node.icon;
-                if (layerGroups[icon] === undefined) {
-                    layerGroups[icon] = [];
+                if (overlays[node.icon] === undefined) {
+                    overlays[node.icon] = L.layerGroup();
+                    allLayerGroups.push(overlays[node.icon]);
                 }
 
-                console.log(layerGroups[icon] === undefined);
-
-                layerGroups[icon].push(L.marker([node.latitude, node.longitude]).bindPopup(node.name));
+                L.marker([node.latitude, node.longitude]).bindPopup(node.name).addTo(overlays[node.icon]);
             }
-
-            var leafletLayerGroups = [];
-            for (var i in layerGroups) {
-                leafletLayerGroups.push(L.layerGroup(layerGroups[i]));
-            }
-
 
             var mapTileLayer = L.tileLayer('/maps/{{ model.mapFolderName }}/tiles/{z}/{x}/{y}.png', {
+                noWrap: true,
                 attribution: 'Map data &copy; IOI Interactive',
                 minZoom: 3,
-                maxZoom: 5
+                maxZoom: 5,
+                bounds: [[-.1875, .125], [-200, 207.46875]]
             });
-            //mapTileLayer.addTo(map);
+            allLayerGroups.push(mapTileLayer);
 
             var map = L.map('map', {
                 maxZoom: 5,
                 minZoom: 3,
                 crs: L.CRS.Simple,
-                layers: [mapTileLayer]
+                layers: allLayerGroups
             }).setView([{{ model.mapCenterLatitude }}, {{ model.mapCenterLongitude }}], 3);
+            map.setMaxBounds([[-.1875, .125], [-200, 207.46875]]);
             map.addEventListener('click', function(e) {
                 $('#suggest-edit-modal')
                     .find('input[name="latitude"]').val(e.latlng.lat).end()
@@ -234,9 +231,11 @@
                     .modal('show');
             });
             map.zoomControl.setPosition('topright');
-            L.control.layers({"Level 0": mapTileLayer}, {"Layers": leafletLayerGroups}).addTo(map);
 
-            console.log(leafletLayerGroups);
+            console.log(overlays);
+            L.control.layers({"Level 0": mapTileLayer}, overlays).addTo(map);
+
+            //console.log(leafletLayerGroups);
         },
         error: function() {
             alert('An error occurred when trying to get map nodes');
