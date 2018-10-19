@@ -57,5 +57,7 @@ class NodeController {
             $this->entityManager->persist($nodeNote);
             $this->entityManager->flush();
         }
+
+        return;
     }
 }

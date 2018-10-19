@@ -11,7 +11,7 @@ $klein->respond('GET', '/', function () use ($twig, $applicationContext) {
     return \Controllers\Renderer::render('game-select.twig', $twig);
 });
 
-$klein->respond('GET', '/[:game]', function (\Klein\Request $request) use ($twig, $applicationContext) {
+$klein->respond('GET', '/games/[:game]', function (\Klein\Request $request) use ($twig, $applicationContext) {
     if (!in_array($request->game, [\BusinessLogic\Game::HITMAN, \BusinessLogic\Game::HITMAN2])) {
         return http_response_code(404);
     }
@@ -21,7 +21,7 @@ $klein->respond('GET', '/[:game]', function (\Klein\Request $request) use ($twig
     return \Controllers\Renderer::render("game/{$request->game}.twig", $twig, $gameViewModel);
 });
 
-$klein->respond('GET', '/[:game]/[:location]/[:missionSlug]/[:difficulty]', function (\Klein\Request $request) use ($twig, $applicationContext) {
+$klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]', function (\Klein\Request $request) use ($twig, $applicationContext) {
     $viewModel = new \ViewModels\GameMapViewModel();
     $viewModel->difficulty = $request->difficulty;
     $viewModel->game = $request->game;
@@ -61,7 +61,10 @@ $klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\
 
     $applicationContext->get(\Controllers\NodeController::class)->createNode(intval($_POST['mission-id']), $_POST['difficulty'], $_POST);
 
-    return $response->code(204);
+    error_log("Before response.");
+    $response->code(204);
+    error_log("After response. Returning.");
+    return;
 });
 
 $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
