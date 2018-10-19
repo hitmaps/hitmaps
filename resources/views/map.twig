@@ -80,9 +80,8 @@
                             <div class="col-sm-10">
                                 <select name="type" class="form-control">
                                     <option value="point-of-interest">Point of Interest</option>
-                                    <optgroup label="Weapons and Tools">
-                                        <option value="lethal-melee">Lethal Melee</option>
-                                    </optgroup>
+                                    <option value="weapons-and-tools">Weapons and Tools</option>
+                                    <option value="navigation">Navigation</option>
                                 </select>
                             </div>
                         </div>
@@ -103,8 +102,22 @@
                                         <option value="locked-door">Locked Door</option>
                                         <option value="destroy-evidence">Destroy Evidence</option>
                                     </optgroup>
-                                    <optgroup label="item">
-                                        <option value="-"
+                                    <optgroup label="Weapons and Tools">
+                                        <option value="lethal-melee">Lethal Melee</option>
+                                        <option value="non-lethal-melee">Non-Lethal Melee</option>
+                                        <option value="explosive">Explosive</option>
+                                        <option value="coin">Coin</option>
+                                        <option value="poison">Poison</option>
+                                        <option value="firearm">Firearm</option>
+                                        <option value="ammo">Ammo</option>
+                                    </optgroup>
+                                    <optgroup label="Navigation">
+                                        <option value="starting-location">Starting Location</option>
+                                        <option value="exit-location">Exit Location</option>
+                                        <option value="Agency Pickup">Agency Pickup</option>
+                                        <option value="up-stair">Stairs - Up Only</option>
+                                        <option value="up-down-stair">Stairs - Up and Down</option>
+                                        <option value="down-stair">Stairs - Down Only</option>
                                     </optgroup>
                                 </select>
                             </div>
@@ -129,6 +142,7 @@
                                     <select class="form-control" name="note-type[]">
                                         <option value="requirement">Requirement</option>
                                         <option value="warning">Warning</option>
+                                        <option value="info">Information</option>
                                         <option value="description">Description</option>
                                     </select>
                                 </div>
@@ -147,6 +161,7 @@
                                     <select class="form-control" name="note-type[]">
                                         <option value="requirement">Requirement</option>
                                         <option value="warning">Warning</option>
+                                        <option value="info">Information</option>
                                         <option value="description">Description</option>
                                     </select>
                                 </div>
@@ -197,10 +212,9 @@
         method: 'GET',
         success: function(data) {
             json = JSON.parse(data);
-            console.log(json);
 
             for (var i in json) {
-                L.marker([json[i].latitude, json[i].longitude]).bindPopup("I'm a thing!").addTo(map);
+                //L.marker([json[i].latitude, json[i].longitude]).bindPopup("I'm a thing!").addTo(map);
             }
         },
         error: function() {
@@ -239,10 +253,7 @@
             }
         });
 
-        e.preventDefault();
-
-        console.log(e);
-
+        console.log("Done adding node.");
         return false;
     })
 </script>
