@@ -188,24 +188,7 @@
     </div>
 </div>
 <script>
-    var map = L.map('map', {
-        maxZoom: 5,
-        minZoom: 3,
-        crs: L.CRS.Simple
-    }).setView([{{ model.mapCenterLatitude }}, {{ model.mapCenterLongitude }}], 3);
-    map.zoomControl.setPosition('topright');
-
-    L.tileLayer('/maps/{{ model.mapFolderName }}/tiles/{z}/{x}/{y}.png', {
-        attribution: 'Map data &copy; IOI Interactive',
-        maxZoom: 5
-    }).addTo(map);
-
-    map.addEventListener('click', function(e) {
-        $('#suggest-edit-modal')
-            .find('input[name="latitude"]').val(e.latlng.lat).end()
-            .find('input[name="longitude"]').val(e.latlng.lng).end()
-            .modal('show');
-    });
+    var layerGroups = {};
 
     $.ajax({
         url: '/api/nodes?missionId={{ model.missionId }}&difficulty={{ model.difficulty }}',
@@ -214,8 +197,46 @@
             json = JSON.parse(data);
 
             for (var i in json) {
-                //L.marker([json[i].latitude, json[i].longitude]).bindPopup("I'm a thing!").addTo(map);
+                var node = json[i];
+                var icon = node.icon;
+                if (layerGroups[icon] === undefined) {
+                    layerGroups[icon] = [];
+                }
+
+                console.log(layerGroups[icon] === undefined);
+
+                layerGroups[icon].push(L.marker([node.latitude, node.longitude]).bindPopup(node.name));
             }
+
+            var leafletLayerGroups = [];
+            for (var i in layerGroups) {
+                leafletLayerGroups.push(L.layerGroup(layerGroups[i]));
+            }
+
+
+            var mapTileLayer = L.tileLayer('/maps/{{ model.mapFolderName }}/tiles/{z}/{x}/{y}.png', {
+                attribution: 'Map data &copy; IOI Interactive',
+                minZoom: 3,
+                maxZoom: 5
+            });
+            //mapTileLayer.addTo(map);
+
+            var map = L.map('map', {
+                maxZoom: 5,
+                minZoom: 3,
+                crs: L.CRS.Simple,
+                layers: [mapTileLayer]
+            }).setView([{{ model.mapCenterLatitude }}, {{ model.mapCenterLongitude }}], 3);
+            map.addEventListener('click', function(e) {
+                $('#suggest-edit-modal')
+                    .find('input[name="latitude"]').val(e.latlng.lat).end()
+                    .find('input[name="longitude"]').val(e.latlng.lng).end()
+                    .modal('show');
+            });
+            map.zoomControl.setPosition('topright');
+            L.control.layers({"Level 0": mapTileLayer}, {"Layers": leafletLayerGroups}).addTo(map);
+
+            console.log(leafletLayerGroups);
         },
         error: function() {
             alert('An error occurred when trying to get map nodes');
