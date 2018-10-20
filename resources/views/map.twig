@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
           integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
           crossorigin=""/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+          integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
     {#<link rel="stylesheet" href="/css/navbar-fixed-right.min.css" />#}
 
     <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
@@ -66,6 +68,8 @@
             <div class="card">
                 <div class="card-header" id="header-{{ loop.index0 }}">
                     <h5 class="mb-0">
+                        <a href="javascript:" data-layer="{{ typeName }}|*">
+                            <i class="fas fa-circle"></i></a>
                         <button class="btn btn-link" type="button" data-toggle="collapse"
                                 data-target="#body-{{ loop.index0 }}" aria-expanded="false" aria-controls="body-{{ loop.index0 }}">
                             {{ typeName }}
@@ -75,7 +79,8 @@
                 <div id="body-{{ loop.index0 }}" class="collapse" aria-labelledby="header-{{ loop.index0 }}" data-parent="#accordion">
                     <div class="card-body">
                         {% for groupName,group in type %}
-                            <a href="javascript:" data-layer="{{ typeName }}|{{ groupName }}"><b>{{ groupName }}</b></a>
+                            <a href="javascript:" data-layer="{{ typeName }}|{{ groupName }}"><i class="fas fa-circle"></i></a>
+                            <b>{{ groupName }}</b>
                             {% for node in group %}
                                 <p>{{ node.name }}</p>
                             {% endfor %}
@@ -216,12 +221,34 @@
     var g_map;
 
     $('[data-layer]').click(function() {
-        var layer = g_overlays[$(this).attr('data-layer')];
-        if (g_map.hasLayer(layer)) {
-            g_map.removeLayer(layer);
+        var target = $(this).attr('data-layer');
+        var typeToggle = target.includes('*');
+        var shouldShow = $(this).find('i').hasClass('far');
+
+        if (typeToggle) {
+            target = target.replace('*', '');
+            for (key in g_overlays) {
+                if (key.includes(target)) {
+                    var layerToShowOrHide = g_overlays[key];
+
+                    toggleLayer(layerToShowOrHide, shouldShow);
+                }
+            }
         } else {
-            g_map.addLayer(layer);
+            var layer = g_overlays[$(this).attr('data-layer')];
+            toggleLayer(layer, shouldShow);
         }
+
+        if (shouldShow) {
+            $('[data-layer^="' + target + '"]').find('i').removeClass('far').addClass('fas');
+        } else {
+            $('[data-layer^="' + target + '"]').find('i').addClass('far').removeClass('fas');
+        }
+
+        /*if (typeToggle) {
+        } else {
+            $(this).find('i').toggleClass('fas').toggleClass('far');
+        }*/
     });
 
     $.ajax({
@@ -272,9 +299,6 @@
             });
             g_map.zoomControl.setPosition('topright');
 
-            console.log(overlays);
-            L.control.layers({"Level 0": mapTileLayer}, g_overlays).addTo(g_map);
-
             //console.log(leafletLayerGroups);
         },
         error: function() {
@@ -315,7 +339,15 @@
 
         console.log("Done adding node.");
         return false;
-    })
+    });
+
+    function toggleLayer(layer, shouldShow) {
+        if (shouldShow) {
+            g_map.addLayer(layer);
+        } else {
+            g_map.removeLayer(layer);
+        }
+    }
 </script>
 </body>
 </html>
