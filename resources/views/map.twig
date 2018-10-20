@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
           integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
           crossorigin=""/>
+    {#<link rel="stylesheet" href="/css/navbar-fixed-right.min.css" />#}
 
     <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
             integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
@@ -27,11 +28,17 @@
         }
 
         .leaflet-container {
-            background: #464646
-        ;
+            background: #464646;
         }
 
-        .leaflet-control-zoom-in {
+        .navbar-fixed-right {
+            display: block;
+            float: right;
+            width: 300px;
+            min-height: 100vh;
+        }
+
+        /*.leaflet-control-zoom-in {
             border: 2px solid #fff !important;
             margin-bottom: 10px;
         }
@@ -41,28 +48,44 @@
         }
 
         .leaflet-control-zoom-in, .leaflet-control-zoom-out {
-            /*float: left!important;*/
+            /*float: left!important;
             border-radius: 3px !important;
             padding: 5px!important;
             background: rgba(22,24,29,0.75)!important;
             color: #fff!important;
             box-shadow: none!important;
-        }
-
-        .sidebar {
-            position: relative;
-            float: left;
-            width: 400px;
-            min-height: 100vh;
-            background: rgba(13,14,15,0.95);
-            z-index: 1;
-        }
+        }*/
     </style>
 </head>
 <body>
 <div id="map"></div>
-<nav class="navbar fixed-bottom navbar-light bg-light">
-    <a class="navbar-brand" href="#">Fixed bottom</a>
+<nav class="navbar navbar-fixed-right navbar-light bg-light">
+    <a class="navbar-brand" href="#">Legend</a>
+    <div class="accordion" id="accordion">
+        {% for typeName,type in model.nodes %}
+            <div class="card">
+                <div class="card-header" id="header-{{ loop.index0 }}">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse"
+                                data-target="#body-{{ loop.index0 }}" aria-expanded="false" aria-controls="body-{{ loop.index0 }}">
+                            {{ typeName }}
+                        </button>
+                    </h5>
+                </div>
+                <div id="body-{{ loop.index0 }}" class="collapse" aria-labelledby="header-{{ loop.index0 }}" data-parent="#accordion">
+                    <div class="card-body">
+                        {% for groupName,group in type %}
+                            <a href="javascript:" data-layer="{{ typeName }}|{{ groupName }}"><b>{{ groupName }}</b></a>
+                            {% for node in group %}
+                                <p>{{ node.name }}</p>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
 </nav>
 <div class="modal" id="suggest-edit-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -189,27 +212,38 @@
     </div>
 </div>
 <script>
+    var g_overlays = {};
+    var g_map;
+
+    $('[data-layer]').click(function() {
+        var layer = g_overlays[$(this).attr('data-layer')];
+        if (g_map.hasLayer(layer)) {
+            g_map.removeLayer(layer);
+        } else {
+            g_map.addLayer(layer);
+        }
+    });
+
     $.ajax({
         url: '/api/nodes?missionId={{ model.missionId }}&difficulty={{ model.difficulty }}',
         method: 'GET',
         success: function(data) {
             json = JSON.parse(data);
 
-            var overlays = {};
             var allLayerGroups = [];
             for (var typeName in json) {
                 var type = json[typeName];
                 for (var groupName in type) {
                     var group = type[groupName];
 
-                    if (overlays[typeName + '|' + groupName] === undefined) {
-                        overlays[typeName + '|' + groupName] = L.layerGroup();
-                        allLayerGroups.push(overlays[typeName + '|' + groupName]);
+                    if (g_overlays[typeName + '|' + groupName] === undefined) {
+                        g_overlays[typeName + '|' + groupName] = L.layerGroup();
+                        allLayerGroups.push(g_overlays[typeName + '|' + groupName]);
                     }
 
                     for (var k in group) {
                         var node = group[k];
-                        L.marker([node.latitude, node.longitude]).bindPopup(node.name).addTo(overlays[typeName + '|' + groupName]);
+                        L.marker([node.latitude, node.longitude]).bindPopup(node.name).addTo(g_overlays[typeName + '|' + groupName]);
                     }
                 }
             }
@@ -223,23 +257,23 @@
             });
             allLayerGroups.push(mapTileLayer);
 
-            var map = L.map('map', {
+            g_map = L.map('map', {
                 maxZoom: 5,
                 minZoom: 3,
                 crs: L.CRS.Simple,
                 layers: allLayerGroups
             }).setView([{{ model.mapCenterLatitude }}, {{ model.mapCenterLongitude }}], 3);
-            map.setMaxBounds([[-.1875, .125], [-200, 207.46875]]);
-            map.addEventListener('click', function(e) {
+            g_map.setMaxBounds([[-.1875, .125], [-200, 207.46875]]);
+            g_map.addEventListener('click', function(e) {
                 $('#suggest-edit-modal')
                     .find('input[name="latitude"]').val(e.latlng.lat).end()
                     .find('input[name="longitude"]').val(e.latlng.lng).end()
                     .modal('show');
             });
-            map.zoomControl.setPosition('topright');
+            g_map.zoomControl.setPosition('topright');
 
             console.log(overlays);
-            L.control.layers({"Level 0": mapTileLayer}, overlays).addTo(map);
+            L.control.layers({"Level 0": mapTileLayer}, g_overlays).addTo(g_map);
 
             //console.log(leafletLayerGroups);
         },

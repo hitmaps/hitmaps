@@ -20,10 +20,11 @@ class NodeController {
         $this->nodeRepository = $entityManager->getRepository(Node::class);
     }
 
-    public function getNodesForMission(int $missionid, string $difficulty): array {
+    public function getNodesForMission(int $missionid, string $difficulty, bool $distinctOnly = false): array {
         $nodes = $this->nodeRepository->findByMissionAndDifficulty($missionid, $difficulty);
 
         $groups = [];
+        $addedNodes = [];
         foreach ($nodes as $node) {
             /* @var $node Node */
             $type = $node->getType();
@@ -36,7 +37,16 @@ class NodeController {
                 $groups[$type][$group] = [];
             }
 
-            $groups[$type][$group][] = $node;
+            if (!$distinctOnly ||
+                $node->getName() === null ||
+                $node->getName() === '' ||
+                !in_array($type . $group . $node->getName(), $addedNodes)) {
+                $groups[$type][$group][] = $node;
+
+                if ($distinctOnly && $node->getName() !== null && $node->getName() !== '') {
+                    $addedNodes[] = $type . $group . $node->getName();
+                }
+            }
         }
 
         return $groups;

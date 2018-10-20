@@ -2,6 +2,8 @@
 
 require __DIR__ . '/autoload.php';
 
+SassCompiler::run("scss/", "css/", "scss_formatter_compressed");
+
 $loader = new Twig_Loader_Filesystem(__DIR__ . '/resources/views');
 $twig = new Twig_Environment($loader);
 
@@ -34,7 +36,7 @@ $klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]'
     $viewModel->mapCenterLatitude = -102.3125;
     $viewModel->mapCenterLongitude = 104.25;
 
-    $viewModel->nodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($viewModel->missionId, $request->difficulty);
+    $viewModel->nodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($viewModel->missionId, $request->difficulty, true);
 
     return \Controllers\Renderer::render('map.twig', $twig, $viewModel);
 });
