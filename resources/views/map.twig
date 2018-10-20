@@ -189,8 +189,6 @@
     </div>
 </div>
 <script>
-    var layerGroups = {};
-
     $.ajax({
         url: '/api/nodes?missionId={{ model.missionId }}&difficulty={{ model.difficulty }}',
         method: 'GET',
@@ -199,14 +197,21 @@
 
             var overlays = {};
             var allLayerGroups = [];
-            for (var i in json) {
-                var node = json[i];
-                if (overlays[node.icon] === undefined) {
-                    overlays[node.icon] = L.layerGroup();
-                    allLayerGroups.push(overlays[node.icon]);
-                }
+            for (var typeName in json) {
+                var type = json[typeName];
+                for (var groupName in type) {
+                    var group = type[groupName];
 
-                L.marker([node.latitude, node.longitude]).bindPopup(node.name).addTo(overlays[node.icon]);
+                    if (overlays[typeName + '|' + groupName] === undefined) {
+                        overlays[typeName + '|' + groupName] = L.layerGroup();
+                        allLayerGroups.push(overlays[typeName + '|' + groupName]);
+                    }
+
+                    for (var k in group) {
+                        var node = group[k];
+                        L.marker([node.latitude, node.longitude]).bindPopup(node.name).addTo(overlays[typeName + '|' + groupName]);
+                    }
+                }
             }
 
             var mapTileLayer = L.tileLayer('/maps/{{ model.mapFolderName }}/tiles/{z}/{x}/{y}.png', {
