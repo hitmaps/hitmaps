@@ -62,6 +62,11 @@ class Node {
     public $difficulty;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    public $group;
+
+    /**
      * @return mixed
      */
     public function getId(): int {
@@ -199,5 +204,16 @@ class Node {
      */
     public function setDifficulty(string $difficulty): void {
         $this->difficulty = $difficulty;
+    }
+
+    public function setGroup(string $group): void {
+        $this->group = $group;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGroup(): string {
+        return $this->group;
     }
 }

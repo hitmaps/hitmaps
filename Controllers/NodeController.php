@@ -21,7 +21,25 @@ class NodeController {
     }
 
     public function getNodesForMission(int $missionid, string $difficulty): array {
-        return $this->nodeRepository->findByMissionAndDifficulty($missionid, $difficulty);
+        $nodes = $this->nodeRepository->findByMissionAndDifficulty($missionid, $difficulty);
+
+        $groups = [];
+        foreach ($nodes as $node) {
+            /* @var $node Node */
+            $type = $node->getType();
+            $group = $node->getGroup();
+            if (!isset($groups[$type])) {
+                $groups[$type] = [];
+            }
+
+            if (!isset($groups[$type][$group])) {
+                $groups[$type][$group] = [];
+            }
+
+            $groups[$type][$group][] = $node;
+        }
+
+        return $groups;
     }
 
     public function createNode(int $missionId, string $difficulty, array $postData): void {
