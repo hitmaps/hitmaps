@@ -34,6 +34,8 @@ $klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]'
     $viewModel->mapCenterLatitude = -102.3125;
     $viewModel->mapCenterLongitude = 104.25;
 
+    $viewModel->nodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($viewModel->missionId, $request->difficulty);
+
     return \Controllers\Renderer::render('map.twig', $twig, $viewModel);
 });
 

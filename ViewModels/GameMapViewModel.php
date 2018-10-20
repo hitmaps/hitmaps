@@ -16,6 +16,6 @@ class GameMapViewModel {
     public $mapCenterLatitude;
 
     // TODO
-    public $pointsOfInterest;
+    public $nodes;
     public $disguises; // ?
 }
