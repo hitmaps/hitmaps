@@ -3,9 +3,12 @@
 namespace Controllers;
 
 
+use Controllers\ViewModels\NodeNoteViewModel;
+use Controllers\ViewModels\NodeWithNotesViewModel;
 use DataAccess\Models\Node;
 use DataAccess\Models\NodeNote;
 use DataAccess\Repositories\NodeRepository;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManager;
 
 class NodeController {
@@ -15,9 +18,13 @@ class NodeController {
     /* @var $nodeRepository NodeRepository */
     private $nodeRepository;
 
+    /* @var $nodeNoteRepository ObjectRepository */
+    private $nodeNoteRepository;
+
     public function __construct(EntityManager $entityManager) {
         $this->entityManager = $entityManager;
         $this->nodeRepository = $entityManager->getRepository(Node::class);
+        $this->nodeNoteRepository = $entityManager->getRepository(NodeNote::class);
     }
 
     public function getNodesForMission(int $missionid, string $difficulty, bool $distinctOnly = false): array {
@@ -27,6 +34,9 @@ class NodeController {
         $addedNodes = [];
         foreach ($nodes as $node) {
             /* @var $node Node */
+            /* @var $notes NodeNote[] */
+            $notes = $this->nodeNoteRepository->findBy(['nodeId' => $node->getId()]);
+
             $type = $node->getType();
             $group = $node->getGroup();
             if (!isset($groups[$type])) {
@@ -41,7 +51,29 @@ class NodeController {
                 $node->getName() === null ||
                 $node->getName() === '' ||
                 !in_array($type . $group . $node->getName(), $addedNodes)) {
-                $groups[$type][$group][] = $node;
+                $nodeViewModel = new NodeWithNotesViewModel();
+                $nodeViewModel->id = $node->getId();
+                $nodeViewModel->missionId = $node->getMissionId();
+                $nodeViewModel->type = $node->getType();
+                $nodeViewModel->icon = $node->getIcon();
+                $nodeViewModel->name = $node->getName();
+                $nodeViewModel->target = $node->getTarget();
+                $nodeViewModel->level = $node->getLevel();
+                $nodeViewModel->latitude = $node->getLatitude();
+                $nodeViewModel->longitude = $node->getLongitude();
+                $nodeViewModel->difficulty = $node->getDifficulty();
+                $nodeViewModel->group = $node->getGroup();
+                $nodeViewModel->notes = [];
+                foreach ($notes as $note) {
+                    $innerViewModel = new NodeNoteViewModel();
+                    $innerViewModel->id = $note->getId();
+                    $innerViewModel->type = $note->getType();
+                    $innerViewModel->text = $note->getText();
+
+                    $nodeViewModel->notes[] = $innerViewModel;
+                }
+
+                $groups[$type][$group][] = $nodeViewModel;
 
                 if ($distinctOnly && $node->getName() !== null && $node->getName() !== '') {
                     $addedNodes[] = $type . $group . $node->getName();

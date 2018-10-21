@@ -40,6 +40,49 @@
             min-height: 100vh;
         }
 
+        [data-name="name"] {
+            font-size: 1.3em;
+            font-weight: bolder;
+        }
+
+        [data-name="group"] {
+            font-weight: bolder;
+            color: #666;
+        }
+
+        [data-name="target"] {
+            color: #666;
+        }
+
+        [data-name="notes"] {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .requirement {
+            color: #721c24;
+            background: #f8d7da;
+            border: #f5c6cb solid 1px;
+        }
+
+        .warning {
+            color: #856404;
+            background: #fff3cd;
+            border: #ffeeba solid 1px;
+        }
+
+        .info {
+            color: #0c5460;
+            background: #d1ecf1;
+            border: #bee5eb solid 1px;
+        }
+
+        .description {
+            color: #1b1e21;
+            background: #d6d8d9;
+            border: #c6c8ca solid 1px;
+        }
+
         /*.leaflet-control-zoom-in {
             border: 2px solid #fff !important;
             margin-bottom: 10px;
@@ -216,6 +259,22 @@
         </div>
     </div>
 </div>
+<script type="text/html" id="popup-template">
+    <div>
+        <div data-name="name">Stove</div>
+        <div data-name="group">Explosion</div>
+        <div data-name="target">Start Gas Leak</div>
+        <hr>
+        <div data-name="notes"></div>
+    </div>
+</script>
+<script type="text/html" id="popup-note-template">
+    <div>
+        <div>
+            <div data-name="note-contents"></div>
+        </div>
+    </div>
+</script>
 <script>
     var g_overlays = {};
     var g_map;
@@ -244,11 +303,6 @@
         } else {
             $('[data-layer^="' + target + '"]').find('i').addClass('far').removeClass('fas');
         }
-
-        /*if (typeToggle) {
-        } else {
-            $(this).find('i').toggleClass('fas').toggleClass('far');
-        }*/
     });
 
     $.ajax({
@@ -275,7 +329,7 @@
                             iconSize: [24, 24],
                             iconAnchor: [12, 12],
                             popupAnchor: [0, 0]
-                        })}).bindPopup(node.name).addTo(g_overlays[typeName + '|' + groupName]);
+                        })}).bindPopup(buildPopup(node)).addTo(g_overlays[typeName + '|' + groupName]);
                     }
                 }
             }
@@ -352,6 +406,23 @@
         } else {
             g_map.removeLayer(layer);
         }
+    }
+
+    function buildPopup(node) {
+        var $template = $($('#popup-template').html());
+        $template.find('[data-name="group"]').html(node.group).end()
+            .find('[data-name="name"]').html(node.name).end()
+            .find('[data-name="target"]').html(node.target).end();
+
+        for (var i in node.notes) {
+            var $noteTemplate = $($('#popup-note-template').html());
+
+            $noteTemplate.find('[data-name="note-contents"]').html(node.notes[i].text).parent().addClass(node.notes[i].type);
+
+            $template.find('[data-name="notes"]').append($noteTemplate.html());
+        }
+
+        return $template.html();
     }
 </script>
 </body>
