@@ -270,7 +270,12 @@
 
                     for (var k in group) {
                         var node = group[k];
-                        L.marker([node.latitude, node.longitude]).bindPopup(node.name).addTo(g_overlays[typeName + '|' + groupName]);
+                        L.marker([node.latitude, node.longitude], {
+                            icon: L.icon({iconUrl: '/img/map-icons/' + node.icon + '.png',
+                            iconSize: [24, 24],
+                            iconAnchor: [12, 12],
+                            popupAnchor: [0, 0]
+                        })}).bindPopup(node.name).addTo(g_overlays[typeName + '|' + groupName]);
                     }
                 }
             }
