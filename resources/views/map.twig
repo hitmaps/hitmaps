@@ -38,6 +38,7 @@
             float: right;
             width: 300px;
             min-height: 100vh;
+            background: #000;
         }
 
         [data-name="name"] {
@@ -83,29 +84,80 @@
             border: #c6c8ca solid 1px;
         }
 
-        /*.leaflet-control-zoom-in {
+        #map .leaflet-control-container {
+            display: none;
+        }
+
+        .leaflet-control-zoom {
+            float: none;
+            display: inline-block;
+            box-sizing: content-box;
+        }
+
+        .leaflet-bar {
+            box-shadow: none;
+            border-radius: 0;
+        }
+
+        .leaflet-control-zoom-in {
             border: 2px solid #fff !important;
             margin-bottom: 10px;
+            box-sizing: content-box;
         }
 
         .leaflet-control-zoom-out {
             border: 2px solid #fff!important;
+            box-sizing: content-box;
+            margin-left: 5px;
         }
 
         .leaflet-control-zoom-in, .leaflet-control-zoom-out {
-            /*float: left!important;
+            float: left!important;
             border-radius: 3px !important;
             padding: 5px!important;
             background: rgba(22,24,29,0.75)!important;
             color: #fff!important;
             box-shadow: none!important;
-        }*/
+        }
+
+        .accordion .card {
+            margin-top: 5px;
+            margin-bottom: 5px;
+            border-radius: 3px !important;
+        }
+
+        .accordion .card > .card-header {
+            border-radius: 3px;
+            background: #555;
+            border: 2px solid #fff;
+        }
+
+        .accordion .card > .card-header a {
+            color: #fff;
+            font-size: .8em;
+        }
+
+        .accordion .card > .card-header a:hover {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .accordion .card .card-body {
+            background: #bbb;
+            border: 2px solid #fff;
+            border-top-width: 0;
+        }
+
+        .accordion .card .card-body i {
+            color: #000;
+        }
     </style>
 </head>
 <body>
 <div id="map"></div>
-<nav class="navbar navbar-fixed-right navbar-light bg-light">
-    <a class="navbar-brand" href="#">Legend</a>
+<nav class="navbar navbar-fixed-right navbar-light">
+    <div id="map-control"></div>
+    <br>
     <div class="accordion" id="accordion">
         {% for typeName,type in model.nodes %}
             <div class="card">
@@ -113,10 +165,10 @@
                     <h5 class="mb-0">
                         <a href="javascript:" data-layer="{{ typeName }}|*">
                             <i class="fas fa-circle"></i></a>
-                        <button class="btn btn-link" type="button" data-toggle="collapse"
+                        <a href="javascript:" data-toggle="collapse"
                                 data-target="#body-{{ loop.index0 }}" aria-expanded="false" aria-controls="body-{{ loop.index0 }}">
                             {{ typeName }}
-                        </button>
+                        </a>
                     </h5>
                 </div>
                 <div id="body-{{ loop.index0 }}" class="collapse" aria-labelledby="header-{{ loop.index0 }}" data-parent="#accordion">
@@ -356,7 +408,10 @@
                     .find('input[name="longitude"]').val(e.latlng.lng).end()
                     .modal('show');
             });
-            g_map.zoomControl.setPosition('topright');
+            var zoom = L.control.zoom({position: 'topright'});
+            zoom.addTo(g_map);
+            //g_map.zoomControl.setPosition('topright');
+            $('#map-control').append(zoom.getContainer());
 
             //console.log(leafletLayerGroups);
         },
