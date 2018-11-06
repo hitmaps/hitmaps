@@ -65,9 +65,7 @@ $klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\
 
     $applicationContext->get(\Controllers\NodeController::class)->createNode(intval($_POST['mission-id']), $_POST['difficulty'], $_POST);
 
-    error_log("Before response.");
     $response->code(204);
-    error_log("After response. Returning.");
     return;
 });
 
