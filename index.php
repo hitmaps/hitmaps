@@ -2,7 +2,7 @@
 
 require __DIR__ . '/autoload.php';
 
-SassCompiler::run("scss/", "css/", "scss_formatter_compressed");
+//SassCompiler::run("scss/", "css/", "scss_formatter_compressed");
 
 $loader = new Twig_Loader_Filesystem(__DIR__ . '/resources/views');
 $twig = new Twig_Environment($loader);
@@ -10,17 +10,27 @@ $twig = new Twig_Environment($loader);
 $klein = new \Klein\Klein();
 
 $klein->respond('GET', '/', function () use ($twig, $applicationContext) {
-    return \Controllers\Renderer::render('game-select.twig', $twig);
-});
+    /* @var $locations \DataAccess\Models\Location[] */
+    $locations = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findBy([], ['order' => 'ASC']);
 
-$klein->respond('GET', '/games/[:game]', function (\Klein\Request $request) use ($twig, $applicationContext) {
-    if (!in_array($request->game, [\BusinessLogic\Game::HITMAN, \BusinessLogic\Game::HITMAN2])) {
-        return http_response_code(404);
+    /* @var $games \ViewModels\GameViewModel[] */
+    $games = [];
+
+    foreach ($locations as $location) {
+        if (!isset($games[$location->getGame()])) {
+            $gameViewModel = new \ViewModels\GameViewModel();
+            $gameViewModel->game = $location->getGame();
+            $gameViewModel->locations = [];
+            $games[$location->getGame()] = $gameViewModel;
+        }
+
+        $locationViewModel = new \ViewModels\LocationViewModel();
+        $locationViewModel->country = $location->getDestinationCountry();
+        $locationViewModel->name = $location->getDestination();
+        $games[$location->getGame()]->locations[] = $locationViewModel;
     }
 
-    $gameViewModel = $applicationContext->get(\Controllers\LocationsController::class)->getLocationsAndMissionsForGame($request->game);
-
-    return \Controllers\Renderer::render("game/{$request->game}.twig", $twig, $gameViewModel);
+    return \Controllers\Renderer::render('location-select.twig', $twig, $games);
 });
 
 $klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]', function (\Klein\Request $request) use ($twig, $applicationContext) {
