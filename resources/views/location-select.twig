@@ -1,0 +1,14 @@
+<html>
+<head>
+    <title>Game Select | HITMAN Maps</title>
+</head>
+<body>
+{% for game in model %}
+    <h2>{{ game.game }}</h2>
+    {% for location in game.locations %}
+        <p>{{ location.name }}</p>
+        <code>{{ location.country }}</code>
+    {% endfor %}
+{% endfor %}
+</body>
+</html>
