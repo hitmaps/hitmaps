@@ -29,22 +29,20 @@
         }
     </style>
 </head>
-<body>
+<body style="background: url('/img/backgrounds/{{ model.game }}.png') no-repeat center;">
 <div class="site-container">
-    {% for game in model %}
-        <div class="text-center">
-            <img src="/img/logos/{{ game.game }}.png" class="img-fluid">
-        </div>
-        <div class="row">
-            {% for location in game.locations %}
-                <div class="location col-lg col-md-6" style="background: url('/img/locations/{{ game.game }}/{{ location.country | lower }}.png') no-repeat center">
-                    <p>&nbsp;</p>
-                    <h4>{{ location.country }}</h4>
-                    <h3>{{ location.name }}</h3>
-                </div>
-            {% endfor %}
-        </div>
-    {% endfor %}
+    <div class="text-center">
+        <img src="/img/logos/{{ model.game }}.png" class="img-fluid">
+    </div>
+    <div class="row">
+        {% for location in model.locations %}
+            <div class="location col-lg col-md-6" style="background: url('/img/locations/{{ model.game }}/{{ location.country | lower }}.png') no-repeat center">
+                <p>&nbsp;</p>
+                <h4>{{ location.country }}</h4>
+                <h3>{{ location.name }}</h3>
+            </div>
+        {% endfor %}
+    </div>
 </div>
 </body>
 </html>
