@@ -33,6 +33,25 @@ $klein->respond('GET', '/', function () use ($twig, $applicationContext) {
     return \Controllers\Renderer::render('location-select.twig', $twig, $games);
 });
 
+$klein->respond('GET', '/games/[:game]', function(\Klein\Request $request) use ($twig, $applicationContext) {
+    /* @var $locations \DataAccess\Models\Location[] */
+    $locations = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)
+        ->findBy(['game' => $request->game], ['order' => 'ASC']);
+
+    /* @var $gameViewModel \ViewModels\GameViewModel */
+    $gameViewModel = new \ViewModels\GameViewModel();
+    $gameViewModel->game = $request->game;
+
+    foreach ($locations as $location) {
+        $locationViewModel = new \ViewModels\LocationViewModel();
+        $locationViewModel->country = $location->getDestinationCountry();
+        $locationViewModel->name = $location->getDestination();
+        $gameViewModel->locations[] = $locationViewModel;
+    }
+
+    return \Controllers\Renderer::render('location-select.twig', $twig, $gameViewModel);
+});
+
 $klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]', function (\Klein\Request $request) use ($twig, $applicationContext) {
     $viewModel = new \ViewModels\GameMapViewModel();
     $viewModel->difficulty = $request->difficulty;
