@@ -1,14 +1,24 @@
 <html>
 <head>
     <title>Game Select | HITMAN Maps</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
 </head>
 <body>
+<div class="container">
+</div>
 {% for game in model %}
     <h2>{{ game.game }}</h2>
-    {% for location in game.locations %}
-        <p>{{ location.name }}</p>
-        <code>{{ location.country }}</code>
-    {% endfor %}
+    <div class="row">
+        {% for location in game.locations %}
+            <div class="col-lg col-md-6">
+                <h4>{{ location.country }}</h4>
+                <h3>{{ location.name }}</h3>
+            </div>
+        {% endfor %}
+    </div>
+
 {% endfor %}
 </body>
 </html>
