@@ -2,7 +2,7 @@
 
 require __DIR__ . '/autoload.php';
 
-//SassCompiler::run("scss/", "css/", "scss_formatter_compressed");
+SassCompiler::run("scss/", "css/", "scss_formatter_compressed");
 
 $loader = new Twig_Loader_Filesystem(__DIR__ . '/resources/views');
 $twig = new Twig_Environment($loader);
@@ -37,10 +37,16 @@ $klein->respond('GET', '/games/[:game]', function(\Klein\Request $request) use (
     /* @var $locations \DataAccess\Models\Location[] */
     $locations = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)
         ->findBy(['game' => $request->game], ['order' => 'ASC']);
+    /* @var $game \DataAccess\Models\Game */
+    $game = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
+        ->getRepository(\DataAccess\Models\Game::class)
+        ->findOneBy(['slug' => $request->game]);
 
     /* @var $gameViewModel \ViewModels\GameViewModel */
     $gameViewModel = new \ViewModels\GameViewModel();
     $gameViewModel->game = $request->game;
+    $gameViewModel->fullName = $game->getFullName();
+    $gameViewModel->tagline = $game->getTagline();
 
     foreach ($locations as $location) {
         $locationViewModel = new \ViewModels\LocationViewModel();
