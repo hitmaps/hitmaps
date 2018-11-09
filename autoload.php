@@ -28,7 +28,8 @@ $databaseConnection = [
     'user' => $settings->databaseUser,
     'password' => $settings->databasePassword,
     'host' => $settings->databaseHost,
-    'dbname' => $settings->databaseName
+    'dbname' => $settings->databaseName,
+    'charset' => 'utf8mb4'
 ];
 $entityManager = \Doctrine\ORM\EntityManager::create($databaseConnection, $databaseConfig);
 $applicationContext->set(\Doctrine\ORM\EntityManager::class, $entityManager);
