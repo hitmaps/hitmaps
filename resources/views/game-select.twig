@@ -7,33 +7,31 @@
     <link rel="stylesheet" href="/css/site.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,500,500i" rel="stylesheet">
 </head>
-<body>
-<div class="row h-100 text-center">
-    {% for game in model %}
-    <div class="col-lg" style="background: url('/img/backgrounds/{{ game.slug }}.png') no-repeat center">
-        <img src="/img/logos/{{ game.slug }}.png" class="img-fluid">
-        <h2>{{ game.tagline }}</h2>
+<body style="background: url('/img/backgrounds/home.jpg') no-repeat center">
+<header class="row">
+    <div class="col text-center">
+        <h1>Welcome, Agent.</h1>
+        <h2>Select Your Campaign</h2>
     </div>
+</header>
+<div class="row">
+    {% for game in model %}
+        <div class="col-lg {{ game.slug }} text-center">
+            <a href="/games/{{ game.slug }}">
+                <div class="game-btn" style="background: url('/img/backgrounds/{{ game.slug }}.png') no-repeat center">
+                    <img src="/img/logos/{{ game.slug }}.png" class="img-fluid">
+                    <h2>{{ game.tagline }}</h2>
+                </div>
+            </a>
+        </div>
     {% endfor %}
 </div>
-{#<div>
-    <div class="text-center">
-        <img src="/img/logos/{{ model.game }}.png" class="img-fluid">
-        <h2>{{ model.tagline }}</h2>
+<footer class="fixed-bottom text-center">
+    <div class="alert alert-dark" role="alert">
+        The site is currently under construction. Most information is unavailable at this time.
     </div>
-    <div class="row">
-        {% for location in model.locations %}
-            <div class="location col-lg col-md-6" style="background: url('/img/locations/{{ model.game }}/{{ location.name | remove_accent | lower | replace({' ': '_'}) }}.png') no-repeat center">
-                <a href="/games/{{ model.game }}/{{ location.id }}">
-                    <p>&nbsp;</p>
-                    <div class="location-info">
-                        <h4>{{ location.country }}</h4>
-                        <h3>{{ location.name }}</h3>
-                    </div>
-                </a>
-            </div>
-        {% endfor %}
-    </div>
-</div>#}
+    <p>Copyright 2018 hitman2maps.com</p>
+    <p>HITMAN™, HITMAN™ 2, the HITMAN™ logo, images, and text are the property of IO Interactive.</p>
+</footer>
 </body>
 </html>
