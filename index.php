@@ -6,31 +6,27 @@ SassCompiler::run("scss/", "css/", "scss_formatter_compressed");
 
 $loader = new Twig_Loader_Filesystem(__DIR__ . '/resources/views');
 $twig = new Twig_Environment($loader);
+$twig->addFilter(new Twig_SimpleFilter('remove_accent', function ($string) {
+    return str_replace('à', 'a', $string);
+}));
 
 $klein = new \Klein\Klein();
 
 $klein->respond('GET', '/', function () use ($twig, $applicationContext) {
-    /* @var $locations \DataAccess\Models\Location[] */
-    $locations = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findBy([], ['order' => 'ASC']);
+    /* @var $games \DataAccess\Models\Game[] */
+    $games = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Game::class)->findAll();
 
-    /* @var $games \ViewModels\GameViewModel[] */
-    $games = [];
+    $viewModels = [];
+    foreach ($games as $game) {
+        $gameViewModel = new \ViewModels\GameViewModel();
+        $gameViewModel->tagline = $game->getTagline();
+        $gameViewModel->fullName = $game->getFullName();
+        $gameViewModel->slug = $game->getSlug();
 
-    foreach ($locations as $location) {
-        if (!isset($games[$location->getGame()])) {
-            $gameViewModel = new \ViewModels\GameViewModel();
-            $gameViewModel->game = $location->getGame();
-            $gameViewModel->locations = [];
-            $games[$location->getGame()] = $gameViewModel;
-        }
-
-        $locationViewModel = new \ViewModels\LocationViewModel();
-        $locationViewModel->country = $location->getDestinationCountry();
-        $locationViewModel->name = $location->getDestination();
-        $games[$location->getGame()]->locations[] = $locationViewModel;
+        $viewModels[] = $gameViewModel;
     }
 
-    return \Controllers\Renderer::render('location-select.twig', $twig, $games);
+    return \Controllers\Renderer::render('game-select.twig', $twig, $viewModels);
 });
 
 $klein->respond('GET', '/games/[:game]', function(\Klein\Request $request) use ($twig, $applicationContext) {
@@ -50,6 +46,7 @@ $klein->respond('GET', '/games/[:game]', function(\Klein\Request $request) use (
 
     foreach ($locations as $location) {
         $locationViewModel = new \ViewModels\LocationViewModel();
+        $locationViewModel->id = $location->getId();
         $locationViewModel->country = $location->getDestinationCountry();
         $locationViewModel->name = $location->getDestination();
         $gameViewModel->locations[] = $locationViewModel;

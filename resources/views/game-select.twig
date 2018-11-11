@@ -7,8 +7,16 @@
     <link rel="stylesheet" href="/css/site.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,500,500i" rel="stylesheet">
 </head>
-<body style="background: url('/img/backgrounds/{{ model.game }}.png') no-repeat center;" class="{{ model.game }}">
-<div class="site-container">
+<body>
+<div class="row h-100 text-center">
+    {% for game in model %}
+    <div class="col-lg" style="background: url('/img/backgrounds/{{ game.slug }}.png') no-repeat center">
+        <img src="/img/logos/{{ game.slug }}.png" class="img-fluid">
+        <h2>{{ game.tagline }}</h2>
+    </div>
+    {% endfor %}
+</div>
+{#<div>
     <div class="text-center">
         <img src="/img/logos/{{ model.game }}.png" class="img-fluid">
         <h2>{{ model.tagline }}</h2>
@@ -26,6 +34,6 @@
             </div>
         {% endfor %}
     </div>
-</div>
+</div>#}
 </body>
 </html>

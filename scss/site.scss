@@ -1,3 +1,7 @@
+body {
+  background: #ddd;
+}
+
 .hitman {
   .site-container {
     padding-right: 50px;
@@ -13,8 +17,6 @@
   }
 
   .location {
-    display: flex;
-    flex-direction: column;
     color: white;
     border: solid 1px #fff;
     margin-left: 3px;
@@ -24,20 +26,34 @@
       .location-info {
         background: white;
         color: #000;
+        text-shadow: none;
       }
 
       box-shadow: 2px 2px 2px #000;
     }
 
     .location-info {
-      margin-left: -15px;
-      margin-right: -15px;
       padding: 15px;
+      color: white;
+      text-shadow:
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
     }
   }
 
-  .location > p {
-    flex-grow: 1;
+  .location > a  {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin-left: -15px;
+    margin-right: -15px;
+    text-decoration: none;
+
+    > p {
+      flex-grow: 1;
+    }
   }
 
   img {
@@ -82,20 +98,35 @@
       .location-info {
         background: white;
         color: #000;
+        text-shadow: none;
       }
 
       box-shadow: 2px 2px 2px #000;
     }
 
     .location-info {
-      margin-left: -15px;
-      margin-right: -15px;
       padding: 15px;
+      color: white;
+      text-shadow:
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
     }
   }
 
-  .location > p {
-    flex-grow: 1;
+
+  .location > a  {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin-left: -15px;
+    margin-right: -15px;
+    text-decoration: none;
+
+    > p {
+      flex-grow: 1;
+    }
   }
 
   img {
@@ -107,7 +138,11 @@
     text-transform: uppercase;
     color: #fff;
     font-weight: 300;
-    font-style: italic;
     margin-bottom: 20px;
+    text-shadow:
+      -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+      1px 1px 0 #000;
   }
 }
