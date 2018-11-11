@@ -2,7 +2,31 @@ body {
   background: #ddd;
 }
 
+header {
+  font-family: 'Arial', sans-serif;
+  color: #fff;
+  font-weight: bolder;
+  margin-top: 20px;
+}
+
 .hitman {
+  /* Homepage */
+  .game-btn {
+    border: solid 1px #fff;
+    padding: 20px;
+
+    &:hover {
+      box-shadow: 10px 10px 25px #000;
+    }
+  }
+
+  > a {
+    text-decoration: none;
+    display: block;
+    margin: 20px;
+  }
+
+  /* Locations page */
   .site-container {
     padding-right: 50px;
     padding-left: 50px;
@@ -70,9 +94,25 @@ body {
 }
 
 .hitman2 {
-  margin-top: 20px;
+  /* Homepage */
+  .game-btn {
+    border: solid 1px #fff;
+    padding: 20px;
+
+    &:hover {
+      box-shadow: 10px 10px 25px #000;
+    }
+  }
+
+  > a {
+    text-decoration: none;
+    display: block;
+    margin: 20px;
+  }
+
   font-family: 'Roboto', sans-serif;
 
+  /* Locations page */
   .site-container {
     padding-right: 50px;
     padding-left: 50px;
@@ -144,5 +184,17 @@ body {
       1px -1px 0 #000,
       -1px 1px 0 #000,
       1px 1px 0 #000;
+    font-style: italic;
+  }
+}
+
+footer {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  background: #000;
+  color: #6b6c72;
+
+  > p {
+    margin-bottom: 0;
   }
 }
