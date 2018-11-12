@@ -4,8 +4,8 @@ namespace ViewModels;
 
 
 class LocationViewModel {
-    /* @var $id string */
-    public $id;
+    /* @var $slug string */
+    public $slug;
 
     /* @var $name string */
     public $name;

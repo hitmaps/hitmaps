@@ -1,12 +1,21 @@
 body {
   background: #ddd;
+  padding-bottom: 15rem;
 }
 
 header {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Roboto', 'Arial', sans-serif;
   color: #fff;
   font-weight: bolder;
   margin-top: 20px;
+
+  h1 {
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin-top: 20px;
+  }
 }
 
 .hitman {
@@ -184,7 +193,6 @@ header {
       1px -1px 0 #000,
       -1px 1px 0 #000,
       1px 1px 0 #000;
-    font-style: italic;
   }
 }
 

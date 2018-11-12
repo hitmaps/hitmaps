@@ -6,9 +6,6 @@ SassCompiler::run("scss/", "css/", "scss_formatter_compressed");
 
 $loader = new Twig_Loader_Filesystem(__DIR__ . '/resources/views');
 $twig = new Twig_Environment($loader);
-$twig->addFilter(new Twig_SimpleFilter('remove_accent', function ($string) {
-    return str_replace('à', 'a', $string);
-}));
 
 $klein = new \Klein\Klein();
 
@@ -46,7 +43,7 @@ $klein->respond('GET', '/games/[:game]', function(\Klein\Request $request) use (
 
     foreach ($locations as $location) {
         $locationViewModel = new \ViewModels\LocationViewModel();
-        $locationViewModel->id = $location->getId();
+        $locationViewModel->slug = $location->getMapFolderName();
         $locationViewModel->country = $location->getDestinationCountry();
         $locationViewModel->name = $location->getDestination();
         $gameViewModel->locations[] = $locationViewModel;
