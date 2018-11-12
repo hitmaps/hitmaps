@@ -8,7 +8,6 @@ TARGETDIR=latest_build;for file in *;do test "$file" != "$TARGETDIR" && cp -r "$
 cd latest_build
 rm -rf ci
 rm -rf .git
-rm -rf db
 
 zip -r ../latest_build.zip .
 cd ../
