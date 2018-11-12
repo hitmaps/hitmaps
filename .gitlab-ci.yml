@@ -21,7 +21,7 @@ deploy_prod:
     - bash deploy_to_prod.sh
   environment:
     name: Production
-    url: https://www.rl-outfitting.com
+    url: https://www.hitman2maps.com
   artifacts:
     paths:
       - latest_build/
