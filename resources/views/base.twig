@@ -1,0 +1,24 @@
+<html>
+<head>
+    {% include 'analytics.twig' %}
+
+    <title>{{ page_title }} | HITMAN Maps</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/site.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,500,500i" rel="stylesheet">
+</head>
+<body style="{{ body_style }}" class="{{ body_class }}">
+    {% block content %}
+    {% endblock %}
+    <footer class="fixed-bottom text-center">
+        <div class="alert alert-dark" role="alert">
+            The site is currently under construction. Most information is unavailable at this time.<br>
+            This site is currently not designed for mobile use.
+        </div>
+        <p>Copyright 2018 hitman2maps.com</p>
+        <p>HITMAN™, HITMAN™ 2, the HITMAN™ logo, images, and text are the property of IO Interactive.</p>
+    </footer>
+</body>
+</html>

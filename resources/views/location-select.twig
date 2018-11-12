@@ -1,31 +1,27 @@
-<html>
-<head>
-    <title>{{ model.fullName }} | HITMAN Maps</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-          crossorigin="anonymous">
-    <link rel="stylesheet" href="/css/site.css">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,500,500i" rel="stylesheet">
-</head>
-<body style="background: url('/img/backgrounds/{{ model.game }}.png') no-repeat center;" class="{{ model.game }}">
-<div class="site-container">
-    <div class="text-center">
-        <img src="/img/logos/{{ model.game }}.png" class="img-fluid">
-        <h2>{{ model.tagline }}</h2>
+{% extends 'base.twig' %}
+
+{% set page_title = model.fullName %}
+{% set body_style = "background: url('/img/backgrounds/#{model.game}.png') no-repeat center;" %}
+{% set body_class = model.game %}
+
+{% block content %}
+    <div class="site-container">
+        <div class="text-center">
+            <img src="/img/logos/{{ model.game }}.png" class="img-fluid">
+            <h2>{{ model.tagline }}</h2>
+        </div>
+        <div class="row">
+            {% for location in model.locations %}
+                <div class="location col-lg col-md-6" style="background: url('/img/locations/{{ model.game }}/{{ location.slug }}.png') no-repeat center">
+                    <a href="/games/{{ model.game }}/{{ location.slug }}">
+                        <p>&nbsp;</p>
+                        <div class="location-info">
+                            <h4>{{ location.country }}</h4>
+                            <h3>{{ location.name }}</h3>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
     </div>
-    <div class="row">
-        {% for location in model.locations %}
-            <div class="location col-lg col-md-6" style="background: url('/img/locations/{{ model.game }}/{{ location.name | remove_accent | lower | replace({' ': '_'}) }}.png') no-repeat center">
-                <a href="/games/{{ model.game }}/{{ location.id }}">
-                    <p>&nbsp;</p>
-                    <div class="location-info">
-                        <h4>{{ location.country }}</h4>
-                        <h3>{{ location.name }}</h3>
-                    </div>
-                </a>
-            </div>
-        {% endfor %}
-    </div>
-</div>
-</body>
-</html>
+{% endblock %}
