@@ -52,6 +52,16 @@ $klein->respond('GET', '/games/[:game]', function(\Klein\Request $request) use (
     return \Controllers\Renderer::render('location-select.twig', $twig, $gameViewModel);
 });
 
+$klein->respond('GET', '/games/[:game]/[:location]', function(\Klein\Request $request) use ($twig, $applicationContext) {
+    /* @var $location \DataAccess\Models\Location */
+    $location = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)
+        ->findOneBy(['mapFolderName' => $request->location]);
+    $missions = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Mission::class)
+        ->findBy(['locationId' => $location->getId() ]);
+
+    return \Controllers\Renderer::render('mission-select.twig', $twig, $missions);
+});
+
 $klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]', function (\Klein\Request $request) use ($twig, $applicationContext) {
     $viewModel = new \ViewModels\GameMapViewModel();
     $viewModel->difficulty = $request->difficulty;
