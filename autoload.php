@@ -36,8 +36,8 @@ $applicationContext->set(\Doctrine\ORM\EntityManager::class, $entityManager);
 
 if ($settings->loggingEnvironment !== 'development') {
     // TODO Rollbar configuration
-    /*\Rollbar\Rollbar::init([
+    \Rollbar\Rollbar::init([
         'access_token' => $settings->loggingAccessToken,
         'environment' => $settings->loggingEnvironment
-    ]);*/
+    ]);
 }
