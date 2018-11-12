@@ -102,4 +102,24 @@ $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
     return json_encode($applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($_GET['missionId'], $_GET['difficulty']));
 });
 
+/* Admin Endpoints */
+$klein->respond('GET', '/admin/migrate', function() {
+    $config = new Config\Settings();
+    if ($config->accessKey !== $_GET['accessKey']) {
+        return http_response_code(404);
+    }
+
+    $wrapper = new \Phinx\Wrapper\TextWrapper(new \Phinx\Console\PhinxApplication(), array('configuration' => __DIR__ . '/phinx.yml'));
+
+    $output = $wrapper->getMigrate();
+
+    if ($wrapper->getExitCode() > 0) {
+        http_response_code(500);
+    } else {
+        http_response_code(200);
+    }
+
+    return '<pre>' . $output . '</pre>';
+});
+
 $klein->dispatch();
