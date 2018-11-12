@@ -18,4 +18,4 @@ mv latest_build.zip latest_build
 lftp -d -e "set ssl:verify-certificate no; mirror -P $NUMBER_OF_CONCURRENT_UPLOADS -Rv $LOCAL_DIR $REMOTE_DIR; quit;" ftp://$USERNAME:$PASSWORD@$HOST
 
 wget https://www.hitman2maps.com/unzip-build.php > /dev/null
-wget https://www.hitman2maps.com/admin/migrate?accesskey=$ACCESS_KEY > latest_build/phinx-log.txt
+wget https://www.hitman2maps.com/admin/migrate?access-key=$ACCESS_KEY > latest_build/phinx-log.txt
