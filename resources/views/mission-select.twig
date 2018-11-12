@@ -1,0 +1,10 @@
+<html>
+<body>
+{% for mission in model %}
+    {{ mission.slug }}
+    {% for difficulty in mission.difficulties %}
+        {{ difficulty.difficulty }}
+    {% endfor %}
+{% endfor %}
+</body>
+</html>

@@ -4,6 +4,8 @@
 namespace DataAccess\Models;
 
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -42,9 +44,14 @@ class Mission {
     private $order;
 
     /**
-     * @ORM\Column(type="boolean", name="professional_mode")
+     * @var Collection
+     * @ORM\ManyToMany(targetEntity="MissionDifficulty")
      */
-    private $professionalMode;
+    private $difficulties;
+
+    public function __construct() {
+        $this->difficulties = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -131,16 +138,16 @@ class Mission {
     }
 
     /**
-     * @return mixed
+     * @return Collection
      */
-    public function isProfessionalMode(): bool {
-        return $this->professionalMode;
+    public function getDifficulties(): Collection {
+        return $this->difficulties;
     }
 
     /**
-     * @param mixed $professionalMode
+     * @param Collection $difficulties
      */
-    public function setProfessionalMode(bool $professionalMode): void {
-        $this->professionalMode = $professionalMode;
+    public function setDifficulties(Collection $difficulties): void {
+        $this->difficulties = $difficulties;
     }
 }
