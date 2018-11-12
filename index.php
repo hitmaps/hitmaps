@@ -105,7 +105,7 @@ $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
 /* Admin Endpoints */
 $klein->respond('GET', '/admin/migrate', function() {
     $config = new Config\Settings();
-    if ($config->accessKey !== $_GET['accessKey']) {
+    if ($config->accessKey !== $_GET['access-key']) {
         return http_response_code(404);
     }
 
