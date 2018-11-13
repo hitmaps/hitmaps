@@ -44,16 +44,6 @@ class Mission {
     private $order;
 
     /**
-     * @var Collection
-     * @ORM\ManyToMany(targetEntity="MissionDifficulty")
-     */
-    private $difficulties;
-
-    public function __construct() {
-        $this->difficulties = new ArrayCollection();
-    }
-
-    /**
      * @return mixed
      */
     public function getId(): int {
@@ -135,19 +125,5 @@ class Mission {
      */
     public function setOrder(int $order): void {
         $this->order = $order;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getDifficulties(): Collection {
-        return $this->difficulties;
-    }
-
-    /**
-     * @param Collection $difficulties
-     */
-    public function setDifficulties(Collection $difficulties): void {
-        $this->difficulties = $difficulties;
     }
 }
