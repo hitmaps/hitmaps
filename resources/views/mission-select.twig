@@ -1,7 +1,7 @@
 {% extends 'base.twig' %}
 
 {% set page_title = model.name %}
-{% set body_style = "background: url('/img/backgrounds/#{model.game}/paris.png') no-repeat center" %}
+{% set body_style = "background: url('/img/backgrounds/#{model.game}/#{model.slug}.png') no-repeat center" %}
 {% set body_class = "missions #{model.slug}" %}
 
 {% block content %}
