@@ -104,6 +104,7 @@ $klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]'
 });
 
 $klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext) {
+    return http_response_code(404);
     /*
      * array (size=11)
      * 'type' => string 'sabotage' (length=8)
