@@ -206,3 +206,43 @@ footer {
     margin-bottom: 0;
   }
 }
+
+.missions {
+  header {
+    text-shadow:
+      -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+      1px 1px 0 #000;
+  }
+
+  .mission {
+
+    .game-btn {
+      border: solid 1px #fff;
+      margin: 20px;
+
+      .header {
+        border-bottom: solid 1px #fff;
+        padding: 20px;
+        background: #fff;
+      }
+
+      ul.difficulties {
+        list-style-type: none;
+        padding-left: 0;
+        background: #eee;
+        margin-bottom: 0;
+
+        li {
+          padding: 20px;
+          border-bottom: solid 1px #fff;
+
+          &:hover {
+            background: #ddd;
+          }
+        }
+      }
+    }
+  }
+}

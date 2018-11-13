@@ -1,10 +1,33 @@
-<html>
-<body>
-{% for mission in model %}
-    {{ mission.slug }}
-    {% for difficulty in mission.difficulties %}
-        {{ difficulty.difficulty }}
-    {% endfor %}
-{% endfor %}
-</body>
-</html>
+{% extends 'base.twig' %}
+
+{% set page_title = model.name %}
+{% set body_style = "background: url('/img/backgrounds/#{model.game}/paris.png') no-repeat center" %}
+{% set body_class = "missions #{model.slug}" %}
+
+{% block content %}
+    <header class="row">
+        <div class="col text-center">
+            <h1>{{ model.name }}</h1>
+            <h2>{{ model.country }}</h2>
+        </div>
+    </header>
+    <div class="row">
+        {% for mission in model.missions %}
+            {#{% if loop.index0 > 0 and loop.index0 % 2 == 0 %}
+                <div class="w-100"></div>
+            {% endif %}#}
+            <div class="col-lg mission">
+                <div class="game-btn">
+                    <div class="header">
+                        <h3>{{ mission.name }}</h3>
+                    </div>
+                    <ul class="difficulties">
+                        {% for difficulty in mission.difficulties %}
+                            <li>&rArr; {{ difficulty }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
