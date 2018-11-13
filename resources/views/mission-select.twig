@@ -23,7 +23,11 @@
                     </div>
                     <ul class="difficulties">
                         {% for difficulty in mission.difficulties %}
-                            <li>&rArr; {{ difficulty }}</li>
+                            <li>
+                                <a href="/games/{{ model.game }}/{{ model.slug }}/{{ mission.slug }}/{{ difficulty | lower }}">
+                                    &rArr; {{ difficulty }}
+                                </a>
+                            </li>
                         {% endfor %}
                     </ul>
                 </div>
