@@ -4,6 +4,8 @@
 namespace DataAccess\Models;
 
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,11 +42,6 @@ class Mission {
      * @ORM\Column(type="integer")
      */
     private $order;
-
-    /**
-     * @ORM\Column(type="boolean", name="professional_mode")
-     */
-    private $professionalMode;
 
     /**
      * @return mixed
@@ -128,19 +125,5 @@ class Mission {
      */
     public function setOrder(int $order): void {
         $this->order = $order;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function isProfessionalMode(): bool {
-        return $this->professionalMode;
-    }
-
-    /**
-     * @param mixed $professionalMode
-     */
-    public function setProfessionalMode(bool $professionalMode): void {
-        $this->professionalMode = $professionalMode;
     }
 }

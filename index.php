@@ -52,6 +52,39 @@ $klein->respond('GET', '/games/[:game]', function(\Klein\Request $request) use (
     return \Controllers\Renderer::render('location-select.twig', $twig, $gameViewModel);
 });
 
+$klein->respond('GET', '/games/[:game]/[:location]', function(\Klein\Request $request) use ($twig, $applicationContext) {
+    /* @var $location \DataAccess\Models\Location */
+    $location = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)
+        ->findOneBy(['mapFolderName' => $request->location, 'game' => $request->game]);
+    /* @var $missions \DataAccess\Models\Mission[] */
+    $missions = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Mission::class)
+        ->findBy(['locationId' => $location->getId()]);
+
+    $locationViewModel = new \ViewModels\LocationViewModel();
+    $locationViewModel->name = $location->getDestination();
+    $locationViewModel->game = $request->game;
+    $locationViewModel->country = $location->getDestinationCountry();
+    $locationViewModel->slug = $location->getMapFolderName();
+    $locationViewModel->missions = [];
+    foreach ($missions as $mission) {
+        $missionViewModel = new \ViewModels\MissionViewModel();
+        $missionViewModel->slug = $mission->getSlug();
+        $missionViewModel->name = $mission->getName();
+        $missionViewModel->difficulties = [];
+
+        /* @var $difficulties \DataAccess\Models\MissionDifficulty[] */
+        $difficulties = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\MissionDifficulty::class)
+            ->findBy(['missionId' => $mission->getId()]);
+
+        foreach ($difficulties as $difficulty) {
+            $missionViewModel->difficulties[] = $difficulty->getDifficulty();
+        }
+        $locationViewModel->missions[] = $missionViewModel;
+    }
+
+    return \Controllers\Renderer::render('mission-select.twig', $twig, $locationViewModel);
+});
+
 $klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]', function (\Klein\Request $request) use ($twig, $applicationContext) {
     $viewModel = new \ViewModels\GameMapViewModel();
     $viewModel->difficulty = $request->difficulty;

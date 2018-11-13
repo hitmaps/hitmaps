@@ -13,6 +13,9 @@ class LocationViewModel {
     /* @var $country string */
     public $country;
 
+    /* @var $game string */
+    public $game;
+
     /* @var $missions MissionViewModel[] */
     public $missions;
 }
