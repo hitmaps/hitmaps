@@ -136,6 +136,12 @@ $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
     return json_encode($applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($_GET['missionId'], $_GET['difficulty']));
 });
 
+/* Auth Endpoints */
+$klein->respond('GET', '/ajax/users/steam-link', function() use ($applicationContext) {
+    $authController = $applicationContext->get(\Controllers\AuthenticationController::class);
+    return json_encode(['link' => $authController->getSignInButton()]);
+});
+
 /* Admin Endpoints */
 $klein->respond('GET', '/admin/migrate', function() {
     $config = new Config\Settings();

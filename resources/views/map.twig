@@ -158,6 +158,7 @@
 <nav class="navbar navbar-fixed-right navbar-light">
     <div id="map-control"></div>
     <br>
+    <a href="#" class="steam-button" style="display: none">Login with Steam</a>
     <div class="accordion" id="accordion">
         {% for typeName,type in model.nodes %}
             <div class="card">
@@ -328,6 +329,19 @@
     </div>
 </script>
 <script>
+    $.ajax({
+        url: '',
+        method: 'GET',
+        success: function(data) {
+            $('.steam-button').attr('href', JSON.parse(data)['link'])
+                .css('display', 'block');
+        },
+        error: function(err) {
+            console.error(err);
+            alert(err);
+        }
+    })
+
     var g_overlays = {};
     var g_map;
 
