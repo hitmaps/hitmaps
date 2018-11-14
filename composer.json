@@ -14,6 +14,7 @@
         "rollbar/rollbar": "^1.6",
         "doctrine/orm": "^2.6",
         "robmorgan/phinx": "^0.10.6",
-        "panique/php-sass": "1.0"
+        "panique/php-sass": "1.0",
+        "iignatov/lightopenid": "^1.0"
     }
 }
