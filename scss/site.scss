@@ -51,15 +51,15 @@ header {
 
   .location {
     color: white;
-    border: solid 1px #fff;
     margin-left: 3px;
     margin-right: 3px;
 
+
+
     &:hover {
       .location-info {
-        background: white;
-        color: #000;
-        text-shadow: none;
+        color: white;
+        background: rgb(252, 0, 59);
       }
 
       box-shadow: 2px 2px 2px #000;
@@ -67,12 +67,9 @@ header {
 
     .location-info {
       padding: 15px;
-      color: white;
-      text-shadow:
-        -1px -1px 0 #000,
-        1px -1px 0 #000,
-        -1px 1px 0 #000,
-        1px 1px 0 #000;
+      background: white;
+      color: #000;
+      text-shadow: none;
     }
   }
 
@@ -139,28 +136,23 @@ header {
     display: flex;
     flex-direction: column;
     color: white;
-    border: solid 1px #fff;
     margin-left: 3px;
     margin-right: 3px;
 
     &:hover {
-      .location-info {
-        background: white;
-        color: #000;
-        text-shadow: none;
-      }
-
       box-shadow: 2px 2px 2px #000;
+
+      .location-info {
+        color: white;
+        background: rgb(252, 0, 59);
+      }
     }
 
     .location-info {
       padding: 15px;
-      color: white;
-      text-shadow:
-        -1px -1px 0 #000,
-        1px -1px 0 #000,
-        -1px 1px 0 #000,
-        1px 1px 0 #000;
+      background: white;
+      color: #000;
+      text-shadow: none;
     }
   }
 
