@@ -11,4 +11,14 @@ class Settings {
     public $accessKey = 'access-key';
     public $loggingEnvironment = 'development';
     public $loggingAccessToken = 'token';
+
+    // Email-specific settings
+    public $emailMethod = 'MAILGUN'; // MAILGUN or SMTP
+    public $smtpDomain = '';
+    public $smtpUsername = '';
+    public $smtpPassword = '';
+    public $noReplyEmail = '';
+    public $bccEmail = ''; // Used if you want a copy of all emails sent out copied to 1 address
+    public $mailgunApiKey = '';
+    public $mailgunDomain = '';
 }
