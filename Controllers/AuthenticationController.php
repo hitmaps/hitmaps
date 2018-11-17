@@ -4,14 +4,11 @@ namespace Controllers;
 
 
 
-use BusinessLogic\SteamHandler;
-
 class AuthenticationController {
-    function getSignInButton() {
-        return SteamHandler::generateLoginLink();
-    }
+    private $registerNewUserCommand;
+    private $loginUserService;
+    private $verifyUserCommand;
 
-    function handleSteamLogin() {
-        return SteamHandler::getSteam64Id();
+    public function __construct() {
     }
 }
