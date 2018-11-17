@@ -137,9 +137,18 @@ $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
 });
 
 /* Auth Endpoints */
-$klein->respond('GET', '/ajax/users/login', function() use ($applicationContext) {
-    $authController = $applicationContext->get(\Controllers\AuthenticationController::class);
-    return json_encode(['link' => $authController->getSignInButton()]);
+$klein->respond('GET', '/user/login', function(\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext, $klein) {
+    $flashes = $klein->service()->flashes();
+    $model = new \Controllers\ViewModels\BaseModel();
+    if (count($flashes) > 0) {
+        foreach ($flashes as $type => $messages) {
+            foreach ($messages as $msg) {
+                $model->messages[] = new \Controllers\ViewModels\AlertMessage($type, $msg, $type === 'success' ? 'check-circle' : 'times-circle');
+            }
+        }
+    }
+
+    return $applicationContext->get(\Controllers\AuthenticationController::class)->viewSignInPage($twig, $model);
 });
 
 /* Admin Endpoints */

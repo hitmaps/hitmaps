@@ -238,3 +238,27 @@ footer {
     }
   }
 }
+
+.login {
+  .row {
+    .col.login {
+      margin: 40px;
+
+      &:first-child {
+        margin-right: 20px;
+      }
+
+      &:last-child {
+        margin-left: 20px;
+      }
+
+      background: #fff;
+      border-radius: .25rem;
+      border: solid 1px rgba(0, 0, 0, .125);
+
+      .login-card {
+        margin: 10px;
+      }
+    }
+  }
+}
