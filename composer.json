@@ -15,6 +15,10 @@
         "doctrine/orm": "^2.6",
         "robmorgan/phinx": "^0.10.6",
         "panique/php-sass": "1.0",
-        "iignatov/lightopenid": "^1.0"
+        "iignatov/lightopenid": "^1.0",
+        "phpmailer/phpmailer": "~6.0",
+        "mailgun/mailgun-php": "^2.4",
+        "php-http/curl-client": "^1.7",
+        "guzzlehttp/psr7": "^1.4"
     }
 }
