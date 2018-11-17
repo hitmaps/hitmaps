@@ -137,7 +137,7 @@ $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
 });
 
 /* Auth Endpoints */
-$klein->respond('GET', '/ajax/users/steam-link', function() use ($applicationContext) {
+$klein->respond('GET', '/ajax/users/login', function() use ($applicationContext) {
     $authController = $applicationContext->get(\Controllers\AuthenticationController::class);
     return json_encode(['link' => $authController->getSignInButton()]);
 });
