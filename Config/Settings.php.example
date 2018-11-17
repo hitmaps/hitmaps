@@ -12,6 +12,10 @@ class Settings {
     public $loggingEnvironment = 'development';
     public $loggingAccessToken = 'token';
 
+    // ReCAPTCHA
+    public $recaptchaSiteKey = '';
+    public $recaptchaSiteSecret = '';
+
     // Email-specific settings
     public $emailMethod = 'MAILGUN'; // MAILGUN or SMTP
     public $smtpDomain = '';
