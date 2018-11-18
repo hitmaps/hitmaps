@@ -3,7 +3,9 @@
 namespace ViewModels;
 
 
-class GameMapViewModel {
+use Controllers\ViewModels\BaseModel;
+
+class GameMapViewModel extends BaseModel {
     public $game;
     public $locationNameOne;
     public $locationNameTwo;
@@ -14,6 +16,8 @@ class GameMapViewModel {
 
     public $mapCenterLongitude;
     public $mapCenterLatitude;
+
+    public $editorTitle;
 
     // TODO
     public $nodes;
