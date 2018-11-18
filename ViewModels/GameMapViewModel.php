@@ -16,6 +16,8 @@ class GameMapViewModel extends BaseModel {
 
     public $mapCenterLongitude;
     public $mapCenterLatitude;
+    public $topLeftCoordinate;
+    public $bottomRightCoordinate;
     public $lowestFloor;
     public $highestFloor;
     public $startingFloor;

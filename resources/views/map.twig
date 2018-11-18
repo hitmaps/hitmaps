@@ -353,7 +353,7 @@
                     crs: L.CRS.Simple,
                     layers: allLayerGroups
                 }).setView([{{ model.mapCenterLatitude }}, {{ model.mapCenterLongitude }}], 3);
-                //g_map.setMaxBounds([[-.1875, .125], [-200, 207.46875]]);
+                g_map.setMaxBounds([[{{ model.topLeftCoordinate }}], [{{ model.bottomRightCoordinate }}]]);
                 g_map.addEventListener('click', function(e) {
                     if (parseInt($('input[type="hidden"][name="edit-mode"]').val()) === 0) {
                         console.log('editor disabled');

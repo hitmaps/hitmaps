@@ -110,6 +110,8 @@ $klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]'
     $viewModel->mapFolderName = $mission->getMapFolderName();
     $viewModel->mapCenterLatitude = $mission->getMapCenterLatitude();
     $viewModel->mapCenterLongitude = $mission->getMapCenterLongitude();
+    $viewModel->topLeftCoordinate = $mission->getTopLeftCoordinate();
+    $viewModel->bottomRightCoordinate = $mission->getBottomRightCoordinate();
     $viewModel->lowestFloor = $mission->getLowestFloorNumber();
     $viewModel->highestFloor = $mission->getHighestFloorNumber();
     $viewModel->startingFloor = $mission->getStartingFloorNumber();

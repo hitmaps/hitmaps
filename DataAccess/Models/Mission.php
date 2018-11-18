@@ -75,6 +75,16 @@ class Mission {
     private $startingFloorNumber;
 
     /**
+     * @ORM\Column(type="string", name="top_left_coordinate")
+     */
+    private $topLeftCoordinate;
+
+    /**
+     * @ORM\Column(type="string", name="bottom_right_coordinate")
+     */
+    private $bottomRightCoordinate;
+
+    /**
      * @return mixed
      */
     public function getId(): int {
@@ -242,5 +252,33 @@ class Mission {
      */
     public function setStartingFloorNumber($startingFloorNumber) {
         $this->startingFloorNumber = $startingFloorNumber;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTopLeftCoordinate() {
+        return $this->topLeftCoordinate;
+    }
+
+    /**
+     * @param mixed $topLeftCoordinate
+     */
+    public function setTopLeftCoordinate($topLeftCoordinate) {
+        $this->topLeftCoordinate = $topLeftCoordinate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBottomRightCoordinate() {
+        return $this->bottomRightCoordinate;
+    }
+
+    /**
+     * @param mixed $bottomRightCoordinate
+     */
+    public function setBottomRightCoordinate($bottomRightCoordinate) {
+        $this->bottomRightCoordinate = $bottomRightCoordinate;
     }
 }
