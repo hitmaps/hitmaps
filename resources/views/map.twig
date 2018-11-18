@@ -18,20 +18,23 @@
 {% block content %}
     <div id="map"></div>
     <nav class="navbar navbar-fixed-right navbar-light">
+        <div class="editor-enabled" style="display: none">
+            <h3>Editor Enabled</h3>
+        </div>
         <div id="map-control">
             <div class="control-buttons">
                 <input type="hidden" name="edit-mode" value="0">
                 {% if model.loggedIn %}
                     <button id="edit-button" class="btn control-button" data-toggle="tooltip" title="Edit Map"><i class="fas fa-pencil-alt"></i></button>
                     <a href="/user/profile">
-                        <button class="btn control-button" data-toggle="tooltip" title="Profile"><i class="fas fa-user-circle"></i></button>
+                        <button class="btn control-button" data-toggle="tooltip" data-placement="bottom" title="Profile"><i class="fas fa-user-circle"></i></button>
                     </a>
                     <a href="/user/logout">
-                        <button class="btn control-button" data-toggle="tooltip" title="Log out"><i class="fas fa-sign-out-alt"></i></button>
+                        <button class="btn control-button" data-toggle="tooltip" data-placement="bottom" title="Log out"><i class="fas fa-sign-out-alt"></i></button>
                     </a>
                 {% else %}
                     <a href="/user/login">
-                        <button class="btn control-button" data-toggle="tooltip" title="Login / Register to edit"><i class="fas fa-sign-in-alt"></i></button>
+                        <button class="btn control-button" data-toggle="tooltip" data-placement="bottom" title="Login / Register to edit"><i class="fas fa-sign-in-alt"></i></button>
                     </a>
                 {% endif %}
             </div>
@@ -385,8 +388,13 @@
                 url: '/api/nodes',
                 method: 'POST',
                 data: $(this).serialize(),
-                success: function() {
-                    L.marker([$form.find('input[name="latitude"]').val(), $form.find('input[name="longitude"]').val()]).bindPopup("I'm a thing!").addTo(map);
+                success: function(data) {
+                    if (JSON.parse(data).approved) {
+                        toastr["success"]('Item successfully added to map!');
+                        //L.marker([$form.find('input[name="latitude"]').val(), $form.find('input[name="longitude"]').val()]).bindPopup("I'm a thing!").addTo(map);
+                    } else {
+                        toastr["success"]('Suggestion has been submitted. If it is approved by an administrator, it will become visible on the map.');
+                    }
                     $('#suggest-edit-modal').modal('hide');
                 },
                 error: function() {

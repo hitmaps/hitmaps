@@ -89,14 +89,27 @@ $klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]'
     $viewModel = new \ViewModels\GameMapViewModel();
     $viewModel->difficulty = $request->difficulty;
     $viewModel->game = $request->game;
-    // TODO Get real mission name
-    $viewModel->missionId = 2;
-    $viewModel->mission = $request->missionSlug;
-    // TODO Get real location information
-    $viewModel->locationNameOne = $request->location;
-    $viewModel->mapFolderName = $request->location;
-    $viewModel->mapCenterLatitude = -102.3125;
-    $viewModel->mapCenterLongitude = 104.25;
+
+    /* @var $mission \DataAccess\Models\Mission|null */
+    $mission = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
+        ->getRepository(\DataAccess\Models\Mission::class)
+        ->findOneBy(['slug' => $request->missionSlug]);
+    if ($mission === null) {
+        bounceTo404($twig);
+    }
+
+    $viewModel->missionId = $mission->getId();
+    $viewModel->mission = $mission->getName();
+
+    /* @var $location \DataAccess\Models\Location */
+    $location = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
+        ->getRepository(\DataAccess\Models\Location::class)
+        ->findOneBy(['id' => $mission->getLocationId()]);
+
+    $viewModel->locationNameOne = $location->getDestination();
+    $viewModel->mapFolderName = $location->getMapFolderName();
+    $viewModel->mapCenterLatitude = $location->getMapCenterLatitude();
+    $viewModel->mapCenterLongitude = $location->getMapCenterLongitude();
 
     if (userIsLoggedIn()) {
         /* @var $user \DataAccess\Models\User */
@@ -394,6 +407,11 @@ function userIsLoggedIn() {
         return false;
     }
 }
+
+function bounceTo404(Twig_Environment $twig) {
+    return \Controllers\Renderer::render('404.twig', $twig);
+}
+
 
 function bounceToLogin(\Klein\Klein $klein, \Klein\Response $response, string $redirectLocation = '') {
     $klein->service()->flash("An account is required to view this page.", 'danger');
