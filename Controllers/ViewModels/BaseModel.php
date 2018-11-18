@@ -12,6 +12,7 @@ class BaseModel {
     public $messages = [];
     public $loggedIn = false;
     public $userContext;
+    public $referer;
 
     public function __construct() {
         try {
@@ -23,6 +24,12 @@ class BaseModel {
         } catch (SessionException $e) {
             $this->loggedIn = false;
             $this->admin = false;
+        }
+
+        if (isset($_SERVER['HTTP_REFERER'])) {
+            $this->referer = $_SERVER['HTTP_REFERER'];
+        } else {
+            $this->referer = '/';
         }
     }
 }

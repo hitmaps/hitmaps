@@ -8,3 +8,7 @@ function verifyRecaptchaCallback(response) {
 function expiredRecaptchaCallback() {
     $('input[data-recaptcha]').val("").trigger('change');
 }
+
+//-- Initialize toastr properties
+toastr.options.progressBar = true;
+toastr.options.closeButton = true;

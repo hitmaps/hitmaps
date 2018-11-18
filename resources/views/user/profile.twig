@@ -1,0 +1,170 @@
+{% extends 'base.twig' %}
+
+{% set page_title = 'Profile' %}
+{% set body_style = "background: url('/img/backgrounds/home.jpg') no-repeat center; background-size: cover" %}
+{% set body_class = 'register' %}
+
+{% block content %}
+    <header class="row">
+        <div class="col text-center">
+            <h1>Interactive Maps For</h1>
+            <a href="/">
+                <img src="/img/logos/hitman2.png">
+            </a>
+            <h2>Manage Your Profile</h2>
+        </div>
+    </header>
+    {% for alert in model.messages %}
+        <div class="alert alert-{{ alert.type }}" role="alert">
+            <i class="fas fa-{{ alert.icon }}"></i>
+            {{ alert.messageHtml | raw }}
+        </div>
+    {% endfor %}
+    <div class="row">
+        <div class="col login">
+            <div class="login-card">
+                <h3>Change Name</h3>
+                <form method="post" action="/user/edit/basic-info" class="form-horizontal">
+                    <div class="form-group row has-feedback">
+                        <label for="email" class="col-form-label col-md-4">
+                            <i class="fas fa-envelope"></i>
+                            Email
+                        </label>
+                        <div class="col-md-8">
+                            <input type="email" class="form-control" name="email"
+                                   value="{{ model.user.email }}"
+                                   disabled
+                                   required>
+                            <div class="help-block with-errors"></div>
+                        </div>
+                    </div>
+                    <div class="form-group row has-feedback">
+                        <label for="name" class="col-form-label col-md-4">
+                            <i class="fas fa-user"></i>
+                            Name
+                        </label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" name="name"
+                                   placeholder="Carlton Smith"
+                                   value="{{ model.user.name }}"
+                                   required>
+                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                            <div class="help-block with-errors"></div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-5 offset-md-4">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-check"></i> Save Name
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <script>
+                    $('form[action="/user/edit/basic-info"]').parsley({
+                        errorClass: 'is-invalid text-danger',
+                        successClass: 'is-valid',
+                        errorsWrapper: '<span class="form-text text-danger"></span>',
+                        errorTemplate: '<span></span>',
+                        trigger: 'change'
+                    });
+                </script>
+            </div>
+        </div>
+        <div class="col login">
+            <div class="login-card">
+                <h3>Change Password</h3>
+                <form method="post" action="/user/edit/password" class="form-horizontal">
+                    <div class="form-group row has-feedback">
+                        <label for="current-password" class="col-form-label col-md-5">
+                            <i class="fa fa-key"></i>
+                            Current Password
+                        </label>
+                        <div class="col-md-7">
+                            <input type="password" class="form-control" name="current-password" id="current-password"
+                                   placeholder="********" required>
+                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row has-feedback">
+                        <label for="password" class="col-form-label col-md-5">
+                            <i class="fa fa-key"></i>
+                            New Password
+                        </label>
+                        <div class="col-md-7">
+                            <input type="password" class="form-control" name="password" id="password" placeholder="********"
+                                   minlength="8" required>
+                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row has-feedback">
+                        <label for="confirm-password" class="col-form-label col-md-5">
+                            <i class="fa fa-key"></i>
+                            Confirm New Password
+                        </label>
+                        <div class="col-md-7">
+                            <input type="password" class="form-control" name="confirm-password" placeholder="********"
+                                   data-parsley-equalto="#password" data-parsley-error-message="Passwords must match" required>
+                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-5 offset-md-5">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-check"></i> Update Password
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <script>
+                    $('form[action="/user/edit/password"]').parsley({
+                        errorClass: 'is-invalid text-danger',
+                        successClass: 'is-valid',
+                        errorsWrapper: '<span class="form-text text-danger"></span>',
+                        errorTemplate: '<span></span>',
+                        trigger: 'change'
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('form').on('submit', function(e) {
+                var $form = $(this);
+
+                e.preventDefault();
+                if (!$form.parsley().isValid()) {
+                    return false;
+                }
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    beforeSend: function() {
+                        var $submitButton = $form.find('button[type="submit"]');
+                        $submitButton.find('i.fas').toggleClass('fa-check fa-spinner').addClass('fa-spin');
+                        $submitButton.addClass('disabled');
+                    },
+                    success: function(data) {
+                        toastr["success"](JSON.parse(data).message);
+                    },
+                    error: function(data) {
+                        try {
+                            toastr["error"](JSON.parse(data).message);
+                        } catch (e) {
+                            toastr["error"]("An error occurred. Try your request again in a few moments.");
+                        }
+                    },
+                    complete: function() {
+                        var $submitButton = $form.find('button[type="submit"]');
+                        $submitButton.removeClass('disabled')
+                            .find('i.fas').toggleClass('fa-check fa-spinner').removeClass('fa-spin');
+                        $form.validator();
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
