@@ -3,10 +3,12 @@
 namespace Controllers;
 
 
+use BusinessLogic\UserRole;
 use Controllers\ViewModels\NodeNoteViewModel;
 use Controllers\ViewModels\NodeWithNotesViewModel;
 use DataAccess\Models\Node;
 use DataAccess\Models\NodeNote;
+use DataAccess\Models\User;
 use DataAccess\Repositories\NodeRepository;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManager;
@@ -84,17 +86,52 @@ class NodeController {
         return $groups;
     }
 
-    public function createNode(int $missionId, string $difficulty, array $postData): void {
+    public function createNode(int $missionId, string $difficulty, array $postData, User $user): Node {
+        /*
+         * - Sabotage uses "action" instead of "target"
+         * - Distraction uses "action" instead of "target"
+         * - Agency Pickup uses "pickup-type" instead of "target"
+         *     - "large" -> Large Pickup
+         *     - "small" -> Stash
+         * - Stairwell uses "stairwell-direction" as its icon
+         *     - up-stair
+         *     - up-down-stair
+         *     - down-stair
+         */
+
+        list($type, $icon) = explode('|', $postData['icon']);
         $node = new Node();
         $node->setDifficulty($difficulty);
-        $node->setIcon($postData['icon']);
+        $node->setGroup($postData['group']);
+        $node->setIcon($icon);
         $node->setLatitude($postData['latitude']);
         $node->setLevel($postData['level']);
         $node->setLongitude($postData['longitude']);
         $node->setMissionId($missionId);
-        $node->setName($postData['name']);
-        $node->setTarget($postData['target']);
-        $node->setType($postData['type']);
+        $node->setName($postData['name'] !== null ? $postData['name'] : '');
+        $node->setType($type);
+        $node->setCreatedBy($user->getId());
+        $node->setTarget('');
+
+        switch ($icon) {
+            case 'sabotage':
+            case 'distraction':
+                $node->setTarget($postData['action']);
+                break;
+            case 'agency-pickup':
+                if ($postData['pickup-type'] === 'large') {
+                    $node->setTarget('Large');
+                } else {
+                    $node->setTarget('Small');
+                }
+                break;
+            case 'up-stair':
+                $node->setIcon($postData['stairwell-direction']);
+                break;
+            default:
+                $node->setTarget($postData['target']);
+        }
+        $node->setApproved(UserRole::hasAccess($user->getRolesAsInts(), [UserRole::TRUSTED_EDITOR]));
 
         $this->entityManager->persist($node);
         $this->entityManager->flush();
@@ -118,6 +155,6 @@ class NodeController {
             $this->entityManager->flush();
         }
 
-        return;
+        return $node;
     }
 }
