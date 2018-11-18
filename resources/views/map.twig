@@ -78,62 +78,106 @@
                     <div class="modal-body">
                         <h3>General Info</h3>
                         <div class="form-group row">
-                            <label for="type" class="col-sm-2 col-form-label">Type</label>
-                            <div class="col-sm-10">
-                                <select name="type" class="form-control">
-                                    <option value="point-of-interest">Point of Interest</option>
-                                    <option value="weapons-and-tools">Weapons and Tools</option>
-                                    <option value="navigation">Navigation</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="icon" class="col-sm-2 col-form-label">Icon</label>
+                            <label for="icon" class="col-sm-2 col-form-label">Category</label>
                             <div class="col-sm-10">
                                 <select name="icon" class="form-control">
+                                    <option selected disabled>-- Select --</option>
                                     <optgroup label="Point of Interest">
-                                        <option value="explosion">Explosion</option>
-                                        <option value="distraction">Distraction</option>
-                                        <option value="poison">Poison</option>
-                                        <option value="misc-item">Misc Item</option>
-                                        <option value="intel">Intel</option>
-                                        <option value="disguise">Disguise</option>
-                                        <option value="blend-in">Blend In</option>
-                                        <option value="conceal-item">Conceal Item</option>
-                                        <option value="weapon-crate">Weapon Crate</option>
-                                        <option value="locked-door">Locked Door</option>
-                                        <option value="destroy-evidence">Destroy Evidence</option>
+                                        <option value="point-of-interest|sabotage" data-name="true" data-action="true">Sabotage</option>
+                                        <option value="point-of-interest|distraction" data-name="true" data-action="true">Distraction</option>
+                                        <option value="point-of-interest|poison" data-name="true" data-target="true">Poison</option>
+                                        <option value="point-of-interest|misc-item" data-name="true">Misc Item</option>
+                                        <option value="point-of-interest|intel" data-name="true" data-note="Please enter the intel description into the notes field!">Intel</option>
+                                        <option value="point-of-interest|disguise" data-name="true">Disguise</option>
+                                        <option value="point-of-interest|blend-in" data-name="true">Blend In</option>
+                                        <option value="point-of-interest|conceal-item">Conceal Item</option>
+                                        <option value="point-of-interest|weapon-crate">Weapon Crate</option>
+                                        <option value="point-of-interest|locked-door">Locked Door</option>
+                                        <option value="point-of-interest|destroy-evidence">Destroy Evidence</option>
                                     </optgroup>
                                     <optgroup label="Weapons and Tools">
-                                        <option value="lethal-melee">Lethal Melee</option>
-                                        <option value="non-lethal-melee">Non-Lethal Melee</option>
-                                        <option value="explosive">Explosive</option>
-                                        <option value="coin">Coin</option>
-                                        <option value="poison">Poison</option>
-                                        <option value="firearm">Firearm</option>
-                                        <option value="ammo">Ammo</option>
+                                        <option value="weapons-and-tools|lethal-melee" data-name="true">Lethal Melee</option>
+                                        <option value="weapons-and-tools|non-lethal-melee" data-name="true">Non-Lethal Melee</option>
+                                        <option value="weapons-and-tools|explosive" data-name="true">Explosive</option>
+                                        <option value="weapons-and-tools|coin">Coin</option>
+                                        <option value="weapons-and-tools|poison" data-name="true">Poison</option>
+                                        <option value="weapons-and-tools|firearm" data-name="true">Firearm</option>
+                                        <option value="weapons-and-tools|ammo" data-name="true">Ammo</option>
                                     </optgroup>
                                     <optgroup label="Navigation">
-                                        <option value="starting-location">Starting Location</option>
-                                        <option value="exit-location">Exit Location</option>
-                                        <option value="Agency Pickup">Agency Pickup</option>
-                                        <option value="up-stair">Stairs - Up Only</option>
-                                        <option value="up-down-stair">Stairs - Up and Down</option>
-                                        <option value="down-stair">Stairs - Down Only</option>
+                                        <option value="navigation|starting-location" data-name="true">Starting Location</option>
+                                        <option value="navigation|exit-location" data-name="true">Exit Location</option>
+                                        <option value="navigation|agency-pickup" data-name="true" data-pickup="true">Agency Pickup</option>
+                                        <option value="navigation|up-stair" data-direction="true">Stairs</option>
                                     </optgroup>
                                 </select>
+                                <div class="help-block"></div>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group row" data-type="name" style="display: none">
                             <label for="name" class="col-sm-2 col-form-label">Name</label>
                             <div class="col-sm-10">
                                 <input type="text" name="name" class="form-control">
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="target" class="col-sm-2 col-form-label">Target</label>
+                        <div class="form-group row" data-type="action" style="display: none">
+                            <label for="action" class="col-sm-2 col-form-label">
+                                Action
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" name="action" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row" data-type="target" style="display: none">
+                            <label for="target" class="col-sm-2 col-form-label">
+                                Target
+                            </label>
                             <div class="col-sm-10">
                                 <input type="text" name="target" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row" data-type="pickup" style="display: none">
+                            <label for="pickup-type" class="col-sm-2 col-form-label">
+                                Type
+                            </label>
+                            <div class="col-sm-10">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="pickup-type" value="large" checked>
+                                    <label class="form-check-label" for="large">
+                                        Pickup (Large)
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="pickup-type" value="small">
+                                    <label class="form-check-label" for="small">
+                                        Stash (Small)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row" data-type="direction" style="display: none">
+                            <label for="stairwell-direction" class="col-sm-2 col-form-label">
+                                Direction
+                            </label>
+                            <div class="col-sm-10">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="stairwell-direction" value="up-stair" checked>
+                                    <label class="form-check-label" for="up-stair">
+                                        Up Only
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="stairwell-direction" value="up-down-stair">
+                                    <label class="form-check-label" for="up-down-stair">
+                                        Up and Down
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="stairwell-direction" value="down-stair">
+                                    <label class="form-check-label" for="down-stair">
+                                        Down Only
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <h3>Notes</h3>
@@ -154,6 +198,11 @@
                                 <div class="col-sm-10">
                                     <input type="text" name="note-text[]" class="form-control">
                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-8 offset-sm-2">
+                                <button type="button" id="add-note-button" class="btn btn-dark">+ Add Another Note</button>
                             </div>
                         </div>
                         <div class="note-template" style="display: none">
@@ -302,19 +351,27 @@
             }
         });
 
-        $('#suggest-notes').on('change', 'input[name="note-text[]"]', function() {
-            var fields = $('#suggest-notes').find('input[name="note-text[]"]');
-            var shouldAddNewRow = true;
-            $.each(fields, function() {
-                if (shouldAddNewRow && $(this).val() === '') {
-                    shouldAddNewRow = false;
-                }
-            });
+        $('select[name="icon"]').change(function() {
+            var $selectedItem = $('select[name="icon"] option:selected');
 
-            if (shouldAddNewRow) {
-                var template = $('.note-template').html();
-                $('#suggest-notes').append(template);
+            toggleEditorFieldDisplay($selectedItem, 'name');
+            toggleEditorFieldDisplay($selectedItem, 'action');
+            toggleEditorFieldDisplay($selectedItem, 'target');
+            toggleEditorFieldDisplay($selectedItem, 'pickup');
+            toggleEditorFieldDisplay($selectedItem, 'direction');
+        });
+
+        function toggleEditorFieldDisplay($selectedItem, attribute) {
+            if ($selectedItem.attr('data-' + attribute) !== undefined && $selectedItem.attr('data-' + attribute) !== false) {
+                $('[data-type="' + attribute + '"]').show();
+            } else {
+                $('[data-type="' + attribute + '"]').hide();
             }
+        }
+
+        $('#add-note-button').click(function() {
+            var template = $('.note-template').html();
+            $('#suggest-notes').append(template);
         });
 
         $('form[action="/api/nodes"]').submit(function(e) {
