@@ -43,7 +43,7 @@ $klein->respond('GET', '/games/[:game]', function(\Klein\Request $request) use (
 
     foreach ($locations as $location) {
         $locationViewModel = new \ViewModels\LocationViewModel();
-        $locationViewModel->slug = $location->getMapFolderName();
+        $locationViewModel->slug = $location->getSlug();
         $locationViewModel->country = $location->getDestinationCountry();
         $locationViewModel->name = $location->getDestination();
         $gameViewModel->locations[] = $locationViewModel;
@@ -55,7 +55,7 @@ $klein->respond('GET', '/games/[:game]', function(\Klein\Request $request) use (
 $klein->respond('GET', '/games/[:game]/[:location]', function(\Klein\Request $request) use ($twig, $applicationContext) {
     /* @var $location \DataAccess\Models\Location */
     $location = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)
-        ->findOneBy(['mapFolderName' => $request->location, 'game' => $request->game]);
+        ->findOneBy(['slug' => $request->location, 'game' => $request->game]);
     /* @var $missions \DataAccess\Models\Mission[] */
     $missions = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Mission::class)
         ->findBy(['locationId' => $location->getId()]);
@@ -64,7 +64,7 @@ $klein->respond('GET', '/games/[:game]/[:location]', function(\Klein\Request $re
     $locationViewModel->name = $location->getDestination();
     $locationViewModel->game = $request->game;
     $locationViewModel->country = $location->getDestinationCountry();
-    $locationViewModel->slug = $location->getMapFolderName();
+    $locationViewModel->slug = $location->getSlug();
     $locationViewModel->missions = [];
     foreach ($missions as $mission) {
         $missionViewModel = new \ViewModels\MissionViewModel();

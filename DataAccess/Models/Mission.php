@@ -43,6 +43,22 @@ class Mission {
      */
     private $order;
 
+
+    /**
+     * @ORM\Column(type="string", name="map_folder_name")
+     */
+    private $mapFolderName;
+
+    /**
+     * @ORM\Column(type="string", name="map_center_latitude")
+     */
+    private $mapCenterLatitude;
+
+    /**
+     * @ORM\Column(type="string", name="map_center_longitude")
+     */
+    private $mapCenterLongitude;
+
     /**
      * @return mixed
      */
@@ -125,5 +141,49 @@ class Mission {
      */
     public function setOrder(int $order): void {
         $this->order = $order;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMapFolderName(): string {
+        return $this->mapFolderName;
+    }
+
+    /**
+     * @param mixed $mapFolderName
+     */
+    public function setMapFolderName($mapFolderName) {
+        $this->mapFolderName = $mapFolderName;
+    }
+
+
+
+    /**
+     * @return mixed
+     */
+    public function getMapCenterLatitude(): string {
+        return $this->mapCenterLatitude;
+    }
+
+    /**
+     * @param mixed $mapCenterLatitude
+     */
+    public function setMapCenterLatitude($mapCenterLatitude): void {
+        $this->mapCenterLatitude = $mapCenterLatitude;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMapCenterLongitude(): string {
+        return $this->mapCenterLongitude;
+    }
+
+    /**
+     * @param mixed $mapCenterLongitude
+     */
+    public function setMapCenterLongitude($mapCenterLongitude): void {
+        $this->mapCenterLongitude = $mapCenterLongitude;
     }
 }
