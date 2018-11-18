@@ -60,6 +60,21 @@ class Mission {
     private $mapCenterLongitude;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $lowestFloorNumber;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $highestFloorNumber;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $startingFloorNumber;
+
+    /**
      * @return mixed
      */
     public function getId(): int {
@@ -185,5 +200,47 @@ class Mission {
      */
     public function setMapCenterLongitude($mapCenterLongitude): void {
         $this->mapCenterLongitude = $mapCenterLongitude;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLowestFloorNumber() {
+        return $this->lowestFloorNumber;
+    }
+
+    /**
+     * @param mixed $lowestFloorNumber
+     */
+    public function setLowestFloorNumber($lowestFloorNumber) {
+        $this->lowestFloorNumber = $lowestFloorNumber;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHighestFloorNumber() {
+        return $this->highestFloorNumber;
+    }
+
+    /**
+     * @param mixed $highestFloorNumber
+     */
+    public function setHighestFloorNumber($highestFloorNumber) {
+        $this->highestFloorNumber = $highestFloorNumber;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStartingFloorNumber() {
+        return $this->startingFloorNumber;
+    }
+
+    /**
+     * @param mixed $startingFloorNumber
+     */
+    public function setStartingFloorNumber($startingFloorNumber) {
+        $this->startingFloorNumber = $startingFloorNumber;
     }
 }
