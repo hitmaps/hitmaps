@@ -151,6 +151,197 @@ $klein->respond('GET', '/user/login', function(\Klein\Request $request, \Klein\R
     return $applicationContext->get(\Controllers\AuthenticationController::class)->viewSignInPage($twig, $model);
 });
 
+$klein->respond('POST', '/user/login', function(\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext, $klein) {
+    $controller = $applicationContext->get(\Controllers\AuthenticationController::class);
+
+    $redirect = '/';
+    if (isset($_POST['redirect-location'])) {
+        $redirect = $_POST['redirect-location'];
+    }
+
+    try {
+        $controller->loginUser($_POST['email'], $_POST['password'], $_POST['g-recaptcha-response']);
+
+        return $response->redirect($redirect);
+    } catch (\BusinessLogic\Authentication\LoginFailedException | \Controllers\RecaptchaFailedException $e) {
+        $viewModel = new \Controllers\ViewModels\LoginViewModel();
+        $viewModel->redirectLocation = $redirect === '/' ? null : $redirect;
+        if ($e instanceof \BusinessLogic\Authentication\LoginFailedException) {
+            $viewModel->messages[] = new \Controllers\ViewModels\AlertMessage('danger', 'The username or password entered is incorrect.', 'times-circle');
+        } else {
+            $viewModel->messages[] = new \Controllers\ViewModels\AlertMessage('danger', 'You must complete the captcha in order to log in.', 'times-circle');
+        }
+
+        return \Controllers\Renderer::render('user/login.twig', $twig, $viewModel);
+    }
+});
+
+$klein->respond('GET', '/user/register', function() use ($twig, $klein) {
+    $model = new \Controllers\ViewModels\BaseModel();
+    $flashes = $klein->service()->flashes();
+    if (count($flashes) > 0) {
+        foreach ($flashes as $type => $messages) {
+            foreach ($messages as $msg) {
+                $model->messages[] = new \Controllers\ViewModels\AlertMessage($type, $msg, $type === 'success' ? 'check-circle' : 'times-circle');
+            }
+        }
+    }
+
+    return \Controllers\Renderer::render('user/register.twig', $twig, $model);
+});
+
+$klein->respond('POST', '/user/register', function(\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext, $klein) {
+    $controller = $applicationContext->get(\Controllers\AuthenticationController::class);
+
+    try {
+        $controller->registerUser($_POST['name'], $_POST['email'], $_POST['password'], $_POST['confirm-password'], $_POST['g-recaptcha-response'], $twig);
+    } catch (\Controllers\RecaptchaFailedException $e) {
+        $klein->service()->flash('You must complete the captcha in order to create an account.', 'danger');
+        return $response->redirect('/user/register');
+    }
+
+    $klein->service()->flash('Account created. Check your email to validate your account!', 'success');
+    return $response->redirect('/user/login');
+});
+
+$klein->respond('GET', '/user/verify', function(\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext, $klein) {
+    $controller = $applicationContext->get(\Controllers\AuthenticationController::class);
+    $success = $controller->verifyUser($_GET['token']);
+
+    if ($success) {
+        $klein->service()->flash('Account verified! You may now log in.', 'success');
+    } else {
+        $klein->service()->flash('We were not able to verify your account. Make sure you clicked the activation link ' .
+            'from the most recent email you received, and that the link did not expire.', 'danger');
+    }
+
+    $response->redirect('/user/login');
+});
+
+$klein->respond('GET', '/user/logout', function() use ($twig) {
+    \BusinessLogic\Session\Session::start();
+    \BusinessLogic\Session\Session::destroy();
+    \BusinessLogic\Session\Session::close();
+
+    $viewModel = new \Controllers\ViewModels\BaseModel();
+    $viewModel->messages[] = new \Controllers\ViewModels\AlertMessage('success', 'You have been logged out!', 'check-circle');
+
+    return \Controllers\Renderer::render('user/login.twig', $twig, $viewModel);
+});
+
+$klein->respond('GET', '/user/profile', function(\Klein\Request $request, \Klein\Response $response) use ($klein, $twig, $applicationContext) {
+    if (!userIsLoggedIn()) {
+        return bounceToLogin($klein, $response, '/user/profile');
+    }
+
+    $viewModel = new \Controllers\ViewModels\UpdateProfileViewModel();
+    $viewModel->user = \BusinessLogic\Session\Session::read('userContext');
+
+    return \Controllers\Renderer::render('user/profile.twig', $twig, $viewModel);
+});
+
+// AJAX endpoint
+$klein->respond('POST', '/user/edit/basic-info', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    if (!userIsLoggedIn()) {
+        print json_encode(['message' => 'You must be logged in to make changes to your profile!']);
+        return $response->code(401);
+    }
+
+    /* @var $user \DataAccess\Models\User */
+    $user = \BusinessLogic\Session\Session::read('userContext');
+
+    $command = $applicationContext->get(\BusinessLogic\Authentication\UpdateProfileCommand::class);
+    $user = $command->execute($user->getEmail(), $_POST['name']);
+
+    \BusinessLogic\Session\Session::write($user, 'userContext');
+
+    print json_encode(['message' => 'Changes have been saved!']);
+    return $response->code(200);
+});
+
+$klein->respond('POST', '/user/edit/password', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    if (!userIsLoggedIn()) {
+        print json_encode(['message' => 'You must be logged in to change your password!']);
+        return $response->code(401);
+    }
+
+    if (trim($_POST['current-password']) === '' || trim($_POST['password']) === '' || trim($_POST['confirm-password']) === '') {
+        print json_encode(['message' => 'Please fill out all the required fields.']);
+        return $response->code(400);
+    }
+
+    if ($_POST['password'] !== $_POST['confirm-password']) {
+        print json_encode(['message' => 'New passwords must match.']);
+        return $response->code(400);
+    }
+
+    /* @var $user \DataAccess\Models\User */
+    $user = \BusinessLogic\Session\Session::read('userContext');
+
+    try {
+        $command = $applicationContext->get(\BusinessLogic\Authentication\UpdateUserPasswordCommand::class);
+        $command->execute($user->getEmail(), $_POST['current-password'], $_POST['password']);
+    } catch (Exception $e) {
+        print json_encode(['message' => $e->getMessage()]);
+        return $response->code(400);
+    }
+
+    print json_encode(['message' => "Your password has been changed!"]);
+    return $response->code(200);
+});
+
+$klein->respond('GET', '/user/register/verify-email', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    $entityManager = $applicationContext->get(\Doctrine\ORM\EntityManager::class);
+
+    $user = $entityManager->getRepository(\DataAccess\Models\User::class)->findOneBy(['email' => $_GET['email']]);
+
+    if ($user === null) {
+        return $response->code(200);
+    } else {
+        return $response->code(400);
+    }
+});
+
+$klein->respond('POST', '/user/forgot-password', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext, $twig) {
+    $command = $applicationContext->get(\BusinessLogic\Authentication\GeneratePasswordResetCommand::class);
+    $command->execute($_POST['email'], $twig);
+
+    print json_encode(['message' => 'Password reset request sent. If you have an account registered under that email address, you will receive a link to reset your password shortly.']);
+    return $response->code(200);
+});
+
+$klein->respond('GET', '/user/reset-password', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext, $twig, $klein) {
+    $command = $applicationContext->get(\BusinessLogic\Authentication\VerifyPasswordResetTokenCommand::class);
+    $result = $command->execute($_GET['email'], $_GET['token']);
+
+    $model = new \Controllers\ViewModels\ResetPasswordViewModel();
+    $model->email = $_GET['email'];
+    $model->token = $_GET['token'];
+
+    if ($result) {
+        return \Controllers\Renderer::render('user/reset-password.twig', $twig, $model);
+    } else {
+        $klein->service()->flash("We were not able to verify your password reset request. Make sure you clicked the activation 
+            link from the most recent email that you received, and that the link did not expire.", 'danger');
+        return $response->redirect('/user/login');
+    }
+});
+
+$klein->respond('POST', '/user/reset-password', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext, $twig, $klein) {
+    $verifyTokenCommand = $applicationContext->get(\BusinessLogic\Authentication\VerifyPasswordResetTokenCommand::class);
+
+    if (!$verifyTokenCommand->execute($_POST['email'], $_POST['token'])) {
+        $klein->service()->flash("We were not able to verify your password reset request. Make sure you clicked the activation 
+            link from the most recent email that you received, and that the link did not expire.", 'danger');
+        return $response->redirect('/user/login');
+    }
+
+    $applicationContext->get(\BusinessLogic\Authentication\UpdateUserPasswordCommand::class)->execute($_POST['email'], null, $_POST['password']);
+
+    $klein->service()->flash('Your password has been reset. You may now log in.', 'success');
+    return $response->redirect('/user/login');
+});
+
 /* Admin Endpoints */
 $klein->respond('GET', '/admin/migrate', function() {
     $config = new Config\Settings();
@@ -169,6 +360,27 @@ $klein->respond('GET', '/admin/migrate', function() {
     }
 
     return '<pre>' . $output . '</pre>';
+});
+
+$klein->onHttpError(function (int $code, \Klein\Klein $router) use ($twig) {
+    switch ($code) {
+        case 403:
+            $router->response()->body(\Controllers\Renderer::render('403.twig', $twig));
+            break;
+        case 404:
+            $router->response()->body(\Controllers\Renderer::render('404.twig', $twig));
+            break;
+        case 500:
+            $router->response()->body(\Controllers\Renderer::render('500.twig', $twig));
+            break;
+        default:
+            $router->response()->body("Welp, something unexpected happened with error code: {$code}");
+    }
+});
+
+$klein->onError(function (\Klein\Klein $klein, $msg, $type, Throwable $err) use ($twig) {
+    \Rollbar\Rollbar::log(\Rollbar\Payload\Level::ERROR, $err);
+    $klein->response()->body(\Controllers\Renderer::render('500.twig', $twig));
 });
 
 $klein->dispatch();
