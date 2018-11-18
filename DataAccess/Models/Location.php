@@ -20,11 +20,6 @@ class Location {
     private $game;
 
     /**
-     * @ORM\Column(type="string", name="map_folder_name")
-     */
-    private $mapFolderName;
-
-    /**
      * @ORM\Column(type="string")
      */
     private $destination;
@@ -35,19 +30,14 @@ class Location {
     private $destinationCountry;
 
     /**
-     * @ORM\Column(type="string", name="map_center_latitude")
-     */
-    private $mapCenterLatitude;
-
-    /**
-     * @ORM\Column(type="string", name="map_center_longitude")
-     */
-    private $mapCenterLongitude;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $order;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $slug;
 
     /**
      * @return mixed
@@ -75,20 +65,6 @@ class Location {
      */
     public function setGame($game): void {
         $this->game = $game;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMapFolderName(): string {
-        return $this->mapFolderName;
-    }
-
-    /**
-     * @param mixed $mapFolderName
-     */
-    public function setMapFolderName($mapFolderName) {
-        $this->mapFolderName = $mapFolderName;
     }
 
     /**
@@ -122,34 +98,6 @@ class Location {
     /**
      * @return mixed
      */
-    public function getMapCenterLatitude(): string {
-        return $this->mapCenterLatitude;
-    }
-
-    /**
-     * @param mixed $mapCenterLatitude
-     */
-    public function setMapCenterLatitude($mapCenterLatitude): void {
-        $this->mapCenterLatitude = $mapCenterLatitude;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMapCenterLongitude(): string {
-        return $this->mapCenterLongitude;
-    }
-
-    /**
-     * @param mixed $mapCenterLongitude
-     */
-    public function setMapCenterLongitude($mapCenterLongitude): void {
-        $this->mapCenterLongitude = $mapCenterLongitude;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getOrder(): int {
         return $this->order;
     }
@@ -159,5 +107,19 @@ class Location {
      */
     public function setOrder(int $order) {
         $this->order = $order;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSlug() {
+        return $this->slug;
+    }
+
+    /**
+     * @param mixed $slug
+     */
+    public function setSlug($slug) {
+        $this->slug = $slug;
     }
 }
