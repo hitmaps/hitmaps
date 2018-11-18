@@ -391,7 +391,12 @@
                 success: function(data) {
                     if (JSON.parse(data).approved) {
                         toastr["success"]('Item successfully added to map!');
-                        //L.marker([$form.find('input[name="latitude"]').val(), $form.find('input[name="longitude"]').val()]).bindPopup("I'm a thing!").addTo(map);
+                        L.marker([$form.find('input[name="latitude"]').val(), $form.find('input[name="longitude"]').val()], {
+                            icon: L.icon({iconUrl: '/img/map-icons/' + JSON.parse(data).icon + '.png',
+                                iconSize: [24, 24],
+                                iconAnchor: [12, 12],
+                                popupAnchor: [0, 0]
+                            })}).bindPopup(buildPopup(JSON.parse(data))).addTo(g_overlays[JSON.parse(data).type + '|' + JSON.parse(data).group]);
                     } else {
                         toastr["success"]('Suggestion has been submitted. If it is approved by an administrator, it will become visible on the map.');
                     }
