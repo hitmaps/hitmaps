@@ -372,12 +372,9 @@
 
                 // Show the starting level's tiles
                 for (var j = g_lowestFloor; j <= g_highestFloor; j++) {
-                    if (j === g_startingFloor) {
-                        g_map.addLayer(g_mapLayers[j]);
-                    } else {
-                        g_map.removeLayer(g_mapLayers[j]);
-                    }
+                    g_map.removeLayer(g_mapLayers[j]);
                 }
+                g_map.addLayer(g_mapLayers[g_startingFloor]);
             },
             error: function() {
                 alert('An error occurred when trying to get map nodes');
