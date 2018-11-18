@@ -201,7 +201,7 @@ $klein->respond('POST', '/user/register', function(\Klein\Request $request, \Kle
     }
 
     $klein->service()->flash('Account created. Check your email to validate your account!', 'success');
-    return $response->redirect('/user/login');
+    return $response->redirect('/user/login?redirectLocation=/');
 });
 
 $klein->respond('GET', '/user/verify', function(\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext, $klein) {
@@ -215,7 +215,7 @@ $klein->respond('GET', '/user/verify', function(\Klein\Request $request, \Klein\
             'from the most recent email you received, and that the link did not expire.', 'danger');
     }
 
-    $response->redirect('/user/login');
+    $response->redirect('/user/login?redirectLocation=/');
 });
 
 $klein->respond('GET', '/user/logout', function() use ($twig) {
@@ -323,7 +323,7 @@ $klein->respond('GET', '/user/reset-password', function(\Klein\Request $request,
     } else {
         $klein->service()->flash("We were not able to verify your password reset request. Make sure you clicked the activation 
             link from the most recent email that you received, and that the link did not expire.", 'danger');
-        return $response->redirect('/user/login');
+        return $response->redirect('/user/login?redirectLocation=/');
     }
 });
 
@@ -385,3 +385,21 @@ $klein->onError(function (\Klein\Klein $klein, $msg, $type, Throwable $err) use 
 });
 
 $klein->dispatch();
+
+function userIsLoggedIn() {
+    \BusinessLogic\Session\Session::start();
+
+    try {
+        \BusinessLogic\Session\Session::read('userContext');
+
+        return true;
+    } catch (\BusinessLogic\Session\SessionException $e) {
+        return false;
+    }
+}
+
+function bounceToLogin(\Klein\Klein $klein, \Klein\Response $response, string $redirectLocation = '') {
+    $klein->service()->flash("An account is required to view this page.", 'danger');
+    $redirectLocation = $redirectLocation === '' ? '' : '?redirectLocation=' . $redirectLocation;
+    return $response->redirect('/user/login' . $redirectLocation);
+}
