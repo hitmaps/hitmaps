@@ -15,7 +15,7 @@ class VerifyPasswordResetTokenCommand {
     }
 
     function execute(string $email, string $token) {
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email, 'resetPasswordToken' => $token]);
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email, 'passwordResetToken' => $token]);
 
         return $user !== null;
     }

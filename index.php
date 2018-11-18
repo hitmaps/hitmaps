@@ -333,13 +333,13 @@ $klein->respond('POST', '/user/reset-password', function(\Klein\Request $request
     if (!$verifyTokenCommand->execute($_POST['email'], $_POST['token'])) {
         $klein->service()->flash("We were not able to verify your password reset request. Make sure you clicked the activation 
             link from the most recent email that you received, and that the link did not expire.", 'danger');
-        return $response->redirect('/user/login');
+        return $response->redirect('/user/login?redirectLocation=/');
     }
 
     $applicationContext->get(\BusinessLogic\Authentication\UpdateUserPasswordCommand::class)->execute($_POST['email'], null, $_POST['password']);
 
     $klein->service()->flash('Your password has been reset. You may now log in.', 'success');
-    return $response->redirect('/user/login');
+    return $response->redirect('/user/login?redirectLocation=/');
 });
 
 /* Admin Endpoints */
@@ -379,6 +379,7 @@ $klein->onHttpError(function (int $code, \Klein\Klein $router) use ($twig) {
 });
 
 $klein->onError(function (\Klein\Klein $klein, $msg, $type, Throwable $err) use ($twig) {
+    error_log($err);
     \Rollbar\Rollbar::log(\Rollbar\Payload\Level::ERROR, $err);
     $klein->response()->body(\Controllers\Renderer::render('500.twig', $twig));
 });
