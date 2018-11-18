@@ -107,9 +107,9 @@ $klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]'
         ->findOneBy(['id' => $mission->getLocationId()]);
 
     $viewModel->locationNameOne = $location->getDestination();
-    $viewModel->mapFolderName = $location->getMapFolderName();
-    $viewModel->mapCenterLatitude = $location->getMapCenterLatitude();
-    $viewModel->mapCenterLongitude = $location->getMapCenterLongitude();
+    $viewModel->mapFolderName = $mission->getMapFolderName();
+    $viewModel->mapCenterLatitude = $mission->getMapCenterLatitude();
+    $viewModel->mapCenterLongitude = $mission->getMapCenterLongitude();
 
     if (userIsLoggedIn()) {
         /* @var $user \DataAccess\Models\User */
