@@ -60,17 +60,17 @@ class Mission {
     private $mapCenterLongitude;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", name="lowest_floor_number")
      */
     private $lowestFloorNumber;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", name="highest_floor_number")
      */
     private $highestFloorNumber;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", name="starting_floor_number")
      */
     private $startingFloorNumber;
 
