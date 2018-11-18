@@ -39,9 +39,9 @@ class User {
     private $verificationToken;
 
     /**
-     * @ORM\Column(type="string", nullable=true, name="reset_password_token")
+     * @ORM\Column(type="string", nullable=true, name="password_reset_token")
      */
-    private $resetPasswordToken;
+    private $passwordResetToken;
 
     /**
      * @return mixed
@@ -116,14 +116,14 @@ class User {
     /**
      * @return mixed
      */
-    public function getResetPasswordToken() {
-        return $this->resetPasswordToken;
+    public function getPasswordResetToken() {
+        return $this->passwordResetToken;
     }
 
     /**
-     * @param mixed $resetPasswordToken
+     * @param mixed $passwordResetToken
      */
-    public function setResetPasswordToken($resetPasswordToken) {
-        $this->resetPasswordToken = $resetPasswordToken;
+    public function setPasswordResetToken($passwordResetToken) {
+        $this->passwordResetToken = $passwordResetToken;
     }
 }

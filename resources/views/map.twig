@@ -278,12 +278,12 @@
                     layers: allLayerGroups
                 }).setView([{{ model.mapCenterLatitude }}, {{ model.mapCenterLongitude }}], 3);
                 g_map.setMaxBounds([[-.1875, .125], [-200, 207.46875]]);
-                g_map.addEventListener('click', function(e) {
+                /*g_map.addEventListener('click', function(e) {
                     $('#suggest-edit-modal')
                         .find('input[name="latitude"]').val(e.latlng.lat).end()
                         .find('input[name="longitude"]').val(e.latlng.lng).end()
                         .modal('show');
-                });
+                });*/
                 var zoom = L.control.zoom({position: 'topright'});
                 zoom.addTo(g_map);
                 //g_map.zoomControl.setPosition('topright');
