@@ -98,38 +98,35 @@ $klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]'
     $viewModel->mapCenterLatitude = -102.3125;
     $viewModel->mapCenterLongitude = 104.25;
 
+    if (userIsLoggedIn()) {
+        /* @var $user \DataAccess\Models\User */
+        $user = \BusinessLogic\Session\Session::read('userContext');
+        $roles = $user->getRolesAsInts();
+
+        if (\BusinessLogic\UserRole::hasAccess($roles, [\BusinessLogic\UserRole::TRUSTED_EDITOR])) {
+            $viewModel->editorTitle = 'Add Change';
+        } else {
+            $viewModel->editorTitle = 'Suggest Edit';
+        }
+    }
+
     $viewModel->nodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($viewModel->missionId, $request->difficulty, true);
 
     return \Controllers\Renderer::render('map.twig', $twig, $viewModel);
 });
 
 $klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext) {
-    return http_response_code(404);
-    /*
-     * array (size=11)
-     * 'type' => string 'sabotage' (length=8)
-     * 'icon' => string 'explosion' (length=9)
-     * 'name' => string 'test' (length=4)
-     * 'target' => string 'test' (length=4)
-     * 'note-type' =>
-     *   array (size=2)
-     *     0 => string 'requirement' (length=11)
-     *     1 => string 'requirement' (length=11)
-     * 'note-text' =>
-     *   array (size=2)
-     *     0 => string '' (length=0)
-     *     1 => string '' (length=0)
-     * 'mission-id' => string '2' (length=1)
-     * 'level' => string '0' (length=1)
-     * 'latitude' => string '-95.375' (length=7)
-     * 'longitude' => string '113.5' (length=5)
-     * 'difficulty' => string 'standard' (length=8)
-     */
+    if (!userIsLoggedIn()) {
+        print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
+        return $response->code(401);
+    }
 
-    $applicationContext->get(\Controllers\NodeController::class)->createNode(intval($_POST['mission-id']), $_POST['difficulty'], $_POST);
 
-    $response->code(204);
-    return;
+    $user = \BusinessLogic\Session\Session::read('userContext');
+    $node = $applicationContext->get(\Controllers\NodeController::class)->createNode(intval($_POST['mission-id']), $_POST['difficulty'], $_POST, $user);
+
+    $response->code(201);
+    return json_encode($node);
 });
 
 $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {

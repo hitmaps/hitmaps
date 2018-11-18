@@ -4,8 +4,10 @@
 namespace DataAccess\Models;
 
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ORM\Entity()
@@ -42,6 +44,18 @@ class User {
      * @ORM\Column(type="string", nullable=true, name="password_reset_token")
      */
     private $passwordResetToken;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="UserRole", fetch="EAGER")
+     * @ORM\JoinTable(name="user_to_user_roles",
+     *     joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id", unique=true)})
+     */
+    private $roles;
+
+    public function __construct() {
+        $this->roles = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -125,5 +139,30 @@ class User {
      */
     public function setPasswordResetToken($passwordResetToken) {
         $this->passwordResetToken = $passwordResetToken;
+    }
+
+    /**
+     * @return PersistentCollection
+     */
+    public function getRoles(): PersistentCollection {
+        return $this->roles;
+    }
+
+    public function getRolesAsInts() {
+        $array = [];
+
+        /* @var $role UserRole */
+        foreach ($this->roles->toArray() as $role) {
+            $array[] = $role->getId();
+        }
+
+        return $array;
+    }
+
+    /**
+     * @param PersistentCollection $roles
+     */
+    public function setRoles(PersistentCollection $roles) {
+        $this->roles = $roles;
     }
 }

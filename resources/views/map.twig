@@ -71,7 +71,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Suggest Edit</h5>
+                    <h5 class="modal-title">{{ model.editorTitle }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -84,35 +84,36 @@
                             <div class="col-sm-10">
                                 <select name="icon" class="form-control selectpicker">
                                     <option selected disabled>-- Select --</option>
-                                    <optgroup label="Point of Interest">
-                                        <option value="point-of-interest|sabotage" data-name="true" data-action="true">Sabotage</option>
-                                        <option value="point-of-interest|distraction" data-name="true" data-action="true">Distraction</option>
-                                        <option value="point-of-interest|poison" data-name="true" data-target="true">Poison</option>
-                                        <option value="point-of-interest|misc-item" data-name="true">Misc Item</option>
-                                        <option value="point-of-interest|intel" data-name="true" data-note="Please enter the intel description into the notes field!">Intel</option>
-                                        <option value="point-of-interest|disguise" data-name="true">Disguise</option>
-                                        <option value="point-of-interest|blend-in" data-name="true">Blend In</option>
-                                        <option value="point-of-interest|conceal-item">Conceal Item</option>
-                                        <option value="point-of-interest|weapon-crate">Weapon Crate</option>
-                                        <option value="point-of-interest|locked-door">Locked Door</option>
-                                        <option value="point-of-interest|destroy-evidence">Destroy Evidence</option>
+                                    <optgroup label="Points of Interest">
+                                        <option value="Points of Interest|sabotage" data-name="true" data-action="true">Sabotage</option>
+                                        <option value="Points of Interest|distraction" data-name="true" data-action="true">Distraction</option>
+                                        <option value="Points of Interest|poison" data-name="true" data-target="true">Poison</option>
+                                        <option value="Points of Interest|misc-item" data-name="true">Misc Item</option>
+                                        <option value="Points of Interest|intel" data-name="true" data-note="Please enter the intel description into the notes field!">Intel</option>
+                                        <option value="Points of Interest|disguise" data-name="true">Disguise</option>
+                                        <option value="Points of Interest|blend-in" data-name="true">Blend In</option>
+                                        <option value="Points of Interest|conceal-item">Conceal Item</option>
+                                        <option value="Points of Interest|weapon-crate">Weapon Crate</option>
+                                        <option value="Points of Interest|locked-door">Locked Door</option>
+                                        <option value="Points of Interest|destroy-evidence">Destroy Evidence</option>
                                     </optgroup>
                                     <optgroup label="Weapons and Tools">
-                                        <option value="weapons-and-tools|lethal-melee" data-name="true">Lethal Melee</option>
-                                        <option value="weapons-and-tools|non-lethal-melee" data-name="true">Non-Lethal Melee</option>
-                                        <option value="weapons-and-tools|explosive" data-name="true">Explosive</option>
-                                        <option value="weapons-and-tools|coin">Coin</option>
-                                        <option value="weapons-and-tools|poison" data-name="true">Poison</option>
-                                        <option value="weapons-and-tools|firearm" data-name="true">Firearm</option>
-                                        <option value="weapons-and-tools|ammo" data-name="true">Ammo</option>
+                                        <option value="Weapons and Tools|lethal-melee" data-name="true">Lethal Melee</option>
+                                        <option value="Weapons and Tools|non-lethal-melee" data-name="true">Non-Lethal Melee</option>
+                                        <option value="Weapons and Tools|explosive" data-name="true">Explosive</option>
+                                        <option value="Weapons and Tools|coin">Coin</option>
+                                        <option value="Weapons and Tools|poison" data-name="true">Poison</option>
+                                        <option value="Weapons and Tools|firearm" data-name="true">Firearm</option>
+                                        <option value="Weapons and Tools|ammo" data-name="true">Ammo</option>
                                     </optgroup>
                                     <optgroup label="Navigation">
-                                        <option value="navigation|starting-location" data-name="true">Starting Location</option>
-                                        <option value="navigation|exit-location" data-name="true">Exit Location</option>
-                                        <option value="navigation|agency-pickup" data-name="true" data-pickup="true">Agency Pickup</option>
-                                        <option value="navigation|up-stair" data-direction="true">Stairs</option>
+                                        <option value="Navigation|starting-location" data-name="true">Starting Location</option>
+                                        <option value="Navigation|exit-location" data-name="true">Exit Location</option>
+                                        <option value="Navigation|agency-pickup" data-name="true" data-pickup="true">Agency Pickup</option>
+                                        <option value="Navigation|up-stair" data-direction="true">Stairwell</option>
                                     </optgroup>
                                 </select>
+                                <input type="hidden" name="group">
                                 <div class="help-block"></div>
                             </div>
                         </div>
@@ -355,6 +356,7 @@
 
         $('select[name="icon"]').change(function() {
             var $selectedItem = $('select[name="icon"] option:selected');
+            $('input[name="group"]').val($selectedItem.text());
 
             toggleEditorFieldDisplay($selectedItem, 'name');
             toggleEditorFieldDisplay($selectedItem, 'action');
