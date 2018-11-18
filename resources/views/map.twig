@@ -6,11 +6,13 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
           integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
           crossorigin=""/>
+    <link rel="stylesheet" href="/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="/css/map.css">
 
     <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
             integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
             crossorigin=""></script>
+    <script src="/js/bootstrap-select.min.js"></script>
     <script src="/js/map.js"></script>
 {% endblock %}
 {% block content %}
@@ -80,7 +82,7 @@
                         <div class="form-group row">
                             <label for="icon" class="col-sm-2 col-form-label">Category</label>
                             <div class="col-sm-10">
-                                <select name="icon" class="form-control">
+                                <select name="icon" class="form-control selectpicker">
                                     <option selected disabled>-- Select --</option>
                                     <optgroup label="Point of Interest">
                                         <option value="point-of-interest|sabotage" data-name="true" data-action="true">Sabotage</option>
@@ -185,7 +187,7 @@
                             <div class="form-group row">
                                 <label for="note-type[]" class="col-sm-2 col-form-label">Type</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control" name="note-type[]">
+                                    <select class="form-control selectpicker" name="note-type[]">
                                         <option value="requirement">Requirement</option>
                                         <option value="warning">Warning</option>
                                         <option value="info">Information</option>
