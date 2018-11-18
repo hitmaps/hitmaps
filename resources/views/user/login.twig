@@ -115,13 +115,48 @@
                     </div>
                 </form>
                 <script>
-                    $('form[action="/user/forgot-password"]').parsley({
+                    var $form = $('form[action="/user/forgot-password"]');
+                    $form.parsley({
                         excluded: 'input[type=button],input[type=submit],input[type=reset]',
                         errorClass: 'is-invalid text-danger',
                         successClass: 'is-valid',
                         errorsWrapper: '<span class="form-text text-danger"></span>',
                         errorTemplate: '<span></span>',
                         trigger: 'change'
+                    });
+
+                    $('#forgot-password').find('form').on('submit', function(e) {
+                        e.preventDefault();
+                        if (!$(this).parsley().isValid()) {
+                            return false;
+                        }
+
+                        $.ajax({
+                            url: $(this).attr('action'),
+                            method: $(this).attr('method'),
+                            data: $(this).serialize(),
+                            beforeSend: function() {
+                                $form.find('button[type="submit"]').find('i.fas').toggleClass('fa-check fa-spinner')
+                                    .addClass('fa-spin').end().addClass('disabled');
+                            },
+                            success: function(data) {
+                                toastr["success"](JSON.parse(data).message);
+                                $('#forgot-password').modal('hide');
+                            },
+                            error: function(data) {
+                                try {
+                                    toastr["error"](JSON.parse(data).message);
+                                } catch (e) {
+                                    toastr["error"]("An error occurred. Try your request again in a few moments.");
+                                }
+                            },
+                            complete: function() {
+                                $form.find('button[type="submit"]').find('i.fas').toggleClass('fa-check fa-spinner')
+                                    .removeClass('fa-spin').end().removeClass('disabled');
+                            }
+                        });
+
+                        return false;
                     });
                 </script>
             </div>
