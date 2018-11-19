@@ -9,11 +9,12 @@ cd latest_build
 rm -rf ci
 rm -rf .git
 
-zip -r ../latest_build.zip .
+zip -r ../latest_build.zip . > ../zip_output.txt
 cd ../
 rm -rf latest_build
 mkdir latest_build
 mv latest_build.zip latest_build
+mv zip_output.txt latest_build
 
 lftp -d -e "set ssl:verify-certificate no; mirror -P $NUMBER_OF_CONCURRENT_UPLOADS -Rv $LOCAL_DIR $REMOTE_DIR; quit;" ftp://$USERNAME:$PASSWORD@$HOST
 
