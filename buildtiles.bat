@@ -1,34 +1,45 @@
-REM Sapienza
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Sapienza\1.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Sapienza\tiles\1"
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Sapienza\2.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Sapienza\tiles\2"
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Sapienza\3.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Sapienza\tiles\3"
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Sapienza\4.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Sapienza\tiles\4"
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Sapienza\5.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Sapienza\tiles\5"
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Sapienza\6.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Sapienza\tiles\6"
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Sapienza\7.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Sapienza\tiles\7"
+REM Hawkes Bay
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\HawkesBay\0.png" "E:\Users\mkoch\Downloads\H2 Maps\HawkesBay\tiles\0"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\HawkesBay\1.png" "E:\Users\mkoch\Downloads\H2 Maps\HawkesBay\tiles\1"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\HawkesBay\2.png" "E:\Users\mkoch\Downloads\H2 Maps\HawkesBay\tiles\2"
 
-REM Marrakesh
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Marrakesh\0.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Marrakesh\tiles\0"
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Marrakesh\1.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Marrakesh\tiles\1"
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Marrakesh\2.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Marrakesh\tiles\2"
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Marrakesh\3.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Marrakesh\tiles\3"
+REM Miami
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Miami\-1.png" "E:\Users\mkoch\Downloads\H2 Maps\Miami\tiles\-1"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Miami\0.png" "E:\Users\mkoch\Downloads\H2 Maps\Miami\tiles\0"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Miami\1.png" "E:\Users\mkoch\Downloads\H2 Maps\Miami\tiles\1"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Miami\2.png" "E:\Users\mkoch\Downloads\H2 Maps\Miami\tiles\2"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Miami\3.png" "E:\Users\mkoch\Downloads\H2 Maps\Miami\tiles\3"
 
-REM Bangkok
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Bangkok\0.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Bangkok\tiles\0"
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Bangkok\1.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Bangkok\tiles\1"
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Bangkok\2.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Bangkok\tiles\2"
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Bangkok\3.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Bangkok\tiles\3"
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Bangkok\4.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Bangkok\tiles\4"
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Bangkok\5.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Bangkok\tiles\5"
+REM Colombia
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Colombia\-1.png" "E:\Users\mkoch\Downloads\H2 Maps\Colombia\tiles\-1"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Colombia\0.png" "E:\Users\mkoch\Downloads\H2 Maps\Colombia\tiles\0"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Colombia\1.png" "E:\Users\mkoch\Downloads\H2 Maps\Colombia\tiles\1"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Colombia\2.png" "E:\Users\mkoch\Downloads\H2 Maps\Colombia\tiles\2"
 
-REM Colorado
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Colorado\0.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Colorado\tiles\0"
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Colorado\1.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Colorado\tiles\1"
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Colorado\2.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Colorado\tiles\2"
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Colorado\3.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Colorado\tiles\3"
+REM India
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\India\-1.png" "E:\Users\mkoch\Downloads\H2 Maps\India\tiles\-1"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\India\0.png" "E:\Users\mkoch\Downloads\H2 Maps\India\tiles\0"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\India\1.png" "E:\Users\mkoch\Downloads\H2 Maps\India\tiles\1"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\India\2.png" "E:\Users\mkoch\Downloads\H2 Maps\India\tiles\2"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\India\3.png" "E:\Users\mkoch\Downloads\H2 Maps\India\tiles\3"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\India\4.png" "E:\Users\mkoch\Downloads\H2 Maps\India\tiles\4"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\India\5.png" "E:\Users\mkoch\Downloads\H2 Maps\India\tiles\5"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\India\6.png" "E:\Users\mkoch\Downloads\H2 Maps\India\tiles\6"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\India\7.png" "E:\Users\mkoch\Downloads\H2 Maps\India\tiles\7"
 
-REM Hokkaido
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Hokkaido\0.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Hokkaido\tiles\0"
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Hokkaido\1.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Hokkaido\tiles\1"
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Hokkaido\2.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Hokkaido\tiles\2"
-gdal2tiles.py -l -p raster -z 0-5 -w none "E:\Users\mkoch\Downloads\H2 Legacy Maps\Hokkaido\3.png" "E:\Users\mkoch\Downloads\H2 Legacy Maps\Hokkaido\tiles\3"
+REM Vermont
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Vermont\-1.png" "E:\Users\mkoch\Downloads\H2 Maps\Vermont\tiles\-1"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Vermont\0.png" "E:\Users\mkoch\Downloads\H2 Maps\Vermont\tiles\0"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Vermont\1.png" "E:\Users\mkoch\Downloads\H2 Maps\Vermont\tiles\1"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Vermont\2.png" "E:\Users\mkoch\Downloads\H2 Maps\Vermont\tiles\2"
+
+REM Sgail
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Sgail\0.png" "E:\Users\mkoch\Downloads\H2 Maps\Sgail\tiles\0"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Sgail\1.png" "E:\Users\mkoch\Downloads\H2 Maps\Sgail\tiles\1"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Sgail\2.png" "E:\Users\mkoch\Downloads\H2 Maps\Sgail\tiles\2"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Sgail\3.png" "E:\Users\mkoch\Downloads\H2 Maps\Sgail\tiles\3"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Sgail\4.png" "E:\Users\mkoch\Downloads\H2 Maps\Sgail\tiles\4"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Sgail\5.png" "E:\Users\mkoch\Downloads\H2 Maps\Sgail\tiles\5"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Sgail\6.png" "E:\Users\mkoch\Downloads\H2 Maps\Sgail\tiles\6"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Sgail\7.png" "E:\Users\mkoch\Downloads\H2 Maps\Sgail\tiles\7"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Sgail\8.png" "E:\Users\mkoch\Downloads\H2 Maps\Sgail\tiles\8"
