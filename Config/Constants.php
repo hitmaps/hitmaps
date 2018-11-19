@@ -4,7 +4,7 @@ namespace Config;
 
 
 class Constants {
-    public $siteDomain = 'https://www.mikekoch.me/hitman-maps';
+    public $siteDomain = 'http://localhost:8000';
     public $currentYear;
 
     public function __construct() {

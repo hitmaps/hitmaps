@@ -9,6 +9,7 @@ use BusinessLogic\Authentication\RegisterNewUserCommand;
 use BusinessLogic\Authentication\VerifyUserCommand;
 use Config\Constants;
 use Config\Settings;
+use Controllers\ViewModels\BaseModel;
 use ReCaptcha\ReCaptcha;
 use ReCaptcha\RequestMethod\CurlPost;
 
@@ -24,6 +25,17 @@ class AuthenticationController {
         $this->loginUserService = $loginUserService;
         $this->verifyUserCommand = $verifyUserCommand;
     }
+
+    public function viewSignInPage(\Twig_Environment $twig, BaseModel $model): string {
+        if (isset($_GET['redirectLocation'])) {
+            $model->redirectLocation = $_GET['redirectLocation'];
+        } elseif (isset($_SERVER['HTTP_REFERER'])) {
+            $model->redirectLocation = parse_url($_SERVER['HTTP_REFERER'], PHP_URL_PATH);
+        }
+
+        return Renderer::render('user/login.twig', $twig, $model);
+    }
+
 
     public function registerUser(string $name,
                           string $email,

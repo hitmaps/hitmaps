@@ -4,8 +4,10 @@
 namespace DataAccess\Models;
 
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ORM\Entity()
@@ -39,9 +41,21 @@ class User {
     private $verificationToken;
 
     /**
-     * @ORM\Column(type="string", nullable=true, name="reset_password_token")
+     * @ORM\Column(type="string", nullable=true, name="password_reset_token")
      */
-    private $resetPasswordToken;
+    private $passwordResetToken;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="UserRole", fetch="EAGER")
+     * @ORM\JoinTable(name="user_to_user_roles",
+     *     joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id", unique=true)})
+     */
+    private $roles;
+
+    public function __construct() {
+        $this->roles = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -116,14 +130,39 @@ class User {
     /**
      * @return mixed
      */
-    public function getResetPasswordToken() {
-        return $this->resetPasswordToken;
+    public function getPasswordResetToken() {
+        return $this->passwordResetToken;
     }
 
     /**
-     * @param mixed $resetPasswordToken
+     * @param mixed $passwordResetToken
      */
-    public function setResetPasswordToken($resetPasswordToken) {
-        $this->resetPasswordToken = $resetPasswordToken;
+    public function setPasswordResetToken($passwordResetToken) {
+        $this->passwordResetToken = $passwordResetToken;
+    }
+
+    /**
+     * @return PersistentCollection
+     */
+    public function getRoles(): PersistentCollection {
+        return $this->roles;
+    }
+
+    public function getRolesAsInts() {
+        $array = [];
+
+        /* @var $role UserRole */
+        foreach ($this->roles->toArray() as $role) {
+            $array[] = $role->getId();
+        }
+
+        return $array;
+    }
+
+    /**
+     * @param PersistentCollection $roles
+     */
+    public function setRoles(PersistentCollection $roles) {
+        $this->roles = $roles;
     }
 }
