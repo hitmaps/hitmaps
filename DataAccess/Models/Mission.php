@@ -43,6 +43,47 @@ class Mission {
      */
     private $order;
 
+
+    /**
+     * @ORM\Column(type="string", name="map_folder_name")
+     */
+    private $mapFolderName;
+
+    /**
+     * @ORM\Column(type="string", name="map_center_latitude")
+     */
+    private $mapCenterLatitude;
+
+    /**
+     * @ORM\Column(type="string", name="map_center_longitude")
+     */
+    private $mapCenterLongitude;
+
+    /**
+     * @ORM\Column(type="integer", name="lowest_floor_number")
+     */
+    private $lowestFloorNumber;
+
+    /**
+     * @ORM\Column(type="integer", name="highest_floor_number")
+     */
+    private $highestFloorNumber;
+
+    /**
+     * @ORM\Column(type="integer", name="starting_floor_number")
+     */
+    private $startingFloorNumber;
+
+    /**
+     * @ORM\Column(type="string", name="top_left_coordinate")
+     */
+    private $topLeftCoordinate;
+
+    /**
+     * @ORM\Column(type="string", name="bottom_right_coordinate")
+     */
+    private $bottomRightCoordinate;
+
     /**
      * @return mixed
      */
@@ -125,5 +166,119 @@ class Mission {
      */
     public function setOrder(int $order): void {
         $this->order = $order;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMapFolderName(): string {
+        return $this->mapFolderName;
+    }
+
+    /**
+     * @param mixed $mapFolderName
+     */
+    public function setMapFolderName($mapFolderName) {
+        $this->mapFolderName = $mapFolderName;
+    }
+
+
+
+    /**
+     * @return mixed
+     */
+    public function getMapCenterLatitude(): string {
+        return $this->mapCenterLatitude;
+    }
+
+    /**
+     * @param mixed $mapCenterLatitude
+     */
+    public function setMapCenterLatitude($mapCenterLatitude): void {
+        $this->mapCenterLatitude = $mapCenterLatitude;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMapCenterLongitude(): string {
+        return $this->mapCenterLongitude;
+    }
+
+    /**
+     * @param mixed $mapCenterLongitude
+     */
+    public function setMapCenterLongitude($mapCenterLongitude): void {
+        $this->mapCenterLongitude = $mapCenterLongitude;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLowestFloorNumber() {
+        return $this->lowestFloorNumber;
+    }
+
+    /**
+     * @param mixed $lowestFloorNumber
+     */
+    public function setLowestFloorNumber($lowestFloorNumber) {
+        $this->lowestFloorNumber = $lowestFloorNumber;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHighestFloorNumber() {
+        return $this->highestFloorNumber;
+    }
+
+    /**
+     * @param mixed $highestFloorNumber
+     */
+    public function setHighestFloorNumber($highestFloorNumber) {
+        $this->highestFloorNumber = $highestFloorNumber;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStartingFloorNumber() {
+        return $this->startingFloorNumber;
+    }
+
+    /**
+     * @param mixed $startingFloorNumber
+     */
+    public function setStartingFloorNumber($startingFloorNumber) {
+        $this->startingFloorNumber = $startingFloorNumber;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTopLeftCoordinate() {
+        return $this->topLeftCoordinate;
+    }
+
+    /**
+     * @param mixed $topLeftCoordinate
+     */
+    public function setTopLeftCoordinate($topLeftCoordinate) {
+        $this->topLeftCoordinate = $topLeftCoordinate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBottomRightCoordinate() {
+        return $this->bottomRightCoordinate;
+    }
+
+    /**
+     * @param mixed $bottomRightCoordinate
+     */
+    public function setBottomRightCoordinate($bottomRightCoordinate) {
+        $this->bottomRightCoordinate = $bottomRightCoordinate;
     }
 }

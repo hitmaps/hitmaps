@@ -1,0 +1,169 @@
+{% extends 'base.twig' %}
+
+{% set page_title = 'Login / Register' %}
+{% set body_style = "background: url('/img/backgrounds/home.jpg') no-repeat center; background-size: cover" %}
+{% set body_class = 'login' %}
+
+{% block content %}
+    <header class="row">
+        <div class="col text-center">
+            <h1>Interactive Maps For</h1>
+            <a href="/">
+                <img src="/img/logos/hitman2.png">
+            </a>
+            <h2>Login or Create an Account</h2>
+        </div>
+    </header>
+    {% for alert in model.messages %}
+        <div class="alert alert-{{ alert.type }}" role="alert">
+            <i class="fas fa-{{ alert.icon }}"></i>
+            {{ alert.messageHtml | raw }}
+        </div>
+    {% endfor %}
+    <div class="row">
+        <div class="col login">
+            <div class="login-card">
+                <h3>Existing Users</h3>
+                <h4>Sign In</h4>
+                <form id="login-form" class="form-horizontal" method="post" action="/user/login">
+                    <div class="form-group email row">
+                        <label for="email" class="col-md-3 col-form-label"><i class="fas fa-envelope"></i> Email</label>
+                        <div class="col-md-9">
+                            <input type="email" name="email" class="form-control" id="email" placeholder="carlton.smith@example.com" required>
+                            <div class="help-block with-errors"></div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="password" class="col-md-3 col-form-label"><i class="fas fa-key"></i> Password</label>
+                        <div class="col-md-9">
+                            <input type="password" name="password" class="form-control" id="password" placeholder="********" required>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <div class="help-block">
+                                        <a href="javascript:" data-toggle="modal" data-target="#forgot-password">I forgot my password</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row has-feedback">
+                        <div class="col-md-9 offset-md-3">
+                            <div class="g-recaptcha"
+                                 data-callback="verifyRecaptchaCallback"
+                                 data-expired-callback="expiredRecaptchaCallback"
+                                 data-sitekey="{{ settings.recaptchaSiteKey }}"></div>
+                            <input type="hidden" class="form-control" data-parsley-required="true" data-recaptcha="true" data-parsley-error-message="Please complete the captcha" data-validate="true" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3 offset-md-3">
+                            {% if model.redirectLocation|length %}
+                                <input type="hidden" name="redirect-location" value="{{ model.redirectLocation }}" />
+                            {% endif %}
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-sign-in-alt"></i> Sign In
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <script>
+                    $('#login-form').parsley({
+                        excluded: 'input[type=button],input[type=submit],input[type=reset]',
+                        errorClass: 'is-invalid text-danger',
+                        successClass: 'is-valid',
+                        errorsWrapper: '<span class="form-text text-danger"></span>',
+                        errorTemplate: '<span></span>',
+                        trigger: 'change'
+                    });
+                </script>
+            </div>
+        </div>
+        <div class="col login">
+            <div class="login-card">
+                <h3>New Users</h3>
+                <h4>Create an Account to Get Started</h4>
+                <p>Registration is disabled at this time.</p>
+                {#<a href="/user/register" class="btn btn-primary"><i class="fas fa-user-plus"></i> Register</a>#}
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="forgot-password" tabindex="-1" role="dialog" aria-labelledby="forgot-password-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="/user/forgot-password" method="post" class="form-horizontal" data-toggle="validator">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Forgot Password?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Forgot your password? No problem! Enter your email below and we will send you an email with a link
+                            to reset your password.</p>
+                        <div class="form-group row">
+                            <label for="email" class="col-form-label col-md-3">
+                                <i class="fa fa-envelope"></i> Email
+                            </label>
+                            <div class="col-md-9">
+                                <input type="email" class="form-control" name="email" placeholder="carlton.smith@example.com" required>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success" type="submit"><i class="fas fa-check"></i> Submit</button>
+                        <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fas fa-times"></i> Cancel</button>
+                    </div>
+                </form>
+                <script>
+                    var $form = $('form[action="/user/forgot-password"]');
+                    $form.parsley({
+                        excluded: 'input[type=button],input[type=submit],input[type=reset]',
+                        errorClass: 'is-invalid text-danger',
+                        successClass: 'is-valid',
+                        errorsWrapper: '<span class="form-text text-danger"></span>',
+                        errorTemplate: '<span></span>',
+                        trigger: 'change'
+                    });
+
+                    $('#forgot-password').find('form').on('submit', function(e) {
+                        e.preventDefault();
+                        if (!$(this).parsley().isValid()) {
+                            return false;
+                        }
+
+                        $.ajax({
+                            url: $(this).attr('action'),
+                            method: $(this).attr('method'),
+                            data: $(this).serialize(),
+                            beforeSend: function() {
+                                $form.find('button[type="submit"]').find('i.fas').toggleClass('fa-check fa-spinner')
+                                    .addClass('fa-spin').end().addClass('disabled');
+                            },
+                            success: function(data) {
+                                toastr["success"](JSON.parse(data).message);
+                                $('#forgot-password').modal('hide');
+                            },
+                            error: function(data) {
+                                try {
+                                    toastr["error"](JSON.parse(data).message);
+                                } catch (e) {
+                                    toastr["error"]("An error occurred. Try your request again in a few moments.");
+                                }
+                            },
+                            complete: function() {
+                                $form.find('button[type="submit"]').find('i.fas').toggleClass('fa-check fa-spinner')
+                                    .removeClass('fa-spin').end().removeClass('disabled');
+                            }
+                        });
+
+                        return false;
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+{% endblock %}

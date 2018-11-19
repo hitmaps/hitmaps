@@ -37,7 +37,7 @@ class Node {
     public $name;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     public $target;
 
@@ -62,9 +62,28 @@ class Node {
     public $difficulty;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", name="`group`")
      */
     public $group;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    public $approved;
+
+    /**
+     * @ORM\Column(type="integer", name="created_by")
+     */
+    public $createdBy;
+
+    /**
+     * @ORM\Column(type="datetime", name="date_created")
+     */
+    public $dateCreated;
+
+    public function __construct() {
+        $this->dateCreated = new \DateTime("now");
+    }
 
     /**
      * @return mixed
@@ -215,5 +234,47 @@ class Node {
      */
     public function getGroup(): string {
         return $this->group;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getApproved(): bool {
+        return $this->approved;
+    }
+
+    /**
+     * @param mixed $approved
+     */
+    public function setApproved(bool $approved) {
+        $this->approved = $approved;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedBy(): int {
+        return $this->createdBy;
+    }
+
+    /**
+     * @param mixed $createdBy
+     */
+    public function setCreatedBy(int $createdBy) {
+        $this->createdBy = $createdBy;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDateCreated(): \DateTime {
+        return $this->dateCreated;
+    }
+
+    /**
+     * @param mixed $dateCreated
+     */
+    public function setDateCreated(\DateTime $dateCreated): void {
+        $this->dateCreated = $dateCreated;
     }
 }
