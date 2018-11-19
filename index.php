@@ -192,6 +192,8 @@ $klein->respond('POST', '/user/login', function(\Klein\Request $request, \Klein\
 });
 
 $klein->respond('GET', '/user/register', function() use ($twig, $klein) {
+    return bounceTo404($twig);
+
     $model = new \Controllers\ViewModels\BaseModel();
     $flashes = $klein->service()->flashes();
     if (count($flashes) > 0) {
