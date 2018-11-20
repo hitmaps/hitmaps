@@ -42,4 +42,7 @@ class SetMapBoundariesForHitmanTwo extends AbstractMigration {
               `bottom_right_coordinate` = '-241.375,373.375' 
           WHERE `slug` = 'ark-society'");
     }
+
+    public function down() {
+    }
 }
