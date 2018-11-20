@@ -194,8 +194,6 @@ $klein->respond('POST', '/user/login', function(\Klein\Request $request, \Klein\
 });
 
 $klein->respond('GET', '/user/register', function() use ($twig, $klein) {
-    return bounceTo404($twig);
-
     $model = new \Controllers\ViewModels\BaseModel();
     $flashes = $klein->service()->flashes();
     if (count($flashes) > 0) {
@@ -210,6 +208,11 @@ $klein->respond('GET', '/user/register', function() use ($twig, $klein) {
 });
 
 $klein->respond('POST', '/user/register', function(\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext, $klein) {
+    $settings = new \Config\Settings();
+    if ($_POST['super-secret-code'] !== $settings->superSecretPublicCode) {
+        return "The registration code you entered was not correct. An account was not created.";
+    }
+
     $controller = $applicationContext->get(\Controllers\AuthenticationController::class);
 
     try {
