@@ -237,7 +237,7 @@
                             </div>
                         </div>
                         <input type="hidden" name="mission-id" value="{{ model.missionId }}">
-                        <input type="hidden" name="level" value="0">
+                        <input type="hidden" name="level" value="{{ model.startingFloor }}">
                         <input type="hidden" name="latitude">
                         <input type="hidden" name="longitude">
                         <input type="hidden" name="difficulty" value="{{ model.difficulty }}">
@@ -375,6 +375,16 @@
                     g_map.removeLayer(g_mapLayers[j]);
                 }
                 g_map.addLayer(g_mapLayers[g_startingFloor]);
+
+                // Show the starting level's items
+                for (var j = g_lowestFloor; j <= g_highestFloor; j++) {
+                    for (var k in g_overlays[j]) {
+                        toggleLayer(g_overlays[j][k], false);
+                    }
+                }
+                for (var j in g_overlays[g_startingFloor]) {
+                    toggleLayer(g_overlays[g_startingFloor][j], true);
+                }
             },
             error: function() {
                 alert('An error occurred when trying to get map nodes');
@@ -413,14 +423,15 @@
                 method: 'POST',
                 data: $(this).serialize(),
                 success: function(data) {
-                    if (JSON.parse(data).approved) {
+                    var node = JSON.parse(data);
+                    if (node.approved) {
                         toastr["success"]('Item successfully added to map!');
                         L.marker([$form.find('input[name="latitude"]').val(), $form.find('input[name="longitude"]').val()], {
-                            icon: L.icon({iconUrl: '/img/map-icons/' + JSON.parse(data).icon + '.png',
+                            icon: L.icon({iconUrl: '/img/map-icons/' + node.icon + '.png',
                                 iconSize: [24, 24],
                                 iconAnchor: [12, 12],
                                 popupAnchor: [0, 0]
-                            })}).bindPopup(buildPopup(JSON.parse(data))).addTo(g_overlays[JSON.parse(data).type + '|' + JSON.parse(data).group]);
+                            })}).bindPopup(buildPopup(node)).addTo(g_overlays[node.level][node.type + '|' + node.group]);
                     } else {
                         toastr["success"]('Suggestion has been submitted. If it is approved by an administrator, it will become visible on the map.');
                     }
@@ -461,12 +472,20 @@
         }
 
         $('select[name="level"]').change(function() {
+            var $formField = $('input[type="hidden"][name="level"]');
+            var previousLevel = $formField.val();
             var level = $(this).val();
+            $formField.val(level);
 
-            for (var i in g_mapLayers) {
-                g_map.removeLayer(g_mapLayers[i]);
+            toggleLayer(g_mapLayers[previousLevel], false);
+            toggleLayer(g_mapLayers[level], true);
+
+            for (var i in g_overlays[previousLevel]) {
+                toggleLayer(g_overlays[previousLevel][i], false);
             }
-            g_map.addLayer(g_mapLayers[level]);
+            for (var i in g_overlays[level]) {
+                toggleLayer(g_overlays[level][i], true);
+            }
         });
     </script>
 {% endblock %}
