@@ -148,7 +148,9 @@ $klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\
 });
 
 $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
-    return json_encode($applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($_GET['missionId'], $_GET['difficulty']));
+    $nodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($_GET['missionId'], $_GET['difficulty']);
+    $nodeCategories = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\NodeCategory::class)->findAll();
+    return json_encode(['nodes' => $nodes, 'categories' => $nodeCategories]);
 });
 
 /* Auth Endpoints */
