@@ -25,6 +25,17 @@
             <div class="login-card">
                 <form id="register-form" action="/user/register" method="post" class="form-horizontal">
                     <div class="form-group row">
+                        <label for="super-secret-code" class="col-md-3 col-form-label">Registration Code</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="super-secret-code" placeholder="lemmein!">
+                            <small class="form-text text-muted">
+                                Please enter the registration code that was provided to you.
+                                If you were not provided a registration code, you cannot register at this time.
+                                Public registration will be available in the future once the beta test has completed.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label for="name" class="col-md-3 col-form-label"><i class="fas fa-user-plus"></i> Name</label>
                         <div class="col-md-9">
                             <input type="text" name="name" class="form-control" id="name" placeholder="Carlton Smith" required>

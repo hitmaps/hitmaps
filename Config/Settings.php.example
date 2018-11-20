@@ -11,6 +11,7 @@ class Settings {
     public $accessKey = 'access-key';
     public $loggingEnvironment = 'development';
     public $loggingAccessToken = 'token';
+    public $superSecretPublicCode = ''; // Used for securing things that certain users should be able to see
 
     // ReCAPTCHA
     public $recaptchaSiteKey = '';

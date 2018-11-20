@@ -77,7 +77,7 @@
         </div>
     </nav>
     <div class="modal" id="suggest-edit-modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ model.editorTitle }}</h5>
@@ -87,7 +87,18 @@
                 </div>
                 <form action="/api/nodes" method="post">
                     <div class="modal-body">
-                        <h3>General Info</h3>
+                        <div class="alert alert-dark" style="font-size: .8em">
+                            Please indicate the following under the notes section when adding items:
+                            <ul>
+                                <li>Any <b>required</b> items, such as needing a wrench for loosening valves (use type "Requirement")</li>
+                                <li>Whether or not the action is <b>suspicious</b> when wearing a certain disguise (use type "Warning")</li>
+                                <li>If you feel something <b>requires more information</b>, use the "Information" type</li>
+                                <li>You may add the in-game description for items by using the "Description" type</li>
+                                <li>Any notes with blank text will not be added to the node</li>
+                            </ul>
+                        </div>
+
+                        <h3>Item Info</h3>
                         <div class="form-group row">
                             <label for="icon" class="col-sm-2 col-form-label">Category</label>
                             <div class="col-sm-10">
@@ -96,9 +107,9 @@
                                     <optgroup label="Points of Interest">
                                         <option value="Points of Interest|sabotage" data-name="true" data-action="true">Sabotage</option>
                                         <option value="Points of Interest|distraction" data-name="true" data-action="true">Distraction</option>
-                                        <option value="Points of Interest|poison" data-name="true" data-target="true">Poison</option>
+                                        <option value="Points of Interest|poison" data-name="true" data-target="true" data-note="This is for items you can poison, not for the weapon/tool itself!">Poison</option>
                                         <option value="Points of Interest|misc-item" data-name="true">Misc Item</option>
-                                        <option value="Points of Interest|intel" data-name="true" data-note="Please enter the intel description into the notes field!">Intel</option>
+                                        <option value="Points of Interest|intel" data-name="true" data-note="Please enter the intel description into the notes field (under the 'Description' type)!">Intel</option>
                                         <option value="Points of Interest|disguise" data-name="true">Disguise</option>
                                         <option value="Points of Interest|blend-in" data-name="true">Blend In</option>
                                         <option value="Points of Interest|conceal-item">Conceal Item</option>
@@ -111,7 +122,7 @@
                                         <option value="Weapons and Tools|non-lethal-melee" data-name="true">Non-Lethal Melee</option>
                                         <option value="Weapons and Tools|explosive" data-name="true">Explosive</option>
                                         <option value="Weapons and Tools|coin">Coin</option>
-                                        <option value="Weapons and Tools|poison" data-name="true">Poison</option>
+                                        <option value="Weapons and Tools|poison" data-name="true" data-note="This is for the weapon/tool itself, not items you can poison!">Poison</option>
                                         <option value="Weapons and Tools|firearm" data-name="true">Firearm</option>
                                         <option value="Weapons and Tools|ammo" data-name="true">Ammo</option>
                                     </optgroup>
@@ -123,13 +134,17 @@
                                     </optgroup>
                                 </select>
                                 <input type="hidden" name="group">
-                                <div class="help-block"></div>
+                                <small class="form-text text-muted" id="note-help-text">
+                                </small>
                             </div>
                         </div>
                         <div class="form-group row" data-type="name" style="display: none">
                             <label for="name" class="col-sm-2 col-form-label">Name</label>
                             <div class="col-sm-10">
                                 <input type="text" name="name" class="form-control">
+                                <small class="form-text text-muted">
+                                    Enter the name as it appears on the inventory/intel screen in-game.
+                                </small>
                             </div>
                         </div>
                         <div class="form-group row" data-type="action" style="display: none">
@@ -138,6 +153,9 @@
                             </label>
                             <div class="col-sm-10">
                                 <input type="text" name="action" class="form-control">
+                                <small class="form-text text-muted">
+                                    Enter the action this distraction/sabotage does (such as "loosen the valve", "turn on radio", etc.)
+                                </small>
                             </div>
                         </div>
                         <div class="form-group row" data-type="target" style="display: none">
@@ -146,6 +164,9 @@
                             </label>
                             <div class="col-sm-10">
                                 <input type="text" name="target" class="form-control">
+                                <small class="form-text text-muted">
+                                    Who will be poisoned?
+                                </small>
                             </div>
                         </div>
                         <div class="form-group row" data-type="pickup" style="display: none">
@@ -237,7 +258,7 @@
                             </div>
                         </div>
                         <input type="hidden" name="mission-id" value="{{ model.missionId }}">
-                        <input type="hidden" name="level" value="0">
+                        <input type="hidden" name="level" value="{{ model.startingFloor }}">
                         <input type="hidden" name="latitude">
                         <input type="hidden" name="longitude">
                         <input type="hidden" name="difficulty" value="{{ model.difficulty }}">
@@ -312,18 +333,20 @@
                 json = JSON.parse(data);
 
                 var allLayerGroups = [];
-                for (var typeName in json) {
-                    var type = json[typeName];
+                // Build layer groups
+                for (var i in json.categories) {
+                    var category = json.categories[i];
+                    for (var j = g_lowestFloor; j <= g_highestFloor; j++) {
+                        g_overlays[j][category.type + '|' + category.group] = L.layerGroup();
+                        allLayerGroups.push(g_overlays[j][category.type + '|' + category.group]);
+                    }
+                }
+
+                var nodes = json.nodes;
+                for (var typeName in nodes) {
+                    var type = nodes[typeName];
                     for (var groupName in type) {
                         var group = type[groupName];
-
-                        if (g_overlays[g_lowestFloor][typeName + '|' + groupName] === undefined) {
-                            for (var i = g_lowestFloor; i <= g_highestFloor; i++) {
-                                g_overlays[i][typeName + '|' + groupName] = L.layerGroup();
-                                allLayerGroups.push(g_overlays[i][typeName + '|' + groupName]);
-                            }
-                        }
-
                         for (var k in group) {
                             var node = group[k];
                             L.marker([node.latitude, node.longitude], {
@@ -375,6 +398,16 @@
                     g_map.removeLayer(g_mapLayers[j]);
                 }
                 g_map.addLayer(g_mapLayers[g_startingFloor]);
+
+                // Show the starting level's items
+                for (var j = g_lowestFloor; j <= g_highestFloor; j++) {
+                    for (var k in g_overlays[j]) {
+                        toggleLayer(g_overlays[j][k], false);
+                    }
+                }
+                for (var j in g_overlays[g_startingFloor]) {
+                    toggleLayer(g_overlays[g_startingFloor][j], true);
+                }
             },
             error: function() {
                 alert('An error occurred when trying to get map nodes');
@@ -390,6 +423,13 @@
             toggleEditorFieldDisplay($selectedItem, 'target');
             toggleEditorFieldDisplay($selectedItem, 'pickup');
             toggleEditorFieldDisplay($selectedItem, 'direction');
+
+            var note = $selectedItem.attr('data-note');
+            if (note !== undefined && note !== false) {
+                $('#note-help-text').text(note);
+            } else {
+                $('#note-help-text').text('');
+            }
         });
 
         function toggleEditorFieldDisplay($selectedItem, attribute) {
@@ -413,14 +453,15 @@
                 method: 'POST',
                 data: $(this).serialize(),
                 success: function(data) {
-                    if (JSON.parse(data).approved) {
+                    var node = JSON.parse(data);
+                    if (node.approved) {
                         toastr["success"]('Item successfully added to map!');
                         L.marker([$form.find('input[name="latitude"]').val(), $form.find('input[name="longitude"]').val()], {
-                            icon: L.icon({iconUrl: '/img/map-icons/' + JSON.parse(data).icon + '.png',
+                            icon: L.icon({iconUrl: '/img/map-icons/' + node.icon + '.png',
                                 iconSize: [24, 24],
                                 iconAnchor: [12, 12],
                                 popupAnchor: [0, 0]
-                            })}).bindPopup(buildPopup(JSON.parse(data))).addTo(g_overlays[JSON.parse(data).type + '|' + JSON.parse(data).group]);
+                            })}).bindPopup(buildPopup(node)).addTo(g_overlays[node.level][node.type + '|' + node.group]);
                     } else {
                         toastr["success"]('Suggestion has been submitted. If it is approved by an administrator, it will become visible on the map.');
                     }
@@ -461,12 +502,20 @@
         }
 
         $('select[name="level"]').change(function() {
+            var $formField = $('input[type="hidden"][name="level"]');
+            var previousLevel = $formField.val();
             var level = $(this).val();
+            $formField.val(level);
 
-            for (var i in g_mapLayers) {
-                g_map.removeLayer(g_mapLayers[i]);
+            toggleLayer(g_mapLayers[previousLevel], false);
+            toggleLayer(g_mapLayers[level], true);
+
+            for (var i in g_overlays[previousLevel]) {
+                toggleLayer(g_overlays[previousLevel][i], false);
             }
-            g_map.addLayer(g_mapLayers[level]);
+            for (var i in g_overlays[level]) {
+                toggleLayer(g_overlays[level][i], true);
+            }
         });
     </script>
 {% endblock %}

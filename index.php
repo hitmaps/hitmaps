@@ -148,7 +148,9 @@ $klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\
 });
 
 $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
-    return json_encode($applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($_GET['missionId'], $_GET['difficulty']));
+    $nodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($_GET['missionId'], $_GET['difficulty']);
+    $nodeCategories = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\NodeCategory::class)->findAll();
+    return json_encode(['nodes' => $nodes, 'categories' => $nodeCategories]);
 });
 
 /* Auth Endpoints */
@@ -192,8 +194,6 @@ $klein->respond('POST', '/user/login', function(\Klein\Request $request, \Klein\
 });
 
 $klein->respond('GET', '/user/register', function() use ($twig, $klein) {
-    return bounceTo404($twig);
-
     $model = new \Controllers\ViewModels\BaseModel();
     $flashes = $klein->service()->flashes();
     if (count($flashes) > 0) {
@@ -208,6 +208,11 @@ $klein->respond('GET', '/user/register', function() use ($twig, $klein) {
 });
 
 $klein->respond('POST', '/user/register', function(\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext, $klein) {
+    $settings = new \Config\Settings();
+    if ($_POST['super-secret-code'] !== $settings->superSecretPublicCode) {
+        return "The registration code you entered was not correct. An account was not created.";
+    }
+
     $controller = $applicationContext->get(\Controllers\AuthenticationController::class);
 
     try {
