@@ -77,7 +77,7 @@
         </div>
     </nav>
     <div class="modal" id="suggest-edit-modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ model.editorTitle }}</h5>
@@ -87,7 +87,18 @@
                 </div>
                 <form action="/api/nodes" method="post">
                     <div class="modal-body">
-                        <h3>General Info</h3>
+                        <div class="alert alert-dark" style="font-size: .8em">
+                            Please indicate the following under the notes section when adding items:
+                            <ul>
+                                <li>Any <b>required</b> items, such as needing a wrench for loosening valves (use type "Requirement")</li>
+                                <li>Whether or not the action is <b>suspicious</b> when wearing a certain disguise (use type "Warning")</li>
+                                <li>If you feel something <b>requires more information</b>, use the "Information" type</li>
+                                <li>You may add the in-game description for items by using the "Description" type</li>
+                                <li>Any notes with blank text will not be added to the node</li>
+                            </ul>
+                        </div>
+
+                        <h3>Item Info</h3>
                         <div class="form-group row">
                             <label for="icon" class="col-sm-2 col-form-label">Category</label>
                             <div class="col-sm-10">
@@ -96,9 +107,9 @@
                                     <optgroup label="Points of Interest">
                                         <option value="Points of Interest|sabotage" data-name="true" data-action="true">Sabotage</option>
                                         <option value="Points of Interest|distraction" data-name="true" data-action="true">Distraction</option>
-                                        <option value="Points of Interest|poison" data-name="true" data-target="true">Poison</option>
+                                        <option value="Points of Interest|poison" data-name="true" data-target="true" data-note="This is for items you can poison, not for the weapon/tool itself!">Poison</option>
                                         <option value="Points of Interest|misc-item" data-name="true">Misc Item</option>
-                                        <option value="Points of Interest|intel" data-name="true" data-note="Please enter the intel description into the notes field!">Intel</option>
+                                        <option value="Points of Interest|intel" data-name="true" data-note="Please enter the intel description into the notes field (under the 'Description' type)!">Intel</option>
                                         <option value="Points of Interest|disguise" data-name="true">Disguise</option>
                                         <option value="Points of Interest|blend-in" data-name="true">Blend In</option>
                                         <option value="Points of Interest|conceal-item">Conceal Item</option>
@@ -111,7 +122,7 @@
                                         <option value="Weapons and Tools|non-lethal-melee" data-name="true">Non-Lethal Melee</option>
                                         <option value="Weapons and Tools|explosive" data-name="true">Explosive</option>
                                         <option value="Weapons and Tools|coin">Coin</option>
-                                        <option value="Weapons and Tools|poison" data-name="true">Poison</option>
+                                        <option value="Weapons and Tools|poison" data-name="true" data-note="This is for the weapon/tool itself, not items you can poison!">Poison</option>
                                         <option value="Weapons and Tools|firearm" data-name="true">Firearm</option>
                                         <option value="Weapons and Tools|ammo" data-name="true">Ammo</option>
                                     </optgroup>
@@ -123,13 +134,17 @@
                                     </optgroup>
                                 </select>
                                 <input type="hidden" name="group">
-                                <div class="help-block"></div>
+                                <small class="form-text text-muted" id="note-help-text">
+                                </small>
                             </div>
                         </div>
                         <div class="form-group row" data-type="name" style="display: none">
                             <label for="name" class="col-sm-2 col-form-label">Name</label>
                             <div class="col-sm-10">
                                 <input type="text" name="name" class="form-control">
+                                <small class="form-text text-muted">
+                                    Enter the name as it appears on the inventory/intel screen in-game.
+                                </small>
                             </div>
                         </div>
                         <div class="form-group row" data-type="action" style="display: none">
@@ -138,6 +153,9 @@
                             </label>
                             <div class="col-sm-10">
                                 <input type="text" name="action" class="form-control">
+                                <small class="form-text text-muted">
+                                    Enter the action this distraction/sabotage does (such as "loosen the valve", "turn on radio", etc.)
+                                </small>
                             </div>
                         </div>
                         <div class="form-group row" data-type="target" style="display: none">
@@ -146,6 +164,9 @@
                             </label>
                             <div class="col-sm-10">
                                 <input type="text" name="target" class="form-control">
+                                <small class="form-text text-muted">
+                                    Who will be poisoned?
+                                </small>
                             </div>
                         </div>
                         <div class="form-group row" data-type="pickup" style="display: none">
@@ -402,6 +423,13 @@
             toggleEditorFieldDisplay($selectedItem, 'target');
             toggleEditorFieldDisplay($selectedItem, 'pickup');
             toggleEditorFieldDisplay($selectedItem, 'direction');
+
+            var note = $selectedItem.attr('data-note');
+            if (note !== undefined && note !== false) {
+                $('#note-help-text').text(note);
+            } else {
+                $('#note-help-text').text('');
+            }
         });
 
         function toggleEditorFieldDisplay($selectedItem, attribute) {
