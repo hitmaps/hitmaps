@@ -312,18 +312,20 @@
                 json = JSON.parse(data);
 
                 var allLayerGroups = [];
-                for (var typeName in json) {
-                    var type = json[typeName];
+                // Build layer groups
+                for (var i in json.categories) {
+                    var category = json.categories[i];
+                    for (var j = g_lowestFloor; j <= g_highestFloor; j++) {
+                        g_overlays[j][category.type + '|' + category.group] = L.layerGroup();
+                        allLayerGroups.push(g_overlays[j][category.type + '|' + category.group]);
+                    }
+                }
+
+                var nodes = json.nodes;
+                for (var typeName in nodes) {
+                    var type = nodes[typeName];
                     for (var groupName in type) {
                         var group = type[groupName];
-
-                        if (g_overlays[g_lowestFloor][typeName + '|' + groupName] === undefined) {
-                            for (var i = g_lowestFloor; i <= g_highestFloor; i++) {
-                                g_overlays[i][typeName + '|' + groupName] = L.layerGroup();
-                                allLayerGroups.push(g_overlays[i][typeName + '|' + groupName]);
-                            }
-                        }
-
                         for (var k in group) {
                             var node = group[k];
                             L.marker([node.latitude, node.longitude], {
