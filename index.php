@@ -123,8 +123,10 @@ $klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]'
 
         if (\BusinessLogic\UserRole::hasAccess($roles, [\BusinessLogic\UserRole::TRUSTED_EDITOR])) {
             $viewModel->editorTitle = 'Add Change';
+            $viewModel->canDeleteNodes = true;
         } else {
             $viewModel->editorTitle = 'Suggest Edit';
+            $viewModel->canDeleteNodes = false;
         }
     }
 
@@ -145,6 +147,36 @@ $klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\
 
     $response->code(201);
     return json_encode($node);
+});
+
+$klein->respond('GET', '/api/nodes/delete/[:nodeId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    if (!userIsLoggedIn()) {
+        print json_encode(['message' => 'You must be logged in to modify nodes!']);
+        return $response->code(401);
+    }
+
+    /* @var $user \DataAccess\Models\User */
+    $user = \BusinessLogic\Session\Session::read('userContext');
+    $roles = $user->getRolesAsInts();
+    if (!\BusinessLogic\UserRole::hasAccess($roles, [\BusinessLogic\UserRole::TRUSTED_EDITOR])) {
+        print json_encode(['message' => 'You do not have permission to delete nodes!']);
+        return $response->code(403);
+    }
+
+    $node = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Node::class)->findOneBy(['id' => $request->nodeId]);
+    if ($node === null) {
+        print json_encode(['message' => 'Could not find the node to delete!']);
+        return $response->code(404);
+    }
+    $notes = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\NodeNote::class)->findBy(['nodeId' => $request->nodeId]);
+    foreach ($notes as $note) {
+        $applicationContext->get(\Doctrine\ORM\EntityManager::class)->remove($note);
+    }
+    $applicationContext->get(\Doctrine\ORM\EntityManager::class)->remove($node);
+    $applicationContext->get(\Doctrine\ORM\EntityManager::class)->flush();
+
+    print json_encode(['message' => 'Node deleted!']);
+    return $response->code(200);
 });
 
 $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
