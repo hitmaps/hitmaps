@@ -279,6 +279,9 @@
             <div data-name="target">Start Gas Leak</div>
             <hr>
             <div data-name="notes"></div>
+            {% if model.canDeleteNodes %}
+                <button class="btn btn-danger btn-sm" data-action="delete-btn" data-node-id="x">Delete</button>
+            {% endif %}
         </div>
     </script>
     <script type="text/html" id="popup-note-template">
@@ -295,6 +298,7 @@
         var g_lowestFloor = {{ model.lowestFloor }};
         var g_highestFloor = {{ model.highestFloor }};
         var g_startingFloor = {{ model.startingFloor }};
+        var g_openMarker = undefined;
 
         // Initialize g_overlays for each floor
         for (var i = g_lowestFloor; i <= g_highestFloor; i++) {
@@ -350,12 +354,16 @@
                         var group = type[groupName];
                         for (var k in group) {
                             var node = group[k];
-                            L.marker([node.latitude, node.longitude], {
+                            var marker = L.marker([node.latitude, node.longitude], {
                                 icon: L.icon({iconUrl: '/img/map-icons/' + node.icon + '.png',
                                     iconSize: [24, 24],
                                     iconAnchor: [12, 12],
                                     popupAnchor: [0, 0]
-                                })}).bindPopup(buildPopup(node)).addTo(g_overlays[node.level][typeName + '|' + groupName]);
+                                })}).bindPopup(buildPopup(node));
+                            marker.addTo(g_overlays[node.level][typeName + '|' + groupName]);
+                            marker.on('popupopen', function() {
+                                g_openMarker = this;
+                            })
                         }
                     }
                 }
@@ -489,7 +497,8 @@
             var $template = $($('#popup-template').html());
             $template.find('[data-name="group"]').html(node.group).end()
                 .find('[data-name="name"]').html(node.name).end()
-                .find('[data-name="target"]').html(node.target).end();
+                .find('[data-name="target"]').html(node.target).end()
+                .find('[data-node-id="x"]').attr('data-node-id', node.id).end();
 
             for (var i in node.notes) {
                 var $noteTemplate = $($('#popup-note-template').html());
@@ -518,5 +527,23 @@
                 toggleLayer(g_overlays[level][i], true);
             }
         });
+
+        {% if model.canDeleteNodes %}
+        $('body').on('click', '[data-action="delete-btn"]', function() {
+            var nodeId = parseInt($(this).attr('data-node-id'));
+
+            $.ajax({
+                url: '/api/nodes/delete/' + nodeId,
+                method: 'GET',
+                success: function() {
+                    toastr["success"]("Node deleted!");
+                    g_map.removeLayer(g_openMarker);
+                },
+                error: function() {
+                    toastr["error"]("Error deleting node!");
+                }
+            });
+        });
+        {% endif %}
     </script>
 {% endblock %}
