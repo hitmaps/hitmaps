@@ -23,6 +23,7 @@ class GameMapViewModel extends BaseModel {
     public $startingFloor;
 
     public $editorTitle;
+    public $canDeleteNodes;
 
     // TODO
     public $nodes;
