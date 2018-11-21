@@ -5,6 +5,7 @@ namespace BusinessLogic\Authentication;
 
 use BusinessLogic\Emailer;
 use DataAccess\Models\User;
+use DataAccess\Models\UserRole;
 use Doctrine\ORM\EntityManager;
 
 class RegisterNewUserCommand {
@@ -26,6 +27,8 @@ class RegisterNewUserCommand {
         $user->setPassword($hashedPassword);
         $user->setEmail($email);
         $user->setVerificationToken($verificationToken);
+        $role = $this->entityManager->getRepository(UserRole::class)->findOneBy(['id' => 2]);
+        $user->getRoles()->add($role);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
