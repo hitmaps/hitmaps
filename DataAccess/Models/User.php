@@ -142,9 +142,9 @@ class User {
     }
 
     /**
-     * @return PersistentCollection
+     * @return mixed
      */
-    public function getRoles(): PersistentCollection {
+    public function getRoles() {
         return $this->roles;
     }
 
@@ -160,9 +160,9 @@ class User {
     }
 
     /**
-     * @param PersistentCollection $roles
+     * @param $roles mixed
      */
-    public function setRoles(PersistentCollection $roles) {
+    public function setRoles($roles) {
         $this->roles = $roles;
     }
 }
