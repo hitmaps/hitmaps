@@ -280,7 +280,7 @@
             <hr>
             <div data-name="notes"></div>
             {% if model.canDeleteNodes %}
-                <button class="btn btn-danger btn-xs" id="delete-btn" data-node-id="x">Delete</button>
+                <button class="btn btn-danger btn-sm" data-action="delete-btn" data-node-id="x">Delete</button>
             {% endif %}
         </div>
     </script>
@@ -497,7 +497,8 @@
             var $template = $($('#popup-template').html());
             $template.find('[data-name="group"]').html(node.group).end()
                 .find('[data-name="name"]').html(node.name).end()
-                .find('[data-name="target"]').html(node.target).end();
+                .find('[data-name="target"]').html(node.target).end()
+                .find('[data-node-id="x"]').attr('data-node-id', node.id).end();
 
             for (var i in node.notes) {
                 var $noteTemplate = $($('#popup-note-template').html());
@@ -528,7 +529,7 @@
         });
 
         {% if model.canDeleteNodes %}
-        $('#delete-btn').click(function() {
+        $('body').on('click', '[data-action="delete-btn"]', function() {
             var nodeId = parseInt($(this).attr('data-node-id'));
 
             $.ajax({
