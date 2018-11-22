@@ -93,7 +93,7 @@
                                 <li>Any <b>required</b> items, such as needing a wrench for loosening valves (use type "Requirement")</li>
                                 <li>Whether or not the action is <b>suspicious</b> when wearing a certain disguise (use type "Warning")</li>
                                 <li>If you feel something <b>requires more information</b>, use the "Information" type</li>
-                                <li>You may add the in-game description for items by using the "Description" type</li>
+                                <li>You may add the in-game description for items by using the "Description" type <b>if there is no name field provided.</b></li>
                                 <li>Any notes with blank text will not be added to the node</li>
                             </ul>
                         </div>
@@ -104,36 +104,21 @@
                             <div class="col-sm-10">
                                 <select name="icon" class="form-control selectpicker">
                                     <option selected disabled>-- Select --</option>
-                                    <optgroup label="Points of Interest">
-                                        <option value="Points of Interest|sabotage" data-name="true" data-action="true">Sabotage</option>
-                                        <option value="Points of Interest|distraction" data-name="true" data-action="true">Distraction</option>
-                                        <option value="Points of Interest|interaction" data-name="true" data-action="true">Interaction</option>
-                                        <option value="Points of Interest|poison" data-name="true" data-target="true" data-note="This is for items you can poison, not for the weapon/tool itself!">Poison</option>
-                                        <option value="Points of Interest|misc-item" data-name="true">Misc Item</option>
-                                        <option value="Points of Interest|intel" data-name="true" data-note="Please enter the intel description into the notes field (under the 'Description' type)!">Intel</option>
-                                        <option value="Points of Interest|disguise" data-name="true">Disguise</option>
-                                        <option value="Points of Interest|blend-in" data-name="true">Blend In</option>
-                                        <option value="Points of Interest|conceal-item">Conceal Item</option>
-                                        <option value="Points of Interest|hiding-spot">Hiding Spot</option>
-                                        <option value="Points of Interest|weapon-crate">Weapon Crate</option>
-                                        <option value="Points of Interest|locked-door">Locked Door</option>
-                                        <option value="Points of Interest|destroy-evidence">Destroy Evidence</option>
-                                    </optgroup>
-                                    <optgroup label="Weapons and Tools">
-                                        <option value="Weapons and Tools|lethal-melee" data-name="true">Lethal Melee</option>
-                                        <option value="Weapons and Tools|non-lethal-melee" data-name="true">Non-Lethal Melee</option>
-                                        <option value="Weapons and Tools|explosive" data-name="true">Explosive</option>
-                                        <option value="Weapons and Tools|coin">Coin</option>
-                                        <option value="Weapons and Tools|poison" data-name="true" data-note="This is for the weapon/tool itself, not items you can poison!">Poison</option>
-                                        <option value="Weapons and Tools|firearm" data-name="true">Firearm</option>
-                                        <option value="Weapons and Tools|ammo" data-name="true">Ammo</option>
-                                    </optgroup>
-                                    <optgroup label="Navigation">
-                                        <option value="Navigation|starting-location" data-name="true">Starting Location</option>
-                                        <option value="Navigation|exit-location" data-name="true">Exit Location</option>
-                                        <option value="Navigation|agency-pickup" data-name="true" data-pickup="true">Agency Pickup</option>
-                                        <option value="Navigation|up-stair" data-direction="true">Stairwell</option>
-                                    </optgroup>
+                                    {% for type,categories in model.nodeCategories %}
+                                        <optgroup label="{{ type }}">
+                                            {% for category in categories %}
+                                                <option value="{{ type }}|{{ category.icon }}"
+                                                    {% if category.requireName %} data-name="true" {% endif %}
+                                                    {% if category.requireAction %} data-action="true" {% endif %}
+                                                    {% if category.requireTarget %} data-target="true" {% endif %}
+                                                    {% if category.requirePickup %} data-pickup="true" {% endif %}
+                                                    {% if category.note != null %} data-note="{{ category.note }}" {% endif %}
+                                                    {% if category.requireDirection %} data-direction="true" {% endif %}>
+                                                    {{ category.group }}
+                                                </option>
+                                            {% endfor %}
+                                        </optgroup>
+                                    {% endfor %}
                                 </select>
                                 <input type="hidden" name="group">
                                 <small class="form-text text-muted" id="note-help-text">
@@ -145,7 +130,7 @@
                             <div class="col-sm-10">
                                 <input type="text" name="name" class="form-control">
                                 <small class="form-text text-muted">
-                                    Enter the name as it appears on the inventory/intel screen in-game.
+                                    Enter the name as it appears in-game.
                                 </small>
                             </div>
                         </div>
@@ -156,7 +141,7 @@
                             <div class="col-sm-10">
                                 <input type="text" name="action" class="form-control">
                                 <small class="form-text text-muted">
-                                    Enter the action this distraction/sabotage does (such as "loosen the valve", "turn on radio", etc.)
+                                    Enter the action that is performed (such as "loosen the valve", "turn on radio", "trigger fire alarm", etc.)
                                 </small>
                             </div>
                         </div>

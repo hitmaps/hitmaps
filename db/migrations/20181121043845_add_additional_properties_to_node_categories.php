@@ -97,8 +97,7 @@ class AddAdditionalPropertiesToNodeCategories extends AbstractMigration {
             WHERE `group` = 'Explosive'
               AND `type` = 'Weapons and Tools'");
         $this->execute("UPDATE `node_categories`
-            SET `icon` = 'coin',
-              `require_name` = 1
+            SET `icon` = 'coin'
             WHERE `group` = 'Coin'
               AND `type` = 'Weapons and Tools'");
         $this->execute("UPDATE `node_categories`
