@@ -27,6 +27,46 @@ class NodeCategory {
     public $group;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    public $icon;
+
+    /**
+     * @ORM\Column(type="boolean", name="require_name")
+     */
+    public $requireName;
+
+    /**
+     * @ORM\Column(type="boolean", name="require_action")
+     */
+    public $requireAction;
+
+    /**
+     * @ORM\Column(type="boolean", name="require_target")
+     */
+    public $requireTarget;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    public $note;
+
+    /**
+     * @ORM\Column(type="boolean", name="require_pickup")
+     */
+    public $requirePickup;
+
+    /**
+     * @ORM\Column(type="boolean", name="require_direction")
+     */
+    public $requireDirection;
+
+    /**
+     * @ORM\Column(type="integer", name="`order`")
+     */
+    public $order;
+
+    /**
      * @return mixed
      */
     public function getId(): int {
@@ -66,5 +106,117 @@ class NodeCategory {
      */
     public function setGroup($group) {
         $this->group = $group;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIcon() {
+        return $this->icon;
+    }
+
+    /**
+     * @param mixed $icon
+     */
+    public function setIcon($icon) {
+        $this->icon = $icon;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRequireName() {
+        return $this->requireName;
+    }
+
+    /**
+     * @param mixed $requireName
+     */
+    public function setRequireName($requireName) {
+        $this->requireName = $requireName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRequireAction() {
+        return $this->requireAction;
+    }
+
+    /**
+     * @param mixed $requireAction
+     */
+    public function setRequireAction($requireAction) {
+        $this->requireAction = $requireAction;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRequireTarget() {
+        return $this->requireTarget;
+    }
+
+    /**
+     * @param mixed $requireTarget
+     */
+    public function setRequireTarget($requireTarget) {
+        $this->requireTarget = $requireTarget;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNote() {
+        return $this->note;
+    }
+
+    /**
+     * @param mixed $note
+     */
+    public function setNote($note) {
+        $this->note = $note;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRequirePickup() {
+        return $this->requirePickup;
+    }
+
+    /**
+     * @param mixed $requirePickup
+     */
+    public function setRequirePickup($requirePickup) {
+        $this->requirePickup = $requirePickup;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRequireDirection() {
+        return $this->requireDirection;
+    }
+
+    /**
+     * @param mixed $requireDirection
+     */
+    public function setRequireDirection($requireDirection) {
+        $this->requireDirection = $requireDirection;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrder() {
+        return $this->order;
+    }
+
+    /**
+     * @param mixed $order
+     */
+    public function setOrder($order) {
+        $this->order = $order;
     }
 }
