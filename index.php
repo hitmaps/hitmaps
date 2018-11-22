@@ -130,6 +130,19 @@ $klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]'
         }
     }
 
+    $nodeCategories = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\NodeCategory::class)->findBy([], ['order' => 'ASC', 'group' => 'ASC']);
+    $sortedNodeCategories = [];
+
+    /* @var $nodeCategory \DataAccess\Models\NodeCategory */
+    foreach ($nodeCategories as $nodeCategory) {
+        if (!key_exists($nodeCategory->getType(), $sortedNodeCategories)) {
+            $sortedNodeCategories[$nodeCategory->getType()] = [];
+        }
+
+        $sortedNodeCategories[$nodeCategory->getType()][] = $nodeCategory;
+    }
+
+    $viewModel->nodeCategories = $sortedNodeCategories;
     $viewModel->nodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($viewModel->missionId, $request->difficulty, true);
 
     return \Controllers\Renderer::render('map.twig', $twig, $viewModel);
