@@ -342,8 +342,8 @@
                             var node = group[k];
                             var marker = L.marker([node.latitude, node.longitude], {
                                 icon: L.icon({iconUrl: '/img/map-icons/' + node.icon + '.png',
-                                    iconSize: [24, 24],
-                                    iconAnchor: [12, 12],
+                                    iconSize: [32, 32],
+                                    iconAnchor: [16, 16],
                                     popupAnchor: [0, 0]
                                 })}).bindPopup(buildPopup(node));
                             marker.addTo(g_overlays[node.level][typeName + '|' + groupName]);
@@ -458,8 +458,8 @@
                         toastr["success"]('Item successfully added to map!');
                         L.marker([$form.find('input[name="latitude"]').val(), $form.find('input[name="longitude"]').val()], {
                             icon: L.icon({iconUrl: '/img/map-icons/' + node.icon + '.png',
-                                iconSize: [24, 24],
-                                iconAnchor: [12, 12],
+                                iconSize: [32, 32],
+                                iconAnchor: [16, 16],
                                 popupAnchor: [0, 0]
                             })}).bindPopup(buildPopup(node)).addTo(g_overlays[node.level][node.type + '|' + node.group]);
                     } else {
