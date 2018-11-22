@@ -103,7 +103,7 @@
                             <label for="icon" class="col-sm-2 col-form-label">Category</label>
                             <div class="col-sm-10">
                                 <select name="icon" class="form-control selectpicker">
-                                    <option selected disabled>-- Select --</option>
+                                    <option value="-1" selected disabled>-- Select --</option>
                                     {% for type,categories in model.nodeCategories %}
                                         <optgroup label="{{ type }}">
                                             {% for category in categories %}
@@ -379,7 +379,12 @@
                     }
 
                     console.log('editor enabled');
+                    $('#suggest-notes').html('').append($('.note-template').html());
+                    $('select[name="icon"]').selectpicker('val', -1);
                     $('#suggest-edit-modal')
+                        .find('input[name="name"]').val('').end()
+                        .find('input[name="action"]').val('').end()
+                        .find('input[name="target"]').val('').end()
                         .find('input[name="latitude"]').val(e.latlng.lat).end()
                         .find('input[name="longitude"]').val(e.latlng.lng).end()
                         .modal('show');
