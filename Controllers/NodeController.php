@@ -102,13 +102,13 @@ class NodeController {
         list($type, $icon) = explode('|', $postData['icon']);
         $node = new Node();
         $node->setDifficulty($difficulty);
-        $node->setGroup($postData['group']);
+        $node->setGroup(trim($postData['group']));
         $node->setIcon($icon);
         $node->setLatitude($postData['latitude']);
         $node->setLevel($postData['level']);
         $node->setLongitude($postData['longitude']);
         $node->setMissionId($missionId);
-        $node->setName($postData['name'] !== null ? $postData['name'] : '');
+        $node->setName($postData['name'] !== null ? trim($postData['name']) : '');
         $node->setType($type);
         $node->setCreatedBy($user->getId());
         $node->setTarget('');
@@ -116,6 +116,8 @@ class NodeController {
         switch ($icon) {
             case 'sabotage':
             case 'distraction':
+            case 'interaction':
+            case 'alarm':
                 $node->setTarget($postData['action']);
                 break;
             case 'agency-pickup':
@@ -127,6 +129,15 @@ class NodeController {
                 break;
             case 'up-stair':
                 $node->setIcon($postData['stairwell-direction']);
+                break;
+            case 'up-pipe':
+                if ($postData['stairwell-direction'] === 'up-stair') {
+                    $node->setIcon('up-pipe');
+                } elseif ($postData['stairwell-direction'] === 'down-stair') {
+                    $node->setIcon('down-pipe');
+                } else {
+                    $node->setIcon('up-down-pipe');
+                }
                 break;
             default:
                 $node->setTarget($postData['target']);
