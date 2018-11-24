@@ -17,4 +17,5 @@ class NodeWithNotesViewModel {
     public $difficulty;
     public $group;
     public $notes;
+    public $approved;
 }

@@ -87,6 +87,35 @@
                 </div>
                 <form action="/api/nodes" method="post">
                     <div class="modal-body">
+                        <div class="alert alert-primary" style="font-size: .8em">
+                            You can now use a template to auto-fill item information for common items!
+                            <b>If you select a template, all information in "Item Info" and "Notes" will be replaced with
+                                the template's information.</b>
+                        </div>
+                        <h3>Apply Template</h3>
+                        <div class="form-group row">
+                            <label for="template" class="col-sm-2 col-form-label">Template</label>
+                            <div class="col-sm-10">
+                                <select name="template" class="form-control selectpicker" title="Select One" data-live-search="true">
+                                    {% for type,items in model.predeterminedItems %}
+                                        <optgroup label="{{ type }}">
+                                            {% for item in items %}
+                                                <option data-type="{{ type }}"
+                                                        data-icon="{{ item.icon }}"
+                                                        data-description="{{ item.description }}"
+                                                        data-requirement="{{ item.requirement }}"
+                                                        data-warning="{{ item.warning }}"
+                                                        data-information="{{ item.information }}"
+                                                        data-group="{{ item.group }}"
+                                                        data-target="{{ item.target }}">{{ item.name }}</option>
+                                            {% endfor %}
+                                        </optgroup>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <hr>
+                        <h3>Item Info</h3>
                         <div class="alert alert-dark" style="font-size: .8em">
                             Please indicate the following under the notes section when adding items:
                             <ul>
@@ -97,13 +126,10 @@
                                 <li>Any notes with blank text will not be added to the node</li>
                             </ul>
                         </div>
-
-                        <h3>Item Info</h3>
                         <div class="form-group row">
                             <label for="icon" class="col-sm-2 col-form-label">Category</label>
                             <div class="col-sm-10">
-                                <select name="icon" class="form-control selectpicker">
-                                    <option value="-1" selected disabled>-- Select --</option>
+                                <select name="icon" class="form-control selectpicker" title="Select One">
                                     {% for type,categories in model.nodeCategories %}
                                         <optgroup label="{{ type }}">
                                             {% for category in categories %}
@@ -277,6 +303,7 @@
             </div>
         </div>
     </script>
+    <div id="temp" style="display: none"></div>
     <script>
         var g_mapLayers = {};
         var g_overlays = {};
@@ -374,12 +401,13 @@
                 g_map.setMaxBounds([[{{ model.topLeftCoordinate }}], [{{ model.bottomRightCoordinate }}]]);
                 g_map.addEventListener('click', function(e) {
                     if (parseInt($('input[type="hidden"][name="edit-mode"]').val()) === 0) {
-                        console.log('editor disabled');
+                        console.debug('Editor disabled. Modal will not be shown.');
                         return;
                     }
 
-                    console.log('editor enabled');
+                    console.debug('Editor enabled. Displaying modal.');
                     $('#suggest-notes').html('').append($('.note-template').html());
+                    $('select[name="template"]').selectpicker('val', -1);
                     $('select[name="icon"]').selectpicker('val', -1);
                     $('#suggest-edit-modal')
                         .find('input[name="name"]').val('').end()
@@ -414,6 +442,66 @@
             }
         });
 
+        // Template change
+        $('select[name="template"]').change(function() {
+            var $selectedItem = $('select[name="template"] option:selected');
+
+            var $modal = $('#suggest-edit-modal');
+            $modal.find('select[name="icon"]')
+                .selectpicker('val', $selectedItem.attr('data-type') + '|' + $selectedItem.attr('data-icon'));
+            $modal.find('select[name="icon"]').trigger('change');
+
+            var $selectedCategory = $('select[name="icon"] option:selected');
+            if ($selectedCategory.attr('data-name') !== undefined && $selectedItem.attr('data-action') !== false) {
+                $modal.find('input[name="name"]').val($selectedItem.text());
+            }
+            if ($selectedCategory.attr('data-action') !== undefined && $selectedItem.attr('data-action') !== false) {
+                $modal.find('input[name="action"]').val($selectedItem.attr('data-target'));
+            }
+            if ($selectedCategory.attr('data-target') !== undefined && $selectedItem.attr('data-target') !== false) {
+                $modal.find('input[name="target"]').val($selectedItem.attr('data-target'));
+            }
+            var $suggestNotes = $('#suggest-notes');
+            $suggestNotes.html('');
+            var addedNotes = false;
+            if (addNoteFromTemplate($selectedItem, $suggestNotes, 'description')) {
+                addedNotes = true;
+            }
+            if (addNoteFromTemplate($selectedItem, $suggestNotes, 'requirement')) {
+                addedNotes = true;
+            }
+            if (addNoteFromTemplate($selectedItem, $suggestNotes, 'warning')) {
+                addedNotes = true;
+            }
+            if (addNoteFromTemplate($selectedItem, $suggestNotes, 'information', 'info')) {
+                addedNotes = true;
+            }
+
+            if (!addedNotes) {
+                $suggestNotes.append($('.note-template').html());
+            }
+        });
+
+        function addNoteFromTemplate($selectedItem, $suggestNotes, type, target) {
+            if ($selectedItem.attr('data-' + type) === undefined ||
+                $selectedItem.attr('data-' + type) === false ||
+                $selectedItem.attr('data-' + type).trim() === '') {
+                return false;
+            }
+
+            if (target === undefined) {
+                target = type;
+            }
+
+            var $temp = $('#temp');
+            $temp.append($('.note-template').html());
+            $temp.find('input[name="note-text[]"]').attr('value', $selectedItem.attr('data-' + type));
+            $temp.find('select[name="note-type[]"] [value="' + target + '"]').attr('selected', true);
+            $suggestNotes.append($temp.html());
+            $temp.html('');
+            return true;
+        }
+
         $('select[name="icon"]').change(function() {
             var $selectedItem = $('select[name="icon"] option:selected');
             $('input[name="group"]').val($selectedItem.text());
@@ -442,6 +530,10 @@
 
         $('#add-note-button').click(function() {
             var template = $('.note-template').html();
+
+            var nextRowNumber = parseInt($('#modal').find('[data-note-row]').attr('data-note-row')) + 1;
+            console.log(nextRowNumber);
+
             $('#suggest-notes').append(template);
         });
 
@@ -472,7 +564,7 @@
                 }
             });
 
-            console.log("Done adding node.");
+            console.debug("Completed adding node.");
             return false;
         });
 
