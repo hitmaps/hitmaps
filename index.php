@@ -171,8 +171,35 @@ $klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\
     $user = \BusinessLogic\Session\Session::read('userContext');
     $node = $applicationContext->get(\Controllers\NodeController::class)->createNode(intval($_POST['mission-id']), $_POST['difficulty'], $_POST, $user);
 
+
+    $nodeViewModel = new \Controllers\ViewModels\NodeWithNotesViewModel();
+    $nodeViewModel->id = $node->getId();
+    $nodeViewModel->missionId = $node->getMissionId();
+    $nodeViewModel->type = $node->getType();
+    $nodeViewModel->icon = $node->getIcon();
+    $nodeViewModel->name = $node->getName();
+    $nodeViewModel->target = $node->getTarget();
+    $nodeViewModel->level = $node->getLevel();
+    $nodeViewModel->latitude = $node->getLatitude();
+    $nodeViewModel->longitude = $node->getLongitude();
+    $nodeViewModel->difficulty = $node->getDifficulty();
+    $nodeViewModel->group = $node->getGroup();
+    $nodeViewModel->approved = $node->getApproved();
+    $nodeViewModel->notes = [];
+    $notes = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
+        ->getRepository(\DataAccess\Models\NodeNote::class)
+        ->findBy(['nodeId' => $node->getId()]);
+    foreach ($notes as $note) {
+        /* @var $note \DataAccess\Models\NodeNote */
+        $innerViewModel = new \Controllers\ViewModels\NodeNoteViewModel();
+        $innerViewModel->id = $note->getId();
+        $innerViewModel->type = $note->getType();
+        $innerViewModel->text = $note->getText();
+
+        $nodeViewModel->notes[] = $innerViewModel;
+    }
     $response->code(201);
-    return json_encode($node);
+    return json_encode($nodeViewModel);
 });
 
 $klein->respond('GET', '/api/nodes/delete/[:nodeId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {

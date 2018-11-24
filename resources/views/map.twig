@@ -464,48 +464,16 @@
             var $suggestNotes = $('#suggest-notes');
             $suggestNotes.html('');
             var addedNotes = false;
-            if ($selectedItem.attr('data-description') !== undefined &&
-                $selectedItem.attr('data-description') !== false &&
-                $selectedItem.attr('data-description').trim() !== '') {
-                var $temp = $('#temp');
-                $temp.append($('.note-template').html());
-                $temp.find('input[name="note-text[]"]').attr('value', $selectedItem.attr('data-description'));
-                $temp.find('select[name="note-type[]"] [value="description"]').attr('selected', true);
-                $suggestNotes.append($temp.html());
-                $temp.html('');
+            if (addNoteFromTemplate($selectedItem, $suggestNotes, 'description')) {
                 addedNotes = true;
             }
-            if ($selectedItem.attr('data-requirement') !== undefined &&
-                $selectedItem.attr('data-requirement') !== false &&
-                $selectedItem.attr('data-requirement').trim() !== '') {
-                var $temp = $('#temp');
-                $temp.append($('.note-template').html());
-                $temp.find('input[name="note-text[]"]').attr('value', $selectedItem.attr('data-requirement'));
-                $temp.find('select[name="note-type[]"] [value="requirement"]').attr('selected', true);
-                $suggestNotes.append($temp.html());
-                $temp.html('');
+            if (addNoteFromTemplate($selectedItem, $suggestNotes, 'requirement')) {
                 addedNotes = true;
             }
-            if ($selectedItem.attr('data-warning') !== undefined &&
-                $selectedItem.attr('data-warning') !== false &&
-                $selectedItem.attr('data-warning').trim() !== '') {
-                var $temp = $('#temp');
-                $temp.append($('.note-template').html());
-                $temp.find('input[name="note-text[]"]').attr('value', $selectedItem.attr('data-warning'));
-                $temp.find('select[name="note-type[]"] [value="warning"]').attr('selected', true);
-                $suggestNotes.append($temp.html());
-                $temp.html('');
+            if (addNoteFromTemplate($selectedItem, $suggestNotes, 'warning')) {
                 addedNotes = true;
             }
-            if ($selectedItem.attr('data-information') !== undefined &&
-                $selectedItem.attr('data-information') !== false &&
-                $selectedItem.attr('data-information').trim() !== '') {
-                var $temp = $('#temp');
-                $temp.append($('.note-template').html());
-                $temp.find('input[name="note-text[]"]').attr('value', $selectedItem.attr('data-information'));
-                $temp.find('select[name="note-type[]"] [value="info"]').attr('selected', true);
-                $suggestNotes.append($temp.html());
-                $temp.html('');
+            if (addNoteFromTemplate($selectedItem, $suggestNotes, 'information', 'info')) {
                 addedNotes = true;
             }
 
@@ -513,6 +481,26 @@
                 $suggestNotes.append($('.note-template').html());
             }
         });
+
+        function addNoteFromTemplate($selectedItem, $suggestNotes, type, target) {
+            if ($selectedItem.attr('data-' + type) === undefined ||
+                $selectedItem.attr('data-' + type) === false ||
+                $selectedItem.attr('data-' + type).trim() === '') {
+                return false;
+            }
+
+            if (target === undefined) {
+                target = type;
+            }
+
+            var $temp = $('#temp');
+            $temp.append($('.note-template').html());
+            $temp.find('input[name="note-text[]"]').attr('value', $selectedItem.attr('data-' + type));
+            $temp.find('select[name="note-type[]"] [value="' + target + '"]').attr('selected', true);
+            $suggestNotes.append($temp.html());
+            $temp.html('');
+            return true;
+        }
 
         $('select[name="icon"]').change(function() {
             var $selectedItem = $('select[name="icon"] option:selected');
