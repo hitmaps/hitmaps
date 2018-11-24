@@ -87,15 +87,27 @@
                 </div>
                 <form action="/api/nodes" method="post">
                     <div class="modal-body">
-                        <select name="items" class="selectpicker">
-                            {% for type,items in model.predeterminedItems %}
-                                <optgroup label="{{ type }}">
-                                    {% for item in items %}
-                                        <option>{{ item.name }}</option>
+                        <div class="alert alert-primary" style="font-size: .8em">
+                            You can now use a template to auto-fill item information for common items!
+                            Or you can continue to enter information manually below.
+                        </div>
+                        <h3>Apply Template</h3>
+                        <div class="form-group row">
+                            <label for="template" class="col-sm-2 col-form-label">Template</label>
+                            <div class="col-sm-10">
+                                <select name="items" class="form-control selectpicker" title="Select One" data-live-search="true">
+                                    {% for type,items in model.predeterminedItems %}
+                                        <optgroup label="{{ type }}">
+                                            {% for item in items %}
+                                                <option >{{ item.name }}</option>
+                                            {% endfor %}
+                                        </optgroup>
                                     {% endfor %}
-                                </optgroup>
-                            {% endfor %}
-                        </select>
+                                </select>
+                            </div>
+                        </div>
+                        <hr>
+                        <h3>Item Info</h3>
                         <div class="alert alert-dark" style="font-size: .8em">
                             Please indicate the following under the notes section when adding items:
                             <ul>
@@ -106,13 +118,10 @@
                                 <li>Any notes with blank text will not be added to the node</li>
                             </ul>
                         </div>
-
-                        <h3>Item Info</h3>
                         <div class="form-group row">
                             <label for="icon" class="col-sm-2 col-form-label">Category</label>
                             <div class="col-sm-10">
-                                <select name="icon" class="form-control selectpicker">
-                                    <option value="-1" selected disabled>-- Select --</option>
+                                <select name="icon" class="form-control selectpicker" title="Select One">
                                     {% for type,categories in model.nodeCategories %}
                                         <optgroup label="{{ type }}">
                                             {% for category in categories %}
