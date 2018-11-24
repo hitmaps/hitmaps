@@ -142,6 +142,19 @@ $klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]'
         $sortedNodeCategories[$nodeCategory->getType()][] = $nodeCategory;
     }
 
+    $predeterminedItems = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Item::class)->findBy([], ['name' => 'ASC']);
+    $sortedPredeterminedItems = [];
+
+    /* @var $predeterminedItem \DataAccess\Models\Item */
+    foreach ($predeterminedItems as $predeterminedItem) {
+        if (!key_exists($predeterminedItem->getType(), $sortedPredeterminedItems)) {
+            $sortedPredeterminedItems[$predeterminedItem->getType()] = [];
+        }
+
+        $sortedPredeterminedItems[$predeterminedItem->getType()][] = $predeterminedItem;
+    }
+
+    $viewModel->predeterminedItems = $sortedPredeterminedItems;
     $viewModel->nodeCategories = $sortedNodeCategories;
     $viewModel->nodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($viewModel->missionId, $request->difficulty, true);
 
