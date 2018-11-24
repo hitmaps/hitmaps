@@ -89,17 +89,22 @@
                     <div class="modal-body">
                         <div class="alert alert-primary" style="font-size: .8em">
                             You can now use a template to auto-fill item information for common items!
-                            Or you can continue to enter information manually below.
+                            <b>If you select a template, all information in "Item Info" and "Notes" will be replaced with
+                                the template's information.</b>
                         </div>
                         <h3>Apply Template</h3>
                         <div class="form-group row">
                             <label for="template" class="col-sm-2 col-form-label">Template</label>
                             <div class="col-sm-10">
-                                <select name="items" class="form-control selectpicker" title="Select One" data-live-search="true">
+                                <select name="template" class="form-control selectpicker" title="Select One" data-live-search="true">
                                     {% for type,items in model.predeterminedItems %}
                                         <optgroup label="{{ type }}">
                                             {% for item in items %}
-                                                <option >{{ item.name }}</option>
+                                                <option data-type="{{ type }}"
+                                                        data-icon="{{ item.icon }}"
+                                                        data-description="{{ item.description }}"
+                                                        data-group="{{ item.group }}"
+                                                        data-target="{{ item.target }}">{{ item.name }}</option>
                                             {% endfor %}
                                         </optgroup>
                                     {% endfor %}
@@ -430,6 +435,29 @@
             error: function() {
                 alert('An error occurred when trying to get map nodes');
             }
+        });
+
+        // Template change
+        $('select[name="template"]').change(function() {
+            var $selectedItem = $('select[name="template"] option:selected');
+
+            var $modal = $('#suggest-edit-modal');
+            $modal.find('select[name="icon"]')
+                .selectpicker('val', $selectedItem.attr('data-type') + '|' + $selectedItem.attr('data-icon'));
+            $modal.find('select[name="icon"]').trigger('change');
+
+            var $selectedCategory = $('select[name="icon"] option:selected');
+            if ($selectedCategory.attr('data-name') !== undefined && $selectedItem.attr('data-action') !== false) {
+                $modal.find('input[name="name"]').val($selectedItem.text());
+            }
+            if ($selectedCategory.attr('data-action') !== undefined && $selectedItem.attr('data-action') !== false) {
+                $modal.find('input[name="action"]').val($selectedItem.attr('data-target'));
+            }
+            if ($selectedCategory.attr('data-target') !== undefined && $selectedItem.attr('data-target') !== false) {
+                $modal.find('input[name="target"]').val($selectedItem.attr('data-target'));
+            }
+            $modal.find('input[name="pickup"]').val(-1);
+            $modal.find('input[name="direction"]').val(-1);
         });
 
         $('select[name="icon"]').change(function() {
