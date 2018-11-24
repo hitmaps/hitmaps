@@ -403,6 +403,7 @@
 
                     console.debug('Editor enabled. Displaying modal.');
                     $('#suggest-notes').html('').append($('.note-template').html());
+                    $('select[name="template"]').selectpicker('val', -1);
                     $('select[name="icon"]').selectpicker('val', -1);
                     $('#suggest-edit-modal')
                         .find('input[name="name"]').val('').end()
@@ -456,8 +457,11 @@
             if ($selectedCategory.attr('data-target') !== undefined && $selectedItem.attr('data-target') !== false) {
                 $modal.find('input[name="target"]').val($selectedItem.attr('data-target'));
             }
-            $modal.find('input[name="pickup"]').val(-1);
-            $modal.find('input[name="direction"]').val(-1);
+            $('#suggest-notes').html('').append($('.note-template').html());
+            if ($selectedItem.attr('data-description') !== undefined && $selectedItem.attr('data-description') !== false) {
+                $modal.find('input[name="note-text[]"]').val($selectedItem.attr('data-description'));
+                $modal.find('select[name="note-type[]"]').val('description');
+            }
         });
 
         $('select[name="icon"]').change(function() {
