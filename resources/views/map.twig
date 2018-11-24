@@ -103,6 +103,9 @@
                                                 <option data-type="{{ type }}"
                                                         data-icon="{{ item.icon }}"
                                                         data-description="{{ item.description }}"
+                                                        data-requirement="{{ item.requirement }}"
+                                                        data-warning="{{ item.warning }}"
+                                                        data-information="{{ item.information }}"
                                                         data-group="{{ item.group }}"
                                                         data-target="{{ item.target }}">{{ item.name }}</option>
                                             {% endfor %}
@@ -300,6 +303,7 @@
             </div>
         </div>
     </script>
+    <div id="temp" style="display: none"></div>
     <script>
         var g_mapLayers = {};
         var g_overlays = {};
@@ -457,10 +461,56 @@
             if ($selectedCategory.attr('data-target') !== undefined && $selectedItem.attr('data-target') !== false) {
                 $modal.find('input[name="target"]').val($selectedItem.attr('data-target'));
             }
-            $('#suggest-notes').html('').append($('.note-template').html());
-            if ($selectedItem.attr('data-description') !== undefined && $selectedItem.attr('data-description') !== false) {
-                $modal.find('input[name="note-text[]"]').val($selectedItem.attr('data-description'));
-                $modal.find('select[name="note-type[]"]').val('description');
+            var $suggestNotes = $('#suggest-notes');
+            $suggestNotes.html('');
+            var addedNotes = false;
+            if ($selectedItem.attr('data-description') !== undefined &&
+                $selectedItem.attr('data-description') !== false &&
+                $selectedItem.attr('data-description').trim() !== '') {
+                var $temp = $('#temp');
+                $temp.append($('.note-template').html());
+                $temp.find('input[name="note-text[]"]').attr('value', $selectedItem.attr('data-description'));
+                $temp.find('select[name="note-type[]"] [value="description"]').attr('selected', true);
+                $suggestNotes.append($temp.html());
+                $temp.html('');
+                addedNotes = true;
+            }
+            if ($selectedItem.attr('data-requirement') !== undefined &&
+                $selectedItem.attr('data-requirement') !== false &&
+                $selectedItem.attr('data-requirement').trim() !== '') {
+                var $temp = $('#temp');
+                $temp.append($('.note-template').html());
+                $temp.find('input[name="note-text[]"]').attr('value', $selectedItem.attr('data-requirement'));
+                $temp.find('select[name="note-type[]"] [value="requirement"]').attr('selected', true);
+                $suggestNotes.append($temp.html());
+                $temp.html('');
+                addedNotes = true;
+            }
+            if ($selectedItem.attr('data-warning') !== undefined &&
+                $selectedItem.attr('data-warning') !== false &&
+                $selectedItem.attr('data-warning').trim() !== '') {
+                var $temp = $('#temp');
+                $temp.append($('.note-template').html());
+                $temp.find('input[name="note-text[]"]').attr('value', $selectedItem.attr('data-warning'));
+                $temp.find('select[name="note-type[]"] [value="warning"]').attr('selected', true);
+                $suggestNotes.append($temp.html());
+                $temp.html('');
+                addedNotes = true;
+            }
+            if ($selectedItem.attr('data-information') !== undefined &&
+                $selectedItem.attr('data-information') !== false &&
+                $selectedItem.attr('data-information').trim() !== '') {
+                var $temp = $('#temp');
+                $temp.append($('.note-template').html());
+                $temp.find('input[name="note-text[]"]').attr('value', $selectedItem.attr('data-information'));
+                $temp.find('select[name="note-type[]"] [value="info"]').attr('selected', true);
+                $suggestNotes.append($temp.html());
+                $temp.html('');
+                addedNotes = true;
+            }
+
+            if (!addedNotes) {
+                $suggestNotes.append($('.note-template').html());
             }
         });
 
@@ -492,6 +542,10 @@
 
         $('#add-note-button').click(function() {
             var template = $('.note-template').html();
+
+            var nextRowNumber = parseInt($('#modal').find('[data-note-row]').attr('data-note-row')) + 1;
+            console.log(nextRowNumber);
+
             $('#suggest-notes').append(template);
         });
 

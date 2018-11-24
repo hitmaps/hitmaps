@@ -34,6 +34,21 @@ class Item {
     /**
      * @ORM\Column(type="string")
      */
+    public $requirement;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    public $warning;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    public $information;
+
+    /**
+     * @ORM\Column(type="string")
+     */
     public $type;
 
     /**
@@ -100,6 +115,48 @@ class Item {
      */
     public function setDescription($description) {
         $this->description = $description;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRequirement() {
+        return $this->requirement;
+    }
+
+    /**
+     * @param mixed $requirement
+     */
+    public function setRequirement($requirement) {
+        $this->requirement = $requirement;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWarning() {
+        return $this->warning;
+    }
+
+    /**
+     * @param mixed $warning
+     */
+    public function setWarning($warning) {
+        $this->warning = $warning;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInformation() {
+        return $this->information;
+    }
+
+    /**
+     * @param mixed $information
+     */
+    public function setInformation($information) {
+        $this->information = $information;
     }
 
     /**
