@@ -76,6 +76,32 @@
             {% endfor %}
         </div>
     </nav>
+    <div class="modal" id="confirm-move-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Move</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/api/nodes/move" method="post">
+                    <input type="hidden" name="node-id">
+                    <input type="hidden" name="latitude">
+                    <input type="hidden" name="longitude">
+                    <div class="modal-body">
+                        <div class="alert alert-warning">
+                            Are you sure you want to re-position this item?
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No, cancel</button>
+                        <button type="submit" class="btn btn-primary">Yes, save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="modal" id="suggest-edit-modal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -367,16 +393,12 @@
                         var group = type[groupName];
                         for (var k in group) {
                             var node = group[k];
-                            var marker = L.marker([node.latitude, node.longitude], {
-                                icon: L.icon({iconUrl: '/img/map-icons/' + node.icon + '.png',
-                                    iconSize: [32, 32],
-                                    iconAnchor: [16, 16],
-                                    popupAnchor: [0, 0]
-                                })}).bindPopup(buildPopup(node));
+                            var marker = buildMarker(node).bindPopup(buildPopup(node));
+                            if (node.name !== '') {
+                                marker.bindTooltip(node.name);
+                            }
+
                             marker.addTo(g_overlays[node.level][typeName + '|' + groupName]);
-                            marker.on('popupopen', function() {
-                                g_openMarker = this;
-                            })
                         }
                     }
                 }
@@ -482,6 +504,39 @@
             }
         });
 
+        function buildMarker(node) {
+            return L.marker([node.latitude, node.longitude], {
+                icon: L.icon({iconUrl: '/img/map-icons/' + node.icon + '.png',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 16],
+                    popupAnchor: [0, 0]
+                }),
+                custom: {
+                    id: node.id,
+                    node: node
+                },
+                draggable: true,
+                riseOnHover: true
+            }).on('popupopen', function() {
+                g_openMarker = this;
+            }).on('dragend', function(e) {
+                var nodeInformation = e.target.options.custom;
+                if (parseInt($('input[type="hidden"][name="edit-mode"]').val()) === 0) {
+                    console.debug("Editor disabled. Sending node back.");
+                    e.target.setLatLng([nodeInformation.node.latitude, nodeInformation.node.longitude]);
+                    toastr["warning"]("The editor is disabled. No items can be moved unless the editor is enabled.");
+                    return;
+                }
+
+                console.log(e.target);
+                var $modal = $('#confirm-move-modal')
+                    .find('input[name="node-id"]').val(nodeInformation.id).end()
+                    .find('input[name="latitude"]').val(e.target.getLatLng().lat).end()
+                    .find('input[name="longitude"]').val(e.target.getLatLng().lng).end()
+                    .modal('show');
+            });
+        }
+
         function addNoteFromTemplate($selectedItem, $suggestNotes, type, target) {
             if ($selectedItem.attr('data-' + type) === undefined ||
                 $selectedItem.attr('data-' + type) === false ||
@@ -537,7 +592,7 @@
             $('#suggest-notes').append(template);
         });
 
-        $('form[action="/api/nodes"]').submit(function(e) {
+        $('form[action="/api/nodes"]').submit(function() {
             var $form = $(this);
 
             $.ajax({
@@ -548,12 +603,11 @@
                     var node = JSON.parse(data);
                     if (node.approved) {
                         toastr["success"]('Item successfully added to map!');
-                        L.marker([$form.find('input[name="latitude"]').val(), $form.find('input[name="longitude"]').val()], {
-                            icon: L.icon({iconUrl: '/img/map-icons/' + node.icon + '.png',
-                                iconSize: [32, 32],
-                                iconAnchor: [16, 16],
-                                popupAnchor: [0, 0]
-                            })}).bindPopup(buildPopup(node)).addTo(g_overlays[node.level][node.type + '|' + node.group]);
+                        var marker = buildMarker(node).bindPopup(buildPopup(node));
+                        if (node.name !== '') {
+                            marker.buildTooltip(node.name);
+                        }
+                        marker.addTo(g_overlays[node.level][node.type + '|' + node.group]);
                     } else {
                         toastr["success"]('Suggestion has been submitted. If it is approved by an administrator, it will become visible on the map.');
                     }
@@ -565,6 +619,26 @@
             });
 
             console.debug("Completed adding node.");
+            return false;
+        });
+
+        $('form[action="/api/nodes/move"]').submit(function() {
+            var $form = $(this);
+
+            $.ajax({
+                url: '/api/nodes/move',
+                method: 'POST',
+                data: $form.serialize(),
+                success: function(data) {
+                    toastr["success"]('Item successfully moved!');
+                    $('#confirm-move-modal').modal('hide');
+                },
+                error: function() {
+                    alert('Error!');
+                }
+            });
+
+            console.debug("Completed moving node.");
             return false;
         });
 

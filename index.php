@@ -202,6 +202,19 @@ $klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\
     return json_encode($nodeViewModel);
 });
 
+$klein->respond('POST', '/api/nodes/move', function (\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext) {
+    if (!userIsLoggedIn()) {
+        print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
+        return $response->code(401);
+    }
+
+
+    $user = \BusinessLogic\Session\Session::read('userContext');
+    $applicationContext->get(\Controllers\NodeController::class)->moveNode(intval($_POST['node-id']), $_POST['latitude'], $_POST['longitude']);
+
+    return json_encode(['message' => 'OK']);
+});
+
 $klein->respond('GET', '/api/nodes/delete/[:nodeId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     if (!userIsLoggedIn()) {
         print json_encode(['message' => 'You must be logged in to modify nodes!']);
