@@ -10,5 +10,8 @@ function expiredRecaptchaCallback() {
 }
 
 //-- Initialize toastr properties
-toastr.options.progressBar = true;
-toastr.options.closeButton = true;
+toastr.options = {
+    progressBar: true,
+    closeButton: true,
+    positionClass: 'toast-top-full-width'
+};

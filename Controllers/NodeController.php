@@ -168,4 +168,20 @@ class NodeController {
 
         return $node;
     }
+
+    public function moveNode($nodeId, $latitude, $longitude): void {
+        /* @var $node Node */
+        $node = $this->entityManager->getRepository(Node::class)->findOneBy(['id' => $nodeId]);
+
+        if ($node === null) {
+            throw new \Exception("Could not find node with ID {$nodeId}");
+        }
+
+        $node->setLatitude($latitude);
+        $node->setLongitude($longitude);
+        $this->entityManager->persist($node);
+        $this->entityManager->flush();
+
+        return;
+    }
 }

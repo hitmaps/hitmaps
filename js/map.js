@@ -5,13 +5,13 @@ $(document).ready(function() {
 
         if (previousEditState === 0) {
             // Enable edit mode
-            toastr["success"]('Editor enabled. Click anywhere to create a new node.');
+            toastr["info"]('Editor enabled. Click anywhere to create a new node.');
             $editMode.val(1);
             $('.editor-enabled').show();
             $('[data-toggle="tooltip"]').tooltip('hide');
         } else {
             // Disable edit mode
-            toastr["success"]('Editor disabled.');
+            toastr["info"]('Editor disabled.');
             $editMode.val(0);
             $('.editor-enabled').hide();
             $('[data-toggle="tooltip"]').tooltip('hide');
