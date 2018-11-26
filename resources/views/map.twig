@@ -602,12 +602,12 @@
                 success: function(data) {
                     var node = JSON.parse(data);
                     if (node.approved) {
-                        toastr["success"]('Item successfully added to map!');
                         var marker = buildMarker(node).bindPopup(buildPopup(node));
                         if (node.name !== '') {
-                            marker.buildTooltip(node.name);
+                            marker.bindTooltip(node.name);
                         }
                         marker.addTo(g_overlays[node.level][node.type + '|' + node.group]);
+                        toastr["success"]('Item successfully added to map!');
                     } else {
                         toastr["success"]('Suggestion has been submitted. If it is approved by an administrator, it will become visible on the map.');
                     }
