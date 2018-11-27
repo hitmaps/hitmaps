@@ -127,6 +127,7 @@
                                         <optgroup label="{{ type }}">
                                             {% for item in items %}
                                                 <option data-type="{{ type }}"
+                                                        data-subgroup="{{ item.subgroup }}"
                                                         data-icon="{{ item.icon }}"
                                                         data-description="{{ item.description }}"
                                                         data-requirement="{{ item.requirement }}"
@@ -153,13 +154,14 @@
                             </ul>
                         </div>
                         <div class="form-group row">
-                            <label for="icon" class="col-sm-2 col-form-label">Category</label>
+                            <label for="subgroup" class="col-sm-2 col-form-label">Category</label>
                             <div class="col-sm-10">
-                                <select name="icon" class="form-control selectpicker" title="Select One">
+                                <select name="subgroup" class="form-control selectpicker" title="Select One">
                                     {% for type,categories in model.nodeCategories %}
                                         <optgroup label="{{ type }}">
                                             {% for category in categories %}
-                                                <option value="{{ type }}|{{ category.icon }}"
+                                                <option value="{{ type }}|{{ category.subgroup }}"
+                                                        data-icon="{{ category.icon }}"
                                                     {% if category.requireName %} data-name="true" {% endif %}
                                                     {% if category.requireAction %} data-action="true" {% endif %}
                                                     {% if category.requireTarget %} data-target="true" {% endif %}
@@ -175,6 +177,13 @@
                                 <input type="hidden" name="group">
                                 <small class="form-text text-muted" id="note-help-text">
                                 </small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="icon" class="col-sm-2 col-form-label">Icon</label>
+                            <div class="col-sm-10">
+                                <input type="hidden" name="icon">
+                                <img id="icon-preview" src="#" alt="Icon Preview">
                             </div>
                         </div>
                         <div class="form-group row" data-type="name" style="display: none">
@@ -420,7 +429,7 @@
                     console.debug('Editor enabled. Displaying modal.');
                     $('#suggest-notes').html('').append($('.note-template').html());
                     $('select[name="template"]').selectpicker('val', -1);
-                    $('select[name="icon"]').selectpicker('val', -1);
+                    $('select[name="subgroup"]').selectpicker('val', -1);
                     $('#suggest-edit-modal')
                         .find('input[name="name"]').val('').end()
                         .find('input[name="action"]').val('').end()
@@ -459,11 +468,14 @@
             var $selectedItem = $('select[name="template"] option:selected');
 
             var $modal = $('#suggest-edit-modal');
-            $modal.find('select[name="icon"]')
-                .selectpicker('val', $selectedItem.attr('data-type') + '|' + $selectedItem.attr('data-icon'));
-            $modal.find('select[name="icon"]').trigger('change');
+            $modal.find('select[name="subgroup"]')
+                .selectpicker('val', $selectedItem.attr('data-type') + '|' + $selectedItem.attr('data-subgroup'));
+            $modal.find('select[name="subgroup"]').trigger('change');
+            var icon = $selectedItem.attr('data-icon');
+            $modal.find('input[name="icon"]').val(icon);
+            $modal.find('img#icon-preview').attr('src', '/img/map-icons/' + icon + '.png');
 
-            var $selectedCategory = $('select[name="icon"] option:selected');
+            var $selectedCategory = $('select[name="subgroup"] option:selected');
             if ($selectedCategory.attr('data-name') !== undefined && $selectedItem.attr('data-action') !== false) {
                 $modal.find('input[name="name"]').val($selectedItem.text());
             }
@@ -565,8 +577,8 @@
             return true;
         }
 
-        $('select[name="icon"]').change(function() {
-            var $selectedItem = $('select[name="icon"] option:selected');
+        $('select[name="subgroup"]').change(function() {
+            var $selectedItem = $('select[name="subgroup"] option:selected');
             $('input[name="group"]').val($selectedItem.text());
 
             toggleEditorFieldDisplay($selectedItem, 'name');
