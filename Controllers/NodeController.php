@@ -58,6 +58,7 @@ class NodeController {
                 $nodeViewModel->missionId = $node->getMissionId();
                 $nodeViewModel->type = $node->getType();
                 $nodeViewModel->icon = $node->getIcon();
+                $nodeViewModel->subgroup = $node->getSubgroup();
                 $nodeViewModel->name = $node->getName();
                 $nodeViewModel->target = $node->getTarget();
                 $nodeViewModel->level = $node->getLevel();
@@ -99,11 +100,12 @@ class NodeController {
          *     - down-stair
          */
 
-        list($type, $icon) = explode('|', $postData['icon']);
+        list($type, $subgroup) = explode('|', $postData['subgroup']);
         $node = new Node();
         $node->setDifficulty($difficulty);
         $node->setGroup(trim($postData['group']));
-        $node->setIcon($icon);
+        $node->setSubgroup($subgroup);
+        $node->setIcon($postData['icon']);
         $node->setLatitude($postData['latitude']);
         $node->setLevel($postData['level']);
         $node->setLongitude($postData['longitude']);
@@ -113,7 +115,7 @@ class NodeController {
         $node->setCreatedBy($user->getId());
         $node->setTarget('');
 
-        switch ($icon) {
+        switch ($subgroup) {
             case 'sabotage':
             case 'distraction':
             case 'interaction':

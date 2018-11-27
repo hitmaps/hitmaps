@@ -176,7 +176,9 @@ $klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\
     $nodeViewModel->id = $node->getId();
     $nodeViewModel->missionId = $node->getMissionId();
     $nodeViewModel->type = $node->getType();
-    $nodeViewModel->icon = $node->getIcon();
+    // TODO Update this
+    //$nodeViewModel->icon = $node->getIcon();
+    $nodeViewModel->subgroup = $node->getSubgroup();
     $nodeViewModel->name = $node->getName();
     $nodeViewModel->target = $node->getTarget();
     $nodeViewModel->level = $node->getLevel();

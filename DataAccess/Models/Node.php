@@ -29,6 +29,11 @@ class Node {
     /**
      * @ORM\Column(type="string")
      */
+    public $subgroup;
+
+    /**
+     * @ORM\Column(type="string")
+     */
     public $icon;
 
     /**
@@ -130,14 +135,28 @@ class Node {
     /**
      * @return mixed
      */
-    public function getIcon(): string {
+    public function getSubgroup(): string {
+        return $this->subgroup;
+    }
+
+    /**
+     * @param mixed $subgroup
+     */
+    public function setSubgroup(string $subgroup): void {
+        $this->subgroup = $subgroup;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIcon() {
         return $this->icon;
     }
 
     /**
      * @param mixed $icon
      */
-    public function setIcon(string $icon): void {
+    public function setIcon($icon): void {
         $this->icon = $icon;
     }
 
