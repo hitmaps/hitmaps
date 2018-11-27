@@ -348,26 +348,16 @@
             var target = $(this).attr('data-layer');
             var typeToggle = target.includes('*');
             var shouldShow = $(this).find('i').hasClass('far');
-
-            if (typeToggle) {
-                target = target.replace('*', '');
-                for (key in g_overlays) {
-                    if (key.includes(target)) {
-                        var layerToShowOrHide = g_overlays[key];
-
-                        toggleLayer(layerToShowOrHide, shouldShow);
-                    }
-                }
-            } else {
-                var layer = g_overlays[$(this).attr('data-layer')];
-                toggleLayer(layer, shouldShow);
-            }
+            var currentFloor = $('input[type="hidden"][name="level"]').val();
+            target = target.replace('*', '');
 
             if (shouldShow) {
                 $('[data-layer^="' + target + '"]').find('i').removeClass('far').addClass('fas');
             } else {
                 $('[data-layer^="' + target + '"]').find('i').addClass('far').removeClass('fas');
             }
+
+            updateNodeLayerState();
         });
 
         $.ajax({
@@ -503,6 +493,24 @@
                 $suggestNotes.append($('.note-template').html());
             }
         });
+
+        function updateNodeLayerState() {
+            var currentFloor = $('input[type="hidden"][name="level"]').val();
+
+            for (var floor in g_overlays) {
+                var floorLayers = g_overlays[floor];
+                for (var key in floorLayers) {
+                    if (parseInt(floor) !== parseInt(currentFloor)) {
+                        // Always hide nodes that aren't on the current floor
+                        toggleLayer(floorLayers[key], false);
+                    } else {
+                        // Find the button that toggles this layer and see if it's active or not.
+                        var $icon = $('[data-layer="' + key + '"]').find('i');
+                        toggleLayer(floorLayers[key], $icon.hasClass('fas'));
+                    }
+                }
+            }
+        }
 
         function buildMarker(node) {
             return L.marker([node.latitude, node.longitude], {
@@ -676,13 +684,7 @@
 
             toggleLayer(g_mapLayers[previousLevel], false);
             toggleLayer(g_mapLayers[level], true);
-
-            for (var i in g_overlays[previousLevel]) {
-                toggleLayer(g_overlays[previousLevel][i], false);
-            }
-            for (var i in g_overlays[level]) {
-                toggleLayer(g_overlays[level][i], true);
-            }
+            updateNodeLayerState();
         });
 
         {% if model.canDeleteNodes %}
