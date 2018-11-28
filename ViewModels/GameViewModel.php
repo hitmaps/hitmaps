@@ -2,7 +2,9 @@
 namespace ViewModels;
 
 
-class GameViewModel {
+use Controllers\ViewModels\BaseModel;
+
+class GameViewModel extends BaseModel {
     /* @var $slug string */
     public $slug;
 
