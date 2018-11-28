@@ -29,6 +29,11 @@ class NodeCategory {
     /**
      * @ORM\Column(type="string")
      */
+    public $subgroup;
+
+    /**
+     * @ORM\Column(type="string")
+     */
     public $icon;
 
     /**
@@ -111,6 +116,13 @@ class NodeCategory {
     /**
      * @return mixed
      */
+    public function getSubgroup() {
+        return $this->subgroup;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getIcon() {
         return $this->icon;
     }
@@ -118,8 +130,15 @@ class NodeCategory {
     /**
      * @param mixed $icon
      */
-    public function setIcon($icon) {
+    public function setIcon($icon): void {
         $this->icon = $icon;
+    }
+
+    /**
+     * @param mixed $subgroup
+     */
+    public function setSubgroup($subgroup) {
+        $this->subgroup = $subgroup;
     }
 
     /**
