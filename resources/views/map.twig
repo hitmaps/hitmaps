@@ -72,7 +72,6 @@
                         </div>
                     </div>
                 </div>
-
             {% endfor %}
         </div>
     </nav>
@@ -156,11 +155,12 @@
                         <div class="form-group row">
                             <label for="subgroup" class="col-sm-2 col-form-label">Category</label>
                             <div class="col-sm-10">
-                                <select name="subgroup" class="form-control selectpicker" title="Select One">
+                                <select name="subgroup" class="form-control selectpicker" title="Select One" data-live-search="true">
                                     {% for type,categories in model.nodeCategories %}
                                         <optgroup label="{{ type }}">
                                             {% for category in categories %}
                                                 <option value="{{ type }}|{{ category.subgroup }}"
+                                                        data-content="<img height='24' width='24' src='/img/map-icons/{{ category.icon }}.png' alt='{{ category.group }} Icon'> {{ category.group }}"
                                                         data-icon="{{ category.icon }}"
                                                     {% if category.requireName %} data-name="true" {% endif %}
                                                     {% if category.requireAction %} data-action="true" {% endif %}
@@ -179,11 +179,18 @@
                                 </small>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group row" style="display: none">
                             <label for="icon" class="col-sm-2 col-form-label">Icon</label>
                             <div class="col-sm-10">
-                                <input type="hidden" name="icon">
-                                <img id="icon-preview" src="#" alt="Icon Preview">
+                                <select name="icon" class="form-control selectpicker" data-live-search="true">
+                                    {% for group,icons in model.icons %}
+                                        <optgroup label="{{ group }}">
+                                            {% for icon in icons %}
+                                                <option data-content="<img height='24' width='24' src='/img/map-icons/{{ icon.icon }}.png' alt='{{ icon.altText }} Icon'> {{ icon.altText }}" value="{{ icon.icon }}">{{ icon.altText }}</option>
+                                            {% endfor %}
+                                        </optgroup>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
                         <div class="form-group row" data-type="name" style="display: none">
@@ -472,8 +479,7 @@
                 .selectpicker('val', $selectedItem.attr('data-type') + '|' + $selectedItem.attr('data-subgroup'));
             $modal.find('select[name="subgroup"]').trigger('change');
             var icon = $selectedItem.attr('data-icon');
-            $modal.find('input[name="icon"]').val(icon);
-            $modal.find('img#icon-preview').attr('src', '/img/map-icons/' + icon + '.png');
+            $modal.find('select[name="icon"]').selectpicker('val', icon);
 
             var $selectedCategory = $('select[name="subgroup"] option:selected');
             if ($selectedCategory.attr('data-name') !== undefined && $selectedItem.attr('data-action') !== false) {
