@@ -3,7 +3,9 @@
 namespace ViewModels;
 
 
-class LocationViewModel {
+use Controllers\ViewModels\BaseModel;
+
+class LocationViewModel extends BaseModel {
     /* @var $slug string */
     public $slug;
 

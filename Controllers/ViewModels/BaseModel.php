@@ -13,6 +13,7 @@ class BaseModel {
     public $loggedIn = false;
     public $userContext;
     public $referer;
+    public $backgroundFileExtension = 'png';
 
     public function __construct() {
         try {
@@ -30,6 +31,10 @@ class BaseModel {
             $this->referer = $_SERVER['HTTP_REFERER'];
         } else {
             $this->referer = '/';
+        }
+
+        if (strpos($_SERVER['HTTP_ACCEPT'], 'image/webp') !== false) {
+            $this->backgroundFileExtension = 'webp';
         }
     }
 }
