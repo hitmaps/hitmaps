@@ -154,8 +154,21 @@ $klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]'
         $sortedPredeterminedItems[$predeterminedItem->getType()][] = $predeterminedItem;
     }
 
+    $icons = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Icon::class)->findBy([], ['order' => 'ASC', 'icon' => 'ASC']);
+    $sortedIcons = [];
+
+    /* @var $icon \DataAccess\Models\Icon */
+    foreach ($icons as $icon) {
+        if (!key_exists($predeterminedItem->getGroup(), $sortedIcons)) {
+            $sortedIcons[$predeterminedItem->getGroup()] = [];
+        }
+
+        $sortedIcons[$predeterminedItem->getGroup()][] = $icon;
+    }
+
     $viewModel->predeterminedItems = $sortedPredeterminedItems;
     $viewModel->nodeCategories = $sortedNodeCategories;
+    $viewModel->icons = $sortedIcons;
     $viewModel->nodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($viewModel->missionId, $request->difficulty, true);
 
     return \Controllers\Renderer::render('map.twig', $twig, $viewModel);
@@ -177,6 +190,7 @@ $klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\
     $nodeViewModel->missionId = $node->getMissionId();
     $nodeViewModel->type = $node->getType();
     $nodeViewModel->icon = $node->getIcon();
+    $nodeViewModel->subgroup = $node->getSubgroup();
     $nodeViewModel->name = $node->getName();
     $nodeViewModel->target = $node->getTarget();
     $nodeViewModel->level = $node->getLevel();

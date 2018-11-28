@@ -54,6 +54,11 @@ class Item {
     /**
      * @ORM\Column(type="string")
      */
+    public $subgroup;
+
+    /**
+     * @ORM\Column(type="string")
+     */
     public $icon;
 
     /**
@@ -176,6 +181,20 @@ class Item {
     /**
      * @return mixed
      */
+    public function getSubgroup() {
+        return $this->subgroup;
+    }
+
+    /**
+     * @param mixed $subgroup
+     */
+    public function setSubgroup($subgroup) {
+        $this->subgroup = $subgroup;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getIcon() {
         return $this->icon;
     }
@@ -183,7 +202,7 @@ class Item {
     /**
      * @param mixed $icon
      */
-    public function setIcon($icon) {
+    public function setIcon($icon): void {
         $this->icon = $icon;
     }
 
