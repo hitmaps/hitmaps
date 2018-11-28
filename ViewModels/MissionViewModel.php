@@ -3,7 +3,9 @@
 namespace ViewModels;
 
 
-class MissionViewModel {
+use Controllers\ViewModels\BaseModel;
+
+class MissionViewModel extends BaseModel {
     /* @var $name string */
     public $name;
 

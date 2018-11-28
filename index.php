@@ -13,17 +13,17 @@ $klein->respond('GET', '/', function () use ($twig, $applicationContext) {
     /* @var $games \DataAccess\Models\Game[] */
     $games = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Game::class)->findAll();
 
-    $viewModels = [];
+    $viewModel = new \ViewModels\HomeViewModel();
     foreach ($games as $game) {
         $gameViewModel = new \ViewModels\GameViewModel();
         $gameViewModel->tagline = $game->getTagline();
         $gameViewModel->fullName = $game->getFullName();
         $gameViewModel->slug = $game->getSlug();
 
-        $viewModels[] = $gameViewModel;
+        $viewModel->games[] = $gameViewModel;
     }
 
-    return \Controllers\Renderer::render('game-select.twig', $twig, $viewModels);
+    return \Controllers\Renderer::render('game-select.twig', $twig, $viewModel);
 });
 
 $klein->respond('GET', '/games/[:game]', function(\Klein\Request $request) use ($twig, $applicationContext) {
