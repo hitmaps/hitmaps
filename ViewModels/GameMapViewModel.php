@@ -28,5 +28,6 @@ class GameMapViewModel extends BaseModel {
     public $nodes;
     public $nodeCategories;
     public $predeterminedItems;
+    public $icons;
     public $disguises; // ?
 }
