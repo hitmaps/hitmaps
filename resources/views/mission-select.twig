@@ -14,7 +14,7 @@
         </header>
         {% for mission in model.missions %}
             <div class="row mission justify-content-center">
-                <div class="col-lg-4 name" style="background: url('/img/locations/{{ model.game }}/{{ model.slug }}.png') no-repeat center; background-size: cover">
+                <div class="col-lg-4 name" style="background: url('{{ settings.cdnLocation }}/mission-thumbnails/{{ model.game }}/{{ mission.slug }}.png') no-repeat center; background-size: cover">
                     <p>&nbsp;</p>
                     <h3>
                         <img src="/img/game-icons/mission.png" class="img-fluid" alt="Mission Icon">

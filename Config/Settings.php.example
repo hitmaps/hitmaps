@@ -12,6 +12,7 @@ class Settings {
     public $loggingEnvironment = 'development';
     public $loggingAccessToken = 'token';
     public $superSecretPublicCode = ''; // Used for securing things that certain users should be able to see
+    public $cdnLocation = '//localhost:8000/cdn';
 
     // ReCAPTCHA
     public $recaptchaSiteKey = '';
