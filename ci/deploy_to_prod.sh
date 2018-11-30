@@ -9,6 +9,8 @@ cd latest_build
 rm -rf ci
 rm -rf .git
 rm -rf maps
+# CDN items should be pushed to the CDN, not the website's server
+rm -rf cdn
 
 zip -r ../latest_build.zip . > ../zip_output.txt
 cd ../
