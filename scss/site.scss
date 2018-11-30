@@ -209,29 +209,72 @@ footer {
   }
 
   .mission {
+    margin-bottom: 10px;
 
-    .game-btn {
+    .name {
       border: solid 1px #fff;
-      margin: 20px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
 
-      .header {
-        border-bottom: solid 1px #fff;
-        padding: 20px;
-        background: #fff;
+      > p {
+        flex-grow: 1;
       }
 
-      ul.difficulties {
-        list-style-type: none;
-        padding-left: 0;
-        background: #eee;
+      img {
+        width: 32px;
+        height: 32px;
+        margin-top: 0;
         margin-bottom: 0;
+      }
 
-        li {
-          padding: 20px;
-          border-bottom: solid 1px #fff;
+      margin-right: 5px;
+    }
 
-          &:hover {
-            background: #ddd;
+    .difficulty {
+      text-align: center;
+      background: #fff;
+      padding-left: 0;
+      padding-right: 0;
+      margin-right: 5px;
+
+      > a {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
+        color: #000;
+        font-size: 1.5rem;
+
+        img {
+          margin: 20px auto;
+        }
+
+        img.normal {
+          display: block;
+          max-height: 100px;
+          max-width: 100px;
+        }
+
+        img.inverted {
+          display: none;
+          max-height: 100px;
+          max-width: 100px;
+        }
+
+        &:hover {
+          background: #ff003c;
+          text-decoration: none;
+          color: #fff;
+
+          img.normal {
+            display: none;
+          }
+
+          img.inverted {
+            display: block;
           }
         }
       }

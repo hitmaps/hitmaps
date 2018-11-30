@@ -2,35 +2,35 @@
 
 {% set page_title = model.name %}
 {% set body_style = "background: url('/img/backgrounds/#{model.game}/#{model.slug}.png') no-repeat center; background-size: cover" %}
-{% set body_class = "missions #{model.slug}" %}
+{% set body_class = "#{model.game} missions #{model.slug}" %}
 
 {% block content %}
-    <header class="row">
-        <div class="col text-center">
-            <h1>{{ model.name }}</h1>
-            <h2>{{ model.country }}</h2>
-        </div>
-    </header>
-    <div class="row">
+    <div class="site-container">
+        <header class="row">
+            <div class="col text-center">
+                <h1>{{ model.name }}</h1>
+                <h2>{{ model.country }}</h2>
+            </div>
+        </header>
         {% for mission in model.missions %}
-            {#{% if loop.index0 > 0 and loop.index0 % 2 == 0 %}
-                <div class="w-100"></div>
-            {% endif %}#}
-            <div class="col-lg mission">
-                <div class="game-btn">
-                    <div class="header">
-                        <h3>{{ mission.name }}</h3>
-                    </div>
-                    <ul class="difficulties">
-                        {% for difficulty in mission.difficulties %}
-                            <li>
-                                <a href="/games/{{ model.game }}/{{ model.slug }}/{{ mission.slug }}/{{ difficulty | lower }}">
-                                    &rArr; {{ difficulty }}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
+            <div class="row mission justify-content-center">
+                <div class="col-lg-4 name" style="background: url('{{ settings.cdnLocation }}/mission-thumbnails/{{ model.game }}/{{ mission.slug }}.{{ model.backgroundFileExtension }}') no-repeat center; background-size: cover">
+                    <p>&nbsp;</p>
+                    <h3>
+                        <img src="/img/game-icons/mission.png" class="img-fluid" alt="Mission Icon">
+                        {{ mission.name }}
+                    </h3>
                 </div>
+                {% for difficulty in mission.difficulties %}
+                    <div class="col-lg difficulty">
+                        <a href="/games/{{ model.game }}/{{ model.slug }}/{{ mission.slug }}/{{ difficulty | lower }}">
+                            <img src="/img/game-icons/{{ difficulty | lower }}.png" alt="{{ difficulty }} Icon" class="normal img-fluid">
+                            <img src="/img/game-icons/{{ difficulty | lower }}-inverted.png" alt="{{ difficulty }} Icon" class="inverted img-fluid">
+                            <p>{{ difficulty }}</p>
+                        </a>
+                    </div>
+                {% endfor %}
+                <!-- Difficulties -->
             </div>
         {% endfor %}
     </div>
