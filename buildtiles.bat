@@ -3,14 +3,14 @@ REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\HawkesBay\2.png" "E:\Users\mkoch\Downloads\H2 Maps\HawkesBay\tiles\2"
 
 REM Miami
-gdal2tiles.py -l -p raster -z 5-7 -w none "E:\Users\mkoch\Downloads\H2 Maps\Miami\-1.png" "E:\Users\mkoch\Downloads\H2 Maps\Miami\tiles\-1"
-gdal2tiles.py -l -p raster -z 5-7 -w none "E:\Users\mkoch\Downloads\H2 Maps\Miami\0.png" "E:\Users\mkoch\Downloads\H2 Maps\Miami\tiles\0"
-gdal2tiles.py -l -p raster -z 5-7 -w none "E:\Users\mkoch\Downloads\H2 Maps\Miami\1.png" "E:\Users\mkoch\Downloads\H2 Maps\Miami\tiles\1"
-gdal2tiles.py -l -p raster -z 5-7 -w none "E:\Users\mkoch\Downloads\H2 Maps\Miami\2.png" "E:\Users\mkoch\Downloads\H2 Maps\Miami\tiles\2"
-gdal2tiles.py -l -p raster -z 5-7 -w none "E:\Users\mkoch\Downloads\H2 Maps\Miami\3.png" "E:\Users\mkoch\Downloads\H2 Maps\Miami\tiles\3"
+REM gdal2tiles.py -l -p raster -z 5-7 -w none "E:\Users\mkoch\Downloads\H2 Maps\Miami\-1.png" "E:\Users\mkoch\Downloads\H2 Maps\Miami\tiles\-1"
+REM gdal2tiles.py -l -p raster -z 5-7 -w none "E:\Users\mkoch\Downloads\H2 Maps\Miami\0.png" "E:\Users\mkoch\Downloads\H2 Maps\Miami\tiles\0"
+REM gdal2tiles.py -l -p raster -z 5-7 -w none "E:\Users\mkoch\Downloads\H2 Maps\Miami\1.png" "E:\Users\mkoch\Downloads\H2 Maps\Miami\tiles\1"
+REM gdal2tiles.py -l -p raster -z 5-7 -w none "E:\Users\mkoch\Downloads\H2 Maps\Miami\2.png" "E:\Users\mkoch\Downloads\H2 Maps\Miami\tiles\2"
+REM gdal2tiles.py -l -p raster -z 5-7 -w none "E:\Users\mkoch\Downloads\H2 Maps\Miami\3.png" "E:\Users\mkoch\Downloads\H2 Maps\Miami\tiles\3"
 
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Colombia\-1.png" "E:\Users\mkoch\Downloads\H2 Maps\Colombia\tiles\-1"
-REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Colombia\0.png" "E:\Users\mkoch\Downloads\H2 Maps\Colombia\tiles\0"
+gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Colombia\0.png" "E:\Users\mkoch\Downloads\H2 Maps\Colombia\tiles\0"
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Colombia\1.png" "E:\Users\mkoch\Downloads\H2 Maps\Colombia\tiles\1"
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Colombia\2.png" "E:\Users\mkoch\Downloads\H2 Maps\Colombia\tiles\2"
 
