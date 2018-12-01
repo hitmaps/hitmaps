@@ -26,7 +26,7 @@
                         <a href="/games/{{ model.game }}/{{ model.slug }}/{{ mission.slug }}/{{ difficulty | lower }}">
                             <img src="/img/game-icons/{{ difficulty | lower }}.png" alt="{{ difficulty }} Icon" class="normal img-fluid">
                             <img src="/img/game-icons/{{ difficulty | lower }}-inverted.png" alt="{{ difficulty }} Icon" class="inverted img-fluid">
-                            <p>{{ difficulty }}</p>
+                            <p>{{ difficulty == 'Standard' ? mission.name : difficulty }}</p>
                         </a>
                     </div>
                 {% endfor %}
