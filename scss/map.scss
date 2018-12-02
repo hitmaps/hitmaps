@@ -159,6 +159,24 @@ html {
           height: 40px;
           border-radius: 3px;
 
+          .fa-caret-down {
+            display: none;
+          }
+
+          .fa-caret-up {
+            display: inline;
+          }
+
+          &.collapsed {
+            .fa-caret-up {
+              display: none;
+            }
+
+            .fa-caret-down {
+              display: inline;
+            }
+          }
+
           &:hover {
             color: #fff;
             text-decoration: none;

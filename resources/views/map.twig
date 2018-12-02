@@ -64,10 +64,13 @@
                         <div class="visibility-toggle" data-layer="{{ typeName }}|*">
                             <i class="far fa-eye"></i>
                         </div>
-                        <div class="name" data-toggle="collapse"
+                        <div class="name collapsed" data-toggle="collapse"
                              data-target="#body-{{ loop.index0 }}" aria-expanded="false" aria-controls="body-{{ loop.index0 }}">
                             {{ typeName }}
-                            <span class="float-right">V</span>
+                            <span class="float-right">
+                                <i class="fas fa-caret-down"></i>
+                                <i class="fas fa-caret-up"></i>
+                            </span>
                         </div>
                     </div>
                     <div id="body-{{ loop.index0 }}" class="collapse" aria-labelledby="header-{{ loop.index0 }}" data-parent="#accordion">
