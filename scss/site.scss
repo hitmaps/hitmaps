@@ -314,6 +314,34 @@ footer {
     top: 110px;
     left: 50px;
     border-radius: 3px;
-    border: 2px solid #fff
+    border: 2px solid #fff;
+
+    .floor {
+      position: relative;
+      /*float: left;
+      width: 55px;*/
+      padding: 10px 15px;
+      margin: 0;
+      border-bottom: 2px solid #fff;
+      background: rgba(22,24,29,0.75);
+      color: #fff;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+
+      &:hover {
+        background: rgba(104, 119, 132, 0.75);
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &.selected {
+        background: #fff;
+        color: #000;
+      }
+    }
   }
 }
