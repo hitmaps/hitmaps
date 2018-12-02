@@ -19,8 +19,11 @@
 {% block content %}
     <div class="floor-toggle">
         {% for i in model.highestFloor..model.lowestFloor %}
-            <div class="floor {% if model.startingFloor == i %}selected{% endif %}" data-floor="{{ i }}">
-                Level {{ i }}
+            <div class="floor-info" data-floor="{{ i }}">
+                <div class="floor{% if model.startingFloor == i %} selected{% endif %}">
+                    Level {{ i }}
+                </div>
+                <div class="item-count">#</div>
             </div>
         {% endfor %}
     </div>
@@ -468,6 +471,7 @@
                 for (var j in g_overlays[g_startingFloor]) {
                     toggleLayer(g_overlays[g_startingFloor][j], true);
                 }
+                updateNodeLayerState();
             },
             error: function() {
                 alert('An error occurred when trying to get map nodes');
@@ -520,17 +524,21 @@
             var currentFloor = $('input[type="hidden"][name="level"]').val();
 
             for (var floor in g_overlays) {
+                var numberOfItemsOnMap = 0;
                 var floorLayers = g_overlays[floor];
                 for (var key in floorLayers) {
-                    if (parseInt(floor) !== parseInt(currentFloor)) {
-                        // Always hide nodes that aren't on the current floor
-                        toggleLayer(floorLayers[key], false);
+                    // Find the button that toggles this layer and see if it's active or not.
+                    var $icon = $('[data-layer="' + key + '"]').find('i');
+                    if ($icon.hasClass('fas')) {
+                        numberOfItemsOnMap++;
+
+                        toggleLayer(floorLayers[key], (parseInt(floor) === parseInt(currentFloor)));
                     } else {
-                        // Find the button that toggles this layer and see if it's active or not.
-                        var $icon = $('[data-layer="' + key + '"]').find('i');
-                        toggleLayer(floorLayers[key], $icon.hasClass('fas'));
+                        toggleLayer(floorLayers[key], false);
                     }
                 }
+                var $itemElement = $('[data-floor="' + floor + '"]').find('.item-count');
+                $itemElement.text(numberOfItemsOnMap);
             }
         }
 
@@ -701,7 +709,7 @@
         $('.floor').click(function() {
             var $formField = $('input[type="hidden"][name="level"]');
             var previousLevel = $formField.val();
-            var level = $(this).attr('data-floor');
+            var level = $(this).parent().attr('data-floor');
             $formField.val(level);
 
             $('.floor').removeClass('selected');
