@@ -201,16 +201,36 @@ html {
     .control-buttons {
       float: right;
       margin-bottom: 10px;
-
-      .control-button {
-        height: 40px;
-        border-radius: 3px;
-        background: rgba(22, 24, 29, .75);
-        color: #fff;
-        box-shadow: none;
-        border: solid 2px #fff;
-      }
     }
+
+    .control-button {
+      height: 40px;
+      border-radius: 3px;
+      background: rgba(22, 24, 29, .75);
+      color: #fff;
+      box-shadow: none;
+      border: solid 2px #fff;
+    }
+  }
+
+  #hide-all, #show-all {
+    height: 40px;
+    border-radius: 3px;
+    background: rgba(22, 24, 29, .75);
+    color: #fff;
+    box-shadow: none;
+    border: solid 2px #2a2d31;
+    opacity: .85;
+    width: 160px;
+
+    &:hover {
+      opacity: 1;
+      border-color: #fff;
+    }
+  }
+
+  #show-all {
+    float: right;
   }
 
   .tooltip-inner {
