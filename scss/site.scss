@@ -310,25 +310,38 @@ footer {
   .floor-toggle {
     z-index: 1;
     position: fixed;
-    width: 95px;
+    width: 150px;
     top: 110px;
     left: 50px;
     border-radius: 3px;
     border: 2px solid #fff;
+    background: rgba(22,24,29,0.75);
 
-    .floor {
-      position: relative;
-      /*float: left;
-      width: 55px;*/
-      padding: 10px 15px;
+    .floor-info {
       margin: 0;
       border-bottom: 2px solid #fff;
-      background: rgba(22,24,29,0.75);
       color: #fff;
-      text-align: center;
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
+
+      .floor {
+        display: inline-block;
+        padding: 10px 15px;
+        /*border-right: solid 2px #fff;*/
+        width: 100px;
+        text-align: center;
+      }
+
+      .item-count {
+        display: inline-block;
+        background: #ddd;
+        color: #000;
+        margin-left: -4px;
+        width: 46px;
+        padding: 10px 15px;
+        text-align: center;
+      }
 
       &:hover {
         background: rgba(104, 119, 132, 0.75);
@@ -338,9 +351,10 @@ footer {
         border-bottom: none;
       }
 
-      &.selected {
+      > .selected {
         background: #fff;
         color: #000;
+        margin-top: -1px;
       }
     }
   }
