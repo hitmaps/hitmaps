@@ -105,7 +105,9 @@ class NodeController {
         $node->setDifficulty($difficulty);
         $node->setGroup(trim($postData['group']));
         $node->setSubgroup($subgroup);
-        $node->setIcon($postData['icon']);
+        $node->setIcon($postData['icon'] !== null && trim($postData['icon']) !== '' ?
+            $postData['icon'] :
+            $subgroup);
         $node->setLatitude($postData['latitude']);
         $node->setLevel($postData['level']);
         $node->setLongitude($postData['longitude']);
