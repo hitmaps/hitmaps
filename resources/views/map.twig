@@ -1,6 +1,8 @@
 {% extends 'base.twig' %}
 
 {% set page_title = "#{model.mission}/#{model.locationNameOne}" %}
+{% set body_class = "map" %}
+{% set footer_style = "display: none" %}
 
 {% block headextend %}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
@@ -16,8 +18,23 @@
     <script src="/js/map.js"></script>
 {% endblock %}
 {% block content %}
+    <div class="floor-toggle">
+        {% for i in model.highestFloor..model.lowestFloor %}
+            <div class="floor-info" data-floor="{{ i }}">
+                <div class="floor{% if model.startingFloor == i %} selected{% endif %}">
+                    Level {{ i }}
+                </div>
+                <div class="item-count">#</div>
+            </div>
+        {% endfor %}
+    </div>
     <div id="map"></div>
     <nav class="navbar navbar-fixed-right navbar-light">
+        <div class="header">
+            <a href="/">
+                <img src="/img/logos/map-header.{{ model.backgroundFileExtension }}" class="img-fluid">
+            </a>
+        </div>
         <div class="editor-enabled" style="display: none">
             <h3>Editor Enabled</h3>
         </div>
@@ -39,31 +56,29 @@
                 {% endif %}
             </div>
         </div>
-        <div class="levels">
-            <select name="level" class="selectpicker">
-                {% for i in model.highestFloor..model.lowestFloor %}
-                    <option value="{{ i }}" {% if model.startingFloor == i %}selected{% endif %}>Level {{ i }}</option>
-                {% endfor %}
-            </select>
-        </div>
         <br>
         <div class="accordion" id="accordion">
+            <button id="hide-all" class="btn control-button"><i class="far fa-fw fa-eye-slash"></i> Hide All</button>
+            <button id="show-all" class="btn control-button"><i class="fas fa-fw fa-eye"></i> Show All</button>
             {% for typeName,type in model.nodes %}
                 <div class="card">
                     <div class="card-header" id="header-{{ loop.index0 }}">
-                        <h5 class="mb-0">
-                            <a href="javascript:" data-layer="{{ typeName }}|*">
-                                <i class="fas fa-circle"></i></a>
-                            <a href="javascript:" data-toggle="collapse"
-                               data-target="#body-{{ loop.index0 }}" aria-expanded="false" aria-controls="body-{{ loop.index0 }}">
-                                {{ typeName }}
-                            </a>
-                        </h5>
+                        <div class="visibility-toggle" data-layer="{{ typeName }}|*">
+                            <i class="far fa-eye"></i>
+                        </div>
+                        <div class="name collapsed" data-toggle="collapse"
+                             data-target="#body-{{ loop.index0 }}" aria-expanded="false" aria-controls="body-{{ loop.index0 }}">
+                            {{ typeName }}
+                            <span class="float-right">
+                                <i class="fas fa-caret-down"></i>
+                                <i class="fas fa-caret-up"></i>
+                            </span>
+                        </div>
                     </div>
                     <div id="body-{{ loop.index0 }}" class="collapse" aria-labelledby="header-{{ loop.index0 }}" data-parent="#accordion">
                         <div class="card-body">
                             {% for groupName,group in type %}
-                                <a href="javascript:" data-layer="{{ typeName }}|{{ groupName }}"><i class="fas fa-circle"></i></a>
+                                <a href="javascript:" data-layer="{{ typeName }}|{{ groupName }}"><i class="far fa-eye"></i></a>
                                 <b>{{ groupName }}</b>
                                 {% for node in group %}
                                     <p>{{ node.name }}</p>
@@ -73,6 +88,17 @@
                     </div>
                 </div>
             {% endfor %}
+        </div>
+        <div class="edit-menu" style="display: none">
+            <h2>Editor Menu</h2>
+            <div class="editor-button selected" data-editor="items">
+                <h3><i class="fas fa-fw fa-map-marker-alt"></i> Add / Remove Items</h3>
+                Add or Remove Items via the Map Editor
+            </div>
+            {#<div class="editor-button" data-editor="ledges">
+                <h3><i class="fas fa-fw fa-bezier-curve"></i> Add / Remove Ledges</h3>
+                Add or Remove Ledges
+            </div>#}
         </div>
     </nav>
     <div class="modal" id="confirm-move-modal" tabindex="-1" role="dialog">
@@ -360,17 +386,51 @@
             g_overlays[i] = {};
         }
 
+        $('#hide-all').click(function() {
+            var $pointsOfInterest = $('[data-layer="Points of Interest|*"]');
+            if ($pointsOfInterest.find('i').hasClass('fa-eye')) {
+                $pointsOfInterest.click();
+            }
+
+            var $weaponsAndTools = $('[data-layer="Weapons and Tools|*"]');
+            if ($weaponsAndTools.find('i').hasClass('fa-eye')) {
+                $weaponsAndTools.click();
+            }
+
+            var $navigation = $('[data-layer="Navigation|*"]');
+            if ($navigation.find('i').hasClass('fa-eye')) {
+                $navigation.click();
+            }
+        });
+
+        $('#show-all').click(function() {
+            var $pointsOfInterest = $('[data-layer="Points of Interest|*"]');
+            if ($pointsOfInterest.find('i').hasClass('fa-eye-slash')) {
+                $pointsOfInterest.click();
+            }
+
+            var $weaponsAndTools = $('[data-layer="Weapons and Tools|*"]');
+            if ($weaponsAndTools.find('i').hasClass('fa-eye-slash')) {
+                $weaponsAndTools.click();
+            }
+
+            var $navigation = $('[data-layer="Navigation|*"]');
+            if ($navigation.find('i').hasClass('fa-eye-slash')) {
+                $navigation.click();
+            }
+        });
+
         $('[data-layer]').click(function() {
             var target = $(this).attr('data-layer');
             var typeToggle = target.includes('*');
-            var shouldShow = $(this).find('i').hasClass('far');
+            var shouldShow = $(this).find('i').hasClass('fa-eye-slash');
             var currentFloor = $('input[type="hidden"][name="level"]').val();
             target = target.replace('*', '');
 
             if (shouldShow) {
-                $('[data-layer^="' + target + '"]').find('i').removeClass('far').addClass('fas');
+                $('[data-layer^="' + target + '"]').find('i').removeClass('fa-eye-slash').addClass('fa-eye');
             } else {
-                $('[data-layer^="' + target + '"]').find('i').addClass('far').removeClass('fas');
+                $('[data-layer^="' + target + '"]').find('i').addClass('fa-eye-slash').removeClass('fa-eye');
             }
 
             updateNodeLayerState();
@@ -464,6 +524,7 @@
                 for (var j in g_overlays[g_startingFloor]) {
                     toggleLayer(g_overlays[g_startingFloor][j], true);
                 }
+                updateNodeLayerState();
             },
             error: function() {
                 alert('An error occurred when trying to get map nodes');
@@ -516,17 +577,21 @@
             var currentFloor = $('input[type="hidden"][name="level"]').val();
 
             for (var floor in g_overlays) {
+                var numberOfItemsOnMap = 0;
                 var floorLayers = g_overlays[floor];
                 for (var key in floorLayers) {
-                    if (parseInt(floor) !== parseInt(currentFloor)) {
-                        // Always hide nodes that aren't on the current floor
-                        toggleLayer(floorLayers[key], false);
+                    // Find the button that toggles this layer and see if it's active or not.
+                    var $icon = $('[data-layer="' + key + '"]').find('i');
+                    if ($icon.hasClass('fa-eye')) {
+                        numberOfItemsOnMap += floorLayers[key].getLayers().length;
+
+                        toggleLayer(floorLayers[key], (parseInt(floor) === parseInt(currentFloor)));
                     } else {
-                        // Find the button that toggles this layer and see if it's active or not.
-                        var $icon = $('[data-layer="' + key + '"]').find('i');
-                        toggleLayer(floorLayers[key], $icon.hasClass('fas'));
+                        toggleLayer(floorLayers[key], false);
                     }
                 }
+                var $itemElement = $('[data-floor="' + floor + '"]').find('.item-count');
+                $itemElement.text(numberOfItemsOnMap);
             }
         }
 
@@ -694,11 +759,14 @@
             return $template.html();
         }
 
-        $('select[name="level"]').change(function() {
+        $('.floor').click(function() {
             var $formField = $('input[type="hidden"][name="level"]');
             var previousLevel = $formField.val();
-            var level = $(this).val();
+            var level = $(this).parent().attr('data-floor');
             $formField.val(level);
+
+            $('.floor').removeClass('selected');
+            $(this).addClass('selected');
 
             toggleLayer(g_mapLayers[previousLevel], false);
             toggleLayer(g_mapLayers[level], true);
