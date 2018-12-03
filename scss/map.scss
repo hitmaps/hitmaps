@@ -242,7 +242,9 @@ html {
     }
   }
 
-  #hide-all, #show-all {
+  #hide-all,
+  #show-all,
+  .search-box .control-button {
     height: 40px;
     border-radius: 3px;
     background: rgba(22, 24, 29, .75);
@@ -257,6 +259,16 @@ html {
       opacity: 1;
       border-color: #fff;
     }
+  }
+
+  .search-box {
+    .bootstrap-select {
+      width: 368px !important;
+    }
+  }
+
+  .search-box .control-button {
+    width: 100%;
   }
 
   #show-all {

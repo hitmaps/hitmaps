@@ -58,6 +58,11 @@
         </div>
         <br>
         <div class="accordion" id="accordion">
+            <div class="search-box">
+                <select class="selectpicker" data-live-search="true" data-title="<i class='fas fa-search'></i> Search" data-style="control-button">
+                    <option value="">Select</option>
+                </select>
+            </div>
             <button id="hide-all" class="btn control-button"><i class="far fa-fw fa-eye-slash"></i> Hide All</button>
             <button id="show-all" class="btn control-button"><i class="fas fa-fw fa-eye"></i> Show All</button>
             {% for typeName,type in model.nodes %}
