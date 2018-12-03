@@ -8,12 +8,16 @@ $(document).ready(function() {
             toastr["info"]('Editor enabled. Click anywhere to create a new node.');
             $editMode.val(1);
             $('.editor-enabled').show();
+            $('#accordion').hide();
+            $('.edit-menu').show();
             $('[data-toggle="tooltip"]').tooltip('hide');
         } else {
             // Disable edit mode
             toastr["info"]('Editor disabled.');
             $editMode.val(0);
             $('.editor-enabled').hide();
+            $('#accordion').show();
+            $('.edit-menu').hide();
             $('[data-toggle="tooltip"]').tooltip('hide');
         }
     });

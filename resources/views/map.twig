@@ -57,9 +57,9 @@
             </div>
         </div>
         <br>
-        <button id="hide-all" class="btn control-button"><i class="far fa-eye-slash"></i> Hide All</button>
-        <button id="show-all" class="btn control-button"><i class="fas fa-eye"></i> Show All</button>
         <div class="accordion" id="accordion">
+            <button id="hide-all" class="btn control-button"><i class="far fa-fw fa-eye-slash"></i> Hide All</button>
+            <button id="show-all" class="btn control-button"><i class="fas fa-fw fa-eye"></i> Show All</button>
             {% for typeName,type in model.nodes %}
                 <div class="card">
                     <div class="card-header" id="header-{{ loop.index0 }}">
@@ -88,6 +88,17 @@
                     </div>
                 </div>
             {% endfor %}
+        </div>
+        <div class="edit-menu" style="display: none">
+            <h2>Editor Menu</h2>
+            <div class="editor-button selected" data-editor="items">
+                <h3><i class="fas fa-fw fa-map-marker-alt"></i> Add / Remove Items</h3>
+                Add or Remove Items via the Map Editor
+            </div>
+            {#<div class="editor-button" data-editor="ledges">
+                <h3><i class="fas fa-fw fa-bezier-curve"></i> Add / Remove Ledges</h3>
+                Add or Remove Ledges
+            </div>#}
         </div>
     </nav>
     <div class="modal" id="confirm-move-modal" tabindex="-1" role="dialog">

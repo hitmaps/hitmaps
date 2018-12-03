@@ -213,6 +213,35 @@ html {
     }
   }
 
+  .edit-menu {
+    h2 {
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    .editor-button {
+      border-radius: 3px;
+      background: rgba(22, 24, 29, .75);
+      color: #fff;
+      box-shadow: none;
+      border: solid 2px #2a2d31;
+      opacity: .85;
+      margin-bottom: 10px;
+      width: 100%;
+      padding: 20px;
+      text-align: left;
+
+      h3 {
+        font-size: 1.25rem;
+      }
+
+      &:hover, &.selected {
+        opacity: 1;
+        border-color: #fff;
+      }
+    }
+  }
+
   #hide-all, #show-all {
     height: 40px;
     border-radius: 3px;
@@ -222,6 +251,7 @@ html {
     border: solid 2px #2a2d31;
     opacity: .85;
     width: 160px;
+    margin-bottom: 10px;
 
     &:hover {
       opacity: 1;
