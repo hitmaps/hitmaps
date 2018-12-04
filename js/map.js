@@ -23,6 +23,10 @@ $(document).ready(function() {
     });
 
     $('.search-box').find('select').change(function() {
+        if (this.value === "") {
+            return;
+        }
+
         $('.search-box').find('.bootstrap-select').addClass('item-selected').end()
             .find('#clear-search').show();
     });
@@ -32,5 +36,6 @@ $(document).ready(function() {
             .find('#clear-search').hide().end()
             .find('select').selectpicker('val', -1);
 
+        $('.search-box').find('select').trigger('change');
     })
 });
