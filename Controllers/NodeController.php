@@ -29,21 +29,26 @@ class NodeController {
         $this->nodeNoteRepository = $entityManager->getRepository(NodeNote::class);
     }
 
-    public function getNodesForMission(int $missionid, string $difficulty, bool $distinctOnly = false): array {
+    public function getNodesForMission(int $missionid, string $difficulty, bool $distinctOnly = false, bool $searchableOnly = false): array {
         $nodes = $this->nodeRepository->findByMissionAndDifficulty($missionid, $difficulty);
 
-        $groups = [];
+        $groups = [
+            'Points of Interest' => [],
+            'Weapons and Tools' => [],
+            'Navigation' => [],
+        ];
         $addedNodes = [];
         foreach ($nodes as $node) {
             /* @var $node Node */
             /* @var $notes NodeNote[] */
+            if ($searchableOnly && !$node->isSearchable()) {
+                continue;
+            }
+
             $notes = $this->nodeNoteRepository->findBy(['nodeId' => $node->getId()]);
 
             $type = $node->getType();
             $group = $node->getGroup();
-            if (!isset($groups[$type])) {
-                $groups[$type] = [];
-            }
 
             if (!isset($groups[$type][$group])) {
                 $groups[$type][$group] = [];
@@ -105,7 +110,7 @@ class NodeController {
         $node->setDifficulty($difficulty);
         $node->setGroup(trim($postData['group']));
         $node->setSubgroup($subgroup);
-        $node->setIcon($postData['icon'] !== null && trim($postData['icon']) !== '' ?
+        $node->setIcon(isset($postData['icon']) && $postData['icon'] !== null && trim($postData['icon']) !== '' ?
             $postData['icon'] :
             $subgroup);
         $node->setLatitude($postData['latitude']);
@@ -116,6 +121,7 @@ class NodeController {
         $node->setType($type);
         $node->setCreatedBy($user->getId());
         $node->setTarget('');
+        $node->setSearchable($postData['searchable']);
 
         switch ($subgroup) {
             case 'sabotage':

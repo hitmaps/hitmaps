@@ -124,6 +124,10 @@ html {
     }
   }
 
+  .search-result {
+    background: red;
+  }
+
   .accordion {
     .card {
       margin-top: 5px;
@@ -277,6 +281,11 @@ html {
             color: #fff;
           }
         }
+      }
+
+      .dropdown-header {
+        background: #eee;
+        text-transform: uppercase;
       }
     }
 
