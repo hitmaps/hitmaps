@@ -124,8 +124,14 @@ html {
     }
   }
 
-  .search-result {
+  .leaflet-marker-icon.search-result {
+    z-index: 9999 !important;
     background: red;
+    padding: 15px !important;
+    margin: -33px 0 0 -33px !important;
+    border-radius: 50%;
+    border: 2px solid #db0000;
+    opacity: .85 !important;
   }
 
   .accordion {
