@@ -60,6 +60,15 @@
         <div class="accordion" id="accordion">
             <div class="search-box">
                 <select class="selectpicker" data-live-search="true" data-title="<i class='fas fa-search'></i> Search" data-style="control-button">
+                    {% for typeName,type in model.nodes %}
+                        {% for groupName,group in type %}
+                            <optgroup label="{{ typeName }} &gt; {{ groupName }}">
+                            {% for node in group %}
+                                <option data-layer="{{ typeName }}|{{ groupName }}">{{ node.name }}</option>
+                            {% endfor %}
+                            </optgroup>
+                        {% endfor %}
+                    {% endfor %}
                 </select>
                 <button id="clear-search" class="btn control-button" data-toggle="tooltip" title="Clear Search" style="display: none"><i class="fas fa-times"></i></button>
             </div>
