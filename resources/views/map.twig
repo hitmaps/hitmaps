@@ -18,11 +18,18 @@
     <script src="/js/map.js"></script>
 {% endblock %}
 {% block content %}
-    <div class="overlay"
-         style="background: url('/img/backgrounds/{{ model.game }}/{{ model.locationSlug }}.{{ model.backgroundFileExtension }}') no-repeat center; background-size: cover">
-        <div class="container">
-            <h1>{{ model.mission }}</h1>
-            <h2>{{ model.locationNameOne }}</h2>
+    <div class="overlay" style="background: #ccc url('/img/backgrounds/loading.{{ model.backgroundFileExtension }}') no-repeat; background-size: cover">
+        <div class="overlay-container">
+            <img src="{{ settings.cdnLocation }}/{{ model.backgroundFileExtension }}/mission-thumbnails/{{ model.game }}/{{ model.missionSlug }}.{{ model.backgroundFileExtension }}" alt="Mission Thumbnail">
+            <div class="footer">
+                <div class="footer-image">
+                    <img src="/img/game-icons/mission-inverted.png" class="img-fluid" alt="Mission Icon">
+                </div>
+                <div class="footer-text">
+                    <h2>Mission</h2>
+                    <h1>{{ model.mission }}</h1>
+                </div>
+            </div>
         </div>
     </div>
     <div class="content">
@@ -399,6 +406,20 @@
     </script>
     <div id="temp" style="display: none"></div>
     <script>
+        function showMap() {
+            $('.overlay').hide();
+        }
+
+        var g_mapLoaded = false;
+        var g_loadImmediate = false;
+        setTimeout(function() {
+            if (g_mapLoaded) {
+                showMap();
+            } else {
+                g_loadImmediate = true;
+            }
+        }, 1000);
+
         var g_mapLayers = {};
         var g_overlays = {};
         var g_map;
@@ -554,8 +575,10 @@
                 }
                 updateNodeLayerState();
 
-                $('.overlay').hide();
-                $('.content').show();
+                g_mapLoaded = true;
+                if (g_loadImmediate) {
+                    showMap();
+                }
             },
             error: function() {
                 alert('An error occurred when trying to get map nodes');

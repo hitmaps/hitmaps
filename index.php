@@ -100,6 +100,7 @@ $klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]'
 
     $viewModel->missionId = $mission->getId();
     $viewModel->mission = $mission->getName();
+    $viewModel->missionSlug = $mission->getSlug();
 
     /* @var $location \DataAccess\Models\Location */
     $location = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
