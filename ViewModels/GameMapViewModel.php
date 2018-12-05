@@ -13,6 +13,7 @@ class GameMapViewModel extends BaseModel {
     public $mapFolderName;
     public $missionId;
     public $mission;
+    public $missionSlug;
     public $difficulty;
 
     public $mapCenterLongitude;

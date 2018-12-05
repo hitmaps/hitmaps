@@ -391,14 +391,53 @@ html {
     height: 100%;
     z-index: 9999;
     color: #fff;
-    text-shadow:
-      -1px -1px 0 #000,
-      1px -1px 0 #000,
-      -1px 1px 0 #000,
-      1px 1px 0 #000;
+    display: flex;
+    align-items: center;
+    justify-items: center;
 
-    .container {
-      margin: 20% auto;
+    .overlay-container {
+      margin: 0 auto;
+      box-shadow: 5px 5px 40px #000;
+
+      .footer {
+        /* Red background */
+        /*background: #ff003c;
+        color: #fff;*/
+
+        /* White background */
+        background: #fff;
+        color: #000;
+        text-align: left;
+        padding: 10px;
+
+        .footer-image {
+          display: inline-block;
+          vertical-align: top;
+
+          img {
+            height: 48px;
+            width: 48px;
+          }
+        }
+
+        .footer-text {
+          display: inline-block;
+          text-transform: uppercase;
+
+          h1 {
+            font-size: 1.5rem;
+            margin-bottom: 0;
+          }
+
+          h2 {
+            font-size: 1rem;
+            margin-bottom: 0;
+
+            /* White background */
+            color: #ff003c;
+          }
+        }
+      }
     }
   }
 }
