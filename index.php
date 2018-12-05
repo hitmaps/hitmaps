@@ -106,6 +106,7 @@ $klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]'
         ->getRepository(\DataAccess\Models\Location::class)
         ->findOneBy(['id' => $mission->getLocationId()]);
 
+    $viewModel->locationSlug = $location->getSlug();
     $viewModel->locationNameOne = $location->getDestination();
     $viewModel->mapFolderName = $mission->getMapFolderName();
     $viewModel->mapCenterLatitude = $mission->getMapCenterLatitude();
