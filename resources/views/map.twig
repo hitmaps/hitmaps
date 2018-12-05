@@ -18,354 +18,363 @@
     <script src="/js/map.js"></script>
 {% endblock %}
 {% block content %}
-    <div class="floor-toggle">
-        {% for i in model.highestFloor..model.lowestFloor %}
-            <div class="floor-info" data-floor="{{ i }}">
-                <div class="floor{% if model.startingFloor == i %} selected{% endif %}">
-                    Level {{ i }}
-                </div>
-                <div class="item-count">#</div>
-            </div>
-        {% endfor %}
+    <div class="overlay"
+         style="background: url('/img/backgrounds/{{ model.game }}/{{ model.locationSlug }}.{{ model.backgroundFileExtension }}') no-repeat center; background-size: cover">
+        <div class="container">
+            <h1>{{ model.mission }}</h1>
+            <h2>{{ model.locationNameOne }}</h2>
+        </div>
     </div>
-    <div id="map"></div>
-    <nav class="navbar navbar-fixed-right navbar-light">
-        <div class="header">
-            <a href="/">
-                <img src="/img/logos/map-header.{{ model.backgroundFileExtension }}" class="img-fluid">
-            </a>
-        </div>
-        <div class="editor-enabled" style="display: none">
-            <h3>Editor Enabled</h3>
-        </div>
-        <div id="map-control">
-            <div class="control-buttons">
-                <input type="hidden" name="edit-mode" value="0">
-                {% if model.loggedIn %}
-                    <button id="edit-button" class="btn control-button" data-toggle="tooltip" title="Edit Map"><i class="fas fa-pencil-alt"></i></button>
-                    <a href="/user/profile">
-                        <button class="btn control-button" data-toggle="tooltip" data-placement="bottom" title="Profile"><i class="fas fa-user-circle"></i></button>
-                    </a>
-                    <a href="/user/logout">
-                        <button class="btn control-button" data-toggle="tooltip" data-placement="bottom" title="Log out"><i class="fas fa-sign-out-alt"></i></button>
-                    </a>
-                {% else %}
-                    <a href="/user/login">
-                        <button class="btn control-button" data-toggle="tooltip" data-placement="bottom" title="Login / Register to edit"><i class="fas fa-sign-in-alt"></i></button>
-                    </a>
-                {% endif %}
-            </div>
-        </div>
-        <br>
-        <div class="accordion" id="accordion">
-            <div class="search-box">
-                <select name="search" class="selectpicker" data-live-search="true" data-title="<i class='fas fa-search'></i> Search" data-style="control-button">
-                    {% for typeName,type in model.searchableNodes %}
-                        {% for groupName,group in type %}
-                            <optgroup label="{{ groupName }}">
-                            {% for node in group %}
-                                <option data-layer="{{ typeName }}|{{ groupName }}">{{ node.name }}</option>
-                            {% endfor %}
-                            </optgroup>
-                        {% endfor %}
-                    {% endfor %}
-                </select>
-                <button id="clear-search" class="btn control-button" data-toggle="tooltip" title="Clear Search" style="display: none"><i class="fas fa-times"></i></button>
-            </div>
-            <button id="hide-all" class="btn control-button"><i class="far fa-fw fa-eye-slash"></i> Hide All</button>
-            <button id="show-all" class="btn control-button"><i class="fas fa-fw fa-eye"></i> Show All</button>
-            {% for typeName,type in model.nodes %}
-                <div class="card">
-                    <div class="card-header" id="header-{{ loop.index0 }}">
-                        <div class="visibility-toggle" data-layer="{{ typeName }}|*">
-                            <i class="far fa-eye"></i>
-                        </div>
-                        <div class="name collapsed" data-toggle="collapse"
-                             data-target="#body-{{ loop.index0 }}" aria-expanded="false" aria-controls="body-{{ loop.index0 }}">
-                            {{ typeName }}
-                            <span class="float-right">
-                                <i class="fas fa-caret-down"></i>
-                                <i class="fas fa-caret-up"></i>
-                            </span>
-                        </div>
+    <div class="content">
+        <div class="floor-toggle">
+            {% for i in model.highestFloor..model.lowestFloor %}
+                <div class="floor-info" data-floor="{{ i }}">
+                    <div class="floor{% if model.startingFloor == i %} selected{% endif %}">
+                        Level {{ i }}
                     </div>
-                    <div id="body-{{ loop.index0 }}" class="collapse" aria-labelledby="header-{{ loop.index0 }}" data-parent="#accordion">
-                        <div class="card-body">
-                            {% for groupName,group in type %}
-                                <a href="javascript:" data-layer="{{ typeName }}|{{ groupName }}"><i class="far fa-eye"></i></a>
-                                <b>{{ groupName }}</b>
-                                {% for node in group %}
-                                    <p>{{ node.name }}</p>
-                                {% endfor %}
-                            {% endfor %}
-                        </div>
-                    </div>
+                    <div class="item-count">#</div>
                 </div>
             {% endfor %}
         </div>
-        <div class="edit-menu" style="display: none">
-            <h2>Editor Menu</h2>
-            <div class="editor-button selected" data-editor="items">
-                <h3><i class="fas fa-fw fa-map-marker-alt"></i> Add / Remove Items</h3>
-                Add or Remove Items via the Map Editor
+        <div id="map"></div>
+        <nav class="navbar navbar-fixed-right navbar-light">
+            <div class="header">
+                <a href="/">
+                    <img src="/img/logos/map-header.{{ model.backgroundFileExtension }}" class="img-fluid">
+                </a>
             </div>
-            {#<div class="editor-button" data-editor="ledges">
-                <h3><i class="fas fa-fw fa-bezier-curve"></i> Add / Remove Ledges</h3>
-                Add or Remove Ledges
-            </div>#}
-        </div>
-    </nav>
-    <div class="modal" id="confirm-move-modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Confirm Move</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+            <div class="editor-enabled" style="display: none">
+                <h3>Editor Enabled</h3>
+            </div>
+            <div id="map-control">
+                <div class="control-buttons">
+                    <input type="hidden" name="edit-mode" value="0">
+                    {% if model.loggedIn %}
+                        <button id="edit-button" class="btn control-button" data-toggle="tooltip" title="Edit Map"><i class="fas fa-pencil-alt"></i></button>
+                        <a href="/user/profile">
+                            <button class="btn control-button" data-toggle="tooltip" data-placement="bottom" title="Profile"><i class="fas fa-user-circle"></i></button>
+                        </a>
+                        <a href="/user/logout">
+                            <button class="btn control-button" data-toggle="tooltip" data-placement="bottom" title="Log out"><i class="fas fa-sign-out-alt"></i></button>
+                        </a>
+                    {% else %}
+                        <a href="/user/login">
+                            <button class="btn control-button" data-toggle="tooltip" data-placement="bottom" title="Login / Register to edit"><i class="fas fa-sign-in-alt"></i></button>
+                        </a>
+                    {% endif %}
                 </div>
-                <form action="/api/nodes/move" method="post">
-                    <input type="hidden" name="node-id">
-                    <input type="hidden" name="latitude">
-                    <input type="hidden" name="longitude">
-                    <div class="modal-body">
-                        <div class="alert alert-warning">
-                            Are you sure you want to re-position this item?
+            </div>
+            <br>
+            <div class="accordion" id="accordion">
+                <div class="search-box">
+                    <select name="search" class="selectpicker" data-live-search="true" data-title="<i class='fas fa-search'></i> Search" data-style="control-button">
+                        {% for typeName,type in model.searchableNodes %}
+                            {% for groupName,group in type %}
+                                <optgroup label="{{ groupName }}">
+                                    {% for node in group %}
+                                        <option data-layer="{{ typeName }}|{{ groupName }}">{{ node.name }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                            {% endfor %}
+                        {% endfor %}
+                    </select>
+                    <button id="clear-search" class="btn control-button" data-toggle="tooltip" title="Clear Search" style="display: none"><i class="fas fa-times"></i></button>
+                </div>
+                <button id="hide-all" class="btn control-button"><i class="far fa-fw fa-eye-slash"></i> Hide All</button>
+                <button id="show-all" class="btn control-button"><i class="fas fa-fw fa-eye"></i> Show All</button>
+                {% for typeName,type in model.nodes %}
+                    <div class="card">
+                        <div class="card-header" id="header-{{ loop.index0 }}">
+                            <div class="visibility-toggle" data-layer="{{ typeName }}|*">
+                                <i class="far fa-eye"></i>
+                            </div>
+                            <div class="name collapsed" data-toggle="collapse"
+                                 data-target="#body-{{ loop.index0 }}" aria-expanded="false" aria-controls="body-{{ loop.index0 }}">
+                                {{ typeName }}
+                                <span class="float-right">
+                                <i class="fas fa-caret-down"></i>
+                                <i class="fas fa-caret-up"></i>
+                            </span>
+                            </div>
+                        </div>
+                        <div id="body-{{ loop.index0 }}" class="collapse" aria-labelledby="header-{{ loop.index0 }}" data-parent="#accordion">
+                            <div class="card-body">
+                                {% for groupName,group in type %}
+                                    <a href="javascript:" data-layer="{{ typeName }}|{{ groupName }}"><i class="far fa-eye"></i></a>
+                                    <b>{{ groupName }}</b>
+                                    {% for node in group %}
+                                        <p>{{ node.name }}</p>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No, cancel</button>
-                        <button type="submit" class="btn btn-primary">Yes, save</button>
-                    </div>
-                </form>
+                {% endfor %}
             </div>
-        </div>
-    </div>
-    <div class="modal" id="suggest-edit-modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">{{ model.editorTitle }}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+            <div class="edit-menu" style="display: none">
+                <h2>Editor Menu</h2>
+                <div class="editor-button selected" data-editor="items">
+                    <h3><i class="fas fa-fw fa-map-marker-alt"></i> Add / Remove Items</h3>
+                    Add or Remove Items via the Map Editor
                 </div>
-                <form action="/api/nodes" method="post">
-                    <div class="modal-body">
-                        <div class="alert alert-primary" style="font-size: .8em">
-                            You can now use a template to auto-fill item information for common items!
-                            <b>If you select a template, all information in "Item Info" and "Notes" will be replaced with
-                                the template's information.</b>
-                        </div>
-                        <h3>Apply Template</h3>
-                        <div class="form-group row">
-                            <label for="template" class="col-sm-2 col-form-label">Template</label>
-                            <div class="col-sm-10">
-                                <select name="template" class="form-control selectpicker" title="Select One" data-live-search="true">
-                                    {% for type,items in model.predeterminedItems %}
-                                        <optgroup label="{{ type }}">
-                                            {% for item in items %}
-                                                <option data-type="{{ type }}"
-                                                        data-subgroup="{{ item.subgroup }}"
-                                                        data-icon="{{ item.icon }}"
-                                                        data-description="{{ item.description }}"
-                                                        data-requirement="{{ item.requirement }}"
-                                                        data-warning="{{ item.warning }}"
-                                                        data-information="{{ item.information }}"
-                                                        data-group="{{ item.group }}"
-                                                        data-target="{{ item.target }}"
-                                                        data-searchable="{{ item.searchable }}">{{ item.name }}</option>
-                                            {% endfor %}
-                                        </optgroup>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                        <hr>
-                        <h3>Item Info</h3>
-                        <div class="alert alert-dark" style="font-size: .8em">
-                            Please indicate the following under the notes section when adding items:
-                            <ul>
-                                <li>Any <b>required</b> items, such as needing a wrench for loosening valves (use type "Requirement")</li>
-                                <li>Whether or not the action is <b>suspicious</b> when wearing a certain disguise (use type "Warning")</li>
-                                <li>If you feel something <b>requires more information</b>, use the "Information" type</li>
-                                <li>You may add the in-game description for items by using the "Description" type <b>if there is no name field provided.</b></li>
-                                <li>Any notes with blank text will not be added to the node</li>
-                            </ul>
-                        </div>
-                        <div class="form-group row">
-                            <label for="subgroup" class="col-sm-2 col-form-label">Category</label>
-                            <div class="col-sm-10">
-                                <select name="subgroup" class="form-control selectpicker" title="Select One" data-live-search="true">
-                                    {% for type,categories in model.nodeCategories %}
-                                        <optgroup label="{{ type }}">
-                                            {% for category in categories %}
-                                                <option value="{{ type }}|{{ category.subgroup }}"
-                                                        data-content="<img height='24' width='24' src='/img/map-icons/{{ category.icon }}.png' alt='{{ category.group }} Icon'> {{ category.group }}"
-                                                        data-icon="{{ category.icon }}"
-                                                        data-searchable="{{ category.searchable }}"
-                                                    {% if category.requireName %} data-name="true" {% endif %}
-                                                    {% if category.requireAction %} data-action="true" {% endif %}
-                                                    {% if category.requireTarget %} data-target="true" {% endif %}
-                                                    {% if category.requirePickup %} data-pickup="true" {% endif %}
-                                                    {% if category.note != null %} data-note="{{ category.note }}" {% endif %}
-                                                    {% if category.requireDirection %} data-direction="true" {% endif %}>
-                                                    {{ category.group }}
-                                                </option>
-                                            {% endfor %}
-                                        </optgroup>
-                                    {% endfor %}
-                                </select>
-                                <input type="hidden" name="group">
-                                <small class="form-text text-muted" id="note-help-text">
-                                </small>
-                            </div>
-                        </div>
-                        <div class="form-group row" style="display: none">
-                            <label for="icon" class="col-sm-2 col-form-label">Icon</label>
-                            <div class="col-sm-10">
-                                <select name="icon" class="form-control selectpicker" data-live-search="true">
-                                    {% for group,icons in model.icons %}
-                                        <optgroup label="{{ group }}">
-                                            {% for icon in icons %}
-                                                <option data-content="<img height='24' width='24' src='/img/map-icons/{{ icon.icon }}.png' alt='{{ icon.altText }} Icon'> {{ icon.altText }}" value="{{ icon.icon }}">{{ icon.altText }}</option>
-                                            {% endfor %}
-                                        </optgroup>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row" data-type="name" style="display: none">
-                            <label for="name" class="col-sm-2 col-form-label">Name</label>
-                            <div class="col-sm-10">
-                                <input type="text" name="name" class="form-control">
-                                <small class="form-text text-muted">
-                                    Enter the name as it appears in-game.
-                                </small>
-                            </div>
-                        </div>
-                        <div class="form-group row" data-type="action" style="display: none">
-                            <label for="action" class="col-sm-2 col-form-label">
-                                Action
-                            </label>
-                            <div class="col-sm-10">
-                                <input type="text" name="action" class="form-control">
-                                <small class="form-text text-muted">
-                                    Enter the action that is performed (such as "loosen the valve", "turn on radio", "trigger fire alarm", etc.)
-                                </small>
-                            </div>
-                        </div>
-                        <div class="form-group row" data-type="target" style="display: none">
-                            <label for="target" class="col-sm-2 col-form-label">
-                                Target
-                            </label>
-                            <div class="col-sm-10">
-                                <input type="text" name="target" class="form-control">
-                                <small class="form-text text-muted">
-                                    Who will be poisoned?
-                                </small>
-                            </div>
-                        </div>
-                        <div class="form-group row" data-type="pickup" style="display: none">
-                            <label for="pickup-type" class="col-sm-2 col-form-label">
-                                Type
-                            </label>
-                            <div class="col-sm-10">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="pickup-type" value="large" checked>
-                                    <label class="form-check-label" for="large">
-                                        Pickup (Large)
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="pickup-type" value="small">
-                                    <label class="form-check-label" for="small">
-                                        Stash (Small)
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group row" data-type="direction" style="display: none">
-                            <label for="stairwell-direction" class="col-sm-2 col-form-label">
-                                Direction
-                            </label>
-                            <div class="col-sm-10">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="stairwell-direction" value="up-stair" checked>
-                                    <label class="form-check-label" for="up-stair">
-                                        Up Only
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="stairwell-direction" value="up-down-stair">
-                                    <label class="form-check-label" for="up-down-stair">
-                                        Up and Down
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="stairwell-direction" value="down-stair">
-                                    <label class="form-check-label" for="down-stair">
-                                        Down Only
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <h3>Notes</h3>
-                        <div id="suggest-notes">
-                            <div class="form-group row">
-                                <label for="note-type[]" class="col-sm-2 col-form-label">Type</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control selectpicker" name="note-type[]">
-                                        <option value="requirement">Requirement</option>
-                                        <option value="warning">Warning</option>
-                                        <option value="info">Information</option>
-                                        <option value="description">Description</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="note-text[]" class="col-sm-2 col-form-label">Text</label>
-                                <div class="col-sm-10">
-                                    <input type="text" name="note-text[]" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-sm-8 offset-sm-2">
-                                <button type="button" id="add-note-button" class="btn btn-dark">+ Add Another Note</button>
-                            </div>
-                        </div>
-                        <div class="note-template" style="display: none">
-                            <div class="form-group row">
-                                <label for="note-type[]" class="col-sm-2 col-form-label">Type</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control" name="note-type[]">
-                                        <option value="requirement">Requirement</option>
-                                        <option value="warning">Warning</option>
-                                        <option value="info">Information</option>
-                                        <option value="description">Description</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="note-text[]" class="col-sm-2 col-form-label">Text</label>
-                                <div class="col-sm-10">
-                                    <input type="text" name="note-text[]" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <input type="hidden" name="mission-id" value="{{ model.missionId }}">
-                        <input type="hidden" name="level" value="{{ model.startingFloor }}">
+                {#<div class="editor-button" data-editor="ledges">
+                    <h3><i class="fas fa-fw fa-bezier-curve"></i> Add / Remove Ledges</h3>
+                    Add or Remove Ledges
+                </div>#}
+            </div>
+        </nav>
+        <div class="modal" id="confirm-move-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirm Move</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="/api/nodes/move" method="post">
+                        <input type="hidden" name="node-id">
                         <input type="hidden" name="latitude">
                         <input type="hidden" name="longitude">
-                        <input type="hidden" name="difficulty" value="{{ model.difficulty }}">
-                        <input type="hidden" name="searchable" value="0">
+                        <div class="modal-body">
+                            <div class="alert alert-warning">
+                                Are you sure you want to re-position this item?
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">No, cancel</button>
+                            <button type="submit" class="btn btn-primary">Yes, save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="suggest-edit-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ model.editorTitle }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                    </div>
-                </form>
+                    <form action="/api/nodes" method="post">
+                        <div class="modal-body">
+                            <div class="alert alert-primary" style="font-size: .8em">
+                                You can now use a template to auto-fill item information for common items!
+                                <b>If you select a template, all information in "Item Info" and "Notes" will be replaced with
+                                    the template's information.</b>
+                            </div>
+                            <h3>Apply Template</h3>
+                            <div class="form-group row">
+                                <label for="template" class="col-sm-2 col-form-label">Template</label>
+                                <div class="col-sm-10">
+                                    <select name="template" class="form-control selectpicker" title="Select One" data-live-search="true">
+                                        {% for type,items in model.predeterminedItems %}
+                                            <optgroup label="{{ type }}">
+                                                {% for item in items %}
+                                                    <option data-type="{{ type }}"
+                                                            data-subgroup="{{ item.subgroup }}"
+                                                            data-icon="{{ item.icon }}"
+                                                            data-description="{{ item.description }}"
+                                                            data-requirement="{{ item.requirement }}"
+                                                            data-warning="{{ item.warning }}"
+                                                            data-information="{{ item.information }}"
+                                                            data-group="{{ item.group }}"
+                                                            data-target="{{ item.target }}"
+                                                            data-searchable="{{ item.searchable }}">{{ item.name }}</option>
+                                                {% endfor %}
+                                            </optgroup>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <hr>
+                            <h3>Item Info</h3>
+                            <div class="alert alert-dark" style="font-size: .8em">
+                                Please indicate the following under the notes section when adding items:
+                                <ul>
+                                    <li>Any <b>required</b> items, such as needing a wrench for loosening valves (use type "Requirement")</li>
+                                    <li>Whether or not the action is <b>suspicious</b> when wearing a certain disguise (use type "Warning")</li>
+                                    <li>If you feel something <b>requires more information</b>, use the "Information" type</li>
+                                    <li>You may add the in-game description for items by using the "Description" type <b>if there is no name field provided.</b></li>
+                                    <li>Any notes with blank text will not be added to the node</li>
+                                </ul>
+                            </div>
+                            <div class="form-group row">
+                                <label for="subgroup" class="col-sm-2 col-form-label">Category</label>
+                                <div class="col-sm-10">
+                                    <select name="subgroup" class="form-control selectpicker" title="Select One" data-live-search="true">
+                                        {% for type,categories in model.nodeCategories %}
+                                            <optgroup label="{{ type }}">
+                                                {% for category in categories %}
+                                                    <option value="{{ type }}|{{ category.subgroup }}"
+                                                            data-content="<img height='24' width='24' src='/img/map-icons/{{ category.icon }}.png' alt='{{ category.group }} Icon'> {{ category.group }}"
+                                                            data-icon="{{ category.icon }}"
+                                                            data-searchable="{{ category.searchable }}"
+                                                            {% if category.requireName %} data-name="true" {% endif %}
+                                                            {% if category.requireAction %} data-action="true" {% endif %}
+                                                            {% if category.requireTarget %} data-target="true" {% endif %}
+                                                            {% if category.requirePickup %} data-pickup="true" {% endif %}
+                                                            {% if category.note != null %} data-note="{{ category.note }}" {% endif %}
+                                                            {% if category.requireDirection %} data-direction="true" {% endif %}>
+                                                        {{ category.group }}
+                                                    </option>
+                                                {% endfor %}
+                                            </optgroup>
+                                        {% endfor %}
+                                    </select>
+                                    <input type="hidden" name="group">
+                                    <small class="form-text text-muted" id="note-help-text">
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="form-group row" style="display: none">
+                                <label for="icon" class="col-sm-2 col-form-label">Icon</label>
+                                <div class="col-sm-10">
+                                    <select name="icon" class="form-control selectpicker" data-live-search="true">
+                                        {% for group,icons in model.icons %}
+                                            <optgroup label="{{ group }}">
+                                                {% for icon in icons %}
+                                                    <option data-content="<img height='24' width='24' src='/img/map-icons/{{ icon.icon }}.png' alt='{{ icon.altText }} Icon'> {{ icon.altText }}" value="{{ icon.icon }}">{{ icon.altText }}</option>
+                                                {% endfor %}
+                                            </optgroup>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row" data-type="name" style="display: none">
+                                <label for="name" class="col-sm-2 col-form-label">Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="name" class="form-control">
+                                    <small class="form-text text-muted">
+                                        Enter the name as it appears in-game.
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="form-group row" data-type="action" style="display: none">
+                                <label for="action" class="col-sm-2 col-form-label">
+                                    Action
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="action" class="form-control">
+                                    <small class="form-text text-muted">
+                                        Enter the action that is performed (such as "loosen the valve", "turn on radio", "trigger fire alarm", etc.)
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="form-group row" data-type="target" style="display: none">
+                                <label for="target" class="col-sm-2 col-form-label">
+                                    Target
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="target" class="form-control">
+                                    <small class="form-text text-muted">
+                                        Who will be poisoned?
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="form-group row" data-type="pickup" style="display: none">
+                                <label for="pickup-type" class="col-sm-2 col-form-label">
+                                    Type
+                                </label>
+                                <div class="col-sm-10">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="pickup-type" value="large" checked>
+                                        <label class="form-check-label" for="large">
+                                            Pickup (Large)
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="pickup-type" value="small">
+                                        <label class="form-check-label" for="small">
+                                            Stash (Small)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row" data-type="direction" style="display: none">
+                                <label for="stairwell-direction" class="col-sm-2 col-form-label">
+                                    Direction
+                                </label>
+                                <div class="col-sm-10">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="stairwell-direction" value="up-stair" checked>
+                                        <label class="form-check-label" for="up-stair">
+                                            Up Only
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="stairwell-direction" value="up-down-stair">
+                                        <label class="form-check-label" for="up-down-stair">
+                                            Up and Down
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="stairwell-direction" value="down-stair">
+                                        <label class="form-check-label" for="down-stair">
+                                            Down Only
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <h3>Notes</h3>
+                            <div id="suggest-notes">
+                                <div class="form-group row">
+                                    <label for="note-type[]" class="col-sm-2 col-form-label">Type</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control selectpicker" name="note-type[]">
+                                            <option value="requirement">Requirement</option>
+                                            <option value="warning">Warning</option>
+                                            <option value="info">Information</option>
+                                            <option value="description">Description</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="note-text[]" class="col-sm-2 col-form-label">Text</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="note-text[]" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-8 offset-sm-2">
+                                    <button type="button" id="add-note-button" class="btn btn-dark">+ Add Another Note</button>
+                                </div>
+                            </div>
+                            <div class="note-template" style="display: none">
+                                <div class="form-group row">
+                                    <label for="note-type[]" class="col-sm-2 col-form-label">Type</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" name="note-type[]">
+                                            <option value="requirement">Requirement</option>
+                                            <option value="warning">Warning</option>
+                                            <option value="info">Information</option>
+                                            <option value="description">Description</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="note-text[]" class="col-sm-2 col-form-label">Text</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="note-text[]" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="mission-id" value="{{ model.missionId }}">
+                            <input type="hidden" name="level" value="{{ model.startingFloor }}">
+                            <input type="hidden" name="latitude">
+                            <input type="hidden" name="longitude">
+                            <input type="hidden" name="difficulty" value="{{ model.difficulty }}">
+                            <input type="hidden" name="searchable" value="0">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -544,6 +553,9 @@
                     toggleLayer(g_overlays[g_startingFloor][j], true);
                 }
                 updateNodeLayerState();
+
+                $('.overlay').hide();
+                $('.content').show();
             },
             error: function() {
                 alert('An error occurred when trying to get map nodes');

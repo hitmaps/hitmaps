@@ -9,6 +9,7 @@ class GameMapViewModel extends BaseModel {
     public $game;
     public $locationNameOne;
     public $locationNameTwo;
+    public $locationSlug;
     public $mapFolderName;
     public $missionId;
     public $mission;
