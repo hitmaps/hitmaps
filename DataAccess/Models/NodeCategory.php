@@ -72,6 +72,11 @@ class NodeCategory {
     public $order;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    public $searchable;
+
+    /**
      * @return mixed
      */
     public function getId(): int {
@@ -237,5 +242,19 @@ class NodeCategory {
      */
     public function setOrder($order) {
         $this->order = $order;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSearchable() {
+        return $this->searchable;
+    }
+
+    /**
+     * @param mixed $searchable
+     */
+    public function setSearchable($searchable): void {
+        $this->searchable = $searchable;
     }
 }

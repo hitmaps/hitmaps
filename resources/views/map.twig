@@ -58,6 +58,20 @@
         </div>
         <br>
         <div class="accordion" id="accordion">
+            <div class="search-box">
+                <select name="search" class="selectpicker" data-live-search="true" data-title="<i class='fas fa-search'></i> Search" data-style="control-button">
+                    {% for typeName,type in model.searchableNodes %}
+                        {% for groupName,group in type %}
+                            <optgroup label="{{ groupName }}">
+                            {% for node in group %}
+                                <option data-layer="{{ typeName }}|{{ groupName }}">{{ node.name }}</option>
+                            {% endfor %}
+                            </optgroup>
+                        {% endfor %}
+                    {% endfor %}
+                </select>
+                <button id="clear-search" class="btn control-button" data-toggle="tooltip" title="Clear Search" style="display: none"><i class="fas fa-times"></i></button>
+            </div>
             <button id="hide-all" class="btn control-button"><i class="far fa-fw fa-eye-slash"></i> Hide All</button>
             <button id="show-all" class="btn control-button"><i class="fas fa-fw fa-eye"></i> Show All</button>
             {% for typeName,type in model.nodes %}
@@ -159,7 +173,8 @@
                                                         data-warning="{{ item.warning }}"
                                                         data-information="{{ item.information }}"
                                                         data-group="{{ item.group }}"
-                                                        data-target="{{ item.target }}">{{ item.name }}</option>
+                                                        data-target="{{ item.target }}"
+                                                        data-searchable="{{ item.searchable }}">{{ item.name }}</option>
                                             {% endfor %}
                                         </optgroup>
                                     {% endfor %}
@@ -188,6 +203,7 @@
                                                 <option value="{{ type }}|{{ category.subgroup }}"
                                                         data-content="<img height='24' width='24' src='/img/map-icons/{{ category.icon }}.png' alt='{{ category.group }} Icon'> {{ category.group }}"
                                                         data-icon="{{ category.icon }}"
+                                                        data-searchable="{{ category.searchable }}"
                                                     {% if category.requireName %} data-name="true" {% endif %}
                                                     {% if category.requireAction %} data-action="true" {% endif %}
                                                     {% if category.requireTarget %} data-target="true" {% endif %}
@@ -343,6 +359,7 @@
                         <input type="hidden" name="latitude">
                         <input type="hidden" name="longitude">
                         <input type="hidden" name="difficulty" value="{{ model.difficulty }}">
+                        <input type="hidden" name="searchable" value="0">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -504,6 +521,7 @@
                         .find('input[name="target"]').val('').end()
                         .find('input[name="latitude"]').val(e.latlng.lat).end()
                         .find('input[name="longitude"]').val(e.latlng.lng).end()
+                        .find('input[name="searchable"]').val(0).end()
                         .modal('show');
                 });
                 var zoom = L.control.zoom({position: 'topright'});
@@ -542,6 +560,7 @@
             $modal.find('select[name="subgroup"]').trigger('change');
             var icon = $selectedItem.attr('data-icon');
             $modal.find('select[name="icon"]').selectpicker('val', icon);
+            $modal.find('input[name="searchable"]').val($selectedItem.attr('data-searchable'));
 
             var $selectedCategory = $('select[name="subgroup"] option:selected');
             if ($selectedCategory.attr('data-name') !== undefined && $selectedItem.attr('data-action') !== false) {
@@ -576,23 +595,46 @@
 
         function updateNodeLayerState() {
             var currentFloor = $('input[type="hidden"][name="level"]').val();
+            var $searchedItem = $('select[name="search"] option:selected');
+            var itemName = $searchedItem !== undefined ? $searchedItem.text() : undefined;
+            var layer = $searchedItem !== undefined ? $searchedItem.attr('data-layer') : undefined;
 
+            var floorsToHighlight = [];
             for (var floor in g_overlays) {
                 var numberOfItemsOnMap = 0;
                 var floorLayers = g_overlays[floor];
                 for (var key in floorLayers) {
+                    var forceOff = (layer !== key || itemName === undefined);
+
                     // Find the button that toggles this layer and see if it's active or not.
                     var $icon = $('[data-layer="' + key + '"]').find('i');
                     if ($icon.hasClass('fa-eye')) {
                         numberOfItemsOnMap += floorLayers[key].getLayers().length;
 
                         toggleLayer(floorLayers[key], (parseInt(floor) === parseInt(currentFloor)));
+                        for (var node in floorLayers[key].getLayers()) {
+                            var nodeProperties = floorLayers[key].getLayers()[node];
+
+                            if (nodeProperties.options.custom.node.name === itemName && !forceOff) {
+                                $(nodeProperties._icon).addClass('search-result');
+                                if (floorsToHighlight.indexOf(floor) === -1) {
+                                    floorsToHighlight.push(floor);
+                                }
+                            } else {
+                                $(nodeProperties._icon).removeClass('search-result');
+                            }
+                        }
                     } else {
                         toggleLayer(floorLayers[key], false);
                     }
                 }
                 var $itemElement = $('[data-floor="' + floor + '"]').find('.item-count');
                 $itemElement.text(numberOfItemsOnMap);
+
+                $('.item-count').removeClass('has-search-results');
+                for (var i in floorsToHighlight) {
+                    $('div[data-floor="' + floorsToHighlight[i] + '"]').find('.item-count').addClass('has-search-results');
+                }
             }
         }
 
@@ -652,6 +694,7 @@
         $('select[name="subgroup"]').change(function() {
             var $selectedItem = $('select[name="subgroup"] option:selected');
             $('input[name="group"]').val($selectedItem.text());
+            $('input[name="searchable"]').val($selectedItem.attr('data-searchable'));
 
             toggleEditorFieldDisplay($selectedItem, 'name');
             toggleEditorFieldDisplay($selectedItem, 'action');
@@ -771,6 +814,10 @@
 
             toggleLayer(g_mapLayers[previousLevel], false);
             toggleLayer(g_mapLayers[level], true);
+            updateNodeLayerState();
+        });
+
+        $('.search-box').find('select').change(function() {
             updateNodeLayerState();
         });
 

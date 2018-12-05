@@ -124,6 +124,17 @@ html {
     }
   }
 
+  .leaflet-marker-icon.search-result {
+    z-index: 9999 !important;
+    background: rgba(255, 0, 60, .75);
+    padding: 15px !important;
+    margin: -33px 0 0 -33px !important;
+    border-radius: 50%;
+    border: 2px solid #ff003c;
+    opacity: .85 !important;
+    box-sizing: content-box;
+  }
+
   .accordion {
     .card {
       margin-top: 5px;
@@ -242,7 +253,9 @@ html {
     }
   }
 
-  #hide-all, #show-all {
+  #hide-all,
+  #show-all,
+  .search-box .control-button {
     height: 40px;
     border-radius: 3px;
     background: rgba(22, 24, 29, .75);
@@ -257,6 +270,42 @@ html {
       opacity: 1;
       border-color: #fff;
     }
+  }
+
+  .search-box {
+    .bootstrap-select {
+      width: 368px !important;
+
+      &.item-selected {
+        width: 313px !important;
+      }
+
+      > .dropdown-toggle {
+        &.bs-placeholder {
+          &:hover,
+          &:active,
+          &:focus {
+            color: #fff;
+          }
+        }
+      }
+
+      .dropdown-header {
+        background: #eee;
+        text-transform: uppercase;
+      }
+    }
+
+    #clear-search.control-button {
+      display: inline-block;
+      margin-left: 10px;
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  .search-box .control-button {
+    width: 100%;
   }
 
   #show-all {
@@ -310,6 +359,11 @@ html {
         width: 46px;
         padding: 10px 15px;
         text-align: center;
+
+        &.has-search-results {
+          background: #ff003c;
+          color: #fff;
+        }
       }
 
       &:hover {
