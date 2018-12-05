@@ -126,12 +126,13 @@ html {
 
   .leaflet-marker-icon.search-result {
     z-index: 9999 !important;
-    background: red;
+    background: rgba(255, 0, 60, .75);
     padding: 15px !important;
     margin: -33px 0 0 -33px !important;
     border-radius: 50%;
-    border: 2px solid #db0000;
+    border: 2px solid #ff003c;
     opacity: .85 !important;
+    box-sizing: content-box;
   }
 
   .accordion {
@@ -358,6 +359,11 @@ html {
         width: 46px;
         padding: 10px 15px;
         text-align: center;
+
+        &.has-search-results {
+          background: #ff003c;
+          color: #fff;
+        }
       }
 
       &:hover {
