@@ -399,6 +399,20 @@
     </script>
     <div id="temp" style="display: none"></div>
     <script>
+        function showMap() {
+            $('.overlay').hide();
+        }
+
+        var g_mapLoaded = false;
+        var g_loadImmediate = false;
+        setTimeout(function() {
+            if (g_mapLoaded) {
+                showMap();
+            } else {
+                g_loadImmediate = true;
+            }
+        }, 1000);
+
         var g_mapLayers = {};
         var g_overlays = {};
         var g_map;
@@ -554,8 +568,10 @@
                 }
                 updateNodeLayerState();
 
-                $('.overlay').hide();
-                $('.content').show();
+                g_mapLoaded = true;
+                if (g_loadImmediate) {
+                    showMap();
+                }
             },
             error: function() {
                 alert('An error occurred when trying to get map nodes');
