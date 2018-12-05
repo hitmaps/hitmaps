@@ -26,6 +26,7 @@ class GameMapViewModel extends BaseModel {
     public $canDeleteNodes;
 
     public $nodes;
+    public $searchableNodes;
     public $nodeCategories;
     public $predeterminedItems;
     public $icons;

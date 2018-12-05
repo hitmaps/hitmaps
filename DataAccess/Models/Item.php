@@ -67,6 +67,11 @@ class Item {
     public $group;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    public $searchable;
+
+    /**
      * @return mixed
      */
     public function getId() {
@@ -218,5 +223,19 @@ class Item {
      */
     public function setGroup($group) {
         $this->group = $group;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSearchable() {
+        return $this->searchable;
+    }
+
+    /**
+     * @param mixed $searchable
+     */
+    public function setSearchable($searchable): void {
+        $this->searchable = $searchable;
     }
 }

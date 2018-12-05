@@ -86,6 +86,11 @@ class Node {
      */
     public $dateCreated;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    public $searchable;
+
     public function __construct() {
         $this->dateCreated = new \DateTime("now");
     }
@@ -295,5 +300,19 @@ class Node {
      */
     public function setDateCreated(\DateTime $dateCreated): void {
         $this->dateCreated = $dateCreated;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSearchable(): bool {
+        return $this->searchable;
+    }
+
+    /**
+     * @param mixed $searchable
+     */
+    public function setSearchable($searchable): void {
+        $this->searchable = $searchable;
     }
 }
