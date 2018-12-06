@@ -91,6 +91,11 @@ class Node {
      */
     public $searchable;
 
+    /**
+     * @ORM\Column(type="string")
+     */
+    public $image;
+
     public function __construct() {
         $this->dateCreated = new \DateTime("now");
     }
@@ -314,5 +319,19 @@ class Node {
      */
     public function setSearchable($searchable): void {
         $this->searchable = $searchable;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImage() {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image): void {
+        $this->image = $image;
     }
 }
