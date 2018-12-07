@@ -132,15 +132,15 @@ class UpdateImagesInItems extends AbstractMigration {
             ],
             [
                 'name' => 'HX-10',
-                'image' => '/weapons/smgs/hx-10',
+                'image' => '/weapons/rifles/hx-10',
             ],
             [
                 'name' => 'HX-7',
-                'image' => '/weapons/smgs/hx-7',
+                'image' => '/weapons/rifles/hx-7',
             ],
             [
                 'name' => 'HX-7 Covert',
-                'image' => '/weapons/smgs/hx-7-covert',
+                'image' => '/weapons/rifles/hx-7-covert',
             ],
             [
                 'name' => 'ICA19',
@@ -236,67 +236,167 @@ class UpdateImagesInItems extends AbstractMigration {
             ],
             [
                 'name' => 'Amputation Knife',
-                'image' => '/weapons/melee/amputation-knife',
+                'image' => '/weapons/lethal-melee/amputation-knife',
             ],
             [
                 'name' => 'Battle Axe',
-                'image' => '/weapons/melee/battle-axe',
+                'image' => '/weapons/lethal-melee/battle-axe',
             ],
             [
                 'name' => 'Circumcision Knife',
-                'image' => '/weapons/melee/circumcision-knife',
+                'image' => '/weapons/lethal-melee/circumcision-knife',
             ],
             [
                 'name' => 'Cleaver',
-                'image' => '/weapons/melee/cleaver',
+                'image' => '/weapons/lethal-melee/cleaver',
             ],
             [
                 'name' => 'Combat Knife',
-                'image' => '/weapons/melee/combat-knife',
+                'image' => '/weapons/lethal-melee/combat-knife',
             ],
             [
                 'name' => 'Fire Axe',
-                'image' => '/weapons/melee/fire-axe',
+                'image' => '/weapons/lethal-melee/fire-axe',
             ],
             [
                 'name' => 'Folding Knife',
-                'image' => '/weapons/melee/folding-knife',
+                'image' => '/weapons/lethal-melee/folding-knife',
             ],
             [
                 'name' => 'Hatchet',
-                'image' => '/weapons/melee/hatchet',
+                'image' => '/weapons/lethal-melee/hatchet',
             ],
             [
                 'name' => 'Katana',
-                'image' => '/weapons/melee/katana',
+                'image' => '/weapons/lethal-melee/katana',
             ],
             [
                 'name' => 'Kitchen Knife',
-                'image' => '/weapons/melee/kitchen-knife',
+                'image' => '/weapons/lethal-melee/kitchen-knife',
             ],
             [
                 'name' => 'Letter Opener',
-                'image' => '/weapons/melee/letter-opener',
+                'image' => '/weapons/lethal-melee/letter-opener',
             ],
             [
                 'name' => 'Old Axe',
-                'image' => '/weapons/melee/old-axe',
+                'image' => '/weapons/lethal-melee/old-axe',
             ],
             [
                 'name' => 'Saber',
-                'image' => '/weapons/melee/saber',
+                'image' => '/weapons/lethal-melee/saber',
             ],
             [
                 'name' => 'Scalpel',
-                'image' => '/weapons/melee/scalpel',
+                'image' => '/weapons/lethal-melee/scalpel',
             ],
             [
                 'name' => 'Scissors',
-                'image' => '/weapons/melee/scissors',
+                'image' => '/weapons/lethal-melee/scissors',
             ],
             [
                 'name' => 'Screwdriver',
-                'image' => '/weapons/melee/screwdriver',
+                'image' => '/weapons/lethal-melee/screwdriver',
+            ],
+            [
+                'name' => 'Android Arm',
+                'image' => '/weapons/non-lethal-melee/android-arm',
+            ],
+            [
+                'name' => 'Baseball',
+                'image' => '/weapons/non-lethal-melee/baseball',
+            ],
+            [
+                'name' => 'Baseball Bat',
+                'image' => '/weapons/non-lethal-melee/baseball-bat',
+            ],
+            [
+                'name' => 'Branding Iron',
+                'image' => '/weapons/non-lethal-melee/branding-iron',
+            ],
+            [
+                'name' => 'Brick',
+                'image' => '/weapons/non-lethal-melee/brick',
+            ],
+            [
+                'name' => 'Bust',
+                'image' => '/weapons/non-lethal-melee/bust',
+            ],
+            [
+                'name' => 'Car Battery',
+                'image' => '/weapons/non-lethal-melee/car-battery',
+            ],
+            [
+                'name' => 'Coconut',
+                'image' => '/weapons/non-lethal-melee/coconut',
+            ],
+            [
+                'name' => 'Cowboy Bust',
+                'image' => '/weapons/non-lethal-melee/cowboy-bust',
+            ],
+            [
+                'name' => 'Crowbar',
+                'image' => '/weapons/non-lethal-melee/crowbar',
+            ],
+            [
+                'name' => 'Fire Poker',
+                'image' => '/weapons/non-lethal-melee/fire-poker',
+            ],
+            [
+                'name' => 'Golf Club',
+                'image' => '/weapons/non-lethal-melee/golf-club',
+            ],
+            [
+                'name' => 'Hammer',
+                'image' => '/weapons/non-lethal-melee/hammer',
+            ],
+            [
+                'name' => 'Lead Pipe',
+                'image' => '/weapons/non-lethal-melee/lead-pipe',
+            ],
+            [
+                'name' => 'Mannequin Arm',
+                'image' => '/weapons/non-lethal-melee/mannequin-arm',
+            ],
+            [
+                'name' => 'Police Baton',
+                'image' => '/weapons/non-lethal-melee/police-baton',
+            ],
+            [
+                'name' => 'Pool Ball',
+                'image' => '/weapons/non-lethal-melee/pool-ball',
+            ],
+            [
+                'name' => 'Shovel',
+                'image' => '/weapons/non-lethal-melee/shovel',
+            ],
+            [
+                'name' => 'Soda Can',
+                'image' => '/weapons/non-lethal-melee/soda-can',
+            ],
+            [
+                'name' => 'Toy Tank',
+                'image' => '/weapons/non-lethal-melee/toy-tank',
+            ],
+            [
+                'name' => 'Wrench',
+                'image' => '/weapons/non-lethal-melee/wrench',
+            ],
+            [
+                'name' => 'Emetic Rat Poison',
+                'image' => '/weapons/poisons/rat-poison',
+            ],
+            [
+                'name' => 'Lethal Poison',
+                'image' => '/weapons/poisons/lethal-poison',
+            ],
+            [
+                'name' => 'Lethal Poison Pill Jar',
+                'image' => '/weapons/poisons/lethal-poison-pill-jars',
+            ],
+            [
+                'name' => 'Lethal Poisonous Frog',
+                'image' => '/weapons/poisons/lethal-poisonous-frog',
             ],
         ];
     }
