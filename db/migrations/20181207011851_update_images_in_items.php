@@ -183,8 +183,120 @@ class UpdateImagesInItems extends AbstractMigration {
                 'image' => '/weapons/rifles/rs-15',
             ],
             [
+                'name' => 'Shashka A33',
+                'image' => '/weapons/rifles/shashka-a33',
+            ],
+            [
+                'name' => 'Shashka A33 Gold',
+                'image' => '/weapons/rifles/shashka-a33-gold',
+            ],
+            [
+                'name' => 'Shashka A33 H',
+                'image' => '/weapons/rifles/shashka-a33-h',
+            ],
+            [
+                'name' => 'Striker',
+                'image' => '/weapons/pistols/striker',
+            ],
+            [
+                'name' => 'TAC-4 AR Auto',
+                'image' => '/weapons/rifles/tac-4-ar-auto',
+            ],
+            [
+                'name' => 'TAC-4 AR Auto Mk II',
+                'image' => '/weapons/rifles/tac-4-ar-auto-2',
+            ],
+            [
+                'name' => 'TAC-4 AR Stealth',
+                'image' => '/weapons/rifles/tac-4-ar-stealth',
+            ],
+            [
+                'name' => 'TAC-4 S/A',
+                'image' => '/weapons/rifles/tac-4-sa',
+            ],
+            [
+                'name' => 'TAC-SMG',
+                'image' => '/weapons/smgs/tac-smg',
+            ],
+            [
+                'name' => 'TAC-SMG S',
+                'image' => '/weapons/smgs/tac-smg-s',
+            ],
+            [
+                'name' => 'TAC-SMG Mk II',
+                'image' => '/weapons/smgs/tac-smg-2',
+            ],
+            [
+                'name' => 'TAC-SMG Covert',
+                'image' => '/weapons/smgs/tac-smg-covert',
+            ],
+            [
+                'name' => 'Tactical Bartoli 12G',
+                'image' => '/weapons/shotguns/tactical-bartoli-12g',
+            ],
+            [
                 'name' => 'Amputation Knife',
-                'image' => '/weapons/pistols/rude-ruby',
+                'image' => '/weapons/melee/amputation-knife',
+            ],
+            [
+                'name' => 'Battle Axe',
+                'image' => '/weapons/melee/battle-axe',
+            ],
+            [
+                'name' => 'Circumcision Knife',
+                'image' => '/weapons/melee/circumcision-knife',
+            ],
+            [
+                'name' => 'Cleaver',
+                'image' => '/weapons/melee/cleaver',
+            ],
+            [
+                'name' => 'Combat Knife',
+                'image' => '/weapons/melee/combat-knife',
+            ],
+            [
+                'name' => 'Fire Axe',
+                'image' => '/weapons/melee/fire-axe',
+            ],
+            [
+                'name' => 'Folding Knife',
+                'image' => '/weapons/melee/folding-knife',
+            ],
+            [
+                'name' => 'Hatchet',
+                'image' => '/weapons/melee/hatchet',
+            ],
+            [
+                'name' => 'Katana',
+                'image' => '/weapons/melee/katana',
+            ],
+            [
+                'name' => 'Kitchen Knife',
+                'image' => '/weapons/melee/kitchen-knife',
+            ],
+            [
+                'name' => 'Letter Opener',
+                'image' => '/weapons/melee/letter-opener',
+            ],
+            [
+                'name' => 'Old Axe',
+                'image' => '/weapons/melee/old-axe',
+            ],
+            [
+                'name' => 'Saber',
+                'image' => '/weapons/melee/saber',
+            ],
+            [
+                'name' => 'Scalpel',
+                'image' => '/weapons/melee/scalpel',
+            ],
+            [
+                'name' => 'Scissors',
+                'image' => '/weapons/melee/scissors',
+            ],
+            [
+                'name' => 'Screwdriver',
+                'image' => '/weapons/melee/screwdriver',
             ],
         ];
     }
