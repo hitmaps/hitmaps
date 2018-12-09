@@ -482,7 +482,7 @@
                         var group = type[groupName];
                         for (var k in group) {
                             var node = group[k];
-                            var marker = buildMarker(node).bindPopup(buildPopup(node));
+                            var marker = buildMarker(node).bindPopup(buildPopup);
                             if (node.name !== '') {
                                 marker.bindTooltip(node.name);
                             }
@@ -750,7 +750,7 @@
                 success: function(data) {
                     var node = JSON.parse(data);
                     if (node.approved) {
-                        var marker = buildMarker(node).bindPopup(buildPopup(node));
+                        var marker = buildMarker(node).bindPopup(buildPopup);
                         if (node.name !== '') {
                             marker.bindTooltip(node.name);
                         }
@@ -798,7 +798,9 @@
             }
         }
 
-        function buildPopup(node) {
+        function buildPopup(element) {
+            var node = element.options.custom.node;
+
             var $template = $($('#popup-template').html());
             $template.find('[data-name="group"]').html(node.group).end()
                 .find('[data-name="name"]').html(node.name).end()
