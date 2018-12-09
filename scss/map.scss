@@ -25,6 +25,110 @@ html {
     .leaflet-control-container {
       display: none;
     }
+
+    .leaflet-popup-close-button {
+      font-size: 2rem;
+      width: 25px;
+    }
+
+    .leaflet-popup-content-wrapper {
+      padding: 0;
+      border-radius: 5px;
+
+
+      .leaflet-popup-content {
+        width: 300px !important;
+        margin: 0 !important;
+        padding-bottom: 10px !important;
+
+        img {
+          width: 300px !important;
+          height: 200px !important;
+          border-top-left-radius: 5px;
+          border-top-right-radius: 5px;
+          background: url('/img/map-icons/loader.gif') no-repeat center #fff;
+        }
+
+        div[data-name="name"] {
+          color: #000;
+          text-transform: uppercase;
+          padding: 10px 10px 0;
+          font-size: 1.3em;
+          font-weight: bolder;
+        }
+
+        div[data-name="group"] {
+          color: #aaa;
+          text-transform: uppercase;
+          font-weight: bolder;
+          padding: 0 10px;
+        }
+
+        [data-name="target"] {
+          padding: 0 10px;
+          color: #666;
+        }
+
+        [data-name="notes"] {
+          margin-top: 10px;
+          margin-bottom: 10px;
+
+          > div {
+            padding: 10px;
+
+            &:not(:last-child) {
+              margin-bottom: 10px;
+            }
+          }
+
+          .requirement {
+            .in-game-description {
+              display: none;
+            }
+
+            color: #721c24;
+            background: #f8d7da;
+            border-left: solid 3px #d00000;
+          }
+
+          .warning {
+            .in-game-description {
+              display: none;
+            }
+
+            color: #856404;
+            background: #fff3cd;
+            border-left: solid 3px #ffa500;
+          }
+
+          .info {
+            .in-game-description {
+              display: none;
+            }
+
+            color: #0c5460;
+            background: #b7d4ff;
+            border-left: solid 3px #0000e0;
+          }
+
+          .description {
+            .in-game-description {
+              text-transform: uppercase;
+              font-weight: bolder;
+              color: #404040;
+            }
+
+            color: #666;
+            background: #e4e4e4;
+            border-left: solid 3px #666666;
+          }
+        }
+
+        [data-action="delete-btn"] {
+          margin-left: 10px;
+        }
+      }
+    }
   }
 
   .leaflet-container {
@@ -37,49 +141,6 @@ html {
     width: 400px;
     min-height: 100vh;
     background: #000;
-  }
-
-  [data-name="name"] {
-    font-size: 1.3em;
-    font-weight: bolder;
-  }
-
-  [data-name="group"] {
-    font-weight: bolder;
-    color: #666;
-  }
-
-  [data-name="target"] {
-    color: #666;
-  }
-
-  [data-name="notes"] {
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-
-  .requirement {
-    color: #721c24;
-    background: #f8d7da;
-    border: #f5c6cb solid 1px;
-  }
-
-  .warning {
-    color: #856404;
-    background: #fff3cd;
-    border: #ffeeba solid 1px;
-  }
-
-  .info {
-    color: #0c5460;
-    background: #d1ecf1;
-    border: #bee5eb solid 1px;
-  }
-
-  .description {
-    color: #1b1e21;
-    background: #d6d8d9;
-    border: #c6c8ca solid 1px;
   }
 
   .leaflet-control-zoom {
