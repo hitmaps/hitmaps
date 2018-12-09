@@ -137,6 +137,7 @@ class NodeController {
         $node->setCreatedBy($user->getId());
         $node->setTarget('');
         $node->setSearchable($postData['searchable']);
+        $node->setImage(isset($postData['image']) && $postData['image'] !== '' ? $postData['image'] : null);
 
         switch ($subgroup) {
             case 'sabotage':

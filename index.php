@@ -200,6 +200,20 @@ $klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\
     $nodeViewModel->difficulty = $node->getDifficulty();
     $nodeViewModel->group = $node->getGroup();
     $nodeViewModel->approved = $node->getApproved();
+    $nodeViewModel->image = $node->getImage();
+    switch ($nodeViewModel->icon) {
+        case 'poison':
+            $nodeViewModel->targetIcon = 'fa-user';
+            break;
+        case 'interaction':
+        case 'sabotage':
+        case 'distraction':
+            $nodeViewModel->targetIcon = 'fa-cog';
+            break;
+        default:
+            $nodeViewModel->targetIcon = '';
+            break;
+    }
     $nodeViewModel->notes = [];
     $notes = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
         ->getRepository(\DataAccess\Models\NodeNote::class)

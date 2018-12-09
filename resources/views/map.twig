@@ -174,7 +174,8 @@
                                                         data-information="{{ item.information }}"
                                                         data-group="{{ item.group }}"
                                                         data-target="{{ item.target }}"
-                                                        data-searchable="{{ item.searchable }}">{{ item.name }}</option>
+                                                        data-searchable="{{ item.searchable }}"
+                                                        data-image="{{ item.image }}">{{ item.name }}</option>
                                             {% endfor %}
                                         </optgroup>
                                     {% endfor %}
@@ -358,6 +359,7 @@
                         <input type="hidden" name="level" value="{{ model.startingFloor }}">
                         <input type="hidden" name="latitude">
                         <input type="hidden" name="longitude">
+                        <input type="hidden" name="image">
                         <input type="hidden" name="difficulty" value="{{ model.difficulty }}">
                         <input type="hidden" name="searchable" value="0">
                     </div>
@@ -526,6 +528,12 @@
                         .find('input[name="latitude"]').val(e.latlng.lat).end()
                         .find('input[name="longitude"]').val(e.latlng.lng).end()
                         .find('input[name="searchable"]').val(0).end()
+                        .find('input[name="image"]').val('').end()
+                        .find('[data-type="direction"]').hide().end()
+                        .find('[data-type="pickup"]').hide().end()
+                        .find('[data-type="target"]').hide().end()
+                        .find('[data-type="action"]').hide().end()
+                        .find('[data-type="name"]').hide().end()
                         .modal('show');
                 });
                 var zoom = L.control.zoom({position: 'topright'});
@@ -565,6 +573,7 @@
             var icon = $selectedItem.attr('data-icon');
             $modal.find('select[name="icon"]').selectpicker('val', icon);
             $modal.find('input[name="searchable"]').val($selectedItem.attr('data-searchable'));
+            $modal.find('input[name="image"]').val($selectedItem.attr('data-image'));
 
             var $selectedCategory = $('select[name="subgroup"] option:selected');
             if ($selectedCategory.attr('data-name') !== undefined && $selectedItem.attr('data-action') !== false) {
