@@ -122,6 +122,10 @@ html {
             border-left: solid 3px #666666;
           }
         }
+
+        [data-action="delete-btn"] {
+          margin-left: 10px;
+        }
       }
     }
   }
