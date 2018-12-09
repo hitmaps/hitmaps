@@ -11,6 +11,7 @@ class NodeWithNotesViewModel {
     public $icon;
     public $name;
     public $target;
+    public $targetIcon;
     public $level;
     public $latitude;
     public $longitude;
@@ -19,4 +20,5 @@ class NodeWithNotesViewModel {
     public $subgroup;
     public $notes;
     public $approved;
+    public $image;
 }

@@ -66,11 +66,26 @@ class NodeController {
                 $nodeViewModel->subgroup = $node->getSubgroup();
                 $nodeViewModel->name = $node->getName();
                 $nodeViewModel->target = $node->getTarget();
+                switch ($nodeViewModel->icon) {
+                    case 'poison':
+                        $nodeViewModel->targetIcon = 'fa-user';
+                        break;
+                    case 'interaction':
+                    case 'sabotage':
+                    case 'distraction':
+                        $nodeViewModel->targetIcon = 'fa-cog';
+                        break;
+                    default:
+                        $nodeViewModel->targetIcon = '';
+                        break;
+                }
+
                 $nodeViewModel->level = $node->getLevel();
                 $nodeViewModel->latitude = $node->getLatitude();
                 $nodeViewModel->longitude = $node->getLongitude();
                 $nodeViewModel->difficulty = $node->getDifficulty();
                 $nodeViewModel->group = $node->getGroup();
+                $nodeViewModel->image = $node->getImage();
                 $nodeViewModel->notes = [];
                 foreach ($notes as $note) {
                     $innerViewModel = new NodeNoteViewModel();
@@ -122,6 +137,7 @@ class NodeController {
         $node->setCreatedBy($user->getId());
         $node->setTarget('');
         $node->setSearchable($postData['searchable']);
+        $node->setImage(isset($postData['image']) && $postData['image'] !== '' ? $postData['image'] : null);
 
         switch ($subgroup) {
             case 'sabotage':
