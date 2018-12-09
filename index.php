@@ -493,6 +493,14 @@ $klein->respond('POST', '/user/reset-password', function(\Klein\Request $request
     return $response->redirect('/user/login?redirectLocation=/');
 });
 
+$klein->respond('GET', '/terms-of-use', function() use ($twig) {
+    return \Controllers\Renderer::render('terms-of-use.twig', $twig, new \Controllers\ViewModels\BaseModel());
+});
+
+$klein->respond('GET', '/privacy-policy', function() use ($twig) {
+    return \Controllers\Renderer::render('privacy-policy.twig', $twig, new \Controllers\ViewModels\BaseModel());
+});
+
 /* Admin Endpoints */
 $klein->respond('GET', '/admin/migrate', function() {
     $config = new Config\Settings();
