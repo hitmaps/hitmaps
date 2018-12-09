@@ -3,10 +3,10 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class UpdateImagesInItems extends AbstractMigration {
+class UpdateImagesInNodes extends AbstractMigration {
     public function up() {
         foreach ($this->getRows() as $row) {
-            $this->execute("UPDATE `items` 
+            $this->execute("UPDATE `nodes` 
               SET `image` = '{$row['image']}'
               WHERE `name` = '{$row['name']}'");
         }
@@ -403,7 +403,7 @@ class UpdateImagesInItems extends AbstractMigration {
 
     public function down() {
         foreach ($this->getRows() as $row) {
-            $this->execute("UPDATE `items` 
+            $this->execute("UPDATE `nodes` 
               SET `image` = null
               WHERE `name` = '{$row['name']}'");
         }
