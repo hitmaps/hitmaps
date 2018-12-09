@@ -194,8 +194,25 @@ footer {
   background: #000;
   color: #6b6c72;
 
-  > p {
+  p {
     margin-bottom: 0;
+    color: #fff;
+  }
+
+  h4 {
+    text-transform: uppercase;
+    color: #fff;
+    font-size: 1rem;
+  }
+  
+  a {
+    color: #fff;
+    text-decoration: none;
+
+    &:hover {
+      color: #ddd;
+      text-decoration: none;
+    }
   }
 }
 
