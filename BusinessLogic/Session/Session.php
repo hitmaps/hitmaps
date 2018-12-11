@@ -55,7 +55,7 @@ class Session {
      *
      * @var integer
      */
-    protected static $SESSION_AGE = 1800;
+    protected static $SESSION_AGE = 7200;
     /**
      * Helps prevent hijacking by resetting the session ID at every request.
      * Might cause unnecessary file I/O overhead?
