@@ -291,6 +291,10 @@ html {
       text-transform: uppercase;
     }
 
+    h3 {
+      color: #fff;
+    }
+
     .editor-button {
       border-radius: 3px;
       background: rgba(22, 24, 29, .75);
@@ -308,6 +312,7 @@ html {
       }
 
       &:hover, &.selected {
+        cursor: pointer;
         opacity: 1;
         border-color: #fff;
       }
