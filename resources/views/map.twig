@@ -744,6 +744,9 @@
             $('input[name="group"]').val($selectedItem.text());
             $('input[name="searchable"]').val($selectedItem.attr('data-searchable'));
 
+            var icon = $selectedItem.attr('data-icon');
+            $('#suggest-edit-modal').find('select[name="icon"]').selectpicker('val', icon);
+
             toggleEditorFieldDisplay($selectedItem, 'name');
             toggleEditorFieldDisplay($selectedItem, 'action');
             toggleEditorFieldDisplay($selectedItem, 'target');
