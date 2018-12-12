@@ -1,25 +1,30 @@
 $(document).ready(function() {
-    $('#edit-button').click(function() {
-        var $editMode = $('input[type="hidden"][name="edit-mode"]');
-        var previousEditState = parseInt($editMode.val());
+    var EDIT_MODES = {
+        OFF: 0,
+        ITEMS: 1,
+        LEDGES: 2
+    }
 
-        if (previousEditState === 0) {
-            // Enable edit mode
-            toastr["info"]('Editor enabled. Click anywhere to create a new node.');
-            $editMode.val(1);
-            $('.editor-enabled').show();
-            $('#accordion').hide();
-            $('.edit-menu').show();
-            $('[data-toggle="tooltip"]').tooltip('hide');
-        } else {
-            // Disable edit mode
-            toastr["info"]('Editor disabled.');
-            $editMode.val(0);
-            $('.editor-enabled').hide();
-            $('#accordion').show();
-            $('.edit-menu').hide();
-            $('[data-toggle="tooltip"]').tooltip('hide');
-        }
+    $('#edit-button').click(function() {
+        $('.edit-menu').show();
+        $('#accordion').hide();
+        $('[data-toggle="tooltip"]').tooltip('hide');
+    });
+
+    $('[data-editor="items"]').click(function() {
+        var $editMode = $('input[type="hidden"][name="edit-mode"]');
+        $editMode.val(EDIT_MODES.ITEMS);
+        toastr["info"]('Click anywhere to create a new node.');
+        $('.editor-enabled').show().find('h3').text('ADD / REMOVE ITEMS');
+        $('.edit-menu').hide();
+    });
+
+    $('[data-editor="ledges"]').click(function() {
+        var $editMode = $('input[type="hidden"][name="edit-mode"]');
+        $editMode.val(EDIT_MODES.LEDGES);
+        toastr["info"]('Use the buttons below to create / delete ledges.');
+        $('.editor-enabled').show().find('h3').text('ADD / REMOVE LEDGES');
+        $('.edit-menu').hide();
     });
 
     $('.search-box').find('select').change(function() {
