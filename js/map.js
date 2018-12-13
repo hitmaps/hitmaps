@@ -3,7 +3,7 @@ $(document).ready(function() {
         OFF: 0,
         ITEMS: 1,
         LEDGES: 2
-    }
+    };
 
     $('#edit-button').click(function() {
         $('.edit-menu').show();
@@ -25,6 +25,7 @@ $(document).ready(function() {
         toastr["info"]('Use the buttons below to create / delete ledges.');
         $('.editor-enabled').show().find('h3').text('ADD / REMOVE LEDGES');
         $('.edit-menu').hide();
+        $('.ledges-menu').show();
     });
 
     $('.search-box').find('select').change(function() {
