@@ -233,6 +233,15 @@ $klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\
     return json_encode($nodeViewModel);
 });
 
+$klein->respond('POST', '/api/ledges', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    if (!userIsLoggedIn()) {
+        print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
+        return $response->code(401);
+    }
+
+    die(var_dump($_POST));
+});
+
 $klein->respond('POST', '/api/nodes/move', function (\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext) {
     if (!userIsLoggedIn()) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
