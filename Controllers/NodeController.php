@@ -104,6 +104,9 @@ class NodeController {
             }
         }
 
+        // Add ledges
+        $groups['Navigation']['Ledge'] = [];
+
         return $groups;
     }
 
