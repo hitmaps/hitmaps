@@ -239,7 +239,18 @@ $klein->respond('POST', '/api/ledges', function (\Klein\Request $request, \Klein
         return $response->code(401);
     }
 
-    die(var_dump($_POST));
+    $ledge = $applicationContext->get(\Controllers\LedgeController::class)->createLedge($_POST['missionId'], $_POST['level'], $_POST['vertices']);
+
+    $explodedVertices = explode('|', $ledge->getVertices());
+
+    $viewModel = new \Controllers\ViewModels\LedgeViewModel();
+    $viewModel->id = $ledge->getId();
+    $viewModel->missionId = $ledge->getMissionId();
+    $viewModel->level = $ledge->getLevel();
+    $viewModel->vertices = $explodedVertices;
+
+    $response->code(201);
+    return json_encode($viewModel);
 });
 
 $klein->respond('POST', '/api/nodes/move', function (\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext) {
@@ -288,7 +299,20 @@ $klein->respond('GET', '/api/nodes/delete/[:nodeId]', function(\Klein\Request $r
 $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
     $nodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($_GET['missionId'], $_GET['difficulty']);
     $nodeCategories = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\NodeCategory::class)->findAll();
-    return json_encode(['nodes' => $nodes, 'categories' => $nodeCategories]);
+
+    /* @var $ledges \DataAccess\Models\Ledge[] */
+    $ledges = $applicationContext->get(\Controllers\LedgeController::class)->getLedgesForMission($_GET['missionId']);
+    $formattedLedges = [];
+    foreach ($ledges as $ledge) {
+        $viewModel = new \Controllers\ViewModels\LedgeViewModel();
+        $viewModel->id = $ledge->getId();
+        $viewModel->missionId = $ledge->getMissionId();
+        $viewModel->level = $ledge->getLevel();
+        $viewModel->vertices = explode('|', $ledge->getVertices());
+        $formattedLedges[] = $viewModel;
+    }
+
+    return json_encode(['nodes' => $nodes, 'categories' => $nodeCategories, 'ledges' => $formattedLedges]);
 });
 
 /* Auth Endpoints */

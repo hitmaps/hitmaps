@@ -22,6 +22,11 @@ class Ledge {
     public $missionId;
 
     /**
+     * @ORM\Column(type="integer", name="level")
+     */
+    public $level;
+
+    /**
      * @ORM\Column(type="string")
      */
     public $vertices;
@@ -52,6 +57,20 @@ class Ledge {
      */
     public function setMissionId($missionId): void {
         $this->missionId = $missionId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLevel() {
+        return $this->level;
+    }
+
+    /**
+     * @param mixed $level
+     */
+    public function setLevel($level): void {
+        $this->level = $level;
     }
 
     /**
