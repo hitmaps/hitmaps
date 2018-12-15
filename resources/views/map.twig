@@ -443,6 +443,7 @@
         var g_startingFloor = {{ model.startingFloor }};
         var g_openMarker = undefined;
         var g_workingLedgeVertices = [];
+        var g_workingLedgeLayers = [];
 
         // Initialize g_overlays for each floor
         for (var i = g_lowestFloor; i <= g_highestFloor; i++) {
@@ -625,8 +626,13 @@
                     });
                 });
 
+                g_map.on('pm:create', function(e) {
+                    g_workingLedgeLayers.push(e.layer);
+                });
+
                 g_map.on('pm:drawend', function(e) {
                     console.log("About to save ledge.");
+                    console.log(e);
 
                     var data = {
                         vertices: g_workingLedgeVertices,
@@ -660,6 +666,12 @@
                         },
                         error: function() {
                             alert('Error!');
+                        },
+                        complete: function() {
+                            for (var i in g_workingLedgeLayers) {
+                                g_map.removeLayer(g_workingLedgeLayers[i]);
+                            }
+                            g_workingLedgeLayers = [];
                         }
                     });
                 });
