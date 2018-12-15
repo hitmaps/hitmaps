@@ -532,6 +532,20 @@
                     }
                 }
 
+                var ledges = json.ledges;
+                for (var i in ledges) {
+                    var ledge = ledges[i];
+                    var latlngs = [];
+                    for (var j in ledge.vertices) {
+                        var coords = ledge.vertices[j].split(',');
+                        latlngs.push([coords[0], coords[1]]);
+                    }
+                    var polyline = L.polyline(latlngs, {
+                        color: 'lime'
+                    });
+                    polyline.addTo(g_overlays[ledge.level]['Navigation|Ledge']);
+                }
+
                 // Build tile layers for each floor
                 for (var j = g_lowestFloor; j <= g_highestFloor; j++) {
                     var mapTileLayer = L.tileLayer('/maps/{{ model.mapFolderName }}/tiles/' + j + '/{z}/{x}/{y}.png', {
@@ -552,7 +566,6 @@
                 g_map.setMaxBounds([[{{ model.topLeftCoordinate }}], [{{ model.bottomRightCoordinate }}]]);
                 g_map.addEventListener('click', function(e) {
                     if (parseInt($('input[type="hidden"][name="edit-mode"]').val()) !== 1) {
-                        console.debug('Editor disabled. Modal will not be shown.');
                         return;
                     }
 
@@ -606,12 +619,30 @@
                     var layer = e.workingLayer;
                     layer.on('pm:vertexadded', function(e) {
                         console.log(e.latlng);
-                        g_workingLedgeVertices.push(e.latlng);
+                        g_workingLedgeVertices.push([e.latlng.lat, e.latlng.lng]);
                     });
                 });
 
                 g_map.on('pm:drawend', function(e) {
-                    console.log(g_workingLedgeVertices);
+                    console.log("About to save ledge.");
+
+                    var data = {
+                        "vertices": g_workingLedgeVertices,
+                        "missionId": $('input[name="mission-id"]').val()
+                    };
+
+                    $.ajax({
+                        url: '/api/ledges',
+                        method: 'POST',
+                        data: data,
+                        success: function(data) {
+                            console.log(data);
+                        },
+                        error: function() {
+                            alert('Error!');
+                        }
+                    });
+
                     g_workingLedgeVertices = [];
                 });
             },
