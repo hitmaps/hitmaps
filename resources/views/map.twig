@@ -541,9 +541,11 @@
                         latlngs.push([coords[0], coords[1]]);
                     }
                     var polyline = L.polyline(latlngs, {
-                        color: 'lime'
+                        color: '#fff',
+                        weight: 4,
+                        opacity: .75
                     });
-                    polyline.addTo(g_overlays[ledge.level]['Navigation|Ledge']);
+                    polyline.bindTooltip('Ledge', {sticky: true}).addTo(g_overlays[ledge.level]['Navigation|Ledge']);
                 }
 
                 // Build tile layers for each floor
@@ -627,8 +629,9 @@
                     console.log("About to save ledge.");
 
                     var data = {
-                        "vertices": g_workingLedgeVertices,
-                        "missionId": $('input[name="mission-id"]').val()
+                        vertices: g_workingLedgeVertices,
+                        missionId: $('input[name="mission-id"]').val(),
+                        level: $('input[type="hidden"][name="level"]').val()
                     };
 
                     $.ajax({
@@ -636,14 +639,29 @@
                         method: 'POST',
                         data: data,
                         success: function(data) {
-                            console.log(data);
+                            var ledge = JSON.parse(data);
+                            var latlngs = [];
+                            for (var j in ledge.vertices) {
+                                var coords = ledge.vertices[j].split(',');
+                                latlngs.push([coords[0], coords[1]]);
+                            }
+                            var polyline = L.polyline(latlngs, {
+                                color: '#fff',
+                                weight: 4,
+                                opacity: .75
+                            });
+                            console.log(g_overlays);
+                            console.log(ledge.level);
+                            console.log(g_overlays[ledge.level]);
+                            polyline.bindTooltip('Ledge', {sticky: true}).addTo(g_overlays[ledge.level]['Navigation|Ledge']);
+                            toastr["success"]("Ledge successfully added to map!");
+
+                            g_workingLedgeVertices = [];
                         },
                         error: function() {
                             alert('Error!');
                         }
                     });
-
-                    g_workingLedgeVertices = [];
                 });
             },
             error: function() {
@@ -711,19 +729,24 @@
                     // Find the button that toggles this layer and see if it's active or not.
                     var $icon = $('[data-layer="' + key + '"]').find('i');
                     if ($icon.hasClass('fa-eye')) {
-                        numberOfItemsOnMap += floorLayers[key].getLayers().length;
+                        if (key !== 'Navigation|Ledge') {
+                            numberOfItemsOnMap += floorLayers[key].getLayers().length;
+                        }
 
                         toggleLayer(floorLayers[key], (parseInt(floor) === parseInt(currentFloor)));
-                        for (var node in floorLayers[key].getLayers()) {
-                            var nodeProperties = floorLayers[key].getLayers()[node];
 
-                            if (nodeProperties.options.custom.node.name === itemName && !forceOff) {
-                                $(nodeProperties._icon).addClass('search-result');
-                                if (floorsToHighlight.indexOf(floor) === -1) {
-                                    floorsToHighlight.push(floor);
+                        if (key !== 'Navigation|Ledge') {
+                            for (var node in floorLayers[key].getLayers()) {
+                                var nodeProperties = floorLayers[key].getLayers()[node];
+
+                                if (nodeProperties.options.custom.node.name === itemName && !forceOff) {
+                                    $(nodeProperties._icon).addClass('search-result');
+                                    if (floorsToHighlight.indexOf(floor) === -1) {
+                                        floorsToHighlight.push(floor);
+                                    }
+                                } else {
+                                    $(nodeProperties._icon).removeClass('search-result');
                                 }
-                            } else {
-                                $(nodeProperties._icon).removeClass('search-result');
                             }
                         }
                     } else {
