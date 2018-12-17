@@ -8,12 +8,14 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
           integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
           crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.css" />
     <link rel="stylesheet" href="/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="/css/map.css">
 
     <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
             integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
             crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.min.js"></script>
     <script src="/js/bootstrap-select.min.js"></script>
     <script src="/js/map.js"></script>
 {% endblock %}
@@ -120,14 +122,33 @@
             </div>
             <div class="edit-menu" style="display: none">
                 <h2>Editor Menu</h2>
-                <div class="editor-button selected" data-editor="items">
+                <h3>What would you like to do?</h3>
+                <div class="editor-button" data-editor="items">
                     <h3><i class="fas fa-fw fa-map-marker-alt"></i> Add / Remove Items</h3>
-                    Add or Remove Items via the Map Editor
                 </div>
-                {#<div class="editor-button" data-editor="ledges">
+                <div class="editor-button" data-editor="ledges">
                     <h3><i class="fas fa-fw fa-bezier-curve"></i> Add / Remove Ledges</h3>
-                    Add or Remove Ledges
-                </div>#}
+                </div>
+                <p>Click the <i class="fas fa-pencil-alt"></i> icon to close the editor menu.</p>
+            </div>
+            <div class="items-menu" style="display: none">
+                <p><i class="fas fa-fw fa-plus-circle"></i> Click anywhere on the map to add a new item.</p>
+                <p><i class="fas fa-fw fa-arrows-alt"></i> Drag and drop an existing item to move it.</p>
+                <p><i class="fas fa-fw fa-trash"></i> Click on an existing item and then the "Delete" button to delete it.</p>
+                <p><b>Known Issue:</b> When adding an item for the first time (the first non-lethal melee, first stairwell, etc), it will not appear until you refresh the page.</p>
+                <div class="editor-button" data-item="cancel">
+                    <h3><i class="fas fa-times-circle"></i> Close Item Menu</h3>
+                </div>
+            </div>
+            <div class="ledges-menu" style="display: none">
+                <p data-ledge="delete-help"><i class="fas fa-trash"></i> Click on an existing ledge to delete it.</p>
+                <div class="editor-button" data-ledge="add">
+                    <h3><i class="fas fa-plus-circle"></i> Add Ledge</h3>
+                    <p>Click here to enable / disable ledge builder</p>
+                </div>
+                <div class="editor-button" data-ledge="cancel">
+                    <h3><i class="fas fa-times-circle"></i> Close Ledge Menu</h3>
+                </div>
             </div>
         </nav>
         <div class="modal" id="confirm-move-modal" tabindex="-1" role="dialog">
@@ -153,6 +174,28 @@
                             <button type="submit" class="btn btn-primary">Yes, save</button>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="confirm-delete-ledge-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delete Ledge</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <input type="hidden" name="ledge-id">
+                    <div class="modal-body">
+                        <div class="alert alert-warning">
+                            Are you sure you want to delete this ledge?
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" id="delete-ledge-btn" class="btn btn-danger">Delete</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -433,6 +476,8 @@
         var g_highestFloor = {{ model.highestFloor }};
         var g_startingFloor = {{ model.startingFloor }};
         var g_openMarker = undefined;
+        var g_workingLedgeVertices = [];
+        var g_workingLedgeLayers = [];
 
         // Initialize g_overlays for each floor
         for (var i = g_lowestFloor; i <= g_highestFloor; i++) {
@@ -522,6 +567,12 @@
                     }
                 }
 
+                var ledges = json.ledges;
+                for (var i in ledges) {
+                    var ledge = ledges[i];
+                    buildLedge(ledge).addTo(g_overlays[ledge.level]['Navigation|Ledge']);
+                }
+
                 // Build tile layers for each floor
                 for (var j = g_lowestFloor; j <= g_highestFloor; j++) {
                     var mapTileLayer = L.tileLayer('/maps/{{ model.mapFolderName }}/tiles/' + j + '/{z}/{x}/{y}.png', {
@@ -541,8 +592,7 @@
                 }).setView([{{ model.mapCenterLatitude }}, {{ model.mapCenterLongitude }}], 3);
                 g_map.setMaxBounds([[{{ model.topLeftCoordinate }}], [{{ model.bottomRightCoordinate }}]]);
                 g_map.addEventListener('click', function(e) {
-                    if (parseInt($('input[type="hidden"][name="edit-mode"]').val()) === 0) {
-                        console.debug('Editor disabled. Modal will not be shown.');
+                    if (parseInt($('input[type="hidden"][name="edit-mode"]').val()) !== 1) {
                         return;
                     }
 
@@ -591,6 +641,58 @@
                 if (g_loadImmediate) {
                     showMap();
                 }
+
+                g_map.on('pm:drawstart', function(e) {
+                    var layer = e.workingLayer;
+                    layer.on('pm:vertexadded', function(e) {
+                        console.log(e.latlng);
+                        g_workingLedgeVertices.push([e.latlng.lat, e.latlng.lng]);
+                    });
+                });
+
+                g_map.on('pm:create', function(e) {
+                    g_workingLedgeLayers.push(e.layer);
+                });
+
+                g_map.on('pm:drawend', function(e) {
+                    if (g_workingLedgeVertices.length === 0) {
+                        for (var i in g_workingLedgeLayers) {
+                            g_map.removeLayer(g_workingLedgeLayers[i]);
+                        }
+                        g_workingLedgeLayers = [];
+                        return;
+                    }
+
+                    console.log("About to save ledge.");
+                    console.log(e);
+
+                    var data = {
+                        vertices: g_workingLedgeVertices,
+                        missionId: $('input[name="mission-id"]').val(),
+                        level: $('input[type="hidden"][name="level"]').val()
+                    };
+
+                    $.ajax({
+                        url: '/api/ledges',
+                        method: 'POST',
+                        data: data,
+                        success: function(data) {
+                            var ledge = JSON.parse(data);
+                            buildLedge(ledge).addTo(g_overlays[ledge.level]['Navigation|Ledge']);
+                            g_workingLedgeVertices = [];
+                            toastr["success"]("Ledge successfully created!");
+                        },
+                        error: function() {
+                            alert('Error!');
+                        },
+                        complete: function() {
+                            for (var i in g_workingLedgeLayers) {
+                                g_map.removeLayer(g_workingLedgeLayers[i]);
+                            }
+                            g_workingLedgeLayers = [];
+                        }
+                    });
+                });
             },
             error: function() {
                 alert('An error occurred when trying to get map nodes');
@@ -657,19 +759,24 @@
                     // Find the button that toggles this layer and see if it's active or not.
                     var $icon = $('[data-layer="' + key + '"]').find('i');
                     if ($icon.hasClass('fa-eye')) {
-                        numberOfItemsOnMap += floorLayers[key].getLayers().length;
+                        if (key !== 'Navigation|Ledge') {
+                            numberOfItemsOnMap += floorLayers[key].getLayers().length;
+                        }
 
                         toggleLayer(floorLayers[key], (parseInt(floor) === parseInt(currentFloor)));
-                        for (var node in floorLayers[key].getLayers()) {
-                            var nodeProperties = floorLayers[key].getLayers()[node];
 
-                            if (nodeProperties.options.custom.node.name === itemName && !forceOff) {
-                                $(nodeProperties._icon).addClass('search-result');
-                                if (floorsToHighlight.indexOf(floor) === -1) {
-                                    floorsToHighlight.push(floor);
+                        if (key !== 'Navigation|Ledge') {
+                            for (var node in floorLayers[key].getLayers()) {
+                                var nodeProperties = floorLayers[key].getLayers()[node];
+
+                                if (nodeProperties.options.custom.node.name === itemName && !forceOff) {
+                                    $(nodeProperties._icon).addClass('search-result');
+                                    if (floorsToHighlight.indexOf(floor) === -1) {
+                                        floorsToHighlight.push(floor);
+                                    }
+                                } else {
+                                    $(nodeProperties._icon).removeClass('search-result');
                                 }
-                            } else {
-                                $(nodeProperties._icon).removeClass('search-result');
                             }
                         }
                     } else {
@@ -685,6 +792,53 @@
                 }
             }
         }
+
+        function buildLedge(ledge) {
+            var latlngs = [];
+            for (var j in ledge.vertices) {
+                var coords = ledge.vertices[j].split(',');
+                latlngs.push([coords[0], coords[1]]);
+            }
+            var polyline = L.polyline(latlngs, {
+                color: '#fff',
+                weight: 4,
+                opacity: .75,
+                custom: {
+                    id: ledge.id
+                }
+            }).on('click', function() {
+                if (parseInt($('input[type="hidden"][name="edit-mode"]').val()) !== 2) {
+                    return;
+                }
+
+                g_openMarker = this;
+
+                $('input[type="hidden"][name="ledge-id"]').val(this.options.custom.id);
+                $('#confirm-delete-ledge-modal').modal('show');
+            });
+
+            return polyline.bindTooltip('Ledge', {sticky: true});
+        }
+
+        $('#delete-ledge-btn').click(function() {
+            var $modal = $('#confirm-delete-ledge-modal');
+
+            var ledgeId = $modal.find('input[type="hidden"][name="ledge-id"]').val();
+
+            $.ajax({
+                url: '/api/ledges/delete/' + ledgeId,
+                method: 'GET',
+                success: function() {
+                    toastr["success"]("Ledge deleted!");
+                    g_map.removeLayer(g_openMarker);
+                    g_openMarker = undefined;
+                    $modal.modal('hide');
+                },
+                error: function() {
+                    toastr["error"]("Error deleting ledge!");
+                }
+            })
+        });
 
         function buildMarker(node) {
             return L.marker([node.latitude, node.longitude], {
@@ -882,6 +1036,26 @@
 
         $('.search-box').find('select').change(function() {
             updateNodeLayerState();
+        });
+
+        $('[data-ledge="add"]').click(function() {
+            if (!$(this).hasClass('selected')) {
+                g_map.pm.enableDraw('Line', { snapping: 'false', finishOn: 'mouseout' });
+                toastr["info"]("Click anywhere to start creating a ledge");
+                $(this).addClass('selected');
+                $('[data-ledge="delete-help"]').hide();
+            } else {
+                g_map.pm.disableDraw('Line');
+                $(this).removeClass('selected');
+                toastr["info"]("Ledge builder disabled");
+                $('[data-ledge="delete-help"]').show();
+            }
+        });
+
+        $('[data-ledge="cancel"]').click(function() {
+            $('[data-ledge="add"]').removeClass('selected');
+            $('[data-ledge="delete-help"]').show();
+            g_map.pm.disableDraw('line');
         });
 
         {% if model.canDeleteNodes %}
