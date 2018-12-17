@@ -253,6 +253,21 @@ $klein->respond('POST', '/api/ledges', function (\Klein\Request $request, \Klein
     return json_encode($viewModel);
 });
 
+$klein->respond('GET', '/api/ledges/delete/[:ledgeId]', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    if (!userIsLoggedIn()) {
+        print json_encode(['message' => 'You must be logged in to delete ledges!']);
+        return $response->code(401);
+    }
+
+    $ledge = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Ledge::class)->findOneBy(['id' => $request->ledgeId]);
+    $entityManager = $applicationContext->get(\Doctrine\ORM\EntityManager::class);
+    $entityManager->remove($ledge);
+    $entityManager->flush();
+
+    $response->code(200);
+    return json_encode(['message' => 'Ledge deleted!']);
+});
+
 $klein->respond('POST', '/api/nodes/move', function (\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext) {
     if (!userIsLoggedIn()) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
@@ -266,7 +281,7 @@ $klein->respond('POST', '/api/nodes/move', function (\Klein\Request $request, \K
     return json_encode(['message' => 'OK']);
 });
 
-$klein->respond('GET', '/api/nodes/delete/[:nodeId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    $klein->respond('GET', '/api/nodes/delete/[:nodeId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     if (!userIsLoggedIn()) {
         print json_encode(['message' => 'You must be logged in to modify nodes!']);
         return $response->code(401);
