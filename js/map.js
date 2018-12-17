@@ -1,25 +1,52 @@
 $(document).ready(function() {
-    $('#edit-button').click(function() {
-        var $editMode = $('input[type="hidden"][name="edit-mode"]');
-        var previousEditState = parseInt($editMode.val());
+    var EDIT_MODES = {
+        OFF: 0,
+        ITEMS: 1,
+        LEDGES: 2
+    };
 
-        if (previousEditState === 0) {
-            // Enable edit mode
-            toastr["info"]('Editor enabled. Click anywhere to create a new node.');
-            $editMode.val(1);
-            $('.editor-enabled').show();
-            $('#accordion').hide();
-            $('.edit-menu').show();
-            $('[data-toggle="tooltip"]').tooltip('hide');
-        } else {
-            // Disable edit mode
-            toastr["info"]('Editor disabled.');
-            $editMode.val(0);
-            $('.editor-enabled').hide();
+    $('#edit-button').click(function() {
+        var $editMenu = $('.edit-menu');
+        if ($editMenu.is(':visible')) {
+            $editMenu.hide();
             $('#accordion').show();
-            $('.edit-menu').hide();
-            $('[data-toggle="tooltip"]').tooltip('hide');
+        } else {
+            $editMenu.show();
+            $('#accordion').hide();
         }
+        $('[data-toggle="tooltip"]').tooltip('hide');
+    });
+
+    $('[data-editor="items"]').click(function() {
+        var $editMode = $('input[type="hidden"][name="edit-mode"]');
+        $editMode.val(EDIT_MODES.ITEMS);
+        $('.editor-enabled').show().find('h3').text('ADD / REMOVE ITEMS');
+        $('.edit-menu').hide();
+        $('.items-menu').show();
+    });
+
+    $('[data-item="cancel"]').click(function() {
+        var $editMode = $('input[type="hidden"][name="edit-mode"]');
+        $editMode.val(EDIT_MODES.OFF);
+        $('.edit-menu').show();
+        $('.items-menu').hide();
+        $('.editor-enabled').hide();
+    });
+
+    $('[data-editor="ledges"]').click(function() {
+        var $editMode = $('input[type="hidden"][name="edit-mode"]');
+        $editMode.val(EDIT_MODES.LEDGES);
+        $('.editor-enabled').show().find('h3').text('ADD / REMOVE LEDGES');
+        $('.edit-menu').hide();
+        $('.ledges-menu').show();
+    });
+
+    $('[data-ledge="cancel"]').click(function() {
+        var $editMode = $('input[type="hidden"][name="edit-mode"]');
+        $editMode.val(EDIT_MODES.OFF);
+        $('.edit-menu').show();
+        $('.ledges-menu').hide();
+        $('.editor-enabled').hide();
     });
 
     $('.search-box').find('select').change(function() {
