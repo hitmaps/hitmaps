@@ -51,6 +51,7 @@ class NodeController {
             $categoryViewModel = new CategoryViewModel();
             $categoryViewModel->name = $nodeCategory->getGroup();
             $categoryViewModel->icon = $nodeCategory->getIcon();
+            $categoryViewModel->collapsible = $nodeCategory->getCollapsible();
 
             /* @var $topLevelCategory TopLevelCategoryViewModel */
             $topLevelCategory = $groups[$nodeCategory->getType()];

@@ -78,10 +78,10 @@
                 <div class="search-box">
                     <select name="search" class="selectpicker" data-live-search="true" data-title="<i class='fas fa-search'></i> Search" data-style="control-button">
                         {% for typeName,type in model.searchableNodes %}
-                            {% for groupName,group in type %}
-                                <optgroup label="{{ groupName }}">
-                                    {% for node in group %}
-                                        <option data-layer="{{ typeName }}|{{ groupName }}">{{ node.name }}</option>
+                            {% for group in type.items %}
+                                <optgroup label="{{ group.name }}">
+                                    {% for node in group.items %}
+                                        <option data-layer="{{ typeName }}|{{ group.name }}">{{ node.name }}</option>
                                     {% endfor %}
                                 </optgroup>
                             {% endfor %}
@@ -94,26 +94,47 @@
                 {% for typeName,type in model.nodes %}
                     <div class="card">
                         <div class="card-header" id="header-{{ loop.index0 }}">
-                            <div class="visibility-toggle" data-layer="{{ typeName }}|*">
-                                <i class="far fa-eye"></i>
-                            </div>
                             <div class="name collapsed" data-toggle="collapse"
                                  data-target="#body-{{ loop.index0 }}" aria-expanded="false" aria-controls="body-{{ loop.index0 }}">
                                 {{ typeName }}
                                 <span class="float-right">
-                                <i class="fas fa-caret-down"></i>
-                                <i class="fas fa-caret-up"></i>
-                            </span>
+                                    <i class="fas fa-caret-down"></i>
+                                    <i class="fas fa-caret-up"></i>
+                                </span>
+                            </div>
+                            <div class="visibility-toggle" data-layer="{{ typeName }}|*">
+                                <i class="far fa-eye"></i>
                             </div>
                         </div>
-                        <div id="body-{{ loop.index0 }}" class="collapse" aria-labelledby="header-{{ loop.index0 }}" data-parent="#accordion">
+                        <div id="body-{{ loop.index0 }}" class="collapse" aria-labelledby="header-{{ loop.index0 }}">
                             <div class="card-body">
-                                {% for groupName,group in type %}
-                                    <a href="javascript:" data-layer="{{ typeName }}|{{ groupName }}"><i class="far fa-eye"></i></a>
-                                    <b>{{ groupName }}</b>
-                                    {% for node in group %}
-                                        <p>{{ node.name }}</p>
-                                    {% endfor %}
+                                {% for groupName,group in type.items %}
+                                    <div data-layer="{{ typeName }}|{{ groupName }}" class="{{ group.collapsible ? 'full-width' : 'half-width' }}">
+                                        <div class="name">
+                                            <img src="/img/map-icons/{{ group.icon }}.png" alt="{{ groupName }} Icon" class="img-fluid">
+                                            <span>{{ groupName }}</span>
+                                        </div>
+                                        {% if group.collapsible %}
+                                            <div class="visibility-toggle" data-toggle="collapse" data-target="#collapsible-{{ typeName|replace({' ': '_'}) }}-{{ groupName|replace({' ': '_'}) }}">
+                                                <i class="fas fa-caret-up"></i>
+                                                <i class="fas fa-caret-down"></i>
+                                            </div>
+                                            <div class="collapsible-items collapse {{ group.icon == 'sabotage' ? 'show' : '' }}" id="collapsible-{{ typeName|replace({' ': '_'}) }}-{{ groupName|replace({' ': '_'}) }}">
+                                                <ul style="columns: {{ group.items|length > 1 ? 2 : 1 }}">
+                                                    {% for node in group.items %}
+                                                        <li>
+                                                            {% if node.icon != group.icon %}
+                                                                <img src="/img/map-icons/{{ node.icon }}.png" alt="{{ node.name }} Icon" class="img-fluid">
+                                                            {% endif %}
+                                                            {{ node.name }}
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+
                                 {% endfor %}
                             </div>
                         </div>
