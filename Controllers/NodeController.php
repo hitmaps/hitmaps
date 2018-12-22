@@ -6,7 +6,10 @@ namespace Controllers;
 use BusinessLogic\UserRole;
 use Controllers\ViewModels\NodeNoteViewModel;
 use Controllers\ViewModels\NodeWithNotesViewModel;
+use Controllers\ViewModels\Sidebar\CategoryViewModel;
+use Controllers\ViewModels\Sidebar\TopLevelCategoryViewModel;
 use DataAccess\Models\Node;
+use DataAccess\Models\NodeCategory;
 use DataAccess\Models\NodeNote;
 use DataAccess\Models\User;
 use DataAccess\Repositories\NodeRepository;
@@ -23,20 +26,38 @@ class NodeController {
     /* @var $nodeNoteRepository ObjectRepository */
     private $nodeNoteRepository;
 
+    /* @var $nodeCategoryRepository ObjectRepository */
+    private $nodeCategoryRepository;
+
     public function __construct(EntityManager $entityManager) {
         $this->entityManager = $entityManager;
         $this->nodeRepository = $entityManager->getRepository(Node::class);
         $this->nodeNoteRepository = $entityManager->getRepository(NodeNote::class);
+        $this->nodeCategoryRepository = $entityManager->getRepository(NodeCategory::class);
     }
 
     public function getNodesForMission(int $missionid, string $difficulty, bool $distinctOnly = false, bool $searchableOnly = false): array {
         $nodes = $this->nodeRepository->findByMissionAndDifficulty($missionid, $difficulty);
 
         $groups = [
-            'Points of Interest' => [],
-            'Weapons and Tools' => [],
-            'Navigation' => [],
+            'Points of Interest' => new TopLevelCategoryViewModel('Points of Interest'),
+            'Weapons and Tools' => new TopLevelCategoryViewModel('Weapons and Tools'),
+            'Navigation' => new TopLevelCategoryViewModel('Navigation'),
         ];
+
+        $nodeCategories = $this->nodeCategoryRepository->findBy([], ['order' => 'ASC']);
+        foreach ($nodeCategories as $nodeCategory) {
+            /* @var $nodeCategory NodeCategory */
+            $categoryViewModel = new CategoryViewModel();
+            $categoryViewModel->name = $nodeCategory->getGroup();
+            $categoryViewModel->icon = $nodeCategory->getIcon();
+
+            /* @var $topLevelCategory TopLevelCategoryViewModel */
+            $topLevelCategory = $groups[$nodeCategory->getType()];
+
+            $topLevelCategory->items[$nodeCategory->getGroup()] = $categoryViewModel;
+        }
+
         $addedNodes = [];
         foreach ($nodes as $node) {
             /* @var $node Node */
@@ -49,10 +70,6 @@ class NodeController {
 
             $type = $node->getType();
             $group = $node->getGroup();
-
-            if (!isset($groups[$type][$group])) {
-                $groups[$type][$group] = [];
-            }
 
             if (!$distinctOnly ||
                 $node->getName() === null ||
@@ -96,16 +113,16 @@ class NodeController {
                     $nodeViewModel->notes[] = $innerViewModel;
                 }
 
-                $groups[$type][$group][] = $nodeViewModel;
+                /* @var $categoryViewModel CategoryViewModel */
+                $categoryViewModel = $groups[$type]->items[$group];
+
+                $categoryViewModel->items[] = $nodeViewModel;
 
                 if ($distinctOnly && $node->getName() !== null && $node->getName() !== '') {
                     $addedNodes[] = $type . $group . $node->getName();
                 }
             }
         }
-
-        // Add ledges
-        $groups['Navigation']['Ledge'] = [];
 
         return $groups;
     }
