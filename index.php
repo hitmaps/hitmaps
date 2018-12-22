@@ -174,7 +174,6 @@ $klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]'
     $viewModel->nodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($viewModel->missionId, $request->difficulty, true);
     $viewModel->searchableNodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($viewModel->missionId, $request->difficulty, true, true);
 
-    die(var_dump($viewModel));
     return \Controllers\Renderer::render('map.twig', $twig, $viewModel);
 });
 

@@ -218,7 +218,7 @@ html {
         }
 
         .name {
-          margin-left: 10px;
+          margin-right: 10px;
           width: 313px;
         }
 
@@ -258,12 +258,94 @@ html {
       }
 
       .card-body {
-        background: #bbb;
-        border: 2px solid #fff;
-        border-top-width: 0;
+        background: #000;
+        border-radius: 0;
+        border: none;
+        padding: 0;
+        margin-bottom: 10px;
 
-        i {
-          color: #000;
+        .visibility-toggle {
+          width: 40px;
+          text-align: center;
+        }
+
+        .full-width {
+          .name {
+            width: 313px;
+          }
+        }
+
+        .half-width {
+          width: 180px;
+          display: inline-block;
+        }
+
+        .name {
+          margin-right: 10px;
+          vertical-align: top;
+          opacity: .85;
+
+          span {
+            vertical-align: middle;
+          }
+        }
+
+        .visibility-toggle {
+          background: #2a2d31;
+        }
+
+        .name, .visibility-toggle {
+          display: inline-block;
+          color: #fff;
+          cursor: pointer;
+          height: 40px;
+          border-radius: 3px;
+          
+          &.hidden {
+            text-decoration: line-through;
+          }
+
+          .fa-caret-down {
+            display: none;
+          }
+
+          .fa-caret-up {
+            display: inline;
+          }
+
+          &.collapsed {
+            .fa-caret-up {
+              display: none;
+            }
+
+            .fa-caret-down {
+              display: inline;
+            }
+          }
+
+          &:hover {
+            color: #fff;
+            text-decoration: none;
+            opacity: 1;
+          }
+        }
+
+        .collapsible-items {
+          ul {
+            list-style-type: none;
+            padding: 0 15px 10px 15px;
+            background: #2a2d31;
+          }
+
+          li {
+            padding-top: 15px;
+            color: #fff;
+            opacity: .85;
+
+            &:hover {
+              opacity: 1;
+            }
+          }
         }
       }
     }
