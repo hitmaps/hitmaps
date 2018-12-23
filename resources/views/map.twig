@@ -90,7 +90,7 @@
                     <button id="clear-search" class="btn control-button" data-toggle="tooltip" title="Clear Search" style="display: none"><i class="fas fa-times"></i></button>
                 </div>
                 <button id="hide-all" class="btn control-button"><i class="far fa-fw fa-eye-slash"></i> Hide All</button>
-                <button id="show-all" class="btn control-button"><i class="fas fa-fw fa-eye"></i> Show All</button>
+                <button id="show-all" class="btn control-button"><i class="far fa-fw fa-eye"></i> Show All</button>
                 {% for typeName,type in model.nodes %}
                     <div class="card">
                         <div class="card-header" id="header-{{ loop.index0 }}">
@@ -102,24 +102,25 @@
                                     <i class="fas fa-caret-up"></i>
                                 </span>
                             </div>
-                            <div class="visibility-toggle" data-layer="{{ typeName }}|*">
+                            <div class="visibility-toggle group-toggle" data-layer="{{ typeName }}|*">
                                 <i class="far fa-eye"></i>
+                                <i class="far fa-eye-slash"></i>
                             </div>
                         </div>
                         <div id="body-{{ loop.index0 }}" class="collapse" aria-labelledby="header-{{ loop.index0 }}">
                             <div class="card-body">
                                 {% for groupName,group in type.items %}
-                                    <div data-layer="{{ typeName }}|{{ groupName }}" class="{{ group.collapsible ? 'full-width' : 'half-width' }}">
-                                        <div class="name">
+                                    <div class="{{ group.collapsible ? 'full-width' : 'half-width' }}">
+                                        <div class="name" data-layer="{{ typeName }}|{{ groupName }}">
                                             <img src="/img/map-icons/{{ group.icon }}.png" alt="{{ groupName }} Icon" class="img-fluid">
                                             <span>{{ groupName }}</span>
                                         </div>
                                         {% if group.collapsible %}
-                                            <div class="visibility-toggle" data-toggle="collapse" data-target="#collapsible-{{ typeName|replace({' ': '_'}) }}-{{ groupName|replace({' ': '_'}) }}">
+                                            <div class="visibility-toggle collapsed" data-toggle="collapse" data-target="#collapsible-{{ typeName|replace({' ': '_'}) }}-{{ groupName|replace({' ': '_'}) }}">
                                                 <i class="fas fa-caret-up"></i>
                                                 <i class="fas fa-caret-down"></i>
                                             </div>
-                                            <div class="collapsible-items collapse {{ group.icon == 'sabotage' ? 'show' : '' }}" id="collapsible-{{ typeName|replace({' ': '_'}) }}-{{ groupName|replace({' ': '_'}) }}">
+                                            <div class="collapsible-items collapse" id="collapsible-{{ typeName|replace({' ': '_'}) }}-{{ groupName|replace({' ': '_'}) }}">
                                                 <ul style="columns: {{ group.items|length > 1 ? 2 : 1 }}">
                                                     {% for node in group.items %}
                                                         <li>
@@ -133,8 +134,6 @@
                                             </div>
                                         {% endif %}
                                     </div>
-
-
                                 {% endfor %}
                             </div>
                         </div>
@@ -506,50 +505,70 @@
         }
 
         $('#hide-all').click(function() {
-            var $pointsOfInterest = $('[data-layer="Points of Interest|*"]');
-            if ($pointsOfInterest.find('i').hasClass('fa-eye')) {
-                $pointsOfInterest.click();
+            var pois =$('[data-layer^="Points of Interest"]');
+            for (var i in pois) {
+                var $poi = $(pois[i]);
+                if (!$poi.hasClass('map-hidden')) {
+                    $poi.click();
+                }
             }
 
-            var $weaponsAndTools = $('[data-layer="Weapons and Tools|*"]');
-            if ($weaponsAndTools.find('i').hasClass('fa-eye')) {
-                $weaponsAndTools.click();
+            var weaponsAndTools =$('[data-layer^="Weapons and Tools"]');
+            for (var i in weaponsAndTools) {
+                var $weaponOrTool = $(weaponsAndTools[i]);
+                if (!$weaponOrTool.hasClass('map-hidden')) {
+                    $weaponOrTool.click();
+                }
             }
 
-            var $navigation = $('[data-layer="Navigation|*"]');
-            if ($navigation.find('i').hasClass('fa-eye')) {
-                $navigation.click();
+            var navigations =$('[data-layer^="Navigation"]');
+            for (var i in navigations) {
+                var $navigation = $(navigations[i]);
+                if (!$navigation.hasClass('map-hidden')) {
+                    $navigation.click();
+                }
             }
         });
 
         $('#show-all').click(function() {
-            var $pointsOfInterest = $('[data-layer="Points of Interest|*"]');
-            if ($pointsOfInterest.find('i').hasClass('fa-eye-slash')) {
-                $pointsOfInterest.click();
+            var pois =$('[data-layer^="Points of Interest"]');
+            for (var i in pois) {
+                var $poi = $(pois[i]);
+                if ($poi.hasClass('map-hidden')) {
+                    $poi.click();
+                }
             }
 
-            var $weaponsAndTools = $('[data-layer="Weapons and Tools|*"]');
-            if ($weaponsAndTools.find('i').hasClass('fa-eye-slash')) {
-                $weaponsAndTools.click();
+            var weaponsAndTools =$('[data-layer^="Weapons and Tools"]');
+            for (var i in weaponsAndTools) {
+                var $weaponOrTool = $(weaponsAndTools[i]);
+                if ($weaponOrTool.hasClass('map-hidden')) {
+                    $weaponOrTool.click();
+                }
             }
 
-            var $navigation = $('[data-layer="Navigation|*"]');
-            if ($navigation.find('i').hasClass('fa-eye-slash')) {
-                $navigation.click();
+            var navigations =$('[data-layer^="Navigation"]');
+            for (var i in navigations) {
+                var $navigation = $(navigations[i]);
+                if ($navigation.hasClass('map-hidden')) {
+                    $navigation.click();
+                }
             }
         });
 
         $('[data-layer]').click(function() {
             var target = $(this).attr('data-layer');
-            var typeToggle = target.includes('*');
-            var shouldShow = $(this).find('i').hasClass('fa-eye-slash');
-            var currentFloor = $('input[type="hidden"][name="level"]').val();
+            var shouldShow = $(this).hasClass('map-hidden');
             target = target.replace('*', '');
+            var targetParts = target.split('|');
 
             if (shouldShow) {
-                $('[data-layer^="' + target + '"]').find('i').removeClass('fa-eye-slash').addClass('fa-eye');
+                $('[data-layer^="' + target + '"]').removeClass('map-hidden');
+
+                // Always re-enable the type's icon since *something* is showing
+                $('[data-layer="' + targetParts[0] + '|*"]').removeClass('map-hidden');
             } else {
-                $('[data-layer^="' + target + '"]').find('i').addClass('fa-eye-slash').removeClass('fa-eye');
+                $('[data-layer^="' + target + '"]').addClass('map-hidden');
             }
 
             updateNodeLayerState();
@@ -574,10 +593,10 @@
                 var nodes = json.nodes;
                 for (var typeName in nodes) {
                     var type = nodes[typeName];
-                    for (var groupName in type) {
-                        var group = type[groupName];
-                        for (var k in group) {
-                            var node = group[k];
+                    for (var groupName in type.items) {
+                        var group = type.items[groupName];
+                        for (var k in group.items) {
+                            var node = group.items[k];
                             var marker = buildMarker(node).bindPopup(buildPopup);
                             if (node.name !== '') {
                                 marker.bindTooltip(node.name);
@@ -767,8 +786,9 @@
         function updateNodeLayerState() {
             var currentFloor = $('input[type="hidden"][name="level"]').val();
             var $searchedItem = $('select[name="search"] option:selected');
-            var itemName = $searchedItem !== undefined ? $searchedItem.text() : undefined;
-            var layer = $searchedItem !== undefined ? $searchedItem.attr('data-layer') : undefined;
+            var bootstrapSelectInitialized = $('.search-box').find('.bootstrap-select').length > 0;
+            var itemName = $searchedItem !== undefined && bootstrapSelectInitialized ? $searchedItem.text() : undefined;
+            var layer = $searchedItem !== undefined && bootstrapSelectInitialized ? $searchedItem.attr('data-layer') : undefined;
 
             var floorsToHighlight = [];
             for (var floor in g_overlays) {
@@ -779,7 +799,7 @@
 
                     // Find the button that toggles this layer and see if it's active or not.
                     var $icon = $('[data-layer="' + key + '"]').find('i');
-                    if ($icon.hasClass('fa-eye')) {
+                    if (!$icon.hasClass('map-hidden')) {
                         if (key !== 'Navigation|Ledge') {
                             numberOfItemsOnMap += floorLayers[key].getLayers().length;
                         }

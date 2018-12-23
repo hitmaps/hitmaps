@@ -215,6 +215,24 @@ html {
         .visibility-toggle {
           width: 40px;
           text-align: center;
+
+          .fa-eye-slash {
+            display: none;
+          }
+
+          .fa-eye {
+            display: inline;
+          }
+
+          &.map-hidden {
+            .fa-eye-slash {
+              display: inline;
+            }
+
+            .fa-eye {
+              display: none;
+            }
+          }
         }
 
         .name {
@@ -273,11 +291,14 @@ html {
           .name {
             width: 313px;
           }
+
+          margin-bottom: 5px;
         }
 
         .half-width {
           width: 180px;
           display: inline-block;
+          margin-bottom: 5px;
         }
 
         .name {
@@ -288,10 +309,19 @@ html {
           span {
             vertical-align: middle;
           }
+
+          &.map-hidden {
+            opacity: .65;
+
+            span {
+              text-decoration: line-through;
+            }
+          }
         }
 
         .visibility-toggle {
           background: #2a2d31;
+          padding: 10px;
         }
 
         .name, .visibility-toggle {
@@ -300,7 +330,7 @@ html {
           cursor: pointer;
           height: 40px;
           border-radius: 3px;
-          
+
           &.hidden {
             text-decoration: line-through;
           }
@@ -311,6 +341,7 @@ html {
 
           .fa-caret-up {
             display: inline;
+            vertical-align: text-top;
           }
 
           &.collapsed {
@@ -320,6 +351,7 @@ html {
 
             .fa-caret-down {
               display: inline;
+              vertical-align: text-top;
             }
           }
 
@@ -331,10 +363,13 @@ html {
         }
 
         .collapsible-items {
+          margin-top: 5px;
+
           ul {
             list-style-type: none;
             padding: 0 15px 10px 15px;
             background: #2a2d31;
+            border-radius: 3px;
           }
 
           li {
