@@ -116,7 +116,8 @@ class NodeController {
 
                 /* @var $categoryViewModel CategoryViewModel */
                 $categoryViewModel = $groups[$type]->items[$group];
-                $categoryViewModel->items[$nodeViewModel->name] = $nodeViewModel;
+
+                $categoryViewModel->items[] = $nodeViewModel;
 
                 if ($distinctOnly && $node->getName() !== null && $node->getName() !== '') {
                     $addedNodes[] = $type . $group . $node->getName();
