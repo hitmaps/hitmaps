@@ -77,6 +77,11 @@ class NodeCategory {
     public $searchable;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    public $collapsible;
+
+    /**
      * @return mixed
      */
     public function getId(): int {
@@ -256,5 +261,19 @@ class NodeCategory {
      */
     public function setSearchable($searchable): void {
         $this->searchable = $searchable;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCollapsible() {
+        return $this->collapsible;
+    }
+
+    /**
+     * @param mixed $collapsible
+     */
+    public function setCollapsible($collapsible): void {
+        $this->collapsible = $collapsible;
     }
 }
