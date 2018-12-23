@@ -48,11 +48,6 @@ class NodeController {
         $nodeCategories = $this->nodeCategoryRepository->findBy([], ['order' => 'ASC']);
         foreach ($nodeCategories as $nodeCategory) {
             /* @var $nodeCategory NodeCategory */
-            if ($nodeCategory->getType() === 'Weapons and Tools' &&
-                $nodeCategory->getGroup() === 'Distraction') {
-                continue;
-            }
-
             $categoryViewModel = new CategoryViewModel();
             $categoryViewModel->name = $nodeCategory->getGroup();
             $categoryViewModel->icon = $nodeCategory->getIcon();
@@ -120,14 +115,7 @@ class NodeController {
                 }
 
                 /* @var $categoryViewModel CategoryViewModel */
-                if ($node->getType() === 'Weapons and Tools' &&
-                    $node->getGroup() === 'Distraction') {
-                    $categoryViewModel = $groups[$type];
-                } else {
-                    $categoryViewModel = $groups[$type]->items[$group];
-                }
-
-
+                $categoryViewModel = $groups[$type]->items[$group];
                 $categoryViewModel->items[$nodeViewModel->name] = $nodeViewModel;
 
                 if ($distinctOnly && $node->getName() !== null && $node->getName() !== '') {
