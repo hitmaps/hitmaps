@@ -798,8 +798,7 @@
                     var forceOff = (layer !== key || itemName === undefined);
 
                     // Find the button that toggles this layer and see if it's active or not.
-                    var $icon = $('[data-layer="' + key + '"]').find('i');
-                    if (!$icon.hasClass('map-hidden')) {
+                    if (!$('[data-layer="' + key + '"]').hasClass('map-hidden')) {
                         if (key !== 'Navigation|Ledge') {
                             numberOfItemsOnMap += floorLayers[key].getLayers().length;
                         }
