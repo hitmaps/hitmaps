@@ -505,70 +505,70 @@
         }
 
         $('#hide-all').click(function() {
-            var pois =$('[data-layer^="Points of Interest"]');
-            for (var i in pois) {
-                var $poi = $(pois[i]);
+            var pois =$('div[data-layer^="Points of Interest"]');
+            $.each(pois, function() {
+                var $poi = $(this);
                 if (!$poi.hasClass('map-hidden')) {
                     $poi.click();
                 }
-            }
+            });
 
-            var weaponsAndTools =$('[data-layer^="Weapons and Tools"]');
-            for (var i in weaponsAndTools) {
-                var $weaponOrTool = $(weaponsAndTools[i]);
+            var weaponsAndTools =$('div[data-layer^="Weapons and Tools"]');
+            $.each(weaponsAndTools, function() {
+                var $weaponOrTool = $(this);
                 if (!$weaponOrTool.hasClass('map-hidden')) {
                     $weaponOrTool.click();
                 }
-            }
+            });
 
-            var navigations =$('[data-layer^="Navigation"]');
-            for (var i in navigations) {
-                var $navigation = $(navigations[i]);
+            var navigations =$('div[data-layer^="Navigation"]');
+            $.each(navigations, function() {
+                var $navigation = $(this);
                 if (!$navigation.hasClass('map-hidden')) {
                     $navigation.click();
                 }
-            }
+            });
         });
 
         $('#show-all').click(function() {
-            var pois =$('[data-layer^="Points of Interest"]');
-            for (var i in pois) {
-                var $poi = $(pois[i]);
+            var pois =$('div[data-layer^="Points of Interest"]');
+            $.each(pois, function() {
+                var $poi = $(this);
                 if ($poi.hasClass('map-hidden')) {
                     $poi.click();
                 }
-            }
+            });
 
-            var weaponsAndTools =$('[data-layer^="Weapons and Tools"]');
-            for (var i in weaponsAndTools) {
-                var $weaponOrTool = $(weaponsAndTools[i]);
+            var weaponsAndTools =$('div[data-layer^="Weapons and Tools"]');
+            $.each(weaponsAndTools, function() {
+                var $weaponOrTool = $(this);
                 if ($weaponOrTool.hasClass('map-hidden')) {
                     $weaponOrTool.click();
                 }
-            }
+            });
 
-            var navigations =$('[data-layer^="Navigation"]');
-            for (var i in navigations) {
-                var $navigation = $(navigations[i]);
+            var navigations =$('div[data-layer^="Navigation"]');
+            $.each(navigations, function() {
+                var $navigation = $(this);
                 if ($navigation.hasClass('map-hidden')) {
                     $navigation.click();
                 }
-            }
+            });
         });
 
-        $('[data-layer]').click(function() {
+        $('div[data-layer]').click(function() {
             var target = $(this).attr('data-layer');
             var shouldShow = $(this).hasClass('map-hidden');
             target = target.replace('*', '');
             var targetParts = target.split('|');
 
             if (shouldShow) {
-                $('[data-layer^="' + target + '"]').removeClass('map-hidden');
+                $('div[data-layer^="' + target + '"]').removeClass('map-hidden');
 
                 // Always re-enable the type's icon since *something* is showing
-                $('[data-layer="' + targetParts[0] + '|*"]').removeClass('map-hidden');
+                $('div[data-layer="' + targetParts[0] + '|*"]').removeClass('map-hidden');
             } else {
-                $('[data-layer^="' + target + '"]').addClass('map-hidden');
+                $('div[data-layer^="' + target + '"]').addClass('map-hidden');
             }
 
             updateNodeLayerState();
@@ -798,7 +798,7 @@
                     var forceOff = (layer !== key || itemName === undefined);
 
                     // Find the button that toggles this layer and see if it's active or not.
-                    if (!$('[data-layer="' + key + '"]').hasClass('map-hidden')) {
+                    if (!$('div[data-layer="' + key + '"]').hasClass('map-hidden')) {
                         if (key !== 'Navigation|Ledge') {
                             numberOfItemsOnMap += floorLayers[key].getLayers().length;
                         }
