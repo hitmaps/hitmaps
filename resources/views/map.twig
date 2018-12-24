@@ -1075,6 +1075,20 @@
         });
 
         $('.search-box').find('select').change(function() {
+            // Enable the layer that was selected
+            var selectedOption = $(this).find('option:selected');
+            if (selectedOption.length === 0) {
+                updateNodeLayerState();
+                return;
+            }
+
+            var layer = $(selectedOption).attr('data-layer');
+            var layerButton = $('div[data-layer="' + layer + '"]');
+
+            if (layerButton.hasClass('map-hidden')) {
+                layerButton.click();
+            }
+
             updateNodeLayerState();
         });
 
