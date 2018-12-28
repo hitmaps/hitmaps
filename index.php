@@ -23,6 +23,11 @@ $klein->respond('GET', '/', function () use ($twig, $applicationContext) {
         $viewModel->games[] = $gameViewModel;
     }
 
+    /* @var $elusiveTargetRepository \DataAccess\Repositories\ElusiveTargetRepository */
+    $elusiveTargetRepository = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\ElusiveTarget::class);
+
+    $viewModel->elusiveTarget = $elusiveTargetRepository->getActiveElusiveTarget();
+
     return \Controllers\Renderer::render('game-select.twig', $twig, $viewModel);
 });
 
