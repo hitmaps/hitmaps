@@ -28,10 +28,11 @@
                 </a>
             </div>
         {% endfor %}
-        {# TODO Elusive Target #}
-        <div class="elusive-target col-lg" style="background: url('{{ settings.cdnLocation }}/jpg/elusive-targets/the-revolutionary.jpg') no-repeat center; background-size: cover">
+        {% if model.elusiveTarget != null %}
+        <div class="elusive-target col-lg" style="background: url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}{{ model.elusiveTarget.imageUrl }}.{{ model.jpgBackgroundFileExtension }}') no-repeat center; background-size: cover">
             <a href="#">
                 <p>&nbsp;</p>
+                <p id="elusive-countdown"></p>
                 <div class="elusive-target-info">
                     <div class="image">
                         <img src="/img/game-icons/elusive-target.png" class="normal img-fluid" alt="Elusive Target Icon">
@@ -39,10 +40,44 @@
                     </div>
                     <div class="text">
                         <h2>Elusive Target</h2>
-                        <h1>The Revolutionary</h1>
+                        <h1>{{ model.elusiveTarget.name }}</h1>
                     </div>
                 </div>
             </a>
         </div>
+        <script>
+            var expirationUtc = moment.utc('{{ model.elusiveTarget.endingTime|date('Y-m-d H:i:s') }}');
+
+            var countdown = setInterval(function() {
+                var currentUtc = moment.utc();
+                var difference = moment(expirationUtc.diff(currentUtc));
+
+                if (difference < 0) {
+                    $('#elusive-countdown').text('Ended');
+                    clearInterval(countdown);
+                    return;
+                }
+
+                var days = expirationUtc.diff(currentUtc, 'days');
+                var hours = difference.hours();
+                var minutes = getFormattedDuration(difference.minutes());
+                var seconds = getFormattedDuration(difference.seconds());
+                if (days > 0) {
+                    hours += days * 24;
+                }
+                hours = getFormattedDuration(hours);
+
+                $('#elusive-countdown').text(hours + ':' + minutes + ':' + seconds);
+            }, 1000);
+
+            function getFormattedDuration(duration) {
+                if (duration < 10) {
+                    return '0' + duration;
+                }
+
+                return duration;
+            }
+        </script>
+        {% endif %}
     </div>
 {% endblock %}

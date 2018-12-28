@@ -111,7 +111,7 @@ header {
     margin-right: -15px;
     text-decoration: none;
 
-    > p {
+    > p:first-child {
       flex-grow: 1;
     }
   }
@@ -178,6 +178,7 @@ header {
   img {
     margin-top: 20px;
     margin-bottom: 20px;
+    box-shadow: #000 5px 5px 40px;
   }
 
   h2 {
@@ -252,6 +253,7 @@ header {
   img {
     margin-top: 20px;
     margin-bottom: 20px;
+    box-shadow: #000 5px 5px 40px;
   }
 
   h2 {
