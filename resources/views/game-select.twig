@@ -1,26 +1,48 @@
 {% extends 'base.twig' %}
 
 {% set page_title = 'Home' %}
-{% set body_style = "background: url('/img/backgrounds/home.#{model.backgroundFileExtension}') no-repeat center; background-size: cover" %}
+{% set body_style = "background: url('/img/backgrounds/loading.#{model.backgroundFileExtension}') no-repeat center; background-size: cover" %}
 
 {% block content %}
     <header class="row">
         <div class="col text-center">
             <h1>Interactive Maps For</h1>
             <img src="/img/logos/hitman2.{{ model.backgroundFileExtension }}">
-            <h2>Select Your Campaign</h2>
         </div>
     </header>
-    <div class="row">
+    <div class="row dashboard">
         {% for game in model.games %}
-            <div class="col-lg {{ game.slug }} text-center">
+            <div class="game col-lg" style="background: url('/img/backgrounds/{{ game.slug }}.png') no-repeat center; background-size: cover">
                 <a href="/games/{{ game.slug }}">
-                    <div class="game-btn" style="background: url('/img/backgrounds/{{ game.slug }}.png') no-repeat center">
-                        <img src="/img/logos/{{ game.slug }}.{{ model.backgroundFileExtension }}" class="img-fluid">
-                        <h2>{{ game.tagline }}</h2>
+                    <p>&nbsp;</p>
+                    <div class="game-info">
+                        <div class="image">
+                            <img src="/img/game-icons/campaign.png" class="normal img-fluid" alt="Campaign Icon">
+                            <img src="/img/game-icons/campaign-inverted.png" class="inverted img-fluid" alt="Campaign Icon">
+                        </div>
+                        <div class="text">
+                            <h2>Campaign</h2>
+                            <h1>{{ game.fullName }}</h1>
+                        </div>
                     </div>
                 </a>
             </div>
         {% endfor %}
+        {# TODO Elusive Target #}
+        <div class="elusive-target col-lg" style="background: url('{{ settings.cdnLocation }}/jpg/elusive-targets/the-revolutionary.jpg') no-repeat center; background-size: cover">
+            <a href="#">
+                <p>&nbsp;</p>
+                <div class="elusive-target-info">
+                    <div class="image">
+                        <img src="/img/game-icons/elusive-target.png" class="normal img-fluid" alt="Elusive Target Icon">
+                        <img src="/img/game-icons/elusive-target-inverted.png" class="inverted img-fluid" alt="Elusive Target Icon">
+                    </div>
+                    <div class="text">
+                        <h2>Elusive Target</h2>
+                        <h1>The Revolutionary</h1>
+                    </div>
+                </div>
+            </a>
+        </div>
     </div>
 {% endblock %}
