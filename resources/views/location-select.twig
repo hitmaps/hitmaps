@@ -1,18 +1,18 @@
 {% extends 'base.twig' %}
 
 {% set page_title = model.fullName %}
-{% set body_style = "background: url('/img/backgrounds/#{model.game}.#{model.backgroundFileExtension}') no-repeat center; background-size: cover" %}
+{% set body_style = "background: url('#{settings.cdnLocation}/#{model.jpgBackgroundFileExtension}/backgrounds/#{model.game}.#{model.jpgBackgroundFileExtension}') no-repeat center; background-size: cover" %}
 {% set body_class = model.game %}
 
 {% block content %}
     <div class="site-container">
         <div class="text-center">
-            <img src="/img/logos/{{ model.game }}.{{ model.backgroundFileExtension }}" class="img-fluid">
+            <img src="{{ settings.cdnLocation }}/{{ model.pngBackgroundFileExtension }}/logos/{{ model.game }}.{{ model.pngBackgroundFileExtension }}" class="img-fluid">
             <h2>{{ model.tagline }}</h2>
         </div>
         <div class="row">
             {% for location in model.locations %}
-                <div class="location col-lg col-md-6" style="background: url('/img/locations/{{ model.game }}/{{ location.slug }}.{{ model.backgroundFileExtension }}') no-repeat center">
+                <div class="location col-lg col-md-6" style="background: url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/locations/{{ model.game }}/{{ location.slug }}.{{ model.jpgBackgroundFileExtension }}') no-repeat center">
                     <a href="/games/{{ model.game }}/{{ location.slug }}">
                         <p>&nbsp;</p>
                         <div class="location-info">

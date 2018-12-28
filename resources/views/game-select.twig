@@ -1,18 +1,18 @@
 {% extends 'base.twig' %}
 
 {% set page_title = 'Home' %}
-{% set body_style = "background: url('/img/backgrounds/loading.#{model.backgroundFileExtension}') no-repeat center; background-size: cover" %}
+{% set body_style = "background: url('#{settings.cdnLocation}/#{model.jpgBackgroundFileExtension}/backgrounds/loading.#{model.jpgBackgroundFileExtension}') no-repeat center; background-size: cover" %}
 
 {% block content %}
     <header class="row">
         <div class="col text-center">
             <h1>Interactive Maps For</h1>
-            <img src="/img/logos/hitman2.{{ model.backgroundFileExtension }}">
+            <img src="{{ settings.cdnLocation }}/{{ model.pngBackgroundFileExtension }}/logos/hitman2.{{ model.pngBackgroundFileExtension }}">
         </div>
     </header>
     <div class="row dashboard">
         {% for game in model.games %}
-            <div class="game col-lg" style="background: url('/img/backgrounds/{{ game.slug }}.png') no-repeat center; background-size: cover">
+            <div class="game col-lg" style="background: url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/backgrounds/{{ game.slug }}.{{ model.jpgBackgroundFileExtension }}') no-repeat center; background-size: cover">
                 <a href="/games/{{ game.slug }}">
                     <p>&nbsp;</p>
                     <div class="game-info">
