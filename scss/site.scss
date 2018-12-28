@@ -115,6 +115,18 @@ header {
       flex-grow: 1;
     }
   }
+
+  .elusive-target {
+    .countdown {
+      padding: 15px;
+
+      #elusive-countdown {
+        color: darkgoldenrod;
+        font-size: 1.5rem;
+        vertical-align: middle;
+      }
+    }
+  }
 }
 
 .hitman {
