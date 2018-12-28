@@ -5,8 +5,8 @@ namespace DataAccess\Models;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="campaigns")
+ * @ORM\Entity(repositoryClass="DataAccess\Repositories\ElusiveTargetRepository")
+ * @ORM\Table(name="elusive_targets")
  */
 class ElusiveTarget {
     /**
