@@ -18,17 +18,119 @@ header {
   }
 }
 
-.hitman {
-  /* Homepage */
-  .game-btn {
-    border: solid 1px #fff;
-    padding: 20px;
+@media (min-width: 992px) {
+  .game {
+    height: 500px;
+  }
+}
+
+.dashboard {
+  margin: 40px;
+
+  .game, .elusive-target {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    margin-left: 3px;
+    margin-right: 3px;
+
 
     &:hover {
-      box-shadow: 10px 10px 25px #000;
+      .game-info, .elusive-target-info {
+        color: white;
+        background: rgb(252, 0, 59);
+
+        h2 {
+          color: white;
+        }
+
+        .image img {
+          &.normal {
+            display: none;
+          }
+
+          &.inverted {
+            display: block;
+          }
+        }
+      }
+
+      box-shadow: 2px 2px 2px #000;
+    }
+
+    .game-info, .elusive-target-info {
+      padding: 15px;
+      background: white;
+      color: #000;
+      text-shadow: none;
+
+      h2 {
+        color: #ff003c;
+      }
+
+      .image {
+        display: inline-block;
+        vertical-align: top;
+
+        img {
+          height: 48px;
+          width: 48px;
+
+          &.normal {
+            display: block;
+          }
+
+          &.inverted {
+            display: none;
+          }
+        }
+      }
+
+      .text {
+        display: inline-block;
+        text-transform: uppercase;
+
+        h1 {
+          font-size: 1.5rem;
+          margin-bottom: 0;
+        }
+
+        h2 {
+          font-size: 1rem;
+          margin-bottom: 0;
+        }
+      }
     }
   }
 
+  .game > a, .elusive-target > a  {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin-left: -15px;
+    margin-right: -15px;
+    text-decoration: none;
+
+    > p:first-child {
+      flex-grow: 1;
+    }
+  }
+
+  .elusive-target {
+    .countdown {
+      padding: 15px 15px 0;
+
+      #elusive-countdown {
+        color: #fef30a;
+        font-size: 2rem;
+        vertical-align: middle;
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+.hitman {
   > a {
     text-decoration: none;
     display: block;
@@ -100,16 +202,6 @@ header {
 }
 
 .hitman2 {
-  /* Homepage */
-  .game-btn {
-    border: solid 1px #fff;
-    padding: 20px;
-
-    &:hover {
-      box-shadow: 10px 10px 25px #000;
-    }
-  }
-
   > a {
     text-decoration: none;
     display: block;

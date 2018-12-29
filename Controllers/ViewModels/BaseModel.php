@@ -13,7 +13,8 @@ class BaseModel {
     public $loggedIn = false;
     public $userContext;
     public $referer;
-    public $backgroundFileExtension = 'png';
+    public $pngBackgroundFileExtension = 'png';
+    public $jpgBackgroundFileExtension = 'jpg';
 
     public function __construct() {
         try {
@@ -34,7 +35,8 @@ class BaseModel {
         }
 
         if (strpos($_SERVER['HTTP_ACCEPT'], 'image/webp') !== false) {
-            $this->backgroundFileExtension = 'webp';
+            $this->pngBackgroundFileExtension = 'webp';
+            $this->jpgBackgroundFileExtension = 'webp';
         }
     }
 }

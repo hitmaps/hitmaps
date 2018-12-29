@@ -1,7 +1,7 @@
 {% extends 'base.twig' %}
 
 {% set page_title = model.name %}
-{% set body_style = "background: url('/img/backgrounds/#{model.game}/#{model.slug}.png') no-repeat center; background-size: cover" %}
+{% set body_style = "background: url('#{settings.cdnLocation}/#{model.jpgBackgroundFileExtension}/backgrounds/#{model.game}/#{model.slug}.#{model.jpgBackgroundFileExtension}') no-repeat center; background-size: cover" %}
 {% set body_class = "#{model.game} missions #{model.slug}" %}
 
 {% block content %}
@@ -14,7 +14,7 @@
         </header>
         {% for mission in model.missions %}
             <div class="row mission justify-content-center">
-                <div class="col-lg-4 name" style="background: url('{{ settings.cdnLocation }}/{{ model.backgroundFileExtension }}/mission-thumbnails/{{ model.game }}/{{ mission.slug }}.{{ model.backgroundFileExtension }}') no-repeat; background-size: cover">
+                <div class="col-lg-4 name" style="background: url('{{ settings.cdnLocation }}/{{ model.pngBackgroundFileExtension }}/mission-thumbnails/{{ model.game }}/{{ mission.slug }}.{{ model.pngBackgroundFileExtension }}') no-repeat; background-size: cover">
                     <p>&nbsp;</p>
                     <h3>
                         <img src="/img/game-icons/mission.png" class="img-fluid" alt="Mission Icon">

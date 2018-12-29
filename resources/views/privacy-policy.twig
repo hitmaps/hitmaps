@@ -1,7 +1,7 @@
 {% extends 'base.twig' %}
 
 {% set page_title = 'Privacy Policy' %}
-{% set body_style = "background: url('/img/backgrounds/home.#{model.backgroundFileExtension}') no-repeat center; background-size: cover; color: #fff" %}
+{% set body_style = "background: url('#{settings.cdnLocation}/#{model.jpgBackgroundFileExtension}/backgrounds/loading.#{model.jpgBackgroundFileExtension}') no-repeat center; background-size: cover; color: #000" %}
 
 {% block content %}
     <style>
