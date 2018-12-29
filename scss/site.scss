@@ -1,6 +1,14 @@
 body {
   background: #ddd;
-  padding-bottom: 15rem;
+  padding-bottom: 20rem;
+
+  @media (max-width: 767px) {
+    padding-bottom: 0;
+  }
+}
+
+.site-header {
+  margin: 0 20px;
 }
 
 header {
@@ -328,6 +336,20 @@ footer {
     &:hover {
       color: #ddd;
       text-decoration: none;
+    }
+  }
+
+  @media(max-width: 767px) {
+    &.fixed-bottom {
+      position: inherit;
+
+      .container {
+        max-width: inherit;
+
+        .col-xs-12 {
+          margin-bottom: 10px;
+        }
+      }
     }
   }
 }
