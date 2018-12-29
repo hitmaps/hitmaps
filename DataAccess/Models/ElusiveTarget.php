@@ -20,9 +20,9 @@ class ElusiveTarget {
     private $name;
 
     /**
-     * @ORM\Column(type="integer", name="mission_id")
+     * @ORM\Column(type="string", name="mission_url")
      */
-    private $missionId;
+    private $missionUrl;
 
     /**
      * @ORM\Column(type="string")
@@ -80,15 +80,15 @@ class ElusiveTarget {
     /**
      * @return mixed
      */
-    public function getMissionId() {
-        return $this->missionId;
+    public function getMissionUrl() {
+        return $this->missionUrl;
     }
 
     /**
      * @param mixed $missionId
      */
-    public function setMissionId($missionId): void {
-        $this->missionId = $missionId;
+    public function setMissionUrl($missionUrl): void {
+        $this->missionUrl = $missionUrl;
     }
 
     /**

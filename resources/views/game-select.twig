@@ -1,26 +1,93 @@
 {% extends 'base.twig' %}
 
 {% set page_title = 'Home' %}
-{% set body_style = "background: url('/img/backgrounds/home.#{model.backgroundFileExtension}') no-repeat center; background-size: cover" %}
+{% set body_style = "background: url('#{settings.cdnLocation}/#{model.jpgBackgroundFileExtension}/backgrounds/loading.#{model.jpgBackgroundFileExtension}') no-repeat center; background-size: cover" %}
 
 {% block content %}
     <header class="row">
         <div class="col text-center">
             <h1>Interactive Maps For</h1>
-            <img src="/img/logos/hitman2.{{ model.backgroundFileExtension }}">
-            <h2>Select Your Campaign</h2>
+            <img src="{{ settings.cdnLocation }}/{{ model.pngBackgroundFileExtension }}/logos/hitman2.{{ model.pngBackgroundFileExtension }}">
         </div>
     </header>
-    <div class="row">
+    <div class="row dashboard">
         {% for game in model.games %}
-            <div class="col-lg {{ game.slug }} text-center">
+            <div class="game col-lg" style="background: url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/backgrounds/{{ game.slug }}.{{ model.jpgBackgroundFileExtension }}') no-repeat center; background-size: cover">
                 <a href="/games/{{ game.slug }}">
-                    <div class="game-btn" style="background: url('/img/backgrounds/{{ game.slug }}.png') no-repeat center">
-                        <img src="/img/logos/{{ game.slug }}.{{ model.backgroundFileExtension }}" class="img-fluid">
-                        <h2>{{ game.tagline }}</h2>
+                    <p>&nbsp;</p>
+                    <div class="game-info">
+                        <div class="image">
+                            <img src="/img/game-icons/campaign.png" class="normal img-fluid" alt="Campaign Icon">
+                            <img src="/img/game-icons/campaign-inverted.png" class="inverted img-fluid" alt="Campaign Icon">
+                        </div>
+                        <div class="text">
+                            <h2>Campaign</h2>
+                            <h1>{{ game.fullName }}</h1>
+                        </div>
                     </div>
                 </a>
             </div>
         {% endfor %}
+        {% if model.elusiveTarget != null %}
+        <div class="elusive-target col-lg" style="background: url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}{{ model.elusiveTarget.imageUrl }}.{{ model.jpgBackgroundFileExtension }}') no-repeat center; background-size: cover">
+            <a href="{{ model.elusiveTarget.missionUrl }}">
+                <p>&nbsp;</p>
+                <p class="countdown">
+                    <img src="/img/game-icons/elusive-target-reminaing-time.png" style="height: 48px; width: 48px">
+                    <span id="elusive-countdown"></span>
+                </p>
+                <div class="elusive-target-info">
+                    <div class="image">
+                        <img src="/img/game-icons/elusive-target.png" class="normal img-fluid" alt="Elusive Target Icon">
+                        <img src="/img/game-icons/elusive-target-inverted.png" class="inverted img-fluid" alt="Elusive Target Icon">
+                    </div>
+                    <div class="text">
+                        <h2>Elusive Target</h2>
+                        <h1>{{ model.elusiveTarget.name }}</h1>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <script>
+            var expirationUtc = moment.utc('{{ model.elusiveTarget.endingTime|date('Y-m-d H:i:s') }}');
+
+            var countdown = setInterval(function() {
+                var $countdown = $('#elusive-countdown');
+
+                var currentUtc = moment.utc();
+                var difference = expirationUtc.diff(currentUtc);
+
+                if (difference < 0) {
+                    $countdown.text('Ended');
+                    clearInterval(countdown);
+                    return;
+                }
+
+                var duration = moment.duration(difference);
+
+                var days = expirationUtc.diff(currentUtc, 'days');
+                console.log(days + ' Days');
+                var hours = duration.hours();
+                console.log(hours + ' Hours');
+                var minutes = getFormattedDuration(duration.minutes());
+                var seconds = getFormattedDuration(duration.seconds());
+                if (days > 0) {
+                    hours += days * 24;
+                }
+                console.log(hours + ' Adjusted Hours');
+                hours = getFormattedDuration(hours);
+
+                $countdown.text(hours + ':' + minutes + ':' + seconds);
+            }, 1000);
+
+            function getFormattedDuration(duration) {
+                if (duration < 10) {
+                    return '0' + duration;
+                }
+
+                return duration;
+            }
+        </script>
+        {% endif %}
     </div>
 {% endblock %}
