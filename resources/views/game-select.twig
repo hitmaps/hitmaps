@@ -30,10 +30,10 @@
         {% endfor %}
         {% if model.elusiveTarget != null %}
         <div class="elusive-target col-lg" style="background: url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}{{ model.elusiveTarget.imageUrl }}.{{ model.jpgBackgroundFileExtension }}') no-repeat center; background-size: cover">
-            <a href="#">
+            <a href="{{ model.elusiveTarget.missionUrl }}">
                 <p>&nbsp;</p>
                 <p class="countdown">
-                    <img src="/img/game-icons/elusive-target.png" style="height: 48px; width: 48px">
+                    <img src="/img/game-icons/elusive-target-reminaing-time.png" style="height: 48px; width: 48px">
                     <span id="elusive-countdown"></span>
                 </p>
                 <div class="elusive-target-info">
@@ -52,25 +52,32 @@
             var expirationUtc = moment.utc('{{ model.elusiveTarget.endingTime|date('Y-m-d H:i:s') }}');
 
             var countdown = setInterval(function() {
+                var $countdown = $('#elusive-countdown');
+
                 var currentUtc = moment.utc();
-                var difference = moment(expirationUtc.diff(currentUtc));
+                var difference = expirationUtc.diff(currentUtc);
 
                 if (difference < 0) {
-                    $('#elusive-countdown').text('Ended');
+                    $countdown.text('Ended');
                     clearInterval(countdown);
                     return;
                 }
 
+                var duration = moment.duration(difference);
+
                 var days = expirationUtc.diff(currentUtc, 'days');
-                var hours = difference.hours();
-                var minutes = getFormattedDuration(difference.minutes());
-                var seconds = getFormattedDuration(difference.seconds());
+                console.log(days + ' Days');
+                var hours = duration.hours();
+                console.log(hours + ' Hours');
+                var minutes = getFormattedDuration(duration.minutes());
+                var seconds = getFormattedDuration(duration.seconds());
                 if (days > 0) {
                     hours += days * 24;
                 }
+                console.log(hours + ' Adjusted Hours');
                 hours = getFormattedDuration(hours);
 
-                $('#elusive-countdown').text(hours + ':' + minutes + ':' + seconds);
+                $countdown.text(hours + ':' + minutes + ':' + seconds);
             }, 1000);
 
             function getFormattedDuration(duration) {
