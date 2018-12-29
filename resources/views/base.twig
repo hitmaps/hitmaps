@@ -3,7 +3,10 @@
 <head>
     {% include 'analytics.twig' %}
 
-    <title>{{ page_title }} | HITMAN Maps</title>
+    <title>{{ page_title }} | HITMAN&trade; 2 Maps</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
           crossorigin="anonymous">
@@ -30,7 +33,7 @@
     <footer class="fixed-bottom text-center" style="{{ footer_style }}">
         <div class="container text-left">
             <div class="row">
-                <div class="col col-xs-4">
+                <div class="col-md-4 col-xs-12">
                     <h4>Join the Discussion</h4>
                     <a href="https://discord.gg/guQ97K9" target="_blank">
                         <i class="fab fa-fw fa-discord"></i>
@@ -41,7 +44,7 @@
                         hitmanforum.com Discussion
                     </a>
                 </div>
-                <div class="col col-xs-4">
+                <div class="col-md-4 col-xs-12">
                     <h4>Legal</h4>
                     <a href="/terms-of-use">
                         <i class="fas fa-gavel"></i>
@@ -52,8 +55,8 @@
                         Privacy Policy
                     </a>
                 </div>
-                <div class="col col-xs-4">
-                    <h4>Copyright {{ constants.currentYear }} hitman2maps.com</h4>
+                <div class="col-md-4 col-xs-12">
+                    <h4>&copy; {{ constants.currentYear }} hitman2maps.com</h4>
                     <p>HITMAN™, HITMAN™ 2, the HITMAN™ logo, images, and text are the property of IO Interactive.</p>
                 </div>
             </div>
