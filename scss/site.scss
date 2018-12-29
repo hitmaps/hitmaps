@@ -118,12 +118,13 @@ header {
 
   .elusive-target {
     .countdown {
-      padding: 15px;
+      padding: 15px 15px 0;
 
       #elusive-countdown {
-        color: darkgoldenrod;
-        font-size: 1.5rem;
+        color: #fef30a;
+        font-size: 2rem;
         vertical-align: middle;
+        font-weight: 600;
       }
     }
   }
@@ -190,7 +191,6 @@ header {
   img {
     margin-top: 20px;
     margin-bottom: 20px;
-    box-shadow: #000 5px 5px 40px;
   }
 
   h2 {
@@ -265,7 +265,6 @@ header {
   img {
     margin-top: 20px;
     margin-bottom: 20px;
-    box-shadow: #000 5px 5px 40px;
   }
 
   h2 {
