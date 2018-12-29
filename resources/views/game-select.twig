@@ -1,13 +1,13 @@
 {% extends 'base.twig' %}
 
 {% set page_title = 'Home' %}
-{% set body_style = "background: url('#{settings.cdnLocation}/#{model.jpgBackgroundFileExtension}/backgrounds/loading.#{model.jpgBackgroundFileExtension}') no-repeat center; background-size: cover" %}
+{% set body_style = "background: url('#{settings.cdnLocation}/#{model.jpgBackgroundFileExtension}/backgrounds/loading.#{model.jpgBackgroundFileExtension}') no-repeat center center fixed; background-size: cover" %}
 
 {% block content %}
     <header class="row">
-        <div class="col text-center">
+        <div class="col text-center site-header">
             <h1>Interactive Maps For</h1>
-            <img src="{{ settings.cdnLocation }}/{{ model.pngBackgroundFileExtension }}/logos/hitman2.{{ model.pngBackgroundFileExtension }}">
+            <img src="{{ settings.cdnLocation }}/{{ model.pngBackgroundFileExtension }}/logos/hitman2.{{ model.pngBackgroundFileExtension }}" class="img-fluid">
         </div>
     </header>
     <div class="row dashboard">
