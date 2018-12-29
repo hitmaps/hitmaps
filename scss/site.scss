@@ -422,6 +422,10 @@ footer {
     }
 
     @media (max-width: 991px) {
+      .name {
+        margin-right: 0;
+      }
+
       .difficulty {
         &:nth-child(odd) {
           background: #fff;
@@ -445,17 +449,12 @@ footer {
           }
 
           &:hover {
-            background: #ff003c;
             text-decoration: none;
-            color: #fff;
+            color: #000;
+          }
 
-            img.normal {
-              display: none;
-            }
-
-            img.inverted {
-              display: block;
-            }
+          p {
+            display: inline-block;
           }
         }
       }
