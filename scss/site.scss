@@ -19,8 +19,17 @@ header {
 }
 
 @media (min-width: 992px) {
-  .game {
+  .game, .elusive-target {
     height: 500px;
+  }
+}
+
+
+
+@media (max-width: 991px) {
+  .game, .elusive-target {
+    height: 300px;
+    margin-bottom: 20px;
   }
 }
 
@@ -151,6 +160,14 @@ header {
     }
   }
 
+
+  @media (max-width: 991px) {
+    .location {
+      height: 300px;
+      margin-bottom: 20px;
+    }
+  }
+
   .location {
     color: white;
     margin-left: 3px;
@@ -221,6 +238,13 @@ header {
   @media (min-width: 992px) {
     .location {
       height: 500px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .location {
+      height: 300px;
+      margin-bottom: 20px;
     }
   }
 
@@ -320,6 +344,12 @@ footer {
   .mission {
     margin-bottom: 10px;
 
+    @media (max-width: 991px) {
+      .name {
+        height: 250px;
+      }
+    }
+
     .name {
       border: solid 1px #fff;
       color: #fff;
@@ -340,50 +370,92 @@ footer {
       margin-right: 5px;
     }
 
-    .difficulty {
-      text-align: center;
-      background: #fff;
-      padding-left: 0;
-      padding-right: 0;
-      margin-right: 5px;
+    @media (min-width: 992px) {
+      .difficulty {
+        text-align: center;
+        background: #fff;
+        padding-left: 0;
+        padding-right: 0;
+        margin-right: 5px;
 
-      > a {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        height: 100%;
-        padding-left: 15px;
-        padding-right: 15px;
-        color: #000;
-        font-size: 1.5rem;
+        > a {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          height: 100%;
+          padding-left: 15px;
+          padding-right: 15px;
+          color: #000;
+          font-size: 1.5rem;
 
-        img {
-          margin: 20px auto;
-        }
-
-        img.normal {
-          display: block;
-          max-height: 100px;
-          max-width: 100px;
-        }
-
-        img.inverted {
-          display: none;
-          max-height: 100px;
-          max-width: 100px;
-        }
-
-        &:hover {
-          background: #ff003c;
-          text-decoration: none;
-          color: #fff;
+          img {
+            margin: 20px auto;
+          }
 
           img.normal {
-            display: none;
+            display: block;
+            max-height: 100px;
+            max-width: 100px;
           }
 
           img.inverted {
-            display: block;
+            display: none;
+            max-height: 100px;
+            max-width: 100px;
+          }
+
+          &:hover {
+            background: #ff003c;
+            text-decoration: none;
+            color: #fff;
+
+            img.normal {
+              display: none;
+            }
+
+            img.inverted {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+
+    @media (max-width: 991px) {
+      .difficulty {
+        &:nth-child(odd) {
+          background: #fff;
+        }
+
+        &:nth-child(even) {
+          background: #eee;
+        }
+
+        > a {
+          img.normal {
+            display: inline-block;
+            max-height: 32px;
+            max-width: 32px;
+          }
+
+          img.inverted {
+            display: none;
+            max-height: 32px;
+            max-width: 32px;
+          }
+
+          &:hover {
+            background: #ff003c;
+            text-decoration: none;
+            color: #fff;
+
+            img.normal {
+              display: none;
+            }
+
+            img.inverted {
+              display: block;
+            }
           }
         }
       }
