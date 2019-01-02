@@ -135,12 +135,40 @@ html {
     background: #464646;
   }
 
-  .navbar-fixed-right {
-    display: block;
-    float: right;
-    width: 400px;
-    min-height: 100vh;
-    background: #000;
+  @media (min-width: 768px) {
+    .navbar-fixed-right {
+      display: block;
+      float: right;
+      width: 400px;
+      min-height: 100vh;
+      background: #000;
+    }
+
+    .accordion > .floor-toggle {
+      display: none;
+    }
+
+    .content > .floor-toggle {
+      display: block;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .navbar-fixed-right {
+      background: #000;
+    }
+
+    .accordion > .floor-toggle {
+      display: block;
+    }
+
+    .content > .floor-toggle {
+      display: none;
+    }
+  }
+
+  .navbar-toggler {
+    background: #2a2d31;
   }
 
   .leaflet-control-zoom {
