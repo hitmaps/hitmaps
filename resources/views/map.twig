@@ -103,8 +103,10 @@
                         </select>
                         <button id="clear-search" class="btn control-button" data-toggle="tooltip" title="Clear Search" style="display: none"><i class="fas fa-times"></i></button>
                     </div>
-                    <button id="hide-all" class="btn control-button"><i class="far fa-fw fa-eye-slash"></i> Hide All</button>
-                    <button id="show-all" class="btn control-button"><i class="far fa-fw fa-eye"></i> Show All</button>
+                    <div class="hide-or-select-all">
+                        <button id="hide-all" class="btn control-button"><i class="far fa-fw fa-eye-slash"></i> Hide All</button>
+                        <button id="show-all" class="btn control-button"><i class="far fa-fw fa-eye"></i> Show All</button>
+                    </div>
                     {% for typeName,type in model.nodes %}
                         <div class="card">
                             <div class="card-header" id="header-{{ loop.index0 }}">
