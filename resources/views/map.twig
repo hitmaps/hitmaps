@@ -3,7 +3,6 @@
 {% set page_title = "#{model.mission}/#{model.locationNameOne}" %}
 {% set body_class = "map" %}
 {% set footer_style = "display: none" %}
-{% set skip_viewport = 'true' %}
 
 {% block headextend %}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
@@ -23,7 +22,7 @@
 {% block content %}
     <div class="overlay" style="background: #ccc url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/backgrounds/loading.{{ model.jpgBackgroundFileExtension }}') no-repeat; background-size: cover">
         <div class="overlay-container">
-            <img src="{{ settings.cdnLocation }}/{{ model.pngBackgroundFileExtension }}/mission-thumbnails/{{ model.game }}/{{ model.missionSlug }}.{{ model.pngBackgroundFileExtension }}" alt="Mission Thumbnail">
+            <img class="img-fluid" src="{{ settings.cdnLocation }}/{{ model.pngBackgroundFileExtension }}/mission-thumbnails/{{ model.game }}/{{ model.missionSlug }}.{{ model.pngBackgroundFileExtension }}" alt="Mission Thumbnail">
             <div class="footer">
                 <div class="footer-image">
                     <img src="/img/game-icons/mission-inverted.png" class="img-fluid" alt="Mission Icon">
@@ -47,128 +46,145 @@
             {% endfor %}
         </div>
         <div id="map"></div>
-        <nav class="navbar navbar-fixed-right navbar-light">
-            <div class="header">
-                <a href="/">
-                    <img src="{{ settings.cdnLocation }}/{{ model.pngBackgroundFileExtension }}/logos/map-header.{{ model.pngBackgroundFileExtension }}" class="img-fluid">
-                </a>
-            </div>
-            <div class="editor-enabled" style="display: none">
-                <h3>Editor Enabled</h3>
-            </div>
-            <div id="map-control">
-                <div class="control-buttons">
-                    <input type="hidden" name="edit-mode" value="0">
-                    {% if model.loggedIn %}
-                        <button id="edit-button" class="btn control-button" data-toggle="tooltip" title="Edit Map"><i class="fas fa-pencil-alt"></i></button>
-                        <a href="/user/profile">
-                            <button class="btn control-button" data-toggle="tooltip" data-placement="bottom" title="Profile"><i class="fas fa-user-circle"></i></button>
-                        </a>
-                        <a href="/user/logout">
-                            <button class="btn control-button" data-toggle="tooltip" data-placement="bottom" title="Log out"><i class="fas fa-sign-out-alt"></i></button>
-                        </a>
-                    {% else %}
-                        <a href="/user/login">
-                            <button class="btn control-button" data-toggle="tooltip" data-placement="bottom" title="Login / Register to edit"><i class="fas fa-sign-in-alt"></i></button>
-                        </a>
-                    {% endif %}
+        <nav class="navbar navbar-fixed-right navbar-dark">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="header">
+                    <a href="/">
+                        <img src="{{ settings.cdnLocation }}/{{ model.pngBackgroundFileExtension }}/logos/map-header.{{ model.pngBackgroundFileExtension }}" class="img-fluid">
+                    </a>
                 </div>
-            </div>
-            <br>
-            <div class="accordion" id="accordion">
-                <div class="search-box">
-                    <select name="search" class="selectpicker" data-live-search="true" data-title="<i class='fas fa-search'></i> Search" data-style="control-button">
-                        {% for typeName,type in model.searchableNodes %}
-                            {% for group in type.items %}
-                                <optgroup label="{{ group.name }}">
-                                    {% for node in group.items %}
-                                        <option data-layer="{{ typeName }}|{{ group.name }}">{{ node.name }}</option>
-                                    {% endfor %}
-                                </optgroup>
-                            {% endfor %}
+                <div class="editor-enabled" style="display: none">
+                    <h3>Editor Enabled</h3>
+                </div>
+                <div id="map-control">
+                    <div class="control-buttons">
+                        <input type="hidden" name="edit-mode" value="0">
+                        {% if model.loggedIn %}
+                            <button id="edit-button" class="btn control-button" data-toggle="tooltip" title="Edit Map"><i class="fas fa-pencil-alt"></i></button>
+                            <a href="/user/profile">
+                                <button class="btn control-button" data-toggle="tooltip" data-placement="bottom" title="Profile"><i class="fas fa-user-circle"></i></button>
+                            </a>
+                            <a href="/user/logout">
+                                <button class="btn control-button" data-toggle="tooltip" data-placement="bottom" title="Log out"><i class="fas fa-sign-out-alt"></i></button>
+                            </a>
+                        {% else %}
+                            <a href="/user/login">
+                                <button class="btn control-button" data-toggle="tooltip" data-placement="bottom" title="Login / Register to edit"><i class="fas fa-sign-in-alt"></i></button>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <br>
+                <div class="accordion" id="accordion">
+                    <div class="floor-toggle">
+                        {% for i in model.highestFloor..model.lowestFloor %}
+                            <div class="floor-info" data-floor="{{ i }}">
+                                <div class="floor{% if model.startingFloor == i %} selected{% endif %}">
+                                    Level {{ i }}
+                                </div>
+                                <div class="item-count">#</div>
+                            </div>
                         {% endfor %}
-                    </select>
-                    <button id="clear-search" class="btn control-button" data-toggle="tooltip" title="Clear Search" style="display: none"><i class="fas fa-times"></i></button>
-                </div>
-                <button id="hide-all" class="btn control-button"><i class="far fa-fw fa-eye-slash"></i> Hide All</button>
-                <button id="show-all" class="btn control-button"><i class="far fa-fw fa-eye"></i> Show All</button>
-                {% for typeName,type in model.nodes %}
-                    <div class="card">
-                        <div class="card-header" id="header-{{ loop.index0 }}">
-                            <div class="name collapsed" data-toggle="collapse"
-                                 data-target="#body-{{ loop.index0 }}" aria-expanded="false" aria-controls="body-{{ loop.index0 }}">
-                                {{ typeName }}
-                                <span class="float-right">
+                    </div>
+                    <div class="search-box">
+                        <select name="search" class="selectpicker" data-live-search="true" data-title="<i class='fas fa-search'></i> Search" data-style="control-button">
+                            {% for typeName,type in model.searchableNodes %}
+                                {% for group in type.items %}
+                                    <optgroup label="{{ group.name }}">
+                                        {% for node in group.items %}
+                                            <option data-layer="{{ typeName }}|{{ group.name }}">{{ node.name }}</option>
+                                        {% endfor %}
+                                    </optgroup>
+                                {% endfor %}
+                            {% endfor %}
+                        </select>
+                        <button id="clear-search" class="btn control-button" data-toggle="tooltip" title="Clear Search" style="display: none"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="hide-or-select-all">
+                        <button id="hide-all" class="btn control-button"><i class="far fa-fw fa-eye-slash"></i> Hide All</button>
+                        <button id="show-all" class="btn control-button"><i class="far fa-fw fa-eye"></i> Show All</button>
+                    </div>
+                    {% for typeName,type in model.nodes %}
+                        <div class="card">
+                            <div class="card-header" id="header-{{ loop.index0 }}">
+                                <div class="name collapsed" data-toggle="collapse"
+                                     data-target="#body-{{ loop.index0 }}" aria-expanded="false" aria-controls="body-{{ loop.index0 }}">
+                                    {{ typeName }}
+                                    <span class="float-right">
                                     <i class="fas fa-caret-down"></i>
                                     <i class="fas fa-caret-up"></i>
                                 </span>
+                                </div>
+                                <div class="visibility-toggle group-toggle" data-layer="{{ typeName }}|*">
+                                    <i class="far fa-eye"></i>
+                                    <i class="far fa-eye-slash"></i>
+                                </div>
                             </div>
-                            <div class="visibility-toggle group-toggle" data-layer="{{ typeName }}|*">
-                                <i class="far fa-eye"></i>
-                                <i class="far fa-eye-slash"></i>
-                            </div>
-                        </div>
-                        <div id="body-{{ loop.index0 }}" class="collapse" aria-labelledby="header-{{ loop.index0 }}">
-                            <div class="card-body">
-                                {% for groupName,group in type.items %}
-                                    <div class="{{ group.collapsible ? 'full-width' : 'half-width' }}">
-                                        <div class="name" data-layer="{{ typeName }}|{{ groupName }}">
-                                            <img src="/img/map-icons/{{ group.icon }}.png" alt="{{ groupName }} Icon" class="img-fluid">
-                                            <span>{{ groupName }}</span>
+                            <div id="body-{{ loop.index0 }}" class="collapse" aria-labelledby="header-{{ loop.index0 }}">
+                                <div class="card-body">
+                                    {% for groupName,group in type.items %}
+                                        <div class="{{ group.collapsible ? 'full-width' : 'half-width' }}">
+                                            <div class="name" data-layer="{{ typeName }}|{{ groupName }}">
+                                                <img src="/img/map-icons/{{ group.icon }}.png" alt="{{ groupName }} Icon" class="img-fluid">
+                                                <span>{{ groupName }}</span>
+                                            </div>
+                                            {% if group.collapsible %}
+                                                <div class="visibility-toggle collapsed" data-toggle="collapse" data-target="#collapsible-{{ typeName|replace({' ': '_'}) }}-{{ groupName|replace({' ': '_'}) }}">
+                                                    <i class="fas fa-caret-up"></i>
+                                                    <i class="fas fa-caret-down"></i>
+                                                </div>
+                                                <div class="collapsible-items collapse" id="collapsible-{{ typeName|replace({' ': '_'}) }}-{{ groupName|replace({' ': '_'}) }}">
+                                                    <ul style="columns: {{ group.items|length > 1 ? 2 : 1 }}">
+                                                        {% for node in group.items %}
+                                                            <li>
+                                                                {% if node.icon != group.icon %}
+                                                                    <img src="/img/map-icons/{{ node.icon }}.png" alt="{{ node.name }} Icon" class="img-fluid">
+                                                                {% endif %}
+                                                                {{ node.name }}
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            {% endif %}
                                         </div>
-                                        {% if group.collapsible %}
-                                            <div class="visibility-toggle collapsed" data-toggle="collapse" data-target="#collapsible-{{ typeName|replace({' ': '_'}) }}-{{ groupName|replace({' ': '_'}) }}">
-                                                <i class="fas fa-caret-up"></i>
-                                                <i class="fas fa-caret-down"></i>
-                                            </div>
-                                            <div class="collapsible-items collapse" id="collapsible-{{ typeName|replace({' ': '_'}) }}-{{ groupName|replace({' ': '_'}) }}">
-                                                <ul style="columns: {{ group.items|length > 1 ? 2 : 1 }}">
-                                                    {% for node in group.items %}
-                                                        <li>
-                                                            {% if node.icon != group.icon %}
-                                                                <img src="/img/map-icons/{{ node.icon }}.png" alt="{{ node.name }} Icon" class="img-fluid">
-                                                            {% endif %}
-                                                            {{ node.name }}
-                                                        </li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                {% endfor %}
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
+                    {% endfor %}
+                </div>
+                <div class="edit-menu" style="display: none">
+                    <h2>Editor Menu</h2>
+                    <h3>What would you like to do?</h3>
+                    <div class="editor-button" data-editor="items">
+                        <h3><i class="fas fa-fw fa-map-marker-alt"></i> Add / Remove Items</h3>
                     </div>
-                {% endfor %}
-            </div>
-            <div class="edit-menu" style="display: none">
-                <h2>Editor Menu</h2>
-                <h3>What would you like to do?</h3>
-                <div class="editor-button" data-editor="items">
-                    <h3><i class="fas fa-fw fa-map-marker-alt"></i> Add / Remove Items</h3>
+                    <div class="editor-button" data-editor="ledges">
+                        <h3><i class="fas fa-fw fa-bezier-curve"></i> Add / Remove Ledges</h3>
+                    </div>
+                    <p>Click the <i class="fas fa-pencil-alt"></i> icon to close the editor menu.</p>
                 </div>
-                <div class="editor-button" data-editor="ledges">
-                    <h3><i class="fas fa-fw fa-bezier-curve"></i> Add / Remove Ledges</h3>
+                <div class="items-menu" style="display: none">
+                    <p><i class="fas fa-fw fa-plus-circle"></i> Click anywhere on the map to add a new item.</p>
+                    <p><i class="fas fa-fw fa-arrows-alt"></i> Drag and drop an existing item to move it.</p>
+                    <p><i class="fas fa-fw fa-trash"></i> Click on an existing item and then the "Delete" button to delete it.</p>
+                    <p><b>Known Issue:</b> When adding an item for the first time (the first non-lethal melee, first stairwell, etc), it will not appear until you refresh the page.</p>
+                    <div class="editor-button" data-item="cancel">
+                        <h3><i class="fas fa-times-circle"></i> Close Item Menu</h3>
+                    </div>
                 </div>
-                <p>Click the <i class="fas fa-pencil-alt"></i> icon to close the editor menu.</p>
-            </div>
-            <div class="items-menu" style="display: none">
-                <p><i class="fas fa-fw fa-plus-circle"></i> Click anywhere on the map to add a new item.</p>
-                <p><i class="fas fa-fw fa-arrows-alt"></i> Drag and drop an existing item to move it.</p>
-                <p><i class="fas fa-fw fa-trash"></i> Click on an existing item and then the "Delete" button to delete it.</p>
-                <p><b>Known Issue:</b> When adding an item for the first time (the first non-lethal melee, first stairwell, etc), it will not appear until you refresh the page.</p>
-                <div class="editor-button" data-item="cancel">
-                    <h3><i class="fas fa-times-circle"></i> Close Item Menu</h3>
-                </div>
-            </div>
-            <div class="ledges-menu" style="display: none">
-                <p data-ledge="delete-help"><i class="fas fa-trash"></i> Click on an existing ledge to delete it.</p>
-                <div class="editor-button" data-ledge="add">
-                    <h3><i class="fas fa-plus-circle"></i> Add Ledge</h3>
-                    <p>Click here to enable / disable ledge builder</p>
-                </div>
-                <div class="editor-button" data-ledge="cancel">
-                    <h3><i class="fas fa-times-circle"></i> Close Ledge Menu</h3>
+                <div class="ledges-menu" style="display: none">
+                    <p data-ledge="delete-help"><i class="fas fa-trash"></i> Click on an existing ledge to delete it.</p>
+                    <div class="editor-button" data-ledge="add">
+                        <h3><i class="fas fa-plus-circle"></i> Add Ledge</h3>
+                        <p>Click here to enable / disable ledge builder</p>
+                    </div>
+                    <div class="editor-button" data-ledge="cancel">
+                        <h3><i class="fas fa-times-circle"></i> Close Ledge Menu</h3>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -477,7 +493,7 @@
     <div id="temp" style="display: none"></div>
     <script>
         function showMap() {
-            $('.overlay').hide();
+            //$('.overlay').hide();
         }
 
         var g_mapLoaded = false;
