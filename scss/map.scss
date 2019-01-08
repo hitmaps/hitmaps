@@ -5,6 +5,9 @@ html {
 
 .map {
   .header {
+
+    max-width: 368px;
+
     a {
       opacity: .85;
 
@@ -135,12 +138,56 @@ html {
     background: #464646;
   }
 
-  .navbar-fixed-right {
-    display: block;
-    float: right;
-    width: 400px;
-    min-height: 100vh;
-    background: #000;
+  @media (min-width: 768px) {
+    .navbar-fixed-right {
+      display: block;
+      float: right;
+      width: 400px;
+      min-height: 100vh;
+      background: #000;
+    }
+
+    .navbar-toggler {
+      display: none;
+    }
+
+    .navbar-collapse {
+      display: block;
+    }
+
+    .accordion > .floor-toggle {
+      display: none;
+    }
+
+    .content > .floor-toggle {
+      display: block;
+      position: fixed;
+      top: 110px;
+      left: 50px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .navbar-fixed-right {
+      background: #000;
+    }
+
+    .navbar-toggler {
+      display: block;
+    }
+
+    .accordion > .floor-toggle {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .content > .floor-toggle {
+      display: none;
+    }
+  }
+
+  .navbar-toggler {
+    background: #2a2d31;
   }
 
   .leaflet-control-zoom {
@@ -197,6 +244,10 @@ html {
   }
 
   .accordion {
+    .hide-or-select-all {
+      width: 368px;
+    }
+
     .card {
       margin-top: 5px;
       margin-bottom: 5px;
@@ -386,6 +437,8 @@ html {
   }
 
   #map-control {
+    width: 368px;
+
     .control-buttons {
       float: right;
       margin-bottom: 10px;
@@ -515,10 +568,7 @@ html {
 
   .floor-toggle {
     z-index: 1;
-    position: fixed;
     width: 150px;
-    top: 110px;
-    left: 50px;
     border-radius: 3px;
     border: 2px solid #fff;
     background: rgba(22,24,29,0.75);
