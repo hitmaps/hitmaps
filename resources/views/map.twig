@@ -22,7 +22,7 @@
 {% block content %}
     <div class="overlay" style="background: #ccc url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/backgrounds/loading.{{ model.jpgBackgroundFileExtension }}') no-repeat; background-size: cover">
         <div class="overlay-container">
-            <img src="{{ settings.cdnLocation }}/{{ model.pngBackgroundFileExtension }}/mission-thumbnails/{{ model.game }}/{{ model.missionSlug }}.{{ model.pngBackgroundFileExtension }}" alt="Mission Thumbnail">
+            <img class="img-fluid" src="{{ settings.cdnLocation }}/{{ model.pngBackgroundFileExtension }}/mission-thumbnails/{{ model.game }}/{{ model.missionSlug }}.{{ model.pngBackgroundFileExtension }}" alt="Mission Thumbnail">
             <div class="footer">
                 <div class="footer-image">
                     <img src="/img/game-icons/mission-inverted.png" class="img-fluid" alt="Mission Icon">
@@ -493,7 +493,7 @@
     <div id="temp" style="display: none"></div>
     <script>
         function showMap() {
-            $('.overlay').hide();
+            //$('.overlay').hide();
         }
 
         var g_mapLoaded = false;
