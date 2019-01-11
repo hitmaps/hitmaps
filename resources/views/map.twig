@@ -240,7 +240,8 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">{{ model.editorTitle }}</h5>
+                        <h5 class="modal-title" id="add-suggest-title">{{ model.editorTitle }}</h5>
+                        <h5 class="modal-title" id="edit-suggest-title">Edit Item</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -1135,7 +1136,8 @@
         });
 
         {% if model.canDeleteNodes %}
-        $('body').on('click', '[data-action="delete-btn"]', function() {
+        var $body = $('body');
+        $body.on('click', '[data-action="delete-btn"]', function() {
             var nodeId = parseInt($(this).attr('data-node-id'));
 
             $.ajax({
@@ -1149,6 +1151,21 @@
                     toastr["error"]("Error deleting node!");
                 }
             });
+        });
+
+        $body.on('click', '[data-action="edit-btn"]', function() {
+            console.log(g_openMarker);
+            var nodeId = parseInt($(this).attr('data-node-id'));
+
+            var $modal = $('#suggest-edit-modal');
+            $modal.find('select[name="subgroup"]').selectpicker('val', '');
+            $modal.find('input[name="group"]').val(-1).end()
+                .find('select[name="icon"]').selectpicker('val', '');
+            $modal.find('input[name="name"]').val(-1).end();
+
+            // TODO Action, Target, Pickup Type, Direction, Notes, Original ID
+
+            $modal.modal('show');
         });
         {% endif %}
     </script>
