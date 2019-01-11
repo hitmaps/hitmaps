@@ -478,7 +478,12 @@
             </div>
             <div data-name="notes"></div>
             {% if model.canDeleteNodes %}
-                <button class="btn btn-danger btn-sm" data-action="delete-btn" data-node-id="x">Delete</button>
+                <button class="btn btn-danger btn-sm" data-action="delete-btn" data-node-id="x" data-toggle="tooltip" title="Delete">
+                    <i class="fas fa-times"></i>
+                </button>
+                <button class="btn btn-warning btm-sm" data-action="edit-btn" data-node-id="x" data-toggle="tooltip" title="Edit">
+                    <i class="fas fa-pencil-alt"></i>
+                </button>
             {% endif %}
         </div>
     </script>
