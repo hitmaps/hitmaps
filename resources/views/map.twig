@@ -455,9 +455,10 @@
                             <input type="hidden" name="level" value="{{ model.startingFloor }}">
                             <input type="hidden" name="latitude">
                             <input type="hidden" name="longitude">
-                        <input type="hidden" name="image">
+                            <input type="hidden" name="image">
                             <input type="hidden" name="difficulty" value="{{ model.difficulty }}">
                             <input type="hidden" name="searchable" value="0">
+                            <input type="hidden" name="id" value="-1">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -665,6 +666,8 @@
                     $('select[name="subgroup"]').selectpicker('val', -1);
                     $('select[name="icon"]').selectpicker('val', -1);
                     $('#suggest-edit-modal')
+                        .find('#add-suggest-title').show().end()
+                        .find('#edit-suggest-title').hide().end()
                         .find('input[name="name"]').val('').end()
                         .find('input[name="action"]').val('').end()
                         .find('input[name="target"]').val('').end()
@@ -677,6 +680,7 @@
                         .find('[data-type="target"]').hide().end()
                         .find('[data-type="action"]').hide().end()
                         .find('[data-type="name"]').hide().end()
+                        .find('input[name="id"]').val(-1).end()
                         .modal('show');
                 });
                 var zoom = L.control.zoom({position: 'topright'});
@@ -1006,12 +1010,25 @@
 
         $('form[action="/api/nodes"]').submit(function() {
             var $form = $(this);
+            var nodeId = $form.find('input[name="id"]');
+            var uri = '/api/nodes';
+            var action = 'CREATE';
+
+            if (nodeId > -1) {
+                uri = '/api/nodes/edit/' + nodeId;
+                action = 'EDIT';
+            }
 
             $.ajax({
-                url: '/api/nodes',
+                url: uri,
                 method: 'POST',
-                data: $(this).serialize(),
+                data: $form.serialize(),
                 success: function(data) {
+                    if (action === 'EDIT') {
+                        g_openMarker.options.custom.node.deleted = true;
+                        g_openMarker = undefined;
+                    }
+
                     var node = JSON.parse(data);
                     if (node.approved) {
                         var marker = buildMarker(node).bindPopup(buildPopup);
@@ -1019,11 +1036,18 @@
                             marker.bindTooltip(node.name);
                         }
                         marker.addTo(g_overlays[node.level][node.type + '|' + node.group]);
-                        toastr["success"]('Item successfully added to map!');
+
+                        if (action === 'CREATE') {
+                            toastr["success"]('Item successfully added to map!');
+                        } else {
+                            toastr["success"]('Item successfully edited!');
+                        }
+
                     } else {
                         toastr["success"]('Suggestion has been submitted. If it is approved by an administrator, it will become visible on the map.');
                     }
                     $('#suggest-edit-modal').modal('hide');
+                    updateNodeLayerState();
                 },
                 error: function() {
                     alert('Error!');
@@ -1154,7 +1178,9 @@
                 method: 'GET',
                 success: function() {
                     toastr["success"]("Node deleted!");
-                    g_map.removeLayer(g_openMarker);
+                    g_openMarker.options.custom.node.deleted = true;
+                    g_openMarker = undefined;
+                    updateNodeLayerState();
                 },
                 error: function() {
                     toastr["error"]("Error deleting node!");
@@ -1179,7 +1205,11 @@
                 .find('input[name="id"]').val(node.id).end()
                 .find('input[name="level"]').val(node.level).end()
                 .find('input[name="target"]').val(node.target).end()
-                .find('input[name="action"]').val(node.target).end();
+                .find('input[name="action"]').val(node.target).end()
+                .find('input[name="searchable"]').val(node.searchable === true ? '1' : '0').end()
+                .find('input[name="image"]').val(node.image).end()
+                .find('#add-suggest-title').hide().end()
+                .find('#edit-suggest-title').show().end();
 
             if (node.group === 'Agency Pickup') {
                 $modal.find('input[name="pickup-type"]').removeAttr('checked').end()
