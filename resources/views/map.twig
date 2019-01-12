@@ -844,6 +844,11 @@
                                 } else {
                                     $(nodeProperties._icon).removeClass('search-result');
                                 }
+
+                                if (nodeProperties.options.custom.node.deleted === true) {
+                                    g_map.removeLayer(nodeProperties);
+                                    numberOfItemsOnMap--;
+                                }
                             }
                         }
                     } else {
