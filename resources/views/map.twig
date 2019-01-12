@@ -318,7 +318,7 @@
                                     </small>
                                 </div>
                             </div>
-                            <div class="form-group row" style="display: none">
+                            <div class="form-group row" id="icon-form-group">
                                 <label for="icon" class="col-sm-2 col-form-label">Icon</label>
                                 <div class="col-sm-10">
                                     <select name="icon" class="form-control selectpicker" data-live-search="true">
@@ -976,7 +976,7 @@
 
         $('select[name="subgroup"]').change(function() {
             var $selectedItem = $('select[name="subgroup"] option:selected');
-            $('input[name="group"]').val($selectedItem.text());
+            $('input[name="group"]').val($selectedItem.text().trim());
             $('input[name="searchable"]').val($selectedItem.attr('data-searchable'));
 
             var icon = $selectedItem.attr('data-icon');
@@ -993,6 +993,13 @@
                 $('#note-help-text').text(note);
             } else {
                 $('#note-help-text').text('');
+            }
+
+            if (['Navigation|agency-pickup', 'Navigation|exit-location', 'Navigation|ledge', 'Navigation|up-stair',
+                'Navigation|starting-location', 'Navigation|up-pipe'].indexOf($selectedItem.val()) > -1) {
+                $('#icon-form-group').hide();
+            } else {
+                $('#icon-form-group').show();
             }
         });
 
