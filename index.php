@@ -166,11 +166,11 @@ $klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]'
 
     /* @var $icon \DataAccess\Models\Icon */
     foreach ($icons as $icon) {
-        if (!key_exists($predeterminedItem->getGroup(), $sortedIcons)) {
-            $sortedIcons[$predeterminedItem->getGroup()] = [];
+        if (!key_exists($icon->getGroup(), $sortedIcons)) {
+            $sortedIcons[$icon->getGroup()] = [];
         }
 
-        $sortedIcons[$predeterminedItem->getGroup()][] = $icon;
+        $sortedIcons[$icon->getGroup()][] = $icon;
     }
 
     $viewModel->predeterminedItems = $sortedPredeterminedItems;
