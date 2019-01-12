@@ -1015,7 +1015,7 @@
 
         $('form[action="/api/nodes"]').submit(function() {
             var $form = $(this);
-            var nodeId = $form.find('input[name="id"]');
+            var nodeId = $form.find('input[name="id"]').val();
             var uri = '/api/nodes';
             var action = 'CREATE';
 

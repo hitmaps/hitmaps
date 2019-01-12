@@ -192,7 +192,11 @@ $klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\
     $user = \BusinessLogic\Session\Session::read('userContext');
     $node = $applicationContext->get(\Controllers\NodeController::class)->createNode(intval($_POST['mission-id']), $_POST['difficulty'], $_POST, $user);
 
+    $response->code(201);
+    return json_encode(transformNode($node, $applicationContext));
+});
 
+function transformNode(\DataAccess\Models\Node $node, \DI\Container $applicationContext): \Controllers\ViewModels\NodeWithNotesViewModel {
     $nodeViewModel = new \Controllers\ViewModels\NodeWithNotesViewModel();
     $nodeViewModel->id = $node->getId();
     $nodeViewModel->missionId = $node->getMissionId();
@@ -208,6 +212,7 @@ $klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\
     $nodeViewModel->group = $node->getGroup();
     $nodeViewModel->approved = $node->getApproved();
     $nodeViewModel->image = $node->getImage();
+    $nodeViewModel->searchable = $node->isSearchable();
     switch ($nodeViewModel->icon) {
         case 'poison':
             $nodeViewModel->targetIcon = 'fa-user';
@@ -234,9 +239,9 @@ $klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\
 
         $nodeViewModel->notes[] = $innerViewModel;
     }
-    $response->code(201);
-    return json_encode($nodeViewModel);
-});
+
+    return $nodeViewModel;
+}
 
 $klein->respond('POST', '/api/ledges', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     if (!userIsLoggedIn()) {
@@ -286,7 +291,27 @@ $klein->respond('POST', '/api/nodes/move', function (\Klein\Request $request, \K
     return json_encode(['message' => 'OK']);
 });
 
-    $klein->respond('GET', '/api/nodes/delete/[:nodeId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('POST', '/api/nodes/edit/[:nodeId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    if (!userIsLoggedIn()) {
+        print json_encode(['message' => 'You must be logged in to modify nodes!']);
+        return $response->code(401);
+    }
+
+    /* @var $user \DataAccess\Models\User */
+    $user = \BusinessLogic\Session\Session::read('userContext');
+    $roles = $user->getRolesAsInts();
+    if (!\BusinessLogic\UserRole::hasAccess($roles, [\BusinessLogic\UserRole::TRUSTED_EDITOR])) {
+        print json_encode(['message' => 'You do not have permission to delete nodes!']);
+        return $response->code(403);
+    }
+
+    $node = $applicationContext->get(\Controllers\NodeController::class)->editNode(intval($request->nodeId), intval($_POST['mission-id']), $_POST['difficulty'], $_POST, $user);
+
+    $response->code(200);
+    return json_encode(transformNode($node, $applicationContext));
+});
+
+$klein->respond('GET', '/api/nodes/delete/[:nodeId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     if (!userIsLoggedIn()) {
         print json_encode(['message' => 'You must be logged in to modify nodes!']);
         return $response->code(401);
