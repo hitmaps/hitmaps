@@ -84,6 +84,7 @@ class NodeController {
                 $nodeViewModel->subgroup = $node->getSubgroup();
                 $nodeViewModel->name = $node->getName();
                 $nodeViewModel->target = $node->getTarget();
+                $nodeViewModel->searchable = $node->isSearchable();
                 switch ($nodeViewModel->icon) {
                     case 'poison':
                         $nodeViewModel->targetIcon = 'fa-user';
@@ -129,6 +130,46 @@ class NodeController {
     }
 
     public function createNode(int $missionId, string $difficulty, array $postData, User $user): Node {
+        /*
+         * - Sabotage uses "action" instead of "target"
+         * - Distraction uses "action" instead of "target"
+         * - Agency Pickup uses "pickup-type" instead of "target"
+         *     - "large" -> Large Pickup
+         *     - "small" -> Stash
+         * - Stairwell uses "stairwell-direction" as its icon
+         *     - up-stair
+         *     - up-down-stair
+         *     - down-stair
+         */
+
+        $node = $this->transformPostData($postData, $difficulty, $user, $missionId);
+
+        $this->entityManager->persist($node);
+        $this->entityManager->flush();
+
+        $nodeId = $node->getId();
+
+        $i = 0;
+        foreach ($postData['note-type'] as $noteType) {
+            $noteText = $postData['note-text'][$i++];
+
+            if (trim($noteText) === '') {
+                continue;
+            }
+
+            $nodeNote = new NodeNote();
+            $nodeNote->setNodeId($nodeId);
+            $nodeNote->setType($noteType);
+            $nodeNote->setText($noteText);
+
+            $this->entityManager->persist($nodeNote);
+            $this->entityManager->flush();
+        }
+
+        return $node;
+    }
+
+    private function transformPostData(array $postData, string $difficulty, User $user, int $missionId): Node {
         /*
          * - Sabotage uses "action" instead of "target"
          * - Distraction uses "action" instead of "target"
@@ -191,10 +232,19 @@ class NodeController {
         }
         $node->setApproved(UserRole::hasAccess($user->getRolesAsInts(), [UserRole::TRUSTED_EDITOR]));
 
+        return $node;
+    }
+
+    public function editNode(int $nodeId, int $missionId, string $difficulty, array $postData, User $user): Node {
+
+        $node = $this->transformPostData($postData, $difficulty, $user, $missionId);
+        $node->setId($nodeId);
+
+        $node = $this->entityManager->merge($node);
         $this->entityManager->persist($node);
         $this->entityManager->flush();
 
-        $nodeId = $node->getId();
+        $this->entityManager->getConnection()->executeUpdate("DELETE FROM `node_notes` WHERE `node_id` = " . $nodeId);
 
         $i = 0;
         foreach ($postData['note-type'] as $noteType) {
