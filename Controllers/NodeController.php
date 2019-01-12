@@ -84,6 +84,7 @@ class NodeController {
                 $nodeViewModel->subgroup = $node->getSubgroup();
                 $nodeViewModel->name = $node->getName();
                 $nodeViewModel->target = $node->getTarget();
+                $nodeViewModel->searchable = $node->isSearchable();
                 switch ($nodeViewModel->icon) {
                     case 'poison':
                         $nodeViewModel->targetIcon = 'fa-user';
