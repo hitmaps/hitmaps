@@ -482,7 +482,7 @@
                 <button class="btn btn-danger btn-sm" data-action="delete-btn" data-node-id="x" data-toggle="tooltip" title="Delete">
                     <i class="fas fa-times"></i>
                 </button>
-                <button class="btn btn-warning btm-sm" data-action="edit-btn" data-node-id="x" data-toggle="tooltip" title="Edit">
+                <button class="btn btn-warning btn-sm" data-action="edit-btn" data-node-id="x" data-toggle="tooltip" title="Edit">
                     <i class="fas fa-pencil-alt"></i>
                 </button>
             {% endif %}
@@ -1154,11 +1154,12 @@
         });
 
         $body.on('click', '[data-action="edit-btn"]', function() {
-            console.log(g_openMarker);
-            var nodeId = parseInt($(this).attr('data-node-id'));
+            console.log(g_openMarker.options.custom.node);
+            var node = g_openMarker.options.custom.node;
+            var nodeId = node.id;
 
             var $modal = $('#suggest-edit-modal');
-            $modal.find('select[name="subgroup"]').selectpicker('val', '');
+            $modal.find('select[name="subgroup"]').selectpicker('val', node.subgroup);
             $modal.find('input[name="group"]').val(-1).end()
                 .find('select[name="icon"]').selectpicker('val', '');
             $modal.find('input[name="name"]').val(-1).end();
