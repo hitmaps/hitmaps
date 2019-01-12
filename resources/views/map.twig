@@ -936,6 +936,15 @@
             });
         }
 
+        function addNoteForExistingItem($suggestNotes, value, type) {
+            var $temp = $('#temp');
+            $temp.append($('.note-template').html());
+            $temp.find('input[name="note-text[]"]').attr('value', value);
+            $temp.find('select[name="note-type[]"] [value="' + type + '"]').attr('selected', true);
+            $suggestNotes.append($temp.html());
+            $temp.html('');
+        }
+
         function addNoteFromTemplate($selectedItem, $suggestNotes, type, target) {
             if ($selectedItem.attr('data-' + type) === undefined ||
                 $selectedItem.attr('data-' + type) === false ||
@@ -1159,12 +1168,48 @@
             var nodeId = node.id;
 
             var $modal = $('#suggest-edit-modal');
-            $modal.find('select[name="subgroup"]').selectpicker('val', node.subgroup);
-            $modal.find('input[name="group"]').val(-1).end()
-                .find('select[name="icon"]').selectpicker('val', '');
-            $modal.find('input[name="name"]').val(-1).end();
 
-            // TODO Action, Target, Pickup Type, Direction, Notes, Original ID
+            $modal.find('select[name="subgroup"]').selectpicker('val', node.type + '|' + node.subgroup);
+            $modal.find('select[name="subgroup"]').trigger('change');
+            $modal.find('input[name="group"]').val(node.group);
+            $modal.find('select[name="icon"]').selectpicker('val', node.icon);
+            $modal.find('input[name="name"]').val(node.name).end()
+                .find('input[name="latitude"]').val(node.latitude).end()
+                .find('input[name="longitude"]').val(node.longitude).end()
+                .find('input[name="id"]').val(node.id).end()
+                .find('input[name="level"]').val(node.level).end()
+                .find('input[name="target"]').val(node.target).end()
+                .find('input[name="action"]').val(node.target).end();
+
+            if (node.group === 'Agency Pickup') {
+                $modal.find('input[name="pickup-type"]').removeAttr('checked').end()
+                    .find('input[name="pickup-type"][value="' +
+                        (node.target === 'Small' ? 'small' : 'large') + '"]').attr('checked', true);
+            } else if (node.group === 'Stairwell') {
+                $modal.find('input[name="stairwell-direction"]').removeAttr('checked').end()
+                    .find('input[name="stairwell-direction"][value="' + node.icon + '"]').attr('checked', true);
+            } else if (node.group === 'Ways Up/Down') {
+                var icon = node.icon === 'up-pipe' ? 'up-stair' :
+                    (node.icon === 'up-down-pipe' ? 'up-down-stair' :
+                            'down-stair');
+                $modal.find('input[name="stairwell-direction"]').removeAttr('checked').end()
+                    .find('input[name="stairwell-direction"][value="' + icon + '"]').attr('checked', true);
+            }
+
+            // TODO Notes
+            var $suggestNotes = $('#suggest-notes');
+            $suggestNotes.html('');
+            var addedNotes = false;
+
+            $.each(node.notes, function() {
+                addNoteForExistingItem($suggestNotes, this.text, this.type);
+                addedNotes = true;
+            });
+
+            if (!addedNotes) {
+                $suggestNotes.append($('.note-template').html());
+            }
+
 
             $modal.modal('show');
         });
