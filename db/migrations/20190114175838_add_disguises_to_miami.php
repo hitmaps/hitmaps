@@ -10,152 +10,155 @@ class AddDisguisesToMiami extends AbstractMigration {
 
     private function rows() {
         return [
-            // Common
             [
                 'mission_id' => 22,
                 'name' => 'Event Crew',
-                'image' => '',
+                'image' => 'disguises/miami/worker-event-staff',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Event Security',
-                'image' => '',
+                'image' => 'disguises/miami/guard-event-security',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Food Vendor',
-                'image' => '',
+                'image' => 'disguises/miami/worker-food-stand',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Kronstadt Engineer',
-                'image' => '',
+                'image' => 'disguises/miami/worker-kronstadt-engineer',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Kronstadt Security',
-                'image' => '',
+                'image' => 'disguises/miami/guard-kronstadt-security',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Medic',
-                'image' => '',
+                'image' => 'disguises/miami/worker-medic',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Race Marshall',
-                'image' => '',
+                'image' => 'disguises/miami/worker-race-marshall',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Waiter',
-                'image' => '',
+                'image' => 'disguises/miami/worker-waiter',
             ],
-            // Uncommon
             [
                 'mission_id' => 22,
                 'name' => 'Journalist',
-                'image' => '',
+                'image' => 'disguises/miami/worker-journalist',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Kitchen Staff',
-                'image' => '',
+                'image' => 'disguises/miami/worker-kitchen-staff',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Kronstadt Researcher',
-                'image' => '',
+                'image' => 'disguises/miami/worker-kronstadt-researcher',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Mascot',
-                'image' => '',
+                'image' => 'disguises/miami/uniue-flamingo',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Race Coordinator',
-                'image' => '',
+                'image' => 'disguises/miami/worker-race-coordinator',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Aeon Mechanic',
-                'image' => '',
+                'image' => 'disguises/miami/worker-aeon-mechanic',
+            ],
+            [
+                'mission_id' => 22,
+                'name' => 'Blue Seed Mechanic',
+                'image' => 'disguises/miami/worker-blue-seed-mechanic',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Kowoon Mechanic',
-                'image' => '',
+                'image' => 'disguises/miami/worker-kowoon-mechanic',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Kronstadt Mechanic',
-                'image' => '',
+                'image' => 'disguises/miami/worker-kronstadt-mechanic',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Sotteraneo Mechanic',
-                'image' => '',
+                'image' => 'disguises/miami/worker-sotteraneo-mechanic',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Thwack Mechanic',
-                'image' => '',
+                'image' => 'disguises/miami/worker-thwack-mechanic',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Florida Man',
-                'image' => '',
+                'image' => 'disguises/miami/unique-florida-man',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Moses Lee',
-                'image' => '',
+                'image' => 'disguises/miami/unique-moses-lee',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Pale Rider',
-                'image' => '',
+                'image' => 'disguises/miami/unique-pale-rider',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Sheik',
-                'image' => '',
+                'image' => 'disguises/miami/unique-sheik',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Street Musician',
-                'image' => '',
+                'image' => 'disguises/miami/unique-street-musician',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Ted Mendez',
-                'image' => '',
+                'image' => 'disguises/miami/unique-ted-mendez',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Aeon Driver',
-                'image' => '',
+                'image' => 'disguises/miami/unique-driver-aeon',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Blue Seed Driver',
-                'image' => '',
+                'image' => 'disguises/miami/unique-driver-blue-seed',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Crashed Kronstadt Driver',
-                'image' => '',
+                'image' => 'disguises/miami/unique-crashed-kronstadt-driver',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Kowoon Driver',
-                'image' => '',
+                'image' => 'disguises/miami/unique-driver-kowoon',
             ],
             [
                 'mission_id' => 22,
                 'name' => 'Thwack Driver',
-                'image' => '',
+                'image' => 'disguises/miami/unique-driver-thwack',
             ],
         ];
     }
