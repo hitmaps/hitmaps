@@ -122,6 +122,9 @@ $klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]'
     $viewModel->lowestFloor = $mission->getLowestFloorNumber();
     $viewModel->highestFloor = $mission->getHighestFloorNumber();
     $viewModel->startingFloor = $mission->getStartingFloorNumber();
+    $viewModel->disguises = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
+        ->getRepository(\DataAccess\Models\Disguise::class)
+        ->findBy(['missionId' => $mission->getId()], ['name' => 'ASC']);
 
     if (userIsLoggedIn()) {
         /* @var $user \DataAccess\Models\User */
