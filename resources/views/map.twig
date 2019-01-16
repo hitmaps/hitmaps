@@ -103,6 +103,13 @@
                         </select>
                         <button id="clear-search" class="btn control-button" data-toggle="tooltip" title="Clear Search" style="display: none"><i class="fas fa-times"></i></button>
                     </div>
+                    <div class="search-box">
+                        <select name="disguises" class="selectpicker" data-live-search="true" data-title="Disguises" data-style="control-button">
+                            {% for disguise in model.disguises %}
+                                <option data-content="<img src='{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/{{ disguise.image }}.{{ model.jpgBackgroundFileExtension }}' alt='{{ disguise.name }} Icon' style='height: 75px; width: 75px'> {{ disguise.name }}">{{ disguise.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                     <div class="hide-or-select-all">
                         <button id="hide-all" class="btn control-button"><i class="far fa-fw fa-eye-slash"></i> Hide All</button>
                         <button id="show-all" class="btn control-button"><i class="far fa-fw fa-eye"></i> Show All</button>

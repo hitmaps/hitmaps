@@ -27,7 +27,7 @@ class AddHawkesBayDisguises extends AbstractMigration {
                 'image' => 'disguises/hawkes-bay/wetsuit',
             ],
             [
-                'mission_id' => 22,
+                'mission_id' => 21,
                 'name' => 'Bodyguard',
                 'image' => 'disguises/hawkes-bay/bodyguard',
             ],
