@@ -89,7 +89,7 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <div class="search-box">
+                    <div class="search-box" data-search="items">
                         <select name="search" class="selectpicker" data-live-search="true" data-title="<i class='fas fa-search'></i> Search" data-style="control-button">
                             {% for typeName,type in model.searchableNodes %}
                                 {% for group in type.items %}
@@ -103,12 +103,13 @@
                         </select>
                         <button id="clear-search" class="btn control-button" data-toggle="tooltip" title="Clear Search" style="display: none"><i class="fas fa-times"></i></button>
                     </div>
-                    <div class="search-box">
-                        <select name="disguises" class="selectpicker" data-live-search="true" data-title="Disguises" data-style="control-button">
+                    <div class="search-box" data-search="disguises">
+                        <select name="disguises" class="selectpicker" data-live-search="true" data-title="<i class='far fa-user-tie'></i> Disguises" data-style="control-button">
                             {% for disguise in model.disguises %}
-                                <option data-content="<img src='{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/{{ disguise.image }}.{{ model.jpgBackgroundFileExtension }}' alt='{{ disguise.name }} Icon' style='height: 75px; width: 75px'> {{ disguise.name }}">{{ disguise.name }}</option>
+                                <option title="<i class='far fa-user-tie'></i> {{ disguise.name }}" data-content="<img class='disguise-image' src='{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/{{ disguise.image }}.{{ model.jpgBackgroundFileExtension }}' alt='{{ disguise.name }} Icon'> <span class='disguise-info'><div class='disguise-name'>{{ disguise.name }}</div></span>">{{ disguise.name }}</option>
                             {% endfor %}
                         </select>
+                        <button id="clear-disguise-search" class="btn control-button" data-toggle="tooltip" title="Clear Search" style="display: none"><i class="fas fa-times"></i></button>
                     </div>
                     <div class="hide-or-select-all">
                         <button id="hide-all" class="btn control-button"><i class="far fa-fw fa-eye-slash"></i> Hide All</button>
