@@ -292,9 +292,20 @@ html {
         }
 
         .name, .visibility-toggle {
+          &.control-button {
+            width: 368px;
+            padding-left: 12px;
+            padding-top: 6px;
+            padding-bottom: 6px;
+
+            &:hover {
+              background: inherit;
+            }
+          }
+
           display: inline-block;
           padding: 10px;
-          background: #2a2d31;
+          background: rgba(22, 24, 29, .75);
           color: #fff;
           cursor: pointer;
           height: 40px;
@@ -515,22 +526,23 @@ html {
 
   .search-box {
     &[data-search="disguises"] {
-      .bootstrap-select .dropdown-menu li {
-        float: left;
-        text-align: center;
-      }
-
       a.dropdown-item {
         padding-left: 8px;
 
         .disguise-image {
-          width: 150px;
+          display: inline-block;
+          max-width: 150px;
           height: 112px;
         }
 
         .disguise-info {
+          display: inline-block;
           font-weight: bolder;
         }
+      }
+
+      .dropdown-menu {
+        max-width: 368px !important;
       }
     }
 
