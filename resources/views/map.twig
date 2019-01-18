@@ -90,7 +90,7 @@
                         {% endfor %}
                     </div>
                     <div class="search-box" data-search="items">
-                        <select name="search" class="selectpicker" data-live-search="true" data-title="<i class='fas fa-search'></i> Search" data-style="control-button">
+                        <select name="search" class="selectpicker" data-live-search="true" data-title="<i class='fas fa-fw fa-search'></i> Search" data-style="control-button">
                             {% for typeName,type in model.searchableNodes %}
                                 {% for group in type.items %}
                                     <optgroup label="{{ group.name }}">
@@ -108,7 +108,7 @@
                             <div class="card-header" id="header-disguises">
                                 <div class="name collapsed control-button" data-toggle="collapse"
                                     data-target="#body-disguises" aria-expanded="false" aria-controls="body-disguises">
-                                    <i class="far fa-user-tie"></i> Disguises
+                                    <i class="far fa-fw fa-user-tie"></i> Disguises
                                     <span class="float-right">
                                         <i class="fas fa-caret-down"></i>
                                         <i class="fas fa-caret-up"></i>
@@ -117,13 +117,19 @@
                             </div>
                             <div id="body-disguises" class="collapse" aria-labelledby="header-disguises">
                                 <div class="card-body">
+                                    <div class="half-width">
+                                        <div class="disguise-image">
+                                            <i class="fas fa-4x fa-times-square"></i>
+                                        </div>
+                                        <p class="disguise-info">None</p>
+                                    </div>
                                     {% for disguise in model.disguises %}
-                                        <p>
-                                            <img class="disguise-image"
+                                        <div class="half-width">
+                                            <img class="disguise-image img-fluid"
                                                  src="{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/{{ disguise.image }}.{{ model.jpgBackgroundFileExtension }}"
                                                  alt="{{ disguise.name }} Icon">
-                                            {{ disguise.name }}
-                                        </p>
+                                            <p class="disguise-info">{{ disguise.name }}</p>
+                                        </div>
                                     {% endfor %}
                                 </div>
                             </div>
