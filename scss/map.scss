@@ -297,9 +297,13 @@ html {
             padding-left: 12px;
             padding-top: 6px;
             padding-bottom: 6px;
+            transition: color .15s ease-in-out,
+              background-color .15s ease-in-out,
+              border-color .15s ease-in-out,
+              box-shadow .15s ease-in-out;
 
             &:hover {
-              background: inherit;
+              background: rgba(22, 24, 29, .75);
             }
           }
 
@@ -525,27 +529,6 @@ html {
   }
 
   .search-box {
-    &[data-search="disguises"] {
-      a.dropdown-item {
-        padding-left: 8px;
-
-        .disguise-image {
-          display: inline-block;
-          max-width: 150px;
-          height: 112px;
-        }
-
-        .disguise-info {
-          display: inline-block;
-          font-weight: bolder;
-        }
-      }
-
-      .dropdown-menu {
-        max-width: 368px !important;
-      }
-    }
-
     .bootstrap-select {
       width: 368px !important;
 
@@ -580,6 +563,31 @@ html {
 
   .search-box .control-button {
     width: 100%;
+  }
+
+  #body-disguises {
+    .half-width {
+      text-align: center;
+
+      img.disguise-image {
+        width: 150px;
+        height: 112px;
+      }
+
+      div.disguise-image {
+        height: 112px;
+
+        i {
+          margin-top: 24px;
+          color: #fff;
+        }
+      }
+
+      .disguise-info {
+        font-weight: bolder;
+        color: #fff;
+      }
+    }
   }
 
   #show-all {
