@@ -514,6 +514,26 @@ html {
   }
 
   .search-box {
+    &[data-search="disguises"] {
+      .bootstrap-select .dropdown-menu li {
+        float: left;
+        text-align: center;
+      }
+
+      a.dropdown-item {
+        padding-left: 8px;
+
+        .disguise-image {
+          width: 150px;
+          height: 112px;
+        }
+
+        .disguise-info {
+          font-weight: bolder;
+        }
+      }
+    }
+
     .bootstrap-select {
       width: 368px !important;
 
@@ -537,7 +557,8 @@ html {
       }
     }
 
-    #clear-search.control-button {
+    #clear-search.control-button,
+    #clear-disguise-search.control-button {
       display: inline-block;
       margin-left: 10px;
       width: 40px;
