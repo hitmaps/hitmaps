@@ -104,11 +104,30 @@
                         <button id="clear-search" class="btn control-button" data-toggle="tooltip" title="Clear Search" style="display: none"><i class="fas fa-times"></i></button>
                     </div>
                     <div class="search-box" data-search="disguises">
-                        <select name="disguises" class="selectpicker" data-live-search="true" data-title="<i class='far fa-user-tie'></i> Disguises" data-style="control-button">
-                            {% for disguise in model.disguises %}
-                                <option title="<i class='far fa-user-tie'></i> {{ disguise.name }}" data-content="<img class='disguise-image' src='{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/{{ disguise.image }}.{{ model.jpgBackgroundFileExtension }}' alt='{{ disguise.name }} Icon'> <span class='disguise-info'><div class='disguise-name'>{{ disguise.name }}</div></span>">{{ disguise.name }}</option>
-                            {% endfor %}
-                        </select>
+                        <div class="card">
+                            <div class="card-header" id="header-disguises">
+                                <div class="name collapsed control-button" data-toggle="collapse"
+                                    data-target="#body-disguises" aria-expanded="false" aria-controls="body-disguises">
+                                    <i class="far fa-user-tie"></i> Disguises
+                                    <span class="float-right">
+                                        <i class="fas fa-caret-down"></i>
+                                        <i class="fas fa-caret-up"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div id="body-disguises" class="collapse" aria-labelledby="header-disguises">
+                                <div class="card-body">
+                                    {% for disguise in model.disguises %}
+                                        <p>
+                                            <img class="disguise-image"
+                                                 src="{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/{{ disguise.image }}.{{ model.jpgBackgroundFileExtension }}"
+                                                 alt="{{ disguise.name }} Icon">
+                                            {{ disguise.name }}
+                                        </p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
                         <button id="clear-disguise-search" class="btn control-button" data-toggle="tooltip" title="Clear Search" style="display: none"><i class="fas fa-times"></i></button>
                     </div>
                     <div class="hide-or-select-all">
