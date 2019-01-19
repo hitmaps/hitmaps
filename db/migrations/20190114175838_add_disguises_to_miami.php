@@ -79,7 +79,7 @@ class AddDisguisesToMiami extends AbstractMigration {
             [
                 'mission_id' => 22,
                 'name' => 'Mascot',
-                'image' => 'disguises/miami/uniue-flamingo',
+                'image' => 'disguises/miami/unique-flamingo',
             ],
             [
                 'mission_id' => 22,
