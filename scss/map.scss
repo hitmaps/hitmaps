@@ -339,6 +339,10 @@ html {
             background: #33363a;
           }
         }
+
+        &#header-disguises {
+          margin-bottom: 0;
+        }
       }
 
       .card-body {
@@ -566,26 +570,42 @@ html {
   }
 
   #body-disguises {
-    .half-width {
-      text-align: center;
+    .disguises {
+      background: rgba(22, 24, 29, .75);
 
-      img.disguise-image {
-        width: 150px;
-        height: 112px;
-      }
+      .half-width {
+        padding-top: 10px;
+        text-align: center;
 
-      div.disguise-image {
-        height: 112px;
+        &:hover {
+          background: #16181d;
+          cursor: pointer;
+        }
 
-        i {
-          margin-top: 24px;
+        &.selected {
+          background: rgb(41, 44, 52);
+        }
+
+        img.disguise-image {
+          display: inline-block;
+          width: 150px;
+          height: 112px;
+        }
+
+        div.disguise-image {
+          height: 112px;
+
+          i {
+            margin-top: 24px;
+            color: #fff;
+          }
+        }
+
+        .disguise-info {
+          display: inline-block;
+          font-weight: bolder;
           color: #fff;
         }
-      }
-
-      .disguise-info {
-        font-weight: bolder;
-        color: #fff;
       }
     }
   }
