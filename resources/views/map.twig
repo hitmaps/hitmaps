@@ -117,17 +117,11 @@
                             </div>
                             <div id="body-disguises" class="collapse" aria-labelledby="header-disguises">
                                 <div class="card-body disguises">
-                                    <div class="half-width selected">
-                                        <div class="disguise-image">
-                                            <i class="fas fa-4x fa-times-square"></i>
-                                        </div>
+                                    <div class="full-width selected" style="background: url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/disguises/none.{{ model.jpgBackgroundFileExtension }}'); ">
                                         <p class="disguise-info">None</p>
                                     </div>
                                     {% for disguise in model.disguises %}
-                                        <div class="half-width">
-                                            <img class="disguise-image img-fluid"
-                                                 src="{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/{{ disguise.image }}.{{ model.jpgBackgroundFileExtension }}"
-                                                 alt="{{ disguise.name }} Icon">
+                                        <div class="full-width" style="background: url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/{{ disguise.image }}.{{ model.jpgBackgroundFileExtension }}'); ">
                                             <p class="disguise-info">{{ disguise.name }}</p>
                                         </div>
                                     {% endfor %}
