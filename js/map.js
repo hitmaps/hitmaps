@@ -2,7 +2,8 @@ $(document).ready(function() {
     var EDIT_MODES = {
         OFF: 0,
         ITEMS: 1,
-        LEDGES: 2
+        LEDGES: 2,
+        FOLIAGE: 3
     };
 
     $('#edit-button').click(function() {
@@ -46,6 +47,22 @@ $(document).ready(function() {
         $editMode.val(EDIT_MODES.OFF);
         $('.edit-menu').show();
         $('.ledges-menu').hide();
+        $('.editor-enabled').hide();
+    });
+
+    $('[data-editor="foliage"]').click(function() {
+        var $editMode = $('input[type="hidden"][name="edit-mode"]');
+        $editMode.val(EDIT_MODES.FOLIAGE);
+        $('.editor-enabled').show().find('h3').text('ADD / REMOVE FOLIAGE');
+        $('.edit-menu').hide();
+        $('.foliage-menu').show();
+    });
+
+    $('[data-foliage="cancel"]').click(function() {
+        var $editMode = $('input[type="hidden"][name="edit-mode"]');
+        $editMode.val(EDIT_MODES.OFF);
+        $('.edit-menu').show();
+        $('.foliage-menu').hide();
         $('.editor-enabled').hide();
     });
 
