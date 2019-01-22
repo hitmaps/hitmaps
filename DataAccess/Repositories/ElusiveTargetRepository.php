@@ -11,7 +11,7 @@ class ElusiveTargetRepository extends EntityRepository {
         $currentUtcTime = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $results = $this->createQueryBuilder('e')
-            ->andWhere('e.beginningTime <= :now AND e.endingTime >= :now')
+            ->andWhere('e.endingTime >= :now')
             ->setParameter('now', $currentUtcTime)
             ->getQuery()
             ->getResult();
