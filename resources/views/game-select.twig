@@ -32,10 +32,13 @@
         <div class="elusive-target col-lg" style="background: url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}{{ model.elusiveTarget.imageUrl }}.{{ model.jpgBackgroundFileExtension }}') no-repeat center; background-size: cover">
             <a href="{{ model.elusiveTarget.missionUrl }}">
                 <p>&nbsp;</p>
-                <p class="countdown">
+                <div class="countdown">
                     <img src="/img/game-icons/elusive-target-reminaing-time.png" style="height: 48px; width: 48px">
-                    <span id="elusive-countdown"></span>
-                </p>
+                    <div class="timer">
+                        <div class="target-arrives">TARGET ARRIVES</div>
+                        <div id="elusive-countdown"></div>
+                    </div>
+                </div>
                 <div class="elusive-target-info">
                     <div class="image">
                         <img src="/img/game-icons/elusive-target.png" class="normal img-fluid" alt="Elusive Target Icon">
@@ -49,23 +52,44 @@
             </a>
         </div>
         <script>
+            var playable = {% if model.elusiveTarget.playable %}true{% else %}false{% endif %};
             var expirationUtc = moment.utc('{{ model.elusiveTarget.endingTime|date('Y-m-d H:i:s') }}');
+            var beginningUtc = moment.utc('{{ model.elusiveTarget.beginningTime|date('Y-m-d H:i:s') }}');
 
             var countdown = setInterval(function() {
                 var $countdown = $('#elusive-countdown');
 
                 var currentUtc = moment.utc();
-                var difference = expirationUtc.diff(currentUtc);
+                var difference = undefined;
 
-                if (difference < 0) {
-                    $countdown.text('Ended');
-                    clearInterval(countdown);
+                if (playable) {
+                    difference = expirationUtc.diff(currentUtc);
+                } else {
+                    difference = beginningUtc.diff(currentUtc);
+                    $('.timer').addClass('not-playable');
+                }
+
+                if (difference <= 0) {
+                    if (playable) {
+                        $countdown.text('Ended');
+                        clearInterval(countdown);
+                        return;
+                    }
+
+                    playable = true;
+                    $('.timer').removeClass('not-playable');
                     return;
                 }
 
                 var duration = moment.duration(difference);
+                var days = undefined;
 
-                var days = expirationUtc.diff(currentUtc, 'days');
+                if (playable) {
+                    days = expirationUtc.diff(currentUtc, 'days');
+                } else {
+                    days = beginningUtc.diff(currentUtc, 'days');
+                }
+
                 console.log(days + ' Days');
                 var hours = duration.hours();
                 console.log(hours + ' Hours');

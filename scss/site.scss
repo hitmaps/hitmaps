@@ -136,12 +136,37 @@ header {
   .elusive-target {
     .countdown {
       padding: 15px 15px 0;
+      margin-bottom: 1rem;
 
-      #elusive-countdown {
-        color: #fef30a;
-        font-size: 2rem;
+      .timer {
+        display: inline-block;
         vertical-align: middle;
-        font-weight: 600;
+
+        .target-arrives {
+          color: #fff;
+          line-height: 0;
+          display: none;
+        }
+
+        #elusive-countdown {
+          color: #fef30a;
+          font-size: 2rem;
+          vertical-align: middle;
+          font-weight: 600;
+        }
+
+        &.not-playable {
+          vertical-align: bottom;
+
+          .target-arrives {
+            display: block;
+          }
+
+          #elusive-countdown {
+            line-height: 33px;
+            margin-top: 7px;
+          }
+        }
       }
     }
   }
