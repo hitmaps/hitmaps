@@ -160,4 +160,13 @@ class ElusiveTarget {
     public function setImageUrl($imageUrl): void {
         $this->imageUrl = $imageUrl;
     }
+
+    /**
+     * @return bool
+     */
+    public function isPlayable(): bool {
+        $currentUtcTime = new \DateTime('now', new \DateTimeZone('UTC'));
+
+        return $currentUtcTime > $this->getBeginningTime();
+    }
 }
