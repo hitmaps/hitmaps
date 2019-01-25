@@ -281,6 +281,41 @@ $klein->respond('GET', '/api/ledges/delete/[:ledgeId]', function (\Klein\Request
     return json_encode(['message' => 'Ledge deleted!']);
 });
 
+$klein->respond('POST', '/api/foliage', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    if (!userIsLoggedIn()) {
+        print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
+        return $response->code(401);
+    }
+
+    $ledge = $applicationContext->get(\Controllers\FoliageController::class)->createFoliage($_POST['missionId'], $_POST['level'], $_POST['vertices']);
+
+    $explodedVertices = explode('|', $ledge->getVertices());
+
+    $viewModel = new \Controllers\ViewModels\LedgeViewModel();
+    $viewModel->id = $ledge->getId();
+    $viewModel->missionId = $ledge->getMissionId();
+    $viewModel->level = $ledge->getLevel();
+    $viewModel->vertices = $explodedVertices;
+
+    $response->code(201);
+    return json_encode($viewModel);
+});
+
+$klein->respond('GET', '/api/foliage/delete/[:foliageId]', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    if (!userIsLoggedIn()) {
+        print json_encode(['message' => 'You must be logged in to delete foliage!']);
+        return $response->code(401);
+    }
+
+    $foliage = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Foliage::class)->findOneBy(['id' => $request->foliageId]);
+    $entityManager = $applicationContext->get(\Doctrine\ORM\EntityManager::class);
+    $entityManager->remove($foliage);
+    $entityManager->flush();
+
+    $response->code(200);
+    return json_encode(['message' => 'Foliage deleted!']);
+});
+
 $klein->respond('POST', '/api/nodes/move', function (\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext) {
     if (!userIsLoggedIn()) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
@@ -360,7 +395,19 @@ $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
         $formattedLedges[] = $viewModel;
     }
 
-    return json_encode(['nodes' => $nodes, 'categories' => $nodeCategories, 'ledges' => $formattedLedges]);
+    /* @var $foliage \DataAccess\Models\Foliage[] */
+    $foliage = $applicationContext->get(\Controllers\FoliageController::class)->getFoliageForMission($_GET['missionId']);
+    $formattedFoliage = [];
+    foreach ($foliage as $innerFoliage) {
+        $viewModel = new \Controllers\ViewModels\LedgeViewModel();
+        $viewModel->id = $innerFoliage->getId();
+        $viewModel->missionId = $innerFoliage->getMissionId();
+        $viewModel->level = $innerFoliage->getLevel();
+        $viewModel->vertices = explode('|', $innerFoliage->getVertices());
+        $formattedFoliage[] = $viewModel;
+    }
+
+    return json_encode(['nodes' => $nodes, 'categories' => $nodeCategories, 'ledges' => $formattedLedges, 'foliage' => $formattedFoliage]);
 });
 
 /* Auth Endpoints */
