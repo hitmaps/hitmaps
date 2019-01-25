@@ -292,9 +292,24 @@ html {
         }
 
         .name, .visibility-toggle {
+          &.control-button {
+            width: 368px;
+            padding-left: 12px;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            transition: color .15s ease-in-out,
+              background-color .15s ease-in-out,
+              border-color .15s ease-in-out,
+              box-shadow .15s ease-in-out;
+
+            &:hover {
+              background: rgba(22, 24, 29, .75);
+            }
+          }
+
           display: inline-block;
           padding: 10px;
-          background: #2a2d31;
+          background: rgba(22, 24, 29, .75);
           color: #fff;
           cursor: pointer;
           height: 40px;
@@ -323,6 +338,10 @@ html {
             text-decoration: none;
             background: #33363a;
           }
+        }
+
+        &#header-disguises {
+          margin-bottom: 0;
         }
       }
 
@@ -456,7 +475,8 @@ html {
 
   .edit-menu,
   .items-menu,
-  .ledges-menu {
+  .ledges-menu,
+  .foliage-menu {
     h2 {
       color: #fff;
       text-transform: uppercase;
@@ -537,7 +557,8 @@ html {
       }
     }
 
-    #clear-search.control-button {
+    #clear-search.control-button,
+    #clear-disguise-search.control-button {
       display: inline-block;
       margin-left: 10px;
       width: 40px;
@@ -547,6 +568,46 @@ html {
 
   .search-box .control-button {
     width: 100%;
+  }
+
+  #body-disguises {
+    .disguises {
+      .full-width {
+        padding-top: 10px;
+        padding-right: 20px;
+        text-align: right;
+
+        &:hover {
+          background: #16181d;
+          cursor: pointer;
+        }
+
+        &.selected {
+          background: rgb(41, 44, 52);
+        }
+
+        img.disguise-image {
+          display: inline-block;
+          width: 150px;
+          height: 112px;
+        }
+
+        div.disguise-image {
+          height: 112px;
+
+          i {
+            margin-top: 24px;
+            color: #fff;
+          }
+        }
+
+        .disguise-info {
+          display: inline-block;
+          font-weight: bolder;
+          color: #fff;
+        }
+      }
+    }
   }
 
   #show-all {
