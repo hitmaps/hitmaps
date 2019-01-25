@@ -285,7 +285,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <input type="hidden" name="ledge-id">
+                    <input type="hidden" name="foliage-id">
                     <div class="modal-body">
                         <div class="alert alert-warning">
                             Are you sure you want to delete this foliage?
@@ -1020,7 +1020,7 @@
 
                 g_openMarker = this;
 
-                $('input[type="hidden"][name="ledge-id"]').val(this.options.custom.id);
+                $('input[type="hidden"][name="foliage-id"]').val(this.options.custom.id);
                 $('#confirm-delete-foliage-modal').modal('show');
             });
 
