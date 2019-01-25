@@ -831,7 +831,7 @@
                 data: data,
                 success: function(data) {
                     var foliage = JSON.parse(data);
-                    buildLedge(foliage).addTo(g_overlays[foliage.level]['Navigation|Foliage']);
+                    buildFoliage(foliage).addTo(g_overlays[foliage.level]['Navigation|Foliage']);
                     g_workingLedgeVertices = [];
                     toastr["success"]("Foliage successfully created!");
                 },
@@ -980,7 +980,7 @@
                 latlngs.push([coords[0], coords[1]]);
             }
             var polygon = L.polygon(latlngs, {
-                color: '#fff',
+                color: '#248f24',
                 weight: 4,
                 opacity: .75,
                 custom: {
