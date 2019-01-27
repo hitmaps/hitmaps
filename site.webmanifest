@@ -3,12 +3,12 @@
     "short_name": "HITMAN\u2122 2 Maps",
     "icons": [
         {
-            "src": "/android-chrome-192x192.png?v=69PbYnk9dL",
+            "src": "/android-chrome-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/android-chrome-256x256.png?v=69PbYnk9dL",
+            "src": "/android-chrome-256x256.png",
             "sizes": "256x256",
             "type": "image/png"
         }
