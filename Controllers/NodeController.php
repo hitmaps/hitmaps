@@ -37,7 +37,7 @@ class NodeController {
     }
 
     public function getNodesForMission(int $missionid, string $difficulty, bool $distinctOnly = false, bool $searchableOnly = false): array {
-        $nodes = $this->nodeRepository->findByMissionAndDifficulty($missionid, $difficulty);
+        $nodesWithNotes = $this->nodeRepository->findByMissionAndDifficulty($missionid, $difficulty);
 
         $groups = [
             'Points of Interest' => new TopLevelCategoryViewModel('Points of Interest'),
@@ -60,14 +60,32 @@ class NodeController {
         }
 
         $addedNodes = [];
-        foreach ($nodes as $node) {
+        /* @var $nodeViewModel NodeWithNotesViewModel */
+        $nodeViewModel = null;
+        foreach ($nodesWithNotes as $entity) {
+            if ($entity instanceof NodeNote) {
+                /* @var $note NodeNote */
+                $note = $entity;
+                if ($nodeViewModel === null) {
+                    continue;
+                }
+
+                $innerViewModel = new NodeNoteViewModel();
+                $innerViewModel->id = $note->getId();
+                $innerViewModel->type = $note->getType();
+                $innerViewModel->text = $note->getText();
+
+                $nodeViewModel->notes[] = $innerViewModel;
+                continue;
+            }
+
             /* @var $node Node */
+            $node = $entity;
+            $nodeViewModel = null;
             /* @var $notes NodeNote[] */
             if ($searchableOnly && !$node->isSearchable()) {
                 continue;
             }
-
-            $notes = $this->nodeNoteRepository->findBy(['nodeId' => $node->getId()]);
 
             $type = $node->getType();
             $group = $node->getGroup();
@@ -106,14 +124,6 @@ class NodeController {
                 $nodeViewModel->group = $node->getGroup();
                 $nodeViewModel->image = $node->getImage();
                 $nodeViewModel->notes = [];
-                foreach ($notes as $note) {
-                    $innerViewModel = new NodeNoteViewModel();
-                    $innerViewModel->id = $note->getId();
-                    $innerViewModel->type = $note->getType();
-                    $innerViewModel->text = $note->getText();
-
-                    $nodeViewModel->notes[] = $innerViewModel;
-                }
 
                 /* @var $categoryViewModel CategoryViewModel */
                 $categoryViewModel = $groups[$type]->items[$group];
