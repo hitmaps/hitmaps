@@ -63,6 +63,10 @@ class NodeController {
         /* @var $nodeViewModel NodeWithNotesViewModel */
         $nodeViewModel = null;
         foreach ($nodesWithNotes as $entity) {
+            if ($entity === null) {
+                continue;
+            }
+
             if ($entity instanceof NodeNote) {
                 /* @var $note NodeNote */
                 $note = $entity;
