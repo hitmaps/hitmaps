@@ -9,7 +9,7 @@ class NodeRepository extends EntityRepository {
     public function findByMissionAndDifficulty(int $missionId, string $difficulty): array {
         return $this->getEntityManager()->createQuery('SELECT n, note 
             FROM DataAccess\Models\Node n 
-            JOIN DataAccess\Models\NodeNote note 
+            LEFT JOIN DataAccess\Models\NodeNote note 
               WITH n.id = note.nodeId
             WHERE n.missionId = :missionId
               AND n.difficulty = :difficulty
