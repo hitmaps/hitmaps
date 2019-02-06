@@ -673,7 +673,7 @@ html {
         border-bottom: none;
       }
 
-      > .selected {
+      &.selected {
         background: #fff;
         color: #000;
         margin-top: -1px;

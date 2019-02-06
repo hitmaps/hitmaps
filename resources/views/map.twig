@@ -37,8 +37,8 @@
     <div class="content">
         <div class="floor-toggle">
             {% for i in model.highestFloor..model.lowestFloor %}
-                <div class="floor-info" data-floor="{{ i }}">
-                    <div class="floor{% if model.startingFloor == i %} selected{% endif %}">
+                <div class="floor-info{% if model.startingFloor == i %} selected{% endif %}" data-floor="{{ i }}">
+                    <div class="floor">
                         Level {{ i }}
                     </div>
                     <div class="item-count">#</div>
@@ -88,8 +88,8 @@
                 <div class="accordion" id="accordion">
                     <div class="floor-toggle">
                         {% for i in model.highestFloor..model.lowestFloor %}
-                            <div class="floor-info" data-floor="{{ i }}">
-                                <div class="floor{% if model.startingFloor == i %} selected{% endif %}">
+                            <div class="floor-info{% if model.startingFloor == i %} selected{% endif %}" data-floor="{{ i }}">
+                                <div class="floor">
                                     Level {{ i }}
                                 </div>
                                 <div class="item-count">#</div>
@@ -1318,8 +1318,8 @@
             var level = $(this).parent().attr('data-floor');
             $formField.val(level);
 
-            $('.floor').removeClass('selected');
-            $(this).addClass('selected');
+            $('.floor').parent().removeClass('selected');
+            $(this).parent().addClass('selected');
 
             toggleLayer(g_mapLayers[previousLevel], false);
             toggleLayer(g_mapLayers[level], true);
