@@ -85,6 +85,11 @@ class Mission {
     private $bottomRightCoordinate;
 
     /**
+     * @ORM\Column(type="boolean", name="satellite_view")
+     */
+    private $satelliteView;
+
+    /**
      * @return mixed
      */
     public function getId(): int {
@@ -280,5 +285,19 @@ class Mission {
      */
     public function setBottomRightCoordinate($bottomRightCoordinate) {
         $this->bottomRightCoordinate = $bottomRightCoordinate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSatelliteView() {
+        return $this->satelliteView;
+    }
+
+    /**
+     * @param mixed $satelliteView
+     */
+    public function setSatelliteView($satelliteView): void {
+        $this->satelliteView = $satelliteView;
     }
 }
