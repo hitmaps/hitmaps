@@ -122,7 +122,7 @@ $klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]'
     $viewModel->lowestFloor = $mission->getLowestFloorNumber();
     $viewModel->highestFloor = $mission->getHighestFloorNumber();
     $viewModel->startingFloor = $mission->getStartingFloorNumber();
-    $viewModel->satelliteView = $mission->getSatelliteView();
+    $viewModel->satelliteView = $mission->getSatelliteView() ? 1 : 0;
     $viewModel->disguises = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
         ->getRepository(\DataAccess\Models\Disguise::class)
         ->findBy(['missionId' => $mission->getId()], ['name' => 'ASC']);
