@@ -37,13 +37,20 @@
     <div class="content">
         <div class="floor-toggle">
             {% for i in model.highestFloor..model.lowestFloor %}
-                <div class="floor-info" data-floor="{{ i }}">
-                    <div class="floor{% if model.startingFloor == i %} selected{% endif %}">
+                <div class="floor-info{% if model.startingFloor == i %} selected{% endif %}" data-floor="{{ i }}">
+                    <div class="floor">
                         Level {{ i }}
                     </div>
                     <div class="item-count">#</div>
                 </div>
             {% endfor %}
+            {% if model.satelliteView %}
+                <div class="floor-info text-center" data-floor="-99">
+                    <div class="floor">
+                        Satellite
+                    </div>
+                </div>
+            {% endif %}
         </div>
         <div id="map"></div>
         <nav class="navbar navbar-fixed-right navbar-dark">
@@ -81,13 +88,20 @@
                 <div class="accordion" id="accordion">
                     <div class="floor-toggle">
                         {% for i in model.highestFloor..model.lowestFloor %}
-                            <div class="floor-info" data-floor="{{ i }}">
-                                <div class="floor{% if model.startingFloor == i %} selected{% endif %}">
+                            <div class="floor-info{% if model.startingFloor == i %} selected{% endif %}" data-floor="{{ i }}">
+                                <div class="floor">
                                     Level {{ i }}
                                 </div>
                                 <div class="item-count">#</div>
                             </div>
                         {% endfor %}
+                        {% if model.satelliteView %}
+                            <div class="floor-info text-center" data-floor="-99">
+                                <div class="floor">
+                                    Satellite
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                     <div class="search-box" data-search="items">
                         <select name="search" class="selectpicker" data-live-search="true" data-title="<i class='fas fa-fw fa-search'></i> Search" data-style="control-button">
@@ -581,6 +595,7 @@
         var g_lowestFloor = {{ model.lowestFloor }};
         var g_highestFloor = {{ model.highestFloor }};
         var g_startingFloor = {{ model.startingFloor }};
+        var g_satelliteView = {{ model.satelliteView }};
         var g_openMarker = undefined;
         var g_workingLedgeVertices = [];
         var g_workingLedgeLayers = [];
@@ -716,6 +731,16 @@
                     g_mapLayers[j] = mapTileLayer;
                 }
 
+                if (g_satelliteView) {
+                    var mapTileLayer = L.tileLayer('/maps/{{ model.mapFolderName }}/tiles/-99/{z}/{x}/{y}.png', {
+                        noWrap: true,
+                        minZoom: 3,
+                        maxZoom: 5
+                    });
+                    allLayerGroups.push(mapTileLayer);
+                    g_mapLayers[-99] = mapTileLayer;
+                }
+
                 g_map = L.map('map', {
                     maxZoom: 5,
                     minZoom: 3,
@@ -759,6 +784,10 @@
                 for (var j = g_lowestFloor; j <= g_highestFloor; j++) {
                     g_map.removeLayer(g_mapLayers[j]);
                 }
+                if (g_satelliteView) {
+                    g_map.removeLayer(g_mapLayers[-99]);
+                }
+
                 g_map.addLayer(g_mapLayers[g_startingFloor]);
 
                 // Show the starting level's items
@@ -1289,8 +1318,8 @@
             var level = $(this).parent().attr('data-floor');
             $formField.val(level);
 
-            $('.floor').removeClass('selected');
-            $(this).addClass('selected');
+            $('.floor').parent().removeClass('selected');
+            $(this).parent().addClass('selected');
 
             toggleLayer(g_mapLayers[previousLevel], false);
             toggleLayer(g_mapLayers[level], true);
