@@ -1,6 +1,7 @@
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\HawkesBay\0.png" "E:\Users\mkoch\Downloads\H2 Maps\HawkesBay\tiles\0"
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\HawkesBay\1.png" "E:\Users\mkoch\Downloads\H2 Maps\HawkesBay\tiles\1"
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\HawkesBay\2.png" "E:\Users\mkoch\Downloads\H2 Maps\HawkesBay\tiles\2"
+gdal2tiles.py -l -p raster -z 4-6 -w none "C:\Users\mkoch\Desktop\H2 Maps\HawkesBay\-99.png" "C:\Users\mkoch\Desktop\H2 Maps\HawkesBay\tiles\-99"
 
 REM Miami
 REM gdal2tiles.py -l -p raster -z 5-7 -w none "E:\Users\mkoch\Downloads\H2 Maps\Miami\-1.png" "E:\Users\mkoch\Downloads\H2 Maps\Miami\tiles\-1"
@@ -8,7 +9,7 @@ REM gdal2tiles.py -l -p raster -z 5-7 -w none "E:\Users\mkoch\Downloads\H2 Maps\
 REM gdal2tiles.py -l -p raster -z 5-7 -w none "E:\Users\mkoch\Downloads\H2 Maps\Miami\1.png" "E:\Users\mkoch\Downloads\H2 Maps\Miami\tiles\1"
 REM gdal2tiles.py -l -p raster -z 5-7 -w none "E:\Users\mkoch\Downloads\H2 Maps\Miami\2.png" "E:\Users\mkoch\Downloads\H2 Maps\Miami\tiles\2"
 REM gdal2tiles.py -l -p raster -z 5-7 -w none "E:\Users\mkoch\Downloads\H2 Maps\Miami\3.png" "E:\Users\mkoch\Downloads\H2 Maps\Miami\tiles\3"
-gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Miami\-99.png" "E:\Users\mkoch\Downloads\H2 Maps\Miami\tiles\-99"
+REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Miami\-99.png" "E:\Users\mkoch\Downloads\H2 Maps\Miami\tiles\-99"
 
 REM Santa Fortuna
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Colombia\-1.png" "E:\Users\mkoch\Downloads\H2 Maps\Colombia\tiles\-1"
