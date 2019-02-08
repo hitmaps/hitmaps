@@ -653,13 +653,13 @@ $klein->respond('GET', '/admin/migrate', function() {
 $klein->onHttpError(function (int $code, \Klein\Klein $router) use ($twig) {
     switch ($code) {
         case 403:
-            $router->response()->body(\Controllers\Renderer::render('403.twig', $twig));
+            $router->response()->body(\Controllers\Renderer::render('403.twig', $twig, new \Controllers\ViewModels\BaseModel()));
             break;
         case 404:
-            $router->response()->body(\Controllers\Renderer::render('404.twig', $twig));
+            $router->response()->body(\Controllers\Renderer::render('404.twig', $twig, new \Controllers\ViewModels\BaseModel()));
             break;
         case 500:
-            $router->response()->body(\Controllers\Renderer::render('500.twig', $twig));
+            $router->response()->body(\Controllers\Renderer::render('500.twig', $twig, new \Controllers\ViewModels\BaseModel()));
             break;
         default:
             $router->response()->body("Welp, something unexpected happened with error code: {$code}");
