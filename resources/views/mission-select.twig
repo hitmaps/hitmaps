@@ -7,10 +7,22 @@
 {% block content %}
     <div class="site-container">
         <header class="row">
-            <div class="col text-center">
-                <h1>{{ model.name }}</h1>
-                <h2>{{ model.country }}</h2>
-            </div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="/">
+                            <i class="far fa-home"></i>
+                            Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="/games/{{ model.game }}">{{ model.gameName }}</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        {{ model.name }} ({{ model.country }})
+                    </li>
+                </ol>
+            </nav>
         </header>
         {% for mission in model.missions %}
             <div class="row mission justify-content-center">

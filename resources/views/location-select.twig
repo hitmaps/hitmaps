@@ -6,6 +6,21 @@
 
 {% block content %}
     <div class="site-container">
+        <div class="row">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="/">
+                            <i class="far fa-home"></i>
+                            Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        {{ model.fullName }}
+                    </li>
+                </ol>
+            </nav>
+        </div>
         <div class="text-center">
             <img src="{{ settings.cdnLocation }}/{{ model.pngBackgroundFileExtension }}/logos/{{ model.game }}.{{ model.pngBackgroundFileExtension }}" class="img-fluid">
             <h2>{{ model.tagline }}</h2>
