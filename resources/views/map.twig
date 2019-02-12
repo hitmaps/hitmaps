@@ -1417,6 +1417,7 @@
             $modal.find('select[name="subgroup"]').trigger('change');
             $modal.find('input[name="group"]').val(node.group);
             $modal.find('select[name="icon"]').selectpicker('val', node.icon);
+            $modal.find('select[name="template"]').selectpicker('val', -1);
             $modal.find('input[name="name"]').val(node.name).end()
                 .find('input[name="latitude"]').val(node.latitude).end()
                 .find('input[name="longitude"]').val(node.longitude).end()
