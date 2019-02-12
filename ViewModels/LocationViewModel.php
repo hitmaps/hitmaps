@@ -18,6 +18,9 @@ class LocationViewModel extends BaseModel {
     /* @var $game string */
     public $game;
 
+    /* @var $gameName string */
+    public $gameName;
+
     /* @var $missions MissionViewModel[] */
     public $missions;
 }

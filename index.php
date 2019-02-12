@@ -61,13 +61,17 @@ $klein->respond('GET', '/games/[:game]/[:location]', function(\Klein\Request $re
     /* @var $location \DataAccess\Models\Location */
     $location = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)
         ->findOneBy(['slug' => $request->location, 'game' => $request->game]);
+    /* @var $game \DataAccess\Models\Game */
+    $game = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Game::class)
+        ->findOneBy(['slug' => $request->game]);
     /* @var $missions \DataAccess\Models\Mission[] */
     $missions = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Mission::class)
         ->findBy(['locationId' => $location->getId()]);
 
     $locationViewModel = new \ViewModels\LocationViewModel();
     $locationViewModel->name = $location->getDestination();
-    $locationViewModel->game = $request->game;
+    $locationViewModel->game = $game->getSlug();
+    $locationViewModel->gameName = $game->getFullName();
     $locationViewModel->country = $location->getDestinationCountry();
     $locationViewModel->slug = $location->getSlug();
     $locationViewModel->missions = [];
