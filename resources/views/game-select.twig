@@ -90,15 +90,12 @@
                     days = beginningUtc.diff(currentUtc, 'days');
                 }
 
-                console.log(days + ' Days');
                 var hours = duration.hours();
-                console.log(hours + ' Hours');
                 var minutes = getFormattedDuration(duration.minutes());
                 var seconds = getFormattedDuration(duration.seconds());
                 if (days > 0) {
                     hours += days * 24;
                 }
-                console.log(hours + ' Adjusted Hours');
                 hours = getFormattedDuration(hours);
 
                 $countdown.text(hours + ':' + minutes + ':' + seconds);
@@ -114,4 +111,29 @@
         </script>
         {% endif %}
     </div>
+    <script>
+        /* Begin Firebase block */
+        var messaging = firebase.messaging();
+        messaging.usePublicVapidKey("BPNrkIqrzWoYKu9BblgGOX-DuOjUwQnHm5dXANfAmrNYiCkL2bY3-oinMFfM7K5rRcW7Ej6PygQfGbCXw1pklG4");
+        messaging.requestPermission().then(function() {
+
+            messaging.getToken().then(function(currentToken) {
+                console.info(currentToken);
+                if (currentToken) {
+                    //sendTokenToServer(currentToken);
+                    //updateUIForPushEnabled(currentToken);
+                } else {
+                    console.log('No Instance ID token available. Request permission to generate one.');
+                    //updateUIForPushPermissionRequired();
+                    //setTokenSentToServer(false);
+                }
+            }).catch(function(err) {
+                console.error('An error occurred while retrieving token.', err);
+                //showToken('Error retrieving Instance ID token.', err);
+                //setTokenSentToServer(false);
+            });
+        }).catch(function(err) {
+            console.error('Unable to get permission to notify.', err);
+        });
+    </script>
 {% endblock %}
