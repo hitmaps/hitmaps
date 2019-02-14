@@ -50,10 +50,21 @@
                         <h2>Elusive Target</h2>
                         <h1>{{ model.elusiveTarget.name }}</h1>
                     </div>
+                    <div class="image float-right notification-icon" data-placement="left" data-toggle="tooltip" title="Manage Elusive Target Push Notifications">
+                        <img src="/img/game-icons/notification.png" class="normal img-fluid" alt="Notification Icon">
+                        <img src="/img/game-icons/notification-inverted.png" class="inverted img-fluid" alt="Notification Icon">
+                    </div>
                 </div>
             </a>
         </div>
         <script>
+            $('.notification-icon').click(function(e) {
+                alert('Something something notification permissions');
+
+                {# Don't take them to the ET map #}
+                return false;
+            });
+
             var playable = {% if model.elusiveTarget.playable %}true{% else %}false{% endif %};
             var expirationUtc = moment.utc('{{ model.elusiveTarget.endingTime|date('Y-m-d H:i:s') }}');
             var beginningUtc = moment.utc('{{ model.elusiveTarget.beginningTime|date('Y-m-d H:i:s') }}');
