@@ -2,7 +2,9 @@
 
 {% set page_title = 'Home' %}
 {% set body_style = "background: url('#{settings.cdnLocation}/#{model.jpgBackgroundFileExtension}/backgrounds/loading.#{model.jpgBackgroundFileExtension}') no-repeat center center fixed; background-size: cover" %}
-
+{% block headextend %}
+    <script src="/js/firebase.js"></script>
+{% endblock %}
 {% block content %}
     <header class="row">
         <div class="col text-center site-header">
@@ -111,29 +113,4 @@
         </script>
         {% endif %}
     </div>
-    <script>
-        /* Begin Firebase block */
-        var messaging = firebase.messaging();
-        messaging.usePublicVapidKey("BPNrkIqrzWoYKu9BblgGOX-DuOjUwQnHm5dXANfAmrNYiCkL2bY3-oinMFfM7K5rRcW7Ej6PygQfGbCXw1pklG4");
-        messaging.requestPermission().then(function() {
-
-            messaging.getToken().then(function(currentToken) {
-                console.info(currentToken);
-                if (currentToken) {
-                    //sendTokenToServer(currentToken);
-                    //updateUIForPushEnabled(currentToken);
-                } else {
-                    console.log('No Instance ID token available. Request permission to generate one.');
-                    //updateUIForPushPermissionRequired();
-                    //setTokenSentToServer(false);
-                }
-            }).catch(function(err) {
-                console.error('An error occurred while retrieving token.', err);
-                //showToken('Error retrieving Instance ID token.', err);
-                //setTokenSentToServer(false);
-            });
-        }).catch(function(err) {
-            console.error('Unable to get permission to notify.', err);
-        });
-    </script>
 {% endblock %}
