@@ -4,11 +4,11 @@ var messaging = firebase.messaging();
 messaging.usePublicVapidKey("BPNrkIqrzWoYKu9BblgGOX-DuOjUwQnHm5dXANfAmrNYiCkL2bY3-oinMFfM7K5rRcW7Ej6PygQfGbCXw1pklG4");
 messaging.onTokenRefresh(function() {
     messaging.getToken().then(function(currentToken) {
-        setTokenSentToServer(false);
-        sendTokenToServer(currentToken);
+        H2MAPS_FIREBASE.setTokenSentToServer(false);
+        H2MAPS_FIREBASE.sendTokenToServer(currentToken);
     }).catch(function(err) {
-        console.error('An error occurred while retrieving token.', err);
-        setTokenSentToServer(false);
+        console.error('[onTokenRefresh] An error occurred while retrieving token.', err);
+        H2MAPS_FIREBASE.setTokenSentToServer(false);
     });
 });
 
@@ -17,9 +17,14 @@ messaging.onMessage(function(payload) {
     console.log("Message received. ", payload);
 });
 
+H2MAPS_FIREBASE.RESULT = {
+    SUCCESS: 'SUCCESS',
+    FAILURE: 'FAILURE',
+    ERROR: 'ERROR'
+};
+
 H2MAPS_FIREBASE.sendTokenToServer = function(currentToken) {
     if (!H2MAPS_FIREBASE.isTokenSentToServer()) {
-        // TODO Store token in H2Maps DB
         H2MAPS_FIREBASE.setTokenSentToServer(true);
     } else {
         console.log("Token already sent to server so won't send it again " +
@@ -35,26 +40,42 @@ H2MAPS_FIREBASE.setTokenSentToServer = function(sent) {
     window.localStorage.setItem('sentToServer', sent ? "1" : "0");
 };
 
-H2MAPS_FIREBASE.requestPermission = function() {
+H2MAPS_FIREBASE.requestPermission = function(callback) {
     messaging.requestPermission().then(function() {
         messaging.getToken().then(function(currentToken) {
             console.info(currentToken);
             if (currentToken) {
                 H2MAPS_FIREBASE.sendTokenToServer(currentToken);
-                //updateUIForPushEnabled(currentToken);
 
-                return currentToken;
+                return callback(currentToken);
             } else {
-                console.log('No Instance ID token available. Request permission to generate one.');
-                //updateUIForPushPermissionRequired();
+                console.log('[requestPermission > getToken] No Instance ID token available. Request permission to generate one.');
                 H2MAPS_FIREBASE.setTokenSentToServer(false);
+
+                return callback(H2MAPS_FIREBASE.RESULT.FAILURE);
             }
         }).catch(function(err) {
-            console.error('An error occurred while retrieving token.', err);
-            //showToken('Error retrieving Instance ID token.', err);
+            console.error('[requestPermission > getToken] An error occurred while retrieving token.', err);
             H2MAPS_FIREBASE.setTokenSentToServer(false);
+
+            return callback(H2MAPS_FIREBASE.RESULT.ERROR);
         });
     }).catch(function(err) {
-        console.error('Unable to get permission to notify.', err);
+        console.error('[requestPermission] Unable to get permission to notify.', err);
+
+        return callback(H2MAPS_FIREBASE.RESULT.ERROR);
+    });
+};
+
+H2MAPS_FIREBASE.checkIfEnrolled = function(callback) {
+    messaging.getToken().then(function(currentToken) {
+        return callback(currentToken);
+    }).catch(function(err) {
+        if (err.code === 'messaging/notifications-blocked') {
+            return callback(H2MAPS_FIREBASE.RESULT.FAILURE);
+        }
+
+        console.error('[checkIfEnrolled] An error occurred while checking token status.', err);
+        return callback(H2MAPS_FIREBASE.RESULT.ERROR);
     });
 };
