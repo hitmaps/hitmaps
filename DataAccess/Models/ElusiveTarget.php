@@ -169,7 +169,7 @@ class ElusiveTarget {
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getEndingTime() {
         return $this->endingTime;
