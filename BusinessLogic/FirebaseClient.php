@@ -29,4 +29,28 @@ class FirebaseClient {
         return $client->getMessaging()
             ->unsubscribeFromTopic(Firebase\Messaging\Topic::fromValue($topicId), $token);
     }
+
+    public function sendElusiveTargetMessage(string $topicId, string $title, string $body, string $iconUrl): array {
+        $notification = Firebase\Messaging\Notification::create()
+            ->withTitle($title)
+            ->withBody($body);
+
+        $client = self::buildClient();
+
+        $message = Firebase\Messaging\CloudMessage::withTarget('topic', $topicId)
+            ->withNotification($notification);
+
+        $config = Firebase\Messaging\WebPushConfig::fromArray([
+            'notification' => [
+                'title' => $title,
+                'body' => $body,
+                'icon' => $iconUrl
+            ],
+        ]);
+
+        $message = $message->withWebPushConfig($config);
+
+        return $client->getMessaging()
+            ->send($message);
+    }
 }

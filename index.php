@@ -438,6 +438,22 @@ $klein->respond('POST', '/api/notifications', function(\Klein\Request $request, 
     return $response->code(204);
 });
 
+$klein->respond('GET', '/api/push-elusive-target-status', function() use ($applicationContext) {
+    $config = new Config\Settings();
+    /*if ($config->accessKey !== $_GET['access-key']) {
+        return http_response_code(404);
+    }*/
+
+    $applicationContext->get(\BusinessLogic\ElusiveTargetNotificationSender::class)->sendElusiveTargetNotification();
+
+    return http_response_code(204);
+});
+
+$klein->respond('GET', '/api/test-push', function() use ($applicationContext) {
+    $client = $applicationContext->get(\BusinessLogic\FirebaseClient::class);
+    return json_encode($client->sendElusiveTargetMessage('development-elusive-target-coming', 'Elusive Target Coming Text', 'The next Elusive Target, "[TEST] The Fugitive" is arriving in Hokkaido on February 10th!', 'https://www.hitman2maps.com/android-chrome-256x256.png'));
+});
+
 /* Auth Endpoints */
 $klein->respond('GET', '/user/login', function(\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext, $klein) {
     $flashes = $klein->service()->flashes();

@@ -50,6 +50,41 @@ class ElusiveTarget {
     private $imageUrl;
 
     /**
+     * @ORM\Column(type="boolean", name="coming_notification_sent")
+     */
+    private $comingNotificationSent;
+
+    /**
+     * @ORM\Column(type="boolean", name="playable_notification_sent")
+     */
+    private $playableNotificationSent;
+
+    /**
+     * @ORM\Column(type="boolean", name="`7_days_left_notification_sent`")
+     */
+    private $sevenDaysLeftNotificationSent;
+
+    /**
+     * @ORM\Column(type="boolean", name="`5_days_left_notification_sent`")
+     */
+    private $fiveDaysLeftNotificationSent;
+
+    /**
+     * @ORM\Column(type="boolean", name="`3_days_left_notification_sent`")
+     */
+    private $threeDaysLeftNotificationSent;
+
+    /**
+     * @ORM\Column(type="boolean", name="`1_day_left_notification_sent`")
+     */
+    private $oneDayLeftNotificationSent;
+
+    /**
+     * @ORM\Column(type="boolean", name="end_notification_sent")
+     */
+    private $endNotificationSent;
+
+    /**
      * @return mixed
      */
     public function getId(): int {
@@ -120,7 +155,7 @@ class ElusiveTarget {
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getBeginningTime() {
         return $this->beginningTime;
@@ -168,5 +203,103 @@ class ElusiveTarget {
         $currentUtcTime = new \DateTime('now', new \DateTimeZone('UTC'));
 
         return $currentUtcTime > $this->getBeginningTime();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComingNotificationSent() {
+        return $this->comingNotificationSent;
+    }
+
+    /**
+     * @param mixed $comingNotificationSent
+     */
+    public function setComingNotificationSent($comingNotificationSent): void {
+        $this->comingNotificationSent = $comingNotificationSent;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlayableNotificationSent() {
+        return $this->playableNotificationSent;
+    }
+
+    /**
+     * @param mixed $playableNotificationSent
+     */
+    public function setPlayableNotificationSent($playableNotificationSent): void {
+        $this->playableNotificationSent = $playableNotificationSent;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSevenDaysLeftNotificationSent() {
+        return $this->sevenDaysLeftNotificationSent;
+    }
+
+    /**
+     * @param mixed $sevenDaysLeftNotificationSent
+     */
+    public function setSevenDaysLeftNotificationSent($sevenDaysLeftNotificationSent): void {
+        $this->sevenDaysLeftNotificationSent = $sevenDaysLeftNotificationSent;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFiveDaysLeftNotificationSent() {
+        return $this->fiveDaysLeftNotificationSent;
+    }
+
+    /**
+     * @param mixed $fiveDaysLeftNotificationSent
+     */
+    public function setFiveDaysLeftNotificationSent($fiveDaysLeftNotificationSent): void {
+        $this->fiveDaysLeftNotificationSent = $fiveDaysLeftNotificationSent;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getThreeDaysLeftNotificationSent() {
+        return $this->threeDaysLeftNotificationSent;
+    }
+
+    /**
+     * @param mixed $threeDaysLeftNotificationSent
+     */
+    public function setThreeDaysLeftNotificationSent($threeDaysLeftNotificationSent): void {
+        $this->threeDaysLeftNotificationSent = $threeDaysLeftNotificationSent;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOneDayLeftNotificationSent() {
+        return $this->oneDayLeftNotificationSent;
+    }
+
+    /**
+     * @param mixed $oneDayLeftNotificationSent
+     */
+    public function setOneDayLeftNotificationSent($oneDayLeftNotificationSent): void {
+        $this->oneDayLeftNotificationSent = $oneDayLeftNotificationSent;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEndNotificationSent() {
+        return $this->endNotificationSent;
+    }
+
+    /**
+     * @param mixed $endNotificationSent
+     */
+    public function setEndNotificationSent($endNotificationSent): void {
+        $this->endNotificationSent = $endNotificationSent;
     }
 }
