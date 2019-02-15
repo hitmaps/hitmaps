@@ -2,4 +2,5 @@
 /vendor/
 /css
 Config/Settings.php
+Config/firebase-service-account.json
 phinx.yml

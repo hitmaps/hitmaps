@@ -58,13 +58,6 @@
             </a>
         </div>
         <script>
-            $('.notification-icon').click(function(e) {
-                alert('Something something notification permissions');
-
-                {# Don't take them to the ET map #}
-                return false;
-            });
-
             var playable = {% if model.elusiveTarget.playable %}true{% else %}false{% endif %};
             var expirationUtc = moment.utc('{{ model.elusiveTarget.endingTime|date('Y-m-d H:i:s') }}');
             var beginningUtc = moment.utc('{{ model.elusiveTarget.beginningTime|date('Y-m-d H:i:s') }}');
@@ -123,5 +116,182 @@
             }
         </script>
         {% endif %}
+        <div class="modal fade" id="notification-modal" tabindex="-1" role="dialog" aria-labelledby="notification-modal-label" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="notification-modal-label"><span class="badge badge-pill badge-warning">BETA</span> Manage Notifications</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body d-flex flex-column">
+                        <div id="checking-notification-status">
+                            <h6>Checking to see if notifications are enabled on this device...</h6>
+                            <div class="spinner-grow" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        <div id="enrollment-required" style="display: none">
+                            <h6>Your device is currently not set up to receive notifications. Click the button below to enroll your device.</h6>
+                            <button class="btn btn-primary" id="enroll-button">Enroll</button>
+                            <p id="error-container"></p>
+                        </div>
+                        <div id="notifications-blocked" style="display: none">
+                            <h6>Your device is currently blocking notifications from hitman2maps.com. Please unblock this site from your device, refresh the page, and try to enroll your device again.</h6>
+                        </div>
+                        <div id="notification-settings" style="display: none">
+                            <h6>Send me a notification when...</h6>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="elusive-target-coming" data-firebase-topic="{{ settings.loggingEnvironment }}-elusive-target-coming">
+                                <label class="custom-control-label" for="elusive-target-coming">
+                                    An upcoming Elusive Target is almost playable
+                                </label>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="elusive-target-playable" data-firebase-topic="{{ settings.loggingEnvironment }}-elusive-target-playable">
+                                <label class="custom-control-label" for="elusive-target-playable">
+                                    The Elusive Target arrives and becomes playable
+                                </label>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="elusive-target-7" data-firebase-topic="{{ settings.loggingEnvironment }}-elusive-target-7">
+                                <label class="custom-control-label" for="elusive-target-7">
+                                    The Elusive Target is available for 7 more days
+                                </label>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="elusive-target-5" data-firebase-topic="{{ settings.loggingEnvironment }}-elusive-target-5">
+                                <label class="custom-control-label" for="elusive-target-5">
+                                    The Elusive Target is available for 5 more days
+                                </label>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="elusive-target-3" data-firebase-topic="{{ settings.loggingEnvironment }}-elusive-target-3">
+                                <label class="custom-control-label" for="elusive-target-3">
+                                    The Elusive Target is available for 3 more days
+                                </label>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="elusive-target-1" data-firebase-topic="{{ settings.loggingEnvironment }}-elusive-target-1">
+                                <label class="custom-control-label" for="elusive-target-1">
+                                    The Elusive Target is available for 1 more day
+                                </label>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="elusive-target-end" data-firebase-topic="{{ settings.loggingEnvironment }}-elusive-target-end">
+                                <label class="custom-control-label" for="elusive-target-end">
+                                    The Elusive Target has left
+                                </label>
+                            </div>
+                            <input type="hidden" name="firebase-token">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $('.notification-icon').click(function(e) {
+                $('#notification-modal').modal('show');
+
+                H2MAPS_FIREBASE.checkIfEnrolled(function(enrollmentStatus) {
+                    if (enrollmentStatus === null) {
+                        $('#checking-notification-status').hide();
+                        $('#enrollment-required').show();
+                    } else if (enrollmentStatus === H2MAPS_FIREBASE.RESULT.FAILURE) {
+                        // Notifications are blocked
+                        $('#notifications-blocked').show();
+                        $('#checking-notification-status').hide();
+                    } else {
+                        $('input[name="firebase-token"]').val(enrollmentStatus);
+                        $('#checking-notification-status').hide();
+                        $('#notification-settings').show();
+                    }
+                });
+
+                updateCheckboxState();
+
+                return false;
+            });
+
+            $('#enroll-button').click(function() {
+                requestPermission(0);
+            });
+
+            function requestPermission(retryCount) {
+                var $enrollmentRequiredDiv = $('#enrollment-required');
+                if (retryCount > 5) {
+                    $enrollmentRequiredDiv
+                        .find('#error-container')
+                        .text('Unfortunately, we were unable to receive permission from your device after five attempts. Please try again later or post a message on the HITMAN forums or on the HITMAN 2 Maps Discord via the links in the footer.');
+                }
+
+                H2MAPS_FIREBASE.requestPermission(function(result) {
+                    if (result === H2MAPS_FIREBASE.RESULT.ERROR) {
+                        // An unrelated error occurred. Try enrolling again.
+                        $enrollmentRequiredDiv
+                            .find('#error-container')
+                            .text('Unfortunately, an error occurred when trying to enroll your device. You may try enrolling again by clicking the "Enroll" button.');
+                        return;
+                    }
+                    if (result === H2MAPS_FIREBASE.RESULT.FAILURE) {
+                        return requestPermission(retryCount + 1);
+                    }
+
+                    // Enrollment successful
+                    $enrollmentRequiredDiv.hide();
+                    $('input[name="firebase-token"]').val(result);
+                    $('#notification-settings').show();
+                });
+            }
+
+            $('[data-firebase-topic]').click(function() {
+                var $this = $(this);
+                var subscribing = $this.is(':checked') ? 'SUBSCRIBING' : 'UNSUBSCRIBING';
+
+                $.ajax({
+                    url: '/api/notifications',
+                    method: 'POST',
+                    data: {
+                        token: $('input[name="firebase-token"]').val(),
+                        state: subscribing,
+                        topic: $this.attr('data-firebase-topic')
+                    },
+                    beforeSend: function() {
+                        $this.prop('indeterminate', true).attr('disabled', true);
+                    },
+                    success: function() {
+                        $this.prop('indeterminate', false).attr('disabled', false);
+                        toastr["success"]("Notification preferences updated!");
+                        window.localStorage.setItem($this.attr('data-firebase-topic'), subscribing === 'SUBSCRIBING' ? "1" : "0");
+                    },
+                    failure: function(err) {
+                        $this.prop('checked', !(subscribing === 'SUBSCRIBING'));
+                        toastr["error"]("An error occurred when trying to update your notification preferences. Please try again later.");
+                    }
+                });
+            })
+
+            function updateCheckboxState() {
+                var topicPrefix = '{{ settings.loggingEnvironment }}';
+                var topics = [
+                    topicPrefix + '-elusive-target-coming',
+                    topicPrefix + '-elusive-target-playable',
+                    topicPrefix + '-elusive-target-7',
+                    topicPrefix + '-elusive-target-5',
+                    topicPrefix + '-elusive-target-3',
+                    topicPrefix + '-elusive-target-1',
+                    topicPrefix + '-elusive-target-end'
+                ];
+
+                $.each(topics, function() {
+                    $('input[type="checkbox"][data-firebase-topic="' + this + '"')
+                        .prop('checked', (window.localStorage.getItem(this) === '1'));
+                });
+            }
+        </script>
     </div>
 {% endblock %}

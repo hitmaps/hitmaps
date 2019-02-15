@@ -21,6 +21,7 @@
         "php-http/curl-client": "^1.7",
         "google/recaptcha": "~1.1",
         "guzzlehttp/psr7": "^1.4",
+        "kreait/firebase-php": "^4.18",
         "ext-json": "*"
     }
 }
