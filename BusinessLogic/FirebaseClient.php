@@ -30,7 +30,7 @@ class FirebaseClient {
             ->unsubscribeFromTopic(Firebase\Messaging\Topic::fromValue($topicId), $token);
     }
 
-    public function sendElusiveTargetMessage(string $topicId, string $title, string $body, string $iconUrl): array {
+    public function sendElusiveTargetMessage(string $topicId, string $title, string $body, string $iconUrl, ?string $mapUrl = null): array {
         $notification = Firebase\Messaging\Notification::create()
             ->withTitle($title)
             ->withBody($body);
@@ -44,7 +44,8 @@ class FirebaseClient {
             'notification' => [
                 'title' => $title,
                 'body' => $body,
-                'icon' => $iconUrl
+                'icon' => $iconUrl,
+                'click_action' => $mapUrl
             ],
         ]);
 

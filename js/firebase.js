@@ -12,9 +12,23 @@ messaging.onTokenRefresh(function() {
     });
 });
 
-// TODO not sure if this will be of any use.
 messaging.onMessage(function(payload) {
-    console.log("Message received. ", payload);
+    var notificationTitle = payload.notification.title;
+    var notificationOptions = {
+        body: payload.notification.body,
+        icon: payload.notification.icon
+    };
+
+    if (!("Notification" in window)) {
+        console.log("This browser does not support system notifications");
+    } else if (Notification.permission === "granted") {
+        var notification = new Notification(notificationTitle, notificationOptions);
+        notification.onclick = function(event) {
+            event.preventDefault(); // prevent the browser from focusing the Notification's tab
+            window.open(payload.notification.click_action , '_blank');
+            notification.close();
+        }
+    }
 });
 
 H2MAPS_FIREBASE.RESULT = {
