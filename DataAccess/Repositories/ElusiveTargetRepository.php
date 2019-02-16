@@ -22,4 +22,13 @@ class ElusiveTargetRepository extends EntityRepository {
 
         return $results[0];
     }
+
+    public function getLatestElusiveTarget(): ElusiveTarget {
+        return $this->createQueryBuilder('e')
+            ->select('e')
+            ->orderBy('e.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }
