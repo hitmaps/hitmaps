@@ -560,3 +560,20 @@ footer {
     }
   }
 }
+
+.game-modal {
+  .modal-footer {
+    padding-left: 0;
+    padding-right: 0;
+
+    .btn-block {
+      border-radius: 0;
+      text-transform: uppercase;
+      background: #fff;
+
+      &:hover {
+        background: #ff003c;
+      }
+    }
+  }
+}
