@@ -639,9 +639,38 @@ footer {
       }
     }
   }
+}
 
+.custom-checkbox {
+  .custom-control-input {
+    &:disabled:indeterminate {
+      & ~ .custom-control-label {
+        &::before {
+          background-color: rgba(255, 0, 60, .5);
+          border-color: #ff003c;
+        }
+      }
+    }
+  }
+}
 
+.custom-control-input {
+  &:indeterminate {
+    & ~ .custom-control-label {
+      &::before {
+        border-color: #ff003c;
+      }
+    }
+  }
 
+  &:checked {
+    & ~ .custom-control-label {
+      &::before {
+        background-color: #ff003c;
+        border-color: #ff003c;
+      }
+    }
+  }
 }
 
 @font-face {
