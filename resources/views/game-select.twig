@@ -2,9 +2,6 @@
 
 {% set page_title = 'Home' %}
 {% set body_style = "background: url('#{settings.cdnLocation}/#{model.jpgBackgroundFileExtension}/backgrounds/loading.#{model.jpgBackgroundFileExtension}') no-repeat center center fixed; background-size: cover" %}
-{% block headextend %}
-    <script src="/js/firebase.js"></script>
-{% endblock %}
 {% block content %}
     <header class="row">
         <div class="col text-center site-header">
@@ -116,7 +113,7 @@
             }
         </script>
         {% endif %}
-        <div class="modal fade" id="notification-modal" tabindex="-1" role="dialog" aria-labelledby="notification-modal-label" aria-hidden="true">
+        <div class="modal game-modal fade" id="notification-modal" tabindex="-1" role="dialog" aria-labelledby="notification-modal-label" aria-hidden="true">
             <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -188,7 +185,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-block btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -273,7 +270,7 @@
                         toastr["error"]("An error occurred when trying to update your notification preferences. Please try again later.");
                     }
                 });
-            })
+            });
 
             function updateCheckboxState() {
                 var topicPrefix = '{{ settings.loggingEnvironment }}';
