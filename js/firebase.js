@@ -40,9 +40,6 @@ H2MAPS_FIREBASE.RESULT = {
 H2MAPS_FIREBASE.sendTokenToServer = function(currentToken) {
     if (!H2MAPS_FIREBASE.isTokenSentToServer()) {
         H2MAPS_FIREBASE.setTokenSentToServer(true);
-    } else {
-        console.log("Token already sent to server so won't send it again " +
-            "unless it changes");
     }
 };
 
@@ -57,7 +54,6 @@ H2MAPS_FIREBASE.setTokenSentToServer = function(sent) {
 H2MAPS_FIREBASE.requestPermission = function(callback) {
     messaging.requestPermission().then(function() {
         messaging.getToken().then(function(currentToken) {
-            console.info(currentToken);
             if (currentToken) {
                 H2MAPS_FIREBASE.sendTokenToServer(currentToken);
 

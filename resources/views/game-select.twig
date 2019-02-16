@@ -47,7 +47,7 @@
                         <h2>Elusive Target</h2>
                         <h1>{{ model.elusiveTarget.name }}</h1>
                     </div>
-                    <div class="image float-right notification-icon" data-placement="left" data-toggle="tooltip" title="Manage Elusive Target Push Notifications">
+                    <div class="image float-right notification-icon" data-placement="left" data-toggle="tooltip" title="Manage Elusive Target Notifications">
                         <img src="/img/game-icons/notification.png" class="normal img-fluid" alt="Notification Icon">
                         <img src="/img/game-icons/notification-inverted.png" class="inverted img-fluid" alt="Notification Icon">
                     </div>
@@ -117,10 +117,7 @@
             <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="notification-modal-label"><span class="badge badge-pill badge-warning">BETA</span> Manage Notifications</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <h5 class="modal-title" id="notification-modal-label"><span class="badge badge-pill badge-warning" style="border-radius: 0; font-size: 1.3rem">BETA</span> Manage Notifications</h5>
                     </div>
                     <div class="modal-body d-flex flex-column">
                         <div id="checking-notification-status">
@@ -130,8 +127,7 @@
                             </div>
                         </div>
                         <div id="enrollment-required" style="display: none">
-                            <h6>Your device is currently not set up to receive notifications. Click the button below to enroll your device.</h6>
-                            <button class="btn btn-primary" id="enroll-button">Enroll</button>
+                            <h6>Your device is currently not set up to receive notifications. Click "Enroll" below to begin setting up your device.</h6>
                             <p id="error-container"></p>
                         </div>
                         <div id="notifications-blocked" style="display: none">
@@ -185,7 +181,16 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-block btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-block btn-secondary" id="enroll-button" style="display: none">
+                            <img src="/img/game-icons/modal-continue.png" class="normal img-fluid" alt="Enroll Icon">
+                            <img src="/img/game-icons/modal-continue-inverted.png" class="inverted img-fluid" alt="Enroll Icon">
+                            Enroll
+                        </button>
+                        <button type="button" class="btn btn-block btn-secondary" data-dismiss="modal">
+                            <img src="/img/game-icons/modal-close.png" class="normal img-fluid" alt="Notification Icon">
+                            <img src="/img/game-icons/modal-close-inverted.png" class="inverted img-fluid" alt="Notification Icon">
+                            Close
+                        </button>
                     </div>
                 </div>
             </div>
@@ -198,18 +203,20 @@
                     if (enrollmentStatus === null) {
                         $('#checking-notification-status').hide();
                         $('#enrollment-required').show();
+                        $('#enroll-button').show();
                     } else if (enrollmentStatus === H2MAPS_FIREBASE.RESULT.FAILURE) {
                         // Notifications are blocked
                         $('#notifications-blocked').show();
                         $('#checking-notification-status').hide();
+                        $('#enroll-button').hide();
                     } else {
                         $('input[name="firebase-token"]').val(enrollmentStatus);
                         $('#checking-notification-status').hide();
                         $('#notification-settings').show();
+                        updateCheckboxState();
+                        $('#enroll-button').hide();
                     }
                 });
-
-                updateCheckboxState();
 
                 return false;
             });
@@ -242,18 +249,20 @@
                     $enrollmentRequiredDiv.hide();
                     $('input[name="firebase-token"]').val(result);
                     $('#notification-settings').show();
+                    $('#enroll-button').hide();
                 });
             }
 
             $('[data-firebase-topic]').click(function() {
                 var $this = $(this);
                 var subscribing = $this.is(':checked') ? 'SUBSCRIBING' : 'UNSUBSCRIBING';
+                var token = $('input[name="firebase-token"]').val();
 
                 $.ajax({
                     url: '/api/notifications',
                     method: 'POST',
                     data: {
-                        token: $('input[name="firebase-token"]').val(),
+                        token: token,
                         state: subscribing,
                         topic: $this.attr('data-firebase-topic')
                     },
@@ -263,7 +272,7 @@
                     success: function() {
                         $this.prop('indeterminate', false).attr('disabled', false);
                         toastr["success"]("Notification preferences updated!");
-                        window.localStorage.setItem($this.attr('data-firebase-topic'), subscribing === 'SUBSCRIBING' ? "1" : "0");
+                        window.localStorage.setItem(token + '|' + $this.attr('data-firebase-topic'), subscribing === 'SUBSCRIBING' ? "1" : "0");
                     },
                     failure: function(err) {
                         $this.prop('checked', !(subscribing === 'SUBSCRIBING'));
@@ -283,10 +292,11 @@
                     topicPrefix + '-elusive-target-1',
                     topicPrefix + '-elusive-target-end'
                 ];
+                var token = $('input[name="firebase-token"]').val();
 
                 $.each(topics, function() {
                     $('input[type="checkbox"][data-firebase-topic="' + this + '"')
-                        .prop('checked', (window.localStorage.getItem(this) === '1'));
+                        .prop('checked', (window.localStorage.getItem(token + '|' + this) === '1'));
                 });
             }
         </script>

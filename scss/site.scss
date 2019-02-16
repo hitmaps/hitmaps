@@ -562,18 +562,98 @@ footer {
 }
 
 .game-modal {
-  .modal-footer {
-    padding-left: 0;
-    padding-right: 0;
+  .modal-content {
+    background: transparent;
+    border: none;
 
-    .btn-block {
-      border-radius: 0;
+    .modal-header {
+      font-family: 'nimbus_sans_lbold', sans-serif;
       text-transform: uppercase;
+      border-bottom: none;
+      border-radius: 0;
+
       background: #fff;
 
-      &:hover {
-        background: #ff003c;
+      h5 {
+        font-size: 1.5rem;
+      }
+    }
+
+    .modal-body {
+      background: #fff;
+    }
+
+    .modal-footer {
+      border-top: none;
+      padding-left: 0;
+      padding-right: 0;
+      padding-top: 10px;
+      display: block;
+
+      > :not(:first-child) {
+        margin: 0;
+      }
+
+      #enroll-button {
+        margin-bottom: 10px;
+      }
+
+      .btn-block {
+        border-radius: 0;
+        text-transform: uppercase;
+        background: #fff;
+        color: #000;
+        font-family: 'nimbus_sans_lbold', sans-serif;
+        text-align: left;
+        font-size: 1.3rem;
+        transition: none;
+
+        img {
+          max-height: 32px;
+          max-width: 32px;
+          vertical-align: top;
+
+          &.normal {
+            display: inline-block;
+          }
+
+          &.inverted {
+            display: none;
+          }
+        }
+
+        &:hover {
+          background: #ff003c;
+          color: #fff;
+
+          img {
+            &.normal {
+              display: none;
+            }
+
+            &.inverted {
+              display: inline-block;
+            }
+          }
+        }
       }
     }
   }
+
+
+
+}
+
+@font-face {
+  font-family: 'nimbus_sans_lbold';
+  src: url('/fonts/NimbusSanL-Bol-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'nimbus_sans_lregular';
+  src: url('/fonts/NimbusSanL-Reg-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
