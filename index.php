@@ -415,6 +415,40 @@ $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
     return json_encode(['nodes' => $nodes, 'categories' => $nodeCategories, 'ledges' => $formattedLedges, 'foliage' => $formattedFoliage]);
 });
 
+$klein->respond('POST', '/api/notifications', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    $client = $applicationContext->get(\BusinessLogic\FirebaseClient::class);
+
+    try {
+        if ($_POST['state'] === 'SUBSCRIBING') {
+            $client->subscribeToTopic($_POST['topic'], $_POST['token']);
+        } elseif ($_POST['state'] === 'UNSUBSCRIBING') {
+            $client->unsubscribeFromTopic($_POST['topic'], $_POST['token']);
+        } else {
+            print json_encode(['message' => 'Invalid state provided.']);
+            return $response->code(400);
+        }
+    } catch (\Kreait\Firebase\Exception\Messaging\InvalidArgument $exception) {
+        print json_encode(['message' => $exception->getMessage()]);
+        return $response->code(400);
+    } catch (\Kreait\Firebase\Exception\MessagingException $exception) {
+        print json_encode(['message' => $exception->getMessage()]);
+        return $response->code(500);
+    }
+
+    return $response->code(204);
+});
+
+$klein->respond('GET', '/api/push-elusive-target-status', function() use ($applicationContext) {
+    $config = new Config\Settings();
+    /*if ($config->accessKey !== $_GET['access-key']) {
+        return http_response_code(404);
+    }*/
+
+    $applicationContext->get(\BusinessLogic\ElusiveTargetNotificationSender::class)->sendElusiveTargetNotification();
+
+    return http_response_code(204);
+});
+
 /* Auth Endpoints */
 $klein->respond('GET', '/user/login', function(\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext, $klein) {
     $flashes = $klein->service()->flashes();
