@@ -112,6 +112,26 @@
                 return duration;
             }
         </script>
+        {% else %}
+            <div class="elusive-target col-lg" style="background: url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/elusive-targets/coming-soon.{{ model.jpgBackgroundFileExtension }}') no-repeat center; background-size: cover">
+                <a href="#">
+                    <p>&nbsp;</p>
+                    <div class="elusive-target-info">
+                        <div class="image">
+                            <img src="/img/game-icons/elusive-target.png" class="normal img-fluid" alt="Elusive Target Icon">
+                            <img src="/img/game-icons/elusive-target-inverted.png" class="inverted img-fluid" alt="Elusive Target Icon">
+                        </div>
+                        <div class="text">
+                            <h2>Elusive Target</h2>
+                            <h1>Coming Soon</h1>
+                        </div>
+                        <div class="image float-right notification-icon" data-placement="left" data-toggle="tooltip" title="Manage Elusive Target Notifications">
+                            <img src="/img/game-icons/notification.png" class="normal img-fluid" alt="Notification Icon">
+                            <img src="/img/game-icons/notification-inverted.png" class="inverted img-fluid" alt="Notification Icon">
+                        </div>
+                    </div>
+                </a>
+            </div>
         {% endif %}
         <div class="modal game-modal fade" id="notification-modal" tabindex="-1" role="dialog" aria-labelledby="notification-modal-label" aria-hidden="true">
             <div class="modal-dialog modal-xl" role="document">
