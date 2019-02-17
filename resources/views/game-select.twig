@@ -126,6 +126,34 @@
                                 <span class="sr-only">Loading...</span>
                             </div>
                         </div>
+                        <div id="notifications-unsupported" style="display: none">
+                            <h6>Unfortunately, notifications are not supported on this device. Please try to enroll using a supported device.</h6>
+                            <ul>
+                                <li>iOS
+                                    <ul>
+                                        <li><a href="https://itunes.apple.com/us/app/google-chrome/id535886823?mt=8">Google Chrome</a></li>
+                                        <li><a href="https://itunes.apple.com/us/app/firefox-web-browser/id989804926?mt=8">Firefox</a></li>
+                                        <li><a href="https://itunes.apple.com/us/app/opera-touch-web-browser/id1411869974?mt=8">Opera</a></li>
+                                        <li><a href="https://itunes.apple.com/us/app/brave-browser-fast-adblocker/id1052879175">Brave</a></li>
+                                    </ul>
+                                </li>
+                                <li>Android
+                                    <ul>
+                                        <li><a href="https://play.google.com/store/apps/details?id=com.android.chrome&hl=en_US">Google Chrome</a></li>
+                                        <li><a href="https://play.google.com/store/apps/details?id=org.mozilla.firefox&hl=en_US">Firefox</a></li>
+                                        <li><a href="https://play.google.com/store/apps/details?id=com.brave.browser&hl=en_US">Brave</a></li>
+                                    </ul>
+                                </li>
+                                <li>Desktop
+                                    <ul>
+                                        <li><a href="https://www.google.com/chrome/">Google Chrome</a></li>
+                                        <li>Microsoft Edge</li>
+                                        <li><a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a></li>
+                                        <li><a href="https://www.opera.com/computer">Opera</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
                         <div id="enrollment-required" style="display: none">
                             <h6>Your device is currently not set up to receive notifications. Click "Enroll" below to begin setting up your device.</h6>
                             <p id="error-container"></p>
@@ -198,6 +226,13 @@
         <script>
             $('.notification-icon').click(function(e) {
                 $('#notification-modal').modal('show');
+
+                console.log(H2MAPS_FIREBASE.messagingSupported);
+                if (!H2MAPS_FIREBASE.messagingSupported) {
+                    $('#notifications-unsupported').show();
+                    $('#checking-notification-status').hide();
+                    return false;
+                }
 
                 H2MAPS_FIREBASE.checkIfEnrolled(function(enrollmentStatus) {
                     if (enrollmentStatus === null) {
