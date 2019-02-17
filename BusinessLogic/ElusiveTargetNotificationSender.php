@@ -33,7 +33,9 @@ class ElusiveTargetNotificationSender {
         $constants = new Constants();
         $environment = $settings->loggingEnvironment;
         $beginningDate = $elusiveTarget->getBeginningTime()->format('F j, Y');
-        $availableDays = $elusiveTarget->getEndingTime()->diff($elusiveTarget->getBeginningTime())->format('%a');
+        $currentUtcTime = new \DateTime('now', new \DateTimeZone('UTC'));
+        $currentUtcTime->modify('-1 day');
+        $availableDays = $elusiveTarget->getEndingTime()->diff($currentUtcTime)->format('%a');
         $url = $constants->siteDomain . $elusiveTarget->getMissionUrl();
 
         if (!$elusiveTarget->getComingNotificationSent()) {
