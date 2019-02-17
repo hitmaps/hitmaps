@@ -227,7 +227,6 @@
             $('.notification-icon').click(function(e) {
                 $('#notification-modal').modal('show');
 
-                console.log(H2MAPS_FIREBASE.messagingSupported);
                 if (!H2MAPS_FIREBASE.messagingSupported) {
                     $('#notifications-unsupported').show();
                     $('#checking-notification-status').hide();
