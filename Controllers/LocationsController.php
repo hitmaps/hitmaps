@@ -52,7 +52,7 @@ class LocationsController {
             $locationViewModel->country = $location->getDestinationCountry();
             $locationViewModel->missions = [];
 
-            $missions = $this->missionRepository->findByLocation($location->getId());
+            $missions = $this->missionRepository->findActiveMissionsByLocation($location->getId());
 
             /* @var $mission Mission */
             foreach ($missions as $mission) {
