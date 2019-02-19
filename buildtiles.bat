@@ -1,7 +1,7 @@
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\HawkesBay\0.png" "E:\Users\mkoch\Downloads\H2 Maps\HawkesBay\tiles\0"
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\HawkesBay\1.png" "E:\Users\mkoch\Downloads\H2 Maps\HawkesBay\tiles\1"
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\HawkesBay\2.png" "E:\Users\mkoch\Downloads\H2 Maps\HawkesBay\tiles\2"
-gdal2tiles.py -l -p raster -z 4-6 -w none "C:\Users\mkoch\Desktop\H2 Maps\HawkesBay\-99.png" "C:\Users\mkoch\Desktop\H2 Maps\HawkesBay\tiles\-99"
+REM gdal2tiles.py -l -p raster -z 4-6 -w none "C:\Users\mkoch\Desktop\H2 Maps\HawkesBay\-99.png" "C:\Users\mkoch\Desktop\H2 Maps\HawkesBay\tiles\-99"
 
 REM Miami
 REM gdal2tiles.py -l -p raster -z 5-7 -w none "E:\Users\mkoch\Downloads\H2 Maps\Miami\-1.png" "E:\Users\mkoch\Downloads\H2 Maps\Miami\tiles\-1"
@@ -28,10 +28,12 @@ REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\India\6.png" "E:\Users\mkoch\Downloads\H2 Maps\India\tiles\6"
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\India\7.png" "E:\Users\mkoch\Downloads\H2 Maps\India\tiles\7"
 
+REM Vermont
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Vermont\-1.png" "E:\Users\mkoch\Downloads\H2 Maps\Vermont\tiles\-1"
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Vermont\0.png" "E:\Users\mkoch\Downloads\H2 Maps\Vermont\tiles\0"
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Vermont\1.png" "E:\Users\mkoch\Downloads\H2 Maps\Vermont\tiles\1"
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Vermont\2.png" "E:\Users\mkoch\Downloads\H2 Maps\Vermont\tiles\2"
+gdal2tiles.py -l -p raster -z 3-5 -w none "C:\Users\mkoch\Desktop\H2 Maps\WhittletonCreek\-99.png" "C:\Users\mkoch\Desktop\H2 Maps\WhittletonCreek\tiles\-99"
 
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Sgail\0.png" "E:\Users\mkoch\Downloads\H2 Maps\Sgail\tiles\0"
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Sgail\1.png" "E:\Users\mkoch\Downloads\H2 Maps\Sgail\tiles\1"
