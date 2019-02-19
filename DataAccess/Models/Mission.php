@@ -90,6 +90,16 @@ class Mission {
     private $satelliteView;
 
     /**
+     * @ORM\Column(type="datetime", name="begin_effective_date")
+     */
+    private $beginEffectiveDate;
+
+    /**
+     * @ORM\Column(type="datetime", name="end_effective_date")
+     */
+    private $endEffectiveDate;
+
+    /**
      * @return mixed
      */
     public function getId(): int {
@@ -299,5 +309,33 @@ class Mission {
      */
     public function setSatelliteView($satelliteView): void {
         $this->satelliteView = $satelliteView;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBeginEffectiveDate() {
+        return $this->beginEffectiveDate;
+    }
+
+    /**
+     * @param mixed $beginEffectiveDate
+     */
+    public function setBeginEffectiveDate($beginEffectiveDate): void {
+        $this->beginEffectiveDate = $beginEffectiveDate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEndEffectiveDate() {
+        return $this->endEffectiveDate;
+    }
+
+    /**
+     * @param mixed $endEffectiveDate
+     */
+    public function setEndEffectiveDate($endEffectiveDate): void {
+        $this->endEffectiveDate = $endEffectiveDate;
     }
 }
