@@ -700,7 +700,7 @@
                             var node = group.items[k];
                             var marker = buildMarker(node).bindPopup(buildPopup);
                             if (node.name !== '') {
-                                marker.bindTooltip(node.name);
+                                marker.bindTooltip(node.tooltip);
                             }
 
                             marker.addTo(g_overlays[node.level][typeName + '|' + groupName]);
@@ -1229,7 +1229,7 @@
                     if (node.approved) {
                         var marker = buildMarker(node).bindPopup(buildPopup);
                         if (node.name !== '') {
-                            marker.bindTooltip(node.name);
+                            marker.bindTooltip(node.tooltip);
                         }
                         marker.addTo(g_overlays[node.level][node.type + '|' + node.group]);
 
