@@ -127,6 +127,7 @@ class NodeController {
                 $nodeViewModel->difficulty = $node->getDifficulty();
                 $nodeViewModel->group = $node->getGroup();
                 $nodeViewModel->image = $node->getImage();
+                $nodeViewModel->tooltip = $node->getTooltip();
                 $nodeViewModel->notes = [];
 
                 /* @var $categoryViewModel CategoryViewModel */
