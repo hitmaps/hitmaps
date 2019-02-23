@@ -1291,8 +1291,10 @@
                 .find('[data-node-id="x"]').attr('data-node-id', node.id).end()
                 .find('[data-name="target"]').find('span').html(node.target);
 
-            if (node.target !== null && node.target !== '') {
-                $template.find('[data-name="target"]').find('i').addClass(node.targetIcon);
+            if (node.target !== null && node.target !== '' && node.targetIcon !== '') {
+                $template.find('[data-name="target"]').find('i').addClass(node.targetIcon).show();
+            } else {
+                $template.find('[data-name="target"]').find('i').hide();
             }
 
             if (node.image !== null) {
