@@ -5,7 +5,7 @@ use Phinx\Migration\AbstractMigration;
 
 class SetTooltipsForNontraditionalItems extends AbstractMigration {
     public function up() {
-        /*$this->execute("UPDATE `nodes` SET `tooltip` = 'Stairwell' WHERE `group` = 'Stairwell'");
+        $this->execute("UPDATE `nodes` SET `tooltip` = 'Stairwell' WHERE `group` = 'Stairwell'");
 
         // Blend In: Palace / Auction Staff
         $this->execute("UPDATE `nodes` SET `tooltip` = CONCAT(`group`, ': ', `name`) WHERE `subgroup` = 'blend-in'");
@@ -21,12 +21,12 @@ class SetTooltipsForNontraditionalItems extends AbstractMigration {
         $this->execute("UPDATE `nodes` SET `tooltip` = 'Destroy Evidence' WHERE `subgroup` = 'destroy-evidence'");
         $this->execute("UPDATE `nodes` SET `tooltip` = 'Weapon Crate' WHERE `subgroup` = 'weapon-crate'");
         $this->execute("UPDATE `nodes` SET `tooltip` = 'Security Camera' WHERE `subgroup` = 'camera'");
-        $this->execute("UPDATE `nodes` SET `tooltip` = 'Security Check' WHERE `subgroup` = 'frisk'");*/
+        $this->execute("UPDATE `nodes` SET `tooltip` = 'Security Check' WHERE `subgroup` = 'frisk'");
     }
 
     public function down() {
-        /*$this->execute("UPDATE `nodes` SET `tooltip` = `name` WHERE `group` IN ('Stairwell', 'Blend In',
+        $this->execute("UPDATE `nodes` SET `tooltip` = `name` WHERE `group` IN ('Stairwell', 'Blend In',
           'Locked Door', 'Conceal Item', 'Agency Pickup', 'Hiding Spot', 'Destroy Evidence', 'Weapon Crate', 'Camera',
-          'Security Check')");*/
+          'Security Check')");
     }
 }

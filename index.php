@@ -222,6 +222,7 @@ function transformNode(\DataAccess\Models\Node $node, \DI\Container $application
     $nodeViewModel->approved = $node->getApproved();
     $nodeViewModel->image = $node->getImage();
     $nodeViewModel->searchable = $node->isSearchable();
+    $nodeViewModel->tooltip = $node->getTooltip();
     switch ($nodeViewModel->icon) {
         case 'poison':
             $nodeViewModel->targetIcon = 'fa-user';
