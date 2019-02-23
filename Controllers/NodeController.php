@@ -258,7 +258,7 @@ class NodeController {
                 if ($node->getName() === 'Any Disguise') {
                     $node->setTooltip('Blend In');
                 } else {
-                    $node->setTooltip('Blend In: ' . $node->getName());
+                    $node->setTooltip('Blend In as ' . $node->getName());
                 }
                 break;
             case 'locked-door':
