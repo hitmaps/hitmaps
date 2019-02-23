@@ -699,8 +699,8 @@
                         for (var k in group.items) {
                             var node = group.items[k];
                             var marker = buildMarker(node).bindPopup(buildPopup);
-                            if (node.name !== '') {
-                                marker.bindTooltip(node.name);
+                            if (node.tooltip !== '') {
+                                marker.bindTooltip(node.tooltip);
                             }
 
                             marker.addTo(g_overlays[node.level][typeName + '|' + groupName]);
@@ -1228,8 +1228,8 @@
                     var node = JSON.parse(data);
                     if (node.approved) {
                         var marker = buildMarker(node).bindPopup(buildPopup);
-                        if (node.name !== '') {
-                            marker.bindTooltip(node.name);
+                        if (node.tooltip !== '') {
+                            marker.bindTooltip(node.tooltip);
                         }
                         marker.addTo(g_overlays[node.level][node.type + '|' + node.group]);
 
