@@ -210,6 +210,7 @@ class NodeController {
         $node->setLongitude($postData['longitude']);
         $node->setMissionId($missionId);
         $node->setName($postData['name'] !== null ? trim($postData['name']) : '');
+        $node->setTooltip($postData['name'] !== null ? trim($postData['name']) : '');
         $node->setType($type);
         $node->setCreatedBy($user->getId());
         $node->setTarget('');
@@ -225,13 +226,24 @@ class NodeController {
                 break;
             case 'agency-pickup':
                 if ($postData['pickup-type'] === 'large') {
-                    $node->setTarget('Large');
+                    $node->setTarget('Agency Pickup');
+                    if ($node->getName() !== '') {
+                        $node->setTooltip('Agency Pickup: ' . $node->getName());
+                    } else {
+                        $node->setTooltip('Agency Pickup');
+                    }
                 } else {
-                    $node->setTarget('Small');
+                    $node->setTarget('Hidden Stash');
+                    if ($node->getName() !== '') {
+                        $node->setTarget('Hidden Stash: ' . $node->getName());
+                    } else {
+                        $node->setTooltip('Hidden Stash');
+                    }
                 }
                 break;
             case 'up-stair':
                 $node->setIcon($postData['stairwell-direction']);
+                $node->setTooltip('Stairwell');
                 break;
             case 'up-pipe':
                 if ($postData['stairwell-direction'] === 'up-stair') {
@@ -241,6 +253,22 @@ class NodeController {
                 } else {
                     $node->setIcon('up-down-pipe');
                 }
+                break;
+            case 'blend-in':
+                if ($node->getName() === 'Any Disguise') {
+                    $node->setTooltip('Blend In');
+                } else {
+                    $node->setTooltip('Blend In: ' . $node->getName());
+                }
+                break;
+            case 'locked-door':
+            case 'conceal-item':
+            case 'hiding-spot':
+            case 'destroy-evidence':
+            case 'weapon-crate':
+            case 'camera':
+            case 'frisk':
+                $node->setTooltip($node->getGroup());
                 break;
             default:
                 $node->setTarget($postData['target']);
