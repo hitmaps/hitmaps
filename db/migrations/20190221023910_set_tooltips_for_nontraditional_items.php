@@ -8,8 +8,8 @@ class SetTooltipsForNontraditionalItems extends AbstractMigration {
         $this->execute("UPDATE `nodes` SET `tooltip` = 'Stairwell' WHERE `group` = 'Stairwell'");
 
         // Blend In: Palace / Auction Staff
-        $this->execute("UPDATE `nodes` SET `tooltip` = CONCAT(`group`, ': ', `name`) WHERE `subgroup` = 'blend-in'");
-        $this->execute("UPDATE `nodes` SET `tooltip` = 'Blend In' WHERE `subgroup` = 'blend-in' AND `tooltip` = 'Blend In: '");
+        $this->execute("UPDATE `nodes` SET `tooltip` = CONCAT(`group`, ' as ', `name`) WHERE `subgroup` = 'blend-in'");
+        $this->execute("UPDATE `nodes` SET `tooltip` = 'Blend In' WHERE `subgroup` = 'blend-in' AND `tooltip` = 'Blend In as '");
 
         $this->execute("UPDATE `nodes` SET `tooltip` = 'Locked Door' WHERE `subgroup` = 'locked-door'");
         $this->execute("UPDATE `nodes` SET `tooltip` = 'Conceal Item' WHERE `subgroup` = 'conceal-item'");
