@@ -442,9 +442,9 @@ $klein->respond('POST', '/api/notifications', function(\Klein\Request $request, 
 
 $klein->respond('GET', '/api/push-elusive-target-status', function() use ($applicationContext) {
     $config = new Config\Settings();
-    /*if ($config->accessKey !== $_GET['access-key']) {
+    if ($config->accessKey !== $_GET['access-key']) {
         return http_response_code(404);
-    }*/
+    }
 
     $applicationContext->get(\BusinessLogic\ElusiveTargetNotificationSender::class)->sendElusiveTargetNotification();
 
