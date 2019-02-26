@@ -7,6 +7,7 @@ use Config\Settings;
 use DataAccess\Models\ElusiveTarget;
 use DataAccess\Repositories\ElusiveTargetRepository;
 use Doctrine\ORM\EntityManager;
+use Rollbar\Rollbar;
 
 class ElusiveTargetNotificationSender {
     private $firebaseClient;
@@ -25,6 +26,7 @@ class ElusiveTargetNotificationSender {
         $elusiveTarget = $elusiveTargetRepository->getLatestElusiveTarget();
 
         if ($this->allNotificationsSent($elusiveTarget)) {
+            Rollbar::info('All notifications sent.');
             return;
         }
 
@@ -40,12 +42,17 @@ class ElusiveTargetNotificationSender {
 
         if (!$elusiveTarget->getComingNotificationSent()) {
             $title = "Elusive Target Arriving";
+            $beginningDateForComparison = $elusiveTarget->getBeginningTime();
+            $beginningDateForComparison->modify('-1 day');
+            $availableDays = $elusiveTarget->getEndingTime()->diff($beginningDateForComparison)->format('%a');
             $body = "{$elusiveTarget->getName()} is arriving on {$beginningDate} and will be available for {$availableDays} days!";
-            $this->firebaseClient->sendElusiveTargetMessage("{$environment}-elusive-target-coming", $title, $body, 'https://www.hitman2maps.com/android-chrome-256x256.png', $url);
+            $response = $this->firebaseClient->sendElusiveTargetMessage("{$environment}-elusive-target-coming", $title, $body, 'https://www.hitman2maps.com/android-chrome-256x256.png', $url);
 
             $elusiveTarget->setComingNotificationSent(true);
             $this->entityManager->persist($elusiveTarget);
             $this->entityManager->flush();
+
+            Rollbar::info("Sent Notification: {$elusiveTarget->getName()} is arriving on {$beginningDate} and will be available for {$availableDays} days!", ['firebaseResponse' => $response]);
             return;
         }
 
