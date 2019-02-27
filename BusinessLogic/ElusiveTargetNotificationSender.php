@@ -56,6 +56,11 @@ class ElusiveTargetNotificationSender {
             return;
         }
 
+        // If the ET isn't playable, don't proceed past here
+        if ($currentUtcTime < $elusiveTarget->getBeginningTime()) {
+            return;
+        }
+
         if ($availableDays > 7 && !$elusiveTarget->getPlayableNotificationSent()) {
             $title = "Elusive Target Arrived";
             $body = "{$elusiveTarget->getName()} has arrived and will be available for {$availableDays} days!";
