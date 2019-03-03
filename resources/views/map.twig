@@ -245,7 +245,16 @@
                 </div>
                 <div class="disguise-trespassing-menu" style="display: none">
                     <p data-disguise="delete-help"><i class="fas fa-trash"></i> Click on an existing region to delete it.</p>
-                    <div class="editor-button" data-disguise="add">
+                    <p>Select a disguise from the dropdown below to edit its layout.</p>
+                    <div class="search-box">
+                        <select name="disguise-menu-dropdown" class="selectpicker" data-style="control-button">
+                            <option value="NONE">None</option>
+                            {% for disguise in model.disguises %}
+                                <option value="{{ disguise.id }}">{{ disguise.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="editor-button" data-disguise="add" style="display: none">
                         <h3><i class="fas fa-plus-circle"></i> Add Trespassing Region</h3>
                         <p>Click here to enable / disable trespassing region builder</p>
                     </div>
@@ -634,6 +643,7 @@
         var g_openMarker = undefined;
         var g_workingLedgeVertices = [];
         var g_workingLedgeLayers = [];
+        var g_disguiseOptions = [];
 
         // Initialize g_overlays for each floor
         for (var i = g_lowestFloor; i <= g_highestFloor; i++) {
@@ -723,6 +733,15 @@
                     for (var j = g_lowestFloor; j <= g_highestFloor; j++) {
                         g_overlays[j][category.type + '|' + category.group] = L.layerGroup();
                         allLayerGroups.push(g_overlays[j][category.type + '|' + category.group]);
+                    }
+                }
+                // Layers for disguises
+                for (var i in json.disguises) {
+                    var disguise = json.disguises[i];
+                    for (var j = g_lowestFloor; j <= g_highestFloor; j++) {
+                        g_overlays[j]['Disguises|' + disguise.id] = L.layerGroup();
+                        allLayerGroups.push(g_overlays[j]['Disguises|' + disguise.id]);
+                        g_disguiseOptions.push('Disguises|' + disguise.id);
                     }
                 }
 
@@ -1518,6 +1537,21 @@
 
 
             $modal.modal('show');
+        });
+
+        $('select[name="disguise-menu-dropdown"]').change(function() {
+            var value = this.value;
+            var currentFloor = $('input[type="hidden"][name="level"]').val();
+            for (var i in g_disguiseOptions) {
+                toggleLayer(g_overlays[currentFloor][g_disguiseOptions[i]], false);
+            }
+
+            if (value === 'NONE') {
+                $('[data-disguise="add"]').hide();
+            } else {
+                $('[data-disguise="add"]').show();
+                toggleLayer(g_overlays[currentFloor]['Disguises|' + value], true);
+            }
         });
         {% endif %}
     </script>
