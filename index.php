@@ -414,7 +414,20 @@ $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
         $formattedFoliage[] = $viewModel;
     }
 
-    return json_encode(['nodes' => $nodes, 'categories' => $nodeCategories, 'ledges' => $formattedLedges, 'foliage' => $formattedFoliage]);
+    /* @var $disguises \DataAccess\Models\Disguise[] */
+    $disguises = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
+        ->getRepository(\DataAccess\Models\Disguise::class)
+        ->findBy(['missionId' => $_GET['missionId']], ['name' => 'ASC']);
+    $formattedDisguises = [];
+    foreach ($disguises as $disguise) {
+        $formattedDisguise = new \Controllers\ViewModels\DisguiseViewModel();
+        $formattedDisguise->id = $disguise->getId();
+        $formattedDisguise->name = $disguise->getName();
+        $formattedDisguise->image = $disguise->getImage();
+        $formattedDisguises[] = $formattedDisguise;
+    }
+
+    return json_encode(['nodes' => $nodes, 'categories' => $nodeCategories, 'ledges' => $formattedLedges, 'foliage' => $formattedFoliage, 'disguises' => $formattedDisguises]);
 });
 
 $klein->respond('POST', '/api/notifications', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
