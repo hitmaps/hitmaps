@@ -254,9 +254,13 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="editor-button" data-disguise="add" style="display: none">
+                    <div class="editor-button" data-disguise="add" data-type="trespassing" style="display: none">
                         <h3><i class="fas fa-plus-circle"></i> Add Trespassing Region</h3>
                         <p>Click here to enable / disable trespassing region builder</p>
+                    </div>
+                    <div class="editor-button" data-disguise="add" data-type="hostile" style="display: none">
+                        <h3><i class="fas fa-plus-circle"></i> Add Hostile Region</h3>
+                        <p>Click here to enable / disable hostile region builder</p>
                     </div>
                     <div class="editor-button" data-disguise="cancel">
                         <h3><i class="fas fa-times-circle"></i> Close Disguise Trespassing Area Menu</h3>
@@ -884,7 +888,12 @@
                     if (e.shape === 'Line') {
                         handleLedge(e);
                     } else if (e.shape === 'Poly') {
-                        handleFoliage(e);
+                        if ($('input[type="hidden"][name="edit-mode"]') === 3) {
+                            handleFoliage(e);
+                        } else {
+                            handleDisguiseArea(e);
+                        }
+
                     }
                 });
             },
@@ -944,6 +953,44 @@
                     buildFoliage(foliage).addTo(g_overlays[foliage.level]['Navigation|Foliage']);
                     g_workingLedgeVertices = [];
                     toastr["success"]("Foliage successfully created!");
+                },
+                error: function() {
+                    alert('Error!');
+                },
+                complete: function() {
+                    for (var i in g_workingLedgeLayers) {
+                        g_map.removeLayer(g_workingLedgeLayers[i]);
+                    }
+                    g_workingLedgeLayers = [];
+                }
+            });
+        }
+
+        function handleDisguiseArea(e) {
+            console.log("About to save disguise area.");
+            console.log(e);
+
+            var type = $('[data-disguise="add"][data-type="trespassing"]').hasClass('selected') ?
+                'trespassing' :
+                'hostile';
+            var disguiseId = $('select[name="template"] option:selected').val();
+            var data = {
+                vertices: g_workingLedgeVertices,
+                missionId: $('input[name="mission-id"]').val(),
+                disguiseId: disguiseId,
+                level: $('input[type="hidden"][name="level"]').val(),
+                type: type
+            };
+
+            $.ajax({
+                url: '/api/disguise-areas',
+                method: 'POST',
+                data: data,
+                success: function(data) {
+                    var disguiseData = JSON.parse(data);
+                    buildDisguiseArea(disguiseData).addTo(g_overlays[disguiseData.level]['Disguises|' + disguiseData.disguiseId]);
+                    g_workingLedgeVertices = [];
+                    toastr["success"]("Disguise area successfully created!");
                 },
                 error: function() {
                     alert('Error!');
@@ -1110,6 +1157,34 @@
             return polygon.bindTooltip('Foliage', {sticky: true});
         }
 
+        function buildDisguiseArea(disguiseArea) {
+            var latlngs = [];
+            for (var j in disguiseArea.vertices) {
+                var coords = disguiseArea.vertices[j].split(',');
+                latlngs.push([coords[0], coords[1]]);
+            }
+            var polygon = L.polygon(latlngs, {
+                color: disguiseArea.type === 'trespassing' ? 'yellow' : '#f00',
+                weight: 4,
+                opacity: .75,
+                custom: {
+                    id: disguiseArea.id
+                }
+            }).on('click', function() {
+                if (parseInt($('input[type="hidden"][name="edit-mode"]').val()) !== 4) {
+                    return;
+                }
+
+                g_openMarker = this;
+
+                $('input[type="hidden"][name="trespassing-region-id"]').val(this.options.custom.id);
+                $('#confirm-delete-disguise-trespassing-modal').modal('show');
+            });
+
+            var tooltip = disguiseArea.type === 'trespassing' ? 'Trespassing' : 'Hostile Area';
+            return polygon.bindTooltip(tooltip, {sticky: true});
+        }
+
         $('#delete-ledge-btn').click(function() {
             var $modal = $('#confirm-delete-ledge-modal');
 
@@ -1156,16 +1231,16 @@
             var regionId = $modal.find('input[type="hidden"][name="trespassing-region-id"]').val();
 
             $.ajax({
-                url: '/api/trespassing-region/delete/' + regionId,
+                url: '/api/disguise-areas/delete/' + regionId,
                 method: 'GET',
                 success: function() {
-                    toastr["success"]("Trespassing region deleted!");
+                    toastr["success"]("Disguise area deleted!");
                     g_map.removeLayer(g_openMarker);
                     g_openMarker = undefined;
                     $modal.modal('hide');
                 },
                 error: function() {
-                    toastr["error"]("Error deleting trespassing region!");
+                    toastr["error"]("Error deleting disguise area!");
                 }
             })
         });
@@ -1423,7 +1498,7 @@
         // Ledges
         $('[data-ledge="add"]').click(function() {
             if (!$(this).hasClass('selected')) {
-                g_map.pm.enableDraw('Line', { snapping: 'false', finishOn: 'mouseout' });
+                g_map.pm.enableDraw('Line', { snapping: 'false' });
                 toastr["info"]("Click anywhere to start creating a ledge");
                 $(this).addClass('selected');
                 $('[data-ledge="delete-help"]').hide();
@@ -1444,7 +1519,7 @@
         // Foliage
         $('[data-foliage="add"]').click(function() {
             if (!$(this).hasClass('selected')) {
-                g_map.pm.enableDraw('Poly', { snapping: 'false', finishOn: 'mouseout' });
+                g_map.pm.enableDraw('Poly', { snapping: 'false' });
                 toastr["info"]('Click anywhere to start adding foliage');
                 $(this).addClass('selected');
                 $('[data-foliage="delete-help"]').hide();
@@ -1460,6 +1535,25 @@
             $('[data-foliage="add"]').removeClass('selected');
             $('[data-foliage="delete-help"]').show();
             g_map.pm.disableDraw('Poly');
+        });
+
+        // Disguise trespassing/hostile areas
+        $('[data-disguise="add"]').click(function() {
+            var type = $(this).attr('data-type');
+            var otherType = type === 'trespassing' ? 'hostile' : 'trespassing';
+            g_map.pm.disableDraw('Poly');
+
+            if (!$(this).hasClass('selected')) {
+                g_map.pm.enableDraw('Poly', { snapping: 'false' });
+                toastr["info"]('Click anywhere to start adding a ' + type + ' region');
+                $(this).addClass('selected');
+                $('[data-disguise="add"][data-type="' + otherType + '"]').removeClass('selected');
+                $('[data-disguise="delete-help"]').hide();
+            } else {
+                $(this).removeClass('selected');
+                toastr["info"]('Disguise editor disabled');
+                $('[data-disguise="delete-help"]').show();
+            }
         });
 
         {% if model.canDeleteNodes %}
