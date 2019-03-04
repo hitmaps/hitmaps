@@ -103,7 +103,7 @@
                             </div>
                         {% endif %}
                     </div>
-                    <div class="search-box" data-search="items">
+                    <div class="search-box" id="search-box-items" data-search="items">
                         <select name="search" class="selectpicker" data-live-search="true" data-title="<i class='fas fa-fw fa-search'></i> Search" data-style="control-button">
                             {% for typeName,type in model.searchableNodes %}
                                 {% for group in type.items %}
@@ -117,7 +117,7 @@
                         </select>
                         <button id="clear-search" class="btn control-button" data-toggle="tooltip" title="Clear Search" style="display: none"><i class="fas fa-times"></i></button>
                     </div>
-                    <div class="search-box" data-search="disguises">
+                    <div class="search-box" id="search-box-disguises" data-search="disguises">
                         <div class="card">
                             <div class="card-header" id="header-disguises">
                                 <div class="name collapsed control-button" data-toggle="collapse"
@@ -131,11 +131,11 @@
                             </div>
                             <div id="body-disguises" class="collapse" aria-labelledby="header-disguises">
                                 <div class="card-body disguises">
-                                    <div class="full-width selected" style="background: url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/disguises/none.{{ model.jpgBackgroundFileExtension }}'); ">
+                                    <div data-disguise-id="NONE" class="full-width selected" style="background: url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/disguises/none.{{ model.jpgBackgroundFileExtension }}'); ">
                                         <p class="disguise-info">None</p>
                                     </div>
                                     {% for disguise in model.disguises %}
-                                        <div class="full-width" style="background: url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/{{ disguise.image }}.{{ model.jpgBackgroundFileExtension }}'); ">
+                                        <div data-disguise-id="{{ disguise.id }}" class="full-width" style="background: url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/{{ disguise.image }}.{{ model.jpgBackgroundFileExtension }}'); ">
                                             <p class="disguise-info">{{ disguise.name }}</p>
                                         </div>
                                     {% endfor %}
@@ -745,8 +745,8 @@
                     for (var j = g_lowestFloor; j <= g_highestFloor; j++) {
                         g_overlays[j]['Disguises|' + disguise.id] = L.layerGroup();
                         allLayerGroups.push(g_overlays[j]['Disguises|' + disguise.id]);
-                        g_disguiseOptions.push('Disguises|' + disguise.id);
                     }
+                    g_disguiseOptions.push('Disguises|' + disguise.id);
                 }
 
                 var nodes = json.nodes;
@@ -1065,9 +1065,11 @@
         function updateNodeLayerState() {
             var currentFloor = $('input[type="hidden"][name="level"]').val();
             var $searchedItem = $('select[name="search"] option:selected');
-            var bootstrapSelectInitialized = $('.search-box').find('.bootstrap-select').length > 0;
+            var $searchedDisguise = $('[data-disguise-id].selected');
+            var bootstrapSelectInitialized = $('#search-box-items').find('.bootstrap-select').length > 0;
             var itemName = $searchedItem !== undefined && bootstrapSelectInitialized ? $searchedItem.text() : undefined;
             var layer = $searchedItem !== undefined && bootstrapSelectInitialized ? $searchedItem.attr('data-layer') : undefined;
+            var disguiseName = parseInt($searchedDisguise.attr('data-disguise-id'));
 
             var floorsToHighlight = [];
             for (var floor in g_overlays) {
@@ -1107,10 +1109,20 @@
                                 }
                             }
                         }
+
+                        if (key.startsWith('Disguises|')) {
+                            for (var i in g_disguiseOptions) {
+                                var disguise = g_disguiseOptions[i];
+                                var parts = disguise.split('|');
+                                toggleLayer(floorLayers[disguise], parseInt(parts[1]) === disguiseName &&
+                                    (parseInt(floor) === parseInt(currentFloor)));
+                            }
+                        }
                     } else {
                         toggleLayer(floorLayers[key], false);
                     }
                 }
+
                 var $itemElement = $('[data-floor="' + floor + '"]').find('.item-count');
                 $itemElement.text(numberOfItemsOnMap);
 
