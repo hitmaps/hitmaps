@@ -126,6 +126,12 @@ $(document).ready(function() {
 
         $disguisesSearch.find('select').trigger('change');
     });
+
+    $('[data-disguise-id]').click(function() {
+        $('[data-disguise-id]').removeClass('selected');
+        $(this).addClass('selected');
+        updateNodeLayerState();
+    })
 });
 
 if (!String.prototype.startsWith) {
