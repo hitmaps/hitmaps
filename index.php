@@ -323,6 +323,47 @@ $klein->respond('GET', '/api/foliage/delete/[:foliageId]', function (\Klein\Requ
     return json_encode(['message' => 'Foliage deleted!']);
 });
 
+$klein->respond('POST', '/api/disguise-areas', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    if (!userIsLoggedIn()) {
+        print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
+        return $response->code(401);
+    }
+
+    $disguiseArea = $applicationContext->get(\Controllers\DisguiseAreasController::class)->createDisguiseArea($_POST['missionId'],
+        $_POST['disguiseId'],
+        $_POST['level'],
+        $_POST['type'],
+        $_POST['vertices']);
+
+    $explodedVertices = explode('|', $disguiseArea->getVertices());
+
+    $viewModel = new \Controllers\ViewModels\DisguiseAreaViewModel();
+    $viewModel->id = $disguiseArea->getId();
+    $viewModel->missionId = $disguiseArea->getMissionId();
+    $viewModel->level = $disguiseArea->getLevel();
+    $viewModel->disguiseId = $disguiseArea->getDisguiseId();
+    $viewModel->type = $disguiseArea->getType();
+    $viewModel->vertices = $explodedVertices;
+
+    $response->code(201);
+    return json_encode($viewModel);
+});
+
+$klein->respond('GET', '/api/disguise-areas/delete/[:areaId]', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    if (!userIsLoggedIn()) {
+        print json_encode(['message' => 'You must be logged in to delete disguise areas!']);
+        return $response->code(401);
+    }
+
+    $disguiseArea = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\DisguiseArea::class)->findOneBy(['id' => $request->areaId]);
+    $entityManager = $applicationContext->get(\Doctrine\ORM\EntityManager::class);
+    $entityManager->remove($disguiseArea);
+    $entityManager->flush();
+
+    $response->code(200);
+    return json_encode(['message' => 'Disguise area deleted!']);
+});
+
 $klein->respond('POST', '/api/nodes/move', function (\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext) {
     if (!userIsLoggedIn()) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
