@@ -778,6 +778,17 @@
                     buildFoliage(innerFoliage).addTo(g_overlays[innerFoliage.level]['Navigation|Foliage']);
                 }
 
+                var disguises = json.disguises;
+                for (var i in disguises) {
+                    var innerDisguise = disguises[i];
+
+                    for (var j in innerDisguise.areas) {
+                        var innerArea = innerDisguise.areas[j];
+
+                        buildDisguiseArea(innerArea).addTo(g_overlays[innerArea.level]['Disguises|' + innerDisguise.id]);
+                    }
+                }
+
                 // Build tile layers for each floor
                 for (var j = g_lowestFloor; j <= g_highestFloor; j++) {
                     var mapTileLayer = L.tileLayer('/maps/{{ model.mapFolderName }}/tiles/' + j + '/{z}/{x}/{y}.png', {
@@ -921,6 +932,7 @@
                     buildLedge(ledge).addTo(g_overlays[ledge.level]['Navigation|Ledge']);
                     g_workingLedgeVertices = [];
                     toastr["success"]("Ledge successfully created!");
+                    g_map.pm.enableDraw('Line', { snapping: 'false' });
                 },
                 error: function() {
                     alert('Error!');
@@ -953,6 +965,7 @@
                     buildFoliage(foliage).addTo(g_overlays[foliage.level]['Navigation|Foliage']);
                     g_workingLedgeVertices = [];
                     toastr["success"]("Foliage successfully created!");
+                    g_map.pm.enableDraw('Poly', { snapping: 'false' });
                 },
                 error: function() {
                     alert('Error!');
@@ -973,7 +986,7 @@
             var type = $('[data-disguise="add"][data-type="trespassing"]').hasClass('selected') ?
                 'trespassing' :
                 'hostile';
-            var disguiseId = $('select[name="template"] option:selected').val();
+            var disguiseId = $('select[name="disguise-menu-dropdown"] option:selected').val();
             var data = {
                 vertices: g_workingLedgeVertices,
                 missionId: $('input[name="mission-id"]').val(),
@@ -991,6 +1004,7 @@
                     buildDisguiseArea(disguiseData).addTo(g_overlays[disguiseData.level]['Disguises|' + disguiseData.disguiseId]);
                     g_workingLedgeVertices = [];
                     toastr["success"]("Disguise area successfully created!");
+                    g_map.pm.enableDraw('Poly', { snapping: 'false' });
                 },
                 error: function() {
                     alert('Error!');
@@ -1064,13 +1078,17 @@
 
                     // Find the button that toggles this layer and see if it's active or not.
                     if (!$('div[data-layer="' + key + '"]').hasClass('map-hidden')) {
-                        if (key !== 'Navigation|Ledge' && key !== 'Navigation|Foliage') {
+                        if (key !== 'Navigation|Ledge' &&
+                            key !== 'Navigation|Foliage' &&
+                            !key.startsWith('Disguises|')) {
                             numberOfItemsOnMap += floorLayers[key].getLayers().length;
                         }
 
                         toggleLayer(floorLayers[key], (parseInt(floor) === parseInt(currentFloor)));
 
-                        if (key !== 'Navigation|Ledge' && key !== 'Navigation|Foliage') {
+                        if (key !== 'Navigation|Ledge' &&
+                            key !== 'Navigation|Foliage' &&
+                            !key.startsWith('Disguises|')) {
                             for (var node in floorLayers[key].getLayers()) {
                                 var nodeProperties = floorLayers[key].getLayers()[node];
 
@@ -1554,6 +1572,12 @@
                 toastr["info"]('Disguise editor disabled');
                 $('[data-disguise="delete-help"]').show();
             }
+        });
+
+        $('[data-disguise="cancel"]').click(function() {
+            $('[data-disguise="add"]').removeClass('selected');
+            $('[data-disguise="delete-help"]').show();
+            g_map.pm.disableDraw('Poly');
         });
 
         {% if model.canDeleteNodes %}

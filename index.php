@@ -329,9 +329,9 @@ $klein->respond('POST', '/api/disguise-areas', function (\Klein\Request $request
         return $response->code(401);
     }
 
-    $disguiseArea = $applicationContext->get(\Controllers\DisguiseAreasController::class)->createDisguiseArea($_POST['missionId'],
-        $_POST['disguiseId'],
-        $_POST['level'],
+    $disguiseArea = $applicationContext->get(\Controllers\DisguiseAreasController::class)->createDisguiseArea(intval($_POST['missionId']),
+        intval($_POST['disguiseId']),
+        intval($_POST['level']),
         $_POST['type'],
         $_POST['vertices']);
 
@@ -455,12 +455,37 @@ $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
         $formattedFoliage[] = $viewModel;
     }
 
+    /* @var $disguiseRepository \DataAccess\Repositories\DisguiseRepository */
+    $disguiseRepository = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
+        ->getRepository(\DataAccess\Models\Disguise::class);
+
     /* @var $disguises \DataAccess\Models\Disguise[] */
-    $disguises = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
-        ->getRepository(\DataAccess\Models\Disguise::class)
-        ->findBy(['missionId' => $_GET['missionId']], ['name' => 'ASC']);
+    $disguisesWithAreas = $disguiseRepository->findByMission($_GET['missionId']);
     $formattedDisguises = [];
-    foreach ($disguises as $disguise) {
+
+    /* @var $formattedDisguise \Controllers\ViewModels\DisguiseViewModel */
+    $formattedDisguise = null;
+    foreach ($disguisesWithAreas as $disguiseOrArea) {
+        if ($disguiseOrArea === null) {
+            continue;
+        }
+
+        if ($disguiseOrArea instanceof \DataAccess\Models\DisguiseArea) {
+            /* @var $area \DataAccess\Models\DisguiseArea */
+            $area = $disguiseOrArea;
+            $areaViewModel = new \Controllers\ViewModels\DisguiseAreaViewModel();
+            $areaViewModel->id = $area->getId();
+            $areaViewModel->missionId = $area->getMissionId();
+            $areaViewModel->disguiseId = $area->getDisguiseId();
+            $areaViewModel->level = $area->getLevel();
+            $areaViewModel->type = $area->getType();
+            $areaViewModel->vertices = explode('|', $area->getVertices());
+            $formattedDisguise->areas[] = $areaViewModel;
+            continue;
+        }
+
+        /* @var $disguise \DataAccess\Models\Disguise */
+        $disguise = $disguiseOrArea;
         $formattedDisguise = new \Controllers\ViewModels\DisguiseViewModel();
         $formattedDisguise->id = $disguise->getId();
         $formattedDisguise->name = $disguise->getName();
@@ -468,7 +493,12 @@ $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
         $formattedDisguises[] = $formattedDisguise;
     }
 
-    return json_encode(['nodes' => $nodes, 'categories' => $nodeCategories, 'ledges' => $formattedLedges, 'foliage' => $formattedFoliage, 'disguises' => $formattedDisguises]);
+    return json_encode([
+        'nodes' => $nodes,
+        'categories' => $nodeCategories,
+        'ledges' => $formattedLedges,
+        'foliage' => $formattedFoliage,
+        'disguises' => $formattedDisguises]);
 });
 
 $klein->respond('POST', '/api/notifications', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
