@@ -774,6 +774,11 @@ $klein->respond('GET', '/admin/migrate', function() {
     return '<pre>' . $output . '</pre>';
 });
 
+// Workaround for local development
+$klein->respond('/web/[*]', function($request, $response, $service, $app) {
+    return $response->file(__DIR__ . $request->pathname());
+});
+
 $klein->onHttpError(function (int $code, \Klein\Klein $router) use ($twig) {
     switch ($code) {
         case 403:
