@@ -476,7 +476,8 @@ html {
   .edit-menu,
   .items-menu,
   .ledges-menu,
-  .foliage-menu {
+  .foliage-menu,
+  .disguise-trespassing-menu {
     h2 {
       color: #fff;
       text-transform: uppercase;
@@ -571,6 +572,8 @@ html {
   }
 
   #body-disguises {
+    margin-top: -10px;
+
     .disguises {
       .full-width {
         padding-top: 10px;
@@ -731,6 +734,15 @@ html {
           }
         }
       }
+    }
+  }
+
+  [data-disguise-id] {
+    border: solid 2px #000;
+    border-radius: 3px;
+
+    &:hover {
+      border: solid 2px #fff;
     }
   }
 }

@@ -3,7 +3,8 @@ $(document).ready(function() {
         OFF: 0,
         ITEMS: 1,
         LEDGES: 2,
-        FOLIAGE: 3
+        FOLIAGE: 3,
+        DISGUISES: 4
     };
 
     $('#edit-button').click(function() {
@@ -24,6 +25,7 @@ $(document).ready(function() {
         $('.editor-enabled').show().find('h3').text('ADD / REMOVE ITEMS');
         $('.edit-menu').hide();
         $('.items-menu').show();
+        $('#edit-button').hide();
     });
 
     $('[data-item="cancel"]').click(function() {
@@ -32,6 +34,7 @@ $(document).ready(function() {
         $('.edit-menu').show();
         $('.items-menu').hide();
         $('.editor-enabled').hide();
+        $('#edit-button').show();
     });
 
     $('[data-editor="ledges"]').click(function() {
@@ -40,6 +43,7 @@ $(document).ready(function() {
         $('.editor-enabled').show().find('h3').text('ADD / REMOVE LEDGES');
         $('.edit-menu').hide();
         $('.ledges-menu').show();
+        $('#edit-button').hide();
     });
 
     $('[data-ledge="cancel"]').click(function() {
@@ -48,6 +52,7 @@ $(document).ready(function() {
         $('.edit-menu').show();
         $('.ledges-menu').hide();
         $('.editor-enabled').hide();
+        $('#edit-button').show();
     });
 
     $('[data-editor="foliage"]').click(function() {
@@ -56,6 +61,7 @@ $(document).ready(function() {
         $('.editor-enabled').show().find('h3').text('ADD / REMOVE FOLIAGE');
         $('.edit-menu').hide();
         $('.foliage-menu').show();
+        $('#edit-button').hide();
     });
 
     $('[data-foliage="cancel"]').click(function() {
@@ -64,6 +70,25 @@ $(document).ready(function() {
         $('.edit-menu').show();
         $('.foliage-menu').hide();
         $('.editor-enabled').hide();
+        $('#edit-button').show();
+    });
+
+    $('[data-editor="disguises"]').click(function() {
+        var $editMode = $('input[type="hidden"][name="edit-mode"]');
+        $editMode.val(EDIT_MODES.DISGUISES);
+        $('.editor-enabled').show().find('h3').text('MANAGE DISGUISE AREAS');
+        $('.edit-menu').hide();
+        $('.disguise-trespassing-menu').show();
+        $('#edit-button').hide();
+    });
+
+    $('[data-disguise="cancel"]').click(function() {
+        var $editMode = $('input[type="hidden"][name="edit-mode"]');
+        $editMode.val(EDIT_MODES.OFF);
+        $('.edit-menu').show();
+        $('.disguise-trespassing-menu').hide();
+        $('.editor-enabled').hide();
+        $('#edit-button').show();
     });
 
     $('.search-box[data-search="items"]').find('select').change(function() {
@@ -101,4 +126,27 @@ $(document).ready(function() {
 
         $disguisesSearch.find('select').trigger('change');
     });
+
+    $('[data-disguise-id]').click(function() {
+        $('[data-disguise-id]').removeClass('selected');
+        $(this).addClass('selected');
+
+        if ($(this).attr('data-disguise-id') === 'NONE') {
+            $('.disguise-text').text('Disguises');
+        } else {
+            $('.disguise-text').text($(this).find('p.disguise-info').text());
+        }
+        $('#header-disguises').find('.name').click();
+
+        updateNodeLayerState();
+    })
 });
+
+if (!String.prototype.startsWith) {
+    Object.defineProperty(String.prototype, 'startsWith', {
+        value: function(search, pos) {
+            pos = !pos || pos < 0 ? 0 : +pos;
+            return this.substring(pos, pos + search.length) === search;
+        }
+    });
+}

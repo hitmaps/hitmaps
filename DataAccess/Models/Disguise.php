@@ -5,7 +5,7 @@ namespace DataAccess\Models;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="DataAccess\Repositories\DisguiseRepository")
  * @ORM\Table(name="disguises")
  */
 class Disguise {
