@@ -76,7 +76,7 @@ $(document).ready(function() {
     $('[data-editor="disguises"]').click(function() {
         var $editMode = $('input[type="hidden"][name="edit-mode"]');
         $editMode.val(EDIT_MODES.DISGUISES);
-        $('.editor-enabled').show().find('h3').text('MANAGE DISGUISE TRESPASSING AREAS');
+        $('.editor-enabled').show().find('h3').text('MANAGE DISGUISE AREAS');
         $('.edit-menu').hide();
         $('.disguise-trespassing-menu').show();
         $('#edit-button').hide();
@@ -130,6 +130,14 @@ $(document).ready(function() {
     $('[data-disguise-id]').click(function() {
         $('[data-disguise-id]').removeClass('selected');
         $(this).addClass('selected');
+
+        if ($(this).attr('data-disguise-id') === 'NONE') {
+            $('.disguise-text').text('Disguises');
+        } else {
+            $('.disguise-text').text($(this).find('p.disguise-info').text());
+        }
+        $('#header-disguises').find('.name').click();
+
         updateNodeLayerState();
     })
 });

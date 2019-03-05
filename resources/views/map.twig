@@ -122,7 +122,8 @@
                             <div class="card-header" id="header-disguises">
                                 <div class="name collapsed control-button" data-toggle="collapse"
                                     data-target="#body-disguises" aria-expanded="false" aria-controls="body-disguises">
-                                    <i class="far fa-fw fa-user-tie"></i> Disguises
+                                    <i class="far fa-fw fa-user-tie"></i>
+                                    <span class="disguise-text">Disguises</span>
                                     <span class="float-right">
                                         <i class="fas fa-caret-down"></i>
                                         <i class="fas fa-caret-up"></i>
@@ -210,7 +211,7 @@
                         <h3><i class="fas fa-fw fa-leaf"></i> Add / Remove Foliage</h3>
                     </div>
                     <div class="editor-button" data-editor="disguises">
-                        <h3><i class="fas fa-fw fa-user-tie"></i> Manage Disguise Trespassing Areas</h3>
+                        <h3><i class="fas fa-fw fa-user-tie"></i> Manage Disguise Areas</h3>
                     </div>
                     <p>Click the <i class="fas fa-pencil-alt"></i> icon to close the editor menu.</p>
                 </div>
@@ -263,7 +264,7 @@
                         <p>Click here to enable / disable hostile region builder</p>
                     </div>
                     <div class="editor-button" data-disguise="cancel">
-                        <h3><i class="fas fa-times-circle"></i> Close Disguise Trespassing Area Menu</h3>
+                        <h3><i class="fas fa-times-circle"></i> Close Disguise Area Menu</h3>
                     </div>
                 </div>
             </div>
@@ -1195,6 +1196,7 @@
             }
             var polygon = L.polygon(latlngs, {
                 color: disguiseArea.type === 'trespassing' ? 'yellow' : '#f00',
+                stroke: false,
                 weight: 4,
                 opacity: .75,
                 custom: {
