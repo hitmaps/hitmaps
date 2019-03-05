@@ -138,6 +138,8 @@ $(document).ready(function() {
         }
         $('#header-disguises').find('.name').click();
 
+        $('select[name="disguise-menu-dropdown"]').selectpicker('val', $(this).attr('data-disguise-id'));
+
         updateNodeLayerState();
     })
 });

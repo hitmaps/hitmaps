@@ -1672,18 +1672,7 @@
         });
 
         $('select[name="disguise-menu-dropdown"]').change(function() {
-            var value = this.value;
-            var currentFloor = $('input[type="hidden"][name="level"]').val();
-            for (var i in g_disguiseOptions) {
-                toggleLayer(g_overlays[currentFloor][g_disguiseOptions[i]], false);
-            }
-
-            if (value === 'NONE') {
-                $('[data-disguise="add"]').hide();
-            } else {
-                $('[data-disguise="add"]').show();
-                toggleLayer(g_overlays[currentFloor]['Disguises|' + value], true);
-            }
+            $('[data-disguise-id="' + this.value + '"]').click();
         });
         {% endif %}
     </script>
