@@ -1672,6 +1672,12 @@
         });
 
         $('select[name="disguise-menu-dropdown"]').change(function() {
+            if (value === 'NONE') {
+                $('[data-disguise="add"]').hide();
+            } else {
+                $('[data-disguise="add"]').show();
+            }
+            
             $('[data-disguise-id="' + this.value + '"]').click();
         });
         {% endif %}
