@@ -10,14 +10,14 @@
           crossorigin=""/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.css" />
     <link rel="stylesheet" href="/css/bootstrap-select.min.css">
-    <link rel="stylesheet" href="/css/map.css">
+    <link rel="stylesheet" href="/css/map.css?v={{ constants.cacheHash }}">
 
     <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
             integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
             crossorigin=""></script>
     <script src="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.min.js"></script>
     <script src="/js/bootstrap-select.min.js"></script>
-    <script src="/js/map.js"></script>
+    <script src="/js/map.js?v={{ constants.cacheHash }}"></script>
 {% endblock %}
 {% block content %}
     <div class="overlay" style="background: #ccc url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/backgrounds/loading.{{ model.jpgBackgroundFileExtension }}') no-repeat; background-size: cover">
