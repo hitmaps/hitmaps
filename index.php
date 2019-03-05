@@ -323,6 +323,47 @@ $klein->respond('GET', '/api/foliage/delete/[:foliageId]', function (\Klein\Requ
     return json_encode(['message' => 'Foliage deleted!']);
 });
 
+$klein->respond('POST', '/api/disguise-areas', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    if (!userIsLoggedIn()) {
+        print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
+        return $response->code(401);
+    }
+
+    $disguiseArea = $applicationContext->get(\Controllers\DisguiseAreasController::class)->createDisguiseArea(intval($_POST['missionId']),
+        intval($_POST['disguiseId']),
+        intval($_POST['level']),
+        $_POST['type'],
+        $_POST['vertices']);
+
+    $explodedVertices = explode('|', $disguiseArea->getVertices());
+
+    $viewModel = new \Controllers\ViewModels\DisguiseAreaViewModel();
+    $viewModel->id = $disguiseArea->getId();
+    $viewModel->missionId = $disguiseArea->getMissionId();
+    $viewModel->level = $disguiseArea->getLevel();
+    $viewModel->disguiseId = $disguiseArea->getDisguiseId();
+    $viewModel->type = $disguiseArea->getType();
+    $viewModel->vertices = $explodedVertices;
+
+    $response->code(201);
+    return json_encode($viewModel);
+});
+
+$klein->respond('GET', '/api/disguise-areas/delete/[:areaId]', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    if (!userIsLoggedIn()) {
+        print json_encode(['message' => 'You must be logged in to delete disguise areas!']);
+        return $response->code(401);
+    }
+
+    $disguiseArea = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\DisguiseArea::class)->findOneBy(['id' => $request->areaId]);
+    $entityManager = $applicationContext->get(\Doctrine\ORM\EntityManager::class);
+    $entityManager->remove($disguiseArea);
+    $entityManager->flush();
+
+    $response->code(200);
+    return json_encode(['message' => 'Disguise area deleted!']);
+});
+
 $klein->respond('POST', '/api/nodes/move', function (\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext) {
     if (!userIsLoggedIn()) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
@@ -414,7 +455,50 @@ $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
         $formattedFoliage[] = $viewModel;
     }
 
-    return json_encode(['nodes' => $nodes, 'categories' => $nodeCategories, 'ledges' => $formattedLedges, 'foliage' => $formattedFoliage]);
+    /* @var $disguiseRepository \DataAccess\Repositories\DisguiseRepository */
+    $disguiseRepository = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
+        ->getRepository(\DataAccess\Models\Disguise::class);
+
+    /* @var $disguises \DataAccess\Models\Disguise[] */
+    $disguisesWithAreas = $disguiseRepository->findByMission($_GET['missionId']);
+    $formattedDisguises = [];
+
+    /* @var $formattedDisguise \Controllers\ViewModels\DisguiseViewModel */
+    $formattedDisguise = null;
+    foreach ($disguisesWithAreas as $disguiseOrArea) {
+        if ($disguiseOrArea === null) {
+            continue;
+        }
+
+        if ($disguiseOrArea instanceof \DataAccess\Models\DisguiseArea) {
+            /* @var $area \DataAccess\Models\DisguiseArea */
+            $area = $disguiseOrArea;
+            $areaViewModel = new \Controllers\ViewModels\DisguiseAreaViewModel();
+            $areaViewModel->id = $area->getId();
+            $areaViewModel->missionId = $area->getMissionId();
+            $areaViewModel->disguiseId = $area->getDisguiseId();
+            $areaViewModel->level = $area->getLevel();
+            $areaViewModel->type = $area->getType();
+            $areaViewModel->vertices = explode('|', $area->getVertices());
+            $formattedDisguise->areas[] = $areaViewModel;
+            continue;
+        }
+
+        /* @var $disguise \DataAccess\Models\Disguise */
+        $disguise = $disguiseOrArea;
+        $formattedDisguise = new \Controllers\ViewModels\DisguiseViewModel();
+        $formattedDisguise->id = $disguise->getId();
+        $formattedDisguise->name = $disguise->getName();
+        $formattedDisguise->image = $disguise->getImage();
+        $formattedDisguises[] = $formattedDisguise;
+    }
+
+    return json_encode([
+        'nodes' => $nodes,
+        'categories' => $nodeCategories,
+        'ledges' => $formattedLedges,
+        'foliage' => $formattedFoliage,
+        'disguises' => $formattedDisguises]);
 });
 
 $klein->respond('POST', '/api/notifications', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
@@ -688,6 +772,11 @@ $klein->respond('GET', '/admin/migrate', function() {
     }
 
     return '<pre>' . $output . '</pre>';
+});
+
+// Workaround for local development
+$klein->respond('/web/[*]', function($request, $response, $service, $app) {
+    return $response->file(__DIR__ . $request->pathname());
 });
 
 $klein->onHttpError(function (int $code, \Klein\Klein $router) use ($twig) {

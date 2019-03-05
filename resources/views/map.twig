@@ -10,14 +10,14 @@
           crossorigin=""/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.css" />
     <link rel="stylesheet" href="/css/bootstrap-select.min.css">
-    <link rel="stylesheet" href="/css/map.css">
+    <link rel="stylesheet" href="/css/map.css?v={{ constants.cacheHash }}">
 
     <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
             integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
             crossorigin=""></script>
     <script src="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.min.js"></script>
     <script src="/js/bootstrap-select.min.js"></script>
-    <script src="/js/map.js"></script>
+    <script src="/js/map.js?v={{ constants.cacheHash }}"></script>
 {% endblock %}
 {% block content %}
     <div class="overlay" style="background: #ccc url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/backgrounds/loading.{{ model.jpgBackgroundFileExtension }}') no-repeat; background-size: cover">
@@ -103,7 +103,7 @@
                             </div>
                         {% endif %}
                     </div>
-                    <div class="search-box" data-search="items">
+                    <div class="search-box" id="search-box-items" data-search="items">
                         <select name="search" class="selectpicker" data-live-search="true" data-title="<i class='fas fa-fw fa-search'></i> Search" data-style="control-button">
                             {% for typeName,type in model.searchableNodes %}
                                 {% for group in type.items %}
@@ -117,12 +117,13 @@
                         </select>
                         <button id="clear-search" class="btn control-button" data-toggle="tooltip" title="Clear Search" style="display: none"><i class="fas fa-times"></i></button>
                     </div>
-                    {#<div class="search-box" data-search="disguises">
+                    <div class="search-box" id="search-box-disguises" data-search="disguises">
                         <div class="card">
                             <div class="card-header" id="header-disguises">
                                 <div class="name collapsed control-button" data-toggle="collapse"
                                     data-target="#body-disguises" aria-expanded="false" aria-controls="body-disguises">
-                                    <i class="far fa-fw fa-user-tie"></i> Disguises
+                                    <i class="far fa-fw fa-user-tie"></i>
+                                    <span class="disguise-text">Disguises</span>
                                     <span class="float-right">
                                         <i class="fas fa-caret-down"></i>
                                         <i class="fas fa-caret-up"></i>
@@ -131,11 +132,11 @@
                             </div>
                             <div id="body-disguises" class="collapse" aria-labelledby="header-disguises">
                                 <div class="card-body disguises">
-                                    <div class="full-width selected" style="background: url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/disguises/none.{{ model.jpgBackgroundFileExtension }}'); ">
+                                    <div data-disguise-id="NONE" class="full-width selected" style="background: url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/disguises/none.{{ model.jpgBackgroundFileExtension }}'); ">
                                         <p class="disguise-info">None</p>
                                     </div>
                                     {% for disguise in model.disguises %}
-                                        <div class="full-width" style="background: url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/{{ disguise.image }}.{{ model.jpgBackgroundFileExtension }}'); ">
+                                        <div data-disguise-id="{{ disguise.id }}" class="full-width" style="background: url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/{{ disguise.image }}.{{ model.jpgBackgroundFileExtension }}'); ">
                                             <p class="disguise-info">{{ disguise.name }}</p>
                                         </div>
                                     {% endfor %}
@@ -143,7 +144,7 @@
                             </div>
                         </div>
                         <button id="clear-disguise-search" class="btn control-button" data-toggle="tooltip" title="Clear Search" style="display: none"><i class="fas fa-times"></i></button>
-                    </div>#}
+                    </div>
                     <div class="hide-or-select-all">
                         <button id="hide-all" class="btn control-button"><i class="far fa-fw fa-eye-slash"></i> Hide All</button>
                         <button id="show-all" class="btn control-button"><i class="far fa-fw fa-eye"></i> Show All</button>
@@ -209,6 +210,9 @@
                     <div class="editor-button" data-editor="foliage">
                         <h3><i class="fas fa-fw fa-leaf"></i> Add / Remove Foliage</h3>
                     </div>
+                    <div class="editor-button" data-editor="disguises">
+                        <h3><i class="fas fa-fw fa-user-tie"></i> Manage Disguise Areas</h3>
+                    </div>
                     <p>Click the <i class="fas fa-pencil-alt"></i> icon to close the editor menu.</p>
                 </div>
                 <div class="items-menu" style="display: none">
@@ -238,6 +242,29 @@
                     </div>
                     <div class="editor-button" data-foliage="cancel">
                         <h3><i class="fas fa-times-circle"></i> Close Foliage Menu</h3>
+                    </div>
+                </div>
+                <div class="disguise-trespassing-menu" style="display: none">
+                    <p data-disguise="delete-help"><i class="fas fa-trash"></i> Click on an existing region to delete it.</p>
+                    <p>Select a disguise from the dropdown below to edit its layout.</p>
+                    <div class="search-box">
+                        <select name="disguise-menu-dropdown" class="selectpicker" data-style="control-button">
+                            <option value="NONE">None</option>
+                            {% for disguise in model.disguises %}
+                                <option value="{{ disguise.id }}">{{ disguise.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="editor-button" data-disguise="add" data-type="trespassing" style="display: none">
+                        <h3><i class="fas fa-plus-circle"></i> Add Trespassing Region</h3>
+                        <p>Click here to enable / disable trespassing region builder</p>
+                    </div>
+                    <div class="editor-button" data-disguise="add" data-type="hostile" style="display: none">
+                        <h3><i class="fas fa-plus-circle"></i> Add Hostile Region</h3>
+                        <p>Click here to enable / disable hostile region builder</p>
+                    </div>
+                    <div class="editor-button" data-disguise="cancel">
+                        <h3><i class="fas fa-times-circle"></i> Close Disguise Area Menu</h3>
                     </div>
                 </div>
             </div>
@@ -308,6 +335,28 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         <button type="submit" id="delete-foliage-btn" class="btn btn-danger">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="confirm-delete-disguise-trespassing-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delete Trespassing Region</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <input type="hidden" name="trespassing-region-id">
+                    <div class="modal-body">
+                        <div class="alert alert-warning">
+                            Are you sure you want to delete this trespassing region?
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" id="delete-disguise-trespassing-btn" class="btn btn-danger">Delete</button>
                     </div>
                 </div>
             </div>
@@ -599,6 +648,7 @@
         var g_openMarker = undefined;
         var g_workingLedgeVertices = [];
         var g_workingLedgeLayers = [];
+        var g_disguiseOptions = [];
 
         // Initialize g_overlays for each floor
         for (var i = g_lowestFloor; i <= g_highestFloor; i++) {
@@ -690,6 +740,15 @@
                         allLayerGroups.push(g_overlays[j][category.type + '|' + category.group]);
                     }
                 }
+                // Layers for disguises
+                for (var i in json.disguises) {
+                    var disguise = json.disguises[i];
+                    for (var j = g_lowestFloor; j <= g_highestFloor; j++) {
+                        g_overlays[j]['Disguises|' + disguise.id] = L.layerGroup();
+                        allLayerGroups.push(g_overlays[j]['Disguises|' + disguise.id]);
+                    }
+                    g_disguiseOptions.push('Disguises|' + disguise.id);
+                }
 
                 var nodes = json.nodes;
                 for (var typeName in nodes) {
@@ -718,6 +777,17 @@
                 for (var i in foliage) {
                     var innerFoliage = foliage[i];
                     buildFoliage(innerFoliage).addTo(g_overlays[innerFoliage.level]['Navigation|Foliage']);
+                }
+
+                var disguises = json.disguises;
+                for (var i in disguises) {
+                    var innerDisguise = disguises[i];
+
+                    for (var j in innerDisguise.areas) {
+                        var innerArea = innerDisguise.areas[j];
+
+                        buildDisguiseArea(innerArea).addTo(g_overlays[innerArea.level]['Disguises|' + innerDisguise.id]);
+                    }
                 }
 
                 // Build tile layers for each floor
@@ -830,7 +900,12 @@
                     if (e.shape === 'Line') {
                         handleLedge(e);
                     } else if (e.shape === 'Poly') {
-                        handleFoliage(e);
+                        if ($('input[type="hidden"][name="edit-mode"]') === 3) {
+                            handleFoliage(e);
+                        } else {
+                            handleDisguiseArea(e);
+                        }
+
                     }
                 });
             },
@@ -858,6 +933,7 @@
                     buildLedge(ledge).addTo(g_overlays[ledge.level]['Navigation|Ledge']);
                     g_workingLedgeVertices = [];
                     toastr["success"]("Ledge successfully created!");
+                    g_map.pm.enableDraw('Line', { snapping: 'false' });
                 },
                 error: function() {
                     alert('Error!');
@@ -890,6 +966,46 @@
                     buildFoliage(foliage).addTo(g_overlays[foliage.level]['Navigation|Foliage']);
                     g_workingLedgeVertices = [];
                     toastr["success"]("Foliage successfully created!");
+                    g_map.pm.enableDraw('Poly', { snapping: 'false' });
+                },
+                error: function() {
+                    alert('Error!');
+                },
+                complete: function() {
+                    for (var i in g_workingLedgeLayers) {
+                        g_map.removeLayer(g_workingLedgeLayers[i]);
+                    }
+                    g_workingLedgeLayers = [];
+                }
+            });
+        }
+
+        function handleDisguiseArea(e) {
+            console.log("About to save disguise area.");
+            console.log(e);
+
+            var type = $('[data-disguise="add"][data-type="trespassing"]').hasClass('selected') ?
+                'trespassing' :
+                'hostile';
+            var disguiseId = $('select[name="disguise-menu-dropdown"] option:selected').val();
+            var data = {
+                vertices: g_workingLedgeVertices,
+                missionId: $('input[name="mission-id"]').val(),
+                disguiseId: disguiseId,
+                level: $('input[type="hidden"][name="level"]').val(),
+                type: type
+            };
+
+            $.ajax({
+                url: '/api/disguise-areas',
+                method: 'POST',
+                data: data,
+                success: function(data) {
+                    var disguiseData = JSON.parse(data);
+                    buildDisguiseArea(disguiseData).addTo(g_overlays[disguiseData.level]['Disguises|' + disguiseData.disguiseId]);
+                    g_workingLedgeVertices = [];
+                    toastr["success"]("Disguise area successfully created!");
+                    g_map.pm.enableDraw('Poly', { snapping: 'false' });
                 },
                 error: function() {
                     alert('Error!');
@@ -950,9 +1066,11 @@
         function updateNodeLayerState() {
             var currentFloor = $('input[type="hidden"][name="level"]').val();
             var $searchedItem = $('select[name="search"] option:selected');
-            var bootstrapSelectInitialized = $('.search-box').find('.bootstrap-select').length > 0;
+            var $searchedDisguise = $('[data-disguise-id].selected');
+            var bootstrapSelectInitialized = $('#search-box-items').find('.bootstrap-select').length > 0;
             var itemName = $searchedItem !== undefined && bootstrapSelectInitialized ? $searchedItem.text() : undefined;
             var layer = $searchedItem !== undefined && bootstrapSelectInitialized ? $searchedItem.attr('data-layer') : undefined;
+            var disguiseName = parseInt($searchedDisguise.attr('data-disguise-id'));
 
             var floorsToHighlight = [];
             for (var floor in g_overlays) {
@@ -963,13 +1081,17 @@
 
                     // Find the button that toggles this layer and see if it's active or not.
                     if (!$('div[data-layer="' + key + '"]').hasClass('map-hidden')) {
-                        if (key !== 'Navigation|Ledge' && key !== 'Navigation|Foliage') {
+                        if (key !== 'Navigation|Ledge' &&
+                            key !== 'Navigation|Foliage' &&
+                            !key.startsWith('Disguises|')) {
                             numberOfItemsOnMap += floorLayers[key].getLayers().length;
                         }
 
                         toggleLayer(floorLayers[key], (parseInt(floor) === parseInt(currentFloor)));
 
-                        if (key !== 'Navigation|Ledge' && key !== 'Navigation|Foliage') {
+                        if (key !== 'Navigation|Ledge' &&
+                            key !== 'Navigation|Foliage' &&
+                            !key.startsWith('Disguises|')) {
                             for (var node in floorLayers[key].getLayers()) {
                                 var nodeProperties = floorLayers[key].getLayers()[node];
 
@@ -988,10 +1110,20 @@
                                 }
                             }
                         }
+
+                        if (key.startsWith('Disguises|')) {
+                            for (var i in g_disguiseOptions) {
+                                var disguise = g_disguiseOptions[i];
+                                var parts = disguise.split('|');
+                                toggleLayer(floorLayers[disguise], parseInt(parts[1]) === disguiseName &&
+                                    (parseInt(floor) === parseInt(currentFloor)));
+                            }
+                        }
                     } else {
                         toggleLayer(floorLayers[key], false);
                     }
                 }
+
                 var $itemElement = $('[data-floor="' + floor + '"]').find('.item-count');
                 $itemElement.text(numberOfItemsOnMap);
 
@@ -1056,6 +1188,35 @@
             return polygon.bindTooltip('Foliage', {sticky: true});
         }
 
+        function buildDisguiseArea(disguiseArea) {
+            var latlngs = [];
+            for (var j in disguiseArea.vertices) {
+                var coords = disguiseArea.vertices[j].split(',');
+                latlngs.push([coords[0], coords[1]]);
+            }
+            var polygon = L.polygon(latlngs, {
+                color: disguiseArea.type === 'trespassing' ? 'yellow' : '#f00',
+                stroke: false,
+                weight: 4,
+                opacity: .75,
+                custom: {
+                    id: disguiseArea.id
+                }
+            }).on('click', function() {
+                if (parseInt($('input[type="hidden"][name="edit-mode"]').val()) !== 4) {
+                    return;
+                }
+
+                g_openMarker = this;
+
+                $('input[type="hidden"][name="trespassing-region-id"]').val(this.options.custom.id);
+                $('#confirm-delete-disguise-trespassing-modal').modal('show');
+            });
+
+            var tooltip = disguiseArea.type === 'trespassing' ? 'Trespassing' : 'Hostile Area';
+            return polygon.bindTooltip(tooltip, {sticky: true});
+        }
+
         $('#delete-ledge-btn').click(function() {
             var $modal = $('#confirm-delete-ledge-modal');
 
@@ -1092,6 +1253,26 @@
                 },
                 error: function() {
                     toastr["error"]("Error deleting foliage!");
+                }
+            })
+        });
+
+        $('#delete-disguise-trespassing-btn').click(function() {
+            var $modal = $('#confirm-delete-disguise-trespassing-modal');
+
+            var regionId = $modal.find('input[type="hidden"][name="trespassing-region-id"]').val();
+
+            $.ajax({
+                url: '/api/disguise-areas/delete/' + regionId,
+                method: 'GET',
+                success: function() {
+                    toastr["success"]("Disguise area deleted!");
+                    g_map.removeLayer(g_openMarker);
+                    g_openMarker = undefined;
+                    $modal.modal('hide');
+                },
+                error: function() {
+                    toastr["error"]("Error deleting disguise area!");
                 }
             })
         });
@@ -1349,7 +1530,7 @@
         // Ledges
         $('[data-ledge="add"]').click(function() {
             if (!$(this).hasClass('selected')) {
-                g_map.pm.enableDraw('Line', { snapping: 'false', finishOn: 'mouseout' });
+                g_map.pm.enableDraw('Line', { snapping: 'false' });
                 toastr["info"]("Click anywhere to start creating a ledge");
                 $(this).addClass('selected');
                 $('[data-ledge="delete-help"]').hide();
@@ -1370,7 +1551,7 @@
         // Foliage
         $('[data-foliage="add"]').click(function() {
             if (!$(this).hasClass('selected')) {
-                g_map.pm.enableDraw('Poly', { snapping: 'false', finishOn: 'mouseout' });
+                g_map.pm.enableDraw('Poly', { snapping: 'false' });
                 toastr["info"]('Click anywhere to start adding foliage');
                 $(this).addClass('selected');
                 $('[data-foliage="delete-help"]').hide();
@@ -1385,6 +1566,31 @@
         $('[data-foliage="cancel"]').click(function() {
             $('[data-foliage="add"]').removeClass('selected');
             $('[data-foliage="delete-help"]').show();
+            g_map.pm.disableDraw('Poly');
+        });
+
+        // Disguise trespassing/hostile areas
+        $('[data-disguise="add"]').click(function() {
+            var type = $(this).attr('data-type');
+            var otherType = type === 'trespassing' ? 'hostile' : 'trespassing';
+            g_map.pm.disableDraw('Poly');
+
+            if (!$(this).hasClass('selected')) {
+                g_map.pm.enableDraw('Poly', { snapping: 'false' });
+                toastr["info"]('Click anywhere to start adding a ' + type + ' region');
+                $(this).addClass('selected');
+                $('[data-disguise="add"][data-type="' + otherType + '"]').removeClass('selected');
+                $('[data-disguise="delete-help"]').hide();
+            } else {
+                $(this).removeClass('selected');
+                toastr["info"]('Disguise editor disabled');
+                $('[data-disguise="delete-help"]').show();
+            }
+        });
+
+        $('[data-disguise="cancel"]').click(function() {
+            $('[data-disguise="add"]').removeClass('selected');
+            $('[data-disguise="delete-help"]').show();
             g_map.pm.disableDraw('Poly');
         });
 
@@ -1463,6 +1669,21 @@
 
 
             $modal.modal('show');
+        });
+
+        $('select[name="disguise-menu-dropdown"]').change(function() {
+            var value = this.value;
+            var currentFloor = $('input[type="hidden"][name="level"]').val();
+            for (var i in g_disguiseOptions) {
+                toggleLayer(g_overlays[currentFloor][g_disguiseOptions[i]], false);
+            }
+
+            if (value === 'NONE') {
+                $('[data-disguise="add"]').hide();
+            } else {
+                $('[data-disguise="add"]').show();
+                toggleLayer(g_overlays[currentFloor]['Disguises|' + value], true);
+            }
         });
         {% endif %}
     </script>
