@@ -10,6 +10,10 @@ rm -rf ci
 rm -rf .git
 rm -rf maps
 
+# Put the current commit hash into cachehash.txt
+rm Config/cachehash.txt
+cat $CI_COMMIT_SHORT_SHA > Config/cachehash.txt
+
 zip -r ../latest_build.zip . > ../zip_output.txt
 cd ../
 rm -rf latest_build
