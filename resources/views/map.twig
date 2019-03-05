@@ -1672,7 +1672,7 @@
         });
 
         $('select[name="disguise-menu-dropdown"]').change(function() {
-            if (value === 'NONE') {
+            if (this.value === 'NONE') {
                 $('[data-disguise="add"]').hide();
             } else {
                 $('[data-disguise="add"]').show();
