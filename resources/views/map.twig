@@ -933,7 +933,7 @@
                     buildLedge(ledge).addTo(g_overlays[ledge.level]['Navigation|Ledge']);
                     g_workingLedgeVertices = [];
                     toastr["success"]("Ledge successfully created!");
-                    g_map.pm.enableDraw('Line', { snapping: 'false' });
+                    g_map.pm.enableDraw('Line', { snappable: false });
                 },
                 error: function() {
                     alert('Error!');
@@ -966,7 +966,7 @@
                     buildFoliage(foliage).addTo(g_overlays[foliage.level]['Navigation|Foliage']);
                     g_workingLedgeVertices = [];
                     toastr["success"]("Foliage successfully created!");
-                    g_map.pm.enableDraw('Poly', { snapping: 'false' });
+                    g_map.pm.enableDraw('Poly', { snappable: false });
                 },
                 error: function() {
                     alert('Error!');
@@ -1005,7 +1005,7 @@
                     buildDisguiseArea(disguiseData).addTo(g_overlays[disguiseData.level]['Disguises|' + disguiseData.disguiseId]);
                     g_workingLedgeVertices = [];
                     toastr["success"]("Disguise area successfully created!");
-                    g_map.pm.enableDraw('Poly', { snapping: 'false' });
+                    g_map.pm.enableDraw('Poly', { snappable: false });
                 },
                 error: function() {
                     alert('Error!');
@@ -1530,7 +1530,7 @@
         // Ledges
         $('[data-ledge="add"]').click(function() {
             if (!$(this).hasClass('selected')) {
-                g_map.pm.enableDraw('Line', { snapping: 'false' });
+                g_map.pm.enableDraw('Line', { snappable: false });
                 toastr["info"]("Click anywhere to start creating a ledge");
                 $(this).addClass('selected');
                 $('[data-ledge="delete-help"]').hide();
@@ -1551,7 +1551,7 @@
         // Foliage
         $('[data-foliage="add"]').click(function() {
             if (!$(this).hasClass('selected')) {
-                g_map.pm.enableDraw('Poly', { snapping: 'false' });
+                g_map.pm.enableDraw('Poly', { snappable: false });
                 toastr["info"]('Click anywhere to start adding foliage');
                 $(this).addClass('selected');
                 $('[data-foliage="delete-help"]').hide();
@@ -1576,7 +1576,7 @@
             g_map.pm.disableDraw('Poly');
 
             if (!$(this).hasClass('selected')) {
-                g_map.pm.enableDraw('Poly', { snapping: 'false' });
+                g_map.pm.enableDraw('Poly', { snappable: false });
                 toastr["info"]('Click anywhere to start adding a ' + type + ' region');
                 $(this).addClass('selected');
                 $('[data-disguise="add"][data-type="' + otherType + '"]').removeClass('selected');
