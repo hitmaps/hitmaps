@@ -28,6 +28,10 @@ $klein->respond('GET', '/', function () use ($twig, $applicationContext) {
 
     $viewModel->elusiveTarget = $elusiveTargetRepository->getActiveElusiveTarget();
 
+    /* @var $missionRepository \DataAccess\Repositories\MissionRepository */
+    $missionRepository = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Mission::class);
+    $viewModel->elusiveTargetUrl = $missionRepository->buildUrlForMissionAndDifficulty($viewModel->elusiveTarget->getMissionId(), 'professional');
+
     return \Controllers\Renderer::render('game-select.twig', $twig, $viewModel);
 });
 
