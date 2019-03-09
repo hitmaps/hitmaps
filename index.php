@@ -535,6 +535,15 @@ $klein->respond('GET', '/api/push-elusive-target-status', function() use ($appli
     return http_response_code(204);
 });
 
+$klein->respond('GET', '/api/ioi/status', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    $config = new \Config\Settings();
+    if ($config->accessKey !== $_GET['access-key']) {
+        return $response->code(404);
+    }
+
+    $applicationContext->get(\BusinessLogic\IOIServices\ElusiveTargetUpdater::class)->retrieveLatestElusiveTargetFromIOI();
+});
+
 /* Auth Endpoints */
 $klein->respond('GET', '/user/login', function(\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext, $klein) {
     $flashes = $klein->service()->flashes();
@@ -772,11 +781,6 @@ $klein->respond('GET', '/admin/migrate', function() {
     }
 
     return '<pre>' . $output . '</pre>';
-});
-
-// Workaround for local development
-$klein->respond('/web/[*]', function($request, $response, $service, $app) {
-    return $response->file(__DIR__ . $request->pathname());
 });
 
 $klein->onHttpError(function (int $code, \Klein\Klein $router) use ($twig) {
