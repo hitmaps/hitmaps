@@ -1,6 +1,6 @@
 body {
   background: #ddd;
-  padding-bottom: 20rem;
+  padding-bottom: 137px;
 
   @media (max-width: 767px) {
     padding-bottom: 0;
@@ -381,6 +381,11 @@ footer {
         }
       }
     }
+  }
+
+  .footer-link + .footer-link {
+    padding-right: 10px;
+    padding-left: 10px;
   }
 }
 
