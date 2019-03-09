@@ -37,6 +37,7 @@
                         <div class="target-arrives">TARGET ARRIVES</div>
                         <div id="elusive-countdown"></div>
                     </div>
+                    <img src="/img/game-icons/elusive-target.png" class="normal img-fluid briefing-icon" alt="Briefing Icon" data-toggle="tooltip" title="Mission Briefing">
                 </div>
                 <div class="elusive-target-info">
                     <div class="image">
@@ -112,6 +113,32 @@
                 return duration;
             }
         </script>
+        <div class="modal game-modal fade" id="briefing-modal" tabindex="-1" role="dialog" aria-labelledby="briefing-modal-label" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="briefing-modal-label">{{ model.elusiveTarget.name }}</h5>
+                    </div>
+                    <div class="modal-body d-flex flex-column">
+                        <p>TODO Briefing Text</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-block btn-secondary" data-dismiss="modal">
+                            <img src="/img/game-icons/modal-close.png" class="normal img-fluid" alt="Notification Icon">
+                            <img src="/img/game-icons/modal-close-inverted.png" class="inverted img-fluid" alt="Notification Icon">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <script>
+                $('.briefing-icon').click(function(e) {
+                    $('#briefing-modal').modal('show');
+
+                    return false;
+                });
+            </script>
         {% else %}
             <div class="elusive-target col-lg" style="background: url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/elusive-targets/coming-soon.{{ model.jpgBackgroundFileExtension }}') no-repeat center; background-size: cover">
                 <a href="#">
