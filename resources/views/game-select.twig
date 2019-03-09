@@ -97,15 +97,19 @@
                     days = beginningUtc.diff(currentUtc, 'days');
                 }
 
-                var hours = duration.hours();
-                var minutes = getFormattedDuration(duration.minutes());
-                var seconds = getFormattedDuration(duration.seconds());
-                if (days > 0) {
-                    hours += days * 24;
-                }
-                hours = getFormattedDuration(hours);
+                if (days > 2) {
+                    $countdown.text(days + ' DAYS');
+                } else {
+                    var hours = duration.hours();
+                    var minutes = getFormattedDuration(duration.minutes());
+                    var seconds = getFormattedDuration(duration.seconds());
+                    if (days > 0) {
+                        hours += days * 24;
+                    }
+                    hours = getFormattedDuration(hours);
 
-                $countdown.text(hours + ':' + minutes + ':' + seconds);
+                    $countdown.text(hours + ':' + minutes + ':' + seconds);
+                }
             }, 1000);
 
             function getFormattedDuration(duration) {
