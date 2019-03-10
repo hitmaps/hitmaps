@@ -900,7 +900,7 @@
                     if (e.shape === 'Line') {
                         handleLedge(e);
                     } else if (e.shape === 'Poly') {
-                        if ($('input[type="hidden"][name="edit-mode"]') === 3) {
+                        if (parseInt($('input[type="hidden"][name="edit-mode"]').val()) === 3) {
                             handleFoliage(e);
                         } else {
                             handleDisguiseArea(e);
