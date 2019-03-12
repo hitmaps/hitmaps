@@ -35,6 +35,16 @@ $klein->respond('GET', '/', function () use ($twig, $applicationContext) {
     return \Controllers\Renderer::render('game-select.twig', $twig, $viewModel);
 });
 
+$klein->respond('GET', '/api/games/[:game]?', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    if ($request->game === null) {
+        $games = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Game::class)->findAll();
+    } else {
+        $games = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Game::class)->findBy(['slug' => $request->game]);
+    }
+
+    return $response->json($games);
+});
+
 $klein->respond('GET', '/games/[:game]', function(\Klein\Request $request) use ($twig, $applicationContext) {
     /* @var $locations \DataAccess\Models\Location[] */
     $locations = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)
