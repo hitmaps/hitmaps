@@ -774,6 +774,52 @@ $klein->respond('GET', '/500', function() use ($twig) {
     return \Controllers\Renderer::render('500.twig', $twig);
 });
 
+$klein->respond('GET', '/sitemap.txt', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext, $twig) {
+    $constants = new \Config\Constants();
+    $pages = [];
+    // Static Pages
+    $pages[] = $constants->siteDomain;
+    $pages[] = "{$constants->siteDomain}/terms-of-use";
+    $pages[] = "{$constants->siteDomain}/privacy-policy";
+    $pages[] = "{$constants->siteDomain}/user/forgot-password";
+    $pages[] = "{$constants->siteDomain}/user/register";
+    $pages[] = "{$constants->siteDomain}/user/login";
+    // Location Select
+    /* @var $locationRepository \DataAccess\Repositories\LocationRepository */
+    /* @var $missionRepository \DataAccess\Repositories\MissionRepository */
+    $entityManager = $applicationContext->get(\Doctrine\ORM\EntityManager::class);
+    $locationRepository = $entityManager->getRepository(\DataAccess\Models\Location::class);
+    $missionRepository = $entityManager->getRepository(\DataAccess\Models\Mission::class);
+    /* @var $games \DataAccess\Models\Game[] */
+    $games = $entityManager->getRepository(\DataAccess\Models\Game::class)->findAll();
+    foreach ($games as $game) {
+        $pages[] = "{$constants->siteDomain}/games/{$game->getSlug()}";
+
+        // Get locations
+        /* @var $locations \DataAccess\Models\Location[] */
+        $locations = $locationRepository->findByGame($game->getSlug());
+        foreach ($locations as $location) {
+            $pages[] = "{$constants->siteDomain}/games/{$game->getSlug()}/{$location->getSlug()}";
+
+            /* @var $missions \DataAccess\Models\Mission[] */
+            $missions = $missionRepository->findActiveMissionsByLocation($location->getId());
+            foreach ($missions as $mission) {
+                /* @var $difficulties \DataAccess\Models\MissionDifficulty[] */
+                $difficulties = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\MissionDifficulty::class)
+                    ->findBy(['missionId' => $mission->getId()]);
+
+                foreach ($difficulties as $difficulty) {
+                    $formattedDifficulty = strtolower($difficulty->getDifficulty());
+                    $pages[] = "{$constants->siteDomain}/games/{$game->getSlug()}/{$location->getSlug()}/{$formattedDifficulty}";
+                }
+            }
+        }
+    }
+
+    $response->header('Content-Type', 'text/plain');
+    return \Controllers\Renderer::render('sitemap.twig', $twig, $pages);
+});
+
 /* Admin Endpoints */
 $klein->respond('GET', '/admin/migrate', function() {
     $config = new Config\Settings();
