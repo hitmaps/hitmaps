@@ -2,6 +2,9 @@
 
 {% set page_title = 'Home' %}
 {% set body_style = "background: url('#{settings.cdnLocation}/#{model.jpgBackgroundFileExtension}/backgrounds/loading.#{model.jpgBackgroundFileExtension}') no-repeat center center fixed; background-size: cover" %}
+{% block headextend %}
+    <meta name="description" content="Interactive Maps for HITMAN&trade; 2 allows you to view item locations for all maps in HITMAN&trade; and HITMAN&trade; 2">
+{% endblock %}
 {% block content %}
     <header class="row">
         <div class="col text-center site-header">
