@@ -1,0 +1,5 @@
+# Don't let anyone index the API endpoints
+User-agent: *
+Disallow: /api/
+
+Sitemap: https://www.hitman2maps.com/sitemap.txt
