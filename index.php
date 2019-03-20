@@ -810,7 +810,7 @@ $klein->respond('GET', '/sitemap.txt', function(\Klein\Request $request, \Klein\
 
                 foreach ($difficulties as $difficulty) {
                     $formattedDifficulty = strtolower($difficulty->getDifficulty());
-                    $pages[] = "{$constants->siteDomain}/games/{$game->getSlug()}/{$location->getSlug()}/{$formattedDifficulty}";
+                    $pages[] = "{$constants->siteDomain}/games/{$game->getSlug()}/{$location->getSlug()}/{$mission->getSlug()}/{$formattedDifficulty}";
                 }
             }
         }
