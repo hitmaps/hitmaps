@@ -795,6 +795,7 @@ $klein->respond('GET', '/admin/migrate', function() {
 });
 
 $klein->onHttpError(function (int $code, \Klein\Klein $router) use ($twig) {
+    $router->response()->code($code);
     switch ($code) {
         case 403:
             $router->response()->body(\Controllers\Renderer::render('403.twig', $twig, new \Controllers\ViewModels\BaseModel()));
@@ -813,6 +814,7 @@ $klein->onHttpError(function (int $code, \Klein\Klein $router) use ($twig) {
 $klein->onError(function (\Klein\Klein $klein, $msg, $type, Throwable $err) use ($twig) {
     error_log($err);
     \Rollbar\Rollbar::log(\Rollbar\Payload\Level::ERROR, $err);
+    $klein->response()->code(500);
     $klein->response()->body(\Controllers\Renderer::render('500.twig', $twig));
 });
 
