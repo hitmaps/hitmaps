@@ -763,11 +763,15 @@ $klein->respond('POST', '/user/reset-password', function(\Klein\Request $request
 });
 
 $klein->respond('GET', '/terms-of-use', function() use ($twig) {
-    return \Controllers\Renderer::render('terms-of-use.twig', $twig, new \Controllers\ViewModels\BaseModel());
+    return \Controllers\Renderer::render('terms-of-use.twig', $twig);
 });
 
 $klein->respond('GET', '/privacy-policy', function() use ($twig) {
-    return \Controllers\Renderer::render('privacy-policy.twig', $twig, new \Controllers\ViewModels\BaseModel());
+    return \Controllers\Renderer::render('privacy-policy.twig', $twig);
+});
+
+$klein->respond('GET', '/500', function() use ($twig) {
+    return \Controllers\Renderer::render('500.twig', $twig);
 });
 
 /* Admin Endpoints */
