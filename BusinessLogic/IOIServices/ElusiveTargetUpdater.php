@@ -15,6 +15,10 @@ class ElusiveTargetUpdater {
             'slug' => 'nightcall',
             'tileSaveLocation' => '/elusive-targets/'
         ],
+        "Paris, France" => [
+            'slug' => 'the-showstopper',
+            'tileSaveLocation' => '/elusive-targets/legacy/'
+        ]
     ];
 
     public function __construct(EntityManager $entityManager) {
