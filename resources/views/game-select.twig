@@ -411,5 +411,20 @@
                 });
             }
         </script>
+        {% if true %}
+            <style>
+                .clippy {
+                    z-index: 1040;
+                }
+            </style>
+            <script>
+                clippy.load('Clippy', function(agent){
+                    // do anything with the loaded agent
+                    agent.show();
+                    agent.speak("It looks like you're looking for map information. I'm here to help (... not really 😉)");
+                    agent.Play('Searching');
+                });
+            </script>
+        {% endif %}
     </div>
 {% endblock %}
