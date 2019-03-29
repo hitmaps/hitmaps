@@ -781,7 +781,6 @@ $klein->respond('GET', '/sitemap.txt', function(\Klein\Request $request, \Klein\
     $pages[] = $constants->siteDomain;
     $pages[] = "{$constants->siteDomain}/terms-of-use";
     $pages[] = "{$constants->siteDomain}/privacy-policy";
-    $pages[] = "{$constants->siteDomain}/user/forgot-password";
     $pages[] = "{$constants->siteDomain}/user/register";
     $pages[] = "{$constants->siteDomain}/user/login";
     // Location Select
