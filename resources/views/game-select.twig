@@ -420,9 +420,28 @@
             <script>
                 clippy.load('Clippy', function(agent){
                     // do anything with the loaded agent
+                    var stopIntro = false;
                     agent.show();
-                    agent.speak("It looks like you're looking for map information. I'm here to help (... not really 😉)");
-                    agent.Play('Searching');
+                    agent.speak("It looks like you're looking for map information. I'm here to help!");
+                    setTimeout(function() {
+                        if (!stopIntro) {
+                            agent.speak("Here you can look for maps for HITMAN™ and HITMAN™ 2. You can also view information on the current Elusive Target!");
+                        }
+
+                        setTimeout(function() {
+                            if (!stopIntro) {
+                                agent.speak("If you need help with anything, don't ask me. I'm actually not that helpful...")
+                            }
+                        }, 8000);
+                    }, 4000);
+
+                    $('.game').mouseover(function() {
+                        var gameName = $(this).find('h1').text();
+                        stopIntro = true;
+                        agent.stop();
+                        agent.speak("It looks like you're playing " + gameName + ". Do you need some help?");
+                        agent.play('GetAttention');
+                    });
                 });
             </script>
         {% endif %}
