@@ -29,5 +29,10 @@ HITMAN Maps is an interactive site for viewing maps for HITMAN (2016) and hopefu
 5. Run `vendor\bin\phinx migrate -e development` in the root folder to run all necessary database migrations
 6. Run `php -S localhost:8000` to run the local PHP development server and get started with development 🙂
 
+# Contributing
+1. Open a new issue in the issues section explaining what change / feature you want to work on. That way, the project owner is aware of the change you want to make and can help with any questions, etc.
+2. Make the necessary changes on your fork, making sensible commits along the way
+3. Open a merge request to submit your changes once they are complete
+
 # Legal
 HITMAN™, HITMAN™ 2, the HITMAN™ logo, images, and text are the property of IO Interactive.
