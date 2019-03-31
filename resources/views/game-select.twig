@@ -439,7 +439,7 @@
                         var gameName = $(this).find('h1').text();
                         stopIntro = true;
                         agent.stop();
-                        agent.speak("It looks like you're playing " + gameName + ". Do you need some help?");
+                        agent.speak("THAT is " + gameName + ". Do you need some help?");
                         agent.play('GetAttention');
                     });
                 });
