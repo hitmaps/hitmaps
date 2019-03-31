@@ -14,7 +14,7 @@
     </header>
     <div class="row dashboard">
         {% for game in model.games %}
-            <div class="game col-lg" style="background: url('{{ settings.cdnLocation }}/{{ model.jpgBackgroundFileExtension }}/backgrounds/{{ game.slug }}.{{ model.jpgBackgroundFileExtension }}') no-repeat center; background-size: cover">
+            <div class="game col-lg" style="background: url('{{ settings.cdnLocation }}/jpg/backgrounds/{{ game.slug }}a1.jpg') no-repeat center; background-size: contain">
                 <a href="/games/{{ game.slug }}">
                     <p>&nbsp;</p>
                     <div class="game-info">
