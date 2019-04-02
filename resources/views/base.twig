@@ -17,9 +17,6 @@
           integrity="sha384-j8y0ITrvFafF4EkV1mPW0BKm6dp3c+J9Fky22Man50Ofxo2wNe5pT1oZejDH9/Dt"
           crossorigin="anonymous">
     <link rel="stylesheet" href="/css/toastr.min.css">
-    {% if true %}
-    <link rel="stylesheet" type="text/css" href="/css/a1.css" media="all">
-    {% endif %}
     <link rel="stylesheet" href="/css/site.css?v={{ constants.cacheHash }}">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,500,500i" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -30,9 +27,6 @@
     <script src='https://www.google.com/recaptcha/api.js'></script>
     <script src="/js/moment.min.js"></script>
     <script src="/js/parsley.min.js"></script>
-    {% if true %}
-        <script src="/js/a1.min.js"></script>
-    {% endif %}
     <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase-messaging.js"></script>
     {% include 'firebase-primary.twig' %}
@@ -100,6 +94,6 @@
         </div>
     </footer>
     <script src="/js/toastr.min.js"></script>
-    <script src="/js/site.js"></script>\
+    <script src="/js/site.js"></script>
 </body>
 </html>
