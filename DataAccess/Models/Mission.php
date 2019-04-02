@@ -39,7 +39,7 @@ class Mission {
     private $slug;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", name="`order`")
      */
     private $order;
 
