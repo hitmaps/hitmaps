@@ -33,7 +33,7 @@ class MissionCloner {
         $newMission->setCampaignId($originalMission->getCampaignId());
         $newMission->setName($elusiveTargetName);
         $newMission->setSlug($elusiveTargetSlug);
-        $newMission->setOrder($originalMission->getOrder());
+        $newMission->setOrder(0);
         $newMission->setMapFolderName($originalMission->getMapFolderName());
         $newMission->setMapCenterLatitude($originalMission->getMapCenterLatitude());
         $newMission->setMapCenterLongitude($originalMission->getMapCenterLongitude());
@@ -45,6 +45,7 @@ class MissionCloner {
         $newMission->setSatelliteView($originalMission->getSatelliteView());
         $newMission->setBeginEffectiveDate($beginningTime);
         $newMission->setEndEffectiveDate($endTime);
+        $newMission->setMissionType(MissionType::ELUSIVE_TARGET);
         $this->entityManager->persist($newMission);
         $this->entityManager->flush();
 

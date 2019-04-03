@@ -100,6 +100,11 @@ class Mission {
     private $endEffectiveDate;
 
     /**
+     * @ORM\Column(type="string", name="mission_type")
+     */
+    private $missionType;
+
+    /**
      * @return mixed
      */
     public function getId(): int {
@@ -337,5 +342,19 @@ class Mission {
      */
     public function setEndEffectiveDate($endEffectiveDate): void {
         $this->endEffectiveDate = $endEffectiveDate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMissionType(): string {
+        return $this->missionType;
+    }
+
+    /**
+     * @param mixed $missionType
+     */
+    public function setMissionType(string $missionType): void {
+        $this->missionType = $missionType;
     }
 }
