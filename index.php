@@ -85,8 +85,11 @@ $klein->respond('GET', '/games/[:game]/[:location]', function(\Klein\Request $re
     $locationViewModel->missions = [];
     foreach ($missions as $mission) {
         $missionViewModel = new \ViewModels\MissionViewModel();
+        $missionViewModel->game = $location->getGame();
         $missionViewModel->slug = $mission->getSlug();
         $missionViewModel->name = $mission->getName();
+        $missionViewModel->missionType = $mission->getMissionType();
+        $missionViewModel->setTileLocation();
         $missionViewModel->difficulties = [];
 
         /* @var $difficulties \DataAccess\Models\MissionDifficulty[] */
@@ -117,7 +120,9 @@ $klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]'
 
     $viewModel->missionId = $mission->getId();
     $viewModel->mission = $mission->getName();
+    $viewModel->missionType = $mission->getMissionType();
     $viewModel->missionSlug = $mission->getSlug();
+    $viewModel->setTileLocation();
 
     /* @var $location \DataAccess\Models\Location */
     $location = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
