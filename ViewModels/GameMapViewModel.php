@@ -3,6 +3,8 @@
 namespace ViewModels;
 
 
+use BusinessLogic\Game;
+use BusinessLogic\MissionType;
 use Controllers\ViewModels\BaseModel;
 
 class GameMapViewModel extends BaseModel {
@@ -13,7 +15,9 @@ class GameMapViewModel extends BaseModel {
     public $mapFolderName;
     public $missionId;
     public $mission;
+    public $missionType;
     public $missionSlug;
+    public $tileLocation;
     public $difficulty;
 
     public $mapCenterLongitude;
@@ -34,4 +38,19 @@ class GameMapViewModel extends BaseModel {
     public $predeterminedItems;
     public $icons;
     public $disguises;
+
+    public function setTileLocation() {
+        if ($this->missionType !== MissionType::ELUSIVE_TARGET) {
+            $this->tileLocation = "{$this->pngBackgroundFileExtension}/mission-thumbnails/{$this->game}/{$this->missionSlug}.{$this->pngBackgroundFileExtension}";
+            return;
+        }
+
+        if ($this->game === Game::HITMAN) {
+            $this->tileLocation = "jpg/elusive-targets/legacy/{$this->missionSlug}.jpg";
+            return;
+        }
+
+        $this->tileLocation = "jpg/elusive-targets/{$this->missionSlug}.jpg";
+        return;
+    }
 }
