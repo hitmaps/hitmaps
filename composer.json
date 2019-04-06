@@ -25,6 +25,6 @@
         "ext-json": "*",
         "guzzlehttp/guzzle": "^6.3",
         "ext-imagick": "*",
-        "dg/twitter-php": "^4.0"
+        "abraham/twitteroauth": "^1.0"
     }
 }

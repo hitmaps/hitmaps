@@ -2,12 +2,14 @@
 namespace BusinessLogic;
 
 
+use Abraham\TwitterOAuth\TwitterOAuth;
 use Config\Constants;
 use Config\Settings;
 use DataAccess\Models\ElusiveTarget;
 use DataAccess\Models\Mission;
 use DataAccess\Repositories\ElusiveTargetRepository;
 use DataAccess\Repositories\MissionRepository;
+use DG\Twitter\Twitter;
 use Doctrine\ORM\EntityManager;
 use Rollbar\Rollbar;
 
@@ -40,6 +42,10 @@ class ElusiveTargetNotificationSender {
         // If an ET is coming up and no notification has been sent, send out the notification
         $settings = new Settings();
         $constants = new Constants();
+        $twitter = new TwitterOAuth($settings->twitterConsumerKey,
+            $settings->twitterConsumerSecret,
+            $settings->twitterAccessToken,
+            $settings->twitterAccessTokenSecret);
         $environment = $settings->loggingEnvironment;
         $beginningDate = $elusiveTarget->getBeginningTime()->format('F j, Y');
         $currentUtcTimeForNumberOfDays = new \DateTime('now', new \DateTimeZone('UTC'));
@@ -52,12 +58,18 @@ class ElusiveTargetNotificationSender {
             $beginningDateForComparison->modify('-1 day');
             $availableDays = $elusiveTarget->getEndingTime()->diff($beginningDateForComparison)->format('%a');
             $body = "{$elusiveTarget->getName()} is arriving on {$beginningDate} and will be available for {$availableDays} days!";
+            $imageUrl = "/cdn/jpg{$elusiveTarget->getImageUrl()}.jpg";
             $response = $this->firebaseClient->sendElusiveTargetMessage("{$environment}-elusive-target-coming",
                 $title,
                 $body,
                 "{$constants->siteDomain}/android-chrome-256x256.png",
-                "{$constants->siteDomain}/cdn/jpg{$elusiveTarget->getImageUrl()}.jpg",
+                "{$constants->siteDomain}{$imageUrl}",
                 $url);
+            $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/..{$imageUrl}"]);
+            $twitter->post('statuses/update', [
+                'status' => $body,
+                'media_ids' => $media->media_id_string
+            ]);
 
             $elusiveTarget->setComingNotificationSent(true);
             $this->entityManager->persist($elusiveTarget);
@@ -76,12 +88,18 @@ class ElusiveTargetNotificationSender {
         if ($availableDays > 7 && !$elusiveTarget->getPlayableNotificationSent()) {
             $title = "Elusive Target Arrived";
             $body = "{$elusiveTarget->getName()} has arrived and will be available for {$availableDays} days!";
+            $imageUrl = "/cdn/jpg{$elusiveTarget->getImageUrl()}.jpg";
             $this->firebaseClient->sendElusiveTargetMessage("{$environment}-elusive-target-playable",
                 $title,
                 $body,
                 "{$constants->siteDomain}/android-chrome-256x256.png",
-                "{$constants->siteDomain}/cdn/jpg{$elusiveTarget->getImageUrl()}.jpg",
+                "{$constants->siteDomain}{$imageUrl}",
                 $url);
+            $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/..{$imageUrl}"]);
+            $twitter->post('statuses/update', [
+                'status' => $body,
+                'media_ids' => $media->media_id_string
+            ]);
 
             $elusiveTarget->setPlayableNotificationSent(true);
             $this->entityManager->persist($elusiveTarget);
@@ -99,6 +117,11 @@ class ElusiveTargetNotificationSender {
                 "{$constants->siteDomain}/android-chrome-256x256.png",
                 "{$constants->siteDomain}{$countdownImage}",
                 $url);
+            $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/..{$countdownImage}"]);
+            $twitter->post('statuses/update', [
+                'status' => $body,
+                'media_ids' => $media->media_id_string
+            ]);
 
             $elusiveTarget->setSevenDaysLeftNotificationSent(true);
             $this->entityManager->persist($elusiveTarget);
@@ -115,6 +138,11 @@ class ElusiveTargetNotificationSender {
                 "{$constants->siteDomain}/android-chrome-256x256.png",
                 "{$constants->siteDomain}{$countdownImage}",
                 $url);
+            $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/..{$countdownImage}"]);
+            $twitter->post('statuses/update', [
+                'status' => $body,
+                'media_ids' => $media->media_id_string
+            ]);
 
             $elusiveTarget->setFiveDaysLeftNotificationSent(true);
             $this->entityManager->persist($elusiveTarget);
@@ -131,6 +159,11 @@ class ElusiveTargetNotificationSender {
                 "{$constants->siteDomain}/android-chrome-256x256.png",
                 "{$constants->siteDomain}{$countdownImage}",
                 $url);
+            $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/..{$countdownImage}"]);
+            $twitter->post('statuses/update', [
+                'status' => $body,
+                'media_ids' => $media->media_id_string
+            ]);
 
             $elusiveTarget->setThreeDaysLeftNotificationSent(true);
             $this->entityManager->persist($elusiveTarget);
@@ -147,6 +180,11 @@ class ElusiveTargetNotificationSender {
                 "{$constants->siteDomain}/android-chrome-256x256.png",
                 "{$constants->siteDomain}{$countdownImage}",
                 $url);
+            $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/..{$countdownImage}"]);
+            $twitter->post('statuses/update', [
+                'status' => $body,
+                'media_ids' => $media->media_id_string
+            ]);
 
             $elusiveTarget->setOneDayLeftNotificationSent(true);
             $this->entityManager->persist($elusiveTarget);
