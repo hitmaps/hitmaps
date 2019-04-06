@@ -27,4 +27,10 @@ class Settings {
     public $bccEmail = ''; // Used if you want a copy of all emails sent out copied to 1 address
     public $mailgunApiKey = '';
     public $mailgunDomain = '';
+
+    // Twitter
+    public $twitterConsumerKey = '';
+    public $twitterConsumerSecret = '';
+    public $twitterAccessToken = '';
+    public $twitterAccessTokenSecret = '';
 }
