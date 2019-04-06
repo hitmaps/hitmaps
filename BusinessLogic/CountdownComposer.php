@@ -23,9 +23,9 @@ class CountdownComposer {
 
     public function deleteAllCompositeImages(ElusiveTarget $elusiveTarget): void {
         $compositeDirectory = __DIR__ . '/../cdn/jpg/elusive-targets/countdowns';
-        unlink("{$compositeDirectory}/{$elusiveTarget->getId()}-7.jpg");
-        unlink("{$compositeDirectory}/{$elusiveTarget->getId()}-5.jpg");
-        unlink("{$compositeDirectory}/{$elusiveTarget->getId()}-3.jpg");
-        unlink("{$compositeDirectory}/{$elusiveTarget->getId()}-1.jpg");
+        @unlink("{$compositeDirectory}/{$elusiveTarget->getId()}-7.jpg");
+        @unlink("{$compositeDirectory}/{$elusiveTarget->getId()}-5.jpg");
+        @unlink("{$compositeDirectory}/{$elusiveTarget->getId()}-3.jpg");
+        @unlink("{$compositeDirectory}/{$elusiveTarget->getId()}-1.jpg");
     }
 }
