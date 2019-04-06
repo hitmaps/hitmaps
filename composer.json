@@ -24,6 +24,7 @@
         "kreait/firebase-php": "^4.18",
         "ext-json": "*",
         "guzzlehttp/guzzle": "^6.3",
-        "ext-imagick": "*"
+        "ext-imagick": "*",
+        "dg/twitter-php": "^4.0"
     }
 }
