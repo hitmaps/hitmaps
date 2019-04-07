@@ -35,6 +35,7 @@ $klein->respond('GET', '/', function () use ($twig, $applicationContext) {
     return \Controllers\Renderer::render('game-select.twig', $twig, $viewModel);
 });
 
+// Public API calls
 $klein->respond('GET', '/api/games/[:game]?', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     if ($request->game === null) {
         $games = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Game::class)->findAll();
@@ -43,6 +44,12 @@ $klein->respond('GET', '/api/games/[:game]?', function(\Klein\Request $request, 
     }
 
     return $response->json($games);
+});
+
+$klein->respond('GET', '/api/elusive-targets', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    $elusiveTargets = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\ElusiveTarget::class)->findBy([], ['id' => 'DESC']);
+
+    return $response->json($elusiveTargets);
 });
 
 $klein->respond('GET', '/games/[:game]', function(\Klein\Request $request) use ($twig, $applicationContext) {
