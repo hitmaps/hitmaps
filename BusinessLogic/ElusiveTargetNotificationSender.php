@@ -55,7 +55,6 @@ class ElusiveTargetNotificationSender {
         if (!$elusiveTarget->getComingNotificationSent()) {
             $title = "Elusive Target Arriving";
             $beginningDateForComparison = $elusiveTarget->getBeginningTime();
-            $beginningDateForComparison->modify('-1 day');
             $availableDays = $elusiveTarget->getEndingTime()->diff($beginningDateForComparison)->format('%a');
             $body = "{$elusiveTarget->getName()} is arriving on {$beginningDate} and will be available for {$availableDays} days!";
             $imageUrl = "/cdn/jpg{$elusiveTarget->getImageUrl()}.jpg";
@@ -192,7 +191,7 @@ class ElusiveTargetNotificationSender {
             return;
         }
 
-        if ($availableDays <= '0' && !$elusiveTarget->getEndNotificationSent()) {
+        if ($realUtcTime > $elusiveTarget->getEndingTime() && !$elusiveTarget->getEndNotificationSent()) {
             $title = "{$elusiveTarget->getName()} Has Left";
             $body = "{$elusiveTarget->getName()} has left and is no longer available to play.";
             $this->firebaseClient->sendElusiveTargetMessage("{$environment}-elusive-target-end",
