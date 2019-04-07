@@ -12,42 +12,42 @@ class ElusiveTarget {
     /**
      * @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
      */
-    private $id;
+    public $id;
 
     /**
      * @ORM\Column(type="string")
      */
-    private $name;
+    public $name;
 
     /**
      * @ORM\Column(type="integer", name="mission_id")
      */
-    private $missionId;
+    public $missionId;
 
     /**
      * @ORM\Column(type="string")
      */
-    private $briefing;
+    public $briefing;
 
     /**
      * @ORM\Column(type="string", name="video_briefing_url")
      */
-    private $videoBriefingUrl;
+    public $videoBriefingUrl;
 
     /**
      * @ORM\Column(type="datetime", name="beginning_time")
      */
-    private $beginningTime;
+    public $beginningTime;
 
     /**
      * @ORM\Column(type="datetime", name="ending_time")
      */
-    private $endingTime;
+    public $endingTime;
 
     /**
      * @ORM\Column(type="string", name="image_url")
      */
-    private $imageUrl;
+    public $imageUrl;
 
     /**
      * @ORM\Column(type="boolean", name="coming_notification_sent")
