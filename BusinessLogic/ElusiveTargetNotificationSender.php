@@ -49,6 +49,7 @@ class ElusiveTargetNotificationSender {
         $environment = $settings->loggingEnvironment;
         $beginningDate = $elusiveTarget->getBeginningTime()->format('F j, Y');
         $currentUtcTimeForNumberOfDays = new \DateTime('now', new \DateTimeZone('UTC'));
+        $currentUtcTimeForNumberOfDays->modify('-1 day');
         $availableDays = $elusiveTarget->getEndingTime()->diff($currentUtcTimeForNumberOfDays)->format('%a');
         $url = $constants->siteDomain . $missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId(), 'professional');
 
