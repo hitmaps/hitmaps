@@ -182,6 +182,22 @@ $klein->respond('GET', '/api/games/[:game]/locations/[:location]/missions/[:miss
         'disguises' => $formattedDisguises]);
 });
 
+$klein->respond('GET', '/api/editor/templates', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    $templates = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Item::class)->findBy([], ['name' => 'ASC']);
+    $sortedTemplates = [];
+
+    /* @var $template \DataAccess\Models\Item */
+    foreach ($templates as $template) {
+        if (!key_exists($template->getType(), $sortedTemplates)) {
+            $sortedTemplates[$template->getType()] = [];
+        }
+
+        $sortedTemplates[$template->getType()][] = $template;
+    }
+
+    return $response->json($sortedTemplates);
+});
+
 $klein->respond('GET', '/api/elusive-targets', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $constants = new \Config\Constants();
     $settings = new \Config\Settings();
