@@ -49,12 +49,22 @@ $klein->respond('GET', '/api/games/[:game]?', function(\Klein\Request $request, 
     return $response->json($games);
 });
 
+$klein->respond('GET', '/api/games/[:game]/locations/[:location]?', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    if ($request->location === null) {
+        $locations = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findBy(['game' => $request->game], ['order' => 'ASC']);
+    } else {
+        $locations = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findBy(['game' => $request->game, 'slug' => $request->location]);
+    }
+
+    return $response->json($locations);
+});
+
 $klein->respond('GET', '/api/elusive-targets', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $constants = new \Config\Constants();
     $settings = new \Config\Settings();
     /* @var $missionRepository \DataAccess\Repositories\MissionRepository */
     $missionRepository = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Mission::class);
-    $elusiveTargets = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\ElusiveTarget::class)->findBy([], ['id' => 'DESC']);
+    $elusiveTargets = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\ElusiveTarget::class)->findBy([], ['beginningTime' => 'DESC']);
 
     $viewModels = [];
     foreach ($elusiveTargets as $elusiveTarget) {
