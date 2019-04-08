@@ -5,7 +5,9 @@ namespace BusinessLogic;
 use Config\Constants;
 use Config\Settings;
 use DataAccess\Models\ElusiveTarget;
+use DataAccess\Models\Mission;
 use DataAccess\Repositories\ElusiveTargetRepository;
+use DataAccess\Repositories\MissionRepository;
 use Doctrine\ORM\EntityManager;
 use Rollbar\Rollbar;
 
@@ -21,7 +23,9 @@ class ElusiveTargetNotificationSender {
 
     public function sendElusiveTargetNotification() {
         // Get the active ET from the database
+        /* @var $missionRepository MissionRepository */
         /* @var $elusiveTargetRepository ElusiveTargetRepository */
+        $missionRepository = $this->entityManager->getRepository(Mission::class);
         $elusiveTargetRepository = $this->entityManager->getRepository(ElusiveTarget::class);
         $elusiveTarget = $elusiveTargetRepository->getLatestElusiveTarget();
 
@@ -38,7 +42,7 @@ class ElusiveTargetNotificationSender {
         $currentUtcTimeForNumberOfDays = new \DateTime('now', new \DateTimeZone('UTC'));
         $currentUtcTimeForNumberOfDays->modify('-1 day');
         $availableDays = $elusiveTarget->getEndingTime()->diff($currentUtcTimeForNumberOfDays)->format('%a');
-        $url = $constants->siteDomain . $elusiveTarget->getMissionUrl();
+        $url = $constants->siteDomain . $missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId(), 'professional');
 
         if (!$elusiveTarget->getComingNotificationSent()) {
             $title = "Elusive Target Arriving";

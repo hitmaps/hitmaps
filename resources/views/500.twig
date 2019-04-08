@@ -1,1 +1,21 @@
-Some 500 thing happened. No fancy page for it yet.
+{% extends 'base.twig' %}
+
+{% set page_title = 'Mission Failed' %}
+{% set body_style = "background: url('#{settings.cdnLocation}/#{model.jpgBackgroundFileExtension}/backgrounds/loading.#{model.jpgBackgroundFileExtension}') no-repeat center center fixed; background-size: cover" %}
+
+{% block content %}
+    <div class="site-container" style="color: white">
+        <div class="text-center">
+            <h1>Mission Failed</h1>
+            <h2>Agent Down</h2>
+        </div>
+        <div class="row text-center">
+            <div class="col">
+                <img src="/img/500.gif" alt="500 Error Image"><br>
+                <p style="font-size: .6em; color: white">ArstotzkaGreat on the HITMAN&trade; 2 Maps Discord</p><br>
+                <p>It appears that something went horribly wrong, and we are unable to handle your request at this time. Please try again in a few moments.</p>
+                <a href="/" style="color: white"><i class="fas fa-arrow-left"></i> Back to the homepage</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -39,7 +39,7 @@ class Mission {
     private $slug;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", name="`order`")
      */
     private $order;
 
@@ -98,6 +98,11 @@ class Mission {
      * @ORM\Column(type="datetime", name="end_effective_date")
      */
     private $endEffectiveDate;
+
+    /**
+     * @ORM\Column(type="string", name="mission_type")
+     */
+    private $missionType;
 
     /**
      * @return mixed
@@ -337,5 +342,19 @@ class Mission {
      */
     public function setEndEffectiveDate($endEffectiveDate): void {
         $this->endEffectiveDate = $endEffectiveDate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMissionType(): string {
+        return $this->missionType;
+    }
+
+    /**
+     * @param mixed $missionType
+     */
+    public function setMissionType(string $missionType): void {
+        $this->missionType = $missionType;
     }
 }
