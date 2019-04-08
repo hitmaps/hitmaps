@@ -198,6 +198,22 @@ $klein->respond('GET', '/api/editor/templates', function(\Klein\Request $request
     return $response->json($sortedTemplates);
 });
 
+$klein->respond('GET', '/api/editor/icons', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    $icons = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Icon::class)->findBy([], ['order' => 'ASC', 'icon' => 'ASC']);
+    $sortedIcons = [];
+
+    /* @var $icon \DataAccess\Models\Icon */
+    foreach ($icons as $icon) {
+        if (!key_exists($icon->getGroup(), $sortedIcons)) {
+            $sortedIcons[$icon->getGroup()] = [];
+        }
+
+        $sortedIcons[$icon->getGroup()][] = $icon;
+    }
+
+    return $response->json($sortedIcons);
+});
+
 $klein->respond('GET', '/api/elusive-targets', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $constants = new \Config\Constants();
     $settings = new \Config\Settings();
