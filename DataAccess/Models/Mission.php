@@ -16,93 +16,93 @@ class Mission {
     /**
      * @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
      */
-    private $id;
+    public $id;
 
     /**
      * @ORM\Column(type="integer", name="location_id")
      */
-    private $locationId;
+    public $locationId;
 
     /**
      * @ORM\Column(type="integer", name="campaign_id")
      */
-    private $campaignId;
+    public $campaignId;
 
     /**
      * @ORM\Column(type="string")
      */
-    private $name;
+    public $name;
 
     /**
      * @ORM\Column(type="string")
      */
-    private $slug;
+    public $slug;
 
     /**
      * @ORM\Column(type="integer", name="`order`")
      */
-    private $order;
+    public $order;
 
 
     /**
      * @ORM\Column(type="string", name="map_folder_name")
      */
-    private $mapFolderName;
+    public $mapFolderName;
 
     /**
      * @ORM\Column(type="string", name="map_center_latitude")
      */
-    private $mapCenterLatitude;
+    public $mapCenterLatitude;
 
     /**
      * @ORM\Column(type="string", name="map_center_longitude")
      */
-    private $mapCenterLongitude;
+    public $mapCenterLongitude;
 
     /**
      * @ORM\Column(type="integer", name="lowest_floor_number")
      */
-    private $lowestFloorNumber;
+    public $lowestFloorNumber;
 
     /**
      * @ORM\Column(type="integer", name="highest_floor_number")
      */
-    private $highestFloorNumber;
+    public $highestFloorNumber;
 
     /**
      * @ORM\Column(type="integer", name="starting_floor_number")
      */
-    private $startingFloorNumber;
+    public $startingFloorNumber;
 
     /**
      * @ORM\Column(type="string", name="top_left_coordinate")
      */
-    private $topLeftCoordinate;
+    public $topLeftCoordinate;
 
     /**
      * @ORM\Column(type="string", name="bottom_right_coordinate")
      */
-    private $bottomRightCoordinate;
+    public $bottomRightCoordinate;
 
     /**
      * @ORM\Column(type="boolean", name="satellite_view")
      */
-    private $satelliteView;
+    public $satelliteView;
 
     /**
      * @ORM\Column(type="datetime", name="begin_effective_date")
      */
-    private $beginEffectiveDate;
+    public $beginEffectiveDate;
 
     /**
      * @ORM\Column(type="datetime", name="end_effective_date")
      */
-    private $endEffectiveDate;
+    public $endEffectiveDate;
 
     /**
      * @ORM\Column(type="string", name="mission_type")
      */
-    private $missionType;
+    public $missionType;
 
     /**
      * @return mixed
