@@ -50,6 +50,15 @@ $klein->respond('GET', '/api/games/[:game]?', function(\Klein\Request $request, 
 });
 
 $klein->respond('GET', '/api/games/[:game]/locations/[:location]?', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    $game = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Game::class)->findOneBy(['slug' => $request->game]);
+
+    if ($game === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find game '{$request->game}'"
+        ]);
+    }
+
     if ($request->location === null) {
         $locations = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findBy(['game' => $request->game], ['order' => 'ASC']);
     } else {
@@ -57,6 +66,26 @@ $klein->respond('GET', '/api/games/[:game]/locations/[:location]?', function (\K
     }
 
     return $response->json($locations);
+});
+
+$klein->respond('GET', '/api/games/[:game]/locations/[:location]/missions/[:mission]?', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    /* @var $location \DataAccess\Models\Location */
+    $location = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
+
+    if ($location === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find location with game '{$request->game}' and location slug '{$request->location}'"
+        ]);
+    }
+
+    if ($request->mission === null) {
+        $missions = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Mission::class)->findBy(['locationId' => $location->getId()], ['order' => 'ASC']);
+    } else {
+        $missions = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Mission::class)->findBy(['locationId' => $location->getId(), 'slug' => $request->mission], ['order' => 'ASC']);
+    }
+
+    return $response->json($missions);
 });
 
 $klein->respond('GET', '/api/elusive-targets', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
