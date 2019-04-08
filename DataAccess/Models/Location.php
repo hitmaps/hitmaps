@@ -12,32 +12,32 @@ class Location {
     /**
      * @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
      */
-    private $id;
+    public $id;
 
     /**
      * @ORM\Column(type="string")
      */
-    private $game;
+    public $game;
 
     /**
      * @ORM\Column(type="string")
      */
-    private $destination;
+    public $destination;
 
     /**
      * @ORM\Column(type="string", name="destination_country")
      */
-    private $destinationCountry;
+    public $destinationCountry;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $order;
+    public $order;
 
     /**
      * @ORM\Column(type="string")
      */
-    private $slug;
+    public $slug;
 
     /**
      * @return mixed
