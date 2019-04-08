@@ -88,6 +88,100 @@ $klein->respond('GET', '/api/games/[:game]/locations/[:location]/missions/[:miss
     return $response->json($missions);
 });
 
+$klein->respond('GET', '/api/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    /* @var $location \DataAccess\Models\Location */
+    $location = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
+
+    if ($location === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find location with game '{$request->game}' and location slug '{$request->location}'"
+        ]);
+    }
+
+    /* @var $mission \DataAccess\Models\Mission */
+    $mission = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Mission::class)->findOneBy(['locationId' => $location->getId(), 'slug' => $request->mission]);
+
+    if ($mission === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find mission with game '{$request->game}', location '{$request->location}', and mission slug '{$request->mission}'"
+        ]);
+    }
+
+    $nodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($mission->getId(), $request->difficulty);
+    $nodeCategories = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\NodeCategory::class)->findAll();
+
+    /* @var $ledges \DataAccess\Models\Ledge[] */
+    $ledges = $applicationContext->get(\Controllers\LedgeController::class)->getLedgesForMission($mission->getId());
+    $formattedLedges = [];
+    foreach ($ledges as $ledge) {
+        $viewModel = new \Controllers\ViewModels\LedgeViewModel();
+        $viewModel->id = $ledge->getId();
+        $viewModel->missionId = $ledge->getMissionId();
+        $viewModel->level = $ledge->getLevel();
+        $viewModel->vertices = explode('|', $ledge->getVertices());
+        $formattedLedges[] = $viewModel;
+    }
+
+    /* @var $foliage \DataAccess\Models\Foliage[] */
+    $foliage = $applicationContext->get(\Controllers\FoliageController::class)->getFoliageForMission($mission->getId());
+    $formattedFoliage = [];
+    foreach ($foliage as $innerFoliage) {
+        $viewModel = new \Controllers\ViewModels\LedgeViewModel();
+        $viewModel->id = $innerFoliage->getId();
+        $viewModel->missionId = $innerFoliage->getMissionId();
+        $viewModel->level = $innerFoliage->getLevel();
+        $viewModel->vertices = explode('|', $innerFoliage->getVertices());
+        $formattedFoliage[] = $viewModel;
+    }
+
+    /* @var $disguiseRepository \DataAccess\Repositories\DisguiseRepository */
+    $disguiseRepository = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
+        ->getRepository(\DataAccess\Models\Disguise::class);
+
+    /* @var $disguises \DataAccess\Models\Disguise[] */
+    $disguisesWithAreas = $disguiseRepository->findByMission($mission->getId());
+    $formattedDisguises = [];
+
+    /* @var $formattedDisguise \Controllers\ViewModels\DisguiseViewModel */
+    $formattedDisguise = null;
+    foreach ($disguisesWithAreas as $disguiseOrArea) {
+        if ($disguiseOrArea === null) {
+            continue;
+        }
+
+        if ($disguiseOrArea instanceof \DataAccess\Models\DisguiseArea) {
+            /* @var $area \DataAccess\Models\DisguiseArea */
+            $area = $disguiseOrArea;
+            $areaViewModel = new \Controllers\ViewModels\DisguiseAreaViewModel();
+            $areaViewModel->id = $area->getId();
+            $areaViewModel->missionId = $area->getMissionId();
+            $areaViewModel->disguiseId = $area->getDisguiseId();
+            $areaViewModel->level = $area->getLevel();
+            $areaViewModel->type = $area->getType();
+            $areaViewModel->vertices = explode('|', $area->getVertices());
+            $formattedDisguise->areas[] = $areaViewModel;
+            continue;
+        }
+
+        /* @var $disguise \DataAccess\Models\Disguise */
+        $disguise = $disguiseOrArea;
+        $formattedDisguise = new \Controllers\ViewModels\DisguiseViewModel();
+        $formattedDisguise->id = $disguise->getId();
+        $formattedDisguise->name = $disguise->getName();
+        $formattedDisguise->image = $disguise->getImage();
+        $formattedDisguises[] = $formattedDisguise;
+    }
+
+    return $response->json([
+        'nodes' => $nodes,
+        'categories' => $nodeCategories,
+        'ledges' => $formattedLedges,
+        'foliage' => $formattedFoliage,
+        'disguises' => $formattedDisguises]);
+});
+
 $klein->respond('GET', '/api/elusive-targets', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $constants = new \Config\Constants();
     $settings = new \Config\Settings();
@@ -515,6 +609,9 @@ $klein->respond('GET', '/api/nodes/delete/[:nodeId]', function(\Klein\Request $r
     return $response->code(200);
 });
 
+/**
+ * @deprecated Should use /api/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map instead
+ */
 $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
     $nodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($_GET['missionId'], $_GET['difficulty']);
     $nodeCategories = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\NodeCategory::class)->findAll();
