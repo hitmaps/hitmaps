@@ -50,8 +50,8 @@ class MissionCloner {
         $this->entityManager->flush();
 
         // Copy all nodes
-        $copyNodesSql = "INSERT INTO `nodes` (mission_id, type, subgroup, name, target, level, latitude, longitude, difficulty, `group`, approved, created_by, date_created, icon, searchable, image, original_id)
-            SELECT {$newMission->getId()}, type, subgroup, `name`, target, `level`, latitude, longitude, 'standard', `group`, approved, created_by, date_created, icon, searchable, image, `id`
+        $copyNodesSql = "INSERT INTO `nodes` (mission_id, type, subgroup, name, target, level, latitude, longitude, difficulty, `group`, approved, created_by, date_created, icon, searchable, image, original_id, tooltip)
+            SELECT {$newMission->getId()}, type, subgroup, `name`, target, `level`, latitude, longitude, 'standard', `group`, approved, created_by, date_created, icon, searchable, image, `id`, tooltip
             FROM `nodes`
             WHERE `mission_id` = {$originalMission->getId()}
               AND `difficulty` = 'professional'";
