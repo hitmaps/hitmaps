@@ -20,6 +20,10 @@ class ElusiveTargetUpdater {
         "Paris, France" => [
             'slug' => 'the-showstopper',
             'tileSaveLocation' => '/elusive-targets/legacy/'
+        ],
+        "Sapienza, Italy" => [
+            'slug' => 'world-of-tomorrow',
+            'tileSaveLocation' => '/elusive-targets/legacy/'
         ]
     ];
 
