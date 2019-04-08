@@ -39,7 +39,7 @@ $klein->respond('GET', '/', function () use ($twig, $applicationContext) {
 });
 
 // Public API calls
-$klein->respond('GET', '/api/games/[:game]?', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/v1/games/[:game]?', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     if ($request->game === null) {
         $games = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Game::class)->findAll();
     } else {
@@ -49,7 +49,7 @@ $klein->respond('GET', '/api/games/[:game]?', function(\Klein\Request $request, 
     return $response->json($games);
 });
 
-$klein->respond('GET', '/api/games/[:game]/locations/[:location]?', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]?', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $game = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Game::class)->findOneBy(['slug' => $request->game]);
 
     if ($game === null) {
@@ -68,7 +68,7 @@ $klein->respond('GET', '/api/games/[:game]/locations/[:location]?', function (\K
     return $response->json($locations);
 });
 
-$klein->respond('GET', '/api/games/[:game]/locations/[:location]/missions/[:mission]?', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]?', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     /* @var $location \DataAccess\Models\Location */
     $location = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
 
@@ -88,7 +88,7 @@ $klein->respond('GET', '/api/games/[:game]/locations/[:location]/missions/[:miss
     return $response->json($missions);
 });
 
-$klein->respond('GET', '/api/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     /* @var $location \DataAccess\Models\Location */
     $location = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
 
@@ -182,7 +182,7 @@ $klein->respond('GET', '/api/games/[:game]/locations/[:location]/missions/[:miss
         'disguises' => $formattedDisguises]);
 });
 
-$klein->respond('GET', '/api/editor/templates', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/v1/editor/templates', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $templates = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Item::class)->findBy([], ['name' => 'ASC']);
     $sortedTemplates = [];
 
@@ -198,7 +198,7 @@ $klein->respond('GET', '/api/editor/templates', function(\Klein\Request $request
     return $response->json($sortedTemplates);
 });
 
-$klein->respond('GET', '/api/editor/icons', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/v1/editor/icons', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $icons = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Icon::class)->findBy([], ['order' => 'ASC', 'icon' => 'ASC']);
     $sortedIcons = [];
 
@@ -214,7 +214,7 @@ $klein->respond('GET', '/api/editor/icons', function(\Klein\Request $request, \K
     return $response->json($sortedIcons);
 });
 
-$klein->respond('GET', '/api/elusive-targets', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/v1/elusive-targets', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $constants = new \Config\Constants();
     $settings = new \Config\Settings();
     /* @var $missionRepository \DataAccess\Repositories\MissionRepository */
