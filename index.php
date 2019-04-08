@@ -30,7 +30,10 @@ $klein->respond('GET', '/', function () use ($twig, $applicationContext) {
 
     /* @var $missionRepository \DataAccess\Repositories\MissionRepository */
     $missionRepository = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Mission::class);
-    $viewModel->elusiveTargetUrl = $missionRepository->buildUrlForMissionAndDifficulty($viewModel->elusiveTarget->getMissionId(), 'professional');
+	
+    if ($viewModel->elusiveTarget !== null) {
+        $viewModel->elusiveTargetUrl = $missionRepository->buildUrlForMissionAndDifficulty($viewModel->elusiveTarget->getMissionId(), 'professional');
+    }
 
     return \Controllers\Renderer::render('game-select.twig', $twig, $viewModel);
 });
@@ -119,8 +122,11 @@ $klein->respond('GET', '/games/[:game]/[:location]', function(\Klein\Request $re
     $locationViewModel->missions = [];
     foreach ($missions as $mission) {
         $missionViewModel = new \ViewModels\MissionViewModel();
+        $missionViewModel->game = $location->getGame();
         $missionViewModel->slug = $mission->getSlug();
         $missionViewModel->name = $mission->getName();
+        $missionViewModel->missionType = $mission->getMissionType();
+        $missionViewModel->setTileLocation();
         $missionViewModel->difficulties = [];
 
         /* @var $difficulties \DataAccess\Models\MissionDifficulty[] */
@@ -151,7 +157,9 @@ $klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]'
 
     $viewModel->missionId = $mission->getId();
     $viewModel->mission = $mission->getName();
+    $viewModel->missionType = $mission->getMissionType();
     $viewModel->missionSlug = $mission->getSlug();
+    $viewModel->setTileLocation();
 
     /* @var $location \DataAccess\Models\Location */
     $location = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
@@ -797,11 +805,60 @@ $klein->respond('POST', '/user/reset-password', function(\Klein\Request $request
 });
 
 $klein->respond('GET', '/terms-of-use', function() use ($twig) {
-    return \Controllers\Renderer::render('terms-of-use.twig', $twig, new \Controllers\ViewModels\BaseModel());
+    return \Controllers\Renderer::render('terms-of-use.twig', $twig);
 });
 
 $klein->respond('GET', '/privacy-policy', function() use ($twig) {
-    return \Controllers\Renderer::render('privacy-policy.twig', $twig, new \Controllers\ViewModels\BaseModel());
+    return \Controllers\Renderer::render('privacy-policy.twig', $twig);
+});
+
+$klein->respond('GET', '/500', function() use ($twig) {
+    return \Controllers\Renderer::render('500.twig', $twig);
+});
+
+$klein->respond('GET', '/sitemap.txt', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext, $twig) {
+    $constants = new \Config\Constants();
+    $pages = [];
+    // Static Pages
+    $pages[] = $constants->siteDomain;
+    $pages[] = "{$constants->siteDomain}/terms-of-use";
+    $pages[] = "{$constants->siteDomain}/privacy-policy";
+    $pages[] = "{$constants->siteDomain}/user/register";
+    $pages[] = "{$constants->siteDomain}/user/login";
+    // Location Select
+    /* @var $locationRepository \DataAccess\Repositories\LocationRepository */
+    /* @var $missionRepository \DataAccess\Repositories\MissionRepository */
+    $entityManager = $applicationContext->get(\Doctrine\ORM\EntityManager::class);
+    $locationRepository = $entityManager->getRepository(\DataAccess\Models\Location::class);
+    $missionRepository = $entityManager->getRepository(\DataAccess\Models\Mission::class);
+    /* @var $games \DataAccess\Models\Game[] */
+    $games = $entityManager->getRepository(\DataAccess\Models\Game::class)->findAll();
+    foreach ($games as $game) {
+        $pages[] = "{$constants->siteDomain}/games/{$game->getSlug()}";
+
+        // Get locations
+        /* @var $locations \DataAccess\Models\Location[] */
+        $locations = $locationRepository->findByGame($game->getSlug());
+        foreach ($locations as $location) {
+            $pages[] = "{$constants->siteDomain}/games/{$game->getSlug()}/{$location->getSlug()}";
+
+            /* @var $missions \DataAccess\Models\Mission[] */
+            $missions = $missionRepository->findActiveMissionsByLocation($location->getId());
+            foreach ($missions as $mission) {
+                /* @var $difficulties \DataAccess\Models\MissionDifficulty[] */
+                $difficulties = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\MissionDifficulty::class)
+                    ->findBy(['missionId' => $mission->getId()]);
+
+                foreach ($difficulties as $difficulty) {
+                    $formattedDifficulty = strtolower($difficulty->getDifficulty());
+                    $pages[] = "{$constants->siteDomain}/games/{$game->getSlug()}/{$location->getSlug()}/{$mission->getSlug()}/{$formattedDifficulty}";
+                }
+            }
+        }
+    }
+
+    $response->header('Content-Type', 'text/plain');
+    return \Controllers\Renderer::render('sitemap.twig', $twig, $pages);
 });
 
 /* Admin Endpoints */
@@ -825,6 +882,7 @@ $klein->respond('GET', '/admin/migrate', function() {
 });
 
 $klein->onHttpError(function (int $code, \Klein\Klein $router) use ($twig) {
+    $router->response()->code($code);
     switch ($code) {
         case 403:
             $router->response()->body(\Controllers\Renderer::render('403.twig', $twig, new \Controllers\ViewModels\BaseModel()));
@@ -843,6 +901,7 @@ $klein->onHttpError(function (int $code, \Klein\Klein $router) use ($twig) {
 $klein->onError(function (\Klein\Klein $klein, $msg, $type, Throwable $err) use ($twig) {
     error_log($err);
     \Rollbar\Rollbar::log(\Rollbar\Payload\Level::ERROR, $err);
+    $klein->response()->code(500);
     $klein->response()->body(\Controllers\Renderer::render('500.twig', $twig));
 });
 

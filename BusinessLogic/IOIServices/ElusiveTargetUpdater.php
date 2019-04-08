@@ -1,6 +1,7 @@
 <?php
 namespace BusinessLogic\IOIServices;
 
+use BusinessLogic\MissionCloner;
 use Config\Settings;
 use DataAccess\Models\ElusiveTarget;
 use DataAccess\Models\Mission;
@@ -10,15 +11,21 @@ use Rollbar\Rollbar;
 
 class ElusiveTargetUpdater {
     private $entityManager;
+    private $missionCloner;
     private $locationToSlugMap = [
         "Hawke's Bay, New Zealand" => [
             'slug' => 'nightcall',
             'tileSaveLocation' => '/elusive-targets/'
         ],
+        "Paris, France" => [
+            'slug' => 'the-showstopper',
+            'tileSaveLocation' => '/elusive-targets/legacy/'
+        ]
     ];
 
-    public function __construct(EntityManager $entityManager) {
+    public function __construct(EntityManager $entityManager, MissionCloner $missionCloner) {
         $this->entityManager = $entityManager;
+        $this->missionCloner = $missionCloner;
     }
 
     public function retrieveLatestElusiveTargetFromIOI(): bool {
@@ -64,10 +71,17 @@ class ElusiveTargetUpdater {
                 return false;
             }
 
+            $saveName = str_replace(' ', '-', strtolower($elusiveTargetJson->name));
+            $newMissionId = $this->missionCloner->cloneMissionForElusiveTarget($mission->getSlug(),
+                'professional',
+                $elusiveTargetJson->name,
+                $saveName,
+                new \DateTime($elusiveTargetJson->nextWindow->start),
+                new \DateTime($elusiveTargetJson->nextWindow->end));
+
             $elusiveTarget = new ElusiveTarget();
             $elusiveTarget->setName($elusiveTargetJson->name);
             $image = file_get_contents($elusiveTargetJson->tile);
-            $saveName = str_replace(' ', '-', strtolower($elusiveTargetJson->name));
             $settings = new Settings();
             $fileName = "{$locationInfo['tileSaveLocation']}{$saveName}";
             file_put_contents(__DIR__ . "/../../{$settings->cdnLocation}/jpg{$fileName}.jpg", $image);
@@ -79,7 +93,7 @@ class ElusiveTargetUpdater {
             $elusiveTarget->setThreeDaysLeftNotificationSent(false);
             $elusiveTarget->setOneDayLeftNotificationSent(false);
             $elusiveTarget->setEndNotificationSent(false);
-            $elusiveTarget->setMissionId($mission->getId());
+            $elusiveTarget->setMissionId($newMissionId);
         }
         $elusiveTarget->setBriefing($elusiveTargetJson->description);
         $elusiveTarget->setBeginningTime(new \DateTime($elusiveTargetJson->nextWindow->start));
