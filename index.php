@@ -40,6 +40,7 @@ $klein->respond('GET', '/', function () use ($twig, $applicationContext) {
 
 // Public API calls
 $klein->respond('GET', '/api/v1/games/[:game]?', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    throw new Exception("TEST");
     if ($request->game === null) {
         $games = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Game::class)->findAll();
     } else {
@@ -1066,10 +1067,24 @@ $klein->onHttpError(function (int $code, \Klein\Klein $router) use ($twig) {
             $router->response()->body(\Controllers\Renderer::render('403.twig', $twig, new \Controllers\ViewModels\BaseModel()));
             break;
         case 404:
-            $router->response()->body(\Controllers\Renderer::render('404.twig', $twig, new \Controllers\ViewModels\BaseModel()));
+            if (strpos($router->request()->uri(), '/api/') !== false) {
+                $router->response()->json([
+                    'message' => "Could not find route with URI {$router->request()->uri()}",
+                    'uri' => $router->request()->uri()
+                ]);
+            } else {
+                $router->response()->body(\Controllers\Renderer::render('404.twig', $twig, new \Controllers\ViewModels\BaseModel()));
+            }
             break;
         case 500:
-            $router->response()->body(\Controllers\Renderer::render('500.twig', $twig, new \Controllers\ViewModels\BaseModel()));
+            if (strpos($router->request()->uri(), '/api/') !== false) {
+                $router->response()->json([
+                    'message' => 'It appears that something went horribly wrong, and we are unable to handle your request at this time. Please try again in a few moments.',
+                    'uri' => $router->request()->uri()
+                ]);
+            } else {
+                $router->response()->body(\Controllers\Renderer::render('500.twig', $twig, new \Controllers\ViewModels\BaseModel()));
+            }
             break;
         default:
             $router->response()->body("Welp, something unexpected happened with error code: {$code}");
@@ -1080,7 +1095,15 @@ $klein->onError(function (\Klein\Klein $klein, $msg, $type, Throwable $err) use 
     error_log($err);
     \Rollbar\Rollbar::log(\Rollbar\Payload\Level::ERROR, $err);
     $klein->response()->code(500);
-    $klein->response()->body(\Controllers\Renderer::render('500.twig', $twig));
+
+    if (strpos($klein->request()->uri(), '/api/') !== false) {
+        $klein->response()->json([
+            'message' => 'It appears that something went horribly wrong, and we are unable to handle your request at this time. Please try again in a few moments.',
+            'uri' => $klein->request()->uri()
+        ]);
+    } else {
+        $klein->response()->body(\Controllers\Renderer::render('500.twig', $twig));
+    }
 });
 
 $klein->dispatch();
