@@ -38,6 +38,219 @@ $klein->respond('GET', '/', function () use ($twig, $applicationContext) {
     return \Controllers\Renderer::render('game-select.twig', $twig, $viewModel);
 });
 
+// Public API calls
+$klein->respond('GET', '/api/v1/games/[:game]?', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    throw new Exception("TEST");
+    if ($request->game === null) {
+        $games = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Game::class)->findAll();
+    } else {
+        $games = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Game::class)->findBy(['slug' => $request->game]);
+    }
+
+    return $response->json($games);
+});
+
+$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]?', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    $game = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Game::class)->findOneBy(['slug' => $request->game]);
+
+    if ($game === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find game '{$request->game}'"
+        ]);
+    }
+
+    if ($request->location === null) {
+        $locations = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findBy(['game' => $request->game], ['order' => 'ASC']);
+    } else {
+        $locations = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findBy(['game' => $request->game, 'slug' => $request->location]);
+    }
+
+    return $response->json($locations);
+});
+
+$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]?', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    /* @var $location \DataAccess\Models\Location */
+    $location = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
+
+    if ($location === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find location with game '{$request->game}' and location slug '{$request->location}'"
+        ]);
+    }
+
+    if ($request->mission === null) {
+        $missions = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Mission::class)->findBy(['locationId' => $location->getId()], ['order' => 'ASC']);
+    } else {
+        $missions = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Mission::class)->findBy(['locationId' => $location->getId(), 'slug' => $request->mission], ['order' => 'ASC']);
+    }
+
+    /* @var $mission \DataAccess\Models\Mission */
+    foreach ($missions as $mission) {
+        $missionDifficulties = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\MissionDifficulty::class)->findBy(['missionId' => $mission->getId()]);
+
+        /* @var $missionDifficulty \DataAccess\Models\MissionDifficulty */
+        foreach ($missionDifficulties as $missionDifficulty) {
+            $mission->difficulties[] = $missionDifficulty->getDifficulty();
+        }
+    }
+
+    return $response->json($missions);
+});
+
+$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    /* @var $location \DataAccess\Models\Location */
+    $location = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
+
+    if ($location === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find location with game '{$request->game}' and location slug '{$request->location}'"
+        ]);
+    }
+
+    /* @var $mission \DataAccess\Models\Mission */
+    $mission = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Mission::class)->findOneBy(['locationId' => $location->getId(), 'slug' => $request->mission]);
+
+    if ($mission === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find mission with game '{$request->game}', location '{$request->location}', and mission slug '{$request->mission}'"
+        ]);
+    }
+
+    $nodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($mission->getId(), $request->difficulty);
+    $nodeCategories = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\NodeCategory::class)->findAll();
+
+    /* @var $ledges \DataAccess\Models\Ledge[] */
+    $ledges = $applicationContext->get(\Controllers\LedgeController::class)->getLedgesForMission($mission->getId());
+    $formattedLedges = [];
+    foreach ($ledges as $ledge) {
+        $viewModel = new \Controllers\ViewModels\LedgeViewModel();
+        $viewModel->id = $ledge->getId();
+        $viewModel->missionId = $ledge->getMissionId();
+        $viewModel->level = $ledge->getLevel();
+        $viewModel->vertices = explode('|', $ledge->getVertices());
+        $formattedLedges[] = $viewModel;
+    }
+
+    /* @var $foliage \DataAccess\Models\Foliage[] */
+    $foliage = $applicationContext->get(\Controllers\FoliageController::class)->getFoliageForMission($mission->getId());
+    $formattedFoliage = [];
+    foreach ($foliage as $innerFoliage) {
+        $viewModel = new \Controllers\ViewModels\LedgeViewModel();
+        $viewModel->id = $innerFoliage->getId();
+        $viewModel->missionId = $innerFoliage->getMissionId();
+        $viewModel->level = $innerFoliage->getLevel();
+        $viewModel->vertices = explode('|', $innerFoliage->getVertices());
+        $formattedFoliage[] = $viewModel;
+    }
+
+    /* @var $disguiseRepository \DataAccess\Repositories\DisguiseRepository */
+    $disguiseRepository = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
+        ->getRepository(\DataAccess\Models\Disguise::class);
+
+    /* @var $disguises \DataAccess\Models\Disguise[] */
+    $disguisesWithAreas = $disguiseRepository->findByMission($mission->getId());
+    $formattedDisguises = [];
+
+    /* @var $formattedDisguise \Controllers\ViewModels\DisguiseViewModel */
+    $formattedDisguise = null;
+    foreach ($disguisesWithAreas as $disguiseOrArea) {
+        if ($disguiseOrArea === null) {
+            continue;
+        }
+
+        if ($disguiseOrArea instanceof \DataAccess\Models\DisguiseArea) {
+            /* @var $area \DataAccess\Models\DisguiseArea */
+            $area = $disguiseOrArea;
+            $areaViewModel = new \Controllers\ViewModels\DisguiseAreaViewModel();
+            $areaViewModel->id = $area->getId();
+            $areaViewModel->missionId = $area->getMissionId();
+            $areaViewModel->disguiseId = $area->getDisguiseId();
+            $areaViewModel->level = $area->getLevel();
+            $areaViewModel->type = $area->getType();
+            $areaViewModel->vertices = explode('|', $area->getVertices());
+            $formattedDisguise->areas[] = $areaViewModel;
+            continue;
+        }
+
+        /* @var $disguise \DataAccess\Models\Disguise */
+        $disguise = $disguiseOrArea;
+        $formattedDisguise = new \Controllers\ViewModels\DisguiseViewModel();
+        $formattedDisguise->id = $disguise->getId();
+        $formattedDisguise->name = $disguise->getName();
+        $formattedDisguise->image = $disguise->getImage();
+        $formattedDisguises[] = $formattedDisguise;
+    }
+
+    return $response->json([
+        'nodes' => $nodes,
+        'categories' => $nodeCategories,
+        'ledges' => $formattedLedges,
+        'foliage' => $formattedFoliage,
+        'disguises' => $formattedDisguises]);
+});
+
+$klein->respond('GET', '/api/v1/editor/templates', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    $templates = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Item::class)->findBy([], ['name' => 'ASC']);
+    $sortedTemplates = [];
+
+    /* @var $template \DataAccess\Models\Item */
+    foreach ($templates as $template) {
+        if (!key_exists($template->getType(), $sortedTemplates)) {
+            $sortedTemplates[$template->getType()] = [];
+        }
+
+        $sortedTemplates[$template->getType()][] = $template;
+    }
+
+    return $response->json($sortedTemplates);
+});
+
+$klein->respond('GET', '/api/v1/editor/icons', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    $icons = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Icon::class)->findBy([], ['order' => 'ASC', 'icon' => 'ASC']);
+    $sortedIcons = [];
+
+    /* @var $icon \DataAccess\Models\Icon */
+    foreach ($icons as $icon) {
+        if (!key_exists($icon->getGroup(), $sortedIcons)) {
+            $sortedIcons[$icon->getGroup()] = [];
+        }
+
+        $sortedIcons[$icon->getGroup()][] = $icon;
+    }
+
+    return $response->json($sortedIcons);
+});
+
+$klein->respond('GET', '/api/v1/elusive-targets', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    $constants = new \Config\Constants();
+    $settings = new \Config\Settings();
+    /* @var $missionRepository \DataAccess\Repositories\MissionRepository */
+    $missionRepository = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Mission::class);
+    $elusiveTargets = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\ElusiveTarget::class)->findBy([], ['beginningTime' => 'DESC']);
+
+    $viewModels = [];
+    foreach ($elusiveTargets as $elusiveTarget) {
+        /* @var $elusiveTarget \DataAccess\Models\ElusiveTarget */
+        $viewModel = new \Controllers\ViewModels\ElusiveTargetViewModel();
+        $viewModel->id = $elusiveTarget->getId();
+        $viewModel->beginningTime = $elusiveTarget->getBeginningTime()->format(DateTime::ATOM);
+        $viewModel->name = $elusiveTarget->getName();
+        $viewModel->briefing = $elusiveTarget->getBriefing();
+        $viewModel->endingTime = $elusiveTarget->getEndingTime()->format(DateTime::ATOM);
+        $viewModel->tileUrl = "{$constants->siteDomain}{$settings->cdnLocation}/jpg{$elusiveTarget->getImageUrl()}.jpg";
+        $viewModel->videoBriefingUrl = $elusiveTarget->getVideoBriefingUrl();
+        $viewModel->missionUrl = "{$constants->siteDomain}{$missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId(), 'professional')}";
+
+        $viewModels[] = $viewModel;
+    }
+
+    return $response->json($viewModels);
+});
+
 $klein->respond('GET', '/games/[:game]', function(\Klein\Request $request) use ($twig, $applicationContext) {
     /* @var $locations \DataAccess\Models\Location[] */
     $locations = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)
@@ -439,6 +652,9 @@ $klein->respond('GET', '/api/nodes/delete/[:nodeId]', function(\Klein\Request $r
     return $response->code(200);
 });
 
+/**
+ * @deprecated Should use /api/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map instead
+ */
 $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
     $nodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($_GET['missionId'], $_GET['difficulty']);
     $nodeCategories = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\NodeCategory::class)->findAll();
@@ -851,10 +1067,24 @@ $klein->onHttpError(function (int $code, \Klein\Klein $router) use ($twig) {
             $router->response()->body(\Controllers\Renderer::render('403.twig', $twig, new \Controllers\ViewModels\BaseModel()));
             break;
         case 404:
-            $router->response()->body(\Controllers\Renderer::render('404.twig', $twig, new \Controllers\ViewModels\BaseModel()));
+            if (strpos($router->request()->uri(), '/api/') !== false) {
+                $router->response()->json([
+                    'message' => "Could not find route with URI {$router->request()->uri()}",
+                    'uri' => $router->request()->uri()
+                ]);
+            } else {
+                $router->response()->body(\Controllers\Renderer::render('404.twig', $twig, new \Controllers\ViewModels\BaseModel()));
+            }
             break;
         case 500:
-            $router->response()->body(\Controllers\Renderer::render('500.twig', $twig, new \Controllers\ViewModels\BaseModel()));
+            if (strpos($router->request()->uri(), '/api/') !== false) {
+                $router->response()->json([
+                    'message' => 'It appears that something went horribly wrong, and we are unable to handle your request at this time. Please try again in a few moments.',
+                    'uri' => $router->request()->uri()
+                ]);
+            } else {
+                $router->response()->body(\Controllers\Renderer::render('500.twig', $twig, new \Controllers\ViewModels\BaseModel()));
+            }
             break;
         default:
             $router->response()->body("Welp, something unexpected happened with error code: {$code}");
@@ -865,7 +1095,15 @@ $klein->onError(function (\Klein\Klein $klein, $msg, $type, Throwable $err) use 
     error_log($err);
     \Rollbar\Rollbar::log(\Rollbar\Payload\Level::ERROR, $err);
     $klein->response()->code(500);
-    $klein->response()->body(\Controllers\Renderer::render('500.twig', $twig));
+
+    if (strpos($klein->request()->uri(), '/api/') !== false) {
+        $klein->response()->json([
+            'message' => 'It appears that something went horribly wrong, and we are unable to handle your request at this time. Please try again in a few moments.',
+            'uri' => $klein->request()->uri()
+        ]);
+    } else {
+        $klein->response()->body(\Controllers\Renderer::render('500.twig', $twig));
+    }
 });
 
 $klein->dispatch();
