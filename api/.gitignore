@@ -1,0 +1,6 @@
+.idea/
+/vendor/
+Config/Constants.php
+Config/Settings.php
+Config/firebase-service-account.json
+phinx.yml

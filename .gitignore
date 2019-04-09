@@ -1,7 +1,21 @@
-.idea/
-/vendor/
-/css
-Config/Constants.php
-Config/Settings.php
-Config/firebase-service-account.json
-phinx.yml
+.DS_Store
+node_modules
+/dist
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw*

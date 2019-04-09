@@ -9,7 +9,11 @@ $twig = new Twig_Environment($loader);
 
 $klein = new \Klein\Klein();
 
-$klein->respond('GET', '/', function () use ($twig, $applicationContext) {
+$klein->respond(function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    $response->header('Access-Control-Allow-Origin', '*');
+});
+
+$klein->respond('GET', '/api', function () use ($twig, $applicationContext) {
     /* @var $games \DataAccess\Models\Game[] */
     $games = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Game::class)->findAll();
 
