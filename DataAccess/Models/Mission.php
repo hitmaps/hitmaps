@@ -104,6 +104,10 @@ class Mission {
      */
     public $missionType;
 
+    // Not used by Doctrine
+    /* @var $difficulties string[] */
+    public $difficulties = [];
+
     /**
      * @return mixed
      */
