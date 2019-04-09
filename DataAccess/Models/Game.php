@@ -12,22 +12,22 @@ class Game {
     /**
      * @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
      */
-    private $id;
+    public $id;
 
     /**
      * @ORM\Column(type="string")
      */
-    private $slug;
+    public $slug;
 
     /**
      * @ORM\Column(type="string", name="full_name")
      */
-    private $fullName;
+    public $fullName;
 
     /**
      * @ORM\Column(type="string")
      */
-    private $tagline;
+    public $tagline;
 
     /**
      * @return mixed
