@@ -40,7 +40,6 @@ $klein->respond('GET', '/', function () use ($twig, $applicationContext) {
 
 // Public API calls
 $klein->respond('GET', '/api/v1/games/[:game]?', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    throw new Exception("TEST");
     if ($request->game === null) {
         $games = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Game::class)->findAll();
     } else {
