@@ -115,4 +115,31 @@ footer {
     padding-left: 10px;
   }
 }
+.breadcrumb {
+  background: transparent;
+
+  .breadcrumb-item {
+    padding-left: 30px;
+    padding-right: 30px;
+    font-size: 1.5rem;
+    text-shadow: 2px 2px 2px #000;
+    font-weight: normal;
+
+    a {
+      color: #fff;
+    }
+
+    &.active {
+      color: #fff;
+    }
+
+    & + .breadcrumb-item::before {
+      //noinspection CssNoGenericFontName
+      font-family: "Font Awesome 5 Pro";
+      content: "\f054";
+      margin-right: 30px;
+      color: #fff;
+    }
+  }
+}
 </style>

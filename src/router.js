@@ -11,10 +11,13 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      meta: {
+        title: "Home"
+      }
     },
     {
-      path: '/game/:slug',
+      path: '/games/:slug',
       name: 'level-select',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route

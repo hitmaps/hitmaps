@@ -13,7 +13,7 @@ $klein->respond(function(\Klein\Request $request, \Klein\Response $response) use
     $response->header('Access-Control-Allow-Origin', '*');
 });
 
-$klein->respond('GET', '/api', function () use ($twig, $applicationContext) {
+$klein->respond('GET', '/', function () use ($twig, $applicationContext) {
     /* @var $games \DataAccess\Models\Game[] */
     $games = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Game::class)->findAll();
 
@@ -246,7 +246,7 @@ $klein->respond('GET', '/api/v1/elusive-targets', function(\Klein\Request $reque
         $viewModel->endingTime = $elusiveTarget->getEndingTime()->format(DateTime::ATOM);
         $viewModel->tileUrl = "{$constants->siteDomain}{$settings->cdnLocation}/jpg{$elusiveTarget->getImageUrl()}.jpg";
         $viewModel->videoBriefingUrl = $elusiveTarget->getVideoBriefingUrl();
-        $viewModel->missionUrl = "{$constants->siteDomain}{$missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId(), 'professional')}";
+        $viewModel->missionUrl = "{$constants->siteDomain}{$missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId(), 'standard')}";
 
         $viewModels[] = $viewModel;
     }

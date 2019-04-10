@@ -8,7 +8,7 @@
     </header>
     <div class="row dashboard">
       <div class="game col-lg" v-for="game in games" :key="game.id" 
-      v-bind:style="{ background: 'url(cdn/webp/backgrounds/'+ game.slug + '.webp) center no-repeat', backgroundSize: 'cover'}">
+      v-bind:style="{ backgroundImage: 'url(/cdn/webp/backgrounds/'+ game.slug + '.webp)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}">
         <router-link :to="{ name: 'level-select', params: { slug: game.slug }}">
                     <p>&nbsp;</p>
                     <div class="game-info">
@@ -23,6 +23,26 @@
                     </div>
           </router-link>
       </div>
+      <div class="elusive-target col-lg" 
+      v-bind:style="{ backgroundImage: 'url('+ (elusiveTarget != null ? elusiveTarget.tileUrl : '/cdn/jpg/elusive-targets/coming-soon.jpg') + ')', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}">
+        <a href="#">
+          <p>&nbsp;</p>
+          <div class="elusive-target-info">
+            <div class="image">
+              <img src="/img/game-icons/elusive-target.png" class="normal img-fluid" alt="Elusive Target Icon">
+              <img src="/img/game-icons/elusive-target-inverted.png" class="inverted img-fluid" alt="Elusive Target Icon">
+            </div>
+            <div class="text">
+              <h2>Elusive Target</h2>
+              <h1>{{elusiveTarget != null ? elusiveTarget.name : "Coming soon"}}</h1>
+            </div>
+            <div class="image float-right notification-icon" data-placement="left" data-toggle="tooltip" title="Manage Elusive Target Notifications">
+              <img src="/img/game-icons/notification.png" class="normal img-fluid" alt="Notification Icon">
+              <img src="/img/game-icons/notification-inverted.png" class="inverted img-fluid" alt="Notification Icon">
+            </div>
+          </div>
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -33,12 +53,13 @@ export default {
   name: 'home',
   data () {
     return {
-      games: []
+      games: [],
+      elusiveTarget: {}
     }
   },
   created: function () {
-      console.log("Test")
       this.$http.get("http://"+ window.location.hostname +"/api/v1/games").then(resp => this.games = resp.data)
+      this.$http.get("http://" + window.location.hostname + "/api/v1/elusive-targets").then(resp => this.elusiveTarget = resp.data[0])
   }
 }
 </script>
