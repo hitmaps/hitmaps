@@ -58,8 +58,8 @@ export default {
     }
   },
   created: function () {
-      this.$http.get("http://"+ window.location.hostname +"/api/v1/games").then(resp => this.games = resp.data)
-      this.$http.get("http://" + window.location.hostname + "/api/v1/elusive-targets").then(resp => this.elusiveTarget = resp.data[0])
+      this.$http.get(this.$domain +"/api/v1/games").then(resp => this.games = resp.data)
+      this.$http.get(this.$domain + "/api/v1/elusive-targets").then(resp => this.elusiveTarget = resp.data[0])
   }
 }
 </script>
