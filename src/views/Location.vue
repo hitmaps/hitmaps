@@ -22,13 +22,13 @@
                       "@type": "ListItem",
                       "position": 1,
                       "name": "Home",
-                      "item": "{{ domain }}"
+                      "item": "{{ $domain }}"
                   },
                   {
                       "@type": "ListItem",
                       "position": 2,
                       "name": "{{ game.fullName }}",
-                      "item": "{{ domain }}/{{ game.slug }}"
+                      "item": "{{ $domain }}/{{ game.slug }}"
                   }]
               }
           </script>
@@ -41,13 +41,13 @@
       <div class="row">
         <div v-for="location in locations" :key="location.id" class="location col-lg col-md-6" 
         v-bind:style="{background: 'url(/cdn/webp/locations/' + game.slug + '/' + location.slug + '.webp) no-repeat center'}">
-            <a href="/games/">
+            <router-link :to="{ name: 'mission-select', params: { slug: game.slug, location: location.slug }}">
                 <p>&nbsp;</p>
                 <div class="location-info">
                     <h4>{{ location.destinationCountry }}</h4>
                     <h3>{{ location.destination }}</h3>
                 </div>
-            </a>
+            </router-link>
         </div>
       </div>
     </div>
@@ -61,13 +61,12 @@ export default {
   data () {
     return {
       game: {},
-      locations: [],
-      domain: document.location.protocol + "//" + window.location.hostname
+      locations: []
     }
   },
   created: function() {
-    this.$http.get("http://"+ window.location.hostname +"/api/v1/games/" + this.$route.params.slug).then(resp => this.game = resp.data[0])
-    this.$http.get(this.domain + "/api/v1/games/" + this.$route.params.slug + "/locations").then(resp => this.locations = resp.data)
+    this.$http.get(this.$domain +"/api/v1/games/" + this.$route.params.slug).then(resp => this.game = resp.data[0])
+    this.$http.get(this.$domain + "/api/v1/games/" + this.$route.params.slug + "/locations").then(resp => this.locations = resp.data)
   }
 }
 </script>
