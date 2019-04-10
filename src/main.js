@@ -8,6 +8,11 @@ Vue.config.productionTip = false
 Vue.prototype.$currentYear = new Date().getFullYear()
 Vue.prototype.$http = axios
 
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title + " | HITMAN™ 2 Maps"
+  next()
+})
+
 new Vue({
   router,
   render: h => h(App)
