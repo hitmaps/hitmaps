@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <router-view/>
-    <footer class="fixed-bottom text-center">
+    <footer v-if="isNotInMap()" class="fixed-bottom text-center">
       <div class="container text-left">
             <div class="row">
                 <div class="col-sm-2">
@@ -59,6 +59,15 @@
     </footer>
   </div>
 </template>
+<script>
+export default {
+  methods: {
+    isNotInMap() {
+      return this.$router.history.current.name !== 'map-view';
+    }
+  }
+}
+</script>
 
 <style lang="scss">
 body {
@@ -67,6 +76,20 @@ body {
 
   @media (max-width: 767px) {
     padding-bottom: 0;
+  }
+}
+header {
+  font-family: 'Roboto', 'Arial', sans-serif;
+  color: #fff;
+  font-weight: bolder;
+  margin-top: 20px;
+
+  h1 {
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin-top: 20px;
   }
 }
 footer {

@@ -54,7 +54,7 @@ export default {
   data () {
     return {
       games: [],
-      elusiveTarget: {}
+      elusiveTarget: null
     }
   },
   created: function () {
@@ -66,21 +66,6 @@ export default {
 <style lang="scss" scoped>
   .site-header {
   margin: 0 20px;
-  }
-
-  header {
-    font-family: 'Roboto', 'Arial', sans-serif;
-    color: #fff;
-    font-weight: bolder;
-    margin-top: 20px;
-
-    h1 {
-      text-transform: uppercase;
-    }
-
-    h2 {
-      margin-top: 20px;
-    }
   }
 
   @media (min-width: 992px) {
