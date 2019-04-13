@@ -10,7 +10,9 @@ $twig = new Twig_Environment($loader);
 $klein = new \Klein\Klein();
 
 $klein->respond(function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Origin', $_SERVER['HTTP_ORIGIN']);
+    $response->header('Access-Control-Allow-Headers', 'content-type');
+    $response->header('Access-Control-Allow-Credentials', 'true');
 });
 
 $klein->respond('GET', '/', function () use ($twig, $applicationContext) {
@@ -189,7 +191,9 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
     }
 
     return $response->json([
+        'mission' => $mission,
         'nodes' => $nodes,
+        'searchableNodes' => $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($mission->getId(), $request->difficulty, true, true),
         'categories' => $nodeCategories,
         'ledges' => $formattedLedges,
         'foliage' => $formattedFoliage,
@@ -252,6 +256,28 @@ $klein->respond('GET', '/api/v1/elusive-targets', function(\Klein\Request $reque
     }
 
     return $response->json($viewModels);
+});
+
+$klein->respond('POST', '/api/v1/user/login', function(\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext, $klein) {
+    $controller = $applicationContext->get(\Controllers\AuthenticationController::class);
+
+    try {
+        $controller->loginUser($_POST['email'], $_POST['password'], $_POST['g-recaptcha-response']);
+
+        return $response->json([
+            'loggedIn'=> true,
+            'session' => session_id()
+        ]);
+    } catch (\BusinessLogic\Authentication\LoginFailedException | \Controllers\RecaptchaFailedException $e) {
+        $viewModel = new \Controllers\ViewModels\LoginViewModel();
+        if ($e instanceof \BusinessLogic\Authentication\LoginFailedException) {
+            $viewModel->messages[] = new \Controllers\ViewModels\AlertMessage('danger', 'The username or password entered is incorrect.', 'times-circle');
+        } else {
+            $viewModel->messages[] = new \Controllers\ViewModels\AlertMessage('danger', 'You must complete the captcha in order to log in.', 'times-circle');
+        }
+
+        return $response->json($viewModel);
+    }
 });
 
 $klein->respond('GET', '/games/[:game]', function(\Klein\Request $request) use ($twig, $applicationContext) {
