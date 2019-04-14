@@ -32,8 +32,8 @@
           <l-tile-layer v-for="floor in range(mission.lowestFloorNumber, mission.highestFloorNumber)" :key="floor" :noWrap="true" :visible="currentLayer === floor" :url="mapUrl + floor +  '/{z}/{x}/{y}.png'" ></l-tile-layer>
           <l-tile-layer v-if="mission.satelliteView" :noWrap="true" :visible="currentLayer === -99" :url="mapUrl + '-99/{z}/{x}/{y}.png'"></l-tile-layer>
           <div v-for="floor in range(mission.lowestFloorNumber, mission.highestFloorNumber)" :key="'layer' + floor">
-            <l-layer-group v-for="(group, key) in layerGroups" :key="floor + key" :visible="currentLayer == floor">
-              <l-marker v-for="item in group.items.filter(el=>el.level==floor)" :key="item.id" :icon="generateIcon(item.icon)" :latLng="item.latLng" :draggable="true" @dragend="moveMarker($event, item)">
+            <l-layer-group v-for="(group, key) in layerGroups" :key="floor + key" :visible="currentLayer == floor && !isLayerHidden(key)">
+              <l-marker v-for="item in group.items.filter(el=>el.level==floor)" :key="item.id" :icon="generateIcon(item.icon)" :latLng="item.latLng" :draggable="editor.mode === 'items'" @dragend="moveMarker($event, item)">
                 <l-popup>
                   <img v-if="item.image" :src="'/cdn/png/' + item.image + '.png'" alt="Image template holder">
                   <div data-name="name">{{item.name}}</div>
@@ -51,7 +51,7 @@
                   <button class="btn btn-danger btn-sm" data-action="delete-btn" data-node-id="x" data-toggle="tooltip" title="Delete">
                       <i class="fas fa-times"></i>
                   </button>
-                  <button class="btn btn-warning btn-sm" data-action="edit-btn" data-node-id="x" data-toggle="tooltip" title="Edit">
+                  <button class="btn btn-warning btn-sm" data-action="edit-btn" @click="editMarker(item)" data-node-id="x" data-toggle="tooltip" title="Edit">
                       <i class="fas fa-pencil-alt"></i>
                   </button>
                 </l-popup>
@@ -95,12 +95,15 @@
             <div class="search-box" id="search-box-items" data-search="items">
                 <select name="search" class="selectpicker" data-live-search="true" data-title="<i class='fas fa-fw fa-search'></i> Search" data-style="control-button">
                     <template v-for="(type, key) in searchableNodes">
-                      <optgroup v-for="group in type.items" :key="group.name" :label="group.name">
+                      <optgroup v-for="group in type.items" :key="key + group.name" :label="group.name">
                         <option v-for="node in group.items" :key="node.name" :data-layer="key + '|' + group.name ">{{ node.name }}</option>
                       </optgroup>
                     </template>
                 </select>
                 <button id="clear-search" class="btn control-button" data-toggle="tooltip" title="Clear Search" style="display: none"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="hide-or-select-all">
+                <button id="hide-all" @click="toggleLayer('|')" class="btn control-button"><i class="far fa-fw fa-eye"></i> Toggle All</button>
             </div>
             <div class="card" v-for="(type, key, index) in nodes" :key="index">
               <div class="card-header" :id="'header-' + index">
@@ -112,7 +115,7 @@
                     <i class="fas fa-caret-up"></i>
                   </span>
                 </div>
-                <div class="visibility-toggle group-toggle">
+                <div class="visibility-toggle group-toggle" @click="toggleLayer(type.name + '|*')" :class="{'map-hidden': isLayerHidden(type.name + '|*')}">
                   <i class="far fa-eye"></i>
                   <i class="far fa-eye-slash"></i>
                 </div>
@@ -120,7 +123,7 @@
               <div :id="'body-' + index" class="collapse" :aria-labelledby="'header-' + index">
                 <div class="card-body">
                   <div v-for="group in type.items" :key="type.name + group.name" :class="{'full-width': group.collapsible, 'half-width': !group.collapsible}">
-                    <div class="name">
+                    <div class="name" @click="toggleLayer(type.name + '|' + group.name)" :class="{'map-hidden': isLayerHidden(type.name + '|' + group.name)}">
                       <img :src="'/img/map-icons/' + group.icon + '.png'" :alt="group.name + ' Icon'" class="img-fluid">
                       <span>{{group.name}}</span>
                     </div>
@@ -383,6 +386,7 @@ export default {
             layerGroups: {},
             categories: {},
             mapLoaded: false,
+            hiddenLayers: [],
             editor: {
               enabled: false,
               mode: "",
@@ -466,6 +470,19 @@ export default {
           this.editor.currentMarker = item
           $(this.$refs.confirmMoveModal).modal('show')
         },
+        editMarker: function(item) {
+          this.editor.notes = item.notes
+          this.editor.currentCategory = item.type + "|" + item.subgroup
+          this.editor.clickedPoint = L.latLng(item.latitude, item.longitude)
+          $(this.$refs.subgroupPicker).selectpicker('val', item.type + "|" + item.subgroup)
+          $(this.$refs.iconPicker).selectpicker('val', this.currentCategory.icon)
+          this.currentCategory.nodeId = item.id
+          this.currentCategory.name = item.name
+          this.currentCategory.action = item.target
+          this.currentCategory.target = item.target
+
+          $(this.$refs.editModal).modal('show')
+        },
         confirmMove: function() {
           var data = new FormData()
           console.log(this.editor.currentMarker)
@@ -501,8 +518,14 @@ export default {
           if(currentTemplate.information) this.editor.notes.push({type:"information", text: currentTemplate.information})
         },
         saveMarker: function() {
+          var url = "/api/nodes"
           var data = new FormData()
-          data.append("id", -1)
+          if(this.currentCategory.nodeId) {
+            data.append("id", this.currentCategory.nodeId)
+            url = "/api/nodes/edit/" + this.currentCategory.nodeId
+          } else {
+            data.append("id", -1)
+          }
           data.append("mission-id", this.mission.id)
           data.append("icon", this.currentCategory.icon)
           data.append("subgroup", this.editor.currentCategory)
@@ -513,7 +536,7 @@ export default {
           data.append("longitude", this.editor.clickedPoint.lng)
           data.append("difficulty", this.$route.params.difficulty)
           data.append("group", this.currentCategory.group || "")
-          data.append("searchable", this.currentCategory.searchable)
+          data.append("searchable", +this.currentCategory.searchable)
           data.append("image", this.currentCategory.image || "")
           data.append("action", this.currentCategory.action || "")
           data.append("pickup-type", this.currentCategory.pickupType || "")
@@ -524,7 +547,7 @@ export default {
             data.append("note-type[]", element.type)
             data.append("note-text[]", element.text)
           });
-          this.$http.post(this.$domain + "/api/nodes", data).then(resp => {
+          this.$http.post(this.$domain + url, data).then(resp => {
             //TODO Make this a method
             if(resp.data.approved) {
               resp.data.latLng = L.latLng(resp.data.latitude, resp.data.longitude)
@@ -539,10 +562,39 @@ export default {
                     iconAnchor: [16, 16],
                     popupAnchor: [0, 0]
                 })
+        },
+        isLayerHidden: function(name) {
+          name = name.replace("*", "")
+          return this.hiddenLayers.indexOf(name) != -1 || this.hiddenLayers.indexOf(name.split("|")[0] + "|") != -1 
+        },
+        toggleLayer: function(name) {
+          if(name === "|") {
+            this.toggleLayer("Points of Interest|")
+            this.toggleLayer("Weapons and Tools|")
+            this.toggleLayer("Navigation|")
+            return;
+          }
+          //I think this can be done better
+          name = name.replace("*", "")
+          if(this.isLayerHidden(name)) {
+            if(!name.endsWith("|") && this.hiddenLayers.indexOf(name.split("|")[0] + "|") != -1) {
+              var keys = Object.keys(this.layerGroups).filter(el => el.indexOf(name.split("|")[0]) !== -1 && el !== name)
+              this.hiddenLayers = this.hiddenLayers.concat(keys)
+              this.hiddenLayers = this.hiddenLayers.filter(el => el !== name.split("|")[0] + "|")
+            } else {
+              this.hiddenLayers = this.hiddenLayers.filter(el => el !== name)
+            }
+          } else {
+            if(name.endsWith("|")) {
+              this.hiddenLayers = this.hiddenLayers.filter(el => el.indexOf(name) === -1)
+            }
+              this.hiddenLayers.push(name)
+          }
         }
     },
     created: function () {
         this.$http.get(this.$domain + "/api/v1/games/" + this.$route.params.slug + "/locations/" + this.$route.params.location + "/missions/" + this.$route.params.mission + "/" + this.$route.params.difficulty + "/map").then(resp => {
+            this.$route.meta.title = resp.data.mission.name
             this.currentLayer = resp.data.mission.startingFloorNumber
             this.mission = resp.data.mission
             for(var group in resp.data.nodes) {
