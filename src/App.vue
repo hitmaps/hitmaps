@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <router-view/>
-    <footer v-if="isNotInMap()" class="fixed-bottom text-center">
+    <footer v-if="isNotInMap()" class="text-center">
       <div class="container text-left">
             <div class="row">
                 <div class="col-sm-2">
@@ -70,13 +70,21 @@ export default {
 </script>
 
 <style lang="scss">
-body {
-  background: #ddd;
-  padding-bottom: 137px;
+html,
+body,
+#app {
+  height: 100%;
+}
 
-  @media (max-width: 767px) {
-    padding-bottom: 0;
+#app {
+  background: #ddd;
+  display: flex;
+  flex-direction: column;
+
+  .content {
+    flex: 1 0 auto;
   }
+
 }
 header {
   font-family: 'Roboto', 'Arial', sans-serif;
@@ -93,6 +101,7 @@ header {
   }
 }
 footer {
+  flex-shrink: 0;
   padding-top: 1rem;
   padding-bottom: 1rem;
   background: #000;

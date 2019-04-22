@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import axios from 'axios'
 import store from './store/store'
+import titleMixin from './util/title'
 
 axios.defaults.withCredentials = true;
 
@@ -12,10 +13,7 @@ Vue.prototype.$currentYear = new Date().getFullYear()
 Vue.prototype.$http = axios
 Vue.prototype.$domain = document.location.protocol + "//" + window.location.hostname
 
-router.beforeEach((to, from, next) => {
-  document.title = to.meta.title + " | HITMAN™ 2 Maps"
-  next()
-})
+Vue.mixin(titleMixin)
 
 new Vue({
   store,

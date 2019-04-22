@@ -8,8 +8,8 @@
                     <img src="/img/game-icons/mission-inverted.png" class="img-fluid" alt="Mission Icon">
                 </div>
                 <div class="footer-text">
-                    <h2>{{ mission.missionType }}</h2>
-                    <h1>{{ mission.name }}</h1>
+                    <h2>{{mission.missionType}}</h2>
+                    <h1>122</h1>
                 </div>
             </div>
         </div>
@@ -376,8 +376,12 @@ export default {
         LTooltip,
         LPopup
     },
+    title () {
+      return this.mission ? this.mission.name : "Loading"
+    },
     data () {
         return {
+            test: 123,
             mission: null,
             nodes: null,
             searchableNodes: null,

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="content">
     <header class="row">
       <div class="col text-center site-header">
               <h1>Interactive Maps For</h1>
@@ -51,6 +51,7 @@
 
 export default {
   name: 'home',
+  title: "Home",
   data () {
     return {
       games: [],
@@ -58,8 +59,8 @@ export default {
     }
   },
   created: function () {
-      this.$http.get(this.$domain +"/api/v1/games").then(resp => this.games = resp.data)
-      this.$http.get(this.$domain + "/api/v1/elusive-targets").then(resp => this.elusiveTarget = resp.data[0])
+    this.$http.get(this.$domain +"/api/v1/games").then(resp => this.games = resp.data)
+    this.$http.get(this.$domain + "/api/v1/elusive-targets").then(resp => this.elusiveTarget = resp.data[0])
   }
 }
 </script>
