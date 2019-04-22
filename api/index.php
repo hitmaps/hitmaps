@@ -67,6 +67,20 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]?', function 
 
     if ($request->location === null) {
         $locations = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findBy(['game' => $request->game], ['order' => 'ASC']);
+        foreach ($locations as $location) {
+            $missions = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Mission::class)->findBy(['locationId' => $location->getId()], ['order' => 'ASC']);
+            /* @var $mission \DataAccess\Models\Mission */
+            foreach ($missions as $mission) {
+                $missionDifficulties = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\MissionDifficulty::class)->findBy(['missionId' => $mission->getId()]);
+
+                /* @var $missionDifficulty \DataAccess\Models\MissionDifficulty */
+                foreach ($missionDifficulties as $missionDifficulty) {
+                    $mission->difficulties[] = $missionDifficulty->getDifficulty();
+                }
+            }
+            $location->missions = $missions;
+        }
+
     } else {
         $locations = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findBy(['game' => $request->game, 'slug' => $request->location]);
     }

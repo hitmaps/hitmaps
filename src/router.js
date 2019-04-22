@@ -11,10 +11,7 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home,
-      meta: {
-        title: "Home"
-      }
+      component: Home
     },
     {
       path: '/games/:slug',

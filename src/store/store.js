@@ -5,17 +5,18 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        sessionId: ""
+        game: null,
     },
 
     mutations: {
-        setSessionId(state, id) {
-            state.sessionId = id
+        SET_GAME(state, game) {
+            state.game = game
         }
     },
     actions: {
-        setSessionId(context, id) {
-            context.commit('setSessionId', id)
+        async loadGame(context, id) {
+            var resp = await Vue.prototype.$http.get(Vue.prototype.$domain + "/api/v1/games/" + id)
+            context.commit('SET_GAME', resp.data[0])
         }
     }
 })
