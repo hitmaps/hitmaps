@@ -1,5 +1,5 @@
 <template>
-  <div class="level-select">
+  <div class="content" style="background: url('/cdn/webp/backgrounds/loading.webp') no-repeat center center fixed; background-size: cover">
     <div class="site-container">
       <script type="application/ld+json">
           {
@@ -23,6 +23,25 @@
               <img :src="'/cdn/png/logos/' + game.slug + '.png'" class="img-fluid">
               <h2>{{ game.tagline }}</h2>
       </div>
+      <nav id="scrollspy" class="navbar locations" style="background: url('/cdn/webp/backgrounds/loading.webp') no-repeat center center fixed; background-size: cover">
+        <ul class="nav">
+          <li class="nav-item">
+            <router-link :to="{name: 'home'}" class="nav-link" data-target="#">
+                <img src="/img/game-icons/campaign-transparent.png" class="normal" alt="Home icon">
+                <img src="/img/game-icons/campaign-inverted.png" class="inverted" alt="Home icon">
+                Home
+            </router-link>
+
+          </li>
+          <li v-for="location in locations" :key="location.id" class="nav-item">
+              <a class="nav-link" :href="'#' + location.slug " :data-target="'#' + location.slug ">
+                  <img src="/img/game-icons/location-transparent.png" class="normal" alt="Location Icon">
+                  <img src="/img/game-icons/location.png" class="inverted" alt="Location Icon">
+                  {{ location.destination }}
+              </a>
+          </li>
+        </ul>
+      </nav>
       <div v-for="location in locations" :key="location.id" class="location" 
       v-bind:style="{background: 'url(/cdn/webp/backgrounds/' + game.slug + '/' + location.slug + '.webp) no-repeat center center fixed',
       backgroundSize: 'cover',}">
@@ -38,7 +57,7 @@
         <div class="missions">
           <div class="row" style="margin-left: 15px; margin-right: 15px;">
             <div v-for="mission in location.missions" :key="mission.id" class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-              <a v-if="mission.difficulties.length == 1">
+              <router-link @click.native="saveMissionData(mission)" :to="{ name: 'map-view', params: { slug: location.game, location: location.slug, mission: mission.slug, difficulty: mission.difficulties[0].toLowerCase() }}" v-if="mission.difficulties.length == 1">
                 <div class="card mission">
                     <div style="position: relative">
                         <img :src="'/cdn/'+ generateUrl(mission)" class="card-img-top" alt="">
@@ -56,13 +75,13 @@
                           </div>
                       </div>
                   </div>
-                </a>
+                </router-link>
                 <div v-else class="card mission">
                   <div style="position: relative">
                       <img :src="'/cdn/'+ generateUrl(mission)" class="card-img-top" alt="">
                       <div class="card-img-overlay d-flex flex-column justify-content-end" style="padding: 0">
                         <div class="row difficulties">
-                          <router-link :to="{ name: 'map-view', params: { slug: location.game, location: location.slug, mission: mission.slug, difficulty: difficulty.toLowerCase() }}" v-for="difficulty in mission.difficulties" :key="difficulty" class="col">
+                          <router-link @click.native="saveMissionData(mission)" :to="{ name: 'map-view', params: { slug: location.game, location: location.slug, mission: mission.slug, difficulty: difficulty.toLowerCase() }}" v-for="difficulty in mission.difficulties" :key="difficulty" class="col">
                             <div style="padding-top: 10px; padding-bottom: 10px">
                                 <img :src="'/img/game-icons/' + difficulty.toLowerCase() + '.png'" class="normal">
                                 <img :src="'/img/game-icons/' + difficulty.toLowerCase() + '-inverted.png'" class="inverted">
@@ -106,11 +125,14 @@ export default {
     }
   },
   methods: {
-        generateUrl: function(mission) {
-            if(mission !== "Elusive Target") {
-                return "png/mission-thumbnails/" + this.game.slug + "/" + mission.slug + ".png"
-        }
-     }
+    generateUrl: function(mission) {
+      if(mission !== "Elusive Target") {
+          return "png/mission-thumbnails/" + this.game.slug + "/" + mission.slug + ".png"
+      }
+    },
+    saveMissionData: function(mission) {
+      if(this.$store.state.mission.slug !== mission.slug) this.$store.commit("SET_MISSION", mission)
+    }
   },
   created: function() {
     if(this.game === null || this.game.slug !== this.$route.params.slug) this.$store.dispatch("loadGame", this.$route.params.slug)
@@ -120,7 +142,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.level-select {
+.content {
   > a {
     text-decoration: none;
     display: block;
@@ -181,6 +203,57 @@ export default {
       }
     }
   }
+  .navbar.locations {
+  z-index: 1030;
+  background: gray;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 2px #000;
+  margin-left: -50px;
+  margin-right: -50px;
+  padding: 0;
+
+  @media(min-width: 992px) {
+    position: sticky;
+    top: 0;
+  }
+
+  a {
+    color: white;
+    padding: 20px;
+
+    img {
+      height: 30px;
+      width: 30px;
+
+      &.normal {
+        display: inline-block;
+        filter: drop-shadow(2px 2px 2px #000);
+      }
+
+      &.inverted {
+        display: none;
+        filter: none;
+      }
+    }
+
+    &:hover,
+    &:active,
+    &.active {
+      background: #ff003c;
+
+      img {
+        &.normal {
+          display: none;
+        }
+
+        &.inverted {
+          display: inline-block;
+        }
+      }
+    }
+  }
+}
+
 
   .missions {
     .card {
