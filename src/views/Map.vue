@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div v-if="!mapLoaded" class="overlay" style="background: #ccc url('cdn/webp/backgrounds/loading.webp') no-repeat; background-size: cover">
+    <div v-if="!mapLoaded && mission != null" class="overlay" style="background: #ccc url('/cdn/webp/backgrounds/loading.webp') no-repeat; background-size: cover">
         <div class="overlay-container">
-            <img class="img-fluid" :src="'cdn/'" alt="Mission Thumbnail">
+            <img class="img-fluid" :src="'/cdn/' + loadingTile" alt="Mission Thumbnail">
             <div class="footer">
                 <div class="footer-image">
                     <img src="/img/game-icons/mission-inverted.png" class="img-fluid" alt="Mission Icon">
                 </div>
                 <div class="footer-text">
                     <h2>{{mission.missionType}}</h2>
-                    <h1>122</h1>
+                    <h1>{{mission.name}}</h1>
                 </div>
             </div>
         </div>
@@ -28,11 +28,17 @@
               </div>
           </div>
       </div>
-      <l-map id="map" ref="map" @click="addMarker" :minZoom="3" :maxZoom="5" :maxBounds="[[this.mission.topLeftCoordinate.split(',')[0], this.mission.topLeftCoordinate.split(',')[1]], [this.mission.bottomRightCoordinate.split(',')[0],this.mission.bottomRightCoordinate.split(',')[1]]]" :crs="crs">
+      <l-map id="map" ref="map" @click="addMarker" :minZoom="3" :maxZoom="5" :maxBounds="[[this.mission.topLeftCoordinate.split(',')[0], this.mission.topLeftCoordinate.split(',')[1]], [this.mission.bottomRightCoordinate.split(',')[0],this.mission.bottomRightCoordinate.split(',')[1]]]" 
+      :crs="crs" @pm:drawstart="initDraw" @pm:drawend="endDraw">
           <l-tile-layer v-for="floor in range(mission.lowestFloorNumber, mission.highestFloorNumber)" :key="floor" :noWrap="true" :visible="currentLayer === floor" :url="mapUrl + floor +  '/{z}/{x}/{y}.png'" ></l-tile-layer>
           <l-tile-layer v-if="mission.satelliteView" :noWrap="true" :visible="currentLayer === -99" :url="mapUrl + '-99/{z}/{x}/{y}.png'"></l-tile-layer>
           <div v-for="floor in range(mission.lowestFloorNumber, mission.highestFloorNumber)" :key="'layer' + floor">
             <l-layer-group v-for="(group, key) in layerGroups" :key="floor + key" :visible="currentLayer == floor && !isLayerHidden(key)">
+              <div v-if="group.name === 'Ledge'">
+              <l-polyline v-for="ledge in ledges.filter(el=>el.level==floor)" :key="ledge.id" color="#fff" :weight="4" :opacity=".75" :lat-lngs="parseCoords(ledge.vertices)">
+              </l-polyline>
+              </div>
+              <div v-else>
               <l-marker v-for="item in group.items.filter(el=>el.level==floor)" :key="item.id" :icon="generateIcon(item.icon)" :latLng="item.latLng" :draggable="editor.mode === 'items'" @dragend="moveMarker($event, item)">
                 <l-popup>
                   <img v-if="item.image" :src="'/cdn/png/' + item.image + '.png'" alt="Image template holder">
@@ -57,6 +63,7 @@
                 </l-popup>
                 <l-tooltip v-if="item.tooltip">{{item.tooltip}}</l-tooltip>
               </l-marker>
+              </div>
             </l-layer-group>
           </div>
       </l-map>
@@ -70,6 +77,13 @@
               <img src="/cdn/png/logos/map-header.png" class="img-fluid">
             </router-link>
           </div>
+          <div class="editor-enabled" v-if="editor.enabled">
+            <h3 v-if="editor.mode === ''">Editor Enabled</h3>
+            <h3 v-else-if="editor.mode === 'items'">ADD / REMOVE ITEMS</h3>
+            <h3 v-else-if="editor.mode === 'ledges'">ADD / REMOVE LEDGES</h3>
+            <h3 v-else-if="editor.mode === 'foliage'">ADD / REMOVE FOLIAGE</h3>
+            <h3 v-else-if="editor.mode === 'disguises'">MANAGE DISGUISE AREAS</h3>
+          </div>
           <div id="map-control">
             <div class="control-buttons">
               <button id="edit-button" @click="editor.enabled = !editor.enabled" class="btn control-button" data-toggle="tooltip" title="Edit Map"><i class="fas fa-pencil-alt"></i></button>
@@ -78,7 +92,8 @@
               </router-link>
             </div>
           </div>
-          <div class="accordion" id="accordion" v-if="!editor.enabled">
+          <br>
+          <div class="accordion" id="accordion" v-show="!editor.enabled">
             <div class="floor-toggle">
                 <div v-for="i in range(mission.lowestFloorNumber, mission.highestFloorNumber).reverse()" :key="i" class="floor-info" :class="{'selected': currentLayer === i}">
                     <div @click="changeLevel(i)" class="floor">
@@ -102,6 +117,32 @@
                 </select>
                 <button id="clear-search" class="btn control-button" data-toggle="tooltip" title="Clear Search" style="display: none"><i class="fas fa-times"></i></button>
             </div>
+            <div class="search-box" id="search-box-disguises" data-search="disguises">
+              <div class="card">
+                  <div class="card-header" id="header-disguises">
+                      <div class="name collapsed control-button" data-toggle="collapse"
+                          data-target="#body-disguises" aria-expanded="false" aria-controls="body-disguises">
+                          <i class="far fa-fw fa-user-tie"></i>
+                          <span class="disguise-text">Disguises</span>
+                          <span class="float-right">
+                              <i class="fas fa-caret-down"></i>
+                              <i class="fas fa-caret-up"></i>
+                          </span>
+                      </div>
+                  </div>
+                  <div id="body-disguises" class="collapse" aria-labelledby="header-disguises">
+                      <div class="card-body disguises">
+                          <div data-disguise-id="NONE" class="full-width selected" style="background: url('/cdn/webp/disguises/none.webp'); ">
+                              <p class="disguise-info">None</p>
+                          </div>
+                          <div data-disguise-id="NONE" v-for="disguise in disguises" :key="disguise.id" class="full-width" :style="{background: 'url(/cdn/webp/' + disguise.image + '.webp)'}">
+                              <p class="disguise-info">{{ disguise.name }}</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <button id="clear-disguise-search" class="btn control-button" data-toggle="tooltip" title="Clear Search" style="display: none"><i class="fas fa-times"></i></button>
+          </div>
             <div class="hide-or-select-all">
                 <button id="hide-all" @click="toggleLayer('|')" class="btn control-button"><i class="far fa-fw fa-eye"></i> Toggle All</button>
             </div>
@@ -144,19 +185,70 @@
               </div>
             </div>
           </div>
-          <div class="edit-menu" v-if="editor.enabled && editor.mode === ''">
+          <div class="edit-menu" v-show="editor.enabled && editor.mode === ''">
             <h2>Editor Menu</h2>
             <h3>What would you like to do?</h3>
             <div class="editor-button" @click="editorMenu('items')">
               <h3><i class="fas fa-fw fa-map-marker-alt"></i> Add / Remove Items</h3>
             </div>
+            <div class="editor-button" @click="editorMenu('ledges')">
+              <h3><i class="fas fa-fw fa-bezier-curve"></i> Add / Remove Ledges</h3>
+            </div>
+            <div class="editor-button" @click="editorMenu('foliage')">
+              <h3><i class="fas fa-fw fa-leaf"></i> Add / Remove Foliage</h3>
+            </div>
+            <div class="editor-button" @click="editorMenu('disguises')">
+              <h3><i class="fas fa-fw fa-user-tie"></i> Manage Disguise Areas</h3>
+            </div>
+            <p>Click the <i class="fas fa-pencil-alt"></i> icon to close the editor menu.</p>
           </div>
-          <div class="items-menu" v-if="editor.enabled && editor.mode === 'items'">
+          <div class="items-menu" v-show="editor.enabled && editor.mode === 'items'">
             <p><i class="fas fa-fw fa-plus-circle"></i> Click anywhere on the map to add a new item.</p>
             <p><i class="fas fa-fw fa-arrows-alt"></i> Drag and drop an existing item to move it.</p>
             <p><i class="fas fa-fw fa-trash"></i> Click on an existing item and then the "Delete" button to delete it.</p>
             <div class="editor-button" @click="editorMenu('')">
               <h3><i class="fas fa-times-circle"></i> Close Item Menu</h3>
+            </div>
+          </div>
+          <div class="ledges-menu" v-show="editor.enabled && editor.mode === 'ledges'">
+            <p data-ledge="delete-help"><i class="fas fa-trash"></i> Click on an existing ledge to delete it.</p>
+            <div class="editor-button" @click="toggleDraw('Line')">
+                <h3><i class="fas fa-plus-circle"></i> Add Ledge</h3>
+                <p>Click here to enable / disable ledge builder</p>
+            </div>
+            <div class="editor-button" @click="editorMenu(''); $refs.map.mapObject.pm.disableDraw('Line')">
+                <h3><i class="fas fa-times-circle"></i> Close Ledge Menu</h3>
+            </div>
+          </div>
+          <div class="foliage-menu" v-show="editor.enabled && editor.mode === 'foliage'">
+            <p data-foliage="delete-help"><i class="fas fa-trash"></i> Click on an existing foliage to delete it.</p>
+            <div class="editor-button" data-foliage="add">
+                <h3><i class="fas fa-plus-circle"></i> Add Foliage</h3>
+                <p>Click here to enable / disable foliage builder</p>
+            </div>
+            <div class="editor-button" @click="editorMenu(''); $refs.map.mapObject.pm.disableDraw('Polyy')">
+                <h3><i class="fas fa-times-circle"></i> Close Foliage Menu</h3>
+            </div>
+          </div>
+          <div class="disguise-trespassing-menu" v-show="editor.enabled && editor.mode === 'disguises'">
+            <p data-disguise="delete-help"><i class="fas fa-trash"></i> Click on an existing region to delete it.</p>
+            <p>Select a disguise from the dropdown below to edit its layout.</p>
+            <div class="search-box">
+              <select name="disguise-menu-dropdown" class="selectpicker" data-style="control-button">
+                <option value="NONE">None</option>
+                <option v-for="disguise in disguises" :key="disguise.id" :value="disguise.id">{{ disguise.name }}</option>
+              </select>
+            </div>
+            <div class="editor-button" data-disguise="add" data-type="trespassing" style="display: none">
+                <h3><i class="fas fa-plus-circle"></i> Add Trespassing Region</h3>
+                <p>Click here to enable / disable trespassing region builder</p>
+            </div>
+            <div class="editor-button" data-disguise="add" data-type="hostile" style="display: none">
+                <h3><i class="fas fa-plus-circle"></i> Add Hostile Region</h3>
+                <p>Click here to enable / disable hostile region builder</p>
+            </div>
+            <div class="editor-button" @click="editorMenu(''); $refs.map.mapObject.pm.disableDraw('Poly')">
+                <h3><i class="fas fa-times-circle"></i> Close Disguise Area Menu</h3>
             </div>
           </div>
         </div>
@@ -363,8 +455,11 @@
 </template>
 
 <script>
-import {LMap, LTileLayer, LMarker, LLayerGroup, LTooltip, LPopup } from 'vue2-leaflet';
+import {LMap, LTileLayer, LMarker, LLayerGroup, LTooltip, LPopup, LPolyline } from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css'
+
+import 'leaflet.pm';
+import 'leaflet.pm/dist/leaflet.pm.css';
 
 export default {
     name: 'map-view',
@@ -374,15 +469,16 @@ export default {
         LMarker,
         LLayerGroup,
         LTooltip,
-        LPopup
+        LPopup,
+        LPolyline
     },
     title () {
       return this.mission ? this.mission.name : "Loading"
     },
     data () {
         return {
-            test: 123,
-            mission: null,
+            disguises: [],
+            ledges: [],
             nodes: null,
             searchableNodes: null,
             currentLayer: 0,
@@ -399,18 +495,22 @@ export default {
               currentCategory: null,
               notes: [],
               clickedPoint: {},
-              currentMarker: {}
+              currentMarker: {},
+              vertices: []
             }
         }
     },
     computed: {
+        mission: function () {
+          return this.$store.state.mission
+        },
         mapUrl: function() {
-            return this.$domain + '/api/maps/' + this.mission.mapFolderName + '/tiles/'
+          return this.$domain + '/api/maps/' + this.mission.mapFolderName + '/tiles/'
         },
         loadingTile: function() {
-            if(mission !== "Elusive Target") {
-                return "png/mission-thumbnails/" + this.game.slug + "/" + this.mission.slug + ".png"
-            }
+          if(this.mission.missionType !== "Elusive Target") {
+              return "png/mission-thumbnails/" + this.$route.params.slug + "/" + this.mission.slug + ".png"
+          }
         },
         currentCategory: function() {
           var split = this.editor.currentCategory.split("|")
@@ -594,13 +694,54 @@ export default {
             }
               this.hiddenLayers.push(name)
           }
+        },
+        toggleDraw: function(type) {
+          if(this.$refs.map.mapObject.pm.Draw[type]._enabled) {
+            this.$refs.map.mapObject.pm.disableDraw(type)
+          } else {
+            this.$refs.map.mapObject.pm.enableDraw(type)
+          }
+        },
+        initDraw: function(e) {
+          e.workingLayer.on('pm:vertexadded', (e) => {
+            console.log(e.latlng)
+            this.editor.vertices.push([e.latlng.lat, e.latlng.lng])
+          })
+        },
+        endDraw: function(e) {
+          var data = new FormData()
+          if(e.shape === "Line") {
+            this.editor.vertices.forEach((element, index) => {
+              data.append("vertices[" + index + "][]", element[0])
+              data.append("vertices[" + index + "][]", element[1])
+            })
+            data.append("missionId", this.mission.id)
+            data.append("level", this.currentLayer)
+            this.$http.post(this.$domain + "/api/ledges", data).then(resp => {
+              this.editor.vertices = []
+            })
+          }
+        },
+        parseCoords: function(coords) {
+          var latlngs = []
+          coords.forEach(element => {
+            var latlng = element.split(",")
+            latlngs.push([latlng[0], latlng[1]])
+          })
+          return latlngs
         }
+    },
+    beforeCreate: function() {
+      if(this.$store.state.mission == null) {
+        this.$http.get(this.$domain + "/api/v1/games/" + this.$route.params.slug + "/locations/" + this.$route.params.location + "/missions/" + this.$route.params.mission).then(resp => {
+          this.$store.commit("SET_MISSION", resp.data[0])
+        })
+      }
     },
     created: function () {
         this.$http.get(this.$domain + "/api/v1/games/" + this.$route.params.slug + "/locations/" + this.$route.params.location + "/missions/" + this.$route.params.mission + "/" + this.$route.params.difficulty + "/map").then(resp => {
             this.$route.meta.title = resp.data.mission.name
             this.currentLayer = resp.data.mission.startingFloorNumber
-            this.mission = resp.data.mission
             for(var group in resp.data.nodes) {
               for(var subgroup in resp.data.nodes[group].items) {
                 resp.data.nodes[group].items[subgroup].items.forEach(item => {
@@ -608,6 +749,8 @@ export default {
                 })
               }
             }
+            this.disguises = resp.data.disguises
+            this.ledges = resp.data.ledges
             this.nodes = resp.data.nodes
             this.searchableNodes = resp.data.searchableNodes
             resp.data.categories.forEach(category => {
