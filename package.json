@@ -10,6 +10,7 @@
     "axios": "^0.18.0",
     "core-js": "^2.6.5",
     "leaflet": "^1.4.0",
+    "leaflet.pm": "^2.0.3",
     "vee-validate": "^2.2.2",
     "vue": "^2.6.6",
     "vue-recaptcha": "^1.1.1",

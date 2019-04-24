@@ -143,7 +143,7 @@
 
 <script>
 import VeeValidate from 'vee-validate'
-import VueRecaptcha from 'vue-recaptcha';
+import VueRecaptcha from 'vue-recaptcha'
 import Vue from 'vue'
 
 Vue.use(VeeValidate)
