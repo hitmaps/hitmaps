@@ -38,6 +38,10 @@
               <l-polyline v-for="ledge in ledges.filter(el=>el.level==floor)" :key="ledge.id" color="#fff" :weight="4" :opacity=".75" :lat-lngs="parseCoords(ledge.vertices)">
               </l-polyline>
               </div>
+              <div v-else-if="group.name === 'Foliage'">
+              <l-polygon v-for="item in foliage.filter(el=>el.level==floor)" :key="item.id" color="#248f24" :weight="4" :opacity=".75" :lat-lngs="parseCoords(item.vertices)">
+              </l-polygon>
+              </div>
               <div v-else>
               <l-marker v-for="item in group.items.filter(el=>el.level==floor)" :key="item.id" :icon="generateIcon(item.icon)" :latLng="item.latLng" :draggable="editor.mode === 'items'" @dragend="moveMarker($event, item)">
                 <l-popup>
@@ -222,11 +226,11 @@
           </div>
           <div class="foliage-menu" v-show="editor.enabled && editor.mode === 'foliage'">
             <p data-foliage="delete-help"><i class="fas fa-trash"></i> Click on an existing foliage to delete it.</p>
-            <div class="editor-button" data-foliage="add">
+            <div class="editor-button" @click="toggleDraw('Polygon')">
                 <h3><i class="fas fa-plus-circle"></i> Add Foliage</h3>
                 <p>Click here to enable / disable foliage builder</p>
             </div>
-            <div class="editor-button" @click="editorMenu(''); $refs.map.mapObject.pm.disableDraw('Polyy')">
+            <div class="editor-button" @click="editorMenu(''); $refs.map.mapObject.pm.disableDraw('Polygon')">
                 <h3><i class="fas fa-times-circle"></i> Close Foliage Menu</h3>
             </div>
           </div>
@@ -247,7 +251,7 @@
                 <h3><i class="fas fa-plus-circle"></i> Add Hostile Region</h3>
                 <p>Click here to enable / disable hostile region builder</p>
             </div>
-            <div class="editor-button" @click="editorMenu(''); $refs.map.mapObject.pm.disableDraw('Poly')">
+            <div class="editor-button" @click="editorMenu(''); $refs.map.mapObject.pm.disableDraw('Polygon')">
                 <h3><i class="fas fa-times-circle"></i> Close Disguise Area Menu</h3>
             </div>
           </div>
@@ -455,7 +459,7 @@
 </template>
 
 <script>
-import {LMap, LTileLayer, LMarker, LLayerGroup, LTooltip, LPopup, LPolyline } from 'vue2-leaflet';
+import {LMap, LTileLayer, LMarker, LLayerGroup, LTooltip, LPopup, LPolyline, LPolygon } from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css'
 
 import 'leaflet.pm';
@@ -470,7 +474,8 @@ export default {
         LLayerGroup,
         LTooltip,
         LPopup,
-        LPolyline
+        LPolyline,
+        LPolygon
     },
     title () {
       return this.mission ? this.mission.name : "Loading"
@@ -496,7 +501,8 @@ export default {
               notes: [],
               clickedPoint: {},
               currentMarker: {},
-              vertices: []
+              vertices: [],
+              foliage: []
             }
         }
     },
@@ -696,6 +702,7 @@ export default {
           }
         },
         toggleDraw: function(type) {
+          console.log(this.$refs.map.mapObject.pm.Draw)
           if(this.$refs.map.mapObject.pm.Draw[type]._enabled) {
             this.$refs.map.mapObject.pm.disableDraw(type)
           } else {
@@ -710,14 +717,18 @@ export default {
         },
         endDraw: function(e) {
           var data = new FormData()
+          this.editor.vertices.forEach((element, index) => {
+            data.append("vertices[" + index + "][]", element[0])
+            data.append("vertices[" + index + "][]", element[1])
+          })
+          data.append("missionId", this.mission.id)
+          data.append("level", this.currentLayer)
           if(e.shape === "Line") {
-            this.editor.vertices.forEach((element, index) => {
-              data.append("vertices[" + index + "][]", element[0])
-              data.append("vertices[" + index + "][]", element[1])
-            })
-            data.append("missionId", this.mission.id)
-            data.append("level", this.currentLayer)
             this.$http.post(this.$domain + "/api/ledges", data).then(resp => {
+              this.editor.vertices = []
+            })
+          } else if(this.editor.mode === 'foliage') {
+            this.$http.post(this.$domain + "/api/foliage", data).then(resp => {
               this.editor.vertices = []
             })
           }
@@ -751,6 +762,7 @@ export default {
             }
             this.disguises = resp.data.disguises
             this.ledges = resp.data.ledges
+            this.foliage = resp.data.foliage
             this.nodes = resp.data.nodes
             this.searchableNodes = resp.data.searchableNodes
             resp.data.categories.forEach(category => {
