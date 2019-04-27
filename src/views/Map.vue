@@ -29,17 +29,21 @@
           </div>
       </div>
       <l-map id="map" ref="map" @click="addMarker" :minZoom="3" :maxZoom="5" :maxBounds="[[this.mission.topLeftCoordinate.split(',')[0], this.mission.topLeftCoordinate.split(',')[1]], [this.mission.bottomRightCoordinate.split(',')[0],this.mission.bottomRightCoordinate.split(',')[1]]]" 
-      :crs="crs" @pm:drawstart="initDraw" @pm:drawend="endDraw">
+      :crs="crs" @pm:drawstart="initDraw" @pm:create="pmLayer" @pm:drawend="endDraw">
           <l-tile-layer v-for="floor in range(mission.lowestFloorNumber, mission.highestFloorNumber)" :key="floor" :noWrap="true" :visible="currentLayer === floor" :url="mapUrl + floor +  '/{z}/{x}/{y}.png'" ></l-tile-layer>
           <l-tile-layer v-if="mission.satelliteView" :noWrap="true" :visible="currentLayer === -99" :url="mapUrl + '-99/{z}/{x}/{y}.png'"></l-tile-layer>
           <div v-for="floor in range(mission.lowestFloorNumber, mission.highestFloorNumber)" :key="'layer' + floor">
+            <l-layer-group v-for="disguise in disguises" :key="floor + disguise.name" :visible="currentLayer == floor && editor.currentDisguise === disguise.id">
+              <l-polygon v-for="item in disguise.areas.filter(el=>el.level==floor)" :key="item.id" :lat-lngs="parseCoords(item.vertices)" :fillColor="item.type === 'trespassing' ? 'yellow' : '#f00'" :stroke="false" :weight="4" :opacity=".75">
+              </l-polygon>
+            </l-layer-group>
             <l-layer-group v-for="(group, key) in layerGroups" :key="floor + key" :visible="currentLayer == floor && !isLayerHidden(key)">
               <div v-if="group.name === 'Ledge'">
               <l-polyline v-for="ledge in ledges.filter(el=>el.level==floor)" :key="ledge.id" color="#fff" :weight="4" :opacity=".75" :lat-lngs="parseCoords(ledge.vertices)">
               </l-polyline>
               </div>
               <div v-else-if="group.name === 'Foliage'">
-              <l-polygon v-for="item in foliage.filter(el=>el.level==floor)" :key="item.id" color="#248f24" :weight="4" :opacity=".75" :lat-lngs="parseCoords(item.vertices)">
+              <l-polygon v-for="item in foliage.filter(el=>el.level==floor)" :key="item.id" color="#248f24" fillColor="#248f24" :weight="4" :opacity=".75" :lat-lngs="parseCoords(item.vertices)">
               </l-polygon>
               </div>
               <div v-else>
@@ -58,7 +62,7 @@
                       <div data-name="note-contents">{{note.text}}</div>
                     </div>
                   </div>
-                  <button class="btn btn-danger btn-sm" data-action="delete-btn" data-node-id="x" data-toggle="tooltip" title="Delete">
+                  <button class="btn btn-danger btn-sm" data-action="delete-btn" @click="deleteMarker(item)" data-toggle="tooltip" title="Delete">
                       <i class="fas fa-times"></i>
                   </button>
                   <button class="btn btn-warning btn-sm" data-action="edit-btn" @click="editMarker(item)" data-node-id="x" data-toggle="tooltip" title="Edit">
@@ -127,7 +131,7 @@
                       <div class="name collapsed control-button" data-toggle="collapse"
                           data-target="#body-disguises" aria-expanded="false" aria-controls="body-disguises">
                           <i class="far fa-fw fa-user-tie"></i>
-                          <span class="disguise-text">Disguises</span>
+                          <span class="disguise-text">{{currentDisguise === null ? 'Disguises' : currentDisguise.name}}</span>
                           <span class="float-right">
                               <i class="fas fa-caret-down"></i>
                               <i class="fas fa-caret-up"></i>
@@ -136,10 +140,10 @@
                   </div>
                   <div id="body-disguises" class="collapse" aria-labelledby="header-disguises">
                       <div class="card-body disguises">
-                          <div data-disguise-id="NONE" class="full-width selected" style="background: url('/cdn/webp/disguises/none.webp'); ">
+                          <div @click="changeDisguise('NONE')" data-disguise-id="NONE" class="full-width selected" style="background: url('/cdn/webp/disguises/none.webp'); ">
                               <p class="disguise-info">None</p>
                           </div>
-                          <div data-disguise-id="NONE" v-for="disguise in disguises" :key="disguise.id" class="full-width" :style="{background: 'url(/cdn/webp/' + disguise.image + '.webp)'}">
+                          <div @click="changeDisguise(disguise)" :data-disguise-id="disguise.id" v-for="disguise in disguises" :key="disguise.id" class="full-width" :style="{background: 'url(/cdn/webp/' + disguise.image + '.webp)'}">
                               <p class="disguise-info">{{ disguise.name }}</p>
                           </div>
                       </div>
@@ -170,7 +174,7 @@
                   <div v-for="group in type.items" :key="type.name + group.name" :class="{'full-width': group.collapsible, 'half-width': !group.collapsible}">
                     <div class="name" @click="toggleLayer(type.name + '|' + group.name)" :class="{'map-hidden': isLayerHidden(type.name + '|' + group.name)}">
                       <img :src="'/img/map-icons/' + group.icon + '.png'" :alt="group.name + ' Icon'" class="img-fluid">
-                      <span>{{group.name}}</span>
+                      <span> {{group.name}}</span>
                     </div>
                     <div v-if="group.collapsible" class="visibility-toggle collapsed" data-toggle="collapse" :data-target="'#collapsible-' + collapsible(type, group)">
                       <i class="fas fa-caret-up"></i>
@@ -238,16 +242,16 @@
             <p data-disguise="delete-help"><i class="fas fa-trash"></i> Click on an existing region to delete it.</p>
             <p>Select a disguise from the dropdown below to edit its layout.</p>
             <div class="search-box">
-              <select name="disguise-menu-dropdown" class="selectpicker" data-style="control-button">
+              <select ref="disguisePicker" @change="editor.currentDisguise = $event.target.value" name="disguise-menu-dropdown" class="selectpicker" data-style="control-button">
                 <option value="NONE">None</option>
                 <option v-for="disguise in disguises" :key="disguise.id" :value="disguise.id">{{ disguise.name }}</option>
               </select>
             </div>
-            <div class="editor-button" data-disguise="add" data-type="trespassing" style="display: none">
+            <div class="editor-button" data-disguise="add" data-type="trespassing" @click="toggleDraw('Polygon'); editor.disguiseType = 'trespassing'" v-if="editor.currentDisguise != 'NONE'">
                 <h3><i class="fas fa-plus-circle"></i> Add Trespassing Region</h3>
                 <p>Click here to enable / disable trespassing region builder</p>
             </div>
-            <div class="editor-button" data-disguise="add" data-type="hostile" style="display: none">
+            <div class="editor-button" data-disguise="add" data-type="hostile" @click="toggleDraw('Polygon'); editor.disguiseType = 'hostile'" v-if="editor.currentDisguise != 'NONE'">
                 <h3><i class="fas fa-plus-circle"></i> Add Hostile Region</h3>
                 <p>Click here to enable / disable hostile region builder</p>
             </div>
@@ -484,6 +488,7 @@ export default {
         return {
             disguises: [],
             ledges: [],
+            foliage: [],
             nodes: null,
             searchableNodes: null,
             currentLayer: 0,
@@ -498,11 +503,13 @@ export default {
               templates: null,
               icons: null,
               currentCategory: null,
+              currentDisguise: "NONE",
+              disguiseType: null,
               notes: [],
               clickedPoint: {},
               currentMarker: {},
               vertices: [],
-              foliage: []
+              workingLayers: [],
             }
         }
     },
@@ -521,6 +528,10 @@ export default {
         currentCategory: function() {
           var split = this.editor.currentCategory.split("|")
           return this.categories[split[0]].find(element => element.subgroup == split[1])
+        },
+        currentDisguise: function() {
+          if(this.editor.currentDisguise === "NONE") return null
+          return this.disguises.find(element => element.id == this.editor.currentDisguise)
         },
         pickIconAllowed: function() {
           if(!this.editor.currentCategory) return true
@@ -666,6 +677,12 @@ export default {
             $(this.$refs.editModal).modal('hide')
           })
         },
+        deleteMarker: function(node) {
+          this.$http.get(this.$domain + "/api/nodes/delete/" + node.id).then(resp => {
+            console.log("Node successfully deleted")
+            this.layerGroups[node.type + "|" + node.group].items.splice(this.layerGroups[node.type + "|" + node.group].items.indexOf(node), 1)
+          })
+        },
         generateIcon: function(icon) {
           return L.icon({iconUrl: '/img/map-icons/' + icon + '.png',
                     iconSize: [32, 32],
@@ -706,7 +723,7 @@ export default {
           if(this.$refs.map.mapObject.pm.Draw[type]._enabled) {
             this.$refs.map.mapObject.pm.disableDraw(type)
           } else {
-            this.$refs.map.mapObject.pm.enableDraw(type)
+            this.$refs.map.mapObject.pm.enableDraw(type, { snappable: false })
           }
         },
         initDraw: function(e) {
@@ -714,6 +731,9 @@ export default {
             console.log(e.latlng)
             this.editor.vertices.push([e.latlng.lat, e.latlng.lng])
           })
+        },
+        pmLayer: function(e) {
+          this.editor.workingLayers.push(e.layer)
         },
         endDraw: function(e) {
           var data = new FormData()
@@ -726,10 +746,31 @@ export default {
           if(e.shape === "Line") {
             this.$http.post(this.$domain + "/api/ledges", data).then(resp => {
               this.editor.vertices = []
+              this.ledges.push(resp.data)
+              this.editor.workingLayers.forEach(el => {
+                this.$refs.map.mapObject.removeLayer(el)
+              })
+              this.editor.workingLayers = []
             })
           } else if(this.editor.mode === 'foliage') {
             this.$http.post(this.$domain + "/api/foliage", data).then(resp => {
               this.editor.vertices = []
+              this.foliage.push(resp.data)
+              this.editor.workingLayers.forEach(el => {
+                this.$refs.map.mapObject.removeLayer(el)
+              })
+              this.editor.workingLayers = []
+            })
+          } else if(this.editor.mode === 'disguises') {
+            data.append("disguiseId", this.editor.currentDisguise)
+            data.append("type", this.editor.disguiseType)
+            this.$http.post(this.$domain + "/api/disguise-areas", data).then(resp => {
+              this.editor.vertices = []
+              this.disguises.find(el=> el.id == this.editor.currentDisguise).areas.push(resp.data)
+              this.editor.workingLayers.forEach(el => {
+                this.$refs.map.mapObject.removeLayer(el)
+              })
+              this.editor.workingLayers = []
             })
           }
         },
@@ -740,6 +781,11 @@ export default {
             latlngs.push([latlng[0], latlng[1]])
           })
           return latlngs
+        },
+        changeDisguise: function(disguise) {
+          this.editor.currentDisguise = disguise.id || disguise
+          $(this.$refs.disguisePicker).selectpicker('val', disguise.id || disguise)
+          $('#header-disguises').find('.name').click()
         }
     },
     beforeCreate: function() {
