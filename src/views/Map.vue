@@ -20,7 +20,7 @@
               <div @click="changeLevel(i)" class="floor">
                   Level {{ i }}
               </div>
-              <div class="item-count">#</div>
+              <div :class="{'has-search-results': hasSearchResults(i)}" class="item-count">{{calculateNumber(i)}}</div>
           </div>
           <div class="floor-info text-center " :class="{'selected': currentLayer === -99}">
               <div @click="changeLevel(-99)" class="floor">
@@ -47,7 +47,9 @@
               </l-polygon>
               </div>
               <div v-else>
-              <l-marker v-for="item in group.items.filter(el=>el.level==floor)" :key="item.id" :icon="generateIcon(item.icon)" :latLng="item.latLng" :draggable="editor.mode === 'items'" @dragend="moveMarker($event, item)">
+              <l-marker v-for="item in group.items.filter(el=>el.level==floor)" :key="item.id" :latLng="item.latLng" :draggable="editor.mode === 'items'" @dragend="moveMarker($event, item)">
+                <l-icon :icon-url="'/img/map-icons/' + item.icon + '.png'" :icon-size="[32, 32]" :icon-anchor="[16, 16]"
+                :class-name="isSearchResult(item) ? 'search-result' : ''"></l-icon>
                 <l-popup>
                   <img v-if="item.image" :src="'/cdn/png/' + item.image + '.png'" alt="Image template holder">
                   <div data-name="name">{{item.name}}</div>
@@ -107,7 +109,7 @@
                     <div @click="changeLevel(i)" class="floor">
                         Level {{ i }}
                     </div>
-                    <div class="item-count">#</div>
+                    <div :class="{'has-search-results': hasSearchResults(i)}" class="item-count">{{calculateNumber(i)}}</div>
                 </div>
                 <div class="floor-info text-center " :class="{'selected': currentLayer === -99}">
                     <div @click="changeLevel(-99)" class="floor">
@@ -116,14 +118,14 @@
                 </div>
             </div>
             <div class="search-box" id="search-box-items" data-search="items">
-                <select name="search" class="selectpicker" data-live-search="true" data-title="<i class='fas fa-fw fa-search'></i> Search" data-style="control-button">
+                <select @change="searchItem" ref="itemSearch" name="search" class="selectpicker" data-live-search="true" data-title="<i class='fas fa-fw fa-search'></i> Search" data-style="control-button">
                     <template v-for="(type, key) in searchableNodes">
                       <optgroup v-for="group in type.items" :key="key + group.name" :label="group.name">
-                        <option v-for="node in group.items" :key="node.name" :data-layer="key + '|' + group.name ">{{ node.name }}</option>
+                        <option v-for="node in group.items" :key="node.name" :data-layer="key + '|' + group.name " :value="key + '|' + group.name + ';' + node.name">{{ node.name }}</option>
                       </optgroup>
                     </template>
                 </select>
-                <button id="clear-search" class="btn control-button" data-toggle="tooltip" title="Clear Search" style="display: none"><i class="fas fa-times"></i></button>
+                <button @click="clearSearch" id="clear-search" class="btn control-button" data-toggle="tooltip" title="Clear Search" v-show="searchedItem != null"><i class="fas fa-times"></i></button>
             </div>
             <div class="search-box" id="search-box-disguises" data-search="disguises">
               <div class="card">
@@ -463,7 +465,7 @@
 </template>
 
 <script>
-import {LMap, LTileLayer, LMarker, LLayerGroup, LTooltip, LPopup, LPolyline, LPolygon } from 'vue2-leaflet';
+import {LMap, LTileLayer, LMarker, LLayerGroup, LTooltip, LPopup, LPolyline, LPolygon, LIcon } from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css'
 
 import 'leaflet.pm';
@@ -479,7 +481,8 @@ export default {
         LTooltip,
         LPopup,
         LPolyline,
-        LPolygon
+        LPolygon,
+        LIcon
     },
     title () {
       return this.mission ? this.mission.name : "Loading"
@@ -497,6 +500,7 @@ export default {
             categories: {},
             mapLoaded: false,
             hiddenLayers: [],
+            searchedItem: null,
             editor: {
               enabled: false,
               mode: "",
@@ -683,13 +687,6 @@ export default {
             this.layerGroups[node.type + "|" + node.group].items.splice(this.layerGroups[node.type + "|" + node.group].items.indexOf(node), 1)
           })
         },
-        generateIcon: function(icon) {
-          return L.icon({iconUrl: '/img/map-icons/' + icon + '.png',
-                    iconSize: [32, 32],
-                    iconAnchor: [16, 16],
-                    popupAnchor: [0, 0]
-                })
-        },
         isLayerHidden: function(name) {
           name = name.replace("*", "")
           return this.hiddenLayers.indexOf(name) != -1 || this.hiddenLayers.indexOf(name.split("|")[0] + "|") != -1 
@@ -786,6 +783,38 @@ export default {
           this.editor.currentDisguise = disguise.id || disguise
           $(this.$refs.disguisePicker).selectpicker('val', disguise.id || disguise)
           $('#header-disguises').find('.name').click()
+        },
+        calculateNumber(floor) {
+          var count = 0
+          for(var [key, val] of Object.entries(this.layerGroups)) {
+            if(!this.isLayerHidden(key)) {
+              count += val.items.filter(el => el.level == floor).length
+            }
+          }
+          return count
+        },
+        searchItem(event) {
+          $('.search-box[data-search="items"]').find('.bootstrap-select').addClass('item-selected').end()
+          var item = event.target.value.split(";")
+          if(this.isLayerHidden(item[0])) {
+            this.toggleLayer(item[0])
+          }
+          var group = JSON.parse(JSON.stringify(this.layerGroups[item[0]]))
+          group.items = group.items.filter(el => el.name == item[1])
+          this.searchedItem = group
+        },
+        hasSearchResults(floor) {
+          if(this.searchedItem == null) return false
+          return this.searchedItem.items.filter(el => el.level == floor).length > 0
+        },
+        isSearchResult(item) {
+          if(this.searchedItem == null) return false
+          return this.searchedItem.items.filter(el => el.id == item.id).length > 0 
+        },
+        clearSearch() {
+          this.searchedItem = null
+          $('.search-box[data-search="items"]').find('.bootstrap-select').removeClass('item-selected').end()
+          $(this.$refs.itemSearch).selectpicker('val', '')
         }
     },
     beforeCreate: function() {
