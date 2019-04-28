@@ -14,14 +14,13 @@ HITMAN Maps is an interactive site for viewing maps for HITMAN (2016) and HITMAN
         7. `loggingAccessToken`: If you want to use Rollbar integration for logging,
         put your Rollbar token here.
         8. `superSecretPublicCode`: The registration code to register an account
-        9. `cdnLocation`: Leave this as `/cdn`
-        10. `recaptchaSiteKey`: Use '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
-        11. `recaptchaSiteSecret`: Use '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
-        12. `emailMethod`: Use either 'SMTP' or 'MAILGUN'
-        13. `smtp[Domain|Username|Password]`: SMTP server information if using SMTP
-        14. `noReplyEmail`: The "from" address when sending out emails
-        15. `bccEmail`: An email address if you want a copy of all emails sent out copied to 1 address
-        16. `mailgun[ApiKey|Domain]`: Mailgun API information if using Mailgun
+        9. `recaptchaSiteKey`: Use '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
+        10. `recaptchaSiteSecret`: Use '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
+        11. `emailMethod`: Use either 'SMTP' or 'MAILGUN'
+        12. `smtp[Domain|Username|Password]`: SMTP server information if using SMTP
+        13. `noReplyEmail`: The "from" address when sending out emails
+        14. `bccEmail`: An email address if you want a copy of all emails sent out copied to 1 address
+        15. `mailgun[ApiKey|Domain]`: Mailgun API information if using Mailgun
     2. If you want to have push notification support, you will have to create a
      Firebase account and project, and then export the `firebase-service-account.json` file to this folder
 3. Copy `phinx.yml.example` to `phinx.yml` and update the `database` section with your MySQL database's information

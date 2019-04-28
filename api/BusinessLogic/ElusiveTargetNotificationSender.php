@@ -58,7 +58,7 @@ class ElusiveTargetNotificationSender {
             $beginningDateForComparison = $elusiveTarget->getBeginningTime();
             $availableDays = $elusiveTarget->getEndingTime()->diff($beginningDateForComparison)->format('%a');
             $body = "{$elusiveTarget->getName()} is arriving on {$beginningDate} and will be available for {$availableDays} days!";
-            $imageUrl = "/cdn/jpg{$elusiveTarget->getImageUrl()}.jpg";
+            $imageUrl = "/img/jpg{$elusiveTarget->getImageUrl()}.jpg";
             $response = $this->firebaseClient->sendElusiveTargetMessage("{$environment}-elusive-target-coming",
                 $title,
                 $body,
@@ -88,7 +88,7 @@ class ElusiveTargetNotificationSender {
         if ($availableDays > 7 && !$elusiveTarget->getPlayableNotificationSent()) {
             $title = "Elusive Target Arrived";
             $body = "{$elusiveTarget->getName()} has arrived and will be available for {$availableDays} days!";
-            $imageUrl = "/cdn/jpg{$elusiveTarget->getImageUrl()}.jpg";
+            $imageUrl = "/img/jpg{$elusiveTarget->getImageUrl()}.jpg";
             $this->firebaseClient->sendElusiveTargetMessage("{$environment}-elusive-target-playable",
                 $title,
                 $body,
