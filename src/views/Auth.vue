@@ -1,10 +1,10 @@
 <template>
-    <div>
+    <div class="content" style="background: url('/img/webp/backgrounds/loading.webp') no-repeat center center fixed; background-size: cover">
         <header class="row">
             <div class="col text-center">
                 <h1>Interactive Maps For</h1>
                 <router-link :to="{name: 'home'}">
-                    <img src="/cdn/png/logos/hitman2.png" class="img-fluid">
+                    <img src="/img/png/logos/hitman2.png" class="img-fluid">
                 </router-link>
                 <h2>Login or Create an Account</h2>
             </div>

@@ -68,7 +68,7 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]?', function 
     if ($request->location === null) {
         $locations = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findBy(['game' => $request->game], ['order' => 'ASC']);
         foreach ($locations as $location) {
-            $missions = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Mission::class)->findBy(['locationId' => $location->getId()], ['order' => 'ASC']);
+            $missions = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Mission::class)->findActiveMissionsByLocation($location->getId());
             /* @var $mission \DataAccess\Models\Mission */
             foreach ($missions as $mission) {
                 $missionDifficulties = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\MissionDifficulty::class)->findBy(['missionId' => $mission->getId()]);
@@ -262,7 +262,7 @@ $klein->respond('GET', '/api/v1/elusive-targets', function(\Klein\Request $reque
         $viewModel->name = $elusiveTarget->getName();
         $viewModel->briefing = $elusiveTarget->getBriefing();
         $viewModel->endingTime = $elusiveTarget->getEndingTime()->format(DateTime::ATOM);
-        $viewModel->tileUrl = "{$constants->siteDomain}{$settings->cdnLocation}/jpg{$elusiveTarget->getImageUrl()}.jpg";
+        $viewModel->tileUrl = "{$constants->siteDomain}/img/jpg{$elusiveTarget->getImageUrl()}.jpg";
         $viewModel->videoBriefingUrl = $elusiveTarget->getVideoBriefingUrl();
         $viewModel->missionUrl = "{$constants->siteDomain}{$missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId(), 'standard')}";
 
