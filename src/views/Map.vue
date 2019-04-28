@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div v-if="!mapLoaded && mission != null" class="overlay" style="background: #ccc url('/cdn/webp/backgrounds/loading.webp') no-repeat; background-size: cover">
+    <div v-if="!mapLoaded && mission != null" class="overlay" style="background: #ccc url('/img/webp/backgrounds/loading.webp') no-repeat; background-size: cover">
         <div class="overlay-container">
-            <img class="img-fluid" :src="'/cdn/' + loadingTile" alt="Mission Thumbnail">
+            <img class="img-fluid" :src="'/img/' + loadingTile" alt="Mission Thumbnail">
             <div class="footer">
                 <div class="footer-image">
                     <img src="/img/game-icons/mission-inverted.png" class="img-fluid" alt="Mission Icon">
@@ -51,7 +51,7 @@
                 <l-icon :icon-url="'/img/map-icons/' + item.icon + '.png'" :icon-size="[32, 32]" :icon-anchor="[16, 16]"
                 :class-name="isSearchResult(item) ? 'search-result' : ''"></l-icon>
                 <l-popup>
-                  <img v-if="item.image" :src="'/cdn/png/' + item.image + '.png'" alt="Image template holder">
+                  <img v-if="item.image" :src="'/img/png/' + item.image + '.png'" alt="Image template holder">
                   <div data-name="name">{{item.name}}</div>
                   <div data-name="group">{{item.group}}</div>
                   <div data-name="target">
@@ -84,7 +84,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <div class="header">
             <router-link :to="{name: 'home'}">
-              <img src="/cdn/png/logos/map-header.png" class="img-fluid">
+              <img src="/img/png/logos/map-header.png" class="img-fluid">
             </router-link>
           </div>
           <div class="editor-enabled" v-if="editor.enabled">
@@ -142,10 +142,10 @@
                   </div>
                   <div id="body-disguises" class="collapse" aria-labelledby="header-disguises">
                       <div class="card-body disguises">
-                          <div @click="changeDisguise('NONE')" data-disguise-id="NONE" class="full-width selected" style="background: url('/cdn/webp/disguises/none.webp'); ">
+                          <div @click="changeDisguise('NONE')" data-disguise-id="NONE" class="full-width selected" style="background: url('/img/webp/disguises/none.webp'); ">
                               <p class="disguise-info">None</p>
                           </div>
-                          <div @click="changeDisguise(disguise)" :data-disguise-id="disguise.id" v-for="disguise in disguises" :key="disguise.id" class="full-width" :style="{background: 'url(/cdn/webp/' + disguise.image + '.webp)'}">
+                          <div @click="changeDisguise(disguise)" :data-disguise-id="disguise.id" v-for="disguise in disguises" :key="disguise.id" class="full-width" :style="{background: 'url(/img/webp/' + disguise.image + '.webp)'}">
                               <p class="disguise-info">{{ disguise.name }}</p>
                           </div>
                       </div>

@@ -1,14 +1,14 @@
 <template>
-  <div class="content" style="background: url('/cdn/webp/backgrounds/loading.webp') no-repeat center center fixed; background-size: cover">
+  <div class="content" style="background: url('/img/webp/backgrounds/loading.webp') no-repeat center center fixed; background-size: cover">
     <header class="row">
       <div class="col text-center site-header">
               <h1>Interactive Maps For</h1>
-              <img src="/cdn/png/logos/hitman2.png" class="img-fluid">
+              <img src="/img/png/logos/hitman2.png" class="img-fluid">
           </div>
     </header>
     <div class="row dashboard">
       <div class="game col-lg" v-for="game in games" :key="game.id" 
-      v-bind:style="{ backgroundImage: 'url(/cdn/webp/backgrounds/'+ game.slug + '.webp)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}">
+      v-bind:style="{ backgroundImage: 'url(/img/webp/backgrounds/'+ game.slug + '.webp)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}">
         <router-link :to="{ name: 'level-select', params: { slug: game.slug }}">
                     <p>&nbsp;</p>
                     <div class="game-info">
@@ -24,7 +24,7 @@
           </router-link>
       </div>
       <div class="elusive-target col-lg" 
-      v-bind:style="{ backgroundImage: 'url('+ (elusiveTarget != null ? elusiveTarget.tileUrl : '/cdn/jpg/elusive-targets/coming-soon.jpg') + ')', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}">
+      v-bind:style="{ backgroundImage: 'url('+ (elusiveTarget != null ? elusiveTarget.tileUrl : '/img/jpg/elusive-targets/coming-soon.jpg') + ')', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}">
         <a href="#">
           <p>&nbsp;</p>
           <div class="elusive-target-info">
@@ -60,7 +60,11 @@ export default {
   },
   created: function () {
     this.$http.get(this.$domain +"/api/v1/games").then(resp => this.games = resp.data)
-    this.$http.get(this.$domain + "/api/v1/elusive-targets").then(resp => this.elusiveTarget = resp.data[0])
+    this.$http.get(this.$domain + "/api/v1/elusive-targets").then(resp => {
+      if(new Date(resp.data[0].endingTime).getTime() > new Date().getTime()) {
+        this.elusiveTarget = resp.data[0]
+      }
+    })
   }
 }
 </script>

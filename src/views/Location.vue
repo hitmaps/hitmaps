@@ -1,5 +1,5 @@
 <template>
-  <div class="content" style="background: url('/cdn/webp/backgrounds/loading.webp') no-repeat center center fixed; background-size: cover">
+  <div class="content" style="background: url('/img/webp/backgrounds/loading.webp') no-repeat center center fixed; background-size: cover">
     <div class="site-container">
       <script type="application/ld+json">
           {
@@ -20,10 +20,10 @@
           }
       </script>
       <div class="text-center logo">
-              <img :src="'/cdn/png/logos/' + game.slug + '.png'" class="img-fluid">
+              <img :src="'/img/png/logos/' + game.slug + '.png'" class="img-fluid">
               <h2>{{ game.tagline }}</h2>
       </div>
-      <nav id="scrollspy" class="navbar locations" style="background: url('/cdn/webp/backgrounds/loading.webp') no-repeat center center fixed; background-size: cover">
+      <nav id="scrollspy" class="navbar locations" style="background: url('/img/webp/backgrounds/loading.webp') no-repeat center center fixed; background-size: cover">
         <ul class="nav">
           <li class="nav-item">
             <router-link :to="{name: 'home'}" class="nav-link" data-target="#">
@@ -43,7 +43,7 @@
         </ul>
       </nav>
       <div v-for="location in locations" :key="location.id" class="location" 
-      v-bind:style="{background: 'url(/cdn/webp/backgrounds/' + game.slug + '/' + location.slug + '.webp) no-repeat center center fixed',
+      v-bind:style="{background: 'url(/img/webp/backgrounds/' + game.slug + '/' + location.slug + '.webp) no-repeat center center fixed',
       backgroundSize: 'cover',}">
         <div class="header">
             <a class="anchor" :id="location.slug"></a>
@@ -60,7 +60,7 @@
               <router-link @click.native="saveMissionData(mission)" :to="{ name: 'map-view', params: { slug: location.game, location: location.slug, mission: mission.slug, difficulty: mission.difficulties[0].toLowerCase() }}" v-if="mission.difficulties.length == 1">
                 <div class="card mission">
                     <div style="position: relative">
-                        <img :src="'/cdn/'+ generateUrl(mission)" class="card-img-top" alt="">
+                        <img :src="'/img/'+ generateUrl(mission)" class="card-img-top" alt="">
                         <div class="card-img-overlay d-flex flex-column justify-content-end" style="padding: 0">
                         </div>
                       </div>
@@ -78,7 +78,7 @@
                 </router-link>
                 <div v-else class="card mission">
                   <div style="position: relative">
-                      <img :src="'/cdn/'+ generateUrl(mission)" class="card-img-top" alt="">
+                      <img :src="'/img/'+ generateUrl(mission)" class="card-img-top" alt="">
                       <div class="card-img-overlay d-flex flex-column justify-content-end" style="padding: 0">
                         <div class="row difficulties">
                           <router-link @click.native="saveMissionData(mission)" :to="{ name: 'map-view', params: { slug: location.game, location: location.slug, mission: mission.slug, difficulty: difficulty.toLowerCase() }}" v-for="difficulty in mission.difficulties" :key="difficulty" class="col">
