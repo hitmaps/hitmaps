@@ -23,7 +23,7 @@
                     </div>
           </router-link>
       </div>
-      <div class="elusive-target col-lg" 
+      <div class="elusive-target col-lg" v-if="games.length > 0"
       v-bind:style="{ backgroundImage: 'url('+ (elusiveTarget != null ? elusiveTarget.tileUrl : '/img/jpg/elusive-targets/coming-soon.jpg') + ')', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}">
         <a href="#">
           <p>&nbsp;</p>

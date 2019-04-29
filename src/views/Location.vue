@@ -25,7 +25,7 @@
       </div>
       <nav id="scrollspy" class="navbar locations" style="background: url('/img/webp/backgrounds/loading.webp') no-repeat center center fixed; background-size: cover">
         <ul class="nav">
-          <li class="nav-item">
+          <li v-if="locations.length > 0" class="nav-item">
             <router-link :to="{name: 'home'}" class="nav-link" data-target="#">
                 <img src="/img/game-icons/campaign-transparent.png" class="normal" alt="Home icon">
                 <img src="/img/game-icons/campaign-inverted.png" class="inverted" alt="Home icon">
