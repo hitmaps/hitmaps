@@ -15,7 +15,7 @@
         </div>
     </div>
     <div v-if="mission != null" class="content">
-      <div class="floor-toggle">
+      <div class="floor-toggle" v-if="mission.missionType != 'Sniper Assassin'">
           <div v-for="i in range(mission.lowestFloorNumber, mission.highestFloorNumber).reverse()" :key="i" class="floor-info" :class="{'selected': currentLayer === i}">
               <div @click="changeLevel(i)" class="floor">
                   Level {{ i }}
@@ -104,7 +104,7 @@
           </div>
           <br>
           <div class="accordion" id="accordion" v-show="!editor.enabled">
-            <div class="floor-toggle">
+            <div class="floor-toggle" v-if="mission.missionType != 'Sniper Assassin'">
                 <div v-for="i in range(mission.lowestFloorNumber, mission.highestFloorNumber).reverse()" :key="i" class="floor-info" :class="{'selected': currentLayer === i}">
                     <div @click="changeLevel(i)" class="floor">
                         Level {{ i }}
@@ -127,7 +127,7 @@
                 </select>
                 <button @click="clearSearch" id="clear-search" class="btn control-button" data-toggle="tooltip" title="Clear Search" v-show="searchedItem != null"><i class="fas fa-times"></i></button>
             </div>
-            <div class="search-box" id="search-box-disguises" data-search="disguises">
+            <div v-if="mission.missionType != 'Sniper Assassin'" class="search-box" id="search-box-disguises" data-search="disguises">
               <div class="card">
                   <div class="card-header" id="header-disguises">
                       <div class="name collapsed control-button" data-toggle="collapse"
@@ -154,41 +154,68 @@
               <button id="clear-disguise-search" class="btn control-button" data-toggle="tooltip" title="Clear Search" style="display: none"><i class="fas fa-times"></i></button>
           </div>
             <div class="hide-or-select-all">
-                <button id="hide-all" @click="toggleLayer('|')" class="btn control-button"><i class="far fa-fw fa-eye"></i> Toggle All</button>
+                <button id="hide-all" @click="toggleLayer('|', true)" class="btn control-button"><i class="far fa-fw fa-eye-slash"></i> Hide All</button>
+                <button id="show-all" @click="toggleLayer('|', false)" class="btn control-button"><i class="far fa-fw fa-eye"></i> Show All</button>
             </div>
-            <div class="card" v-for="(type, key, index) in nodes" :key="index">
-              <div class="card-header" :id="'header-' + index">
-                <div class="name collapsed" data-toggle="collapse" :data-target="'#body-' + index"
-                aria-expanded="false" :aria-controls="'body-' + index ">
-                  {{type.name}}
-                  <span class="float-right">
-                    <i class="fas fa-caret-down"></i>
-                    <i class="fas fa-caret-up"></i>
-                  </span>
-                </div>
-                <div class="visibility-toggle group-toggle" @click="toggleLayer(type.name + '|*')" :class="{'map-hidden': isLayerHidden(type.name + '|*')}">
-                  <i class="far fa-eye"></i>
-                  <i class="far fa-eye-slash"></i>
+            <div v-if="mission.missionType == 'Sniper Assassin'">
+              <div v-for="(type, key, index) in nodes" :key="index" class="card">
+                <div class="card-body">
+                  <div v-show="group.items.length > 0" v-for="group in type.items" :key="type.name + group.name" :class="{'full-width': group.collapsible, 'half-width': !group.collapsible}">
+                      <div class="name" @click="toggleLayer(type.name + '|' + group.name)" :class="{'map-hidden': isLayerHidden(type.name + '|' + group.name)}">
+                        <img :src="'/img/map-icons/' + group.icon + '.png'" :alt="group.name + ' Icon'" class="img-fluid">
+                        <span> {{group.name}}</span>
+                      </div>
+                      <div v-if="group.collapsible" class="visibility-toggle collapsed" data-toggle="collapse" :data-target="'#collapsible-' + collapsible(type, group)">
+                        <i class="fas fa-caret-up"></i>
+                        <i class="fas fa-caret-down"></i>
+                      </div>
+                      <div v-if="group.collapsible" class="collapsible-items collapse" :id="'collapsible-' + collapsible(type, group)">
+                        <ul :style="{'columns': group.items.length > 1 ? 2 : 1}">
+                          <li v-for="node in noDuplicates(group.items)" :key="node.name">
+                            <img v-if="node.icon != group.icon" :src="'/img/map-icons/' + node.icon + '.png'" :alt="node.name + ' Icon'" class="img-fluid">
+                            {{node.name}}
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
                 </div>
               </div>
-              <div :id="'body-' + index" class="collapse" :aria-labelledby="'header-' + index">
-                <div class="card-body">
-                  <div v-for="group in type.items" :key="type.name + group.name" :class="{'full-width': group.collapsible, 'half-width': !group.collapsible}">
-                    <div class="name" @click="toggleLayer(type.name + '|' + group.name)" :class="{'map-hidden': isLayerHidden(type.name + '|' + group.name)}">
-                      <img :src="'/img/map-icons/' + group.icon + '.png'" :alt="group.name + ' Icon'" class="img-fluid">
-                      <span> {{group.name}}</span>
-                    </div>
-                    <div v-if="group.collapsible" class="visibility-toggle collapsed" data-toggle="collapse" :data-target="'#collapsible-' + collapsible(type, group)">
-                      <i class="fas fa-caret-up"></i>
+            </div>
+            <div v-else>
+              <div class="card" v-for="(type, key, index) in nodes" :key="index">
+                <div class="card-header" :id="'header-' + index">
+                  <div class="name collapsed" data-toggle="collapse" :data-target="'#body-' + index"
+                  aria-expanded="false" :aria-controls="'body-' + index ">
+                    {{type.name}}
+                    <span class="float-right">
                       <i class="fas fa-caret-down"></i>
-                    </div>
-                    <div v-if="group.collapsible" class="collapsible-items collapse" :id="'collapsible-' + collapsible(type, group)">
-                      <ul :style="{'columns': group.items.length > 1 ? 2 : 1}">
-                        <li v-for="node in noDuplicates(group.items)" :key="node.name">
-                          <img v-if="node.icon != group.icon" :src="'/img/map-icons/' + node.icon + '.png'" :alt="node.name + ' Icon'" class="img-fluid">
-                          {{node.name}}
-                        </li>
-                      </ul>
+                      <i class="fas fa-caret-up"></i>
+                    </span>
+                  </div>
+                  <div class="visibility-toggle group-toggle" @click="toggleLayer(type.name + '|*')" :class="{'map-hidden': isLayerHidden(type.name + '|*')}">
+                    <i class="far fa-eye"></i>
+                    <i class="far fa-eye-slash"></i>
+                  </div>
+                </div>
+                <div :id="'body-' + index" class="collapse" :aria-labelledby="'header-' + index">
+                  <div class="card-body">
+                    <div v-for="group in type.items" :key="type.name + group.name" :class="{'full-width': group.collapsible, 'half-width': !group.collapsible}">
+                      <div class="name" @click="toggleLayer(type.name + '|' + group.name)" :class="{'map-hidden': isLayerHidden(type.name + '|' + group.name)}">
+                        <img :src="'/img/map-icons/' + group.icon + '.png'" :alt="group.name + ' Icon'" class="img-fluid">
+                        <span> {{group.name}}</span>
+                      </div>
+                      <div v-if="group.collapsible" class="visibility-toggle collapsed" data-toggle="collapse" :data-target="'#collapsible-' + collapsible(type, group)">
+                        <i class="fas fa-caret-up"></i>
+                        <i class="fas fa-caret-down"></i>
+                      </div>
+                      <div v-if="group.collapsible" class="collapsible-items collapse" :id="'collapsible-' + collapsible(type, group)">
+                        <ul :style="{'columns': group.items.length > 1 ? 2 : 1}">
+                          <li v-for="node in noDuplicates(group.items)" :key="node.name">
+                            <img v-if="node.icon != group.icon" :src="'/img/map-icons/' + node.icon + '.png'" :alt="node.name + ' Icon'" class="img-fluid">
+                            {{node.name}}
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -201,13 +228,13 @@
             <div class="editor-button" @click="editorMenu('items')">
               <h3><i class="fas fa-fw fa-map-marker-alt"></i> Add / Remove Items</h3>
             </div>
-            <div class="editor-button" @click="editorMenu('ledges')">
+            <div v-if="mission.missionType != 'Sniper Assassin'" class="editor-button" @click="editorMenu('ledges')">
               <h3><i class="fas fa-fw fa-bezier-curve"></i> Add / Remove Ledges</h3>
             </div>
-            <div class="editor-button" @click="editorMenu('foliage')">
+            <div v-if="mission.missionType != 'Sniper Assassin'" class="editor-button" @click="editorMenu('foliage')">
               <h3><i class="fas fa-fw fa-leaf"></i> Add / Remove Foliage</h3>
             </div>
-            <div class="editor-button" @click="editorMenu('disguises')">
+            <div v-if="mission.missionType != 'Sniper Assassin'" class="editor-button" @click="editorMenu('disguises')">
               <h3><i class="fas fa-fw fa-user-tie"></i> Manage Disguise Areas</h3>
             </div>
             <p>Click the <i class="fas fa-pencil-alt"></i> icon to close the editor menu.</p>
@@ -294,23 +321,25 @@
               </button>
             </div>
             <div class="modal-body">
-              <div class="alert alert-primary" style="font-size: .8em">
-                  You can now use a template to auto-fill item information for common items!
-                  <b>If you select a template, all information in "Item Info" and "Notes" will be replaced with
-                      the template's information.</b>
-              </div>
-              <h3>Apply Template</h3>
-              <div class="form-group row">
-                <label for="template" class="col sm-2 col-form-label">Template</label>
-                <div class="col-sm-10">
-                  <select @change="applyTemplate" name="template" ref="templatePicker" class="form-control selectpicker" title="Select One" data-live-search="true">
-                    <optgroup v-for="(group, key) in editor.templates" :key="key" :label="key">
-                      <option v-for="item in group" :key="item.id" :value="key + '|' + item.id">{{item.name}}</option>
-                    </optgroup>
-                  </select>
+              <div v-show="mission.missionType != 'Sniper Assassin'">
+                <div class="alert alert-primary" style="font-size: .8em">
+                    You can now use a template to auto-fill item information for common items!
+                    <b>If you select a template, all information in "Item Info" and "Notes" will be replaced with
+                        the template's information.</b>
                 </div>
+                <h3>Apply Template</h3>
+                <div class="form-group row">
+                  <label for="template" class="col sm-2 col-form-label">Template</label>
+                  <div class="col-sm-10">
+                    <select @change="applyTemplate" name="template" ref="templatePicker" class="form-control selectpicker" title="Select One" data-live-search="true">
+                      <optgroup v-for="(group, key) in editor.templates" :key="key" :label="key">
+                        <option v-for="item in group" :key="item.id" :value="key + '|' + item.id">{{item.name}}</option>
+                      </optgroup>
+                    </select>
+                  </div>
+                </div>
+                <hr>
               </div>
-              <hr>
               <h3>Item Info</h3>
               <div class="alert alert-dark" style="font-size: .8em">
                 Please indicate the following under the notes section when adding items:
@@ -530,6 +559,7 @@ export default {
           }
         },
         currentCategory: function() {
+          if(this.editor.currentCategory == "") return
           var split = this.editor.currentCategory.split("|")
           return this.categories[split[0]].find(element => element.subgroup == split[1])
         },
@@ -617,13 +647,16 @@ export default {
           this.$http.post(this.$domain + "/api/nodes/move", data).then(() => $(this.$refs.confirmMoveModal).modal('hide'))
         },
         selectSubgroup: function(event) {
+          if(event.target.value == "") return
           this.editor.currentCategory = event.target.value
           $(this.$refs.iconPicker).selectpicker('val', this.currentCategory.icon)
         },
         selectIcon: function(event) {
+          if(event.target.value == "") return
           this.currentCategory.icon = event.target.value
         },
         applyTemplate: function(event) {
+          if(event.target.value == "") return
           var split = event.target.value.split("|")
           var currentTemplate = this.editor.templates[split[0]].find(element => element.id == split[1])
           $(this.$refs.subgroupPicker).selectpicker('val', currentTemplate.type + "|" + currentTemplate.subgroup)
@@ -691,16 +724,16 @@ export default {
           name = name.replace("*", "")
           return this.hiddenLayers.indexOf(name) != -1 || this.hiddenLayers.indexOf(name.split("|")[0] + "|") != -1 
         },
-        toggleLayer: function(name) {
+        toggleLayer: function(name, forceMode) {
           if(name === "|") {
-            this.toggleLayer("Points of Interest|")
-            this.toggleLayer("Weapons and Tools|")
-            this.toggleLayer("Navigation|")
+            this.toggleLayer("Points of Interest|", forceMode)
+            this.toggleLayer("Weapons and Tools|", forceMode)
+            this.toggleLayer("Navigation|", forceMode)
             return;
           }
           //I think this can be done better
           name = name.replace("*", "")
-          if(this.isLayerHidden(name)) {
+          if((this.isLayerHidden(name) && forceMode == null) || forceMode == false) {
             if(!name.endsWith("|") && this.hiddenLayers.indexOf(name.split("|")[0] + "|") != -1) {
               var keys = Object.keys(this.layerGroups).filter(el => el.indexOf(name.split("|")[0]) !== -1 && el !== name)
               this.hiddenLayers = this.hiddenLayers.concat(keys)
@@ -852,12 +885,16 @@ export default {
                 //Is not needed directly at start
                 this.$http.get(this.$domain + "/api/v1/editor/templates").then(resp => { 
                   this.editor.templates = resp.data
-                  $('.selectpicker').selectpicker()
+                  this.$nextTick(() => {
+                    $('.selectpicker').selectpicker()
+                  })
                 })
                 this.$http.get(this.$domain + "/api/v1/editor/icons").then(resp => { 
                   this.editor.icons = resp.data
-                  $(this.$refs.iconPicker).selectpicker('destroy')
-                  $(this.$refs.iconPicker).selectpicker()
+                  this.$nextTick(() => {
+                    $(this.$refs.iconPicker).selectpicker('destroy')
+                    $(this.$refs.iconPicker).selectpicker()
+                  })
                 })
             });
         })

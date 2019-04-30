@@ -13,11 +13,11 @@
                     <p>&nbsp;</p>
                     <div class="game-info">
                         <div class="image">
-                            <img src="/img/game-icons/campaign.png" class="normal img-fluid" alt="Campaign Icon">
-                            <img src="/img/game-icons/campaign-inverted.png" class="inverted img-fluid" alt="Campaign Icon">
+                            <img :src="'/img/game-icons/' + game.icon + '.png'" class="normal img-fluid" :alt="game.type + ' Icon'">
+                            <img :src="'/img/game-icons/' + game.icon + '-inverted.png'" class="inverted img-fluid" :alt="game.type + ' Icon'">
                         </div>
                         <div class="text">
-                            <h2>Campaign</h2>
+                            <h2>{{ game.type }}</h2>
                             <h1>{{ game.fullName }}</h1>
                         </div>
                     </div>

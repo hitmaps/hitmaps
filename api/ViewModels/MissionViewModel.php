@@ -29,6 +29,9 @@ class MissionViewModel extends BaseModel {
     /* @var $tileLocation string */
     public $tileLocation;
 
+    /* @var $icon string */
+    public $icon;
+
     public function setTileLocation() {
         if ($this->missionType !== MissionType::ELUSIVE_TARGET) {
             $this->tileLocation = "{$this->pngBackgroundFileExtension}/mission-thumbnails/{$this->game}/{$this->slug}.{$this->pngBackgroundFileExtension}";
@@ -43,4 +46,15 @@ class MissionViewModel extends BaseModel {
         $this->tileLocation = "jpg/elusive-targets/{$this->slug}.jpg";
         return;
     }
+    
+    public function setIcon() {
+        $this->icon = str_replace(' ', '-', mb_strtolower($this->missionType));
+
+        if ($this->missionType === MissionType::PROLOGUE ||
+            $this->missionType === MissionType::BONUS_MISSION ||
+            $this->missionType === MissionType::PATIENT_ZERO) {
+            $this->icon = 'mission';
+        }
+    }
+
 }
