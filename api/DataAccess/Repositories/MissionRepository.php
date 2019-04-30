@@ -13,6 +13,7 @@ class MissionRepository extends EntityRepository {
             ->andWhere('e.locationId = :locationId')
             ->andWhere('e.beginEffectiveDate IS NULL OR e.beginEffectiveDate <= :today')
             ->andWhere('e.endEffectiveDate IS NULL OR e.endEffectiveDate > :today')
+            ->orderBy('e.order')
             ->setParameter('locationId', $locationId)
             ->setParameter('today', new \DateTime('now', new \DateTimeZone('UTC')))
             ->getQuery()

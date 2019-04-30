@@ -46,4 +46,8 @@ REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Sgail\6.png" "E:\Users\mkoch\Downloads\H2 Maps\Sgail\tiles\6"
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Sgail\7.png" "E:\Users\mkoch\Downloads\H2 Maps\Sgail\tiles\7"
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Sgail\8.png" "E:\Users\mkoch\Downloads\H2 Maps\Sgail\tiles\8"
-gdal2tiles.py -l -p raster -z 4-6 -w none "C:\Users\mkoch\Desktop\H2 Maps\IsleOfSgail\-99.png" "C:\Users\mkoch\Desktop\H2 Maps\IsleOfSgail\tiles\-99"
+REM gdal2tiles.py -l -p raster -z 4-6 -w none "C:\Users\mkoch\Desktop\H2 Maps\IsleOfSgail\-99.png" "C:\Users\mkoch\Desktop\H2 Maps\IsleOfSgail\tiles\-99"
+
+REM Sniper Assassin
+gdal2tiles.py -l -p raster -z 4-6 -w none "D:\Downloads\sniper_hawk.png" "D:\Downloads\sniper_hawk"
+gdal2tiles.py -l -p raster -z 4-6 -w none "D:\Downloads\sniper_seagull.png" "D:\Downloads\sniper_seagull"

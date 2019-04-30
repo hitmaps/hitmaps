@@ -53,4 +53,15 @@ class GameMapViewModel extends BaseModel {
         $this->tileLocation = "jpg/elusive-targets/{$this->missionSlug}.jpg";
         return;
     }
+
+    public function setIcon() {
+        $this->icon = str_replace(' ', '-', mb_strtolower($this->missionType));
+
+        if ($this->missionType === MissionType::PROLOGUE ||
+            $this->missionType === MissionType::BONUS_MISSION ||
+            $this->missionType === MissionType::PATIENT_ZERO) {
+            $this->icon = 'mission';
+        }
+    }
+
 }

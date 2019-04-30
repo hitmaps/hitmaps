@@ -344,14 +344,14 @@ export default {
           display: inline-block;
 
           h2 {
-            font-size: 1rem;
+            font-size: 16px;
             margin-bottom: 0;
             color: #fc003b;
             font-weight: 500;
           }
 
           h1 {
-            font-size: 1.5rem;
+            font-size: 21px;
             margin-bottom: 0;
             text-transform: uppercase;
           }
