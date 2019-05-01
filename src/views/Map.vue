@@ -557,6 +557,15 @@ export default {
           if(this.mission.missionType !== "Elusive Target") {
               return "png/mission-thumbnails/" + this.$route.params.slug + "/" + this.mission.slug + ".png"
           }
+
+          if(this.game != null && this.game.slug == 'hitman') {
+            return "jpg/elusive-targets/legacy/" + this.mission.slug + ".jpg"
+          }
+
+          return "jpg/elusive-targets/" + this.mission.slug + ".jpg"
+        },
+        game: function() {
+          return this.$store.state.game
         },
         currentCategory: function() {
           if(this.editor.currentCategory == "") return
@@ -858,6 +867,7 @@ export default {
       }
     },
     created: function () {
+        if(this.game === null || this.game.slug !== this.$route.params.slug) this.$store.dispatch("loadGame", this.$route.params.slug)
         this.$http.get(this.$domain + "/api/v1/games/" + this.$route.params.slug + "/locations/" + this.$route.params.location + "/missions/" + this.$route.params.mission + "/" + this.$route.params.difficulty + "/map").then(resp => {
             this.$route.meta.title = resp.data.mission.name
             this.currentLayer = resp.data.mission.startingFloorNumber

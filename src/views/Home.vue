@@ -6,7 +6,7 @@
               <img src="/img/png/logos/hitman2.png" class="img-fluid">
           </div>
     </header>
-    <div class="row dashboard">
+    <div class="row dashboard" v-if="games.length > 0">
       <div class="game col-lg" v-for="game in games" :key="game.id" 
       v-bind:style="{ backgroundImage: 'url(/img/webp/backgrounds/'+ game.slug + '.webp)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}">
         <router-link :to="{ name: 'level-select', params: { slug: game.slug }}">
@@ -23,10 +23,21 @@
                     </div>
           </router-link>
       </div>
-      <div class="elusive-target col-lg" v-if="games.length > 0"
+      <div class="elusive-target col-lg"
       v-bind:style="{ backgroundImage: 'url('+ (elusiveTarget != null ? elusiveTarget.tileUrl : '/img/jpg/elusive-targets/coming-soon.jpg') + ')', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}">
-        <a href="#">
+        <router-link @click.native="saveGameData" :to="elusiveTarget.missionUrl" v-if="elusiveTarget != null">
           <p>&nbsp;</p>
+          <div class="countdown">
+              <img src="/img/game-icons/elusive-target-reminaing-time.png">
+              <div class="timer" :class="{'not-playable': new Date(elusiveTarget.beginningTime) > new Date()}">
+                  <div class="target-arrives">TARGET ARRIVES</div>
+                  <countdown id="elusive-countdown" :date="new Date(elusiveTarget.beginningTime) > new Date() ? elusiveTarget.beginningTime : elusiveTarget.endingTime"></countdown>
+              </div>
+              <img src="/img/game-icons/briefing-transparent.png" class="normal img-fluid briefing-icon float-right" alt="Briefing Icon"
+                    data-placement="left"
+                    data-toggle="tooltip"
+                    title="Mission Briefing">
+          </div>
           <div class="elusive-target-info">
             <div class="image">
               <img src="/img/game-icons/elusive-target.png" class="normal img-fluid" alt="Elusive Target Icon">
@@ -41,6 +52,23 @@
               <img src="/img/game-icons/notification-inverted.png" class="inverted img-fluid" alt="Notification Icon">
             </div>
           </div>
+        </router-link>
+        <a v-else href="#">
+          <p>&nbsp;</p>
+          <div class="elusive-target-info">
+            <div class="image">
+              <img src="/img/game-icons/elusive-target.png" class="normal img-fluid" alt="Elusive Target Icon">
+              <img src="/img/game-icons/elusive-target-inverted.png" class="inverted img-fluid" alt="Elusive Target Icon">
+            </div>
+            <div class="text">
+              <h2>Elusive Target</h2>
+              <h1>Coming soon</h1>
+            </div>
+            <div class="image float-right notification-icon" data-placement="left" data-toggle="tooltip" title="Manage Elusive Target Notifications">
+              <img src="/img/game-icons/notification.png" class="normal img-fluid" alt="Notification Icon">
+              <img src="/img/game-icons/notification-inverted.png" class="inverted img-fluid" alt="Notification Icon">
+            </div>
+          </div>
         </a>
       </div>
     </div>
@@ -48,14 +76,22 @@
 </template>
 
 <script>
-
+import Countdown from '../components/Countdown.vue'
 export default {
   name: 'home',
   title: "Home",
+  components: {
+    Countdown
+  },
   data () {
     return {
       games: [],
       elusiveTarget: null
+    }
+  },
+  methods: {
+    saveGameData() {
+      //this.$store.commit("SET_GAME", )
     }
   },
   created: function () {

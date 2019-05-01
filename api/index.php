@@ -10,7 +10,7 @@ $twig = new Twig_Environment($loader);
 $klein = new \Klein\Klein();
 
 $klein->respond(function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    $response->header('Access-Control-Allow-Origin', $_SERVER['HTTP_ORIGIN']);
+    if(isset($_SERVER['HTTP_ORIGIN'])) $response->header('Access-Control-Allow-Origin', $_SERVER['HTTP_ORIGIN']);
     $response->header('Access-Control-Allow-Headers', 'content-type');
     $response->header('Access-Control-Allow-Credentials', 'true');
 });
@@ -265,7 +265,7 @@ $klein->respond('GET', '/api/v1/elusive-targets', function(\Klein\Request $reque
         $viewModel->endingTime = $elusiveTarget->getEndingTime()->format(DateTime::ATOM);
         $viewModel->tileUrl = "{$constants->siteDomain}/img/jpg{$elusiveTarget->getImageUrl()}.jpg";
         $viewModel->videoBriefingUrl = $elusiveTarget->getVideoBriefingUrl();
-        $viewModel->missionUrl = "{$constants->siteDomain}{$missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId(), 'standard')}";
+        $viewModel->missionUrl = "{$missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId(), 'standard')}";
 
         $viewModels[] = $viewModel;
     }
