@@ -3,6 +3,7 @@
 namespace BusinessLogic;
 
 
+use DataAccess\Models\Disguise;
 use DataAccess\Models\Mission;
 use DataAccess\Models\MissionDifficulty;
 use Doctrine\ORM\EntityManager;
@@ -83,7 +84,7 @@ class MissionCloner {
 
         // Copy their disguises
         $newDisguiseIdToOldDisguiseId = [];
-        $disguises = $this->entityManager->getRepository(Disguise::class)->findBy(['mission_id' => $originalMission->getId()]);
+        $disguises = $this->entityManager->getRepository(Disguise::class)->findBy(['missionId' => $originalMission->getId()]);
         /* @var $newDisguises Disguise[] */
         $newDisguises = [];
 
