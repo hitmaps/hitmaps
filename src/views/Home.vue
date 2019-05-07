@@ -33,7 +33,7 @@
                   <div class="target-arrives">TARGET ARRIVES</div>
                   <countdown id="elusive-countdown" :date="new Date(elusiveTarget.beginningTime) > new Date() ? elusiveTarget.beginningTime : elusiveTarget.endingTime"></countdown>
               </div>
-              <img src="/img/game-icons/briefing-transparent.png" class="normal img-fluid briefing-icon float-right" alt="Briefing Icon"
+              <img onclick="return false;" @click="showBriefing" src="/img/game-icons/briefing-transparent.png" class="normal img-fluid briefing-icon float-right" alt="Briefing Icon"
                     data-placement="left"
                     data-toggle="tooltip"
                     title="Mission Briefing">
@@ -71,6 +71,38 @@
           </div>
         </a>
       </div>
+      <div ref="briefing" v-if="elusiveTarget != null" class="modal game-modal fade" id="briefing-modal" tabindex="-1" role="dialog" aria-labelledby="briefing-modal-label" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="briefing-modal-label">{{ elusiveTarget.name }}</h5>
+                </div>
+                <div class="modal-body d-flex flex-column">
+                    <div class="row">
+                          <div v-if="elusiveTarget.videoBriefingUrl != null" class="col-xl">
+                              <div class="embed-responsive embed-responsive-16by9">
+                                  <iframe :src="elusiveTarget.videoBriefingUrl"
+                                          class="embed-responsive-item"
+                                          frameborder="0"
+                                          allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+                                          allowfullscreen></iframe>
+                              </div>
+                          </div>
+                        <div class="col-xl">
+                            <p v-html="elusiveTarget.briefing"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-block btn-secondary" data-dismiss="modal">
+                        <img src="/img/game-icons/modal-close.png" class="normal img-fluid" alt="Notification Icon">
+                        <img src="/img/game-icons/modal-close-inverted.png" class="inverted img-fluid" alt="Notification Icon">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -92,6 +124,10 @@ export default {
   methods: {
     saveGameData() {
       //this.$store.commit("SET_GAME", )
+    },
+    showBriefing(e) {
+      e.preventDefault()
+      $(this.$refs.briefing).modal('show')
     }
   },
   created: function () {
@@ -259,5 +295,85 @@ export default {
     }
   }
 }
+.game-modal {
+  .modal-content {
+    background: transparent;
+    border: none;
+
+    .modal-header {
+      font-family: 'nimbus_sans_lbold', sans-serif;
+      text-transform: uppercase;
+      border-bottom: none;
+      border-radius: 0;
+
+      background: #fff;
+
+      h5 {
+        font-size: 1.5rem;
+      }
+    }
+
+    .modal-body {
+      background: #fff;
+    }
+
+    .modal-footer {
+      border-top: none;
+      padding-left: 0;
+      padding-right: 0;
+      padding-top: 10px;
+      display: block;
+
+      > :not(:first-child) {
+        margin: 0;
+      }
+
+      #enroll-button {
+        margin-bottom: 10px;
+      }
+
+      .btn-block {
+        border-radius: 0;
+        text-transform: uppercase;
+        background: #fff;
+        color: #000;
+        font-family: 'nimbus_sans_lbold', sans-serif;
+        text-align: left;
+        font-size: 1.3rem;
+        transition: none;
+
+        img {
+          max-height: 32px;
+          max-width: 32px;
+          vertical-align: top;
+
+          &.normal {
+            display: inline-block;
+          }
+
+          &.inverted {
+            display: none;
+          }
+        }
+
+        &:hover {
+          background: #ff003c;
+          color: #fff;
+
+          img {
+            &.normal {
+              display: none;
+            }
+
+            &.inverted {
+              display: inline-block;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 </style>
 

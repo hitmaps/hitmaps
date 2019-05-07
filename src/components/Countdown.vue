@@ -1,6 +1,9 @@
 <template>
-<div>
+<div v-if="days<2">
 {{hours | twoDigits }}:{{minutes | twoDigits }}:{{seconds | twoDigits }}
+</div>
+<div v-else>
+{{days}} DAYS
 </div>
 </template>
 
@@ -24,6 +27,9 @@ export default {
         },
         hours: function() {
             return Math.trunc((this.parsedDate - this.now) / 1000 / 60 / 60)
+        },
+        days: function() {
+            return Math.trunc((this.parsedDate - this.now) / 1000 / 60 / 60 / 24)
         }
     },
     data() {
