@@ -174,4 +174,18 @@ footer {
     }
   }
 }
+@font-face {
+  font-family: 'nimbus_sans_lbold';
+  src: url('/fonts/NimbusSanL-Bol-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'nimbus_sans_lregular';
+  src: url('/fonts/NimbusSanL-Reg-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 </style>

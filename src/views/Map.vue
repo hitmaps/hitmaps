@@ -33,7 +33,7 @@
           <l-tile-layer v-for="floor in range(mission.lowestFloorNumber, mission.highestFloorNumber)" :key="floor" :noWrap="true" :visible="currentLayer === floor" :url="mapUrl + floor +  '/{z}/{x}/{y}.png'" ></l-tile-layer>
           <l-tile-layer v-if="mission.satelliteView" :noWrap="true" :visible="currentLayer === -99" :url="mapUrl + '-99/{z}/{x}/{y}.png'"></l-tile-layer>
           <div v-for="floor in range(mission.lowestFloorNumber, mission.highestFloorNumber)" :key="'layer' + floor">
-            <l-layer-group v-for="disguise in disguises" :key="floor + disguise.name" :visible="currentLayer == floor && editor.currentDisguise === disguise.id">
+            <l-layer-group v-for="disguise in disguises" :key="floor + disguise.name" :visible="currentLayer == floor && editor.currentDisguise == disguise.id">
               <l-polygon v-for="item in disguise.areas.filter(el=>el.level==floor)" :key="item.id" :lat-lngs="parseCoords(item.vertices)" :fillColor="item.type === 'trespassing' ? 'yellow' : '#f00'" :stroke="false" :weight="4" :opacity=".75">
               </l-polygon>
             </l-layer-group>
@@ -822,6 +822,7 @@ export default {
           return latlngs
         },
         changeDisguise: function(disguise) {
+          console.log(disguise)
           this.editor.currentDisguise = disguise.id || disguise
           $(this.$refs.disguisePicker).selectpicker('val', disguise.id || disguise)
           $('#header-disguises').find('.name').click()
