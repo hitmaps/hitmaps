@@ -1,6 +1,6 @@
 <template>
   <div class="content" style="background: url('/img/webp/backgrounds/loading.webp') no-repeat center center fixed; background-size: cover">
-    <div class="site-container">
+    <div class="site-container" v-if="game != null">
       <script type="application/ld+json">
           {
               "@context": "https://schema.org",
