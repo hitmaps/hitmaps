@@ -88,7 +88,7 @@ class ElusiveTargetNotificationSender {
         if ($availableDays > 7 && !$elusiveTarget->getPlayableNotificationSent()) {
             $title = "Elusive Target Arrived";
             $body = "{$elusiveTarget->getName()} has arrived and will be available for {$availableDays} days!";
-            $imageUrl = "/img/jpg{$elusiveTarget->getImageUrl()}.jpg";
+            $imageUrl = $this->countdownComposer->composeElusiveTargetActiveImage($elusiveTarget);
             $this->firebaseClient->sendElusiveTargetMessage("{$environment}-elusive-target-playable",
                 $title,
                 $body,

@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Location from './views/Location.vue'
+import TermsOfUse from './views/TermsOfUse.vue'
+import PrivacyPolicy from './views/PrivacyPolicy.vue'
 
 Vue.use(Router)
 
@@ -13,6 +15,16 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/terms-of-use',
+      name: 'terms-of-use',
+      component: TermsOfUse
+    },
+    {
+      path: '/privacy-policy',
+      name: 'privacy-policy',
+      component: PrivacyPolicy
     },
     {
       path: '/games/:slug',
