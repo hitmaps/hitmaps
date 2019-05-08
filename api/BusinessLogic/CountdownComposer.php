@@ -21,8 +21,24 @@ class CountdownComposer {
         return $compositeUrl;
     }
 
+    public function composeElusiveTargetActiveImage(ElusiveTarget $elusiveTarget): string {
+        $overlay = new \Imagick(__DIR__ . "/../img/png/elusive-target-overlays/countdown/mission-active.png");
+        $originalImage = new \Imagick(__DIR__ . "/../img/jpg{$elusiveTarget->getImageUrl()}.jpg");
+
+        $originalImage->compositeImage($overlay, \Imagick::COMPOSITE_DEFAULT, 0, 0);
+        $compositeUrl = "/img/jpg/elusive-targets/countdowns/{$elusiveTarget->getId()}-active.jpg";
+        $originalImage->setImageFilename(__DIR__ . "/..{$compositeUrl}");
+        $originalImage->writeImage();
+
+        $overlay->destroy();
+        $originalImage->destroy();
+
+        return $compositeUrl;
+    }
+
     public function deleteAllCompositeImages(ElusiveTarget $elusiveTarget): void {
         $compositeDirectory = __DIR__ . '/../../public/img/jpg/elusive-targets/countdowns';
+        @unlink("{$compositeDirectory}/{$elusiveTarget->getId()}-active.jpg");
         @unlink("{$compositeDirectory}/{$elusiveTarget->getId()}-7.jpg");
         @unlink("{$compositeDirectory}/{$elusiveTarget->getId()}-5.jpg");
         @unlink("{$compositeDirectory}/{$elusiveTarget->getId()}-3.jpg");

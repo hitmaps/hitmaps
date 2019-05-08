@@ -136,7 +136,7 @@ export default {
       return "jpg/elusive-targets/" + mission.slug + ".jpg"
     },
     saveMissionData: function(mission) {
-      if(this.$store.state.mission.slug !== mission.slug) this.$store.commit("SET_MISSION", mission)
+      if(this.$store.state.mission != null && this.$store.state.mission.slug !== mission.slug) this.$store.commit("SET_MISSION", mission)
     }
   },
   created: function() {
