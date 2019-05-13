@@ -3,11 +3,13 @@
 namespace Controllers;
 
 
+use BusinessLogic\MissionType;
 use BusinessLogic\UserRole;
 use Controllers\ViewModels\NodeNoteViewModel;
 use Controllers\ViewModels\NodeWithNotesViewModel;
 use Controllers\ViewModels\Sidebar\CategoryViewModel;
 use Controllers\ViewModels\Sidebar\TopLevelCategoryViewModel;
+use DataAccess\Models\Mission;
 use DataAccess\Models\Node;
 use DataAccess\Models\NodeCategory;
 use DataAccess\Models\NodeNote;
@@ -37,6 +39,9 @@ class NodeController {
     }
 
     public function getNodesForMission(int $missionid, string $difficulty, bool $distinctOnly = false, bool $searchableOnly = false): array {
+        /* @var $mission Mission */
+        $mission = $this->entityManager->getRepository(Mission::class)->findOneBy(['id' => $missionid]);
+        
         $nodesWithNotes = $this->nodeRepository->findByMissionAndDifficulty($missionid, $difficulty);
 
         $groups = [
@@ -45,7 +50,8 @@ class NodeController {
             'Navigation' => new TopLevelCategoryViewModel('Navigation'),
         ];
 
-        $nodeCategories = $this->nodeCategoryRepository->findBy([], ['order' => 'ASC']);
+        $forSniperAssassin = $mission->getMissionType() === MissionType::SNIPER_ASSASSIN;
+        $nodeCategories = $this->nodeCategoryRepository->findBy(['forMission' => !$forSniperAssassin, 'forSniperAssassin' => $forSniperAssassin ], ['order' => 'ASC']);
         foreach ($nodeCategories as $nodeCategory) {
             /* @var $nodeCategory NodeCategory */
             $categoryViewModel = new CategoryViewModel();

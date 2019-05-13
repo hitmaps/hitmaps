@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import Location from './views/Location.vue'
+import TermsOfUse from './views/TermsOfUse.vue'
+import PrivacyPolicy from './views/PrivacyPolicy.vue'
 
 Vue.use(Router)
 
@@ -14,20 +17,19 @@ export default new Router({
       component: Home
     },
     {
-      path: '/games/:slug',
-      name: 'level-select',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "level-select" */ './views/Location.vue')
+      path: '/terms-of-use',
+      name: 'terms-of-use',
+      component: TermsOfUse
     },
     {
-      path: '/games/:slug/:location',
-      name: 'mission-select',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "mission-select" */ './views/Mission.vue')
+      path: '/privacy-policy',
+      name: 'privacy-policy',
+      component: PrivacyPolicy
+    },
+    {
+      path: '/games/:slug',
+      name: 'level-select',
+      component: Location
     },
     {
       path: '/games/:slug/:location/:mission/:difficulty',

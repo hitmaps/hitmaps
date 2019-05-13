@@ -1,6 +1,6 @@
 <template>
   <div class="content" style="background: url('/img/webp/backgrounds/loading.webp') no-repeat center center fixed; background-size: cover">
-    <div class="site-container">
+    <div class="site-container" v-if="game != null">
       <script type="application/ld+json">
           {
               "@context": "https://schema.org",
@@ -25,7 +25,7 @@
       </div>
       <nav id="scrollspy" class="navbar locations" style="background: url('/img/webp/backgrounds/loading.webp') no-repeat center center fixed; background-size: cover">
         <ul class="nav">
-          <li class="nav-item">
+          <li v-if="locations.length > 0" class="nav-item">
             <router-link :to="{name: 'home'}" class="nav-link" data-target="#">
                 <img src="/img/game-icons/campaign-transparent.png" class="normal" alt="Home icon">
                 <img src="/img/game-icons/campaign-inverted.png" class="inverted" alt="Home icon">
@@ -126,12 +126,17 @@ export default {
   },
   methods: {
     generateUrl: function(mission) {
-      if(mission !== "Elusive Target") {
+      if(mission.missionType !== "Elusive Target") {
           return "png/mission-thumbnails/" + this.game.slug + "/" + mission.slug + ".png"
       }
+      if(this.game != null && this.game.slug == 'hitman') {
+        return "jpg/elusive-targets/legacy/" + mission.slug + ".jpg"
+      }
+
+      return "jpg/elusive-targets/" + mission.slug + ".jpg"
     },
     saveMissionData: function(mission) {
-      if(this.$store.state.mission.slug !== mission.slug) this.$store.commit("SET_MISSION", mission)
+      if(this.$store.state.mission != null && this.$store.state.mission.slug !== mission.slug) this.$store.commit("SET_MISSION", mission)
     }
   },
   created: function() {
@@ -344,14 +349,14 @@ export default {
           display: inline-block;
 
           h2 {
-            font-size: 1rem;
+            font-size: 16px;
             margin-bottom: 0;
             color: #fc003b;
             font-weight: 500;
           }
 
           h1 {
-            font-size: 1.5rem;
+            font-size: 21px;
             margin-bottom: 0;
             text-transform: uppercase;
           }

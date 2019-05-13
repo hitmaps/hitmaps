@@ -34,7 +34,7 @@ class BaseModel {
             $this->referer = '/';
         }
 
-        if (strpos($_SERVER['HTTP_ACCEPT'], 'image/webp') !== false) {
+        if (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'image/webp') !== false) {
             $this->pngBackgroundFileExtension = 'webp';
             $this->jpgBackgroundFileExtension = 'webp';
         }
