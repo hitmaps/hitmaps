@@ -24,7 +24,11 @@ class ElusiveTargetUpdater {
         "Sapienza, Italy" => [
             'slug' => 'world-of-tomorrow',
             'tileSaveLocation' => '/elusive-targets/legacy/'
-        ]
+        ],
+        "Miami, USA" => [
+            'slug' => 'finish-line',
+            'tileSaveLocation' => '/elusive-targets/'
+        ]        
     ];
 
     public function __construct(EntityManager $entityManager, MissionCloner $missionCloner) {

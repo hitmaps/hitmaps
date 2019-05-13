@@ -37,16 +37,16 @@
                     <h4>Legal</h4>
                 </div>
                 <span class="footer-link">
-                    <a href="/terms-of-use">
+                    <router-link :to="{ name: 'terms-of-use'}">
                         <i class="fas fa-gavel"></i>
                         Terms of Use
-                    </a>
+                    </router-link>
                 </span>
                 <span class="footer-link">
-                    <a href="/privacy-policy">
+                    <router-link :to="{ name: 'privacy-policy'}">
                         <i class="fas fa-user-secret"></i>
                         Privacy Policy
-                    </a>
+                    </router-link>
                 </span>
             </div>
             <div class="row text-center">
@@ -174,4 +174,18 @@ footer {
     }
   }
 }
+@font-face {
+  font-family: 'nimbus_sans_lbold';
+  src: url('/fonts/NimbusSanL-Bol-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'nimbus_sans_lregular';
+  src: url('/fonts/NimbusSanL-Reg-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 </style>

@@ -30,6 +30,16 @@ class Game {
     public $tagline;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    public $type;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    public $icon;
+
+    /**
      * @return mixed
      */
     public function getId(): int {
@@ -84,4 +94,33 @@ class Game {
     public function setTagline(string $tagline): void {
         $this->tagline = $tagline;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getType() {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     */
+    public function setType($type): void {
+        $this->type = $type;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIcon() {
+        return $this->icon;
+    }
+
+    /**
+     * @param mixed $icon
+     */
+    public function setIcon($icon): void {
+        $this->icon = $icon;
+    }
+
 }

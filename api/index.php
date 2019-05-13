@@ -10,7 +10,7 @@ $twig = new Twig_Environment($loader);
 $klein = new \Klein\Klein();
 
 $klein->respond(function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    $response->header('Access-Control-Allow-Origin', $_SERVER['HTTP_ORIGIN']);
+    if(isset($_SERVER['HTTP_ORIGIN'])) $response->header('Access-Control-Allow-Origin', $_SERVER['HTTP_ORIGIN']);
     $response->header('Access-Control-Allow-Headers', 'content-type');
     $response->header('Access-Control-Allow-Credentials', 'true');
 });
@@ -140,7 +140,8 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
     }
 
     $nodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($mission->getId(), $request->difficulty);
-    $nodeCategories = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\NodeCategory::class)->findAll();
+    $forSniperAssassin = $mission->getMissionType() === \BusinessLogic\MissionType::SNIPER_ASSASSIN;
+    $nodeCategories = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\NodeCategory::class)->findBy(['forMission' => !$forSniperAssassin, 'forSniperAssassin' => $forSniperAssassin], ['order' => 'ASC', 'group' => 'ASC']);
 
     /* @var $ledges \DataAccess\Models\Ledge[] */
     $ledges = $applicationContext->get(\Controllers\LedgeController::class)->getLedgesForMission($mission->getId());
@@ -264,7 +265,7 @@ $klein->respond('GET', '/api/v1/elusive-targets', function(\Klein\Request $reque
         $viewModel->endingTime = $elusiveTarget->getEndingTime()->format(DateTime::ATOM);
         $viewModel->tileUrl = "{$constants->siteDomain}/img/jpg{$elusiveTarget->getImageUrl()}.jpg";
         $viewModel->videoBriefingUrl = $elusiveTarget->getVideoBriefingUrl();
-        $viewModel->missionUrl = "{$constants->siteDomain}{$missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId(), 'standard')}";
+        $viewModel->missionUrl = "{$missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId(), 'standard')}";
 
         $viewModels[] = $viewModel;
     }
@@ -615,6 +616,43 @@ $klein->respond('POST', '/api/disguise-areas', function (\Klein\Request $request
 
     $response->code(201);
     return json_encode($viewModel);
+});
+
+$klein->respond('POST', '/api/disguise-areas/copy', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    if (!userIsLoggedIn()) {
+        print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
+        return $response->code(401);
+    }
+
+    if (!isset($_POST['original-disguise']) || !isset($_POST['target-disguise'])) {
+        $response->code(400);
+        return $response->body(json_encode(['message' => 'You must select a source and target disguise!']));
+    }
+
+    $originalDisguiseId = intval($_POST['original-disguise']);
+    $targetDisguiseId = intval($_POST['target-disguise']);
+
+    if ($originalDisguiseId === $targetDisguiseId) {
+        $response->code(400);
+        return $response->body(json_encode(['message' => 'Original and Target Disguises cannot be the same!']));
+    }
+
+    /* @var $disguiseAreas \DataAccess\Models\DisguiseArea[] */
+    $entityManager = $applicationContext->get(\Doctrine\ORM\EntityManager::class);
+    $entityManager->getConnection()->exec('DELETE FROM `disguise_areas` WHERE `disguise_id` = ' . intval($targetDisguiseId));
+    $disguiseAreas = $entityManager->getRepository(\DataAccess\Models\DisguiseArea::class)->findBy(['disguiseId' => $originalDisguiseId]);
+    foreach ($disguiseAreas as $disguiseArea) {
+        $newDisguiseArea = new \DataAccess\Models\DisguiseArea();
+        $newDisguiseArea->setMissionId($disguiseArea->getMissionId());
+        $newDisguiseArea->setType($disguiseArea->getType());
+        $newDisguiseArea->setDisguiseId($targetDisguiseId);
+        $newDisguiseArea->setLevel($disguiseArea->getLevel());
+        $newDisguiseArea->setVertices($disguiseArea->getVertices());
+        $entityManager->persist($newDisguiseArea);
+    }
+    $entityManager->flush();
+
+    return $response->code(204);
 });
 
 $klein->respond('GET', '/api/disguise-areas/delete/[:areaId]', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
@@ -1062,7 +1100,7 @@ $klein->respond('GET', '/sitemap.txt', function(\Klein\Request $request, \Klein\
         /* @var $locations \DataAccess\Models\Location[] */
         $locations = $locationRepository->findByGame($game->getSlug());
         foreach ($locations as $location) {
-            $pages[] = "{$constants->siteDomain}/games/{$game->getSlug()}/{$location->getSlug()}";
+            $pages[] = "{$constants->siteDomain}/games/{$game->getSlug()}#  {$location->getSlug()}";
 
             /* @var $missions \DataAccess\Models\Mission[] */
             $missions = $missionRepository->findActiveMissionsByLocation($location->getId());

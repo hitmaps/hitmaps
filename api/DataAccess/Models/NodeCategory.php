@@ -82,6 +82,16 @@ class NodeCategory {
     public $collapsible;
 
     /**
+     * @ORM\Column(type="boolean", name="for_mission")
+     */
+    public $forMission;
+
+    /**
+     * @ORM\Column(type="boolean", name="for_sniper_assassin")
+     */
+    public $forSniperAssassin;
+
+    /**
      * @return mixed
      */
     public function getId(): int {
@@ -275,5 +285,33 @@ class NodeCategory {
      */
     public function setCollapsible($collapsible): void {
         $this->collapsible = $collapsible;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getForMission() {
+        return $this->forMission;
+    }
+
+    /**
+     * @param mixed $forMission
+     */
+    public function setForMission($forMission): void {
+        $this->forMission = $forMission;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getForSniperAssassin() {
+        return $this->forSniperAssassin;
+    }
+
+    /**
+     * @param mixed $forSniperAssassin
+     */
+    public function setForSniperAssassin($forSniperAssassin): void {
+        $this->forSniperAssassin = $forSniperAssassin;
     }
 }

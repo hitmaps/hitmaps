@@ -14,6 +14,12 @@ class GameViewModel extends BaseModel {
     /* @var $tagline string */
     public $tagline;
 
+    /* @var $type string */
+    public $type;
+
+    /* @var $icon string */
+    public $icon;
+
     /* @var $locations LocationViewModel[] */
     public $locations;
 }

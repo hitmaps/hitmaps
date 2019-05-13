@@ -3,6 +3,7 @@
 namespace BusinessLogic;
 
 
+use DataAccess\Models\Disguise;
 use DataAccess\Models\Mission;
 use DataAccess\Models\MissionDifficulty;
 use Doctrine\ORM\EntityManager;
@@ -54,7 +55,7 @@ class MissionCloner {
             SELECT {$newMission->getId()}, type, subgroup, `name`, target, `level`, latitude, longitude, 'standard', `group`, approved, created_by, date_created, icon, searchable, image, `id`, tooltip
             FROM `nodes`
             WHERE `mission_id` = {$originalMission->getId()}
-              AND `difficulty` = 'professional'";
+            AND `difficulty` = '{$originalDifficulty}'";
         $this->entityManager->getConnection()->exec($copyNodesSql);
 
         // Copy their notes
@@ -67,11 +68,52 @@ class MissionCloner {
               AND `difficulty` = 'standard'";
         $this->entityManager->getConnection()->exec($copyNotesSql);
 
+        // Copy their ledges
+        $this->entityManager->getConnection()->exec("
+            INSERT INTO `ledges` (mission_id, vertices, level) 
+            SELECT {$newMission->getId()}, vertices, level
+            FROM `ledges`
+            WHERE `mission_id` = {$originalMission->getId()}");
+
+        // Copy their foliage
+        $this->entityManager->getConnection()->exec("
+            INSERT INTO `foliage` (mission_id, vertices, level) 
+            SELECT {$newMission->getId()}, vertices, level
+            FROM `foliage`
+            WHERE `mission_id` = {$originalMission->getId()}");
+
+        // Copy their disguises
+        $newDisguiseIdToOldDisguiseId = [];
+        $disguises = $this->entityManager->getRepository(Disguise::class)->findBy(['missionId' => $originalMission->getId()]);
+        /* @var $newDisguises Disguise[] */
+        $newDisguises = [];
+
+        /* @var $disguises Disguise[] */
+        foreach ($disguises as $disguise) {
+            $newDisguise = new Disguise();
+            $newDisguise->setName($disguise->getName());
+            $newDisguise->setImage($disguise->getImage());
+            $newDisguise->setMissionId($newMission->getId());
+            $this->entityManager->persist($newDisguise);
+            $this->entityManager->flush();
+
+            $newDisguiseIdToOldDisguiseId[$newDisguise->getId()] = $disguise->getId();
+        }
+
+
+        // Copy their disguise areas
+        foreach ($newDisguises as $newDisguise) {
+            $this->entityManager->getConnection()->exec("INSERT INTO `disguise_areas` (mission_id, disguise_id, vertices, level, type) 
+              SELECT {$newDisguise->getMissionId()}, {$newDisguise->getId()}, `vertices`, `level`, `type`
+              FROM `disguise_areas`
+              WHERE `disguise_id` = {$newDisguiseIdToOldDisguiseId[$newDisguise->getId()]} ");
+        }
+
         // Remove the original IDs
-        $removeOriginalSql = "UPDATE `nodes`
+        $this->entityManager->getConnection()->exec("UPDATE `nodes`
             SET `original_id` = NULL
             WHERE `mission_id` = {$newMission->getId()}
-              AND `difficulty` = 'standard'";
+            AND `difficulty` = '{$originalDifficulty}'");
 
         $missionDifficulty = new MissionDifficulty();
         $missionDifficulty->setMissionId($newMission->getId());
