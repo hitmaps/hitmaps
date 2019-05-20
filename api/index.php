@@ -273,15 +273,15 @@ $klein->respond('GET', '/api/v1/elusive-targets', function(\Klein\Request $reque
     return $response->json($viewModels);
 });
 
-$klein->respond('POST', '/api/v1/user/login', function(\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext, $klein) {
+$klein->respond('POST', '/api/web/user/login', function(\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext, $klein) {
     $controller = $applicationContext->get(\Controllers\AuthenticationController::class);
 
     try {
-        $controller->loginUser($_POST['email'], $_POST['password'], $_POST['g-recaptcha-response']);
+        $token = $controller->loginUser($_POST['email'], $_POST['password'], $_POST['g-recaptcha-response']);
 
         return $response->json([
-            'loggedIn'=> true,
-            'session' => session_id()
+            'token' => $token->token,
+            'expiration' => $token->expiration
         ]);
     } catch (\BusinessLogic\Authentication\LoginFailedException | \Controllers\RecaptchaFailedException $e) {
         $viewModel = new \Controllers\ViewModels\LoginViewModel();

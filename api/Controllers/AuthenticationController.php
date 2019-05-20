@@ -71,7 +71,7 @@ class AuthenticationController {
             throw new RecaptchaFailedException();
         }
 
-        $this->loginUserService->loginWithUserAndPassword($email, $password);
+        return $this->loginUserService->loginWithUserAndPassword($email, $password);
     }
 
     public function verifyUser(string $token) {
