@@ -1190,6 +1190,7 @@ $klein->onError(function (\Klein\Klein $klein, $msg, $type, Throwable $err) use 
 $klein->dispatch();
 
 function userIsLoggedIn() {
+    // TODO Change to verify token. Renew token if still valid. Otherwise return 400.
     \BusinessLogic\Session\Session::start();
 
     try {
