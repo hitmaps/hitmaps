@@ -3,18 +3,26 @@
 namespace BusinessLogic\Authentication;
 
 
-use BusinessLogic\AuthTokenWithExpiration;
+use Config\JwtConfig;
+use Firebase\JWT\JWT;
 
 class TokenGenerator {
-    public function generateToken(): AuthTokenWithExpiration {
-        $tokenWithExpiration = new AuthTokenWithExpiration();
-        $tokenWithExpiration->token = bin2hex(openssl_random_pseudo_bytes(32));
-        $tokenWithExpiration->expiration = $this->getTokenExpiration();
+    public function generateToken(): string {
+        $config = new JwtConfig();
 
-        return $tokenWithExpiration;
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+        $token = [
+            'iss' => $config->issuer,
+            'aud' => $config->audience,
+            'iat' => $now,
+            'nbf' => $now,
+            'exp' => $this->getTokenExpiration($now)
+        ];
+
+        return JWT::encode($token, $config->key);
     }
 
-    public function getTokenExpiration(): \DateTime {
+    public function getTokenExpiration(\DateTime $currentTime): \DateTime {
         $currentTime = new \DateTime('now', new \DateTimeZone('UTC'));
 
         return $currentTime->modify('2 hours');
