@@ -1,0 +1,11 @@
+<?php
+
+namespace Config;
+
+
+class JwtConfig {
+    public $key = 'something-more-secure-than-this';
+    public $issuer = 'http://localhost';
+    public $audience = 'http://localhost';
+    public $tokenExpirationInMinutes = 120;
+}
