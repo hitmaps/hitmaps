@@ -2,8 +2,6 @@
 
 require __DIR__ . '/autoload.php';
 
-SassCompiler::run("scss/", "css/", "scss_formatter_compressed");
-
 $loader = new Twig_Loader_Filesystem(__DIR__ . '/resources/views');
 $twig = new Twig_Environment($loader);
 
@@ -13,35 +11,6 @@ $klein->respond(function(\Klein\Request $request, \Klein\Response $response) use
     if(isset($_SERVER['HTTP_ORIGIN'])) $response->header('Access-Control-Allow-Origin', $_SERVER['HTTP_ORIGIN']);
     $response->header('Access-Control-Allow-Headers', 'content-type');
     $response->header('Access-Control-Allow-Credentials', 'true');
-});
-
-$klein->respond('GET', '/', function () use ($twig, $applicationContext) {
-    /* @var $games \DataAccess\Models\Game[] */
-    $games = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Game::class)->findAll();
-
-    $viewModel = new \ViewModels\HomeViewModel();
-    foreach ($games as $game) {
-        $gameViewModel = new \ViewModels\GameViewModel();
-        $gameViewModel->tagline = $game->getTagline();
-        $gameViewModel->fullName = $game->getFullName();
-        $gameViewModel->slug = $game->getSlug();
-
-        $viewModel->games[] = $gameViewModel;
-    }
-
-    /* @var $elusiveTargetRepository \DataAccess\Repositories\ElusiveTargetRepository */
-    $elusiveTargetRepository = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\ElusiveTarget::class);
-
-    $viewModel->elusiveTarget = $elusiveTargetRepository->getActiveElusiveTarget();
-
-    /* @var $missionRepository \DataAccess\Repositories\MissionRepository */
-    $missionRepository = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Mission::class);
-	
-    if ($viewModel->elusiveTarget !== null) {
-        $viewModel->elusiveTargetUrl = $missionRepository->buildUrlForMissionAndDifficulty($viewModel->elusiveTarget->getMissionId(), 'standard');
-    }
-
-    return \Controllers\Renderer::render('game-select.twig', $twig, $viewModel);
 });
 
 // Public API calls
@@ -293,73 +262,6 @@ $klein->respond('POST', '/api/web/user/login', function(\Klein\Request $request,
 
         return $response->json($viewModel);
     }
-});
-
-$klein->respond('GET', '/games/[:game]', function(\Klein\Request $request) use ($twig, $applicationContext) {
-    /* @var $locations \DataAccess\Models\Location[] */
-    $locations = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)
-        ->findBy(['game' => $request->game], ['order' => 'ASC']);
-    /* @var $game \DataAccess\Models\Game */
-    $game = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
-        ->getRepository(\DataAccess\Models\Game::class)
-        ->findOneBy(['slug' => $request->game]);
-
-    /* @var $gameViewModel \ViewModels\GameViewModel */
-    $gameViewModel = new \ViewModels\GameViewModel();
-    $gameViewModel->game = $request->game;
-    $gameViewModel->fullName = $game->getFullName();
-    $gameViewModel->tagline = $game->getTagline();
-
-    foreach ($locations as $location) {
-        $locationViewModel = new \ViewModels\LocationViewModel();
-        $locationViewModel->slug = $location->getSlug();
-        $locationViewModel->country = $location->getDestinationCountry();
-        $locationViewModel->name = $location->getDestination();
-        $gameViewModel->locations[] = $locationViewModel;
-    }
-
-    return \Controllers\Renderer::render('location-select.twig', $twig, $gameViewModel);
-});
-
-$klein->respond('GET', '/games/[:game]/[:location]', function(\Klein\Request $request) use ($twig, $applicationContext) {
-    /* @var $location \DataAccess\Models\Location */
-    $location = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)
-        ->findOneBy(['slug' => $request->location, 'game' => $request->game]);
-    /* @var $game \DataAccess\Models\Game */
-    $game = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Game::class)
-        ->findOneBy(['slug' => $request->game]);
-    /* @var $missionRepository \DataAccess\Repositories\MissionRepository */
-    $missionRepository = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Mission::class);
-    /* @var $missions \DataAccess\Models\Mission[] */
-    $missions = $missionRepository->findActiveMissionsByLocation($location->getId());
-
-    $locationViewModel = new \ViewModels\LocationViewModel();
-    $locationViewModel->name = $location->getDestination();
-    $locationViewModel->game = $game->getSlug();
-    $locationViewModel->gameName = $game->getFullName();
-    $locationViewModel->country = $location->getDestinationCountry();
-    $locationViewModel->slug = $location->getSlug();
-    $locationViewModel->missions = [];
-    foreach ($missions as $mission) {
-        $missionViewModel = new \ViewModels\MissionViewModel();
-        $missionViewModel->game = $location->getGame();
-        $missionViewModel->slug = $mission->getSlug();
-        $missionViewModel->name = $mission->getName();
-        $missionViewModel->missionType = $mission->getMissionType();
-        $missionViewModel->setTileLocation();
-        $missionViewModel->difficulties = [];
-
-        /* @var $difficulties \DataAccess\Models\MissionDifficulty[] */
-        $difficulties = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\MissionDifficulty::class)
-            ->findBy(['missionId' => $mission->getId()]);
-
-        foreach ($difficulties as $difficulty) {
-            $missionViewModel->difficulties[] = $difficulty->getDifficulty();
-        }
-        $locationViewModel->missions[] = $missionViewModel;
-    }
-
-    return \Controllers\Renderer::render('mission-select.twig', $twig, $locationViewModel);
 });
 
 $klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext) {
@@ -890,28 +792,6 @@ $klein->respond('GET', '/user/verify', function(\Klein\Request $request, \Klein\
     $response->redirect('/user/login?redirectLocation=/');
 });
 
-$klein->respond('GET', '/user/logout', function() use ($twig) {
-    \BusinessLogic\Session\Session::start();
-    \BusinessLogic\Session\Session::destroy();
-    \BusinessLogic\Session\Session::close();
-
-    $viewModel = new \Controllers\ViewModels\BaseModel();
-    $viewModel->messages[] = new \Controllers\ViewModels\AlertMessage('success', 'You have been logged out!', 'check-circle');
-
-    return \Controllers\Renderer::render('user/login.twig', $twig, $viewModel);
-});
-
-$klein->respond('GET', '/user/profile', function(\Klein\Request $request, \Klein\Response $response) use ($klein, $twig, $applicationContext) {
-    if (!userIsLoggedIn()) {
-        return bounceToLogin($klein, $response, '/user/profile');
-    }
-
-    $viewModel = new \Controllers\ViewModels\UpdateProfileViewModel();
-    $viewModel->user = \BusinessLogic\Session\Session::read('userContext');
-
-    return \Controllers\Renderer::render('user/profile.twig', $twig, $viewModel);
-});
-
 // AJAX endpoint
 $klein->respond('POST', '/user/edit/basic-info', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $newToken = null;
@@ -1020,14 +900,6 @@ $klein->respond('POST', '/user/reset-password', function(\Klein\Request $request
 
     $klein->service()->flash('Your password has been reset. You may now log in.', 'success');
     return $response->redirect('/user/login?redirectLocation=/');
-});
-
-$klein->respond('GET', '/terms-of-use', function() use ($twig) {
-    return \Controllers\Renderer::render('terms-of-use.twig', $twig);
-});
-
-$klein->respond('GET', '/privacy-policy', function() use ($twig) {
-    return \Controllers\Renderer::render('privacy-policy.twig', $twig);
 });
 
 $klein->respond('GET', '/500', function() use ($twig) {
