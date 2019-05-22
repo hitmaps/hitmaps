@@ -248,10 +248,9 @@ $klein->respond('POST', '/api/web/user/login', function(\Klein\Request $request,
     try {
         $token = $controller->loginUser($_POST['email'], $_POST['password'], $_POST['g-recaptcha-response']);
 
-        return $response->json([
-            'token' => $token->token,
-            'expiration' => $token->expiration
-        ]);
+        $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+        $responseModel->token = $token;
+        return $response->json($responseModel);
     } catch (\BusinessLogic\Authentication\LoginFailedException | \Controllers\RecaptchaFailedException $e) {
         $viewModel = new \Controllers\ViewModels\LoginViewModel();
         if ($e instanceof \BusinessLogic\Authentication\LoginFailedException) {
@@ -260,7 +259,10 @@ $klein->respond('POST', '/api/web/user/login', function(\Klein\Request $request,
             $viewModel->messages[] = new \Controllers\ViewModels\AlertMessage('danger', 'You must complete the captcha in order to log in.', 'times-circle');
         }
 
-        return $response->json($viewModel);
+        $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+        $responseModel->token = null;
+        $responseModel->data = $viewModel;
+        return $response->json($responseModel);
     }
 });
 

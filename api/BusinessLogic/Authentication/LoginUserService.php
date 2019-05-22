@@ -19,7 +19,7 @@ class LoginUserService {
         $this->tokenGenerator = $tokenGenerator;
     }
 
-    public function loginWithUserAndPassword(string $email, string $password): AuthTokenWithExpiration {
+    public function loginWithUserAndPassword(string $email, string $password): string {
         /* @var $user User|null */
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email, 'verificationToken' => null]);
 
@@ -27,18 +27,6 @@ class LoginUserService {
             throw new LoginFailedException();
         }
 
-        $tokenWithExpiration = $this->tokenGenerator->generateToken();
-
-        $authTokenWithExpiration = new AuthTokenWithExpiration();
-        $authTokenWithExpiration->token = $tokenWithExpiration->token;
-        $authTokenWithExpiration->expiration = $tokenWithExpiration->expiration;
-        $hashedToken = new UserAuthToken();
-        $hashedToken->setUserId($user->getId());
-        $hashedToken->setToken(hash('sha512', $tokenWithExpiration->token));
-        $hashedToken->setExpiration($tokenWithExpiration->expiration);
-        $this->entityManager->persist($hashedToken);
-        $this->entityManager->flush();
-
-        return $authTokenWithExpiration;
+        return $this->tokenGenerator->generateToken($user);
     }
 }
