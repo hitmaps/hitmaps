@@ -8,12 +8,7 @@ use BusinessLogic\Session\Session;
 use BusinessLogic\Session\SessionException;
 use DataAccess\Models\User;
 
-class BaseApiResponseModel {
-    public $messages = [];
+class ApiResponseModel {
     public $token;
     public $data;
-
-    public function __construct() {
-
-    }
 }
