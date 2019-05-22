@@ -362,106 +362,9 @@ $klein->respond('GET', '/games/[:game]/[:location]', function(\Klein\Request $re
     return \Controllers\Renderer::render('mission-select.twig', $twig, $locationViewModel);
 });
 
-$klein->respond('GET', '/games/[:game]/[:location]/[:missionSlug]/[:difficulty]', function (\Klein\Request $request) use ($twig, $applicationContext) {
-    $viewModel = new \ViewModels\GameMapViewModel();
-    $viewModel->difficulty = $request->difficulty;
-    $viewModel->game = $request->game;
-
-    /* @var $mission \DataAccess\Models\Mission|null */
-    $mission = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
-        ->getRepository(\DataAccess\Models\Mission::class)
-        ->findOneBy(['slug' => $request->missionSlug]);
-    if ($mission === null) {
-        bounceTo404($twig);
-    }
-
-    $viewModel->missionId = $mission->getId();
-    $viewModel->mission = $mission->getName();
-    $viewModel->missionType = $mission->getMissionType();
-    $viewModel->missionSlug = $mission->getSlug();
-    $viewModel->setTileLocation();
-
-    /* @var $location \DataAccess\Models\Location */
-    $location = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
-        ->getRepository(\DataAccess\Models\Location::class)
-        ->findOneBy(['id' => $mission->getLocationId()]);
-
-    $viewModel->locationSlug = $location->getSlug();
-    $viewModel->locationNameOne = $location->getDestination();
-    $viewModel->mapFolderName = $mission->getMapFolderName();
-    $viewModel->mapCenterLatitude = $mission->getMapCenterLatitude();
-    $viewModel->mapCenterLongitude = $mission->getMapCenterLongitude();
-    $viewModel->topLeftCoordinate = $mission->getTopLeftCoordinate();
-    $viewModel->bottomRightCoordinate = $mission->getBottomRightCoordinate();
-    $viewModel->lowestFloor = $mission->getLowestFloorNumber();
-    $viewModel->highestFloor = $mission->getHighestFloorNumber();
-    $viewModel->startingFloor = $mission->getStartingFloorNumber();
-    $viewModel->satelliteView = $mission->getSatelliteView() ? 1 : 0;
-    $viewModel->disguises = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
-        ->getRepository(\DataAccess\Models\Disguise::class)
-        ->findBy(['missionId' => $mission->getId()], ['name' => 'ASC']);
-
-    if (userIsLoggedIn()) {
-        /* @var $user \DataAccess\Models\User */
-        $user = \BusinessLogic\Session\Session::read('userContext');
-        $roles = $user->getRolesAsInts();
-
-        if (\BusinessLogic\UserRole::hasAccess($roles, [\BusinessLogic\UserRole::TRUSTED_EDITOR])) {
-            $viewModel->editorTitle = 'Add Change';
-            $viewModel->canDeleteNodes = true;
-        } else {
-            $viewModel->editorTitle = 'Suggest Edit';
-            $viewModel->canDeleteNodes = false;
-        }
-    }
-
-    $nodeCategories = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\NodeCategory::class)->findBy([], ['order' => 'ASC', 'group' => 'ASC']);
-    $sortedNodeCategories = [];
-
-    /* @var $nodeCategory \DataAccess\Models\NodeCategory */
-    foreach ($nodeCategories as $nodeCategory) {
-        if (!key_exists($nodeCategory->getType(), $sortedNodeCategories)) {
-            $sortedNodeCategories[$nodeCategory->getType()] = [];
-        }
-
-        $sortedNodeCategories[$nodeCategory->getType()][] = $nodeCategory;
-    }
-
-    $predeterminedItems = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Item::class)->findBy([], ['name' => 'ASC']);
-    $sortedPredeterminedItems = [];
-
-    /* @var $predeterminedItem \DataAccess\Models\Item */
-    foreach ($predeterminedItems as $predeterminedItem) {
-        if (!key_exists($predeterminedItem->getType(), $sortedPredeterminedItems)) {
-            $sortedPredeterminedItems[$predeterminedItem->getType()] = [];
-        }
-
-        $sortedPredeterminedItems[$predeterminedItem->getType()][] = $predeterminedItem;
-    }
-
-    $icons = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Icon::class)->findBy([], ['order' => 'ASC', 'icon' => 'ASC']);
-    $sortedIcons = [];
-
-    /* @var $icon \DataAccess\Models\Icon */
-    foreach ($icons as $icon) {
-        if (!key_exists($icon->getGroup(), $sortedIcons)) {
-            $sortedIcons[$icon->getGroup()] = [];
-        }
-
-        $sortedIcons[$icon->getGroup()][] = $icon;
-    }
-
-    $viewModel->predeterminedItems = $sortedPredeterminedItems;
-    $viewModel->nodeCategories = $sortedNodeCategories;
-    $viewModel->icons = $sortedIcons;
-    $viewModel->nodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($viewModel->missionId, $request->difficulty, true);
-    $viewModel->searchableNodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($viewModel->missionId, $request->difficulty, true, true);
-
-    return \Controllers\Renderer::render('map.twig', $twig, $viewModel);
-});
-
 $klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext) {
-    if (!userIsLoggedIn()) {
+    $newToken = null;
+    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
         return $response->code(401);
     }
@@ -471,7 +374,11 @@ $klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\
     $node = $applicationContext->get(\Controllers\NodeController::class)->createNode(intval($_POST['mission-id']), $_POST['difficulty'], $_POST, $user);
 
     $response->code(201);
-    return json_encode(transformNode($node, $applicationContext));
+
+    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel->token = $newToken;
+    $responseModel->data = transformNode($node, $applicationContext);
+    return json_encode($responseModel);
 });
 
 function transformNode(\DataAccess\Models\Node $node, \DI\Container $applicationContext): \Controllers\ViewModels\NodeWithNotesViewModel {
@@ -523,7 +430,8 @@ function transformNode(\DataAccess\Models\Node $node, \DI\Container $application
 }
 
 $klein->respond('POST', '/api/ledges', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    if (!userIsLoggedIn()) {
+    $newToken = null;
+    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
         return $response->code(401);
     }
@@ -539,11 +447,15 @@ $klein->respond('POST', '/api/ledges', function (\Klein\Request $request, \Klein
     $viewModel->vertices = $explodedVertices;
 
     $response->code(201);
-    return json_encode($viewModel);
+    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel->token = $newToken;
+    $responseModel->data = $viewModel;
+    return json_encode($responseModel);
 });
 
 $klein->respond('GET', '/api/ledges/delete/[:ledgeId]', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    if (!userIsLoggedIn()) {
+    $newToken = null;
+    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to delete ledges!']);
         return $response->code(401);
     }
@@ -554,11 +466,16 @@ $klein->respond('GET', '/api/ledges/delete/[:ledgeId]', function (\Klein\Request
     $entityManager->flush();
 
     $response->code(200);
-    return json_encode(['message' => 'Ledge deleted!']);
+
+    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel->token = $newToken;
+    $responseModel->data = ['message' => 'Ledge deleted!'];
+    return json_encode($responseModel);
 });
 
 $klein->respond('POST', '/api/foliage', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    if (!userIsLoggedIn()) {
+    $newToken = null;
+    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
         return $response->code(401);
     }
@@ -574,11 +491,16 @@ $klein->respond('POST', '/api/foliage', function (\Klein\Request $request, \Klei
     $viewModel->vertices = $explodedVertices;
 
     $response->code(201);
-    return json_encode($viewModel);
+
+    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel->token = $newToken;
+    $responseModel->data = $viewModel;
+    return json_encode($responseModel);
 });
 
 $klein->respond('GET', '/api/foliage/delete/[:foliageId]', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    if (!userIsLoggedIn()) {
+    $newToken = null;
+    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to delete foliage!']);
         return $response->code(401);
     }
@@ -589,11 +511,16 @@ $klein->respond('GET', '/api/foliage/delete/[:foliageId]', function (\Klein\Requ
     $entityManager->flush();
 
     $response->code(200);
-    return json_encode(['message' => 'Foliage deleted!']);
+
+    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel->token = $newToken;
+    $responseModel->data = ['message' => 'Foliage deleted!'];
+    return json_encode($responseModel);
 });
 
 $klein->respond('POST', '/api/disguise-areas', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    if (!userIsLoggedIn()) {
+    $newToken = null;
+    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
         return $response->code(401);
     }
@@ -615,11 +542,16 @@ $klein->respond('POST', '/api/disguise-areas', function (\Klein\Request $request
     $viewModel->vertices = $explodedVertices;
 
     $response->code(201);
-    return json_encode($viewModel);
+
+    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel->token = $newToken;
+    $responseModel->data = $viewModel;
+    return json_encode($responseModel);
 });
 
 $klein->respond('POST', '/api/disguise-areas/copy', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    if (!userIsLoggedIn()) {
+    $newToken = null;
+    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
         return $response->code(401);
     }
@@ -652,11 +584,14 @@ $klein->respond('POST', '/api/disguise-areas/copy', function (\Klein\Request $re
     }
     $entityManager->flush();
 
-    return $response->code(204);
+    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel->token = $newToken;
+    return json_encode($responseModel);
 });
 
 $klein->respond('GET', '/api/disguise-areas/delete/[:areaId]', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    if (!userIsLoggedIn()) {
+    $newToken = null;
+    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to delete disguise areas!']);
         return $response->code(401);
     }
@@ -667,24 +602,31 @@ $klein->respond('GET', '/api/disguise-areas/delete/[:areaId]', function (\Klein\
     $entityManager->flush();
 
     $response->code(200);
-    return json_encode(['message' => 'Disguise area deleted!']);
+
+    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel->token = $newToken;
+    $responseModel->data = ['message' => 'Disguise area deleted!'];
+    return json_encode($responseModel);
 });
 
 $klein->respond('POST', '/api/nodes/move', function (\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext) {
-    if (!userIsLoggedIn()) {
+    $newToken = null;
+    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
         return $response->code(401);
     }
 
-
-    $user = \BusinessLogic\Session\Session::read('userContext');
     $applicationContext->get(\Controllers\NodeController::class)->moveNode(intval($_POST['node-id']), $_POST['latitude'], $_POST['longitude']);
 
-    return json_encode(['message' => 'OK']);
+    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel->token = $newToken;
+    $responseModel->data = ['message' => 'OK'];
+    return json_encode($responseModel);
 });
 
 $klein->respond('POST', '/api/nodes/edit/[:nodeId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    if (!userIsLoggedIn()) {
+    $newToken = null;
+    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to modify nodes!']);
         return $response->code(401);
     }
@@ -700,11 +642,16 @@ $klein->respond('POST', '/api/nodes/edit/[:nodeId]', function(\Klein\Request $re
     $node = $applicationContext->get(\Controllers\NodeController::class)->editNode(intval($request->nodeId), intval($_POST['mission-id']), $_POST['difficulty'], $_POST, $user);
 
     $response->code(200);
-    return json_encode(transformNode($node, $applicationContext));
+
+    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel->token = $newToken;
+    $responseModel->data = transformNode($node, $applicationContext);
+    return json_encode($responseModel);
 });
 
 $klein->respond('GET', '/api/nodes/delete/[:nodeId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    if (!userIsLoggedIn()) {
+    $newToken = null;
+    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to modify nodes!']);
         return $response->code(401);
     }
@@ -729,7 +676,10 @@ $klein->respond('GET', '/api/nodes/delete/[:nodeId]', function(\Klein\Request $r
     $applicationContext->get(\Doctrine\ORM\EntityManager::class)->remove($node);
     $applicationContext->get(\Doctrine\ORM\EntityManager::class)->flush();
 
-    print json_encode(['message' => 'Node deleted!']);
+    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel->token = $newToken;
+    $responseModel->data = ['message' => 'Node deleted!'];
+    print json_encode($responseModel);
     return $response->code(200);
 });
 
@@ -964,7 +914,8 @@ $klein->respond('GET', '/user/profile', function(\Klein\Request $request, \Klein
 
 // AJAX endpoint
 $klein->respond('POST', '/user/edit/basic-info', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    if (!userIsLoggedIn()) {
+    $newToken = null;
+    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to make changes to your profile!']);
         return $response->code(401);
     }
@@ -977,12 +928,16 @@ $klein->respond('POST', '/user/edit/basic-info', function(\Klein\Request $reques
 
     \BusinessLogic\Session\Session::write($user, 'userContext');
 
-    print json_encode(['message' => 'Changes have been saved!']);
+    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel->token = $newToken;
+    $responseModel->data = ['message' => 'Changes have been saved!'];
+    print json_encode($responseModel);
     return $response->code(200);
 });
 
 $klein->respond('POST', '/user/edit/password', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    if (!userIsLoggedIn()) {
+    $newToken = null;
+    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to change your password!']);
         return $response->code(401);
     }
@@ -1008,7 +963,10 @@ $klein->respond('POST', '/user/edit/password', function(\Klein\Request $request,
         return $response->code(400);
     }
 
-    print json_encode(['message' => "Your password has been changed!"]);
+    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel->token = $newToken;
+    $responseModel->data = ['message' => "Your password has been changed!"];
+    print json_encode($responseModel);
     return $response->code(200);
 });
 
@@ -1189,12 +1147,21 @@ $klein->onError(function (\Klein\Klein $klein, $msg, $type, Throwable $err) use 
 
 $klein->dispatch();
 
-function userIsLoggedIn() {
-    // TODO Change to verify token. Renew token if still valid. Otherwise return 400.
-    \BusinessLogic\Session\Session::start();
+function userIsLoggedIn(\Klein\Request $request, \DI\Container $applicationContext, string &$outToken): bool {
+    $outToken = null;
+
+    /* @var $authorizationHeader string */
+    $authorizationHeader = $request->headers()->get('Authorization');
+
+    if ($authorizationHeader === null) {
+        return false;
+    }
+
+    $tokenGenerator = $applicationContext->get(\BusinessLogic\Authentication\TokenGenerator::class);
 
     try {
-        \BusinessLogic\Session\Session::read('userContext');
+        list($token) = sscanf($authorizationHeader, 'Authorization: Bearer %s');
+        $outToken = $tokenGenerator->validateAndRenewToken($token);
 
         return true;
     } catch (\BusinessLogic\Session\SessionException $e) {
