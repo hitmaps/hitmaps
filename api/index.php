@@ -242,6 +242,37 @@ $klein->respond('GET', '/api/v1/elusive-targets', function(\Klein\Request $reque
     return $response->json($viewModels);
 });
 
+// Web APIs
+$klein->respond('GET', '/api/web/home', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    $constants = new \Config\Constants();
+    $games = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Game::class)->findAll();
+
+    /* @var $missionRepository \DataAccess\Repositories\MissionRepository */
+    $missionRepository = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Mission::class);
+    $elusiveTargets = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\ElusiveTarget::class)->findBy([], ['beginningTime' => 'DESC']);
+
+    $viewModels = [];
+    foreach ($elusiveTargets as $elusiveTarget) {
+        /* @var $elusiveTarget \DataAccess\Models\ElusiveTarget */
+        $viewModel = new \Controllers\ViewModels\ElusiveTargetViewModel();
+        $viewModel->id = $elusiveTarget->getId();
+        $viewModel->beginningTime = $elusiveTarget->getBeginningTime()->format(DateTime::ATOM);
+        $viewModel->name = $elusiveTarget->getName();
+        $viewModel->briefing = $elusiveTarget->getBriefing();
+        $viewModel->endingTime = $elusiveTarget->getEndingTime()->format(DateTime::ATOM);
+        $viewModel->tileUrl = "{$constants->siteDomain}/img/jpg{$elusiveTarget->getImageUrl()}.jpg";
+        $viewModel->videoBriefingUrl = $elusiveTarget->getVideoBriefingUrl();
+        $viewModel->missionUrl = "{$missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId(), 'standard')}";
+
+        $viewModels[] = $viewModel;
+    }
+
+    return $response->json([
+        'games' => $games,
+        'elusiveTargets' => $elusiveTargets
+    ]);
+});
+
 $klein->respond('POST', '/api/web/user/login', function(\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext, $klein) {
     $controller = $applicationContext->get(\Controllers\AuthenticationController::class);
 
