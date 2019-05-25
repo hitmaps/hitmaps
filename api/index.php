@@ -248,8 +248,10 @@ $klein->respond('GET', '/api/web/home', function(\Klein\Request $request, \Klein
     $games = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Game::class)->findAll();
 
     /* @var $missionRepository \DataAccess\Repositories\MissionRepository */
+    /* @var $elusiveTargetRepository \DataAccess\Repositories\ElusiveTargetRepository */
     $missionRepository = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Mission::class);
-    $elusiveTargets = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\ElusiveTarget::class)->findBy([], ['beginningTime' => 'DESC']);
+    $elusiveTargetRepository = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\ElusiveTarget::class);
+    $elusiveTargets = $elusiveTargetRepository->getActiveElusiveTargets();
 
     $viewModels = [];
     foreach ($elusiveTargets as $elusiveTarget) {
