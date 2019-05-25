@@ -11,6 +11,9 @@
                     <h2>{{mission.missionType}}</h2>
                     <h1>{{mission.name}}</h1>
                 </div>
+                <div class="loader" style="display: inline-block; height: 48px; float: right">
+                    <img src="/img/map-icons/loader.gif" style="height: 50px; width: 100px">
+                </div>
             </div>
         </div>
     </div>
