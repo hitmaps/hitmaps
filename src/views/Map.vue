@@ -1,6 +1,11 @@
 <template>
   <div>
-    <div v-if="!mapLoaded && mission != null" class="overlay" style="background: #ccc url('/img/webp/backgrounds/loading.webp') no-repeat; background-size: cover">
+    <div v-if="!mapLoaded && mission != null" class="overlay">
+        <div class="background" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; overflow:hidden; z-index: -100">
+            <video loop muted autoplay poster="/img/jpg/loading.jpg" class="fullscreen-bg__video">
+                <source src="/video/loading.mp4" type="video/mp4">
+            </video>
+        </div>
         <div class="overlay-container">
             <img class="img-fluid" :src="'/img/' + loadingTile" alt="Mission Thumbnail">
             <div class="footer">
