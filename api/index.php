@@ -253,7 +253,7 @@ $klein->respond('GET', '/api/web/home', function(\Klein\Request $request, \Klein
     $elusiveTargetRepository = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\ElusiveTarget::class);
     $elusiveTargets = $elusiveTargetRepository->getActiveElusiveTargets();
 
-    $viewModels = [];
+    $elusiveTargetViewModels = [];
     foreach ($elusiveTargets as $elusiveTarget) {
         /* @var $elusiveTarget \DataAccess\Models\ElusiveTarget */
         $viewModel = new \Controllers\ViewModels\ElusiveTargetViewModel();
@@ -266,12 +266,12 @@ $klein->respond('GET', '/api/web/home', function(\Klein\Request $request, \Klein
         $viewModel->videoBriefingUrl = $elusiveTarget->getVideoBriefingUrl();
         $viewModel->missionUrl = "{$missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId(), 'standard')}";
 
-        $viewModels[] = $viewModel;
+        $elusiveTargetViewModels[] = $viewModel;
     }
 
     return $response->json([
         'games' => $games,
-        'elusiveTargets' => $elusiveTargets
+        'elusiveTargets' => $elusiveTargetViewModels
     ]);
 });
 
