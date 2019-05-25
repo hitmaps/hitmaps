@@ -23,7 +23,7 @@
                     </div>
           </router-link>
       </div>
-      <div v-for="elusiveTarget in elusiveTargets" class="elusive-target col-lg"
+      <div class="elusive-target col-lg"
       v-bind:style="{ backgroundImage: 'url('+ (elusiveTarget != null ? elusiveTarget.tileUrl : '/img/jpg/elusive-targets/coming-soon.jpg') + ')', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}">
         <router-link @click.native="saveGameData" :to="elusiveTarget.missionUrl" v-if="elusiveTarget != null">
           <p>&nbsp;</p>
@@ -118,7 +118,9 @@ export default {
   data () {
     return {
       games: [],
-      elusiveTargets: []
+      elusiveTargets: [],
+      activeElusiveIndex: 0,
+      elusiveTarget: null
     }
   },
   methods: {
@@ -134,6 +136,19 @@ export default {
     this.$http.get(this.$domain + '/api/web/home').then(resp => {
         this.games = resp.data.games;
         this.elusiveTargets = resp.data.elusiveTargets;
+
+        if (this.elusiveTargets.length > 0) {
+            this.elusiveTarget = this.elusiveTargets[0];
+        }
+
+        const that = this;
+        setInterval(function() {
+            if (++that.activeElusiveIndex >= that.elusiveTargets.length) {
+                that.activeElusiveIndex = 0;
+            }
+
+            that.elusiveTarget = that.elusiveTargets[that.activeElusiveIndex];
+        }, 10000);
     });
   }
 }
@@ -251,7 +266,7 @@ export default {
   }
 
   .elusive-target {
-    .countdown {
+      .countdown {
       padding: 15px 15px 0;
       margin-bottom: 1rem;
 
