@@ -2,7 +2,8 @@
   <div>
     <div v-if="!mapLoaded && mission != null" class="overlay">
         <div class="background" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; overflow:hidden; z-index: -100">
-            <video loop muted autoplay poster="/img/jpg/loading.jpg" class="fullscreen-bg__video">
+            <video loop muted autoplay poster="/img/jpg/loading.jpg" class="fullscreen-bg__video" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%">
+			    <!-- https://slicejack.com/fullscreen-html5-video-background-css/ -->
                 <source src="/video/loading.mp4" type="video/mp4">
             </video>
         </div>
