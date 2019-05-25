@@ -16,13 +16,4 @@ class ElusiveTargetRepository extends EntityRepository {
             ->getQuery()
             ->getResult();
     }
-
-    public function getLatestElusiveTarget(): ElusiveTarget {
-        return $this->createQueryBuilder('e')
-            ->select('e')
-            ->orderBy('e.id', 'DESC')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
 }
