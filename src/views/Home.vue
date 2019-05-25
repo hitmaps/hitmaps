@@ -23,7 +23,7 @@
                     </div>
           </router-link>
       </div>
-      <div class="elusive-target col-lg"
+      <div v-for="elusiveTarget in elusiveTargets" class="elusive-target col-lg"
       v-bind:style="{ backgroundImage: 'url('+ (elusiveTarget != null ? elusiveTarget.tileUrl : '/img/jpg/elusive-targets/coming-soon.jpg') + ')', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}">
         <router-link @click.native="saveGameData" :to="elusiveTarget.missionUrl" v-if="elusiveTarget != null">
           <p>&nbsp;</p>
@@ -31,7 +31,7 @@
               <img src="/img/game-icons/elusive-target-reminaing-time.png">
               <div class="timer" :class="{'not-playable': new Date(elusiveTarget.beginningTime) > new Date()}">
                   <div class="target-arrives">TARGET ARRIVES</div>
-                  <countdown id="elusive-countdown" :date="new Date(elusiveTarget.beginningTime) > new Date() ? elusiveTarget.beginningTime : elusiveTarget.endingTime"></countdown>
+                  <countdown class="elusive-countdown" :date="new Date(elusiveTarget.beginningTime) > new Date() ? elusiveTarget.beginningTime : elusiveTarget.endingTime"></countdown>
               </div>
               <img onclick="return false;" @click="showBriefing" src="/img/game-icons/briefing-transparent.png" class="normal img-fluid briefing-icon float-right" alt="Briefing Icon"
                     data-placement="left"
@@ -118,7 +118,7 @@ export default {
   data () {
     return {
       games: [],
-      elusiveTarget: null
+      elusiveTargets: []
     }
   },
   methods: {
@@ -131,12 +131,10 @@ export default {
     }
   },
   created: function () {
-    this.$http.get(this.$domain +"/api/v1/games").then(resp => this.games = resp.data)
-    this.$http.get(this.$domain + "/api/v1/elusive-targets").then(resp => {
-      if(new Date(resp.data[0].endingTime).getTime() > new Date().getTime()) {
-        this.elusiveTarget = resp.data[0]
-      }
-    })
+    this.$http.get(this.$domain + '/api/web/home').then(resp => {
+        this.games = resp.data.games;
+        this.elusiveTargets = resp.data.elusiveTargets;
+    });
   }
 }
 </script>
@@ -272,7 +270,7 @@ export default {
           display: none;
         }
 
-        #elusive-countdown {
+        .elusive-countdown {
           color: #fef30a;
           font-size: 2rem;
           vertical-align: middle;
@@ -286,7 +284,7 @@ export default {
             display: block;
           }
 
-          #elusive-countdown {
+          .elusive-countdown {
             line-height: 33px;
             margin-top: 7px;
           }
