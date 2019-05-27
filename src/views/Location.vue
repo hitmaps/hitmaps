@@ -207,6 +207,7 @@ export default {
           max-height: 63px;
           max-width: 63px;
           filter: drop-shadow(2px 2px 2px #000);
+          margin-right: 7px;
         }
 
         p {
@@ -342,6 +343,7 @@ export default {
         .image {
           display: inline-block;
           vertical-align: top;
+          margin-right: 5px;
 
           img {
             height: 48px;
