@@ -127,6 +127,11 @@ export default {
       return this.$store.state.game
     }
   },
+  title () {
+    return this.$store.state.game !== null ?
+        this.$store.state.game.fullName :
+        'Loading';
+  },
   data () {
     return {
       locations: []
