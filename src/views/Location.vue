@@ -1,5 +1,5 @@
 <template>
-  <div class="content" style="background: url('/img/webp/backgrounds/loading.webp') no-repeat center center fixed; background-size: cover">
+  <div class="content" style="background: url('/img/jpg/backgrounds/loading.jpg') no-repeat center center fixed; background-size: cover">
     <div class="site-container" v-if="game != null">
       <script type="application/ld+json">
           {
@@ -28,7 +28,7 @@
               <loader></loader>
           </div>
       </div>
-      <nav id="scrollspy" class="navbar locations" style="background: url('/img/webp/backgrounds/loading.webp') no-repeat center center fixed; background-size: cover">
+      <nav id="scrollspy" class="navbar locations" style="background: url('/img/jpg/backgrounds/loading.jpg') no-repeat center center fixed; background-size: cover">
         <ul class="nav">
           <li v-if="locations.length > 0" class="nav-item">
             <router-link :to="{name: 'home'}" class="nav-link" data-target="#">
@@ -48,7 +48,7 @@
         </ul>
       </nav>
       <div v-for="location in locations" :key="location.id" class="location" 
-      v-bind:style="{background: 'url(/img/webp/backgrounds/' + game.slug + '/' + location.slug + '.webp) no-repeat center center fixed',
+      v-bind:style="{background: 'url(/img/jpg/backgrounds/' + game.slug + '/' + location.slug + '.jpg) no-repeat center center fixed',
       backgroundSize: 'cover',}">
         <div class="header">
             <a class="anchor" :id="location.slug"></a>

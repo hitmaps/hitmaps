@@ -1,5 +1,5 @@
 <template>
-    <div class="content" style="background: url('/img/webp/backgrounds/loading.webp') no-repeat center center fixed; background-size: cover">
+    <div class="content" style="background: url('/img/jpg/backgrounds/loading.jpg') no-repeat center center fixed; background-size: cover">
         <h2>Privacy Policy</h2>
     <div class="alert alert-info">
         <i class="fas fa-info-circle"></i>
