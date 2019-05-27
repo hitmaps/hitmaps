@@ -1,10 +1,11 @@
 <template>
   <div>
     <div v-if="!mapLoaded && mission != null" class="overlay">
-        <div class="background" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; overflow:hidden; z-index: -100">
-            <video loop muted autoplay poster="/img/jpg/loading.jpg" class="fullscreen-bg__video" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%">
-			    <!-- https://slicejack.com/fullscreen-html5-video-background-css/ -->
+        <div class="background">
+            <video loop muted autoplay poster="/img/jpg/loading.jpg" class="video">
+                <source src="/video/loading.webm" type="video/webm">
                 <source src="/video/loading.mp4" type="video/mp4">
+                <source src="/video/loading.ogv" type="video/ogg">
             </video>
         </div>
         <div class="overlay-container">
@@ -1626,6 +1627,39 @@ html {
   display: flex;
   align-items: center;
   justify-items: center;
+
+  .background {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow:hidden;
+    z-index: -100;
+
+    .video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: auto;
+      height: auto;
+      min-width: 100%;
+      min-height: 100%;
+      transform: translate(-50%, -50%);
+
+      @media (max-width: 767px) {
+        & {
+            display: none;
+        }
+      }
+    }
+
+    @media (max-width: 767px) {
+      & {
+        background: url('/img/jpg/loading.jpg') center center / cover no-repeat;
+      }
+    }
+  }
 
   .overlay-container {
     margin: 0 auto;
