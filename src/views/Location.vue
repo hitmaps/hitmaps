@@ -23,6 +23,11 @@
               <img :src="'/img/png/logos/' + game.slug + '.png'" class="img-fluid">
               <h2>{{ game.tagline }}</h2>
       </div>
+      <div class="row loading" v-if="locations.length === 0">
+          <div class="loader">
+              <loader></loader>
+          </div>
+      </div>
       <nav id="scrollspy" class="navbar locations" style="background: url('/img/webp/backgrounds/loading.webp') no-repeat center center fixed; background-size: cover">
         <ul class="nav">
           <li v-if="locations.length > 0" class="nav-item">
@@ -111,9 +116,12 @@
 </template>
 
 <script>
-
+import Loader from '../components/Loader.vue'
 export default {
   name: 'level-select',
+  components: {
+    Loader
+  },
   computed: {
     game: function() {
       return this.$store.state.game
@@ -164,6 +172,10 @@ export default {
     padding-left: 50px;
     margin-right: auto;
     margin-left: auto;
+
+    .loader {
+      margin: 100px auto 0;
+    }
   }
 
   .location {
