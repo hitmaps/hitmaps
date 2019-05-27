@@ -6,8 +6,13 @@
               <img src="/img/png/logos/hitman2.png" class="img-fluid">
           </div>
     </header>
-    <div class="row dashboard" v-if="games.length > 0">
-      <div class="game col-lg" v-for="game in games" :key="game.id" 
+    <div class="row loading" v-if="games.length === 0 && elusiveTargets.length === 0">
+        <div class="loader">
+            <loader></loader>
+        </div>
+    </div>
+    <div class="row dashboard" v-if="games.length > 0 || elusiveTargets.length > 0">
+      <div class="game col-lg" v-for="game in games" :key="game.id"
       v-bind:style="{ backgroundImage: 'url(/img/webp/backgrounds/'+ game.slug + '.webp)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}">
         <router-link :to="{ name: 'level-select', params: { slug: game.slug }}">
                     <p>&nbsp;</p>
@@ -109,11 +114,13 @@
 
 <script>
 import Countdown from '../components/Countdown.vue'
+import Loader from '../components/Loader.vue'
 export default {
   name: 'home',
   title: "Home",
   components: {
-    Countdown
+    Countdown,
+    Loader
   },
   data () {
     return {
@@ -170,6 +177,12 @@ export default {
   .game, .elusive-target {
     height: 300px;
     margin-bottom: 20px;
+  }
+}
+
+.loading {
+  .loader {
+    margin: 100px auto 0;
   }
 }
 
@@ -266,7 +279,7 @@ export default {
   }
 
   .elusive-target {
-      .countdown {
+    .countdown {
       padding: 15px 15px 0;
       margin-bottom: 1rem;
 
