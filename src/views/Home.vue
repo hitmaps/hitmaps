@@ -1,5 +1,5 @@
 <template>
-  <div class="content" style="background: url('/img/webp/backgrounds/loading.webp') no-repeat center center fixed; background-size: cover">
+  <div class="content" style="background: url('/img/jpg/backgrounds/loading.jpg') no-repeat center center fixed; background-size: cover">
     <header class="row">
       <div class="col text-center site-header">
               <h1>Interactive Maps For</h1>
@@ -13,7 +13,7 @@
     </div>
     <div class="row dashboard" v-if="games.length > 0 || elusiveTargets.length > 0">
       <div class="game col-lg" v-for="game in games" :key="game.id"
-      v-bind:style="{ backgroundImage: 'url(/img/webp/backgrounds/'+ game.slug + '.webp)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}">
+      v-bind:style="{ backgroundImage: 'url(/img/jpg/backgrounds/'+ game.slug + '.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}">
         <router-link :to="{ name: 'level-select', params: { slug: game.slug }}">
                     <p>&nbsp;</p>
                     <div class="game-info">

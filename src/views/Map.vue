@@ -152,10 +152,10 @@
                   </div>
                   <div id="body-disguises" class="collapse" aria-labelledby="header-disguises">
                       <div class="card-body disguises">
-                          <div @click="changeDisguise('NONE')" data-disguise-id="NONE" class="full-width selected" style="background: url('/img/webp/disguises/none.webp'); ">
+                          <div @click="changeDisguise('NONE')" data-disguise-id="NONE" class="full-width selected" style="background: url('/img/jpg/disguises/none.jpg'); ">
                               <p class="disguise-info">None</p>
                           </div>
-                          <div @click="changeDisguise(disguise)" :data-disguise-id="disguise.id" v-for="disguise in disguises" :key="disguise.id" class="full-width" :style="{background: 'url(/img/webp/' + disguise.image + '.webp)'}">
+                          <div @click="changeDisguise(disguise)" :data-disguise-id="disguise.id" v-for="disguise in disguises" :key="disguise.id" class="full-width" :style="{background: 'url(/img/jpg/' + disguise.image + '.jpg)'}">
                               <p class="disguise-info">{{ disguise.name }}</p>
                           </div>
                       </div>

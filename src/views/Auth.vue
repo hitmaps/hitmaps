@@ -1,5 +1,5 @@
 <template>
-    <div class="content" style="background: url('/img/webp/backgrounds/loading.webp') no-repeat center center fixed; background-size: cover">
+    <div class="content" style="background: url('/img/jpg/backgrounds/loading.jpg') no-repeat center center fixed; background-size: cover">
         <header class="row">
             <div class="col text-center">
                 <h1>Interactive Maps For</h1>
