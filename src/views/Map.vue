@@ -902,6 +902,7 @@ export default {
             console.log(this.layerGroups)
             this.$nextTick(() => {
                 this.$refs.map.mapObject.setView([Number(this.mission.mapCenterLatitude), Number(this.mission.mapCenterLongitude)], 3);
+                $('#map-control').append(this.$refs.map.mapObject.zoomControl.getContainer());
                 this.mapLoaded = true;
                 //Is not needed directly at start
                 this.$http.get(this.$domain + "/api/v1/editor/templates").then(resp => { 
@@ -1123,8 +1124,6 @@ html {
   float: none;
   display: inline-block;
   box-sizing: content-box;
-  margin-left: 75px !important;
-  margin-top: 50px !important;
 }
 
 .leaflet-bar {
