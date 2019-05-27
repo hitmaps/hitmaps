@@ -32,7 +32,7 @@
               </div>
               <div :class="{'has-search-results': hasSearchResults(i)}" class="item-count">{{calculateNumber(i)}}</div>
           </div>
-          <div class="floor-info text-center " :class="{'selected': currentLayer === -99}">
+          <div class="floor-info text-center " :class="{'selected': currentLayer === -99}" v-if="mission.satelliteView">
               <div @click="changeLevel(-99)" class="floor">
                   Satellite
               </div>
