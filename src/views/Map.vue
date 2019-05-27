@@ -847,6 +847,10 @@ export default {
           return count
         },
         searchItem(event) {
+          if (event.target.value === '') {
+            return;
+          }
+
           $('.search-box[data-search="items"]').find('.bootstrap-select').addClass('item-selected').end()
           var item = event.target.value.split(";")
           if(this.isLayerHidden(item[0])) {
