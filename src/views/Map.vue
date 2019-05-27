@@ -74,12 +74,14 @@
                       <div data-name="note-contents">{{note.text}}</div>
                     </div>
                   </div>
-                  <button class="btn btn-danger btn-sm" data-action="delete-btn" @click="deleteMarker(item)" data-toggle="tooltip" title="Delete">
+                  <div class="btn-group">
+                    <button class="btn btn-danger btn-sm" data-action="delete-btn" @click="deleteMarker(item)" data-toggle="tooltip" title="Delete">
                       <i class="fas fa-times"></i>
-                  </button>
-                  <button class="btn btn-warning btn-sm" data-action="edit-btn" @click="editMarker(item)" data-node-id="x" data-toggle="tooltip" title="Edit">
+                    </button>
+                    <button class="btn btn-warning btn-sm" data-action="edit-btn" @click="editMarker(item)" data-node-id="x" data-toggle="tooltip" title="Edit">
                       <i class="fas fa-pencil-alt"></i>
-                  </button>
+                    </button>
+                  </div>
                 </l-popup>
                 <l-tooltip v-if="item.tooltip">{{item.tooltip}}</l-tooltip>
               </l-marker>
@@ -143,7 +145,9 @@
                       <div class="name collapsed control-button" data-toggle="collapse"
                           data-target="#body-disguises" aria-expanded="false" aria-controls="body-disguises">
                           <i class="far fa-fw fa-user-tie"></i>
-                          <span class="disguise-text">{{currentDisguise === null ? 'Disguises' : currentDisguise.name}}</span>
+                          <span class="disguise-text">
+                              {{currentDisguise === null ? 'Disguises' : currentDisguise.name}}
+                          </span>
                           <span class="float-right">
                               <i class="fas fa-caret-down"></i>
                               <i class="fas fa-caret-up"></i>
@@ -934,6 +938,11 @@ html {
   overflow-y: scroll;
 }
 
+/* Search box color override */
+.bootstrap-select > .dropdown-toggle.bs-placeholder {
+  color: #fff;
+}
+
 .marker-icon,
 .marker-icon:focus {
   background: rgba(0, 0, 0, .25);
@@ -1221,7 +1230,7 @@ html {
       }
 
       .name {
-        margin-right: 10px;
+        margin-right: 14px;
         width: 313px;
       }
 
@@ -1678,6 +1687,7 @@ html {
       .footer-image {
         display: inline-block;
         vertical-align: top;
+        margin-right: 5px;
 
         img {
           height: 48px;

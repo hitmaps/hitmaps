@@ -233,6 +233,7 @@ export default {
       .image {
         display: inline-block;
         vertical-align: top;
+        margin-right: 5px;
 
         img {
           height: 48px;
