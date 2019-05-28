@@ -12,7 +12,7 @@ class TokenGenerator {
     public function generateToken(User $user): string {
         $config = new JwtConfig();
 
-        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+        $now = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
         $token = [
             'iss' => $config->issuer,
             'aud' => $config->audience,
@@ -25,7 +25,7 @@ class TokenGenerator {
         return JWT::encode($token, $config->key);
     }
 
-    public function getTokenExpiration(\DateTime $currentTime): \DateTime {
+    public function getTokenExpiration(\DateTimeImmutable $currentTime): \DateTimeImmutable {
         return $currentTime->modify('2 hours');
     }
 
