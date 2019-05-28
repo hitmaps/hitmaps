@@ -108,9 +108,9 @@
           </div>
           <div id="map-control">
             <div class="control-buttons">
-              <button id="edit-button" @click="editor.enabled = !editor.enabled" class="btn control-button" data-toggle="tooltip" title="Edit Map"><i class="fas fa-pencil-alt"></i></button>
+              <button v-if="isLoggedIn" id="edit-button" @click="editor.enabled = !editor.enabled" class="btn control-button" data-toggle="tooltip" title="Edit Map"><i class="fas fa-pencil-alt"></i></button>
               <router-link :to="{name: 'user-auth'}">
-                <button class="btn control-button" data-toggle="tooltip" data-placement="bottom" title="Login / Register to edit"><i class="fas fa-sign-in-alt"></i></button>
+                <button v-if="!isLoggedIn" class="btn control-button" data-toggle="tooltip" data-placement="bottom" title="Login / Register to edit"><i class="fas fa-sign-in-alt"></i></button>
               </router-link>
             </div>
           </div>
@@ -594,6 +594,14 @@ export default {
           if(!this.editor.currentCategory) return true
           return ['Navigation|agency-pickup', 'Navigation|exit-location', 'Navigation|ledge', 'Navigation|foliage', 'Navigation|up-stair',
                 'Navigation|starting-location', 'Navigation|up-pipe'].indexOf(this.editor.currentCategory) == -1
+        },
+        isLoggedIn: function() {
+          if(localStorage.getItem('token') != null) {
+            var data = JSON.parse(atob(localStorage.getItem('token').split('.')[1]))
+            var now = new Date()
+            if(new Date(data.exp.date).getTime() - now.getTimezoneOffset() * 60000 - now.getTime() > 0) return true
+          }
+          return false
         }
     },
     methods: {
