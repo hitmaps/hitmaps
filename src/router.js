@@ -40,7 +40,7 @@ export default new Router({
       component: () => import(/* webpackChunkName: "map-view" */ './views/Map.vue')
     },
     {
-      path: '/user/auth/:redirect?',
+      path: '/user/auth',
       name: 'user-auth',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route

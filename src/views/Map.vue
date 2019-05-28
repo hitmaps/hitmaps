@@ -109,7 +109,7 @@
           <div id="map-control">
             <div class="control-buttons">
               <button id="edit-button" @click="editor.enabled = !editor.enabled" class="btn control-button" data-toggle="tooltip" title="Edit Map"><i class="fas fa-pencil-alt"></i></button>
-              <router-link :to="{name: 'user-auth', params : {redirect: '/games/' + this.$route.params.slug + '/' + $route.params.location + '/' + $route.params.mission + '/' + $route.params.difficulty }}">
+              <router-link :to="{name: 'user-auth'}">
                 <button class="btn control-button" data-toggle="tooltip" data-placement="bottom" title="Login / Register to edit"><i class="fas fa-sign-in-alt"></i></button>
               </router-link>
             </div>
