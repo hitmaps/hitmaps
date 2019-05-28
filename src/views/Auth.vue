@@ -45,7 +45,7 @@
                     </div>
                     <div class="form-group row has-feedback">
                         <div class="col-md-9 offset-md-3">
-                            <vue-recaptcha @verify="recaptcha = $event" @expired="recaptcha = ''" sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></vue-recaptcha>
+                            <vue-recaptcha @verify="recaptcha = $event" @expired="recaptcha = ''" :sitekey="recaptchaSiteKey"></vue-recaptcha>
                             <input type="hidden" class="form-control" name="recaptcha" v-validate v-model="recaptcha" data-vv-scope="login" required>
                             <span v-show="errors.has('login.recaptcha')" class="form-text text-danger">{{errors.first('login.recaptcha')}}</span>
                         </div>
@@ -154,13 +154,15 @@ export default {
     name: 'user-auth',
     data () {
         return {
+            recaptchaSiteKey: process.env.VUE_APP_RECAPTCHA_KEY,
             login: {
                 email: "",
                 password: "",
                 messages: []
             },
             register: {},
-            recaptcha: ""
+            recaptcha: "",
+            referer: '/'
         }
     },
     components: {
@@ -174,11 +176,11 @@ export default {
                     data.append("email", this.login.email)
                     data.append("password", this.login.password)
                     data.append("g-recaptcha-response", this.recaptcha)
-                    this.$http.post(this.$domain + "/api/v1/user/login", data).then(resp => {
+                    this.$http.post(this.$domain + "/api/web/user/login", data).then(resp => {
                         this.login.messages = resp.data.messages
-                        if(resp.data.loggedIn) {
-                            document.cookie = "PHPSESSID=" + resp.data.session + ";path=/";
-                            this.$router.push({path: this.$route.params.redirect ? this.$route.params.redirect : "/home" }) 
+                        if(resp.data.token !== null) {
+                            localStorage.setItem('token', resp.data.token);
+                            this.$router.push({path: this.referer });
                         }
                     })
                 }
@@ -203,7 +205,12 @@ export default {
             }
         }
     })
-  }
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+        vm.referer = from.path;
+    });
+  },
 }
 </script>
 
