@@ -87,6 +87,54 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
     return $response->json($missions);
 });
 
+$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map-metadata', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    /* @var $location \DataAccess\Models\Location */
+    $location = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
+
+    if ($location === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find location with game '{$request->game}' and location slug '{$request->location}'"
+        ]);
+    }
+
+    /* @var $mission \DataAccess\Models\Mission */
+    $mission = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Mission::class)->findOneBy(['locationId' => $location->getId(), 'slug' => $request->mission]);
+
+    if ($mission === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find mission with game '{$request->game}', location '{$request->location}', and mission slug '{$request->mission}'"
+        ]);
+    }
+
+    $metadata = new \Controllers\ViewModels\MapMetadataViewModel();
+    $metadata->name = $mission->getName();
+    $metadata->type = $mission->getMissionType();
+    $metadata->tileLocation = buildTileUrlForMission($mission, $location->getGame(), $applicationContext);
+
+    return $response->json($metadata);
+});
+
+function buildTileUrlForMission(\DataAccess\Models\Mission $mission, string $game, \DI\Container $applicationContext): string {
+    $constants = new \Config\Constants();
+
+    if ($mission->getMissionType() === \BusinessLogic\MissionType::ELUSIVE_TARGET) {
+        /* @var $elusiveTarget \DataAccess\Models\ElusiveTarget */
+        $elusiveTarget = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
+            ->getRepository(\DataAccess\Models\ElusiveTarget::class)
+            ->findOneBy(['missionId' => $mission->getId()]);
+
+        if ($elusiveTarget === null) {
+            throw new Exception("Could not find ET for an Elusive Target mission!");
+        }
+
+        return "{$constants->siteDomain}/img/jpg{$elusiveTarget->getImageUrl()}.jpg";
+    } else {
+        return "{$constants->siteDomain}/img/png/mission-thumbnails/{$game}/{$mission->getSlug()}.png";
+    }
+}
+
 $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     /* @var $location \DataAccess\Models\Location */
     $location = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
