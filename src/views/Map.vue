@@ -135,8 +135,19 @@
                     <div id="map-control">
                         <div class="control-buttons">
                             <button v-if="isLoggedIn" id="edit-button" @click="editor.enabled = !editor.enabled"
-                                    class="btn control-button" data-toggle="tooltip" title="Edit Map"><i
-                                    class="fas fa-pencil-alt"></i></button>
+                                    class="btn control-button" data-toggle="tooltip" title="Edit Map">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                            <a href="#">
+                                <button v-if="isLoggedIn" class="btn control-button" data-toggle="tooltip" title="Profile">
+                                    <i class="fas fa-user-circle"></i>
+                                </button>
+                            </a>
+                            <a href="#">
+                                <button v-if="isLoggedIn" class="btn control-button" data-toggle="tooltip" title="Log Out">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                </button>
+                            </a>
                             <router-link :to="{name: 'user-auth'}">
                                 <button v-if="!isLoggedIn" class="btn control-button" data-toggle="tooltip"
                                         data-placement="bottom" title="Login / Register to edit"><i
@@ -1552,6 +1563,7 @@
             color: #fff;
             box-shadow: none;
             border: solid 2px #fff;
+            margin-left: 5px;
         }
     }
 
