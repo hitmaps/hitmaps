@@ -1,5 +1,5 @@
 function getTitle(vm) {
-    const { title } = vm.$options
+    const {title} = vm.$options
     if (title) {
         return typeof title === "function"
             ? title.call(vm)
@@ -9,7 +9,7 @@ function getTitle(vm) {
 
 export default {
     computed: {
-        title () {
+        title() {
             return getTitle(this)
         }
     },
@@ -18,7 +18,7 @@ export default {
             document.title = `${val} | HITMAN™ 2 Maps`
         }
     },
-    mounted () {
+    mounted() {
         if (this.title) {
             document.title = `${this.title} | HITMAN™ 2 Maps`
         }

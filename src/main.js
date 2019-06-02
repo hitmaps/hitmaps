@@ -16,7 +16,7 @@ Vue.prototype.$domain = document.location.protocol + "//" + window.location.host
 Vue.mixin(titleMixin)
 
 new Vue({
-  store,
-  router,
-  render: h => h(App)
+    store,
+    router,
+    render: h => h(App)
 }).$mount('#app')
