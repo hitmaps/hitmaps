@@ -5,18 +5,19 @@ import axios from 'axios'
 import store from './store/store'
 import titleMixin from './util/title'
 
-axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true
 
 Vue.config.productionTip = false
 //For Copyright
 Vue.prototype.$currentYear = new Date().getFullYear()
 Vue.prototype.$http = axios
-Vue.prototype.$domain = document.location.protocol + "//" + window.location.hostname
+Vue.prototype.$domain =
+    document.location.protocol + '//' + window.location.hostname
 
 Vue.mixin(titleMixin)
 
 new Vue({
     store,
     router,
-    render: h => h(App)
+    render: h => h(App),
 }).$mount('#app')
