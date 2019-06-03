@@ -876,7 +876,7 @@ $klein->respond('GET', '/user/verify', function(\Klein\Request $request, \Klein\
 });
 
 // AJAX endpoint
-$klein->respond('POST', '/user/edit/basic-info', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('POST', '/api/web/user/edit/basic-info', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to make changes to your profile!']);
