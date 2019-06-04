@@ -7,7 +7,7 @@
                 <router-link :to="{name: 'home'}">
                     <img src="/img/png/logos/hitman2.png" class="img-fluid">
                 </router-link>
-                <h2>Login or Create an Account</h2>
+                <h2>Manage Your Profile</h2>
             </div>
         </header>
         <div class="row">
@@ -21,7 +21,7 @@
                         </label>
                         <div class="col-md-8">
                             <input type="email" class="form-control" name="email"
-                                   v-model="user.email"
+                                   v-model="model.email"
                                    disabled
                                    required>
                             <div class="help-block with-errors"></div>
@@ -35,7 +35,7 @@
                         <div class="col-md-8">
                             <input type="text" class="form-control" name="name"
                                    placeholder="Carlton Smith"
-                                   v-model="user.name"
+                                   v-model="model.name"
                                    required>
                             <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                             <div class="help-block with-errors"></div>
@@ -150,6 +150,14 @@
             }
         },
         created: function () {
+            this.$http.get(this.$domain + '/api/web/user/edit', {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then(resp => {
+                this.model.name = resp.data.data.name;
+                this.model.email = resp.data.data.email;
+            })
             this.$validator.localize({
                 en: {
                     messages: {

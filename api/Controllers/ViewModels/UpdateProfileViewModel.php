@@ -4,9 +4,13 @@
 namespace Controllers\ViewModels;
 
 
-use DataAccess\Models\User;
-
 class UpdateProfileViewModel extends BaseModel {
-    /* @var $user User */
-    public $user;
+    public $email;
+    public $name;
+
+    public function __construct($email, $name) {
+        parent::__construct();
+        $this->email = $email;
+        $this->name = $name;
+    }
 }
