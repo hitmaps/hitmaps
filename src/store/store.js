@@ -15,12 +15,14 @@ export default new Vuex.Store({
         },
         SET_MISSION(state, mission) {
             state.mission = mission
-        }
+        },
     },
     actions: {
         async loadGame(context, id) {
-            var resp = await Vue.prototype.$http.get(Vue.prototype.$domain + "/api/v1/games/" + id)
+            var resp = await Vue.prototype.$http.get(
+                Vue.prototype.$domain + '/api/v1/games/' + id
+            )
             context.commit('SET_GAME', resp.data[0])
-        }
-    }
+        },
+    },
 })
