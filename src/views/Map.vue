@@ -138,11 +138,11 @@
                                     class="btn control-button" data-toggle="tooltip" title="Edit Map">
                                 <i class="fas fa-pencil-alt"></i>
                             </button>
-                            <a href="#">
+                            <router-link :to="{name: 'profile'}">
                                 <button v-if="isLoggedIn" class="btn control-button" data-toggle="tooltip" title="Profile">
                                     <i class="fas fa-user-circle"></i>
                                 </button>
-                            </a>
+                            </router-link>
                             <a href="#">
                                 <button v-if="isLoggedIn" class="btn control-button" data-toggle="tooltip" title="Log Out">
                                     <i class="fas fa-sign-out-alt"></i>

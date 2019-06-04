@@ -11,7 +11,7 @@ Vue.config.productionTip = false
 //For Copyright
 Vue.prototype.$currentYear = new Date().getFullYear()
 Vue.prototype.$http = axios
-Vue.prototype.$domain = document.location.protocol + "//" + window.location.hostname
+Vue.prototype.$domain = document.location.protocol + "//" + window.location.hostname + ":8000"
 
 Vue.mixin(titleMixin)
 

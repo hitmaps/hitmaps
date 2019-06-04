@@ -9,7 +9,7 @@ $klein = new \Klein\Klein();
 
 $klein->respond(function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     if(isset($_SERVER['HTTP_ORIGIN'])) $response->header('Access-Control-Allow-Origin', $_SERVER['HTTP_ORIGIN']);
-    $response->header('Access-Control-Allow-Headers', 'content-type');
+    $response->header('Access-Control-Allow-Headers', 'content-type,Authorization');
     $response->header('Access-Control-Allow-Credentials', 'true');
 });
 
@@ -876,6 +876,21 @@ $klein->respond('GET', '/user/verify', function(\Klein\Request $request, \Klein\
 });
 
 // AJAX endpoint
+$klein->respond('GET', '/api/web/user/edit', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    $newToken = null;
+    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
+        print json_encode(['message' => 'You must be logged in to make changes to your profile!']);
+        return $response->code(401);
+    }
+
+    $user = getUserContextForToken($newToken, $applicationContext);
+
+    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel->token = $newToken;
+    $responseModel->data = new \Controllers\ViewModels\UpdateProfileViewModel($user->getEmail(), $user->getName());
+    return $response->json($responseModel);
+});
+
 $klein->respond('POST', '/api/web/user/edit/basic-info', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
@@ -1102,7 +1117,7 @@ $klein->onError(function (\Klein\Klein $klein, $msg, $type, Throwable $err) use 
 
 $klein->dispatch();
 
-function userIsLoggedIn(\Klein\Request $request, \DI\Container $applicationContext, string &$outToken): bool {
+function userIsLoggedIn(\Klein\Request $request, \DI\Container $applicationContext, ?string &$outToken): bool {
     $outToken = null;
 
     /* @var $authorizationHeader string */
@@ -1115,12 +1130,22 @@ function userIsLoggedIn(\Klein\Request $request, \DI\Container $applicationConte
     $tokenGenerator = $applicationContext->get(\BusinessLogic\Authentication\TokenGenerator::class);
 
     try {
-        list($token) = sscanf($authorizationHeader, 'Authorization: Bearer %s');
+        list($token) = sscanf($authorizationHeader, 'Bearer %s');
         $outToken = $tokenGenerator->validateAndRenewToken($token);
 
         return true;
     } catch (\BusinessLogic\Session\SessionException $e) {
         return false;
+    }
+}
+
+function getUserContextForToken(string $token, \DI\Container $applicationContext): \DataAccess\Models\User {
+    $tokenGenerator = $applicationContext->get(\BusinessLogic\Authentication\TokenGenerator::class);
+
+    try {
+        return $tokenGenerator->validate($token);
+    } catch (\BusinessLogic\Session\SessionException $e) {
+        return null;
     }
 }
 
