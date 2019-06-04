@@ -206,21 +206,18 @@ export default {
                     }
                 });*/
         },
+        changeName: function() {},
     },
     created: function() {
-        this.$http.get(this.$domain + '/api/web/user/edit', {
-                headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('token')
-                }
-            }).then(resp => {
-                this.model.name = resp.data.data.name;
-                this.model.email = resp.data.data.email;
-            })
-            this.$validator.localize({
-                en: {
-                    messages: {
-                        email: 'This value should be a valid email.',
-                        required: 'This value is required.',
+        this.$request(false, 'web/user/edit').then(resp => {
+            this.model.name = resp.data.data.name
+            this.model.email = resp.data.data.email
+        })
+        this.$validator.localize({
+            en: {
+                messages: {
+                    email: 'This value should be a valid email.',
+                    required: 'This value is required.',
                 },
                 custom: {
                     recaptcha: {
