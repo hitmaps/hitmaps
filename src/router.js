@@ -14,22 +14,22 @@ export default new Router({
         {
             path: '/',
             name: 'home',
-            component: Home
+            component: Home,
         },
         {
             path: '/terms-of-use',
             name: 'terms-of-use',
-            component: TermsOfUse
+            component: TermsOfUse,
         },
         {
             path: '/privacy-policy',
             name: 'privacy-policy',
-            component: PrivacyPolicy
+            component: PrivacyPolicy,
         },
         {
             path: '/games/:slug',
             name: 'level-select',
-            component: Location
+            component: Location,
         },
         {
             path: '/games/:slug/:location/:mission/:difficulty',
@@ -37,7 +37,8 @@ export default new Router({
             // route level code-splitting
             // this generates a separate chunk (about.[hash].js) for this route
             // which is lazy-loaded when the route is visited.
-            component: () => import(/* webpackChunkName: "map-view" */ './views/Map.vue')
+            component: () =>
+                import(/* webpackChunkName: "map-view" */ './views/Map.vue'),
         },
         {
             path: '/user/auth',
@@ -45,7 +46,8 @@ export default new Router({
             // route level code-splitting
             // this generates a separate chunk (about.[hash].js) for this route
             // which is lazy-loaded when the route is visited.
-            component: () => import(/* webpackChunkName: "user-auth" */ './views/Auth.vue')
+            component: () =>
+                import(/* webpackChunkName: "user-auth" */ './views/Auth.vue'),
         },
         {
             path: '/user/profile',
@@ -55,5 +57,5 @@ export default new Router({
             // which is lazy-loaded when the route is visited.
             component: () => import(/* webpackChunkName: "user-auth" */ './views/Profile.vue')
         },
-    ]
+    ],
 })

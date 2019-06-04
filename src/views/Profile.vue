@@ -1,11 +1,13 @@
 <template>
-    <div class="content"
-         style="background: url('/img/jpg/backgrounds/loading.jpg') no-repeat center center fixed; background-size: cover">
+    <div
+        class="content"
+        style="background: url('/img/jpg/backgrounds/loading.jpg') no-repeat center center fixed; background-size: cover"
+    >
         <header class="row">
             <div class="col text-center">
                 <h1>Interactive Maps For</h1>
-                <router-link :to="{name: 'home'}">
-                    <img src="/img/png/logos/hitman2.png" class="img-fluid">
+                <router-link :to="{ name: 'home' }">
+                    <img src="/img/png/logos/hitman2.png" class="img-fluid" />
                 </router-link>
                 <h2>Manage Your Profile</h2>
             </div>
@@ -20,10 +22,14 @@
                             Email
                         </label>
                         <div class="col-md-8">
-                            <input type="email" class="form-control" name="email"
-                                   v-model="model.email"
-                                   disabled
-                                   required>
+                            <input
+                                type="email"
+                                class="form-control"
+                                name="email"
+                                v-model="model.email"
+                                disabled
+                                required
+                            />
                             <div class="help-block with-errors"></div>
                         </div>
                     </div>
@@ -33,17 +39,28 @@
                             Name
                         </label>
                         <div class="col-md-8">
-                            <input type="text" class="form-control" name="name"
-                                   placeholder="Carlton Smith"
-                                   v-model="model.name"
-                                   required>
-                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="name"
+                                placeholder="Carlton Smith"
+                                v-model="model.name"
+                                required
+                            />
+                            <span
+                                class="glyphicon form-control-feedback"
+                                aria-hidden="true"
+                            ></span>
                             <div class="help-block with-errors"></div>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-5 offset-md-4">
-                            <button class="btn btn-primary" type="submit" @click="changeName">
+                            <button
+                                class="btn btn-primary"
+                                type="submit"
+                                @click="changeName"
+                            >
                                 <i class="fas fa-check"></i> Save Name
                             </button>
                         </div>
@@ -54,15 +71,27 @@
                 <div class="login-card">
                     <h3>Change Password</h3>
                     <div class="form-group row has-feedback">
-                        <label for="current-password" class="col-form-label col-md-5">
+                        <label
+                            for="current-password"
+                            class="col-form-label col-md-5"
+                        >
                             <i class="fa fa-key"></i>
                             Current Password
                         </label>
                         <div class="col-md-7">
-                            <input type="password" class="form-control" name="current-password" id="current-password"
-                                   v-model="model.currentPassword"
-                                   placeholder="********" required>
-                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                            <input
+                                type="password"
+                                class="form-control"
+                                name="current-password"
+                                id="current-password"
+                                v-model="model.currentPassword"
+                                placeholder="********"
+                                required
+                            />
+                            <span
+                                class="glyphicon form-control-feedback"
+                                aria-hidden="true"
+                            ></span>
                         </div>
                     </div>
                     <div class="form-group row has-feedback">
@@ -71,27 +100,54 @@
                             New Password
                         </label>
                         <div class="col-md-7">
-                            <input type="password" class="form-control" name="password" id="password" placeholder="********"
-                                   v-model="model.newPassword"
-                                   minlength="8" required>
-                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                            <input
+                                type="password"
+                                class="form-control"
+                                name="password"
+                                id="password"
+                                placeholder="********"
+                                v-model="model.newPassword"
+                                minlength="8"
+                                required
+                            />
+                            <span
+                                class="glyphicon form-control-feedback"
+                                aria-hidden="true"
+                            ></span>
                         </div>
                     </div>
                     <div class="form-group row has-feedback">
-                        <label for="confirm-password" class="col-form-label col-md-5">
+                        <label
+                            for="confirm-password"
+                            class="col-form-label col-md-5"
+                        >
                             <i class="fa fa-key"></i>
                             Confirm New Password
                         </label>
                         <div class="col-md-7">
-                            <input type="password" class="form-control" name="confirm-password" placeholder="********"
-                                   v-model="model.confirmNewPassword"
-                                   data-parsley-equalto="#password" data-parsley-error-message="Passwords must match" required>
-                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                            <input
+                                type="password"
+                                class="form-control"
+                                name="confirm-password"
+                                placeholder="********"
+                                v-model="model.confirmNewPassword"
+                                data-parsley-equalto="#password"
+                                data-parsley-error-message="Passwords must match"
+                                required
+                            />
+                            <span
+                                class="glyphicon form-control-feedback"
+                                aria-hidden="true"
+                            ></span>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-5 offset-md-5">
-                            <button class="btn btn-primary" type="submit" @click="changePassword">
+                            <button
+                                class="btn btn-primary"
+                                type="submit"
+                                @click="changePassword"
+                            >
                                 <i class="fas fa-check"></i> Update Password
                             </button>
                         </div>
@@ -103,36 +159,38 @@
 </template>
 
 <script>
-    import VeeValidate from 'vee-validate'
-    import VueRecaptcha from 'vue-recaptcha'
-    import Vue from 'vue'
+import VeeValidate from 'vee-validate'
+import VueRecaptcha from 'vue-recaptcha'
+import Vue from 'vue'
 
-    Vue.use(VeeValidate)
-    VeeValidate.configure({
-        events: 'change'
-    });
-    export default {
-        name: 'profile',
-        data() {
-            return {
-                model: {
-                    email: '',
-                    name: '',
-                    currentPassword: '',
-                    newPassword: '',
-                    confirmNewPassword: ''
-                }
-            }
-        },
-        methods: {
-            changePassword: function () {
-                const data = new FormData();
-                data.append('email', this.model.email);
-                data.append('name', this.model.name);
-                this.$http.post(this.$domain + '/api/web/user/edit/basic-info', data).then(resp => {
-                    console.log(resp);
-                });
-                /*this.$validator.validateAll("login").then((result) => {
+Vue.use(VeeValidate)
+VeeValidate.configure({
+    events: 'change',
+})
+export default {
+    name: 'profile',
+    data() {
+        return {
+            model: {
+                email: '',
+                name: '',
+                currentPassword: '',
+                newPassword: '',
+                confirmNewPassword: '',
+            },
+        }
+    },
+    methods: {
+        changePassword: function() {
+            const data = new FormData()
+            data.append('email', this.model.email)
+            data.append('name', this.model.name)
+            this.$http
+                .post(this.$domain + '/api/web/user/edit/basic-info', data)
+                .then(resp => {
+                    console.log(resp)
+                })
+            /*this.$validator.validateAll("login").then((result) => {
                     if (result) {
                         var data = new FormData()
                         data.append("email", this.login.email)
@@ -147,10 +205,10 @@
                         })
                     }
                 });*/
-            }
         },
-        created: function () {
-            this.$http.get(this.$domain + '/api/web/user/edit', {
+    },
+    created: function() {
+        this.$http.get(this.$domain + '/api/web/user/edit', {
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem('token')
                 }
@@ -162,45 +220,44 @@
                 en: {
                     messages: {
                         email: 'This value should be a valid email.',
-                        required: 'This value is required.'
+                        required: 'This value is required.',
+                },
+                custom: {
+                    recaptcha: {
+                        required: 'Please complete the captcha.',
                     },
-                    custom: {
-                        recaptcha: {
-                            required: 'Please complete the captcha.'
-                        }
-                    }
-                }
-            })
-        },
-        beforeRouteEnter(to, from, next) {
-            next(vm => {
-                vm.referer = from.path;
-            });
-        },
-    }
+                },
+            },
+        })
+    },
+    beforeRouteEnter(to, from, next) {
+        next(vm => {
+            vm.referer = from.path
+        })
+    },
+}
 </script>
 
 <style lang="scss" scoped>
-    .row {
-        .col.login {
-            margin: 40px;
+.row {
+    .col.login {
+        margin: 40px;
 
-            &:first-child {
-                margin-right: 20px;
-            }
+        &:first-child {
+            margin-right: 20px;
+        }
 
-            &:last-child {
-                margin-left: 20px;
-            }
+        &:last-child {
+            margin-left: 20px;
+        }
 
-            background: #fff;
-            border-radius: .25rem;
-            border: solid 1px rgba(0, 0, 0, .125);
+        background: #fff;
+        border-radius: 0.25rem;
+        border: solid 1px rgba(0, 0, 0, 0.125);
 
-            .login-card {
-                margin: 10px;
-            }
+        .login-card {
+            margin: 10px;
         }
     }
-
+}
 </style>
