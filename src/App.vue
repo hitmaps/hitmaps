@@ -5,48 +5,69 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-6">
-                        <h4>&copy; 2018 - {{ $currentYear }} hitman2maps.com</h4>
+                        <h4>
+                            &copy; 2018 - {{ $currentYear }} hitman2maps.com
+                        </h4>
                         <p>
                             HITMAN™, HITMAN™ 2, the HITMAN™ logo, images, and
-                            text are the property of <a href="https://www.ioi.dk" target="_blank">IO Interactive</a>.
+                            text are the property of
+                            <a href="https://www.ioi.dk" target="_blank"
+                                >IO Interactive</a
+                            >.
                         </p>
                     </div>
                     <div class="col-md-6 text-right">
-                        <a href="https://discord.gg/eZqhZah"
-                           target="_blank"
-                           data-toggle="tooltip"
-                           title="Join the HITMAN™ 2 Maps Discord">
-                            <span class="fa-stack fa-2x">
-                              <i class="fas fa-square fa-stack-2x"></i>
-                              <i class="fab fa-discord fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                        <a href="https://www.hitmanforum.com/t/interactive-maps-for-hitman-2/27897"
+                        <a
+                            href="https://discord.gg/eZqhZah"
                             target="_blank"
                             data-toggle="tooltip"
-                            title="hitmanforum.com Discussion">
+                            title="Join the HITMAN™ 2 Maps Discord"
+                        >
                             <span class="fa-stack fa-2x">
-                              <i class="fas fa-square fa-stack-2x"></i>
-                              <i class="fas fa-comments fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-square fa-stack-2x"></i>
+                                <i
+                                    class="fab fa-discord fa-stack-1x fa-inverse"
+                                ></i>
                             </span>
                         </a>
-                        <a href="https://hitmanstat.us" target="_blank"
-                           data-toggle="tooltip"
-                           title="HITMAN™ Server Status - Made With <3 by Hardware">
+                        <a
+                            href="https://www.hitmanforum.com/t/interactive-maps-for-hitman-2/27897"
+                            target="_blank"
+                            data-toggle="tooltip"
+                            title="hitmanforum.com Discussion"
+                        >
                             <span class="fa-stack fa-2x">
-                              <i class="fas fa-square fa-stack-2x"></i>
-                              <i class="fas fa-user-tie fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-square fa-stack-2x"></i>
+                                <i
+                                    class="fas fa-comments fa-stack-1x fa-inverse"
+                                ></i>
                             </span>
                         </a>
-                        <a href="https://status.hitman2maps.com"
-                           data-toggle="tooltip"
-                           title="HITMAN™ 2 Maps Server Status">
+                        <a
+                            href="https://hitmanstat.us"
+                            target="_blank"
+                            data-toggle="tooltip"
+                            title="HITMAN™ Server Status - Made With <3 by Hardware"
+                        >
                             <span class="fa-stack fa-2x">
-                              <i class="fas fa-square fa-stack-2x"></i>
-                              <i class="fas fa-shield-check fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-square fa-stack-2x"></i>
+                                <i
+                                    class="fas fa-user-tie fa-stack-1x fa-inverse"
+                                ></i>
                             </span>
                         </a>
-
+                        <a
+                            href="https://status.hitman2maps.com"
+                            data-toggle="tooltip"
+                            title="HITMAN™ 2 Maps Server Status"
+                        >
+                            <span class="fa-stack fa-2x">
+                                <i class="fas fa-square fa-stack-2x"></i>
+                                <i
+                                    class="fas fa-shield-check fa-stack-1x fa-inverse"
+                                ></i>
+                            </span>
+                        </a>
                     </div>
                 </div>
                 <div class="row legal">
@@ -56,7 +77,8 @@
                                 <i class="fas fa-gavel"></i>
                                 Terms of Use
                             </router-link>
-                        </span> |
+                        </span>
+                        |
                         <span class="footer-link">
                             <router-link :to="{ name: 'privacy-policy' }">
                                 <i class="fas fa-user-secret"></i>

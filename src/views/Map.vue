@@ -311,7 +311,7 @@
                             >
                                 <i class="fas fa-pencil-alt"></i>
                             </button>
-                            <router-link :to="{name: 'profile'}">
+                            <router-link :to="{ name: 'profile' }">
                                 <button
                                     v-if="isLoggedIn"
                                     class="btn control-button"
@@ -1622,7 +1622,7 @@ export default {
                 )
                 var now = new Date()
                 if (
-                    new Date(data.exp.date).getTime() -
+                    new Date(data.exp).getTime() * 1000 -
                         now.getTimezoneOffset() * 60000 -
                         now.getTime() >
                     0
