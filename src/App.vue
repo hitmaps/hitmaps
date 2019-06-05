@@ -75,8 +75,7 @@
                         <span class="footer-link">
                             <router-link :to="{ name: 'terms-of-use' }">
                                 <i class="fas fa-gavel"></i>
-                                Terms of Use
-                            </router-link>
+                                Terms of Use</router-link>
                         </span>
                         |
                         <span class="footer-link">
@@ -159,7 +158,7 @@ footer {
     .legal {
         color: #fff;
 
-        .footer-link + .footer-link {
+        .footer-link {
             margin-left: 5px;
             margin-right: 5px;
         }
