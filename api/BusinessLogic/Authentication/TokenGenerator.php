@@ -23,9 +23,9 @@ class TokenGenerator {
         $token = [
             'iss' => $config->issuer,
             'aud' => $config->audience,
-            'iat' => $now->getTimestamp(),
-            'nbf' => $now->getTimestamp(),
-            'exp' => $this->getTokenExpiration($now)->getTimestamp(),
+            'iat' => $now->getTimestamp() * 1000,
+            'nbf' => $now->getTimestamp() * 1000,
+            'exp' => $this->getTokenExpiration($now)->getTimestamp()  * 1000,
             'data' => $user->getId()
         ];
 
