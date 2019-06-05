@@ -1622,7 +1622,7 @@ export default {
                 )
                 var now = new Date()
                 if (
-                    new Date(data.exp).getTime() * 1000 -
+                    new Date(data.exp * 1000).getTime() * 1000 -
                         now.getTimezoneOffset() * 60000 -
                         now.getTime() >
                     0
