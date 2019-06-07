@@ -170,8 +170,11 @@
 import VeeValidate from 'vee-validate'
 import Vue from 'vue'
 import Loader from '../components/Loader.vue'
+import CxltToaster from 'cxlt-vue2-toastr'
+import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
 
 Vue.use(VeeValidate)
+Vue.use(CxltToaster)
 VeeValidate.configure({
     events: 'change',
 })
@@ -198,7 +201,10 @@ export default {
             data.append('name', this.model.name)
             this.$request(true, 'web/user/edit/basic-info', data)
                 .then(resp => {
-                    console.log(resp)
+                    this.$toast.success({
+                        title: 'Changes Saved',
+                        message: resp.data.data.message
+                    })
                 })
             /*this.$validator.validateAll("login").then((result) => {
                     if (result) {
@@ -223,7 +229,10 @@ export default {
             data.append('confirm-password', this.model.confirmNewPassword)
             this.$request(true, 'web/user/edit/password', data)
                 .then(resp => {
-                    console.log(resp)
+                    this.$toast.success({
+                        title: 'Changes Saved',
+                        message: resp.data.data.message
+                    })
                 })
         },
     },
