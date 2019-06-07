@@ -355,7 +355,7 @@ $klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\
     }
 
 
-    $user = \BusinessLogic\Session\Session::read('userContext');
+    $user = getUserContextForToken($newToken, $applicationContext);
     $node = $applicationContext->get(\Controllers\NodeController::class)->createNode(intval($_POST['mission-id']), $_POST['difficulty'], $_POST, $user);
 
     $response->code(201);
