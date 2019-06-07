@@ -25,7 +25,9 @@ Vue.prototype.$request = (post, endpoint, data) => {
     return new Promise((resolve, reject) => {
         if (post) {
             axios
-                .post(Vue.prototype.$domain + '/api/' + endpoint, data)
+                .post(Vue.prototype.$domain + '/api/' + endpoint, data, {
+                    headers: header,
+                })
                 .then(resp => {
                     if (resp.data.token != null) {
                         localStorage.setItem('token', resp.data.token)
