@@ -1716,8 +1716,7 @@ export default {
             data.append('node-id', this.editor.currentMarker.id)
             data.append('latitude', this.editor.currentMarker.latitude)
             data.append('longitude', this.editor.currentMarker.longitude)
-            this.$http
-                .post(this.$domain + '/api/nodes/move', data)
+            this.$request(true, 'nodes/move', data)
                 .then(() => $(this.$refs.confirmMoveModal).modal('hide'))
         },
         selectSubgroup: function(event) {
@@ -1774,11 +1773,11 @@ export default {
                 })
         },
         saveMarker: function() {
-            var url = '/api/nodes'
+            var url = 'nodes'
             var data = new FormData()
             if (this.currentCategory.nodeId) {
                 data.append('id', this.currentCategory.nodeId)
-                url = '/api/nodes/edit/' + this.currentCategory.nodeId
+                url = 'nodes/edit/' + this.currentCategory.nodeId
             } else {
                 data.append('id', -1)
             }
@@ -1806,7 +1805,7 @@ export default {
                 data.append('note-type[]', element.type)
                 data.append('note-text[]', element.text)
             })
-            this.$http.post(this.$domain + url, data).then(resp => {
+            this.$request(true, url, data).then(resp => {
                 //TODO Make this a method
                 if (resp.data.approved) {
                     resp.data.latLng = L.latLng(
@@ -1821,8 +1820,7 @@ export default {
             })
         },
         deleteMarker: function(node) {
-            this.$http
-                .get(this.$domain + '/api/nodes/delete/' + node.id)
+            this.$request(false, 'nodes/delete/' + node.id)
                 .then(resp => {
                     console.log('Node successfully deleted')
                     this.layerGroups[node.type + '|' + node.group].items.splice(
@@ -1907,8 +1905,7 @@ export default {
             data.append('missionId', this.mission.id)
             data.append('level', this.currentLayer)
             if (e.shape === 'Line') {
-                this.$http
-                    .post(this.$domain + '/api/ledges', data)
+                this.$request(true, 'ledges', data)
                     .then(resp => {
                         this.editor.vertices = []
                         this.ledges.push(resp.data)
@@ -1918,8 +1915,7 @@ export default {
                         this.editor.workingLayers = []
                     })
             } else if (this.editor.mode === 'foliage') {
-                this.$http
-                    .post(this.$domain + '/api/foliage', data)
+                this.$request(true, 'foliage', data)
                     .then(resp => {
                         this.editor.vertices = []
                         this.foliage.push(resp.data)
@@ -1931,8 +1927,7 @@ export default {
             } else if (this.editor.mode === 'disguises') {
                 data.append('disguiseId', this.editor.currentDisguise)
                 data.append('type', this.editor.disguiseType)
-                this.$http
-                    .post(this.$domain + '/api/disguise-areas', data)
+                this.$request(true, 'disguise-areas', data)
                     .then(resp => {
                         this.editor.vertices = []
                         this.disguises
@@ -2015,10 +2010,8 @@ export default {
     },
     beforeCreate: function() {
         if (this.$store.state.mission == null) {
-            this.$http
-                .get(
-                    this.$domain +
-                        '/api/v1/games/' +
+            this.$request(false,
+                    'v1/games/' +
                         this.$route.params.slug +
                         '/locations/' +
                         this.$route.params.location +
@@ -2033,10 +2026,8 @@ export default {
     created: function() {
         if (this.game === null || this.game.slug !== this.$route.params.slug)
             this.$store.dispatch('loadGame', this.$route.params.slug)
-        this.$http
-            .get(
-                this.$domain +
-                    '/api/v1/games/' +
+        this.$request(false,
+                'v1/games/' +
                     this.$route.params.slug +
                     '/locations/' +
                     this.$route.params.location +
@@ -2087,16 +2078,14 @@ export default {
                     )
                     this.mapLoaded = true
                     //Is not needed directly at start
-                    this.$http
-                        .get(this.$domain + '/api/v1/editor/templates')
+                    this.$request(false, 'v1/editor/templates')
                         .then(resp => {
                             this.editor.templates = resp.data
                             this.$nextTick(() => {
                                 $('.selectpicker').selectpicker()
                             })
                         })
-                    this.$http
-                        .get(this.$domain + '/api/v1/editor/icons')
+                    this.$request(false, 'v1/editor/icons')
                         .then(resp => {
                             this.editor.icons = resp.data
                             this.$nextTick(() => {
