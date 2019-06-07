@@ -899,12 +899,10 @@ $klein->respond('POST', '/api/web/user/edit/basic-info', function(\Klein\Request
     }
 
     /* @var $user \DataAccess\Models\User */
-    $user = \BusinessLogic\Session\Session::read('userContext');
+    $user = getUserContextForToken($newToken, $applicationContext);
 
     $command = $applicationContext->get(\BusinessLogic\Authentication\UpdateProfileCommand::class);
     $user = $command->execute($user->getEmail(), $_POST['name']);
-
-    \BusinessLogic\Session\Session::write($user, 'userContext');
 
     $responseModel = new \Controllers\ViewModels\ApiResponseModel();
     $responseModel->token = $newToken;
@@ -913,7 +911,7 @@ $klein->respond('POST', '/api/web/user/edit/basic-info', function(\Klein\Request
     return $response->code(200);
 });
 
-$klein->respond('POST', '/user/edit/password', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('POST', '/api/web/user/edit/password', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to change your password!']);
@@ -931,7 +929,7 @@ $klein->respond('POST', '/user/edit/password', function(\Klein\Request $request,
     }
 
     /* @var $user \DataAccess\Models\User */
-    $user = \BusinessLogic\Session\Session::read('userContext');
+    $user = getUserContextForToken($newToken, $applicationContext);
 
     try {
         $command = $applicationContext->get(\BusinessLogic\Authentication\UpdateUserPasswordCommand::class);

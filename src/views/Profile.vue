@@ -12,7 +12,15 @@
                 <h2>Manage Your Profile</h2>
             </div>
         </header>
-        <div class="row">
+        <div
+                class="row loading"
+                v-if="model.email === ''"
+        >
+            <div class="loader">
+                <loader></loader>
+            </div>
+        </div>
+        <div class="row" v-if="model.email !== ''">
             <div class="col login">
                 <div class="login-card">
                     <h3>Change Name</h3>
@@ -160,8 +168,8 @@
 
 <script>
 import VeeValidate from 'vee-validate'
-import VueRecaptcha from 'vue-recaptcha'
 import Vue from 'vue'
+import Loader from '../components/Loader.vue'
 
 Vue.use(VeeValidate)
 VeeValidate.configure({
@@ -169,6 +177,9 @@ VeeValidate.configure({
 })
 export default {
     name: 'profile',
+    components: {
+        Loader
+    },
     data() {
         return {
             model: {
@@ -181,12 +192,11 @@ export default {
         }
     },
     methods: {
-        changePassword: function() {
+        changeName: function() {
             const data = new FormData()
             data.append('email', this.model.email)
             data.append('name', this.model.name)
-            this.$http
-                .post(this.$domain + '/api/web/user/edit/basic-info', data)
+            this.$request(true, 'web/user/edit/basic-info', data)
                 .then(resp => {
                     console.log(resp)
                 })
@@ -206,7 +216,16 @@ export default {
                     }
                 });*/
         },
-        changeName: function() {},
+        changePassword: function() {
+            const data = new FormData()
+            data.append('current-password', this.model.currentPassword)
+            data.append('password', this.model.newPassword)
+            data.append('confirm-password', this.model.confirmNewPassword)
+            this.$request(true, 'web/user/edit/password', data)
+                .then(resp => {
+                    console.log(resp)
+                })
+        },
     },
     created: function() {
         this.$request(false, 'web/user/edit').then(resp => {
@@ -255,6 +274,12 @@ export default {
         .login-card {
             margin: 10px;
         }
+    }
+}
+
+.loading {
+    .loader {
+        margin: 100px auto 0;
     }
 }
 </style>
