@@ -842,23 +842,32 @@ $klein->respond('GET', '/user/register', function() use ($twig, $klein) {
     return \Controllers\Renderer::render('user/register.twig', $twig, $model);
 });
 
-$klein->respond('POST', '/user/register', function(\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext, $klein) {
-    $settings = new \Config\Settings();
-    if ($_POST['super-secret-code'] !== $settings->superSecretPublicCode) {
-        return "The registration code you entered was not correct. An account was not created.";
-    }
-
+$klein->respond('POST', '/api/web/user/register', function(\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext, $klein) {
     $controller = $applicationContext->get(\Controllers\AuthenticationController::class);
 
+
+    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel->token = null;
     try {
         $controller->registerUser($_POST['name'], $_POST['email'], $_POST['password'], $_POST['confirm-password'], $_POST['g-recaptcha-response'], $twig);
     } catch (\Controllers\RecaptchaFailedException $e) {
-        $klein->service()->flash('You must complete the captcha in order to create an account.', 'danger');
-        return $response->redirect('/user/register');
+        $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+        $responseModel->data = [
+            'messages' => [
+                new \Controllers\ViewModels\AlertMessage('danger', 'You must complete the captcha in order to create an account.')
+            ]
+        ];
+
+        $response->code(400);
+        return $response->json($responseModel);
     }
 
-    $klein->service()->flash('Account created. Check your email to validate your account!', 'success');
-    return $response->redirect('/user/login?redirectLocation=/');
+    $responseModel->data = [
+        'messages' => [
+            new \Controllers\ViewModels\AlertMessage('success', 'Account created. Check your email to validate your account!')
+        ]
+    ];
+    return $response->json($responseModel);
 });
 
 $klein->respond('GET', '/user/verify', function(\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext, $klein) {

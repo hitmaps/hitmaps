@@ -13,7 +13,10 @@
             </div>
         </header>
         <div class="row">
-            <div class="col-md-6 offset-md-3 login" v-if="!showRegistration">
+            <div class="col-md-6 offset-md-3 login" v-if="this.$route.hash !== '#register'">
+                <!--<alert type="success">
+                    Test
+                </alert>-->
                 <div class="login-card">
                     <div
                         v-for="alert in login.messages"
@@ -119,10 +122,10 @@
                     </button>
                 </div>
                 <div class="sign-in-button">
-                    <button
+                    <router-link
                         type="button"
-                        @click="showRegistration = true"
                         class="btn btn-block"
+                        to="#register"
                     >
                         <img
                             src="/img/game-icons/modal-continue.png"
@@ -135,34 +138,12 @@
                             alt="Notification Icon"
                         />
                         Create an Account
-                    </button>
+                    </router-link>
                 </div>
             </div>
-            <div class="col-md-6 offset-md-3 login" v-if="showRegistration">
+            <div class="col-md-6 offset-md-3 login" v-if="this.$route.hash === '#register'">
                 <div class="login-card">
                     <h3>Create an Account</h3>
-                    <div class="form-group row">
-                        <label
-                            for="super-secret-code"
-                            class="col-md-3 col-form-label"
-                        >
-                            Registration Code
-                        </label>
-                        <div class="col-md-9">
-                            <input
-                                type="text"
-                                class="form-control"
-                                placeholder="lemmein!"
-                            />
-                            <small class="form-text text-muted">
-                                Please enter the registration code that was
-                                provided to you. If you were not provided a
-                                registration code, you cannot register at this
-                                time. Public registration will be available in
-                                the future once the beta test has completed.
-                            </small>
-                        </div>
-                    </div>
                     <div class="form-group row">
                         <label for="name" class="col-md-3 col-form-label">
                             <i class="fas fa-user-plus"></i>
@@ -174,6 +155,7 @@
                                 class="form-control"
                                 id="register-name"
                                 placeholder="Carlton Smith"
+                                v-model="register.name"
                                 required
                             />
                         </div>
@@ -192,6 +174,7 @@
                                 placeholder="carlton.smith@example.com"
                                 data-parsley-remote="/user/register/verify-email"
                                 data-parsley-remote-message="An account with this email already exists"
+                                v-model="register.email"
                                 required
                             />
                         </div>
@@ -209,6 +192,7 @@
                                 placeholder="********"
                                 minlength="8"
                                 data-parsley-error-message="Password must be at least 8 characters"
+                                v-model="register.password"
                                 required
                             />
                         </div>
@@ -229,6 +213,7 @@
                                 placeholder="********"
                                 data-parsley-equalto="#password"
                                 data-parsley-error-message="Passwords must match"
+                                v-model="register.confirmPassword"
                                 required
                             />
                             <div class="help-block with-errors"></div>
@@ -282,7 +267,7 @@
                     </div>
                 </div>
                 <div class="sign-in-button">
-                    <button type="button" class="btn btn-block">
+                    <button type="button" class="btn btn-block" @click="doRegister">
                         <img
                             src="/img/game-icons/modal-continue.png"
                             class="normal img-fluid"
@@ -297,10 +282,10 @@
                     </button>
                 </div>
                 <div class="sign-in-button">
-                    <button
+                    <router-link
                         type="button"
-                        @click="showRegistration = false"
                         class="btn btn-block"
+                        :to="{ name: 'user-auth' }"
                     >
                         <img
                             src="/img/game-icons/modal-close.png"
@@ -313,7 +298,7 @@
                             alt="Cancel Icon"
                         />
                         Cancel
-                    </button>
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -324,6 +309,7 @@
 import VeeValidate from 'vee-validate'
 import VueRecaptcha from 'vue-recaptcha'
 import Vue from 'vue'
+import Alert from "../components/Alert";
 
 Vue.use(VeeValidate)
 VeeValidate.configure({
@@ -339,13 +325,19 @@ export default {
                 password: '',
                 messages: []
             },
-            register: {},
+            register: {
+                name: '',
+                email: '',
+                password: '',
+                confirmPassword: '',
+                messages: []
+            },
             recaptcha: '',
-            referer: '/',
-            showRegistration: false
+            referer: '/'
         }
     },
     components: {
+        Alert,
         VueRecaptcha
     },
     methods: {
@@ -356,8 +348,6 @@ export default {
                     data.append('email', this.login.email)
                     data.append('password', this.login.password)
 
-                    // TODO Move to registration
-                    //data.append('g-recaptcha-response', this.recaptcha)
                     this.$http
                         .post(this.$domain + '/api/web/user/login', data)
                         .then(resp => {
@@ -369,6 +359,23 @@ export default {
                         })
                 }
             })
+        },
+        doRegister: function() {
+            this.$validator.validateAll('register').then(result => {
+                if (result) {
+                    const data = new FormData();
+                    data.append('name', this.register.name);
+                    data.append('email', this.register.email);
+                    data.append('password', this.register.password);
+                    data.append('confirm-password', this.register.confirmPassword);
+                    data.append('g-recaptcha-response', this.recaptcha);
+
+                    this.$request(true, 'web/user/register', data)
+                        .then(resp => {
+                            this.register.messages = resp.data.data.messages;
+                        });
+                }
+            });
         },
         validEmail: function(email) {
             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -403,6 +410,10 @@ export default {
     .col-md-6.login {
         background: transparent;
         border: none;
+
+        .alert {
+            margin: 10px;
+        }
 
         .login-card {
             margin: 10px;
