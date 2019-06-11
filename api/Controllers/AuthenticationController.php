@@ -61,16 +61,7 @@ class AuthenticationController {
     }
 
     public function loginUser(string $email,
-                       string $password,
-                       string $recaptchaResponse) {
-        $settings = new Settings();
-        $recaptcha = new ReCaptcha($settings->recaptchaSiteSecret, new CurlPost());
-        $response = $recaptcha->verify($recaptchaResponse, $_SERVER['REMOTE_ADDR']);
-
-        if (!$response->isSuccess()) {
-            throw new RecaptchaFailedException();
-        }
-
+                       string $password) {
         return $this->loginUserService->loginWithUserAndPassword($email, $password);
     }
 
