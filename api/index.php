@@ -327,7 +327,7 @@ $klein->respond('POST', '/api/web/user/login', function(\Klein\Request $request,
     $controller = $applicationContext->get(\Controllers\AuthenticationController::class);
 
     try {
-        $token = $controller->loginUser($_POST['email'], $_POST['password'], $_POST['g-recaptcha-response']);
+        $token = $controller->loginUser($_POST['email'], $_POST['password']);
 
         $responseModel = new \Controllers\ViewModels\ApiResponseModel();
         $responseModel->token = $token;
