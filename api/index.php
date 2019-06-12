@@ -967,7 +967,7 @@ $klein->respond('GET', '/user/register/verify-email', function(\Klein\Request $r
     }
 });
 
-$klein->respond('POST', '/user/forgot-password', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext, $twig) {
+$klein->respond('POST', '/api/web/user/forgot-password', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext, $twig) {
     $command = $applicationContext->get(\BusinessLogic\Authentication\GeneratePasswordResetCommand::class);
     $command->execute($_POST['email'], $twig);
 

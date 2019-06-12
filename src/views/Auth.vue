@@ -135,6 +135,52 @@
                     </router-link>
                 </div>
             </div>
+            <modal id="forgot-password"
+                   aria-labelledby="forgot-password-label"
+                   modalTitle="Forgot Password?"
+                   dismissable>
+                <p>Forgot your password? No problem! Enter your email below and we will send you an email with a link
+                    to reset your password.</p>
+                <div class="form-group row">
+                    <label for="email" class="col-form-label col-md-3">
+                        <i class="fa fa-envelope"></i> Email
+                    </label>
+                    <div class="col-md-9">
+                        <input type="email" class="form-control" name="email" placeholder="carlton.smith@example.com"
+                               v-model="resetPassword.email"
+                               required>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <template v-slot:modal-footer>
+                    <game-button data-dismiss="modal" @click="doResetPassword">
+                        <img
+                                src="/img/game-icons/modal-continue.png"
+                                class="normal img-fluid"
+                                alt="Submit Icon"
+                        />
+                        <img
+                                src="/img/game-icons/modal-continue-inverted.png"
+                                class="inverted img-fluid"
+                                alt="Submit Icon"
+                        />
+                        Submit
+                    </game-button>
+                    <game-button data-dismiss="modal">
+                        <img
+                                src="/img/game-icons/modal-close.png"
+                                class="normal img-fluid"
+                                alt="Cancel Icon"
+                        />
+                        <img
+                                src="/img/game-icons/modal-close-inverted.png"
+                                class="inverted img-fluid"
+                                alt="Cancel Icon"
+                        />
+                        Cancel
+                    </game-button>
+                </template>
+            </modal>
             <div
                 class="col-md-6 offset-md-3 login"
                 v-if="this.$route.hash === '#register'"
@@ -320,6 +366,8 @@ import VeeValidate from 'vee-validate'
 import VueRecaptcha from 'vue-recaptcha'
 import Vue from 'vue'
 import Alert from '../components/Alert'
+import Modal from "../components/Modal";
+import GameButton from "../components/GameButton";
 
 Vue.use(VeeValidate)
 VeeValidate.configure({
@@ -343,11 +391,16 @@ export default {
                 messages: [],
                 registrationComplete: false
             },
+            resetPassword: {
+                email: ''
+            },
             recaptcha: '',
             referer: '/'
         }
     },
     components: {
+        GameButton,
+        Modal,
         Alert,
         VueRecaptcha
     },
@@ -394,6 +447,21 @@ export default {
                     )
                 }
             })
+        },
+        doResetPassword: function() {
+            this.$validator.validateAll('resetPassword').then(result => {
+                if (result) {
+                    const data = new FormData();
+                    data.append('email', this.resetPassword.email);
+
+                    this.$request(true, 'web/user/forgot-password', data).then(resp => {
+                        this.login.messages.push({
+                            messageHtml: resp.data.message,
+                            type: 'success'
+                        });
+                    })
+                }
+            });
         },
         validEmail: function(email) {
             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
