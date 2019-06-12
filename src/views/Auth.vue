@@ -13,20 +13,14 @@
             </div>
         </header>
         <div class="row">
-            <div class="col-md-6 offset-md-3 login" v-if="this.$route.hash !== '#register'">
-                <!--<alert type="success">
-                    Test
-                </alert>-->
+            <div
+                class="col-md-6 offset-md-3 login"
+                v-if="this.$route.hash !== '#register'"
+            >
+                <alert v-for="message in login.messages" :type="message.type">
+                    {{ message.messageHtml }}
+                </alert>
                 <div class="login-card">
-                    <div
-                        v-for="alert in login.messages"
-                        :key="alert.type"
-                        :class="'alert alert-' + alert.type"
-                        role="alert"
-                    >
-                        <i :class="'fas fa-' + alert.icon"></i>
-                        {{ alert.messageHtml }}
-                    </div>
                     <h3>Sign In</h3>
                     <div class="form-group email row">
                         <label for="email" class="col-md-3 col-form-label">
@@ -141,8 +135,17 @@
                     </router-link>
                 </div>
             </div>
-            <div class="col-md-6 offset-md-3 login" v-if="this.$route.hash === '#register'">
-                <div class="login-card">
+            <div
+                class="col-md-6 offset-md-3 login"
+                v-if="this.$route.hash === '#register'"
+            >
+                <alert
+                    v-for="message in register.messages"
+                    :type="message.type"
+                >
+                    {{ message.messageHtml }}
+                </alert>
+                <div class="login-card" v-if="!register.registrationComplete">
                     <h3>Create an Account</h3>
                     <div class="form-group row">
                         <label for="name" class="col-md-3 col-form-label">
@@ -266,8 +269,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="sign-in-button">
-                    <button type="button" class="btn btn-block" @click="doRegister">
+                <div
+                    class="sign-in-button"
+                    v-if="!register.registrationComplete"
+                >
+                    <button
+                        type="button"
+                        class="btn btn-block"
+                        @click="doRegister"
+                    >
                         <img
                             src="/img/game-icons/modal-continue.png"
                             class="normal img-fluid"
@@ -297,7 +307,7 @@
                             class="inverted img-fluid"
                             alt="Cancel Icon"
                         />
-                        Cancel
+                        Back to Login
                     </router-link>
                 </div>
             </div>
@@ -309,7 +319,7 @@
 import VeeValidate from 'vee-validate'
 import VueRecaptcha from 'vue-recaptcha'
 import Vue from 'vue'
-import Alert from "../components/Alert";
+import Alert from '../components/Alert'
 
 Vue.use(VeeValidate)
 VeeValidate.configure({
@@ -330,7 +340,8 @@ export default {
                 email: '',
                 password: '',
                 confirmPassword: '',
-                messages: []
+                messages: [],
+                registrationComplete: false
             },
             recaptcha: '',
             referer: '/'
@@ -351,7 +362,9 @@ export default {
                     this.$http
                         .post(this.$domain + '/api/web/user/login', data)
                         .then(resp => {
-                            this.login.messages = resp.data.messages
+                            if (resp.data.data !== null) {
+                                this.login.messages = resp.data.data.messages
+                            }
                             if (resp.data.token !== null) {
                                 localStorage.setItem('token', resp.data.token)
                                 this.$router.push({ path: this.referer })
@@ -363,19 +376,24 @@ export default {
         doRegister: function() {
             this.$validator.validateAll('register').then(result => {
                 if (result) {
-                    const data = new FormData();
-                    data.append('name', this.register.name);
-                    data.append('email', this.register.email);
-                    data.append('password', this.register.password);
-                    data.append('confirm-password', this.register.confirmPassword);
-                    data.append('g-recaptcha-response', this.recaptcha);
+                    const data = new FormData()
+                    data.append('name', this.register.name)
+                    data.append('email', this.register.email)
+                    data.append('password', this.register.password)
+                    data.append(
+                        'confirm-password',
+                        this.register.confirmPassword
+                    )
+                    data.append('g-recaptcha-response', this.recaptcha)
 
-                    this.$request(true, 'web/user/register', data)
-                        .then(resp => {
-                            this.register.messages = resp.data.data.messages;
-                        });
+                    this.$request(true, 'web/user/register', data).then(
+                        resp => {
+                            this.register.messages = resp.data.data.messages
+                            this.register.registrationComplete = true
+                        }
+                    )
                 }
-            });
+            })
         },
         validEmail: function(email) {
             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
