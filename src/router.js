@@ -41,13 +41,22 @@ export default new Router({
                 import(/* webpackChunkName: "map-view" */ './views/Map.vue'),
         },
         {
-            path: '/user/auth',
-            name: 'user-auth',
+            path: '/user/login',
+            name: 'login',
             // route level code-splitting
             // this generates a separate chunk (about.[hash].js) for this route
             // which is lazy-loaded when the route is visited.
             component: () =>
-                import(/* webpackChunkName: "user-auth" */ './views/Auth.vue'),
+                import(/* webpackChunkName: "login" */ './views/Login.vue'),
+        },
+        {
+          path: '/user/register',
+          name: 'register',
+          // route level code-splitting
+          // this generates a separate chunk (about.[hash].js) for this route
+          // which is lazy-loaded when the route is visited.
+          component: () =>
+            import(/* webpackChunkName: "register" */ './views/Register.vue'),
         },
         {
             path: '/user/profile',
@@ -57,7 +66,7 @@ export default new Router({
             // which is lazy-loaded when the route is visited.
             component: () =>
                 import(
-                    /* webpackChunkName: "user-auth" */ './views/Profile.vue'
+                    /* webpackChunkName: "profile" */ './views/Profile.vue'
                 ),
         },
     ],

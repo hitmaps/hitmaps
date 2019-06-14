@@ -870,18 +870,15 @@ $klein->respond('POST', '/api/web/user/register', function(\Klein\Request $reque
     return $response->json($responseModel);
 });
 
-$klein->respond('GET', '/user/verify', function(\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext, $klein) {
+$klein->respond('GET', '/api/web/user/verify', function(\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext, $klein) {
     $controller = $applicationContext->get(\Controllers\AuthenticationController::class);
     $success = $controller->verifyUser($_GET['token']);
 
     if ($success) {
-        $klein->service()->flash('Account verified! You may now log in.', 'success');
+        $response->redirect('/user/login#verified');
     } else {
-        $klein->service()->flash('We were not able to verify your account. Make sure you clicked the activation link ' .
-            'from the most recent email you received, and that the link did not expire.', 'danger');
+        $response->redirect('/user/login#verify-failed');
     }
-
-    $response->redirect('/user/login?redirectLocation=/');
 });
 
 // AJAX endpoint

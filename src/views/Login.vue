@@ -13,12 +13,20 @@
             </div>
         </header>
         <div class="row">
-            <div
-                class="col-md-6 offset-md-3 login"
-                v-if="this.$route.hash !== '#register'"
-            >
+            <div class="col-md-6 offset-md-3 login">
                 <alert v-for="message in login.messages" :type="message.type">
                     {{ message.messageHtml }}
+                </alert>
+                <alert v-if="this.$route.hash === '#verified'" type="success">
+                    Account verified! You may now log in.
+                </alert>
+                <alert
+                    v-if="this.$route.hash === '#verify-failed'"
+                    type="danger"
+                >
+                    We were not able to verify your account. Make sure you
+                    clicked the activation link from the most recent email you
+                    received, and that the link did not expire.
                 </alert>
                 <div class="login-card">
                     <h3>Sign In</h3>
@@ -119,7 +127,7 @@
                     <router-link
                         type="button"
                         class="btn btn-block"
-                        to="#register"
+                        :to="{ name: 'register' }"
                     >
                         <img
                             src="/img/game-icons/modal-continue.png"
@@ -135,214 +143,49 @@
                     </router-link>
                 </div>
             </div>
-            <modal id="forgot-password"
-                   aria-labelledby="forgot-password-label"
-                   modalTitle="Forgot Password?"
-                   dismissable>
-                <p>Forgot your password? No problem! Enter your email below and we will send you an email with a link
-                    to reset your password.</p>
+            <modal
+                id="forgot-password"
+                aria-labelledby="forgot-password-label"
+                modalTitle="Forgot Password?"
+                dismissable
+            >
+                <p>
+                    Forgot your password? No problem! Enter your email below and
+                    we will send you an email with a link to reset your
+                    password.
+                </p>
                 <div class="form-group row">
                     <label for="email" class="col-form-label col-md-3">
-                        <i class="fa fa-envelope"></i> Email
+                        <i class="fa fa-envelope"></i>
+                        Email
                     </label>
                     <div class="col-md-9">
-                        <input type="email" class="form-control" name="email" placeholder="carlton.smith@example.com"
-                               v-model="resetPassword.email"
-                               required>
+                        <input
+                            type="email"
+                            class="form-control"
+                            name="email"
+                            placeholder="carlton.smith@example.com"
+                            v-model="resetPassword.email"
+                            required
+                        />
                         <div class="help-block with-errors"></div>
                     </div>
                 </div>
                 <template v-slot:modal-footer>
                     <game-button data-dismiss="modal" @click="doResetPassword">
                         <img
-                                src="/img/game-icons/modal-continue.png"
-                                class="normal img-fluid"
-                                alt="Submit Icon"
-                        />
-                        <img
-                                src="/img/game-icons/modal-continue-inverted.png"
-                                class="inverted img-fluid"
-                                alt="Submit Icon"
-                        />
-                        Submit
-                    </game-button>
-                    <game-button data-dismiss="modal">
-                        <img
-                                src="/img/game-icons/modal-close.png"
-                                class="normal img-fluid"
-                                alt="Cancel Icon"
-                        />
-                        <img
-                                src="/img/game-icons/modal-close-inverted.png"
-                                class="inverted img-fluid"
-                                alt="Cancel Icon"
-                        />
-                        Cancel
-                    </game-button>
-                </template>
-            </modal>
-            <div
-                class="col-md-6 offset-md-3 login"
-                v-if="this.$route.hash === '#register'"
-            >
-                <alert
-                    v-for="message in register.messages"
-                    :type="message.type"
-                >
-                    {{ message.messageHtml }}
-                </alert>
-                <div class="login-card" v-if="!register.registrationComplete">
-                    <h3>Create an Account</h3>
-                    <div class="form-group row">
-                        <label for="name" class="col-md-3 col-form-label">
-                            <i class="fas fa-user-plus"></i>
-                            Name
-                        </label>
-                        <div class="col-md-9">
-                            <input
-                                type="text"
-                                class="form-control"
-                                id="register-name"
-                                placeholder="Carlton Smith"
-                                v-model="register.name"
-                                required
-                            />
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="email" class="col-md-3 col-form-label">
-                            <i class="fas fa-envelope"></i>
-                            Email
-                        </label>
-                        <div class="col-md-9">
-                            <input
-                                type="email"
-                                class="form-control"
-                                id="register-email"
-                                placeholder="carlton.smith@example.com"
-                                data-parsley-remote="/user/register/verify-email"
-                                data-parsley-remote-message="An account with this email already exists"
-                                v-model="register.email"
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="password" class="col-md-3 col-form-label">
-                            <i class="fas fa-key"></i>
-                            Password
-                        </label>
-                        <div class="col-md-9">
-                            <input
-                                type="password"
-                                class="form-control"
-                                id="register-password"
-                                placeholder="********"
-                                minlength="8"
-                                data-parsley-error-message="Password must be at least 8 characters"
-                                v-model="register.password"
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label
-                            for="confirm-password"
-                            class="col-md-3 col-form-label"
-                        >
-                            <i class="fas fa-key"></i>
-                            Confirm Password
-                        </label>
-                        <div class="col-md-9">
-                            <input
-                                type="password"
-                                class="form-control"
-                                id="register-confirm-password"
-                                placeholder="********"
-                                data-parsley-equalto="#password"
-                                data-parsley-error-message="Passwords must match"
-                                v-model="register.confirmPassword"
-                                required
-                            />
-                            <div class="help-block with-errors"></div>
-                        </div>
-                    </div>
-                    <div class="form-group row has-feedback">
-                        <div class="col-md-9 offset-md-3">
-                            <div class="checkbox">
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        name="terms"
-                                        data-error="You must agree to the Terms of Use and Privacy Policy"
-                                        required
-                                    />
-                                    I agree to the
-                                    <a href="/terms-of-use" target="_blank">
-                                        Terms of Use
-                                    </a>
-                                    and
-                                    <a href="/privacy-policy" target="_blank">
-                                        Privacy Policy
-                                    </a>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row has-feedback">
-                        <div class="col-md-9 offset-md-3">
-                            <vue-recaptcha
-                                @verify="recaptcha = $event"
-                                @expired="recaptcha = ''"
-                                :sitekey="recaptchaSiteKey"
-                            ></vue-recaptcha>
-                            <input
-                                type="hidden"
-                                class="form-control"
-                                name="recaptcha"
-                                v-validate
-                                v-model="recaptcha"
-                                data-vv-scope="login"
-                                required
-                            />
-                            <span
-                                v-show="errors.has('login.recaptcha')"
-                                class="form-text text-danger"
-                            >
-                                {{ errors.first('login.recaptcha') }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div
-                    class="sign-in-button"
-                    v-if="!register.registrationComplete"
-                >
-                    <button
-                        type="button"
-                        class="btn btn-block"
-                        @click="doRegister"
-                    >
-                        <img
                             src="/img/game-icons/modal-continue.png"
                             class="normal img-fluid"
-                            alt="Register Icon"
+                            alt="Submit Icon"
                         />
                         <img
                             src="/img/game-icons/modal-continue-inverted.png"
                             class="inverted img-fluid"
-                            alt="Register Icon"
+                            alt="Submit Icon"
                         />
-                        Register
-                    </button>
-                </div>
-                <div class="sign-in-button">
-                    <router-link
-                        type="button"
-                        class="btn btn-block"
-                        :to="{ name: 'user-auth' }"
-                    >
+                        Submit
+                    </game-button>
+                    <game-button data-dismiss="modal">
                         <img
                             src="/img/game-icons/modal-close.png"
                             class="normal img-fluid"
@@ -353,10 +196,10 @@
                             class="inverted img-fluid"
                             alt="Cancel Icon"
                         />
-                        Back to Login
-                    </router-link>
-                </div>
-            </div>
+                        Cancel
+                    </game-button>
+                </template>
+            </modal>
         </div>
     </div>
 </template>
@@ -366,15 +209,15 @@ import VeeValidate from 'vee-validate'
 import VueRecaptcha from 'vue-recaptcha'
 import Vue from 'vue'
 import Alert from '../components/Alert'
-import Modal from "../components/Modal";
-import GameButton from "../components/GameButton";
+import Modal from '../components/Modal'
+import GameButton from '../components/GameButton'
 
 Vue.use(VeeValidate)
 VeeValidate.configure({
     events: 'change'
 })
 export default {
-    name: 'user-auth',
+    name: 'login',
     data() {
         return {
             recaptchaSiteKey: process.env.VUE_APP_RECAPTCHA_KEY,
@@ -382,14 +225,6 @@ export default {
                 email: '',
                 password: '',
                 messages: []
-            },
-            register: {
-                name: '',
-                email: '',
-                password: '',
-                confirmPassword: '',
-                messages: [],
-                registrationComplete: false
             },
             resetPassword: {
                 email: ''
@@ -426,42 +261,24 @@ export default {
                 }
             })
         },
-        doRegister: function() {
-            this.$validator.validateAll('register').then(result => {
+        doResetPassword: function() {
+            this.$validator.validateAll('resetPassword').then(result => {
                 if (result) {
                     const data = new FormData()
-                    data.append('name', this.register.name)
-                    data.append('email', this.register.email)
-                    data.append('password', this.register.password)
-                    data.append(
-                        'confirm-password',
-                        this.register.confirmPassword
-                    )
-                    data.append('g-recaptcha-response', this.recaptcha)
+                    data.append('email', this.resetPassword.email)
 
-                    this.$request(true, 'web/user/register', data).then(
+                    this.$request(true, 'web/user/forgot-password', data).then(
                         resp => {
-                            this.register.messages = resp.data.data.messages
-                            this.register.registrationComplete = true
+                            this.login.messages = [
+                                {
+                                    messageHtml: resp.data.message,
+                                    type: 'success'
+                                }
+                            ]
                         }
                     )
                 }
             })
-        },
-        doResetPassword: function() {
-            this.$validator.validateAll('resetPassword').then(result => {
-                if (result) {
-                    const data = new FormData();
-                    data.append('email', this.resetPassword.email);
-
-                    this.$request(true, 'web/user/forgot-password', data).then(resp => {
-                        this.login.messages.push({
-                            messageHtml: resp.data.message,
-                            type: 'success'
-                        });
-                    })
-                }
-            });
         },
         validEmail: function(email) {
             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
