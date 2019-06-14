@@ -87,12 +87,12 @@
                 :maxBounds="[
                     [
                         this.mission.topLeftCoordinate.split(',')[0],
-                        this.mission.topLeftCoordinate.split(',')[1],
+                        this.mission.topLeftCoordinate.split(',')[1]
                     ],
                     [
                         this.mission.bottomRightCoordinate.split(',')[0],
-                        this.mission.bottomRightCoordinate.split(',')[1],
-                    ],
+                        this.mission.bottomRightCoordinate.split(',')[1]
+                    ]
                 ]"
                 :crs="crs"
                 @pm:drawstart="initDraw"
@@ -142,8 +142,7 @@
                             :stroke="false"
                             :weight="4"
                             :opacity="0.75"
-                        >
-                        </l-polygon>
+                        ></l-polygon>
                     </l-layer-group>
                     <l-layer-group
                         v-for="(group, key) in layerGroups"
@@ -160,8 +159,7 @@
                                 :weight="4"
                                 :opacity="0.75"
                                 :lat-lngs="parseCoords(ledge.vertices)"
-                            >
-                            </l-polyline>
+                            ></l-polyline>
                         </div>
                         <div v-else-if="group.name === 'Foliage'">
                             <l-polygon
@@ -174,8 +172,7 @@
                                 :weight="4"
                                 :opacity="0.75"
                                 :lat-lngs="parseCoords(item.vertices)"
-                            >
-                            </l-polygon>
+                            ></l-polygon>
                         </div>
                         <div v-else>
                             <l-marker
@@ -214,7 +211,7 @@
                                             v-if="item.target"
                                             :class="'far ' + item.targetIcon"
                                         ></i>
-                                        <span> {{ item.target }}</span>
+                                        <span>{{ item.target }}</span>
                                     </div>
                                     <div data-name="notes">
                                         <div
@@ -252,9 +249,9 @@
                                         </button>
                                     </div>
                                 </l-popup>
-                                <l-tooltip v-if="item.tooltip">{{
-                                    item.tooltip
-                                }}</l-tooltip>
+                                <l-tooltip v-if="item.tooltip">
+                                    {{ item.tooltip }}
+                                </l-tooltip>
                             </l-marker>
                         </div>
                     </l-layer-group>
@@ -331,7 +328,7 @@
                                     <i class="fas fa-sign-out-alt"></i>
                                 </button>
                             </a>
-                            <router-link :to="{ name: 'user-auth' }">
+                            <router-link :to="{ name: 'login' }">
                                 <button
                                     v-if="!isLoggedIn"
                                     class="btn control-button"
@@ -370,7 +367,7 @@
                                     :class="{
                                         'has-search-results': hasSearchResults(
                                             i
-                                        ),
+                                        )
                                     }"
                                     class="item-count"
                                 >
@@ -419,7 +416,8 @@
                                                     ';' +
                                                     node.name
                                             "
-                                            >{{ node.name }}
+                                        >
+                                            {{ node.name }}
                                         </option>
                                     </optgroup>
                                 </template>
@@ -488,7 +486,7 @@
                                                 background:
                                                     'url(/img/jpg/' +
                                                     disguise.image +
-                                                    '.jpg)',
+                                                    '.jpg)'
                                             }"
                                         >
                                             <p class="disguise-info">
@@ -514,14 +512,16 @@
                                 @click="toggleLayer('|', true)"
                                 class="btn control-button"
                             >
-                                <i class="far fa-fw fa-eye-slash"></i> Hide All
+                                <i class="far fa-fw fa-eye-slash"></i>
+                                Hide All
                             </button>
                             <button
                                 id="show-all"
                                 @click="toggleLayer('|', false)"
                                 class="btn control-button"
                             >
-                                <i class="far fa-fw fa-eye"></i> Show All
+                                <i class="far fa-fw fa-eye"></i>
+                                Show All
                             </button>
                         </div>
                         <div v-if="mission.missionType == 'Sniper Assassin'">
@@ -537,7 +537,7 @@
                                         :key="type.name + group.name"
                                         :class="{
                                             'full-width': group.collapsible,
-                                            'half-width': !group.collapsible,
+                                            'half-width': !group.collapsible
                                         }"
                                     >
                                         <div
@@ -550,7 +550,7 @@
                                             :class="{
                                                 'map-hidden': isLayerHidden(
                                                     type.name + '|' + group.name
-                                                ),
+                                                )
                                             }"
                                         >
                                             <img
@@ -562,7 +562,7 @@
                                                 :alt="group.name + ' Icon'"
                                                 class="img-fluid"
                                             />
-                                            <span> {{ group.name }}</span>
+                                            <span>{{ group.name }}</span>
                                         </div>
                                         <div
                                             v-if="group.collapsible"
@@ -589,7 +589,7 @@
                                                     columns:
                                                         group.items.length > 1
                                                             ? 2
-                                                            : 1,
+                                                            : 1
                                                 }"
                                             >
                                                 <li
@@ -650,7 +650,7 @@
                                         :class="{
                                             'map-hidden': isLayerHidden(
                                                 type.name + '|*'
-                                            ),
+                                            )
                                         }"
                                     >
                                         <i class="far fa-eye"></i>
@@ -668,7 +668,7 @@
                                             :key="type.name + group.name"
                                             :class="{
                                                 'full-width': group.collapsible,
-                                                'half-width': !group.collapsible,
+                                                'half-width': !group.collapsible
                                             }"
                                         >
                                             <div
@@ -685,7 +685,7 @@
                                                         type.name +
                                                             '|' +
                                                             group.name
-                                                    ),
+                                                    )
                                                 }"
                                             >
                                                 <img
@@ -697,7 +697,7 @@
                                                     :alt="group.name + ' Icon'"
                                                     class="img-fluid"
                                                 />
-                                                <span> {{ group.name }}</span>
+                                                <span>{{ group.name }}</span>
                                             </div>
                                             <div
                                                 v-if="group.collapsible"
@@ -727,7 +727,7 @@
                                                             group.items.length >
                                                             1
                                                                 ? 2
-                                                                : 1,
+                                                                : 1
                                                     }"
                                                 >
                                                     <li
@@ -770,8 +770,8 @@
                         <h3>What would you like to do?</h3>
                         <div class="editor-button" @click="editorMenu('items')">
                             <h3>
-                                <i class="fas fa-fw fa-map-marker-alt"></i> Add
-                                / Remove Items
+                                <i class="fas fa-fw fa-map-marker-alt"></i>
+                                Add / Remove Items
                             </h3>
                         </div>
                         <div
@@ -780,8 +780,8 @@
                             @click="editorMenu('ledges')"
                         >
                             <h3>
-                                <i class="fas fa-fw fa-bezier-curve"></i> Add /
-                                Remove Ledges
+                                <i class="fas fa-fw fa-bezier-curve"></i>
+                                Add / Remove Ledges
                             </h3>
                         </div>
                         <div
@@ -790,8 +790,8 @@
                             @click="editorMenu('foliage')"
                         >
                             <h3>
-                                <i class="fas fa-fw fa-leaf"></i> Add / Remove
-                                Foliage
+                                <i class="fas fa-fw fa-leaf"></i>
+                                Add / Remove Foliage
                             </h3>
                         </div>
                         <div
@@ -800,13 +800,14 @@
                             @click="editorMenu('disguises')"
                         >
                             <h3>
-                                <i class="fas fa-fw fa-user-tie"></i> Manage
-                                Disguise Areas
+                                <i class="fas fa-fw fa-user-tie"></i>
+                                Manage Disguise Areas
                             </h3>
                         </div>
                         <p>
-                            Click the <i class="fas fa-pencil-alt"></i> icon to
-                            close the editor menu.
+                            Click the
+                            <i class="fas fa-pencil-alt"></i>
+                            icon to close the editor menu.
                         </p>
                     </div>
                     <div
@@ -814,22 +815,22 @@
                         v-show="editor.enabled && editor.mode === 'items'"
                     >
                         <p>
-                            <i class="fas fa-fw fa-plus-circle"></i> Click
-                            anywhere on the map to add a new item.
+                            <i class="fas fa-fw fa-plus-circle"></i>
+                            Click anywhere on the map to add a new item.
                         </p>
                         <p>
-                            <i class="fas fa-fw fa-arrows-alt"></i> Drag and
-                            drop an existing item to move it.
+                            <i class="fas fa-fw fa-arrows-alt"></i>
+                            Drag and drop an existing item to move it.
                         </p>
                         <p>
-                            <i class="fas fa-fw fa-trash"></i> Click on an
-                            existing item and then the "Delete" button to delete
-                            it.
+                            <i class="fas fa-fw fa-trash"></i>
+                            Click on an existing item and then the "Delete"
+                            button to delete it.
                         </p>
                         <div class="editor-button" @click="editorMenu('')">
                             <h3>
-                                <i class="fas fa-times-circle"></i> Close Item
-                                Menu
+                                <i class="fas fa-times-circle"></i>
+                                Close Item Menu
                             </h3>
                         </div>
                     </div>
@@ -838,12 +839,13 @@
                         v-show="editor.enabled && editor.mode === 'ledges'"
                     >
                         <p data-ledge="delete-help">
-                            <i class="fas fa-trash"></i> Click on an existing
-                            ledge to delete it.
+                            <i class="fas fa-trash"></i>
+                            Click on an existing ledge to delete it.
                         </p>
                         <div class="editor-button" @click="toggleDraw('Line')">
                             <h3>
-                                <i class="fas fa-plus-circle"></i> Add Ledge
+                                <i class="fas fa-plus-circle"></i>
+                                Add Ledge
                             </h3>
                             <p>Click here to enable / disable ledge builder</p>
                         </div>
@@ -855,8 +857,8 @@
                             "
                         >
                             <h3>
-                                <i class="fas fa-times-circle"></i> Close Ledge
-                                Menu
+                                <i class="fas fa-times-circle"></i>
+                                Close Ledge Menu
                             </h3>
                         </div>
                     </div>
@@ -865,15 +867,16 @@
                         v-show="editor.enabled && editor.mode === 'foliage'"
                     >
                         <p data-foliage="delete-help">
-                            <i class="fas fa-trash"></i> Click on an existing
-                            foliage to delete it.
+                            <i class="fas fa-trash"></i>
+                            Click on an existing foliage to delete it.
                         </p>
                         <div
                             class="editor-button"
                             @click="toggleDraw('Polygon')"
                         >
                             <h3>
-                                <i class="fas fa-plus-circle"></i> Add Foliage
+                                <i class="fas fa-plus-circle"></i>
+                                Add Foliage
                             </h3>
                             <p>
                                 Click here to enable / disable foliage builder
@@ -887,8 +890,8 @@
                             "
                         >
                             <h3>
-                                <i class="fas fa-times-circle"></i> Close
-                                Foliage Menu
+                                <i class="fas fa-times-circle"></i>
+                                Close Foliage Menu
                             </h3>
                         </div>
                     </div>
@@ -897,8 +900,8 @@
                         v-show="editor.enabled && editor.mode === 'disguises'"
                     >
                         <p data-disguise="delete-help">
-                            <i class="fas fa-trash"></i> Click on an existing
-                            region to delete it.
+                            <i class="fas fa-trash"></i>
+                            Click on an existing region to delete it.
                         </p>
                         <p>
                             Select a disguise from the dropdown below to edit
@@ -919,7 +922,8 @@
                                     v-for="disguise in disguises"
                                     :key="disguise.id"
                                     :value="disguise.id"
-                                    >{{ disguise.name }}
+                                >
+                                    {{ disguise.name }}
                                 </option>
                             </select>
                         </div>
@@ -934,8 +938,8 @@
                             v-if="editor.currentDisguise != 'NONE'"
                         >
                             <h3>
-                                <i class="fas fa-plus-circle"></i> Add
-                                Trespassing Region
+                                <i class="fas fa-plus-circle"></i>
+                                Add Trespassing Region
                             </h3>
                             <p>
                                 Click here to enable / disable trespassing
@@ -953,8 +957,8 @@
                             v-if="editor.currentDisguise != 'NONE'"
                         >
                             <h3>
-                                <i class="fas fa-plus-circle"></i> Add Hostile
-                                Region
+                                <i class="fas fa-plus-circle"></i>
+                                Add Hostile Region
                             </h3>
                             <p>
                                 Click here to enable / disable hostile region
@@ -969,8 +973,8 @@
                             "
                         >
                             <h3>
-                                <i class="fas fa-times-circle"></i> Close
-                                Disguise Area Menu
+                                <i class="fas fa-times-circle"></i>
+                                Close Disguise Area Menu
                             </h3>
                         </div>
                     </div>
@@ -1052,20 +1056,21 @@
                                 >
                                     You can now use a template to auto-fill item
                                     information for common items!
-                                    <b
-                                        >If you select a template, all
+                                    <b>
+                                        If you select a template, all
                                         information in "Item Info" and "Notes"
                                         will be replaced with the template's
-                                        information.</b
-                                    >
+                                        information.
+                                    </b>
                                 </div>
                                 <h3>Apply Template</h3>
                                 <div class="form-group row">
                                     <label
                                         for="template"
                                         class="col sm-2 col-form-label"
-                                        >Template</label
                                     >
+                                        Template
+                                    </label>
                                     <div class="col-sm-10">
                                         <select
                                             @change="applyTemplate"
@@ -1085,7 +1090,8 @@
                                                     v-for="item in group"
                                                     :key="item.id"
                                                     :value="key + '|' + item.id"
-                                                    >{{ item.name }}
+                                                >
+                                                    {{ item.name }}
                                                 </option>
                                             </optgroup>
                                         </select>
@@ -1102,27 +1108,29 @@
                                 section when adding items:
                                 <ul>
                                     <li>
-                                        Any <b>required</b> items, such as
-                                        needing a wrench for loosening valves
-                                        (use type "Requirement")
+                                        Any
+                                        <b>required</b>
+                                        items, such as needing a wrench for
+                                        loosening valves (use type
+                                        "Requirement")
                                     </li>
                                     <li>
                                         Whether or not the action is
-                                        <b>suspicious</b> when wearing a certain
-                                        disguise (use type "Warning")
+                                        <b>suspicious</b>
+                                        when wearing a certain disguise (use
+                                        type "Warning")
                                     </li>
                                     <li>
                                         If you feel something
-                                        <b>requires more information</b>, use
-                                        the "Information" type
+                                        <b>requires more information</b>
+                                        , use the "Information" type
                                     </li>
                                     <li>
                                         You may add the in-game description for
                                         items by using the "Description" type
-                                        <b
-                                            >if there is no name field
-                                            provided.</b
-                                        >
+                                        <b>
+                                            if there is no name field provided.
+                                        </b>
                                     </li>
                                     <li>
                                         Any notes with blank text will not be
@@ -1134,8 +1142,9 @@
                                 <label
                                     for="subgroup"
                                     class="col-sm-2 col-form-label"
-                                    >Category</label
                                 >
+                                    Category
+                                </label>
                                 <div class="col-sm-10">
                                     <select
                                         @change="selectSubgroup"
@@ -1187,8 +1196,9 @@
                                 <label
                                     for="icon"
                                     class="col-sm-2 col-form-label"
-                                    >Icon</label
                                 >
+                                    Icon
+                                </label>
                                 <div class="col-sm-10">
                                     <select
                                         name="icon"
@@ -1229,8 +1239,9 @@
                                     <label
                                         for="name"
                                         class="col-sm-2 col-form-label"
-                                        >Name</label
                                     >
+                                        Name
+                                    </label>
                                     <div class="col-sm-10">
                                         <input
                                             type="text"
@@ -1415,26 +1426,27 @@
                                         <label
                                             for="note-type[]"
                                             class="col-sm-2 col-form-label"
-                                            >Type</label
                                         >
+                                            Type
+                                        </label>
                                         <div class="col-sm-10">
                                             <select
                                                 v-model="note.type"
                                                 class="form-control"
                                                 name="note-type[]"
                                             >
-                                                <option value="requirement"
-                                                    >Requirement</option
-                                                >
-                                                <option value="warning"
-                                                    >Warning</option
-                                                >
-                                                <option value="info"
-                                                    >Information</option
-                                                >
-                                                <option value="description"
-                                                    >Description</option
-                                                >
+                                                <option value="requirement">
+                                                    Requirement
+                                                </option>
+                                                <option value="warning">
+                                                    Warning
+                                                </option>
+                                                <option value="info">
+                                                    Information
+                                                </option>
+                                                <option value="description">
+                                                    Description
+                                                </option>
                                             </select>
                                         </div>
                                     </div>
@@ -1442,8 +1454,9 @@
                                         <label
                                             for="note-text[]"
                                             class="col-sm-2 col-form-label"
-                                            >Text</label
                                         >
+                                            Text
+                                        </label>
                                         <div class="col-sm-10">
                                             <input
                                                 type="text"
@@ -1501,7 +1514,7 @@ import {
     LPopup,
     LPolyline,
     LPolygon,
-    LIcon,
+    LIcon
 } from 'vue2-leaflet'
 import 'leaflet/dist/leaflet.css'
 
@@ -1519,7 +1532,7 @@ export default {
         LPopup,
         LPolyline,
         LPolygon,
-        LIcon,
+        LIcon
     },
     title() {
         return this.mission ? this.mission.name : 'Loading'
@@ -1550,8 +1563,8 @@ export default {
                 clickedPoint: {},
                 currentMarker: {},
                 vertices: [],
-                workingLayers: [],
-            },
+                workingLayers: []
+            }
         }
     },
     computed: {
@@ -1611,7 +1624,7 @@ export default {
                     'Navigation|foliage',
                     'Navigation|up-stair',
                     'Navigation|starting-location',
-                    'Navigation|up-pipe',
+                    'Navigation|up-pipe'
                 ].indexOf(this.editor.currentCategory) == -1
             )
         },
@@ -1630,7 +1643,7 @@ export default {
                     return true
             }
             return false
-        },
+        }
     },
     methods: {
         noDuplicates: function(val) {
@@ -1716,8 +1729,9 @@ export default {
             data.append('node-id', this.editor.currentMarker.id)
             data.append('latitude', this.editor.currentMarker.latitude)
             data.append('longitude', this.editor.currentMarker.longitude)
-            this.$request(true, 'nodes/move', data)
-                .then(() => $(this.$refs.confirmMoveModal).modal('hide'))
+            this.$request(true, 'nodes/move', data).then(() =>
+                $(this.$refs.confirmMoveModal).modal('hide')
+            )
         },
         selectSubgroup: function(event) {
             if (event.target.value == '') return
@@ -1754,22 +1768,22 @@ export default {
             if (currentTemplate.description)
                 this.editor.notes.push({
                     type: 'description',
-                    text: currentTemplate.description,
+                    text: currentTemplate.description
                 })
             if (currentTemplate.requirement)
                 this.editor.notes.push({
                     type: 'requirement',
-                    text: currentTemplate.requirement,
+                    text: currentTemplate.requirement
                 })
             if (currentTemplate.warning)
                 this.editor.notes.push({
                     type: 'warning',
-                    text: currentTemplate.warning,
+                    text: currentTemplate.warning
                 })
             if (currentTemplate.information)
                 this.editor.notes.push({
                     type: 'information',
-                    text: currentTemplate.information,
+                    text: currentTemplate.information
                 })
         },
         saveMarker: function() {
@@ -1820,16 +1834,15 @@ export default {
             })
         },
         deleteMarker: function(node) {
-            this.$request(false, 'nodes/delete/' + node.id)
-                .then(resp => {
-                    console.log('Node successfully deleted')
-                    this.layerGroups[node.type + '|' + node.group].items.splice(
-                        this.layerGroups[
-                            node.type + '|' + node.group
-                        ].items.indexOf(node),
-                        1
-                    )
-                })
+            this.$request(false, 'nodes/delete/' + node.id).then(resp => {
+                console.log('Node successfully deleted')
+                this.layerGroups[node.type + '|' + node.group].items.splice(
+                    this.layerGroups[
+                        node.type + '|' + node.group
+                    ].items.indexOf(node),
+                    1
+                )
+            })
         },
         isLayerHidden: function(name) {
             name = name.replace('*', '')
@@ -1883,7 +1896,7 @@ export default {
                 this.$refs.map.mapObject.pm.disableDraw(type)
             } else {
                 this.$refs.map.mapObject.pm.enableDraw(type, {
-                    snappable: false,
+                    snappable: false
                 })
             }
         },
@@ -1905,39 +1918,36 @@ export default {
             data.append('missionId', this.mission.id)
             data.append('level', this.currentLayer)
             if (e.shape === 'Line') {
-                this.$request(true, 'ledges', data)
-                    .then(resp => {
-                        this.editor.vertices = []
-                        this.ledges.push(resp.data)
-                        this.editor.workingLayers.forEach(el => {
-                            this.$refs.map.mapObject.removeLayer(el)
-                        })
-                        this.editor.workingLayers = []
+                this.$request(true, 'ledges', data).then(resp => {
+                    this.editor.vertices = []
+                    this.ledges.push(resp.data)
+                    this.editor.workingLayers.forEach(el => {
+                        this.$refs.map.mapObject.removeLayer(el)
                     })
+                    this.editor.workingLayers = []
+                })
             } else if (this.editor.mode === 'foliage') {
-                this.$request(true, 'foliage', data)
-                    .then(resp => {
-                        this.editor.vertices = []
-                        this.foliage.push(resp.data)
-                        this.editor.workingLayers.forEach(el => {
-                            this.$refs.map.mapObject.removeLayer(el)
-                        })
-                        this.editor.workingLayers = []
+                this.$request(true, 'foliage', data).then(resp => {
+                    this.editor.vertices = []
+                    this.foliage.push(resp.data)
+                    this.editor.workingLayers.forEach(el => {
+                        this.$refs.map.mapObject.removeLayer(el)
                     })
+                    this.editor.workingLayers = []
+                })
             } else if (this.editor.mode === 'disguises') {
                 data.append('disguiseId', this.editor.currentDisguise)
                 data.append('type', this.editor.disguiseType)
-                this.$request(true, 'disguise-areas', data)
-                    .then(resp => {
-                        this.editor.vertices = []
-                        this.disguises
-                            .find(el => el.id == this.editor.currentDisguise)
-                            .areas.push(resp.data)
-                        this.editor.workingLayers.forEach(el => {
-                            this.$refs.map.mapObject.removeLayer(el)
-                        })
-                        this.editor.workingLayers = []
+                this.$request(true, 'disguise-areas', data).then(resp => {
+                    this.editor.vertices = []
+                    this.disguises
+                        .find(el => el.id == this.editor.currentDisguise)
+                        .areas.push(resp.data)
+                    this.editor.workingLayers.forEach(el => {
+                        this.$refs.map.mapObject.removeLayer(el)
                     })
+                    this.editor.workingLayers = []
+                })
             }
         },
         parseCoords: function(coords) {
@@ -2006,96 +2016,94 @@ export default {
                 .removeClass('item-selected')
                 .end()
             $(this.$refs.itemSearch).selectpicker('val', '')
-        },
+        }
     },
     beforeCreate: function() {
         if (this.$store.state.mission == null) {
-            this.$request(false,
-                    'v1/games/' +
-                        this.$route.params.slug +
-                        '/locations/' +
-                        this.$route.params.location +
-                        '/missions/' +
-                        this.$route.params.mission
-                )
-                .then(resp => {
-                    this.$store.commit('SET_MISSION', resp.data[0])
-                })
-        }
-    },
-    created: function() {
-        if (this.game === null || this.game.slug !== this.$route.params.slug)
-            this.$store.dispatch('loadGame', this.$route.params.slug)
-        this.$request(false,
+            this.$request(
+                false,
                 'v1/games/' +
                     this.$route.params.slug +
                     '/locations/' +
                     this.$route.params.location +
                     '/missions/' +
-                    this.$route.params.mission +
-                    '/' +
-                    this.$route.params.difficulty +
-                    '/map'
-            )
-            .then(resp => {
-                this.$route.meta.title = resp.data.mission.name
-                this.currentLayer = resp.data.mission.startingFloorNumber
-                for (var group in resp.data.nodes) {
-                    for (var subgroup in resp.data.nodes[group].items) {
-                        resp.data.nodes[group].items[subgroup].items.forEach(
-                            item => {
-                                item.latLng = L.latLng(
-                                    item.latitude,
-                                    item.longitude
-                                )
-                            }
-                        )
-                    }
+                    this.$route.params.mission
+            ).then(resp => {
+                this.$store.commit('SET_MISSION', resp.data[0])
+            })
+        }
+    },
+    created: function() {
+        if (this.game === null || this.game.slug !== this.$route.params.slug)
+            this.$store.dispatch('loadGame', this.$route.params.slug)
+        this.$request(
+            false,
+            'v1/games/' +
+                this.$route.params.slug +
+                '/locations/' +
+                this.$route.params.location +
+                '/missions/' +
+                this.$route.params.mission +
+                '/' +
+                this.$route.params.difficulty +
+                '/map'
+        ).then(resp => {
+            this.$route.meta.title = resp.data.mission.name
+            this.currentLayer = resp.data.mission.startingFloorNumber
+            for (var group in resp.data.nodes) {
+                for (var subgroup in resp.data.nodes[group].items) {
+                    resp.data.nodes[group].items[subgroup].items.forEach(
+                        item => {
+                            item.latLng = L.latLng(
+                                item.latitude,
+                                item.longitude
+                            )
+                        }
+                    )
                 }
-                this.disguises = resp.data.disguises
-                this.ledges = resp.data.ledges
-                this.foliage = resp.data.foliage
-                this.nodes = resp.data.nodes
-                this.searchableNodes = resp.data.searchableNodes
-                resp.data.categories.forEach(category => {
-                    if (!this.categories[category.type])
-                        this.categories[category.type] = []
-                    this.categories[category.type].push(category)
-                    this.layerGroups[category.type + '|' + category.group] =
-                        resp.data.nodes[category.type].items[category.group]
+            }
+            this.disguises = resp.data.disguises
+            this.ledges = resp.data.ledges
+            this.foliage = resp.data.foliage
+            this.nodes = resp.data.nodes
+            this.searchableNodes = resp.data.searchableNodes
+            resp.data.categories.forEach(category => {
+                if (!this.categories[category.type])
+                    this.categories[category.type] = []
+                this.categories[category.type].push(category)
+                this.layerGroups[category.type + '|' + category.group] =
+                    resp.data.nodes[category.type].items[category.group]
+            })
+            console.log(this.layerGroups)
+            this.$nextTick(() => {
+                this.$refs.map.mapObject.setView(
+                    [
+                        Number(this.mission.mapCenterLatitude),
+                        Number(this.mission.mapCenterLongitude)
+                    ],
+                    3
+                )
+                $('#map-control').append(
+                    this.$refs.map.mapObject.zoomControl.getContainer()
+                )
+                this.mapLoaded = true
+                //Is not needed directly at start
+                this.$request(false, 'v1/editor/templates').then(resp => {
+                    this.editor.templates = resp.data
+                    this.$nextTick(() => {
+                        $('.selectpicker').selectpicker()
+                    })
                 })
-                console.log(this.layerGroups)
-                this.$nextTick(() => {
-                    this.$refs.map.mapObject.setView(
-                        [
-                            Number(this.mission.mapCenterLatitude),
-                            Number(this.mission.mapCenterLongitude),
-                        ],
-                        3
-                    )
-                    $('#map-control').append(
-                        this.$refs.map.mapObject.zoomControl.getContainer()
-                    )
-                    this.mapLoaded = true
-                    //Is not needed directly at start
-                    this.$request(false, 'v1/editor/templates')
-                        .then(resp => {
-                            this.editor.templates = resp.data
-                            this.$nextTick(() => {
-                                $('.selectpicker').selectpicker()
-                            })
-                        })
-                    this.$request(false, 'v1/editor/icons')
-                        .then(resp => {
-                            this.editor.icons = resp.data
-                            this.$nextTick(() => {
-                                $(this.$refs.iconPicker).selectpicker('destroy')
-                                $(this.$refs.iconPicker).selectpicker()
-                            })
-                        })
+                this.$request(false, 'v1/editor/icons').then(resp => {
+                    this.editor.icons = resp.data
+                    this.$nextTick(() => {
+                        $(this.$refs.iconPicker).selectpicker('destroy')
+                        $(this.$refs.iconPicker).selectpicker()
+                    })
                 })
             })
-    },
+        })
+    }
 }
 </script>
 
