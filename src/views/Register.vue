@@ -33,9 +33,14 @@
                                 class="form-control"
                                 id="register-name"
                                 placeholder="Carlton Smith"
+                                name="name"
+                                v-validate="'required'"
                                 v-model="register.name"
                                 required
                             />
+                            <div class="help-block with-errors">
+                                {{ errors.first('name') }}
+                            </div>
                         </div>
                     </div>
 
@@ -50,11 +55,16 @@
                                 class="form-control"
                                 id="register-email"
                                 placeholder="carlton.smith@example.com"
+                                v-validate="'required|email'"
+                                name="email"
                                 data-parsley-remote="/user/register/verify-email"
                                 data-parsley-remote-message="An account with this email already exists"
                                 v-model="register.email"
                                 required
                             />
+                            <div class="help-block with-errors">
+                                {{ errors.first('email') }}
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -68,6 +78,7 @@
                                 class="form-control"
                                 id="register-password"
                                 placeholder="********"
+                                v-validate="'required|min:8'"
                                 minlength="8"
                                 data-parsley-error-message="Password must be at least 8 characters"
                                 v-model="register.password"
@@ -89,7 +100,7 @@
                                 class="form-control"
                                 id="register-confirm-password"
                                 placeholder="********"
-                                data-parsley-equalto="#password"
+                                v-validate="'is:register.password'"
                                 data-parsley-error-message="Passwords must match"
                                 v-model="register.confirmPassword"
                                 required
@@ -246,6 +257,9 @@ export default {
                     )
                 }
             })
+        },
+        passwordsMatch: function() {
+            return this.register.password === this.register.confirmPassword
         },
         validEmail: function(email) {
             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
