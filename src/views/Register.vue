@@ -31,6 +31,13 @@
                             <input
                                 type="text"
                                 class="form-control"
+                                :class="
+                                    errors.items.some(
+                                        item => item.field === 'name'
+                                    )
+                                        ? 'is-invalid'
+                                        : ''
+                                "
                                 id="register-name"
                                 placeholder="Carlton Smith"
                                 name="name"
@@ -38,7 +45,7 @@
                                 v-model="register.name"
                                 required
                             />
-                            <div class="help-block with-errors">
+                            <div class="form-text text-danger">
                                 {{ errors.first('name') }}
                             </div>
                         </div>
@@ -53,6 +60,13 @@
                             <input
                                 type="email"
                                 class="form-control"
+                                :class="
+                                    errors.items.some(
+                                        item => item.field === 'email'
+                                    )
+                                        ? 'is-invalid'
+                                        : ''
+                                "
                                 id="register-email"
                                 placeholder="carlton.smith@example.com"
                                 v-validate="'required|email'"
@@ -62,7 +76,7 @@
                                 v-model="register.email"
                                 required
                             />
-                            <div class="help-block with-errors">
+                            <div class="form-text text-danger">
                                 {{ errors.first('email') }}
                             </div>
                         </div>
@@ -76,14 +90,24 @@
                             <input
                                 type="password"
                                 class="form-control"
+                                :class="
+                                    errors.items.some(
+                                        item => item.field === 'password'
+                                    )
+                                        ? 'is-invalid'
+                                        : ''
+                                "
                                 id="register-password"
                                 placeholder="********"
                                 v-validate="'required|min:8'"
-                                minlength="8"
+                                name="password"
                                 data-parsley-error-message="Password must be at least 8 characters"
                                 v-model="register.password"
                                 required
                             />
+                            <div class="form-text text-danger">
+                                {{ errors.first('password') }}
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -98,14 +122,24 @@
                             <input
                                 type="password"
                                 class="form-control"
+                                :class="
+                                    errors.items.some(
+                                        item =>
+                                            item.field === 'confirm-password'
+                                    )
+                                        ? 'is-invalid'
+                                        : ''
+                                "
                                 id="register-confirm-password"
+                                name="confirm-password"
                                 placeholder="********"
-                                v-validate="'is:register.password'"
-                                data-parsley-error-message="Passwords must match"
+                                v-validate="{ is: register.password }"
                                 v-model="register.confirmPassword"
                                 required
                             />
-                            <div class="help-block with-errors"></div>
+                            <div class="form-text text-danger">
+                                {{ errors.first('confirm-password') }}
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row has-feedback">
@@ -116,6 +150,7 @@
                                         type="checkbox"
                                         name="terms"
                                         data-error="You must agree to the Terms of Use and Privacy Policy"
+                                        v-validate="'required'"
                                         required
                                     />
                                     I agree to the
@@ -159,10 +194,9 @@
                     class="sign-in-button"
                     v-if="!register.registrationComplete"
                 >
-                    <button
-                        type="button"
-                        class="btn btn-block"
+                    <game-button
                         @click="doRegister"
+                        :disabled="errors.items.length > 0"
                     >
                         <img
                             src="/img/game-icons/modal-continue.png"
@@ -175,25 +209,23 @@
                             alt="Register Icon"
                         />
                         Register
-                    </button>
+                    </game-button>
                 </div>
                 <div class="sign-in-button">
-                    <router-link
-                        type="button"
-                        class="btn btn-block"
-                        :to="{ name: 'login' }"
-                    >
-                        <img
-                            src="/img/game-icons/modal-close.png"
-                            class="normal img-fluid"
-                            alt="Cancel Icon"
-                        />
-                        <img
-                            src="/img/game-icons/modal-close-inverted.png"
-                            class="inverted img-fluid"
-                            alt="Cancel Icon"
-                        />
-                        Back to Login
+                    <router-link :to="{ name: 'login' }">
+                        <game-button>
+                            <img
+                                src="/img/game-icons/modal-close.png"
+                                class="normal img-fluid"
+                                alt="Cancel Icon"
+                            />
+                            <img
+                                src="/img/game-icons/modal-close-inverted.png"
+                                class="inverted img-fluid"
+                                alt="Cancel Icon"
+                            />
+                            Back to Login
+                        </game-button>
                     </router-link>
                 </div>
             </div>
@@ -237,7 +269,7 @@ export default {
     },
     methods: {
         doRegister: function() {
-            this.$validator.validateAll('register').then(result => {
+            this.$validator.validate().then(result => {
                 if (result) {
                     const data = new FormData()
                     data.append('name', this.register.name)
@@ -270,8 +302,9 @@ export default {
         this.$validator.localize({
             en: {
                 messages: {
-                    email: 'This value should be a valid email.',
-                    required: 'This value is required.'
+                    email: 'This value must be a valid email.',
+                    required: 'This field is required.',
+                    is: 'Passwords must match'
                 },
                 custom: {
                     recaptcha: {
@@ -307,60 +340,13 @@ export default {
             border-radius: 0;
         }
 
+        a:hover {
+            text-decoration: none;
+        }
+
         .sign-in-button {
-            background: #fff;
-            padding: 0;
             margin: 0 10px 10px;
-
-            .btn-block {
-                border-radius: 0;
-                text-transform: uppercase;
-                background: #fff;
-                color: #000;
-                font-family: 'nimbus_sans_lbold', sans-serif;
-                text-align: left;
-                font-size: 1.3rem;
-                transition: none;
-
-                img {
-                    max-width: 32px;
-                    max-height: 32px;
-                    vertical-align: top;
-
-                    &.normal {
-                        display: inline-block;
-                    }
-
-                    &.inverted {
-                        display: none;
-                    }
-
-                    &:hover {
-                        &.normal {
-                            display: none;
-                        }
-
-                        &.inverted {
-                            display: inline-block;
-                        }
-                    }
-                }
-
-                &:hover {
-                    background: #ff003c;
-                    color: #fff;
-
-                    img {
-                        &.normal {
-                            display: none;
-                        }
-
-                        &.inverted {
-                            display: inline-block;
-                        }
-                    }
-                }
-            }
+            padding: 0;
         }
     }
 }
