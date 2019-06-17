@@ -20,7 +20,7 @@ export default {
     background: #fff;
     margin: 0 10px 10px 0;
 
-    .btn-block {
+    &.btn-block {
         border-radius: 0;
         text-transform: uppercase;
         background: #fff;
@@ -65,6 +65,21 @@ export default {
 
                 &.inverted {
                     display: inline-block;
+                }
+            }
+        }
+
+        &:disabled {
+            background: #ddd;
+            color: #333;
+
+            &:hover img {
+                &.normal {
+                    display: inline-block;
+                }
+
+                &.inverted {
+                    display: none;
                 }
             }
         }
