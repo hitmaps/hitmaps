@@ -1932,7 +1932,7 @@ export default {
             if (e.shape === 'Line') {
                 this.$request(true, 'ledges', data).then(resp => {
                     this.editor.vertices = []
-                    this.ledges.push(resp.data)
+                    this.ledges.push(resp.data.data)
                     this.editor.workingLayers.forEach(el => {
                         this.$refs.map.mapObject.removeLayer(el)
                     })
@@ -1941,7 +1941,7 @@ export default {
             } else if (this.editor.mode === 'foliage') {
                 this.$request(true, 'foliage', data).then(resp => {
                     this.editor.vertices = []
-                    this.foliage.push(resp.data)
+                    this.foliage.push(resp.data.data)
                     this.editor.workingLayers.forEach(el => {
                         this.$refs.map.mapObject.removeLayer(el)
                     })
@@ -1954,7 +1954,7 @@ export default {
                     this.editor.vertices = []
                     this.disguises
                         .find(el => el.id == this.editor.currentDisguise)
-                        .areas.push(resp.data)
+                        .areas.push(resp.data.data)
                     this.editor.workingLayers.forEach(el => {
                         this.$refs.map.mapObject.removeLayer(el)
                     })
@@ -2599,6 +2599,12 @@ html {
         box-shadow: none;
         border: solid 2px #fff;
         margin-left: 5px;
+        transition: none;
+
+        &:hover {
+            color: #000;
+            background: #fff;
+        }
     }
 }
 
