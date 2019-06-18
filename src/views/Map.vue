@@ -142,7 +142,15 @@
                             :stroke="false"
                             :weight="4"
                             :opacity="0.75"
-                        ></l-polygon>
+                        >
+                            <l-tooltip>
+                                {{
+                                    item.type === 'trespassing'
+                                        ? 'Trespassing'
+                                        : 'Hostile'
+                                }}
+                            </l-tooltip>
+                        </l-polygon>
                     </l-layer-group>
                     <l-layer-group
                         v-for="(group, key) in layerGroups"
@@ -159,7 +167,9 @@
                                 :weight="4"
                                 :opacity="0.75"
                                 :lat-lngs="parseCoords(ledge.vertices)"
-                            ></l-polyline>
+                            >
+                                <l-tooltip>Ledge</l-tooltip>
+                            </l-polyline>
                         </div>
                         <div v-else-if="group.name === 'Foliage'">
                             <l-polygon
@@ -172,7 +182,9 @@
                                 :weight="4"
                                 :opacity="0.75"
                                 :lat-lngs="parseCoords(item.vertices)"
-                            ></l-polygon>
+                            >
+                                <l-tooltip>Foliage</l-tooltip>
+                            </l-polygon>
                         </div>
                         <div v-else>
                             <l-marker
