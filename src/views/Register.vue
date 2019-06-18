@@ -31,13 +31,10 @@
                             <input
                                 type="text"
                                 class="form-control"
-                                :class="
-                                    errors.items.some(
-                                        item => item.field === 'name'
-                                    )
-                                        ? 'is-invalid'
-                                        : ''
-                                "
+                                :class="{
+                                    'is-invalid': errors.has('name'),
+                                    'text-danger': errors.has('name')
+                                }"
                                 id="register-name"
                                 placeholder="Carlton Smith"
                                 name="name"
@@ -60,13 +57,10 @@
                             <input
                                 type="email"
                                 class="form-control"
-                                :class="
-                                    errors.items.some(
-                                        item => item.field === 'email'
-                                    )
-                                        ? 'is-invalid'
-                                        : ''
-                                "
+                                :class="{
+                                    'is-invalid': errors.has('email'),
+                                    'text-danger': errors.has('email')
+                                }"
                                 id="register-email"
                                 placeholder="carlton.smith@example.com"
                                 v-validate="'required|email'"
@@ -90,13 +84,10 @@
                             <input
                                 type="password"
                                 class="form-control"
-                                :class="
-                                    errors.items.some(
-                                        item => item.field === 'password'
-                                    )
-                                        ? 'is-invalid'
-                                        : ''
-                                "
+                                :class="{
+                                    'is-invalid': errors.has('password'),
+                                    'text-danger': errors.has('password')
+                                }"
                                 id="register-password"
                                 placeholder="********"
                                 v-validate="'required|min:8'"
@@ -122,14 +113,14 @@
                             <input
                                 type="password"
                                 class="form-control"
-                                :class="
-                                    errors.items.some(
-                                        item =>
-                                            item.field === 'confirm-password'
+                                :class="{
+                                    'is-invalid': errors.has(
+                                        'confirm-password'
+                                    ),
+                                    'text-danger': errors.has(
+                                        'confirm-password'
                                     )
-                                        ? 'is-invalid'
-                                        : ''
-                                "
+                                }"
                                 id="register-confirm-password"
                                 name="confirm-password"
                                 placeholder="********"

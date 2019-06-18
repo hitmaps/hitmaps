@@ -105,10 +105,9 @@
                     </div>
                 </div>
                 <div class="sign-in-button">
-                    <button
-                        type="button"
+                    <game-button
                         @click="doLogin"
-                        class="btn btn-block"
+                        :disabled="errors.items.length > 0"
                     >
                         <img
                             src="/img/game-icons/modal-continue.png"
@@ -121,25 +120,23 @@
                             alt="Notification Icon"
                         />
                         Sign In
-                    </button>
+                    </game-button>
                 </div>
                 <div class="sign-in-button">
-                    <router-link
-                        type="button"
-                        class="btn btn-block"
-                        :to="{ name: 'register' }"
-                    >
-                        <img
-                            src="/img/game-icons/modal-continue.png"
-                            class="normal img-fluid"
-                            alt="Notification Icon"
-                        />
-                        <img
-                            src="/img/game-icons/modal-continue-inverted.png"
-                            class="inverted img-fluid"
-                            alt="Notification Icon"
-                        />
-                        Create an Account
+                    <router-link :to="{ name: 'register' }">
+                        <game-button>
+                            <img
+                                src="/img/game-icons/modal-continue.png"
+                                class="normal img-fluid"
+                                alt="Notification Icon"
+                            />
+                            <img
+                                src="/img/game-icons/modal-continue-inverted.png"
+                                class="inverted img-fluid"
+                                alt="Notification Icon"
+                            />
+                            Create an Account
+                        </game-button>
                     </router-link>
                 </div>
             </div>
@@ -336,54 +333,8 @@ export default {
             padding: 0;
             margin: 0 10px 10px;
 
-            .btn-block {
-                border-radius: 0;
-                text-transform: uppercase;
-                background: #fff;
-                color: #000;
-                font-family: 'nimbus_sans_lbold', sans-serif;
-                text-align: left;
-                font-size: 1.3rem;
-                transition: none;
-
-                img {
-                    max-width: 32px;
-                    max-height: 32px;
-                    vertical-align: top;
-
-                    &.normal {
-                        display: inline-block;
-                    }
-
-                    &.inverted {
-                        display: none;
-                    }
-
-                    &:hover {
-                        &.normal {
-                            display: none;
-                        }
-
-                        &.inverted {
-                            display: inline-block;
-                        }
-                    }
-                }
-
-                &:hover {
-                    background: #ff003c;
-                    color: #fff;
-
-                    img {
-                        &.normal {
-                            display: none;
-                        }
-
-                        &.inverted {
-                            display: inline-block;
-                        }
-                    }
-                }
+            a:hover {
+                text-decoration: none;
             }
         }
     }
