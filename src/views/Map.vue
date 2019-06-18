@@ -2125,11 +2125,6 @@ html {
     overflow-y: scroll;
 }
 
-/* Search box color override */
-.bootstrap-select > .dropdown-toggle.bs-placeholder {
-    color: #fff;
-}
-
 .marker-icon,
 .marker-icon:focus {
     background: rgba(0, 0, 0, 0.25);
@@ -2679,6 +2674,8 @@ html {
 
         > .dropdown-toggle {
             &.bs-placeholder {
+                color: #fff;
+
                 &:hover,
                 &:active,
                 &:focus {
