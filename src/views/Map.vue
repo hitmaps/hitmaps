@@ -1833,14 +1833,14 @@ export default {
             })
             this.$request(true, url, data).then(resp => {
                 //TODO Make this a method
-                if (resp.data.approved) {
-                    resp.data.latLng = L.latLng(
-                        resp.data.latitude,
-                        resp.data.longitude
+                if (resp.data.data.approved) {
+                    resp.data.data.latLng = L.latLng(
+                        resp.data.data.latitude,
+                        resp.data.data.longitude
                     )
                     this.layerGroups[
-                        resp.data.type + '|' + resp.data.group
-                    ].items.push(resp.data)
+                        resp.data.data.type + '|' + resp.data.data.group
+                    ].items.push(resp.data.data)
                 }
                 $(this.$refs.editModal).modal('hide')
             })
