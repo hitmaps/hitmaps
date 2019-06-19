@@ -979,6 +979,21 @@
                         </div>
                         <div
                             class="editor-button"
+                            data-disguise="copy"
+                            v-if="editor.currentDisguise === 'NONE'"
+                            @click="showCopyDisguiseModal"
+                        >
+                            <h3>
+                                <i class="fas fa-copy"></i>
+                                Copy Regions
+                            </h3>
+                            <p>
+                                Click here to copy disguise regions from one
+                                disguise to another
+                            </p>
+                        </div>
+                        <div
+                            class="editor-button"
                             @click="
                                 editorMenu('')
                                 $refs.map.mapObject.pm.disableDraw('Polygon')
@@ -992,6 +1007,95 @@
                     </div>
                 </div>
             </nav>
+            <modal
+                modal-title="Copy Disguise Regions"
+                id="copy-disguises-modal"
+                tabindex="-1"
+                role="dialog"
+            >
+                <div class="alert alert-warning">
+                    When copying, any existing target disguise regions will be
+                    deleted before copying.
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="original-disguise">
+                                Source Disguise
+                            </label>
+                            <br />
+                            <select
+                                id="original-disguise"
+                                name="original-disguise"
+                                class="selectpicker"
+                                required
+                            >
+                                <option disabled selected>
+                                    Select
+                                </option>
+                                <option
+                                    v-for="disguise in disguises"
+                                    :value="disguise.id"
+                                >
+                                    {{ disguise.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="target-disguise">
+                                Target Disguise
+                            </label>
+                            <br />
+                            <select
+                                id="target-disguise"
+                                name="target-disguise"
+                                class="selectpicker"
+                                required
+                            >
+                                <option disabled selected>
+                                    Select
+                                </option>
+                                <option
+                                    v-for="disguise in disguises"
+                                    :value="disguise.id"
+                                >
+                                    {{ disguise.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <template v-slot:modal-footer>
+                    <game-button type="submit" id="copy-disguise-regions-btn">
+                        <img
+                            src="/img/game-icons/modal-continue.png"
+                            class="normal img-fluid"
+                            alt="Submit Icon"
+                        />
+                        <img
+                            src="/img/game-icons/modal-continue-inverted.png"
+                            class="inverted img-fluid"
+                            alt="Submit Icon"
+                        />
+                        Copy
+                    </game-button>
+                    <game-button type="button" data-dismiss="modal">
+                        <img
+                            src="/img/game-icons/modal-close.png"
+                            class="normal img-fluid"
+                            alt="Cancel Icon"
+                        />
+                        <img
+                            src="/img/game-icons/modal-close-inverted.png"
+                            class="inverted img-fluid"
+                            alt="Cancel Icon"
+                        />
+                        Cancel
+                    </game-button>
+                </template>
+            </modal>
             <div
                 class="modal"
                 ref="confirmMoveModal"
@@ -1533,6 +1637,9 @@ import 'leaflet/dist/leaflet.css'
 import 'leaflet.pm'
 import 'leaflet.pm/dist/leaflet.pm.css'
 
+import GameButton from '../components/GameButton'
+import Modal from '../components/Modal'
+
 export default {
     name: 'map-view',
     components: {
@@ -1544,7 +1651,9 @@ export default {
         LPopup,
         LPolyline,
         LPolygon,
-        LIcon
+        LIcon,
+        GameButton,
+        Modal
     },
     title() {
         return this.mission ? this.mission.name : 'Loading'
@@ -1576,6 +1685,10 @@ export default {
                 currentMarker: {},
                 vertices: [],
                 workingLayers: []
+            },
+            copyDisguiseArea: {
+                source: -1,
+                destination: -1
             }
         }
     },
@@ -2028,6 +2141,9 @@ export default {
                 .removeClass('item-selected')
                 .end()
             $(this.$refs.itemSearch).selectpicker('val', '')
+        },
+        showCopyDisguiseModal() {
+            $('#copy-disguises-modal').modal('show')
         }
     },
     beforeCreate: function() {
