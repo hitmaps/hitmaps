@@ -1028,6 +1028,7 @@
                                 id="original-disguise"
                                 name="original-disguise"
                                 class="selectpicker"
+                                v-model="copyDisguiseArea.source"
                                 required
                             >
                                 <option disabled selected>
@@ -1052,6 +1053,7 @@
                                 id="target-disguise"
                                 name="target-disguise"
                                 class="selectpicker"
+                                v-model="copyDisguiseArea.destination"
                                 required
                             >
                                 <option disabled selected>
@@ -1068,7 +1070,7 @@
                     </div>
                 </div>
                 <template v-slot:modal-footer>
-                    <game-button type="submit" id="copy-disguise-regions-btn">
+                    <game-button type="submit" id="copy-disguise-regions-btn" @click="copyDisguiseAreas">
                         <img
                             src="/img/game-icons/modal-continue.png"
                             class="normal img-fluid"
@@ -2144,6 +2146,19 @@ export default {
         },
         showCopyDisguiseModal() {
             $('#copy-disguises-modal').modal('show')
+        },
+        copyDisguiseAreas() {
+            let formData = new FormData();
+            formData.append('original-disguise', this.copyDisguiseArea.source);
+            formData.append('target-disguise', this.copyDisguiseArea.destination);
+            this.$request(true, 'disguise-areas/copy', formData)
+                .then(resp => {
+                    $('#copy-disguise-modal').modal('hide');
+                    this.$toast.success({
+                        title: 'Changes Saved',
+                        message: 'Disguise areas copied. Refresh the page to see the changes'
+                    });
+                });
         }
     },
     beforeCreate: function() {
