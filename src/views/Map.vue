@@ -142,6 +142,7 @@
                             :stroke="false"
                             :weight="4"
                             :opacity="0.75"
+                            @click="deletePoly(item.id, 'disguise-areas')"
                         >
                             <l-tooltip>
                                 {{
@@ -167,6 +168,7 @@
                                 :weight="4"
                                 :opacity="0.75"
                                 :lat-lngs="parseCoords(ledge.vertices)"
+                                @click="deletePoly(ledge.id, 'ledges')"
                             >
                                 <l-tooltip>Ledge</l-tooltip>
                             </l-polyline>
@@ -182,6 +184,7 @@
                                 :weight="4"
                                 :opacity="0.75"
                                 :lat-lngs="parseCoords(item.vertices)"
+                                @click="deletePoly(item.id, 'foliage')"
                             >
                                 <l-tooltip>Foliage</l-tooltip>
                             </l-polygon>
@@ -1974,6 +1977,46 @@ export default {
                     1
                 )
             })
+        },
+        deletePoly: function(id, type) {
+            switch (type) {
+                case 'foliage':
+                    if (this.editor.mode !== 'foliage') {
+                        break
+                    }
+
+                    if (
+                        confirm('Are you sure you want to delete this foliage?')
+                    ) {
+                        console.log('TODO Delete foliage')
+                    }
+
+                    break
+                case 'ledges':
+                    if (this.editor.mode !== 'ledges') {
+                        break
+                    }
+
+                    if (
+                        confirm('Are you sure you want to delete this ledge?')
+                    ) {
+                        console.log('TODO Delete ledge')
+                    }
+                    break
+                case 'disguise-areas':
+                    if (this.editor.mode !== 'disguises') {
+                        break
+                    }
+
+                    if (
+                        confirm(
+                            'Are you sure you want to delete this disguise area?'
+                        )
+                    ) {
+                        console.log('TODO Delete foliage')
+                    }
+                    break
+            }
         },
         isLayerHidden: function(name) {
             name = name.replace('*', '')
