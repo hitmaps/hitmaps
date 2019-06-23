@@ -51,13 +51,14 @@ class NodeController {
         ];
 
         $forSniperAssassin = $mission->getMissionType() === MissionType::SNIPER_ASSASSIN;
-        $nodeCategories = $this->nodeCategoryRepository->findBy(['forMission' => !$forSniperAssassin, 'forSniperAssassin' => $forSniperAssassin ], ['order' => 'ASC']);
+        $nodeCategories = $this->nodeCategoryRepository->findBy(['forMission' => !$forSniperAssassin, 'forSniperAssassin' => $forSniperAssassin ], ['order' => 'ASC', 'id' => 'ASC']);
         foreach ($nodeCategories as $nodeCategory) {
             /* @var $nodeCategory NodeCategory */
             $categoryViewModel = new CategoryViewModel();
             $categoryViewModel->name = $nodeCategory->getGroup();
             $categoryViewModel->icon = $nodeCategory->getIcon();
             $categoryViewModel->collapsible = $nodeCategory->getCollapsible();
+            $categoryViewModel->order = $nodeCategory->getOrder();
 
             /* @var $topLevelCategory TopLevelCategoryViewModel */
             $topLevelCategory = $groups[$nodeCategory->getType()];
