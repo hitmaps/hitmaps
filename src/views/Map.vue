@@ -1768,9 +1768,10 @@ export default {
                     atob(localStorage.getItem('token').split('.')[1])
                 )
                 var now = new Date()
+                console.log( new Date(data.exp * 1000).getTime() -
+                        now.getTime())
                 if (
                     new Date(data.exp * 1000).getTime() -
-                        now.getTimezoneOffset() * 60000 -
                         now.getTime() >
                     0
                 )
