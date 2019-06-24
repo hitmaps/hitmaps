@@ -142,7 +142,7 @@
                             :stroke="false"
                             :weight="4"
                             :opacity="0.75"
-                            @click="deletePoly(item.id, 'disguise-areas')"
+                            @click="deletePoly(item, 'disguise-areas')"
                         >
                             <l-tooltip>
                                 {{
@@ -168,7 +168,7 @@
                                 :weight="4"
                                 :opacity="0.75"
                                 :lat-lngs="parseCoords(ledge.vertices)"
-                                @click="deletePoly(ledge.id, 'ledges')"
+                                @click="deletePoly(ledge, 'ledges')"
                             >
                                 <l-tooltip>Ledge</l-tooltip>
                             </l-polyline>
@@ -184,7 +184,7 @@
                                 :weight="4"
                                 :opacity="0.75"
                                 :lat-lngs="parseCoords(item.vertices)"
-                                @click="deletePoly(item.id, 'foliage')"
+                                @click="deletePoly(item, 'foliage')"
                             >
                                 <l-tooltip>Foliage</l-tooltip>
                             </l-polygon>
@@ -1641,14 +1641,19 @@ import {
     LPolygon,
     LIcon
 } from 'vue2-leaflet'
+import Vue from 'vue'
 import 'leaflet/dist/leaflet.css'
 
 import 'leaflet.pm'
 import 'leaflet.pm/dist/leaflet.pm.css'
 
+import CxltToaster from 'cxlt-vue2-toastr'
+import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
+
 import GameButton from '../components/GameButton'
 import Modal from '../components/Modal'
 
+Vue.use(CxltToaster)
 export default {
     name: 'map-view',
     components: {
@@ -1768,13 +1773,8 @@ export default {
                     atob(localStorage.getItem('token').split('.')[1])
                 )
                 var now = new Date()
-                console.log( new Date(data.exp * 1000).getTime() -
-                        now.getTime())
-                if (
-                    new Date(data.exp * 1000).getTime() -
-                        now.getTime() >
-                    0
-                )
+                console.log(new Date(data.exp * 1000).getTime() - now.getTime())
+                if (new Date(data.exp * 1000).getTime() - now.getTime() > 0)
                     return true
             }
             return false
@@ -1979,7 +1979,7 @@ export default {
                 )
             })
         },
-        deletePoly: function(id, type) {
+        deletePoly: function(item, type) {
             switch (type) {
                 case 'foliage':
                     if (this.editor.mode !== 'foliage') {
@@ -1989,7 +1989,21 @@ export default {
                     if (
                         confirm('Are you sure you want to delete this foliage?')
                     ) {
-                        console.log('TODO Delete foliage')
+                        this.$request(false, 'foliage/delete/' + item.id).then(
+                            resp => {
+                                this.$toast.success({
+                                    message: 'Foliage deleted!'
+                                })
+
+                                var foliageObject = this.foliage.find(
+                                    foliage => foliage.id === item.id
+                                )
+                                this.foliage.splice(
+                                    this.foliage.indexOf(foliageObject),
+                                    1
+                                )
+                            }
+                        )
                     }
 
                     break
@@ -2001,7 +2015,21 @@ export default {
                     if (
                         confirm('Are you sure you want to delete this ledge?')
                     ) {
-                        console.log('TODO Delete ledge')
+                        this.$request(false, 'ledges/delete/' + item.id).then(
+                            resp => {
+                                this.$toast.success({
+                                    message: 'Ledge deleted!'
+                                })
+
+                                var ledgeObject = this.ledges.find(
+                                    ledge => ledge.id === item.id
+                                )
+                                this.ledges.splice(
+                                    this.ledges.indexOf(ledgeObject),
+                                    1
+                                )
+                            }
+                        )
                     }
                     break
                 case 'disguise-areas':
@@ -2014,7 +2042,25 @@ export default {
                             'Are you sure you want to delete this disguise area?'
                         )
                     ) {
-                        console.log('TODO Delete foliage')
+                        this.$request(
+                            false,
+                            'disguise-areas/delete/' + item.id
+                        ).then(resp => {
+                            this.$toast.success({
+                                message: 'Disguise area deleted!'
+                            })
+
+                            var disguise = this.disguises.find(
+                                disguise => disguise.id === item.disguiseId
+                            )
+                            var disguiseArea = disguise.areas.find(
+                                area => area.id === item.id
+                            )
+                            disguise.areas.splice(
+                                disguise.areas.indexOf(disguiseArea),
+                                1
+                            )
+                        })
                     }
                     break
             }
