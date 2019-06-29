@@ -11,9 +11,10 @@
                         <p>
                             HITMAN™, HITMAN™ 2, the HITMAN™ logo, images, and
                             text are the property of
-                            <a href="https://www.ioi.dk" target="_blank"
-                                >IO Interactive</a
-                            >.
+                            <a href="https://www.ioi.dk" target="_blank">
+                                IO Interactive
+                            </a>
+                            .
                         </p>
                     </div>
                     <div class="col-md-6 text-right">
@@ -75,7 +76,8 @@
                         <span class="footer-link">
                             <router-link :to="{ name: 'terms-of-use' }">
                                 <i class="fas fa-gavel"></i>
-                                Terms of Use</router-link>
+                                Terms of Use
+                            </router-link>
                         </span>
                         |
                         <span class="footer-link">
@@ -91,12 +93,18 @@
     </div>
 </template>
 <script>
+$(function() {
+    $('body').tooltip({
+        selector: '[data-toggle="tooltip"]'
+    })
+})
+
 export default {
     methods: {
         isNotInMap() {
             return this.$router.history.current.name !== 'map-view'
-        },
-    },
+        }
+    }
 }
 </script>
 

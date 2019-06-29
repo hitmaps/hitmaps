@@ -32,6 +32,16 @@
           integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.5/js/bootstrap-select.min.js"></script>
     <script src="https://www.google.com/recaptcha/api.js?onload=vueRecaptchaApiLoaded&render=explicit" async defer></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase-messaging.js"></script>
+    <script>
+        firebase.initializeApp({
+            apiKey: "AIzaSyDEqqb-AA5R7V6GjmvY4QPQN7ZHJzKsX64",
+            projectId: "hitman2maps",
+            messagingSenderId: "458558604415"
+        });
+    </script>
+    <script src="<%= BASE_URL %>js/firebase.js"></script>
   </head>
   <body data-spy="scroll" data-target="#scrollspy">
     <div id="app"></div>
