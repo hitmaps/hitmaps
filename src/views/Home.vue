@@ -30,7 +30,7 @@
                         'url(/img/jpg/backgrounds/' + game.slug + '.jpg)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
+                    backgroundRepeat: 'no-repeat'
                 }"
             >
                 <router-link
@@ -72,7 +72,7 @@
                         ')',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
+                    backgroundRepeat: 'no-repeat'
                 }"
             >
                 <router-link
@@ -90,7 +90,7 @@
                             :class="{
                                 'not-playable':
                                     new Date(elusiveTarget.beginningTime) >
-                                    new Date(),
+                                    new Date()
                             }"
                         >
                             <div class="target-arrives">TARGET ARRIVES</div>
@@ -139,7 +139,9 @@
                             </h1>
                         </div>
                         <div
-                            class="image float-right notification-icon"
+                            onclick="return false;"
+                            @click="showNotificationModal"
+                            class="image elusive-notification float-right notification-icon"
                             data-placement="left"
                             data-toggle="tooltip"
                             title="Manage Elusive Target Notifications"
@@ -262,7 +264,344 @@
                     </div>
                 </div>
             </div>
+            <div
+                ref="notification-modal"
+                class="modal game-modal fade"
+                id="notification-modal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="notification-modal-label"
+                aria-hidden="true"
+            >
+                <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5
+                                class="modal-title"
+                                id="notification-modal-label"
+                            >
+                                <span
+                                    class="badge badge-pill badge-warning"
+                                    style="border-radius: 0; font-size: 1.3rem"
+                                >
+                                    BETA
+                                </span>
+                                Manage Notifications
+                            </h5>
+                        </div>
+                        <div class="modal-body d-flex flex-column">
+                            <div id="checking-notification-status">
+                                <h6>
+                                    Checking to see if notifications are enabled
+                                    on this device...
+                                </h6>
+                                <div class="spinner-grow" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                            <div
+                                id="notifications-unsupported"
+                                style="display: none"
+                            >
+                                <h6>
+                                    Unfortunately, notifications are not
+                                    supported on this device. Please try to
+                                    enroll using a supported device.
+                                </h6>
+                                <ul>
+                                    <li>
+                                        iOS
+                                        <ul>
+                                            <li>
+                                                <a
+                                                    href="https://itunes.apple.com/us/app/google-chrome/id535886823?mt=8"
+                                                >
+                                                    Google Chrome
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a
+                                                    href="https://itunes.apple.com/us/app/firefox-web-browser/id989804926?mt=8"
+                                                >
+                                                    Firefox
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a
+                                                    href="https://itunes.apple.com/us/app/opera-touch-web-browser/id1411869974?mt=8"
+                                                >
+                                                    Opera
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a
+                                                    href="https://itunes.apple.com/us/app/brave-browser-fast-adblocker/id1052879175"
+                                                >
+                                                    Brave
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        Android
+                                        <ul>
+                                            <li>
+                                                <a
+                                                    href="https://play.google.com/store/apps/details?id=com.android.chrome&hl=en_US"
+                                                >
+                                                    Google Chrome
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a
+                                                    href="https://play.google.com/store/apps/details?id=org.mozilla.firefox&hl=en_US"
+                                                >
+                                                    Firefox
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a
+                                                    href="https://play.google.com/store/apps/details?id=com.brave.browser&hl=en_US"
+                                                >
+                                                    Brave
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        Desktop
+                                        <ul>
+                                            <li>
+                                                <a
+                                                    href="https://www.google.com/chrome/"
+                                                >
+                                                    Google Chrome
+                                                </a>
+                                            </li>
+                                            <li>Microsoft Edge</li>
+                                            <li>
+                                                <a
+                                                    href="https://www.mozilla.org/en-US/firefox/new/"
+                                                >
+                                                    Firefox
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a
+                                                    href="https://www.opera.com/computer"
+                                                >
+                                                    Opera
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div id="enrollment-required" style="display: none">
+                                <h6>
+                                    Your device is currently not set up to
+                                    receive notifications. Click "Enroll" below
+                                    to begin setting up your device.
+                                </h6>
+                                <p id="error-container"></p>
+                            </div>
+                            <div
+                                id="notifications-blocked"
+                                style="display: none"
+                            >
+                                <h6>
+                                    Your device is currently blocking
+                                    notifications from hitman2maps.com. Please
+                                    unblock this site from your device, refresh
+                                    the page, and try to enroll your device
+                                    again.
+                                </h6>
+                            </div>
+                            <div
+                                id="notification-settings"
+                                style="display: none"
+                            >
+                                <h6>Send me a notification when...</h6>
+                                <div class="custom-control custom-checkbox">
+                                    <input
+                                        type="checkbox"
+                                        class="custom-control-input"
+                                        id="elusive-target-coming"
+                                        @click="toggleNotificationState"
+                                        :data-firebase-topic="
+                                            environment +
+                                                '-elusive-target-coming'
+                                        "
+                                        v-model="notifications.almostPlayable"
+                                    />
+                                    <label
+                                        class="custom-control-label"
+                                        for="elusive-target-coming"
+                                    >
+                                        An upcoming Elusive Target is almost
+                                        playable
+                                    </label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input
+                                        type="checkbox"
+                                        class="custom-control-input"
+                                        id="elusive-target-playable"
+                                        @click="toggleNotificationState"
+                                        :data-firebase-topic="
+                                            environment +
+                                                '-elusive-target-playable'
+                                        "
+                                        v-model="notifications.becomesPlayable"
+                                    />
+                                    <label
+                                        class="custom-control-label"
+                                        for="elusive-target-playable"
+                                    >
+                                        The Elusive Target arrives and becomes
+                                        playable
+                                    </label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input
+                                        type="checkbox"
+                                        class="custom-control-input"
+                                        id="elusive-target-7"
+                                        @click="toggleNotificationState"
+                                        :data-firebase-topic="
+                                            environment + '-elusive-target-7'
+                                        "
+                                        v-model="notifications.sevenDays"
+                                    />
+                                    <label
+                                        class="custom-control-label"
+                                        for="elusive-target-7"
+                                    >
+                                        The Elusive Target is available for 7
+                                        more days
+                                    </label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input
+                                        type="checkbox"
+                                        class="custom-control-input"
+                                        id="elusive-target-5"
+                                        @click="toggleNotificationState"
+                                        :data-firebase-topic="
+                                            environment + '-elusive-target-5'
+                                        "
+                                        v-model="notifications.fiveDays"
+                                    />
+                                    <label
+                                        class="custom-control-label"
+                                        for="elusive-target-5"
+                                    >
+                                        The Elusive Target is available for 5
+                                        more days
+                                    </label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input
+                                        type="checkbox"
+                                        class="custom-control-input"
+                                        id="elusive-target-3"
+                                        @click="toggleNotificationState"
+                                        :data-firebase-topic="
+                                            environment + '-elusive-target-3'
+                                        "
+                                        v-model="notifications.threeDays"
+                                    />
+                                    <label
+                                        class="custom-control-label"
+                                        for="elusive-target-3"
+                                    >
+                                        The Elusive Target is available for 3
+                                        more days
+                                    </label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input
+                                        type="checkbox"
+                                        class="custom-control-input"
+                                        id="elusive-target-1"
+                                        @click="toggleNotificationState"
+                                        :data-firebase-topic="
+                                            environment + '-elusive-target-1'
+                                        "
+                                        v-model="notifications.oneDay"
+                                    />
+                                    <label
+                                        class="custom-control-label"
+                                        for="elusive-target-1"
+                                    >
+                                        The Elusive Target is available for 1
+                                        more day
+                                    </label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input
+                                        type="checkbox"
+                                        class="custom-control-input"
+                                        id="elusive-target-end"
+                                        @click="toggleNotificationState"
+                                        :data-firebase-topic="
+                                            environment + '-elusive-target-end'
+                                        "
+                                        v-model="notifications.ended"
+                                    />
+                                    <label
+                                        class="custom-control-label"
+                                        for="elusive-target-end"
+                                    >
+                                        The Elusive Target has left
+                                    </label>
+                                </div>
+                                <input type="hidden" name="firebase-token" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button
+                                type="button"
+                                class="btn btn-block btn-secondary"
+                                id="enroll-button"
+                                style="display: none"
+                                @click="enroll"
+                            >
+                                <img
+                                    src="/img/game-icons/modal-continue.png"
+                                    class="normal img-fluid"
+                                    alt="Enroll Icon"
+                                />
+                                <img
+                                    src="/img/game-icons/modal-continue-inverted.png"
+                                    class="inverted img-fluid"
+                                    alt="Enroll Icon"
+                                />
+                                Enroll
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-block btn-secondary"
+                                data-dismiss="modal"
+                            >
+                                <img
+                                    src="/img/game-icons/modal-close.png"
+                                    class="normal img-fluid"
+                                    alt="Notification Icon"
+                                />
+                                <img
+                                    src="/img/game-icons/modal-close-inverted.png"
+                                    class="inverted img-fluid"
+                                    alt="Notification Icon"
+                                />
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+        <input type="hidden" name="notification-environment" />
     </div>
 </template>
 
@@ -275,7 +614,7 @@ export default {
     title: 'Home',
     components: {
         Countdown,
-        Loader,
+        Loader
     },
     data() {
         return {
@@ -283,6 +622,16 @@ export default {
             elusiveTargets: [],
             activeElusiveIndex: 0,
             elusiveTarget: null,
+            environment: null,
+            notifications: {
+                almostPlayable: false,
+                becomesPlayable: false,
+                sevenDays: false,
+                fiveDays: false,
+                threeDays: false,
+                oneDay: false,
+                ended: false
+            }
         }
     },
     methods: {
@@ -293,11 +642,91 @@ export default {
             e.preventDefault()
             $(this.$refs.briefing).modal('show')
         },
+        showNotificationModal(e) {
+            e.preventDefault()
+            $(this.$refs['notification-modal']).modal('show')
+            if (
+                H2MAPS_FIREBASE.messagingSupported !== undefined &&
+                !H2MAPS_FIREBASE.messagingSupported
+            ) {
+                $('#notifications-unsupported').show()
+                $('#checking-notification-status').hide()
+                return false
+            }
+
+            H2MAPS_FIREBASE.checkIfEnrolled(function(enrollmentStatus) {
+                if (enrollmentStatus === null) {
+                    $('#checking-notification-status').hide()
+                    $('#enrollment-required').show()
+                    $('#enroll-button').show()
+                } else if (
+                    enrollmentStatus === H2MAPS_FIREBASE.RESULT.FAILURE
+                ) {
+                    // Notifications are blocked
+                    $('#notifications-blocked').show()
+                    $('#checking-notification-status').hide()
+                    $('#enroll-button').hide()
+                } else {
+                    $('input[name="firebase-token"]').val(enrollmentStatus)
+                    $('#checking-notification-status').hide()
+                    $('#notification-settings').show()
+                    $('#enroll-button').hide()
+                }
+            })
+
+            return false
+        },
+        enroll() {
+            requestPermission(0)
+        },
+        toggleNotificationState(e) {
+            var $this = $(this.$el)
+            var subscribing = $this.is(':checked')
+                ? 'SUBSCRIBING'
+                : 'UNSUBSCRIBING'
+            var token = $('input[name="firebase-token"]').val()
+
+            console.log(this)
+            console.log(subscribing)
+            console.log(token)
+            console.log('-----')
+
+            /*$.ajax({
+                url: '/api/notifications',
+                method: 'POST',
+                data: {
+                    token: token,
+                    state: subscribing,
+                    topic: $this.attr('data-firebase-topic')
+                },
+                beforeSend: function() {
+                    $this.prop('indeterminate', true).attr('disabled', true)
+                },
+                success: function() {
+                    $this.prop('indeterminate', false).attr('disabled', false)
+                    toastr['success']('Notification preferences updated!')
+                    window.localStorage.setItem(
+                        token + '|' + $this.attr('data-firebase-topic'),
+                        subscribing === 'SUBSCRIBING' ? '1' : '0'
+                    )
+                },
+                failure: function(err) {
+                    $this.prop('checked', !(subscribing === 'SUBSCRIBING'))
+                    toastr['error'](
+                        'An error occurred when trying to update your notification preferences. Please try again later.'
+                    )
+                }
+            })*/
+        }
     },
     created: function() {
         this.$http.get(this.$domain + '/api/web/home').then(resp => {
             this.games = resp.data.games
             this.elusiveTargets = resp.data.elusiveTargets
+            this.environment = resp.data.environment
+            $('input[name="notification-environment"]').val(this.environment)
+
+            updateCheckboxState(this.notifications, this.environment)
 
             if (this.elusiveTargets.length > 0) {
                 this.elusiveTarget = this.elusiveTargets[0]
@@ -313,7 +742,81 @@ export default {
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000)
         })
-    },
+    }
+}
+
+function requestPermission(retryCount) {
+    var $enrollmentRequiredDiv = $('#enrollment-required')
+    if (retryCount > 5) {
+        $enrollmentRequiredDiv
+            .find('#error-container')
+            .text(
+                'Unfortunately, we were unable to receive permission from your device after five attempts. Please try again later or post a message on the HITMAN forums or on the HITMAN 2 Maps Discord via the links in the footer.'
+            )
+    }
+
+    H2MAPS_FIREBASE.requestPermission(function(result) {
+        if (result === H2MAPS_FIREBASE.RESULT.ERROR) {
+            // An unrelated error occurred. Try enrolling again.
+            $enrollmentRequiredDiv
+                .find('#error-container')
+                .text(
+                    'Unfortunately, an error occurred when trying to enroll your device. You may try enrolling again by clicking the "Enroll" button.'
+                )
+            return
+        }
+        if (result === H2MAPS_FIREBASE.RESULT.FAILURE) {
+            return requestPermission(retryCount + 1)
+        }
+
+        // Enrollment successful
+        $enrollmentRequiredDiv.hide()
+        $('input[name="firebase-token"]').val(result)
+        $('#notification-settings').show()
+        $('#enroll-button').hide()
+    })
+}
+
+function updateCheckboxState(notifications, environment) {
+    var topics = [
+        environment + '-elusive-target-coming',
+        environment + '-elusive-target-playable',
+        environment + '-elusive-target-7',
+        environment + '-elusive-target-5',
+        environment + '-elusive-target-3',
+        environment + '-elusive-target-1',
+        environment + '-elusive-target-end'
+    ]
+    var token = $('input[name="firebase-token"]').val()
+
+    notifications.almostPlayable =
+        window.localStorage.getItem(
+            token + '|' + environment + '-elusive-target-coming'
+        ) === '1'
+    notifications.becomesPlayable =
+        window.localStorage.getItem(
+            token + '|' + environment + '-elusive-target-coming'
+        ) === '1'
+    notifications.sevenDays =
+        window.localStorage.getItem(
+            token + '|' + environment + '-elusive-target-coming'
+        ) === '1'
+    notifications.fiveDays =
+        window.localStorage.getItem(
+            token + '|' + environment + '-elusive-target-coming'
+        ) === '1'
+    notifications.threeDays =
+        window.localStorage.getItem(
+            token + '|' + environment + '-elusive-target-coming'
+        ) === '1'
+    notifications.oneDay =
+        window.localStorage.getItem(
+            token + '|' + environment + '-elusive-target-coming'
+        ) === '1'
+    notifications.ended =
+        window.localStorage.getItem(
+            token + '|' + environment + '-elusive-target-coming'
+        ) === '1'
 }
 </script>
 <style lang="scss" scoped>
@@ -392,6 +895,10 @@ export default {
                 display: inline-block;
                 vertical-align: top;
                 margin-right: 5px;
+
+                &.elusive-notification {
+                    margin-right: 0;
+                }
 
                 img {
                     height: 48px;

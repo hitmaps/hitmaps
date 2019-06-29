@@ -316,10 +316,12 @@ $klein->respond('GET', '/api/web/home', function(\Klein\Request $request, \Klein
 
         $elusiveTargetViewModels[] = $viewModel;
     }
+    $settings = new \Config\Settings();
 
     return $response->json([
         'games' => $games,
-        'elusiveTargets' => $elusiveTargetViewModels
+        'elusiveTargets' => $elusiveTargetViewModels,
+        'environment' => $settings->loggingEnvironment
     ]);
 });
 
