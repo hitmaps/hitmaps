@@ -627,6 +627,7 @@ export default {
             activeElusiveIndex: 0,
             elusiveTarget: null,
             environment: null,
+            token: null,
             notifications: {
                 almostPlayable: false,
                 becomesPlayable: false,
@@ -657,6 +658,7 @@ export default {
         },
         showNotificationModal(e) {
             e.preventDefault()
+            const that = this
             $(this.$refs['notification-modal']).modal('show')
             if (
                 H2MAPS_FIREBASE.messagingSupported !== undefined &&
@@ -680,8 +682,15 @@ export default {
                     $('#checking-notification-status').hide()
                     $('#enroll-button').hide()
                 } else {
+                    that.token = enrollmentStatus
                     $('input[name="firebase-token"]').val(enrollmentStatus)
                     $('#checking-notification-status').hide()
+                    updateCheckboxState(
+                        that.token,
+                        that.notifications,
+                        that.previousNotificationsState,
+                        that.environment
+                    )
                     $('#notification-settings').show()
                     $('#enroll-button').hide()
                 }
@@ -692,7 +701,7 @@ export default {
         enroll() {
             requestPermission(0)
         },
-        toggleNotificationState(e) {
+        toggleNotificationState() {
             let sendRequest = false
             let requestType = ''
             let subscribing = false
@@ -767,7 +776,7 @@ export default {
                     })
                     window.localStorage.setItem(
                         token + '|' + topic,
-                        subscribing === 'SUBSCRIBING' ? '1' : '0'
+                        subscribing ? '1' : '0'
                     )
                 })
             }
@@ -779,12 +788,6 @@ export default {
             this.elusiveTargets = resp.data.elusiveTargets
             this.environment = resp.data.environment
             $('input[name="notification-environment"]').val(this.environment)
-
-            updateCheckboxState(
-                this.notifications,
-                this.previousNotificationsState,
-                this.environment
-            )
 
             if (this.elusiveTargets.length > 0) {
                 this.elusiveTarget = this.elusiveTargets[0]
@@ -836,48 +839,38 @@ function requestPermission(retryCount) {
 }
 
 function updateCheckboxState(
+    token,
     notifications,
     previousNotificationsState,
     environment
 ) {
-    var topics = [
-        environment + '-elusive-target-coming',
-        environment + '-elusive-target-playable',
-        environment + '-elusive-target-7',
-        environment + '-elusive-target-5',
-        environment + '-elusive-target-3',
-        environment + '-elusive-target-1',
-        environment + '-elusive-target-end'
-    ]
-    var token = $('input[name="firebase-token"]').val()
-
     notifications.almostPlayable =
         window.localStorage.getItem(
             token + '|' + environment + '-elusive-target-coming'
         ) === '1'
     notifications.becomesPlayable =
         window.localStorage.getItem(
-            token + '|' + environment + '-elusive-target-coming'
+            token + '|' + environment + '-elusive-target-playable'
         ) === '1'
     notifications.sevenDays =
         window.localStorage.getItem(
-            token + '|' + environment + '-elusive-target-coming'
+            token + '|' + environment + '-elusive-target-7'
         ) === '1'
     notifications.fiveDays =
         window.localStorage.getItem(
-            token + '|' + environment + '-elusive-target-coming'
+            token + '|' + environment + '-elusive-target-5'
         ) === '1'
     notifications.threeDays =
         window.localStorage.getItem(
-            token + '|' + environment + '-elusive-target-coming'
+            token + '|' + environment + '-elusive-target-3'
         ) === '1'
     notifications.oneDay =
         window.localStorage.getItem(
-            token + '|' + environment + '-elusive-target-coming'
+            token + '|' + environment + '-elusive-target-1'
         ) === '1'
     notifications.ended =
         window.localStorage.getItem(
-            token + '|' + environment + '-elusive-target-coming'
+            token + '|' + environment + '-elusive-target-ended'
         ) === '1'
 
     previousNotificationsState.almostPlayable = notifications.almostPlayable
@@ -886,7 +879,7 @@ function updateCheckboxState(
     previousNotificationsState.fiveDays = notifications.fiveDays
     previousNotificationsState.threeDays = notifications.threeDays
     previousNotificationsState.oneDay = notifications.oneDay
-    previousNotificationsState.ended = notifications.endedphp
+    previousNotificationsState.ended = notifications.ended
 }
 </script>
 <style lang="scss" scoped>
