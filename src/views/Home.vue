@@ -608,7 +608,11 @@
 <script>
 import Countdown from '../components/Countdown.vue'
 import Loader from '../components/Loader.vue'
+import CxltToaster from 'cxlt-vue2-toastr'
+import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
+import Vue from 'vue'
 
+Vue.use(CxltToaster)
 export default {
     name: 'home',
     title: 'Home',
@@ -689,39 +693,84 @@ export default {
             requestPermission(0)
         },
         toggleNotificationState(e) {
-            // TODO check notifications vs previousState
+            let sendRequest = false
+            let requestType = ''
+            let subscribing = false
+            if (
+                this.notifications.almostPlayable !==
+                this.previousNotificationsState.almostPlayable
+            ) {
+                sendRequest = true
+                requestType = 'elusive-target-coming'
+                subscribing = this.notifications.almostPlayable
+            }
+            if (
+                this.notifications.becomesPlayable !==
+                this.previousNotificationsState.becomesPlayable
+            ) {
+                sendRequest = true
+                requestType = 'elusive-target-playable'
+                subscribing = this.notifications.becomesPlayable
+            }
+            if (
+                this.notifications.sevenDays !==
+                this.previousNotificationsState.sevenDays
+            ) {
+                sendRequest = true
+                requestType = 'elusive-target-7'
+                subscribing = this.notifications.sevenDays
+            }
+            if (
+                this.notifications.fiveDays !==
+                this.previousNotificationsState.fiveDays
+            ) {
+                sendRequest = true
+                requestType = 'elusive-target-5'
+                subscribing = this.notifications.fiveDays
+            }
+            if (
+                this.notifications.threeDays !==
+                this.previousNotificationsState.threeDays
+            ) {
+                sendRequest = true
+                requestType = 'elusive-target-3'
+                subscribing = this.notifications.threeDays
+            }
+            if (
+                this.notifications.oneDay !==
+                this.previousNotificationsState.oneDay
+            ) {
+                sendRequest = true
+                requestType = 'elusive-target-1'
+                subscribing = this.notifications.oneDay
+            }
+            if (
+                this.notifications.ended !==
+                this.previousNotificationsState.ended
+            ) {
+                sendRequest = true
+                requestType = 'elusive-target-end'
+                subscribing = this.notifications.ended
+            }
 
-            console.log(this)
-            console.log(subscribing)
-            console.log(token)
-            console.log('-----')
-
-            /*$.ajax({
-                url: '/api/notifications',
-                method: 'POST',
-                data: {
-                    token: token,
-                    state: subscribing,
-                    topic: $this.attr('data-firebase-topic')
-                },
-                beforeSend: function() {
-                    $this.prop('indeterminate', true).attr('disabled', true)
-                },
-                success: function() {
-                    $this.prop('indeterminate', false).attr('disabled', false)
-                    toastr['success']('Notification preferences updated!')
+            let data = new FormData()
+            let token = $('input[name="firebase-token"]').val()
+            let topic = this.environment + '-' + requestType
+            data.append('token', token)
+            data.append('state', subscribing ? 'SUBSCRIBING' : 'UNSUBSCRIBING')
+            data.append('topic', topic)
+            if (sendRequest) {
+                this.$request(true, 'notifications', data).then(resp => {
+                    this.$toast.success({
+                        title: 'Changes Saved',
+                        message: 'Notification preferences updated!'
+                    })
                     window.localStorage.setItem(
-                        token + '|' + $this.attr('data-firebase-topic'),
+                        token + '|' + topic,
                         subscribing === 'SUBSCRIBING' ? '1' : '0'
                     )
-                },
-                failure: function(err) {
-                    $this.prop('checked', !(subscribing === 'SUBSCRIBING'))
-                    toastr['error'](
-                        'An error occurred when trying to update your notification preferences. Please try again later.'
-                    )
-                }
-            })*/
+                })
+            }
         }
     },
     created: function() {
@@ -731,7 +780,11 @@ export default {
             this.environment = resp.data.environment
             $('input[name="notification-environment"]').val(this.environment)
 
-            updateCheckboxState(this.notifications, this.environment)
+            updateCheckboxState(
+                this.notifications,
+                this.previousNotificationsState,
+                this.environment
+            )
 
             if (this.elusiveTargets.length > 0) {
                 this.elusiveTarget = this.elusiveTargets[0]
@@ -782,7 +835,11 @@ function requestPermission(retryCount) {
     })
 }
 
-function updateCheckboxState(notifications, environment) {
+function updateCheckboxState(
+    notifications,
+    previousNotificationsState,
+    environment
+) {
     var topics = [
         environment + '-elusive-target-coming',
         environment + '-elusive-target-playable',
