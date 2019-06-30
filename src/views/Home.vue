@@ -631,6 +631,15 @@ export default {
                 threeDays: false,
                 oneDay: false,
                 ended: false
+            },
+            previousNotificationsState: {
+                almostPlayable: false,
+                becomesPlayable: false,
+                sevenDays: false,
+                fiveDays: false,
+                threeDays: false,
+                oneDay: false,
+                ended: false
             }
         }
     },
@@ -680,11 +689,7 @@ export default {
             requestPermission(0)
         },
         toggleNotificationState(e) {
-            var $this = $(this.$el)
-            var subscribing = $this.is(':checked')
-                ? 'SUBSCRIBING'
-                : 'UNSUBSCRIBING'
-            var token = $('input[name="firebase-token"]').val()
+            // TODO check notifications vs previousState
 
             console.log(this)
             console.log(subscribing)
@@ -817,6 +822,14 @@ function updateCheckboxState(notifications, environment) {
         window.localStorage.getItem(
             token + '|' + environment + '-elusive-target-coming'
         ) === '1'
+
+    previousNotificationsState.almostPlayable = notifications.almostPlayable
+    previousNotificationsState.becomesPlayable = notifications.becomesPlayable
+    previousNotificationsState.sevenDays = notifications.sevenDays
+    previousNotificationsState.fiveDays = notifications.fiveDays
+    previousNotificationsState.threeDays = notifications.threeDays
+    previousNotificationsState.oneDay = notifications.oneDay
+    previousNotificationsState.ended = notifications.endedphp
 }
 </script>
 <style lang="scss" scoped>
