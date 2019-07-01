@@ -69,5 +69,10 @@ export default new Router({
                     /* webpackChunkName: "profile" */ './views/Profile.vue'
                 ),
         },
+        {
+            path: '*',
+            name: '404',
+            component: () => import('./views/404.vue')
+        }
     ],
 })
