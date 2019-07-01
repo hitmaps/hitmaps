@@ -1,5 +1,6 @@
 stages:
   - deploy
+  - utilities
 
 before_script:
   - apt-get update
