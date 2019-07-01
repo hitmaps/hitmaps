@@ -59,7 +59,8 @@ class GameMapViewModel extends BaseModel {
 
         if ($this->missionType === MissionType::PROLOGUE ||
             $this->missionType === MissionType::BONUS_MISSION ||
-            $this->missionType === MissionType::PATIENT_ZERO) {
+            $this->missionType === MissionType::PATIENT_ZERO ||
+            $this->missionType === MissionType::SPECIAL_ASSIGNMENT) {
             $this->icon = 'mission';
         }
     }
