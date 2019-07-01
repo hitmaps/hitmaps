@@ -25,3 +25,25 @@ deploy_prod:
   artifacts:
     paths:
       - latest_build/
+
+deploy_stage:
+  image: php:7.2
+  stage: deploy
+  only:
+  - stage
+  script:
+  - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+  - php composer-setup.php
+  - php -r "unlink('composer-setup.php');"
+  - php composer.phar install --no-dev
+  - cd ci/
+  - bash deploy_to_stage.sh
+
+refresh_stage_db:
+  image: php:7.2
+  stage: utilities
+  only:
+  - stage
+  when: manual
+  script:
+  - wget https://test.hitman2maps.com/refresh-stage-db.php?access-key=$ACCESS_KEY
