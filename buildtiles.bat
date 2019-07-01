@@ -48,6 +48,13 @@ REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "E:\Users\mkoch\Downloads\H2 Maps\Sgail\8.png" "E:\Users\mkoch\Downloads\H2 Maps\Sgail\tiles\8"
 REM gdal2tiles.py -l -p raster -z 4-6 -w none "C:\Users\mkoch\Desktop\H2 Maps\IsleOfSgail\-99.png" "C:\Users\mkoch\Desktop\H2 Maps\IsleOfSgail\tiles\-99"
 
+REM Golden Handshake
+gdal2tiles.py -l -p raster -z 4-7 -w none "C:\Users\cokoch\Desktop\handshake\-1.png" "C:\Users\cokoch\Desktop\handshake\tiles\-1"
+gdal2tiles.py -l -p raster -z 4-7 -w none "C:\Users\cokoch\Desktop\handshake\0.png" "C:\Users\cokoch\Desktop\handshake\tiles\0"
+gdal2tiles.py -l -p raster -z 4-7 -w none "C:\Users\cokoch\Desktop\handshake\1.png" "C:\Users\cokoch\Desktop\handshake\tiles\1"
+gdal2tiles.py -l -p raster -z 4-7 -w none "C:\Users\cokoch\Desktop\handshake\2.png" "C:\Users\cokoch\Desktop\handshake\tiles\2"
+gdal2tiles.py -l -p raster -z 4-7 -w none "C:\Users\cokoch\Desktop\handshake\3.png" "C:\Users\cokoch\Desktop\handshake\tiles\3"
+
 REM Sniper Assassin
-gdal2tiles.py -l -p raster -z 4-6 -w none "D:\Downloads\sniper_hawk.png" "D:\Downloads\sniper_hawk"
-gdal2tiles.py -l -p raster -z 4-6 -w none "D:\Downloads\sniper_seagull.png" "D:\Downloads\sniper_seagull"
+REM gdal2tiles.py -l -p raster -z 4-6 -w none "D:\Downloads\sniper_hawk.png" "D:\Downloads\sniper_hawk"
+REM gdal2tiles.py -l -p raster -z 4-6 -w none "D:\Downloads\sniper_seagull.png" "D:\Downloads\sniper_seagull"

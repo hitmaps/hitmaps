@@ -28,3 +28,4 @@ yarn-error.log*
 /api/Config/JwtConfig.php
 /api/Config/firebase-service-account.json
 /api/phinx.yml
+/api/maps/golden-handshake
