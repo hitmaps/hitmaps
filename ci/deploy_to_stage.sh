@@ -1,6 +1,7 @@
 #!/bin/bash
 
 cd ../
+npm run staging
 mkdir latest_build
 TARGETDIR=latest_build;for file in *;do test "$file" != "$TARGETDIR" && cp -r "$file" "$TARGETDIR/";done
 
@@ -13,8 +14,6 @@ rm -rf api/maps
 # Put the current commit hash into cachehash.txt
 rm api/Config/cachehash.txt
 echo $CI_COMMIT_SHORT_SHA > api/Config/cachehash.txt
-
-npm run staging
 
 cd dist
 mv * ../
