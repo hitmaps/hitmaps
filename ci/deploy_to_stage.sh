@@ -1,6 +1,7 @@
 #!/bin/bash
 
 cd ../
+npm i
 npm run staging
 mkdir latest_build
 TARGETDIR=latest_build;for file in *;do test "$file" != "$TARGETDIR" && cp -r "$file" "$TARGETDIR/";done
