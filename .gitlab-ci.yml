@@ -39,6 +39,12 @@ deploy_stage:
     - php composer.phar install --no-dev
     - cd ci/
     - bash deploy_to_stage.sh
+  environment:
+    name: Staging
+    url: https://test.hitman2maps.com
+  artifacts:
+    paths:
+      - latest_build/
 
 refresh_stage_db:
   image: php:7.2
