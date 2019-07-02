@@ -7,6 +7,7 @@ before_script:
   - apt-get install -y lftp
   - apt-get install -y zip
   - apt-get install -y wget
+  - apt-get install -y npm
 
 deploy_prod:
   image: php:7.2
