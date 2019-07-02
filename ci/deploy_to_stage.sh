@@ -20,6 +20,8 @@ cd dist
 mv * ../
 cd ../
 
+ls
+
 zip -r ../latest_build.zip . > ../zip_output.txt
 cd ../
 rm -rf latest_build
