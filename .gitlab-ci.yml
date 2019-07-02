@@ -36,7 +36,9 @@ deploy_stage:
     - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
     - php composer-setup.php
     - php -r "unlink('composer-setup.php');"
+    - cd api/
     - php composer.phar install --no-dev
+    - cd ../
     - cd ci/
     - bash deploy_to_stage.sh
   environment:
