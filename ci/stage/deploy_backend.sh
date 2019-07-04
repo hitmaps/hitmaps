@@ -24,4 +24,4 @@ mv zip_output.txt backend
 lftp -d -e "set ssl:verify-certificate no; mirror -P $NUMBER_OF_CONCURRENT_UPLOADS -Rv $LOCAL_DIR $REMOTE_DIR; quit;" ftp://$STAGE_USERNAME:$PASSWORD@$HOST
 
 wget https://test.hitman2maps.com/unzip-build.php?zip=backend&access-key=$ACCESS_KEY > /dev/null
-wget https://test.hitman2maps.com/admin/migrate?access-key=$ACCESS_KEY > latest_build/phinx-log.txt
+wget https://test.hitman2maps.com/admin/migrate?access-key=$ACCESS_KEY > backend/phinx-log.txt
