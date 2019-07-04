@@ -51,7 +51,7 @@ Deploy API:
     - backend/
 
 Deploy Frontend:
-  image: node
+  image: node:10
   stage: Stage Deploy
   only:
     - stage
