@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ../
+cd ../../
 mkdir backend
 TARGETDIR=backend;for file in *;do test "$file" != "$TARGETDIR" && cp -r "$file" "$TARGETDIR/";done
 
@@ -8,7 +8,7 @@ TARGETDIR=backend;for file in *;do test "$file" != "$TARGETDIR" && cp -r "$file"
 cd backend
 rm -rf ci
 rm -rf .git
-rm -rf api/maps
+rm -rf api/maps/
 
 # Put the current commit hash into cachehash.txt
 rm api/Config/cachehash.txt
