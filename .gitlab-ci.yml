@@ -56,7 +56,7 @@ Deploy Frontend:
   only:
     - stage
   script:
-    - npm i
+    - npm ci
     - npm run staging
     - cd ci/stage/
     - bash deploy_frontend.sh
