@@ -1,37 +1,37 @@
 stages:
-- utilities
-- deploy
+  - Utilities
+  - Prod Deploy
+  - Stage Deploy
 
 before_script:
   - apt-get update
   - apt-get install -y lftp
   - apt-get install -y zip
   - apt-get install -y wget
-  - curl -sL https://deb.nodesource.com/setup_10.x | bash -
   - apt-get install -y nodejs
 
-deploy_prod:
+Deploy Prod:
   image: php:7.2
   only:
-    - master
-  stage: deploy
+  - master
+  stage: Prod Deploy
   script:
-    - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-    - php composer-setup.php
-    - php -r "unlink('composer-setup.php');"
-    - php composer.phar install --no-dev
-    - cd ci/
-    - bash deploy_to_prod.sh
+  - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+  - php composer-setup.php
+  - php -r "unlink('composer-setup.php');"
+  - php composer.phar install --no-dev
+  - cd ci/
+  - bash deploy_to_prod.sh
   environment:
     name: Production
     url: https://www.hitman2maps.com
   artifacts:
     paths:
-      - latest_build/
+    - latest_build/
 
-deploy_stage:
+Deploy API:
   image: php:7.2
-  stage: deploy
+  stage: Stage Deploy
   only:
     - stage
   script:
@@ -41,20 +41,38 @@ deploy_stage:
     - php -r "unlink('composer-setup.php');"
     - php composer.phar install --no-dev
     - cd ../
-    - cd ci/
-    - bash deploy_to_stage.sh
+    - cd ci/stage/
+    - bash deploy_backend.sh
   environment:
-    name: Staging
+    name: Staging API
+    url: https://test.hitman2maps.com/api
+  artifacts:
+    paths:
+    - backend/
+
+Deploy Frontend:
+  image: node
+  stage: Stage Deploy
+  only:
+    - stage
+  script:
+    - npm i
+    - npm run staging
+    - cd ci/stage/
+    - bash deploy_frontend.sh
+  environment:
+    name: Staging Frontend
     url: https://test.hitman2maps.com
   artifacts:
     paths:
-      - latest_build/
+      - frontend/
 
-refresh_stage_db:
+
+Refresh Stage DB:
   image: php:7.2
-  stage: utilities
+  stage: Utilities
   only:
-    - stage
+  - stage
   when: manual
   script:
-    - wget https://test.hitman2maps.com/refresh-stage-db.php?access-key=$ACCESS_KEY
+  - wget https://test.hitman2maps.com/refresh-stage-db.php?access-key=$ACCESS_KEY
