@@ -1,12 +1,13 @@
 <template>
     <div
+        v-webp
         class="content"
         style="background: url('/img/jpg/backgrounds/loading.jpg') no-repeat center center fixed; background-size: cover"
     >
         <header class="row">
             <div class="col text-center site-header">
                 <h1>Interactive Maps For</h1>
-                <img src="/img/png/logos/hitman2.png" class="img-fluid" />
+                <img v-webp src="/img/png/logos/hitman2.png" class="img-fluid" />
             </div>
         </header>
         <div
@@ -25,6 +26,7 @@
                 class="game col-lg"
                 v-for="game in games"
                 :key="game.id"
+                v-webp
                 v-bind:style="{
                     backgroundImage:
                         'url(/img/jpg/backgrounds/' + game.slug + '.jpg)',
@@ -63,6 +65,7 @@
             </div>
             <div
                 class="elusive-target col-lg"
+                v-webp
                 v-bind:style="{
                     backgroundImage:
                         'url(' +
