@@ -4,6 +4,7 @@ import router from './router'
 import axios from 'axios'
 import store from './store/store'
 import titleMixin from './util/title'
+import ImageLoader from './plugins/ImageLoader'
 
 axios.defaults.withCredentials = true
 
@@ -50,6 +51,7 @@ Vue.prototype.$request = (post, endpoint, data) => {
 }
 
 Vue.mixin(titleMixin)
+Vue.use(ImageLoader)
 
 new Vue({
     store,

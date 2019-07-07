@@ -130,6 +130,7 @@ header {
     color: #fff;
     font-weight: bolder;
     margin-top: 20px;
+    width: 100%;
 
     h1 {
         text-transform: uppercase;
