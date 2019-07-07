@@ -179,6 +179,8 @@
                             <h1>Coming soon</h1>
                         </div>
                         <div
+                            onclick="return false;"
+                            @click="showNotificationModal"
                             class="image float-right notification-icon"
                             data-placement="left"
                             data-toggle="tooltip"
