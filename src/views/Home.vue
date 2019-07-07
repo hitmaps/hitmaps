@@ -429,7 +429,7 @@
                                         type="checkbox"
                                         class="custom-control-input"
                                         id="elusive-target-coming"
-                                        @click="toggleNotificationState"
+                                        @change="toggleNotificationState"
                                         :data-firebase-topic="
                                             environment +
                                                 '-elusive-target-coming'
@@ -449,7 +449,7 @@
                                         type="checkbox"
                                         class="custom-control-input"
                                         id="elusive-target-playable"
-                                        @click="toggleNotificationState"
+                                        @change="toggleNotificationState"
                                         :data-firebase-topic="
                                             environment +
                                                 '-elusive-target-playable'
@@ -469,7 +469,7 @@
                                         type="checkbox"
                                         class="custom-control-input"
                                         id="elusive-target-7"
-                                        @click="toggleNotificationState"
+                                        @change="toggleNotificationState"
                                         :data-firebase-topic="
                                             environment + '-elusive-target-7'
                                         "
@@ -488,7 +488,7 @@
                                         type="checkbox"
                                         class="custom-control-input"
                                         id="elusive-target-5"
-                                        @click="toggleNotificationState"
+                                        @change="toggleNotificationState"
                                         :data-firebase-topic="
                                             environment + '-elusive-target-5'
                                         "
@@ -507,7 +507,7 @@
                                         type="checkbox"
                                         class="custom-control-input"
                                         id="elusive-target-3"
-                                        @click="toggleNotificationState"
+                                        @change="toggleNotificationState"
                                         :data-firebase-topic="
                                             environment + '-elusive-target-3'
                                         "
@@ -526,7 +526,7 @@
                                         type="checkbox"
                                         class="custom-control-input"
                                         id="elusive-target-1"
-                                        @click="toggleNotificationState"
+                                        @change="toggleNotificationState"
                                         :data-firebase-topic="
                                             environment + '-elusive-target-1'
                                         "
@@ -545,7 +545,7 @@
                                         type="checkbox"
                                         class="custom-control-input"
                                         id="elusive-target-end"
-                                        @click="toggleNotificationState"
+                                        @change="toggleNotificationState"
                                         :data-firebase-topic="
                                             environment + '-elusive-target-end'
                                         "
@@ -780,6 +780,13 @@ export default {
                         token + '|' + topic,
                         subscribing ? '1' : '0'
                     )
+                    this.previousNotificationsState.almostPlayable = this.notifications.almostPlayable
+                    this.previousNotificationsState.becomesPlayable = this.notifications.becomesPlayable
+                    this.previousNotificationsState.sevenDays = this.notifications.sevenDays
+                    this.previousNotificationsState.fiveDays = this.notifications.fiveDays
+                    this.previousNotificationsState.threeDays = this.notifications.threeDays
+                    this.previousNotificationsState.oneDay = this.notifications.oneDay
+                    this.previousNotificationsState.ended = this.notifications.ended
                 })
             }
         }
