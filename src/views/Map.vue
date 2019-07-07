@@ -36,10 +36,12 @@
                         class="loader"
                         style="display: inline-block; height: 48px; float: right"
                     >
-                        <img
-                            src="/img/map-icons/loader.gif"
-                            style="height: 50px; width: 100px"
-                        />
+                        <video loop muted autoplay
+                            style="height: 50px; width: 100px; object-fit: fill"
+                        >
+                            <source src="/video/loader.webm" type="video/webm" />
+                            <source src="/video/loader.mp4" type="video/mp4" />
+                        </video>
                     </div>
                 </div>
             </div>
