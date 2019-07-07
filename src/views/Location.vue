@@ -1,5 +1,6 @@
 <template>
     <div
+        v-webp
         class="content"
         style="background: url('/img/jpg/backgrounds/loading.jpg') no-repeat center center fixed; background-size: cover"
     >
@@ -26,6 +27,7 @@
             </script>
             <div class="text-center logo">
                 <img
+                    v-webp
                     :src="'/img/png/logos/' + game.slug + '.png'"
                     class="img-fluid"
                 />
@@ -37,6 +39,7 @@
                 </div>
             </div>
             <nav
+                v-webp
                 id="scrollspy"
                 class="navbar locations"
                 style="background: url('/img/jpg/backgrounds/loading.jpg') no-repeat center center fixed; background-size: cover"
@@ -90,6 +93,7 @@
                 v-for="location in locations"
                 :key="location.id"
                 class="location"
+                v-webp
                 v-bind:style="{
                     background:
                         'url(/img/jpg/backgrounds/' +
@@ -143,6 +147,7 @@
                                 <div class="card mission">
                                     <div style="position: relative">
                                         <img
+                                            v-webp
                                             :src="
                                                 '/img/' + generateUrl(mission)
                                             "
@@ -177,6 +182,7 @@
                             <div v-else class="card mission">
                                 <div style="position: relative">
                                     <img
+                                        v-webp
                                         :src="'/img/' + generateUrl(mission)"
                                         class="card-img-top"
                                         alt=""

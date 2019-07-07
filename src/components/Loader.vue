@@ -1,7 +1,10 @@
 <template>
     <div class="wrapper">
         <p>Loading...</p>
-        <img class="img-fluid" src="/img/map-icons/loader.gif" alt="Loading" />
+        <video autoplay loop muted class="img-fluid" alt="Loading">
+            <source src="/video/loader.webm" type="video/webm" />
+            <source src="/video/loader.mp4" type="video/mp4" />
+        </video>
     </div>
 </template>
 
@@ -23,7 +26,8 @@ export default {
     padding: 10px;
 }
 
-img {
+video {
     width: 500px;
+    object-fit: fill
 }
 </style>
