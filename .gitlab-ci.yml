@@ -9,6 +9,7 @@ before_script:
   - apt-get install -y zip
   - apt-get install -y curl
   - apt-get install -y nodejs
+  - apt-get install -y wget
 
 Deploy Prod:
   image: php:7.2
