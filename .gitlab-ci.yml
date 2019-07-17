@@ -11,26 +11,45 @@ before_script:
   - apt-get install -y nodejs
   - apt-get install -y wget
 
-Deploy Prod:
+Prod Deploy API:
   image: php:7.2
-  only:
-  - master
   stage: Prod Deploy
+  only:
+    - master
   script:
-  - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-  - php composer-setup.php
-  - php -r "unlink('composer-setup.php');"
-  - php composer.phar install --no-dev
-  - cd ci/
-  - bash deploy_to_prod.sh
+    - cd api/
+    - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    - php composer-setup.php
+    - php -r "unlink('composer-setup.php');"
+    - php composer.phar install --no-dev
+    - cd ../
+    - cd ci/prod/
+    - bash deploy_backend.sh
   environment:
-    name: Production
+    name: Production API
+    url: https://www.hitman2maps.com/api
+  artifacts:
+    paths:
+    - backend/
+
+Prod Deploy Frontend:
+  image: node:10
+  stage: Prod Deploy
+  only:
+    - master
+  script:
+    - npm ci
+    - npm run build
+    - cd ci/prod/
+    - bash deploy_frontend.sh
+  environment:
+    name: Production Frontend
     url: https://www.hitman2maps.com
   artifacts:
     paths:
-    - latest_build/
+    - frontend/
 
-Deploy API:
+Stage Deploy API:
   image: php:7.2
   stage: Stage Deploy
   only:
@@ -51,7 +70,7 @@ Deploy API:
     paths:
     - backend/
 
-Deploy Frontend:
+Stage Deploy Frontend:
   image: node:10
   stage: Stage Deploy
   only:
