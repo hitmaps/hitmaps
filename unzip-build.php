@@ -13,6 +13,5 @@ if ($_GET['zip'] !== 'frontend' && $_GET['zip'] !== 'backend') {
 
 $zip = $_GET['zip'];
 
-
 shell_exec("unzip -o {$zip}.zip");
 shell_exec("rm {$zip}.zip");

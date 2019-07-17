@@ -7,7 +7,11 @@
         <header class="row">
             <div class="col text-center site-header">
                 <h1>Interactive Maps For</h1>
-                <img v-webp src="/img/png/logos/hitman2.png" class="img-fluid" />
+                <img
+                    v-webp
+                    src="/img/png/logos/hitman2.png"
+                    class="img-fluid"
+                />
             </div>
         </header>
         <div
@@ -65,7 +69,6 @@
             </div>
             <div
                 class="elusive-target col-lg"
-                v-webp
                 v-bind:style="{
                     backgroundImage:
                         'url(' +
