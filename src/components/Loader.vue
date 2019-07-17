@@ -10,7 +10,7 @@
 
 <script>
 export default {
-    name: 'Loader',
+    name: 'Loader'
 }
 </script>
 
@@ -28,6 +28,6 @@ export default {
 
 video {
     width: 500px;
-    object-fit: fill
+    object-fit: fill;
 }
 </style>

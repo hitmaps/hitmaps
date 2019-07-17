@@ -101,7 +101,7 @@
                         '/' +
                         location.slug +
                         '.jpg) no-repeat center center fixed',
-                    backgroundSize: 'cover',
+                    backgroundSize: 'cover'
                 }"
             >
                 <div class="header">
@@ -113,11 +113,11 @@
                             alt="Location Icon"
                         />
                         <p>
-                            <span class="name">{{ location.destination }}</span
-                            ><br />
-                            <span class="country">{{
-                                location.destinationCountry
-                            }}</span>
+                            <span class="name">{{ location.destination }}</span>
+                            <br />
+                            <span class="country">
+                                {{ location.destinationCountry }}
+                            </span>
                         </p>
                     </h2>
                 </div>
@@ -139,8 +139,8 @@
                                         slug: location.game,
                                         location: location.slug,
                                         mission: mission.slug,
-                                        difficulty: mission.difficulties[0].toLowerCase(),
-                                    },
+                                        difficulty: mission.difficulties[0].toLowerCase()
+                                    }
                                 }"
                                 v-if="mission.difficulties.length == 1"
                             >
@@ -202,8 +202,8 @@
                                                         slug: location.game,
                                                         location: location.slug,
                                                         mission: mission.slug,
-                                                        difficulty: difficulty.toLowerCase(),
-                                                    },
+                                                        difficulty: difficulty.toLowerCase()
+                                                    }
                                                 }"
                                                 v-for="difficulty in mission.difficulties"
                                                 :key="difficulty"
@@ -267,12 +267,12 @@ import Loader from '../components/Loader.vue'
 export default {
     name: 'level-select',
     components: {
-        Loader,
+        Loader
     },
     computed: {
         game: function() {
             return this.$store.state.game
-        },
+        }
     },
     title() {
         return this.$store.state.game !== null
@@ -281,7 +281,7 @@ export default {
     },
     data() {
         return {
-            locations: [],
+            locations: []
         }
     },
     methods: {
@@ -307,7 +307,7 @@ export default {
                 this.$store.state.mission.slug !== mission.slug
             )
                 this.$store.commit('SET_MISSION', mission)
-        },
+        }
     },
     created: function() {
         if (this.game === null || this.game.slug !== this.$route.params.slug)
@@ -320,7 +320,7 @@ export default {
                     '/locations'
             )
             .then(resp => (this.locations = resp.data))
-    },
+    }
 }
 </script>
 
