@@ -81,9 +81,7 @@
                     backgroundRepeat: 'no-repeat'
                 }"
             >
-                <router-link
-                    @click.native="saveGameData"
-                    :to="elusiveTarget.missionUrl"
+                <a :href="elusiveTarget.missionUrl"
                     v-if="elusiveTarget != null"
                 >
                     <p>&nbsp;</p>
@@ -164,7 +162,7 @@
                             />
                         </div>
                     </div>
-                </router-link>
+                </a>
                 <a v-else href="#">
                     <p>&nbsp;</p>
                     <div class="elusive-target-info">
