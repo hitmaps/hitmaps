@@ -81,7 +81,8 @@
                     backgroundRepeat: 'no-repeat'
                 }"
             >
-                <a :href="elusiveTarget.missionUrl"
+                <a
+                    :href="elusiveTarget.missionUrl"
                     v-if="elusiveTarget != null"
                 >
                     <p>&nbsp;</p>
