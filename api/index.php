@@ -619,7 +619,7 @@ $klein->respond('POST', '/api/nodes/edit/[:nodeId]', function(\Klein\Request $re
     }
 
     /* @var $user \DataAccess\Models\User */
-    $user = \BusinessLogic\Session\Session::read('userContext');
+    $user = getUserContextForToken($newToken, $applicationContext);
     $roles = $user->getRolesAsInts();
     if (!\BusinessLogic\UserRole::hasAccess($roles, [\BusinessLogic\UserRole::TRUSTED_EDITOR])) {
         print json_encode(['message' => 'You do not have permission to delete nodes!']);
@@ -644,7 +644,7 @@ $klein->respond('GET', '/api/nodes/delete/[:nodeId]', function(\Klein\Request $r
     }
 
     /* @var $user \DataAccess\Models\User */
-    $user = \BusinessLogic\Session\Session::read('userContext');
+    $user = getUserContextForToken($newToken, $applicationContext);
     $roles = $user->getRolesAsInts();
     if (!\BusinessLogic\UserRole::hasAccess($roles, [\BusinessLogic\UserRole::TRUSTED_EDITOR])) {
         print json_encode(['message' => 'You do not have permission to delete nodes!']);
