@@ -93,12 +93,6 @@
     </div>
 </template>
 <script>
-$(function() {
-    $('body').tooltip({
-        selector: '[data-toggle="tooltip"]'
-    })
-})
-
 export default {
     methods: {
         isNotInMap() {
