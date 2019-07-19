@@ -1749,7 +1749,12 @@ export default {
             return this.$store.state.game
         },
         currentCategory: function() {
-            if (this.editor.currentCategory == '') return
+            if (
+                this.editor.currentCategory == '' ||
+                this.editor.currentCategory === null ||
+                this.editor.currentCategory === undefined
+            )
+                return
             var split = this.editor.currentCategory.split('|')
             return this.categories[split[0]].find(
                 element => element.subgroup == split[1]
@@ -1828,7 +1833,14 @@ export default {
             this.editor.clickedPoint = event.latlng
             let element = this.$refs.editModal
             //Reset old data
-            this.editor.currentCategory = ''
+            if (this.currentCategory) {
+                this.currentCategory.nodeId = undefined
+                this.currentCategory.name = undefined
+                this.currentCategory.action = undefined
+                this.currentCategory.target = undefined
+            }
+
+            this.editor.currentCategory = undefined
             $(this.$refs.subgroupPicker).selectpicker('val', -1)
             $(this.$refs.iconPicker).selectpicker('val', -1)
             $(this.$refs.templatePicker).selectpicker('val', -1)
