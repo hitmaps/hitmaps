@@ -2118,7 +2118,7 @@ export default {
                     )
                 } else {
                     this.hiddenLayers = this.hiddenLayers.filter(
-                        el => el !== name
+                        el => el.startsWith(name)
                     )
                 }
             } else {
