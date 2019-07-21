@@ -147,7 +147,6 @@
                                 <div class="card mission">
                                     <div style="position: relative">
                                         <img
-                                            v-webp
                                             :src="
                                                 '/img/' + generateUrl(mission)
                                             "
