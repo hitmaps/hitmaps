@@ -147,6 +147,19 @@
                                 <div class="card mission">
                                     <div style="position: relative">
                                         <img
+                                            v-if="
+                                                mission.missionType !==
+                                                    'Elusive Target'
+                                            "
+                                            v-webp
+                                            :src="
+                                                '/img/' + generateUrl(mission)
+                                            "
+                                            class="card-img-top"
+                                            alt=""
+                                        />
+                                        <img
+                                            v-else
                                             :src="
                                                 '/img/' + generateUrl(mission)
                                             "

@@ -115,9 +115,8 @@
                             src="/img/game-icons/briefing-transparent.png"
                             class="normal img-fluid briefing-icon float-right"
                             alt="Briefing Icon"
-                            data-placement="left"
-                            data-toggle="tooltip"
-                            title="Mission Briefing"
+                            v-b-tooltip.hover
+                            title="Tooltip content"
                         />
                     </div>
                     <div class="elusive-target-info">
@@ -147,8 +146,7 @@
                             onclick="return false;"
                             @click="showNotificationModal"
                             class="image elusive-notification float-right notification-icon"
-                            data-placement="left"
-                            data-toggle="tooltip"
+                            v-b-tooltip.hover.left
                             title="Manage Elusive Target Notifications"
                         >
                             <img
@@ -187,8 +185,7 @@
                             onclick="return false;"
                             @click="showNotificationModal"
                             class="image float-right notification-icon"
-                            data-placement="left"
-                            data-toggle="tooltip"
+                            v-b-tooltip.hover.left
                             title="Manage Elusive Target Notifications"
                         >
                             <img

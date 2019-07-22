@@ -5,6 +5,14 @@ import axios from 'axios'
 import store from './store/store'
 import titleMixin from './util/title'
 import ImageLoader from './plugins/ImageLoader'
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import BootstrapVue from 'bootstrap-vue'
+
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+Vue.use(BootstrapVue)
 
 axios.defaults.withCredentials = true
 

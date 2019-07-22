@@ -255,7 +255,7 @@
                                             class="btn btn-danger btn-sm"
                                             data-action="delete-btn"
                                             @click="deleteMarker(item)"
-                                            data-toggle="tooltip"
+                                            v-b-tooltip.hover
                                             title="Delete"
                                         >
                                             <i class="fas fa-times"></i>
@@ -265,7 +265,7 @@
                                             data-action="edit-btn"
                                             @click="editMarker(item)"
                                             data-node-id="x"
-                                            data-toggle="tooltip"
+                                            v-b-tooltip.hover
                                             title="Edit"
                                         >
                                             <i class="fas fa-pencil-alt"></i>
@@ -326,7 +326,7 @@
                                 id="edit-button"
                                 @click="editor.enabled = !editor.enabled"
                                 class="btn control-button"
-                                data-toggle="tooltip"
+                                v-b-tooltip.hover
                                 title="Edit Map"
                             >
                                 <i class="fas fa-pencil-alt"></i>
@@ -335,7 +335,7 @@
                                 <button
                                     v-if="isLoggedIn"
                                     class="btn control-button"
-                                    data-toggle="tooltip"
+                                    v-b-tooltip.hover
                                     title="Profile"
                                 >
                                     <i class="fas fa-user-circle"></i>
@@ -345,7 +345,7 @@
                                 <button
                                     v-if="isLoggedIn"
                                     class="btn control-button"
-                                    data-toggle="tooltip"
+                                    v-b-tooltip.hover
                                     title="Log Out"
                                 >
                                     <i class="fas fa-sign-out-alt"></i>
@@ -355,8 +355,7 @@
                                 <button
                                     v-if="!isLoggedIn"
                                     class="btn control-button"
-                                    data-toggle="tooltip"
-                                    data-placement="bottom"
+                                    v-b-tooltip.hover.bottom
                                     title="Login / Register to edit"
                                 >
                                     <i class="fas fa-sign-in-alt"></i>
@@ -449,7 +448,7 @@
                                 @click="clearSearch"
                                 id="clear-search"
                                 class="btn control-button"
-                                data-toggle="tooltip"
+                                v-b-tooltip.hover
                                 title="Clear Search"
                                 v-show="searchedItem != null"
                             >
@@ -522,7 +521,7 @@
                             <button
                                 id="clear-disguise-search"
                                 class="btn control-button"
-                                data-toggle="tooltip"
+                                v-b-tooltip.hover
                                 title="Clear Search"
                                 style="display: none"
                             >
@@ -1749,7 +1748,12 @@ export default {
             return this.$store.state.game
         },
         currentCategory: function() {
-            if (this.editor.currentCategory == '') return
+            if (
+                this.editor.currentCategory == '' ||
+                this.editor.currentCategory === null ||
+                this.editor.currentCategory === undefined
+            )
+                return
             var split = this.editor.currentCategory.split('|')
             return this.categories[split[0]].find(
                 element => element.subgroup == split[1]
@@ -1828,7 +1832,14 @@ export default {
             this.editor.clickedPoint = event.latlng
             let element = this.$refs.editModal
             //Reset old data
-            this.editor.currentCategory = ''
+            if (this.currentCategory) {
+                this.currentCategory.nodeId = undefined
+                this.currentCategory.name = undefined
+                this.currentCategory.action = undefined
+                this.currentCategory.target = undefined
+            }
+
+            this.editor.currentCategory = undefined
             $(this.$refs.subgroupPicker).selectpicker('val', -1)
             $(this.$refs.iconPicker).selectpicker('val', -1)
             $(this.$refs.templatePicker).selectpicker('val', -1)
@@ -2107,7 +2118,7 @@ export default {
                     )
                 } else {
                     this.hiddenLayers = this.hiddenLayers.filter(
-                        el => el !== name
+                        el => el.startsWith(name)
                     )
                 }
             } else {
