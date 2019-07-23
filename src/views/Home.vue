@@ -116,7 +116,7 @@
                             class="normal img-fluid briefing-icon float-right"
                             alt="Briefing Icon"
                             v-b-tooltip.hover
-                            title="Tooltip content"
+                            title="Mission Briefing"
                         />
                     </div>
                     <div class="elusive-target-info">

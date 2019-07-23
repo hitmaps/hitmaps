@@ -2117,8 +2117,8 @@ export default {
                         el => el !== name.split('|')[0] + '|'
                     )
                 } else {
-                    this.hiddenLayers = this.hiddenLayers.filter(
-                        el => el.startsWith(name)
+                    this.hiddenLayers = this.hiddenLayers.filter(el =>
+                        el.startsWith(name)
                     )
                 }
             } else {
