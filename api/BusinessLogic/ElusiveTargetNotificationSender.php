@@ -63,7 +63,7 @@ class ElusiveTargetNotificationSender {
                     "{$constants->siteDomain}/android-chrome-256x256.png",
                     "{$constants->siteDomain}{$imageUrl}",
                     $url);
-                $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/..{$imageUrl}"]);
+                $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/../..{$imageUrl}"]);
                 $twitter->post('statuses/update', [
                     'status' => $body,
                     'media_ids' => $media->media_id_string
@@ -93,7 +93,7 @@ class ElusiveTargetNotificationSender {
                     "{$constants->siteDomain}/android-chrome-256x256.png",
                     "{$constants->siteDomain}{$imageUrl}",
                     $url);
-                $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/..{$imageUrl}"]);
+                $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/../..{$imageUrl}"]);
                 $twitter->post('statuses/update', [
                     'status' => $body,
                     'media_ids' => $media->media_id_string
@@ -115,7 +115,7 @@ class ElusiveTargetNotificationSender {
                     "{$constants->siteDomain}/android-chrome-256x256.png",
                     "{$constants->siteDomain}{$countdownImage}",
                     $url);
-                $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/..{$countdownImage}"]);
+                $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/../..{$countdownImage}"]);
                 $twitter->post('statuses/update', [
                     'status' => $body,
                     'media_ids' => $media->media_id_string
@@ -136,7 +136,7 @@ class ElusiveTargetNotificationSender {
                     "{$constants->siteDomain}/android-chrome-256x256.png",
                     "{$constants->siteDomain}{$countdownImage}",
                     $url);
-                $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/..{$countdownImage}"]);
+                $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/../..{$countdownImage}"]);
                 $twitter->post('statuses/update', [
                     'status' => $body,
                     'media_ids' => $media->media_id_string
@@ -157,7 +157,7 @@ class ElusiveTargetNotificationSender {
                     "{$constants->siteDomain}/android-chrome-256x256.png",
                     "{$constants->siteDomain}{$countdownImage}",
                     $url);
-                $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/..{$countdownImage}"]);
+                $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/../..{$countdownImage}"]);
                 $twitter->post('statuses/update', [
                     'status' => $body,
                     'media_ids' => $media->media_id_string
@@ -178,7 +178,7 @@ class ElusiveTargetNotificationSender {
                     "{$constants->siteDomain}/android-chrome-256x256.png",
                     "{$constants->siteDomain}{$countdownImage}",
                     $url);
-                $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/..{$countdownImage}"]);
+                $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/../..{$countdownImage}"]);
                 $twitter->post('statuses/update', [
                     'status' => $body,
                     'media_ids' => $media->media_id_string
