@@ -255,8 +255,7 @@
                                             class="btn btn-danger btn-sm"
                                             data-action="delete-btn"
                                             @click="deleteMarker(item)"
-                                            v-b-tooltip.hover
-                                            title="Delete"
+                                            v-tooltip:top="'Delete'"
                                         >
                                             <i class="fas fa-times"></i>
                                         </button>
@@ -265,8 +264,7 @@
                                             data-action="edit-btn"
                                             @click="editMarker(item)"
                                             data-node-id="x"
-                                            v-b-tooltip.hover
-                                            title="Edit"
+                                            v-tooltip:top="'Edit'"
                                         >
                                             <i class="fas fa-pencil-alt"></i>
                                         </button>
@@ -326,8 +324,7 @@
                                 id="edit-button"
                                 @click="editor.enabled = !editor.enabled"
                                 class="btn control-button"
-                                v-b-tooltip.hover
-                                title="Edit Map"
+                                v-tooltip:top="'Edit Map'"
                             >
                                 <i class="fas fa-pencil-alt"></i>
                             </button>
@@ -335,8 +332,7 @@
                                 <button
                                     v-if="isLoggedIn"
                                     class="btn control-button"
-                                    v-b-tooltip.hover
-                                    title="Profile"
+                                    v-tooltip:top="'Profile'"
                                 >
                                     <i class="fas fa-user-circle"></i>
                                 </button>
@@ -345,8 +341,7 @@
                                 <button
                                     v-if="isLoggedIn"
                                     class="btn control-button"
-                                    v-b-tooltip.hover
-                                    title="Log Out"
+                                    v-tooltip:top="'Log Out'"
                                 >
                                     <i class="fas fa-sign-out-alt"></i>
                                 </button>
@@ -355,8 +350,7 @@
                                 <button
                                     v-if="!isLoggedIn"
                                     class="btn control-button"
-                                    v-b-tooltip.hover.bottom
-                                    title="Login / Register to edit"
+                                    v-tooltip:bottom="'Login / Register to edit'"
                                 >
                                     <i class="fas fa-sign-in-alt"></i>
                                 </button>
@@ -448,8 +442,7 @@
                                 @click="clearSearch"
                                 id="clear-search"
                                 class="btn control-button"
-                                v-b-tooltip.hover
-                                title="Clear Search"
+                                v-tooltip:top="'Clear Search'"
                                 v-show="searchedItem != null"
                             >
                                 <i class="fas fa-times"></i>
@@ -521,8 +514,7 @@
                             <button
                                 id="clear-disguise-search"
                                 class="btn control-button"
-                                v-b-tooltip.hover
-                                title="Clear Search"
+                                v-tooltip:top="'Clear Search'"
                                 style="display: none"
                             >
                                 <i class="fas fa-times"></i>
