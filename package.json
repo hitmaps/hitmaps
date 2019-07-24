@@ -9,11 +9,8 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "bootstrap": "^4.3.1",
-    "bootstrap-vue": "^2.0.0-rc.26",
     "core-js": "^2.6.5",
     "cxlt-vue2-toastr": "^1.1.0",
-    "jquery": "^3.4.1",
     "leaflet": "^1.4.0",
     "leaflet.pm": "^2.0.3",
     "popper.js": "^1.15.0",
