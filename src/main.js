@@ -13,7 +13,7 @@ Vue.config.productionTip = false
 Vue.prototype.$currentYear = new Date().getFullYear()
 Vue.prototype.$http = axios
 Vue.prototype.$domain =
-    document.location.protocol + '//' + window.location.hostname + ':8000'
+    document.location.protocol + '//' + window.location.hostname
 
 //Better method to deciding what type of request
 Vue.prototype.$request = (post, endpoint, data) => {
