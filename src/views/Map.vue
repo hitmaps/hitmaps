@@ -350,7 +350,9 @@
                                 <button
                                     v-if="!isLoggedIn"
                                     class="btn control-button"
-                                    v-tooltip:bottom="'Login / Register to edit'"
+                                    v-tooltip:bottom="
+                                        'Login / Register to edit'
+                                    "
                                 >
                                     <i class="fas fa-sign-in-alt"></i>
                                 </button>
