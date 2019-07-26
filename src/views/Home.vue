@@ -145,7 +145,9 @@
                             onclick="return false;"
                             @click="showNotificationModal"
                             class="image elusive-notification float-right notification-icon"
-                            v-tooltip:left="'Manage Elusive Target Notifications'"
+                            v-tooltip:left="
+                                'Manage Elusive Target Notifications'
+                            "
                         >
                             <img
                                 src="/img/game-icons/notification.png"
@@ -183,7 +185,9 @@
                             onclick="return false;"
                             @click="showNotificationModal"
                             class="image float-right notification-icon"
-                            v-tooltip:left="'Manage Elusive Target Notifications'"
+                            v-tooltip:left="
+                                'Manage Elusive Target Notifications'
+                            "
                         >
                             <img
                                 src="/img/game-icons/notification.png"
