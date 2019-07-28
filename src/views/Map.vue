@@ -2085,43 +2085,45 @@ export default {
                 this.hiddenLayers.indexOf(name.split('|')[0] + '|') != -1
             )
         },
-        toggleLayer: function(name, forceMode) {
+        toggleLayer: function(name, hideAll) {
             if (name === '|') {
-                this.toggleLayer('Points of Interest|', forceMode)
-                this.toggleLayer('Weapons and Tools|', forceMode)
-                this.toggleLayer('Navigation|', forceMode)
+                this.hiddenLayers = []
+
+                if (hideAll) {
+                    this.hiddenLayers = ['Points of Interest|', 'Weapons and Tools|', 'Navigation|']
+                }
+
                 return
             }
-            //I think this can be done better
-            name = name.replace('*', '')
-            if (
-                (this.isLayerHidden(name) && forceMode == null) ||
-                forceMode == false
-            ) {
-                if (
-                    !name.endsWith('|') &&
-                    this.hiddenLayers.indexOf(name.split('|')[0] + '|') != -1
-                ) {
-                    var keys = Object.keys(this.layerGroups).filter(
-                        el =>
-                            el.indexOf(name.split('|')[0]) !== -1 && el !== name
-                    )
-                    this.hiddenLayers = this.hiddenLayers.concat(keys)
-                    this.hiddenLayers = this.hiddenLayers.filter(
-                        el => el !== name.split('|')[0] + '|'
-                    )
+
+            if (name.includes('*')) {
+                // Case 1: Toggling top level category
+                let prefix = name.replace('*', '')
+
+                if (this.isLayerHidden(prefix)) {
+                    this.$delete(this.hiddenLayers, this.hiddenLayers.indexOf(prefix))
                 } else {
-                    this.hiddenLayers = this.hiddenLayers.filter(el =>
-                        el.startsWith(name)
-                    )
+                    this.hiddenLayers = this.hiddenLayers.filter(layer => !layer.includes(prefix))
+                    this.hiddenLayers.push(prefix)
                 }
-            } else {
-                if (name.endsWith('|')) {
-                    this.hiddenLayers = this.hiddenLayers.filter(
-                        el => el.indexOf(name) === -1
-                    )
+            }  else {
+                // Case 2: Toggling group
+                let topLevelCategory = name.split('|')[0]
+                let group = name.split('|')[1]
+                if (this.hiddenLayers.indexOf(topLevelCategory + '|') !== -1) {
+                    // Case a: Top level category is hidden
+                    this.$delete(this.hiddenLayers, this.hiddenLayers.indexOf(topLevelCategory + '|'))
+                    this.categories[topLevelCategory]
+                        .filter(category => category.type === topLevelCategory && category.group !== group)
+                        .map(category => category.group)
+                        .forEach(group => this.hiddenLayers.push(topLevelCategory + '|' + group))
+                } else if (this.hiddenLayers.indexOf(name) !== -1) {
+                    // Case b: Group is hidden
+                    this.$delete(this.hiddenLayers, this.hiddenLayers.indexOf(name))
+                } else {
+                    // Case c: Groups is not hidden, nor is top level category
+                    this.hiddenLayers.push(name)
                 }
-                this.hiddenLayers.push(name)
             }
         },
         toggleDraw: function(type) {
