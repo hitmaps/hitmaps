@@ -126,7 +126,7 @@ class ElusiveTargetUpdater {
                 $image = file_get_contents($elusiveTargetJson->tile);
                 $settings = new Settings();
                 $fileName = "{$locationInfo['tileSaveLocation']}{$saveName}";
-                file_put_contents(__DIR__ . "/../../img/jpg{$fileName}.jpg", $image);
+                file_put_contents(__DIR__ . "/../../../img/jpg{$fileName}.jpg", $image);
                 $elusiveTarget->setImageUrl($fileName);
                 $elusiveTarget->setComingNotificationSent(false);
                 $elusiveTarget->setPlayableNotificationSent(false);
