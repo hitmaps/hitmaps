@@ -36,12 +36,11 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .content {
-    padding: 20px;
-
     > .inner-content {
         background-color: white;
+        margin: 20px;
         padding: 20px;
         font-family: 'nimbus_sans_lbold', sans-serif;
 
