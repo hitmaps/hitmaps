@@ -86,6 +86,13 @@
                                 Privacy Policy
                             </router-link>
                         </span>
+                        |
+                        <span class="footer-link">
+                            <router-link :to="{ name: 'about' }">
+                                <i class="fas fa-info-circle"></i>
+                                About
+                            </router-link>
+                        </span>
                     </div>
                 </div>
             </div>
