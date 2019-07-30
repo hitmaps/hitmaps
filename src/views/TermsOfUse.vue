@@ -146,11 +146,10 @@
         </div>
     </div>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
 .content {
-    padding: 20px;
-
     > .inner-content {
+        margin: 20px;
         background-color: white;
         padding: 20px;
         font-family: 'nimbus_sans_lbold', sans-serif;
