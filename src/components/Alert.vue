@@ -41,5 +41,9 @@ export default {
     &.alert-danger {
         border-left: solid 6px #d00000;
     }
+
+    &.alert-info {
+        border-left: solid 6px #0000ff;
+    }
 }
 </style>
