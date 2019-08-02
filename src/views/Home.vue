@@ -115,7 +115,7 @@
                             src="/img/game-icons/briefing-transparent.png"
                             class="normal img-fluid briefing-icon float-right"
                             alt="Briefing Icon"
-                            v-tooltip="'Mission Briefing'"
+                            v-tooltip:left="'Mission Briefing'"
                         />
                     </div>
                     <div class="elusive-target-info">
