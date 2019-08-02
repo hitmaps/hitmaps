@@ -18,13 +18,51 @@
             <p>I started working on hitman2maps.com a month or so before HITMAN&trade; 2 was released, as I was not
             seeing any progress made on hitmanmaps.com. By building a site that allows outside contributions, maps
             for all six starting locations were created far faster than I could ever imagine.</p>
-            <h3>FAQs</h3>
-            <p><b>Are you affiliated with IO Interactive or hitmanmaps.com?</b></p>
+            <h3>Are you Affiliated With IO Interactive or HITMAN&trade; Maps?</h3>
             <p>Nope. Not at all. hitmanmaps.com was created by Winterbirds, which heavily influenced hitman2maps.com,
             as I wanted to provide a similar user experience to what hitmanmaps.com users were used to using.  However,
-                I've never spoken to Winterbirds.</p>
-            <p><b>Are you available for hire?</b></p>
-            <p>Please check https://mikeko.ch to see if I'm currently available for hire.</p>
+                I've never spoken to the creator of hitmanmaps.com.</p>
+            <h3>Special Thanks</h3>
+            <p>I'd like to thank the following for making HITMAN&trade; 2 Maps what it is today:</p>
+            <div class="row">
+                <div class="col">
+                    <div class="media">
+                        <img v-webp src="/img/png/logos/ioi.png" alt="IO Interactive Logo" class="align-self-start mr-3" height="64" width="64">
+                        <div class="media-body">
+                            <h5 class="mt-0">
+                                <a href="https://www.ioi.dk" target="_blank">IO Interactive</a>
+                            </h5>
+                            <p>Without them, HITMAN&trade; 2 would not exist, and therefore this site would
+                                not exist.</p>
+                        </div>
+                    </div>
+                    <div class="media">
+                        <a href="https://www.jetbrains.com" target="_blank">
+                            <img v-webp src="/img/png/logos/jetbrains.png" alt="JetBrains Logo" class="align-self-start mr-3" height="64" width="64">
+                        </a>
+                        <div class="media-body">
+                            <h5 class="mt-0">
+                                <a href="https://www.jetbrains.com" target="_blank">JetBrains</a>
+                            </h5>
+                            <p>JetBrains provides hitman2maps with a free open-source license to all of their products.</p>
+                        </div>
+                    </div>
+                    <div class="media">
+                            <img v-webp src="/img/png/logos/readmeio.png" alt="Readme.io Logo" class="align-self-start mr-3" height="64" width="64">
+                        <div class="media-body">
+                            <h5 class="mt-0">
+                                <a href="https://www.readme.io" target="_blank">ReadMe</a>
+                            </h5>
+                            <p>ReadMe provides a free open-source license to document hitman2maps's public API.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <h5>The Community</h5>
+                    <p>The community is vital to HITMAN&trade; 2 Maps. Without them, this site would not be where it is
+                    today (I would not have had the motivation to do it all by myself 😂).</p>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -55,6 +93,10 @@ export default {
         p {
             font-family: 'Roboto', 'Arial', sans-serif;
             font-weight: lighter;
+        }
+
+        a {
+            color: #000;
         }
     }
 }
