@@ -45,6 +45,8 @@ if ($settings->useRedis) {
         'port' => $settings->redisPort
     ]);
     $applicationContext->set(Client::class, $redis);
+} else {
+    $applicationContext->set(Client::class, null);
 }
 // endregion
 
