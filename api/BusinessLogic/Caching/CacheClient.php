@@ -32,6 +32,14 @@ class CacheClient {
         $this->client->set($key, json_encode($value));
     }
 
+    public function delete(array $keys) {
+        if ($this->client === null) {
+            return;
+        }
+
+        $this->client->del($keys);
+    }
+
     // region All-in-ones
     public function retrieve(string $key, callable $getFromSource) {
         $cached = $this->get($key);
