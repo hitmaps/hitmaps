@@ -25,6 +25,7 @@
         "ext-json": "*",
         "guzzlehttp/guzzle": "^6.3",
         "abraham/twitteroauth": "^1.0",
-        "firebase/php-jwt": "^5.0"
+        "firebase/php-jwt": "^5.0",
+        "predis/predis": "^1.1"
     }
 }
