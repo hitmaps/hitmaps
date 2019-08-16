@@ -1103,7 +1103,7 @@ $klein->respond('GET', '/sitemap.txt', function(\Klein\Request $request, \Klein\
 });
 
 /* Admin Endpoints */
-$klein->respond('GET', '/admin/migrate', function() {
+$klein->respond('GET', '/api/admin/migrate', function() {
     $config = new Config\Settings();
     if ($config->accessKey !== $_GET['access-key']) {
         return http_response_code(404);
