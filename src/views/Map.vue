@@ -1,19 +1,6 @@
 <template>
     <div>
-        <div v-if="!mapLoaded && mission != null" class="overlay">
-            <div class="background">
-                <video
-                    loop
-                    muted
-                    autoplay
-                    poster="/img/jpg/loading.jpg"
-                    class="video"
-                >
-                    <source src="/video/loading.webm" type="video/webm" />
-                    <source src="/video/loading.mp4" type="video/mp4" />
-                    <source src="/video/loading.ogv" type="video/ogg" />
-                </video>
-            </div>
+        <div v-if="!mapLoaded && mission != null" class="overlay" :style="'background: #ccc url(\'/img/jpg/mission-backgrounds/' + mission.background + '.jpg\') no-repeat; background-size: cover'">
             <div class="overlay-container">
                 <img
                     class="img-fluid"
