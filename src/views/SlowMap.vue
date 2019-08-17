@@ -73,6 +73,198 @@
                     </div>
                 </div>
             </div>
+            <l-map
+                id="map"
+                ref="map"
+                @click="addMarker"
+                :minZoom="3"
+                :maxZoom="5"
+                :maxBounds="[
+                    [
+                        this.mission.topLeftCoordinate.split(',')[0],
+                        this.mission.topLeftCoordinate.split(',')[1]
+                    ],
+                    [
+                        this.mission.bottomRightCoordinate.split(',')[0],
+                        this.mission.bottomRightCoordinate.split(',')[1]
+                    ]
+                ]"
+                :crs="crs"
+                @pm:drawstart="initDraw"
+                @pm:create="pmLayer"
+                @pm:drawend="endDraw"
+            >
+                <l-tile-layer
+                    v-for="floor in range(
+                        mission.lowestFloorNumber,
+                        mission.highestFloorNumber
+                    )"
+                    :key="floor"
+                    :noWrap="true"
+                    :visible="currentLayer === floor"
+                    :url="mapUrl + floor + '/{z}/{x}/{y}.png'"
+                ></l-tile-layer>
+                <l-tile-layer
+                    v-if="mission.satelliteView"
+                    :noWrap="true"
+                    :visible="currentLayer === -99"
+                    :url="mapUrl + '-99/{z}/{x}/{y}.png'"
+                ></l-tile-layer>
+                <div
+                    v-for="floor in range(
+                        mission.lowestFloorNumber,
+                        mission.highestFloorNumber
+                    )"
+                    :key="'layer' + floor"
+                >
+                    <l-layer-group
+                        v-for="disguise in disguises"
+                        :key="floor + disguise.name"
+                        :visible="
+                            currentLayer == floor &&
+                                editor.currentDisguise == disguise.id
+                        "
+                    >
+                        <l-polygon
+                            v-for="item in disguise.areas.filter(
+                                el => el.level == floor
+                            )"
+                            :key="item.id"
+                            :lat-lngs="parseCoords(item.vertices)"
+                            :fillColor="
+                                item.type === 'trespassing' ? 'yellow' : '#f00'
+                            "
+                            :stroke="false"
+                            :weight="4"
+                            :opacity="0.75"
+                            @click="deletePoly(item, 'disguise-areas')"
+                        >
+                            <l-tooltip>
+                                {{
+                                    item.type === 'trespassing'
+                                        ? 'Trespassing'
+                                        : 'Hostile'
+                                }}
+                            </l-tooltip>
+                        </l-polygon>
+                    </l-layer-group>
+                    <l-layer-group
+                        v-for="(group, key) in layerGroups"
+                        :key="floor + key"
+                        :visible="currentLayer == floor && !isLayerHidden(key)"
+                    >
+                        <div v-if="group.name === 'Ledge'">
+                            <l-polyline
+                                v-for="ledge in ledges.filter(
+                                    el => el.level == floor
+                                )"
+                                :key="ledge.id"
+                                color="#fff"
+                                :weight="4"
+                                :opacity="0.75"
+                                :lat-lngs="parseCoords(ledge.vertices)"
+                                @click="deletePoly(ledge, 'ledges')"
+                            >
+                                <l-tooltip>Ledge</l-tooltip>
+                            </l-polyline>
+                        </div>
+                        <div v-else-if="group.name === 'Foliage'">
+                            <l-polygon
+                                v-for="item in foliage.filter(
+                                    el => el.level == floor
+                                )"
+                                :key="item.id"
+                                color="#248f24"
+                                fillColor="#248f24"
+                                :weight="4"
+                                :opacity="0.75"
+                                :lat-lngs="parseCoords(item.vertices)"
+                                @click="deletePoly(item, 'foliage')"
+                            >
+                                <l-tooltip>Foliage</l-tooltip>
+                            </l-polygon>
+                        </div>
+                        <div v-else>
+                            <l-marker
+                                v-for="item in group.items.filter(
+                                    el => el.level == floor
+                                )"
+                                :key="item.id"
+                                :latLng="item.latLng"
+                                :draggable="editor.mode === 'items'"
+                                @dragend="moveMarker($event, item)"
+                            >
+                                <l-icon
+                                    :icon-url="
+                                        '/img/map-icons/' + item.icon + '.png'
+                                    "
+                                    :icon-size="[32, 32]"
+                                    :icon-anchor="[16, 16]"
+                                    :class-name="
+                                        isSearchResult(item)
+                                            ? 'search-result'
+                                            : ''
+                                    "
+                                ></l-icon>
+                                <l-popup>
+                                    <img
+                                        v-if="item.image"
+                                        :src="'/img/png/' + item.image + '.png'"
+                                        alt="Image template holder"
+                                    />
+                                    <div data-name="name">{{ item.name }}</div>
+                                    <div data-name="group">
+                                        {{ item.group }}
+                                    </div>
+                                    <div data-name="target">
+                                        <i
+                                            v-if="item.target"
+                                            :class="'far ' + item.targetIcon"
+                                        ></i>
+                                        <span>{{ item.target }}</span>
+                                    </div>
+                                    <div data-name="notes">
+                                        <div
+                                            v-for="note in item.notes"
+                                            :key="note.id"
+                                            :class="note.type"
+                                        >
+                                            <div class="in-game-description">
+                                                In-game Description:
+                                            </div>
+                                            <div data-name="note-contents">
+                                                {{ note.text }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button
+                                            class="btn btn-danger btn-sm"
+                                            data-action="delete-btn"
+                                            @click="deleteMarker(item)"
+                                            v-tooltip:top="'Delete'"
+                                        >
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                        <button
+                                            class="btn btn-warning btn-sm"
+                                            data-action="edit-btn"
+                                            @click="editMarker(item)"
+                                            data-node-id="x"
+                                            v-tooltip:top="'Edit'"
+                                        >
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </button>
+                                    </div>
+                                </l-popup>
+                                <l-tooltip v-if="item.tooltip">
+                                    {{ item.tooltip }}
+                                </l-tooltip>
+                            </l-marker>
+                        </div>
+                    </l-layer-group>
+                </div>
+            </l-map>
             <nav class="navbar navbar-fixed-right navbar-dark">
                 <button
                     class="navbar-toggler"
@@ -1426,7 +1618,22 @@
 </template>
 
 <script>
+import {
+    LMap,
+    LTileLayer,
+    LMarker,
+    LLayerGroup,
+    LTooltip,
+    LPopup,
+    LPolyline,
+    LPolygon,
+    LIcon
+} from 'vue2-leaflet'
 import Vue from 'vue'
+import 'leaflet/dist/leaflet.css'
+
+import 'leaflet.pm'
+import 'leaflet.pm/dist/leaflet.pm.css'
 
 import CxltToaster from 'cxlt-vue2-toastr'
 import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
@@ -1438,6 +1645,15 @@ Vue.use(CxltToaster)
 export default {
     name: 'map-view',
     components: {
+        LMap,
+        LTileLayer,
+        LMarker,
+        LLayerGroup,
+        LTooltip,
+        LPopup,
+        LPolyline,
+        LPolygon,
+        LIcon,
         GameButton,
         Modal
     },
@@ -1452,6 +1668,7 @@ export default {
             nodes: null,
             searchableNodes: null,
             currentLayer: 0,
+            crs: L.CRS.Simple,
             layerGroups: {},
             categories: {},
             mapLoaded: false,
