@@ -818,6 +818,8 @@
                     layers: allLayerGroups
                 }).setView([{{ model.mapCenterLatitude }}, {{ model.mapCenterLongitude }}], 3);
                 g_map.setMaxBounds([[{{ model.topLeftCoordinate }}], [{{ model.bottomRightCoordinate }}]]);
+
+                // TODO Migrate this
                 g_map.addEventListener('click', function(e) {
                     if (parseInt($('input[type="hidden"][name="edit-mode"]').val()) !== 1) {
                         return;
@@ -846,6 +848,8 @@
                         .find('input[name="id"]').val(-1).end()
                         .modal('show');
                 });
+
+
                 var zoom = L.control.zoom({position: 'topright'});
                 zoom.addTo(g_map);
                 $('#map-control').append(zoom.getContainer());
@@ -860,6 +864,8 @@
 
                 g_map.addLayer(g_mapLayers[g_startingFloor]);
 
+
+                // TODO Need to continue migrating below here
                 // Show the starting level's items
                 for (var j = g_lowestFloor; j <= g_highestFloor; j++) {
                     for (var k in g_overlays[j]) {
