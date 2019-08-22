@@ -1452,7 +1452,10 @@ export default {
             nodes: null,
             searchableNodes: null,
             currentLayer: 0,
-            layerGroups: {},
+            overlays: [],
+            layerGroups: [],
+            map: null,
+            mapLayers: [],
             categories: {},
             mapLoaded: false,
             hiddenLayers: [],
@@ -2092,25 +2095,73 @@ export default {
             this.foliage = resp.data.foliage
             this.nodes = resp.data.nodes
             this.searchableNodes = resp.data.searchableNodes
+
             resp.data.categories.forEach(category => {
-                if (!this.categories[category.type])
-                    this.categories[category.type] = []
-                this.categories[category.type].push(category)
-                this.layerGroups[category.type + '|' + category.group] =
-                    resp.data.nodes[category.type].items[category.group]
-            })
+                for (let i = this.mission.lowestFloor; i <= this.mission.highestFloor; i++) {
+                    this.overlays[i][category.type + '|' + category.group] - L.layerGroup();
+                    this.layerGroups.push(this.overlays[i][category.type + '|' + category.group]);
+                }
+            });
+
+            resp.data.nodes.forEach(nodeType => {
+                nodeType.items.forEach(group => {
+                    group.items.forEach(node => {
+                        let marker = buildMarker(node).bindPopup(buildPopup);
+                        if (node.tooltip !== '') {
+                            marker.bindTooltip(node.tooltip);
+                        }
+
+                        marker.addTo(this.overlays[node.level][nodeType.name + '|' + group.name]);
+                    })
+                });
+            });
+
             console.log(this.layerGroups)
             this.$nextTick(() => {
-                this.$refs.map.mapObject.setView(
-                    [
-                        Number(this.mission.mapCenterLatitude),
-                        Number(this.mission.mapCenterLongitude)
-                    ],
-                    3
-                )
-                $('#map-control').append(
-                    this.$refs.map.mapObject.zoomControl.getContainer()
-                )
+                // Build tile layers for each floor
+                for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
+                    let mapTileLayer = L.tileLayer('/api/maps/' + this.mission.mapFolderName + '/tiles/' + i + '/{z}/{x}/{y}.png', {
+                        noWrap: true,
+                        minZoom: 3,
+                        maxZoom: 5
+                    });
+                    this.layerGroups.push(mapTileLayer);
+                    this.mapLayers[i] = mapTileLayer;
+                }
+
+                if (this.mission.satelliteView) {
+                    let mapTileLayer = L.tileLayer('/api/maps/' + this.mission.mapFolderName + '/tiles/-99/{z}/{x}/{y}.png', {
+                        noWrap: true,
+                        minZoom: 3,
+                        maxZoom: 5
+                    });
+                    this.layerGroups.push(mapTileLayer);
+                    this.mapLayers[-99] = mapTileLayer;
+                }
+
+                this.map = L.map('map', {
+                    maxZoom: 5,
+                    minZoom: 3,
+                    crs: L.CRS.Simple,
+                    layers: this.layerGroups
+                }).setView([this.mission.mapCenterLatitude, this.mission.mapCenterLongitude], 3);
+                let topLeftCoordinate = this.mission.topLeftCoordinate.split(',');
+                let bottomRightCoordinate = this.mission.bottomRightCoordinate.split(',');
+                this.map.setMaxBounds([topLeftCoordinate, bottomRightCoordinate]);
+
+                const zoom = L.control.zoom({position: 'topright'});
+                zoom.addTo(this.map);
+                $('#map-control').append(zoom.getContainer());
+
+                for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
+                    this.map.removeLayer(this.mapLayers[i]);
+                }
+                if (this.mission.satelliteLayer) {
+                    this.map.removeLayer(this.mapLayers[-99]);
+                }
+
+                this.map.addLayer(this.mapLayers[this.mission.startingFloorNumber]);
+
                 this.mapLoaded = true
                 //Is not needed directly at start
                 this.$request(false, 'v1/editor/templates').then(resp => {
