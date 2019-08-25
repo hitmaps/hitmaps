@@ -73,6 +73,7 @@
                     </div>
                 </div>
             </div>
+            <div id="map"></div>
             <nav class="navbar navbar-fixed-right navbar-dark">
                 <button
                     class="navbar-toggler"
@@ -1422,6 +1423,26 @@
                 </div>
             </div>
         </div>
+        <template id="popup-template">
+            <div>
+                <img src="#" alt="Image template holder">
+                <div data-name="name">Stove</div>
+                <div data-name="group">Explosion</div>
+                <div data-name="target">
+                    <i class="far"></i>
+                    <span>Start Gas Leak</span>
+                </div>
+                <div data-name="notes"></div>
+                <div v-if="isLoggedIn">
+                    <button class="btn btn-danger btn-sm" data-action="delete-btn" data-node-id="x" data-toggle="tooltip" title="Delete">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button class="btn btn-warning btn-sm" data-action="edit-btn" data-node-id="x" data-toggle="tooltip" title="Edit">
+                        <i class="fas fa-pencil-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </template>
     </div>
 </template>
 
@@ -1552,7 +1573,6 @@ export default {
                     atob(localStorage.getItem('token').split('.')[1])
                 )
                 var now = new Date()
-                console.log(new Date(data.exp * 1000).getTime() - now.getTime())
                 if (new Date(data.exp * 1000).getTime() - now.getTime() > 0)
                     return true
             }
@@ -1582,7 +1602,10 @@ export default {
             return array
         },
         changeLevel: function(level) {
-            this.currentLayer = level
+            this.map.removeLayer(this.mapLayers[this.currentLayer]);
+            this.currentLayer = level;
+            this.map.addLayer(this.mapLayers[this.currentLayer]);
+            this.updateNodeLayerState();
         },
         collapsible: function(type, group) {
             return (
@@ -1593,6 +1616,68 @@ export default {
         },
         editorMenu: function(menu) {
             this.editor.mode = menu
+        },
+        buildMarker: function(node) {
+            return L.marker([node.latitude, node.longitude], {
+                icon: L.icon({iconUrl: '/img/map-icons/' + node.icon + '.png',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 16],
+                    popupAnchor: [0, 0]
+                }),
+                custom: {
+                    id: node.id,
+                    node: node
+                },
+                draggable: true,
+                riseOnHover: true
+            }).on('popupopen', function() {
+                g_openMarker = this;
+            }).on('dragend', function(e) {
+                var nodeInformation = e.target.options.custom;
+                if (parseInt($('input[type="hidden"][name="edit-mode"]').val()) === 0) {
+                    console.debug("Editor disabled. Sending node back.");
+                    e.target.setLatLng([nodeInformation.node.latitude, nodeInformation.node.longitude]);
+                    toastr["warning"]("The editor is disabled. No items can be moved unless the editor is enabled.");
+                    return;
+                }
+
+                var $modal = $('#confirm-move-modal')
+                    .find('input[name="node-id"]').val(nodeInformation.id).end()
+                    .find('input[name="latitude"]').val(e.target.getLatLng().lat).end()
+                    .find('input[name="longitude"]').val(e.target.getLatLng().lng).end()
+                    .modal('show');
+            });
+        },
+        buildPopup: function(element) {
+            let node = element.options.custom.node;
+
+            let $template = $($('#popup-template').html());
+            $template.find('[data-name="group"]').html(node.group).end()
+                .find('[data-name="name"]').html(node.name).end()
+                .find('[data-node-id="x"]').attr('data-node-id', node.id).end()
+                .find('[data-name="target"]').find('span').html(node.target);
+
+            if (node.target !== null && node.target !== '' && node.targetIcon !== '') {
+                $template.find('[data-name="target"]').find('i').addClass(node.targetIcon).show();
+            } else {
+                $template.find('[data-name="target"]').find('i').hide();
+            }
+
+            if (node.image !== null) {
+                $template.find('img').attr('src', '{{ settings.cdnLocation }}/{{ model.pngBackgroundFileExtension }}' + node.image + '.{{ model.pngBackgroundFileExtension }}');
+            } else {
+                $template.find('img').remove();
+            }
+
+            for (let i in node.notes) {
+                let $noteTemplate = $($('#popup-note-template').html());
+
+                $noteTemplate.find('[data-name="note-contents"]').html(node.notes[i].text).parent().addClass(node.notes[i].type);
+
+                $template.find('[data-name="notes"]').append($noteTemplate.html());
+            }
+
+            return $template.html();
         },
         addMarker: function(event) {
             if (!this.editor.enabled || this.editor.mode !== 'items') return
@@ -1614,7 +1699,6 @@ export default {
             $(element).modal('show')
         },
         moveMarker: function(event, item) {
-            console.log(event)
             if (this.editor.mode === '') {
                 //Resetting the position
                 event.target.setLatLng([item.latitude, item.longitude])
@@ -1646,7 +1730,6 @@ export default {
         },
         confirmMove: function() {
             var data = new FormData()
-            console.log(this.editor.currentMarker)
             data.append('node-id', this.editor.currentMarker.id)
             data.append('latitude', this.editor.currentMarker.latitude)
             data.append('longitude', this.editor.currentMarker.longitude)
@@ -1756,7 +1839,6 @@ export default {
         },
         deleteMarker: function(node) {
             this.$request(false, 'nodes/delete/' + node.id).then(resp => {
-                console.log('Node successfully deleted')
                 this.layerGroups[node.type + '|' + node.group].items.splice(
                     this.layerGroups[
                         node.type + '|' + node.group
@@ -1858,8 +1940,13 @@ export default {
                 this.hiddenLayers.indexOf(name.split('|')[0] + '|') != -1
             )
         },
-        toggleLayer: function(name, hideAll) {
-            if (name === '|') {
+        toggleLayer: function(layer, shouldShow) {
+            if (shouldShow) {
+                this.map.addLayer(layer);
+            } else {
+                this.map.removeLayer(layer);
+            }
+            /*if (name === '|') {
                 this.hiddenLayers = []
 
                 if (hideAll) {
@@ -1897,10 +1984,9 @@ export default {
                     // Case c: Groups is not hidden, nor is top level category
                     this.hiddenLayers.push(name)
                 }
-            }
+            }*/
         },
         toggleDraw: function(type) {
-            console.log(this.$refs.map.mapObject.pm.Draw)
             if (this.$refs.map.mapObject.pm.Draw[type]._enabled) {
                 this.$refs.map.mapObject.pm.disableDraw(type)
             } else {
@@ -1911,7 +1997,6 @@ export default {
         },
         initDraw: function(e) {
             e.workingLayer.on('pm:vertexadded', e => {
-                console.log(e.latlng)
                 this.editor.vertices.push([e.latlng.lat, e.latlng.lng])
             })
         },
@@ -1968,7 +2053,6 @@ export default {
             return latlngs
         },
         changeDisguise: function(disguise) {
-            console.log(disguise)
             this.editor.currentDisguise = disguise.id || disguise
             $(this.$refs.disguisePicker).selectpicker(
                 'val',
@@ -1979,13 +2063,20 @@ export default {
                 .click()
         },
         calculateNumber(floor) {
-            var count = 0
-            for (var [key, val] of Object.entries(this.layerGroups)) {
-                if (!this.isLayerHidden(key)) {
-                    count += val.items.filter(el => el.level == floor).length
+            var count = 0;
+            for (var level in this.overlays) {
+                if (parseInt(level) !== floor) {
+                    continue;
+                }
+
+                let layerGroups = this.overlays[level];
+                for (let layerGroup in layerGroups) {
+                    if (!this.isLayerHidden(layerGroup)) {
+                        count += layerGroups[layerGroup].getLayers().length;
+                    }
                 }
             }
-            return count
+            return count;
         },
         searchItem(event) {
             if (event.target.value === '') {
@@ -2003,6 +2094,75 @@ export default {
             var group = JSON.parse(JSON.stringify(this.layerGroups[item[0]]))
             group.items = group.items.filter(el => el.name == item[1])
             this.searchedItem = group
+        },
+        updateNodeLayerState() {
+            //var $searchedDisguise = $('[data-disguise-id].selected');
+            //var bootstrapSelectInitialized = $('#search-box-items').find('.bootstrap-select').length > 0;
+            //var itemName = this.searchedItem !== undefined && bootstrapSelectInitialized ? this.searchedItem : undefined;
+            //var layer = this.searchedItem !== undefined && bootstrapSelectInitialized ? $searchedItem.attr('data-layer') : undefined;
+            //var disguiseName = parseInt($searchedDisguise.attr('data-disguise-id'));
+
+            var floorsToHighlight = [];
+            for (var floor in this.overlays) {
+                var numberOfItemsOnMap = 0;
+                var floorLayers = this.overlays[floor];
+                for (var key in floorLayers) {
+                    var forceOff = true;
+                    //var forceOff = (layer !== key || itemName === undefined);
+
+                    // Find the button that toggles this layer and see if it's active or not.
+                    if (!$('div[data-layer="' + key + '"]').hasClass('map-hidden')) {
+                        if (key !== 'Navigation|Ledge' &&
+                            key !== 'Navigation|Foliage' &&
+                            !key.startsWith('Disguises|')) {
+                            numberOfItemsOnMap += floorLayers[key].getLayers().length;
+                        }
+
+                        this.toggleLayer(floorLayers[key], (parseInt(floor) === parseInt(this.currentLayer)));
+
+                        if (key !== 'Navigation|Ledge' &&
+                            key !== 'Navigation|Foliage' &&
+                            !key.startsWith('Disguises|')) {
+                            for (var node in floorLayers[key].getLayers()) {
+                                var nodeProperties = floorLayers[key].getLayers()[node];
+
+                                if (false /*nodeProperties.options.custom.node.name === itemName && !forceOff*/) {
+                                    $(nodeProperties._icon).addClass('search-result');
+                                    if (floorsToHighlight.indexOf(floor) === -1) {
+                                        floorsToHighlight.push(floor);
+                                    }
+                                } else {
+                                    $(nodeProperties._icon).removeClass('search-result');
+                                }
+
+                                if (nodeProperties.options.custom.node.deleted === true) {
+                                    this.map.removeLayer(nodeProperties);
+                                    numberOfItemsOnMap--;
+                                }
+                            }
+                        }
+
+                        /*if (key.startsWith('Disguises|')) {
+                            for (var i in g_disguiseOptions) {
+                                var disguise = g_disguiseOptions[i];
+                                var parts = disguise.split('|');
+                                toggleLayer(floorLayers[disguise], parseInt(parts[1]) === disguiseName &&
+                                    (parseInt(floor) === parseInt(this.currentLayer)));
+                            }
+                        }*/
+                    } else {
+                        this.toggleLayer(floorLayers[key], false);
+                    }
+                }
+
+                var $itemElement = $('[data-floor="' + floor + '"]').find('.item-count');
+                $itemElement.text(numberOfItemsOnMap);
+
+                $('.item-count').removeClass('has-search-results');
+                for (var i in floorsToHighlight) {
+                    $('div[data-floor="' + floorsToHighlight[i] + '"]').find('.item-count').addClass('has-search-results');
+                }
+            }
         },
         hasSearchResults(floor) {
             if (this.searchedItem == null) return false
@@ -2108,24 +2268,26 @@ export default {
                 }
             });
 
-            resp.data.nodes.forEach(nodeType => {
-                nodeType.items.forEach(group => {
+            for (let typeName in resp.data.nodes) {
+                let nodeType = resp.data.nodes[typeName];
+
+                for (let groupName in nodeType.items) {
+                    let group = nodeType.items[groupName];
                     group.items.forEach(node => {
-                        let marker = buildMarker(node).bindPopup(buildPopup);
+                        let marker = this.buildMarker(node).bindPopup(this.buildPopup);
                         if (node.tooltip !== '') {
                             marker.bindTooltip(node.tooltip);
                         }
 
                         marker.addTo(this.overlays[node.level][nodeType.name + '|' + group.name]);
                     })
-                });
-            });
+                }
+            }
 
-            console.log(this.layerGroups)
             this.$nextTick(() => {
                 // Build tile layers for each floor
                 for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                    let mapTileLayer = L.tileLayer('/api/maps/' + this.mission.mapFolderName + '/tiles/' + i + '/{z}/{x}/{y}.png', {
+                    let mapTileLayer = L.tileLayer(this.mapUrl + i + '/{z}/{x}/{y}.png', {
                         noWrap: true,
                         minZoom: 3,
                         maxZoom: 5
@@ -2135,7 +2297,7 @@ export default {
                 }
 
                 if (this.mission.satelliteView) {
-                    let mapTileLayer = L.tileLayer('/api/maps/' + this.mission.mapFolderName + '/tiles/-99/{z}/{x}/{y}.png', {
+                    let mapTileLayer = L.tileLayer(this.mapUrl + '/-99/{z}/{x}/{y}.png', {
                         noWrap: true,
                         minZoom: 3,
                         maxZoom: 5
@@ -2161,7 +2323,7 @@ export default {
                 for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
                     this.map.removeLayer(this.mapLayers[i]);
                 }
-                if (this.mission.satelliteLayer) {
+                if (this.mission.satelliteView) {
                     this.map.removeLayer(this.mapLayers[-99]);
                 }
 
@@ -2176,7 +2338,7 @@ export default {
                 for (let i in this.overlays[this.mission.startingFloorNumber]) {
                     this.toggleLayer(this.overlays[this.mission.startingFloorNumber][i], true);
                 }
-                updateNodeLayerState();
+                this.updateNodeLayerState();
 
                 this.mapLoaded = true;
                 //Is not needed directly at start
