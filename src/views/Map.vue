@@ -2096,9 +2096,14 @@ export default {
             this.nodes = resp.data.nodes
             this.searchableNodes = resp.data.searchableNodes
 
+            // Initialize g_overlays for each floor
+            for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
+                this.overlays[i] = {};
+            }
+
             resp.data.categories.forEach(category => {
-                for (let i = this.mission.lowestFloor; i <= this.mission.highestFloor; i++) {
-                    this.overlays[i][category.type + '|' + category.group] - L.layerGroup();
+                for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
+                    this.overlays[i][category.type + '|' + category.group] = L.layerGroup();
                     this.layerGroups.push(this.overlays[i][category.type + '|' + category.group]);
                 }
             });
@@ -2162,21 +2167,38 @@ export default {
 
                 this.map.addLayer(this.mapLayers[this.mission.startingFloorNumber]);
 
-                this.mapLoaded = true
+                // Show the starting level's items
+                for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
+                    for (let j in this.overlays[i]) {
+                        this.toggleLayer(this.overlays[i][j], false);
+                    }
+                }
+                for (let i in this.overlays[this.mission.startingFloorNumber]) {
+                    this.toggleLayer(this.overlays[this.mission.startingFloorNumber][i], true);
+                }
+                updateNodeLayerState();
+
+                this.mapLoaded = true;
                 //Is not needed directly at start
                 this.$request(false, 'v1/editor/templates').then(resp => {
-                    this.editor.templates = resp.data
+                    this.editor.templates = resp.data;
                     this.$nextTick(() => {
                         $('.selectpicker').selectpicker()
                     })
-                })
+                });
                 this.$request(false, 'v1/editor/icons').then(resp => {
-                    this.editor.icons = resp.data
+                    this.editor.icons = resp.data;
                     this.$nextTick(() => {
-                        $(this.$refs.iconPicker).selectpicker('destroy')
+                        $(this.$refs.iconPicker).selectpicker('destroy');
                         $(this.$refs.iconPicker).selectpicker()
                     })
-                })
+                });
+
+                this.map.on('pm:drawstart', this.initDraw);
+
+                this.map.on('pm:create', this.pmLayer);
+
+                this.map.on('pm:drawend', this.endDraw);
             })
         })
     }
