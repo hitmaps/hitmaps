@@ -1481,6 +1481,7 @@ export default {
             mapLoaded: false,
             hiddenLayers: [],
             searchedItem: null,
+            floorsWithSearchResults: [],
             editor: {
                 enabled: false,
                 mode: '',
@@ -1678,6 +1679,50 @@ export default {
             }
 
             return $template.html();
+        },
+        buildLedge: function(ledge) {
+            const polyline = L.polyline(this.parseCoords(ledge.vertices), {
+                color: '#fff',
+                weight: 4,
+                opacity: .75,
+                custom: {
+                    id: ledge.id
+                }
+            }).on('click', function() {
+                this.deletePoly(ledge, 'ledges');
+            });
+
+            return polyline.bindTooltip('Ledge', {sticky: true});
+        },
+        buildFoliage: function(foliage) {
+            const polygon = L.polygon(this.parseCoords(foliage.vertices), {
+                color: '#248f24',
+                weight: 4,
+                opacity: .75,
+                custom: {
+                    id: foliage.id
+                }
+            }).on('click', function() {
+                this.deletePoly(ledge, 'foliage');
+            });
+
+            return polygon.bindTooltip('Foliage', {sticky: true});
+        },
+        buildDisguiseArea: function(disguiseArea) {
+            const polygon = L.polygon(this.parseCoords(disguiseArea.vertices), {
+                color: disguiseArea.type === 'trespassing' ? 'yellow' : '#f00',
+                stroke: false,
+                weight: 4,
+                opacity: .75,
+                custom: {
+                    id: disguiseArea.id
+                }
+            }).on('click', function() {
+                deletePoly(disguiseArea, 'disguise-areas')
+            });
+
+            const tooltip = disguiseArea.type === 'trespassing' ? 'Trespassing' : 'Hostile Area';
+            return polygon.bindTooltip(tooltip, {sticky: true});
         },
         addMarker: function(event) {
             if (!this.editor.enabled || this.editor.mode !== 'items') return
@@ -2061,6 +2106,7 @@ export default {
             $('#header-disguises')
                 .find('.name')
                 .click()
+            this.updateNodeLayerState();
         },
         calculateNumber(floor) {
             var count = 0;
@@ -2071,7 +2117,10 @@ export default {
 
                 let layerGroups = this.overlays[level];
                 for (let layerGroup in layerGroups) {
-                    if (!this.isLayerHidden(layerGroup)) {
+                    if (!this.isLayerHidden(layerGroup) &&
+                        !layerGroup.startsWith('Disguises|') &&
+                        !layerGroup.startsWith('Navigation|Ledge') &&
+                        !layerGroup.startsWith('Navigation|Foliage')) {
                         count += layerGroups[layerGroup].getLayers().length;
                     }
                 }
@@ -2080,96 +2129,81 @@ export default {
         },
         searchItem(event) {
             if (event.target.value === '') {
-                return
+                return;
             }
 
             $('.search-box[data-search="items"]')
                 .find('.bootstrap-select')
                 .addClass('item-selected')
-                .end()
-            var item = event.target.value.split(';')
-            if (this.isLayerHidden(item[0])) {
-                this.toggleLayer(item[0])
-            }
-            var group = JSON.parse(JSON.stringify(this.layerGroups[item[0]]))
-            group.items = group.items.filter(el => el.name == item[1])
-            this.searchedItem = group
+                .end();
+            const item = event.target.value.split(';');
+            this.searchedItem = {
+                layer: item[0],
+                name: item[1]
+            };
+            this.updateNodeLayerState();
         },
         updateNodeLayerState() {
-            //var $searchedDisguise = $('[data-disguise-id].selected');
-            //var bootstrapSelectInitialized = $('#search-box-items').find('.bootstrap-select').length > 0;
-            //var itemName = this.searchedItem !== undefined && bootstrapSelectInitialized ? this.searchedItem : undefined;
-            //var layer = this.searchedItem !== undefined && bootstrapSelectInitialized ? $searchedItem.attr('data-layer') : undefined;
-            //var disguiseName = parseInt($searchedDisguise.attr('data-disguise-id'));
+            let itemName = null;
+            let layer = null;
+            let disguiseId = null;
 
-            var floorsToHighlight = [];
-            for (var floor in this.overlays) {
-                var numberOfItemsOnMap = 0;
-                var floorLayers = this.overlays[floor];
-                for (var key in floorLayers) {
-                    var forceOff = true;
-                    //var forceOff = (layer !== key || itemName === undefined);
+            if (this.searchedItem !== null) {
+                itemName = this.searchedItem.name;
+                layer = this.searchedItem.layer;
+            }
+            if (this.editor.currentDisguise !== 'NONE') {
+                disguiseId = parseInt(this.editor.currentDisguise);
+            }
+
+            this.floorsWithSearchResults = [];
+            for (const floorString in this.overlays) {
+                const floor = parseInt(floorString);
+                const floorLayers = this.overlays[floor];
+                for (const key in floorLayers) {
+                    const currentFloor = floor === parseInt(this.currentLayer);
+                    const forceOff = (layer !== key || itemName === null);
 
                     // Find the button that toggles this layer and see if it's active or not.
-                    if (!$('div[data-layer="' + key + '"]').hasClass('map-hidden')) {
-                        if (key !== 'Navigation|Ledge' &&
-                            key !== 'Navigation|Foliage' &&
-                            !key.startsWith('Disguises|')) {
-                            numberOfItemsOnMap += floorLayers[key].getLayers().length;
-                        }
+                    let layerVisible = !$('div[data-layer="' + key + '"]').hasClass('map-hidden');
+                    if (key !== 'Navigation|Ledge' &&
+                        key !== 'Navigation|Foliage' &&
+                        !key.startsWith('Disguises|')) {
+                        for (const node in floorLayers[key].getLayers()) {
+                            const nodeProperties = floorLayers[key].getLayers()[node];
 
-                        this.toggleLayer(floorLayers[key], (parseInt(floor) === parseInt(this.currentLayer)));
+                            if (currentFloor && layerVisible) {
+                                $(nodeProperties._icon).css('display', 'block');
+                            } else {
+                                $(nodeProperties._icon).css('display', 'none');
+                            }
 
-                        if (key !== 'Navigation|Ledge' &&
-                            key !== 'Navigation|Foliage' &&
-                            !key.startsWith('Disguises|')) {
-                            for (var node in floorLayers[key].getLayers()) {
-                                var nodeProperties = floorLayers[key].getLayers()[node];
-
-                                if (false /*nodeProperties.options.custom.node.name === itemName && !forceOff*/) {
-                                    $(nodeProperties._icon).addClass('search-result');
-                                    if (floorsToHighlight.indexOf(floor) === -1) {
-                                        floorsToHighlight.push(floor);
-                                    }
-                                } else {
-                                    $(nodeProperties._icon).removeClass('search-result');
+                            if (nodeProperties.options.custom.node.name === itemName && !forceOff) {
+                                $(nodeProperties._icon).addClass('search-result');
+                                if (this.floorsWithSearchResults.indexOf(floor) === -1) {
+                                    this.floorsWithSearchResults.push(floor);
                                 }
+                            } else {
+                                $(nodeProperties._icon).removeClass('search-result');
+                            }
 
-                                if (nodeProperties.options.custom.node.deleted === true) {
-                                    this.map.removeLayer(nodeProperties);
-                                    numberOfItemsOnMap--;
-                                }
+                            if (nodeProperties.options.custom.node.deleted === true) {
+                                this.map.removeLayer(nodeProperties);
                             }
                         }
-
-                        /*if (key.startsWith('Disguises|')) {
-                            for (var i in g_disguiseOptions) {
-                                var disguise = g_disguiseOptions[i];
-                                var parts = disguise.split('|');
-                                toggleLayer(floorLayers[disguise], parseInt(parts[1]) === disguiseName &&
-                                    (parseInt(floor) === parseInt(this.currentLayer)));
-                            }
-                        }*/
-                    } else {
-                        this.toggleLayer(floorLayers[key], false);
                     }
-                }
 
-                var $itemElement = $('[data-floor="' + floor + '"]').find('.item-count');
-                $itemElement.text(numberOfItemsOnMap);
-
-                $('.item-count').removeClass('has-search-results');
-                for (var i in floorsToHighlight) {
-                    $('div[data-floor="' + floorsToHighlight[i] + '"]').find('.item-count').addClass('has-search-results');
+                    if (key.startsWith('Disguises|')) {
+                        this.disguises.forEach(disguise => {
+                            this.toggleLayer(floorLayers['Disguises|' + disguise.id],
+                                disguise.id === disguiseId && floor === parseInt(this.currentLayer));
+                        });
+                    }
                 }
             }
         },
         hasSearchResults(floor) {
-            if (this.searchedItem == null) return false
-            return (
-                this.searchedItem.items.filter(el => el.level == floor).length >
-                0
-            )
+            return this.floorsWithSearchResults.indexOf(floor) !== -1;
         },
         isSearchResult(item) {
             if (this.searchedItem == null) return false
@@ -2179,12 +2213,13 @@ export default {
             )
         },
         clearSearch() {
-            this.searchedItem = null
+            this.searchedItem = null;
             $('.search-box[data-search="items"]')
                 .find('.bootstrap-select')
                 .removeClass('item-selected')
-                .end()
-            $(this.$refs.itemSearch).selectpicker('val', '')
+                .end();
+            $(this.$refs.itemSearch).selectpicker('val', '');
+            this.updateNodeLayerState();
         },
         showCopyDisguiseModal() {
             $('#copy-disguises-modal').modal('show')
@@ -2268,6 +2303,15 @@ export default {
                 }
             });
 
+            // Layers for disguises
+            console.log(resp.data.disguises);
+            resp.data.disguises.forEach(disguise => {
+                for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
+                    this.overlays[i]['Disguises|' + disguise.id] = L.layerGroup();
+                    this.layerGroups.push(this.overlays[i]['Disguises|' + disguise.id]);
+                }
+            });
+
             for (let typeName in resp.data.nodes) {
                 let nodeType = resp.data.nodes[typeName];
 
@@ -2283,6 +2327,20 @@ export default {
                     })
                 }
             }
+
+            resp.data.ledges.forEach(ledge => {
+                this.buildLedge(ledge).addTo(this.overlays[ledge.level]['Navigation|Ledge']);
+            });
+
+            resp.data.foliage.forEach(foliage => {
+                this.buildFoliage(foliage).addTo(this.overlays[foliage.level]['Navigation|Foliage']);
+            });
+
+            resp.data.disguises.forEach(disguise => {
+                disguise.areas.forEach(area => {
+                    this.buildDisguiseArea(area).addTo(this.overlays[area.level]['Disguises|' + disguise.id]);
+                });
+            });
 
             this.$nextTick(() => {
                 // Build tile layers for each floor
@@ -2310,7 +2368,8 @@ export default {
                     maxZoom: 5,
                     minZoom: 3,
                     crs: L.CRS.Simple,
-                    layers: this.layerGroups
+                    layers: this.layerGroups,
+                    renderer: L.canvas()
                 }).setView([this.mission.mapCenterLatitude, this.mission.mapCenterLongitude], 3);
                 let topLeftCoordinate = this.mission.topLeftCoordinate.split(',');
                 let bottomRightCoordinate = this.mission.bottomRightCoordinate.split(',');
@@ -2329,14 +2388,11 @@ export default {
 
                 this.map.addLayer(this.mapLayers[this.mission.startingFloorNumber]);
 
-                // Show the starting level's items
+                // "Show" all items; CSS will handle showing / hiding
                 for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
                     for (let j in this.overlays[i]) {
-                        this.toggleLayer(this.overlays[i][j], false);
+                        this.toggleLayer(this.overlays[i][j], true);
                     }
-                }
-                for (let i in this.overlays[this.mission.startingFloorNumber]) {
-                    this.toggleLayer(this.overlays[this.mission.startingFloorNumber][i], true);
                 }
                 this.updateNodeLayerState();
 
