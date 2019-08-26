@@ -1434,7 +1434,7 @@
                     <span>Start Gas Leak</span>
                 </div>
                 <div data-name="notes"></div>
-                <div v-if="isLoggedIn">
+                <div data-authenticated-only>
                     <button class="btn btn-danger btn-sm" data-action="delete-btn" data-node-id="x" data-toggle="tooltip" title="Delete">
                         <i class="fas fa-times"></i>
                     </button>
@@ -1666,6 +1666,12 @@ export default {
                 $noteTemplate.find('[data-name="note-contents"]').html(node.notes[i].text).parent().addClass(node.notes[i].type);
 
                 $template.find('[data-name="notes"]').append($noteTemplate.html());
+            }
+
+            if (!this.isLoggedIn) {
+                // Yeah, this isn't the most "secure" thing... but the editor won't work unless you're authenticated.
+                // Additionally, anyone can create an account, so it's not confidential information.
+                $template.find('[data-authenticated-only]').html('');
             }
 
             return $template.html();
