@@ -1482,6 +1482,7 @@ export default {
             hiddenLayers: [],
             searchedItem: null,
             floorsWithSearchResults: [],
+            floorCountOverride: [],
             editor: {
                 enabled: false,
                 mode: '',
@@ -1990,51 +1991,56 @@ export default {
                 this.hiddenLayers.indexOf(name.split('|')[0] + '|') != -1
             )
         },
-        toggleLayer: function(layer, shouldShow) {
+        hideAll: function() {
+            this.hiddenLayers.push('Points of Interest|', 'Weapons and Tools|', 'Navigation|');
+            this.updateNodeLayerState();
+        },
+        toggleLayerGroup: function(layer, shouldShow) {
             if (shouldShow) {
                 this.map.addLayer(layer);
             } else {
                 this.map.removeLayer(layer);
             }
-            /*if (name === '|') {
+        },
+        toggleLayer: function(name, hideAll) {
+            if (name === '|') {
                 this.hiddenLayers = []
 
                 if (hideAll) {
                     this.hiddenLayers = ['Points of Interest|', 'Weapons and Tools|', 'Navigation|']
                 }
+            } else {
+                if (name.includes('*')) {
+                    // Case 1: Toggling top level category
+                    let prefix = name.replace('*', '')
 
-                return
+                    if (this.isLayerHidden(prefix)) {
+                        this.$delete(this.hiddenLayers, this.hiddenLayers.indexOf(prefix))
+                    } else {
+                        this.hiddenLayers = this.hiddenLayers.filter(layer => !layer.includes(prefix))
+                        this.hiddenLayers.push(prefix)
+                    }
+                }  else {
+                    // Case 2: Toggling group
+                    let topLevelCategory = name.split('|')[0]
+                    let group = name.split('|')[1]
+                    if (this.hiddenLayers.indexOf(topLevelCategory + '|') !== -1) {
+                        // Case a: Top level category is hidden
+                        this.$delete(this.hiddenLayers, this.hiddenLayers.indexOf(topLevelCategory + '|'))
+                        this.categories[topLevelCategory]
+                            .filter(category => category.type === topLevelCategory && category.group !== group)
+                            .map(category => category.group)
+                            .forEach(group => this.hiddenLayers.push(topLevelCategory + '|' + group))
+                    } else if (this.hiddenLayers.indexOf(name) !== -1) {
+                        // Case b: Group is hidden
+                        this.$delete(this.hiddenLayers, this.hiddenLayers.indexOf(name))
+                    } else {
+                        // Case c: Groups is not hidden, nor is top level category
+                        this.hiddenLayers.push(name)
+                    }
+                }
             }
-
-            if (name.includes('*')) {
-                // Case 1: Toggling top level category
-                let prefix = name.replace('*', '')
-
-                if (this.isLayerHidden(prefix)) {
-                    this.$delete(this.hiddenLayers, this.hiddenLayers.indexOf(prefix))
-                } else {
-                    this.hiddenLayers = this.hiddenLayers.filter(layer => !layer.includes(prefix))
-                    this.hiddenLayers.push(prefix)
-                }
-            }  else {
-                // Case 2: Toggling group
-                let topLevelCategory = name.split('|')[0]
-                let group = name.split('|')[1]
-                if (this.hiddenLayers.indexOf(topLevelCategory + '|') !== -1) {
-                    // Case a: Top level category is hidden
-                    this.$delete(this.hiddenLayers, this.hiddenLayers.indexOf(topLevelCategory + '|'))
-                    this.categories[topLevelCategory]
-                        .filter(category => category.type === topLevelCategory && category.group !== group)
-                        .map(category => category.group)
-                        .forEach(group => this.hiddenLayers.push(topLevelCategory + '|' + group))
-                } else if (this.hiddenLayers.indexOf(name) !== -1) {
-                    // Case b: Group is hidden
-                    this.$delete(this.hiddenLayers, this.hiddenLayers.indexOf(name))
-                } else {
-                    // Case c: Groups is not hidden, nor is top level category
-                    this.hiddenLayers.push(name)
-                }
-            }*/
+            this.updateNodeLayerState();
         },
         toggleDraw: function(type) {
             if (this.$refs.map.mapObject.pm.Draw[type]._enabled) {
@@ -2130,7 +2136,7 @@ export default {
                     }
                 }
             }
-            return count;
+            return count + this.floorCountOverride[floor];
         },
         searchItem(event) {
             if (event.target.value === '') {
@@ -2162,28 +2168,33 @@ export default {
             }
 
             this.floorsWithSearchResults = [];
+            this.floorCountOverride = [];
             for (const floorString in this.overlays) {
                 const floor = parseInt(floorString);
+                this.floorCountOverride[floor] = 0;
                 const floorLayers = this.overlays[floor];
                 for (const key in floorLayers) {
                     const currentFloor = floor === parseInt(this.currentLayer);
                     const forceOff = (layer !== key || itemName === null);
 
                     // Find the button that toggles this layer and see if it's active or not.
-                    let layerVisible = !$('div[data-layer="' + key + '"]').hasClass('map-hidden');
                     if (key !== 'Navigation|Ledge' &&
                         key !== 'Navigation|Foliage' &&
                         !key.startsWith('Disguises|')) {
                         for (const node in floorLayers[key].getLayers()) {
                             const nodeProperties = floorLayers[key].getLayers()[node];
 
-                            if (currentFloor && layerVisible) {
+                            if (currentFloor && !this.isLayerHidden(key)) {
                                 $(nodeProperties._icon).css('display', 'block');
                             } else {
                                 $(nodeProperties._icon).css('display', 'none');
                             }
 
                             if (nodeProperties.options.custom.node.name === itemName && !forceOff) {
+                                if (this.isLayerHidden(key)) {
+                                    $(nodeProperties._icon).css('display', 'block');
+                                    this.floorCountOverride[floor]++;
+                                }
                                 $(nodeProperties._icon).addClass('search-result');
                                 if (this.floorsWithSearchResults.indexOf(floor) === -1) {
                                     this.floorsWithSearchResults.push(floor);
@@ -2200,7 +2211,7 @@ export default {
 
                     if (key.startsWith('Disguises|')) {
                         this.disguises.forEach(disguise => {
-                            this.toggleLayer(floorLayers['Disguises|' + disguise.id],
+                            this.toggleLayerGroup(floorLayers['Disguises|' + disguise.id],
                                 disguise.id === disguiseId && floor === parseInt(this.currentLayer));
                         });
                     }
@@ -2370,7 +2381,7 @@ export default {
                 }
 
                 if (this.mission.satelliteView) {
-                    let mapTileLayer = L.tileLayer(this.mapUrl + '/-99/{z}/{x}/{y}.png', {
+                    let mapTileLayer = L.tileLayer(this.mapUrl + '-99/{z}/{x}/{y}.png', {
                         noWrap: true,
                         minZoom: 3,
                         maxZoom: 5
@@ -2406,7 +2417,7 @@ export default {
                 // "Show" all items; CSS will handle showing / hiding
                 for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
                     for (let j in this.overlays[i]) {
-                        this.toggleLayer(this.overlays[i][j], true);
+                        this.toggleLayerGroup(this.overlays[i][j], true);
                     }
                 }
                 this.updateNodeLayerState();
