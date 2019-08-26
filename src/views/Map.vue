@@ -1423,7 +1423,7 @@
                 </div>
             </div>
         </div>
-        <template id="popup-template">
+        <script type="text/html" id="popup-template">
             <div>
                 <img src="#" alt="Image template holder">
                 <div data-name="name">Stove</div>
@@ -1442,7 +1442,7 @@
                     </button>
                 </div>
             </div>
-        </template>
+        </script>
     </div>
 </template>
 
@@ -1619,6 +1619,7 @@ export default {
             this.editor.mode = menu
         },
         buildMarker: function(node) {
+            const that = this;
             return L.marker([node.latitude, node.longitude], {
                 icon: L.icon({iconUrl: '/img/map-icons/' + node.icon + '.png',
                     iconSize: [32, 32],
@@ -1631,8 +1632,8 @@ export default {
                 },
                 draggable: true,
                 riseOnHover: true
-            }).on('popupopen', function() {
-                g_openMarker = this;
+            }).on('click', function(e) {
+                that.editor.currentMarker = node;
             }).on('dragend', function(e) {
                 var nodeInformation = e.target.options.custom;
                 if (parseInt($('input[type="hidden"][name="edit-mode"]').val()) === 0) {
@@ -1754,7 +1755,8 @@ export default {
             this.editor.currentMarker = item
             $(this.$refs.confirmMoveModal).modal('show')
         },
-        editMarker: function(item) {
+        editMarker: function() {
+            const item = this.editor.currentMarker;
             this.editor.notes = item.notes
             this.editor.currentCategory = item.type + '|' + item.subgroup
             this.editor.clickedPoint = L.latLng(item.latitude, item.longitude)
@@ -1879,17 +1881,20 @@ export default {
                         resp.data.data.type + '|' + resp.data.data.group
                     ].items.push(resp.data.data)
                 }
-                $(this.$refs.editModal).modal('hide')
+                $(this.$refs.editModal).modal('hide');
+                this.editor.currentMarker = null;
             })
         },
-        deleteMarker: function(node) {
+        deleteMarker: function() {
+            const node = this.editor.currentMarker;
             this.$request(false, 'nodes/delete/' + node.id).then(resp => {
                 this.layerGroups[node.type + '|' + node.group].items.splice(
                     this.layerGroups[
                         node.type + '|' + node.group
                     ].items.indexOf(node),
                     1
-                )
+                );
+                this.editor.currentMarker = null;
             })
         },
         deletePoly: function(item, type) {
@@ -2257,6 +2262,10 @@ export default {
         }
     },
     created: function() {
+        const $body = $('body');
+        $body.on('click', '[data-action="edit-btn"]', this.editMarker);
+        $body.on('click', '[data-action="delete-btn"]', this.deleteMarker);
+
         if (this.game === null || this.game.slug !== this.$route.params.slug)
             this.$store.dispatch('loadGame', this.$route.params.slug)
         this.$request(
@@ -2290,6 +2299,12 @@ export default {
             this.foliage = resp.data.foliage
             this.nodes = resp.data.nodes
             this.searchableNodes = resp.data.searchableNodes
+            resp.data.categories.forEach(category => {
+                if (!this.categories[category.type]) {
+                    this.categories[category.type] = [];
+                }
+                this.categories[category.type].push(category);
+            });
 
             // Initialize g_overlays for each floor
             for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
