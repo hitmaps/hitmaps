@@ -931,6 +931,7 @@
                             <button
                                 type="button"
                                 class="btn btn-secondary"
+                                @click="cancelMoveMarker"
                                 data-dismiss="modal"
                             >
                                 No, cancel
@@ -1494,6 +1495,7 @@ export default {
                 notes: [],
                 clickedPoint: {},
                 currentMarker: {},
+                originalLatLng: null,
                 vertices: [],
                 workingLayers: []
             },
@@ -1617,7 +1619,8 @@ export default {
             )
         },
         editorMenu: function(menu) {
-            this.editor.mode = menu
+            this.editor.mode = menu;
+            this.updateNodeLayerState();
         },
         buildMarker: function(node) {
             const that = this;
@@ -1631,25 +1634,10 @@ export default {
                     id: node.id,
                     node: node
                 },
-                draggable: true,
                 riseOnHover: true
             }).on('click', function(e) {
                 that.editor.currentMarker = node;
-            }).on('dragend', function(e) {
-                var nodeInformation = e.target.options.custom;
-                if (parseInt($('input[type="hidden"][name="edit-mode"]').val()) === 0) {
-                    console.debug("Editor disabled. Sending node back.");
-                    e.target.setLatLng([nodeInformation.node.latitude, nodeInformation.node.longitude]);
-                    toastr["warning"]("The editor is disabled. No items can be moved unless the editor is enabled.");
-                    return;
-                }
-
-                var $modal = $('#confirm-move-modal')
-                    .find('input[name="node-id"]').val(nodeInformation.id).end()
-                    .find('input[name="latitude"]').val(e.target.getLatLng().lat).end()
-                    .find('input[name="longitude"]').val(e.target.getLatLng().lng).end()
-                    .modal('show');
-            });
+            }).on('dragend', this.moveMarker);
         },
         buildPopup: function(element) {
             let node = element.options.custom.node;
@@ -1667,7 +1655,7 @@ export default {
             }
 
             if (node.image !== null) {
-                $template.find('img').attr('src', '{{ settings.cdnLocation }}/{{ model.pngBackgroundFileExtension }}' + node.image + '.{{ model.pngBackgroundFileExtension }}');
+                $template.find('img').attr('src', '/img/png/' + node.image + '.png');
             } else {
                 $template.find('img').remove();
             }
@@ -1745,16 +1733,16 @@ export default {
             this.editor.notes = []
             $(element).modal('show')
         },
-        moveMarker: function(event, item) {
-            if (this.editor.mode === '') {
-                //Resetting the position
-                event.target.setLatLng([item.latitude, item.longitude])
-                return
-            }
+        moveMarker: function(event) {
+            let item = event.target;
             item.latitude = event.target.getLatLng().lat
             item.longitude = event.target.getLatLng().lng
             this.editor.currentMarker = item
+            this.editor.originalLatLng = [item.options.custom.node.latitude, item.options.custom.node.longitude];
             $(this.$refs.confirmMoveModal).modal('show')
+        },
+        cancelMoveMarker: function() {
+            this.editor.currentMarker.setLatLng(this.editor.originalLatLng);
         },
         editMarker: function() {
             const item = this.editor.currentMarker;
@@ -1877,10 +1865,14 @@ export default {
                     resp.data.data.latLng = L.latLng(
                         resp.data.data.latitude,
                         resp.data.data.longitude
-                    )
-                    this.layerGroups[
-                        resp.data.data.type + '|' + resp.data.data.group
-                    ].items.push(resp.data.data)
+                    );
+                    let node = resp.data.data;
+
+                    let marker = this.buildMarker(node).bindPopup(this.buildPopup);
+                    if (node.tooltip !== '') {
+                        marker.bindTooltip(node.tooltip);
+                    }
+                    marker.addTo(this.overlays[node.level][node.type + '|' + node.group]);
                 }
                 $(this.$refs.editModal).modal('hide');
                 this.editor.currentMarker = null;
@@ -2184,6 +2176,13 @@ export default {
                         for (const node in floorLayers[key].getLayers()) {
                             const nodeProperties = floorLayers[key].getLayers()[node];
 
+                            if (this.editor.mode === '') {
+                                nodeProperties.dragging.disable();
+                            } else {
+                                nodeProperties.dragging.enable();
+                            }
+
+
                             if (currentFloor && !this.isLayerHidden(key)) {
                                 $(nodeProperties._icon).css('display', 'block');
                             } else {
@@ -2438,6 +2437,8 @@ export default {
                     })
                 });
 
+                this.map.on('click', this.addMarker);
+
                 this.map.on('pm:drawstart', this.initDraw);
 
                 this.map.on('pm:create', this.pmLayer);
@@ -2480,9 +2481,9 @@ html {
     width: 100%;
     height: 100%;
 
-    /*.leaflet-control-container {
-          display: none;
-        }*/
+    .leaflet-control-container {
+        display: none;
+    }
 
     .leaflet-popup-close-button {
         font-size: 2rem;
