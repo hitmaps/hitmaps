@@ -2256,8 +2256,10 @@ export default {
                             }
 
                             if (nodeProperties.options.custom.node.name === itemName && !forceOff) {
-                                if (this.isLayerHidden(key) && currentFloor) {
-                                    $(nodeProperties._icon).css('display', 'block');
+                                if (this.isLayerHidden(key)) {
+                                    if (currentFloor) {
+                                        $(nodeProperties._icon).css('display', 'block');
+                                    }
                                     this.floorCountOverride[floor]++;
                                 }
                                 $(nodeProperties._icon).addClass('search-result');
