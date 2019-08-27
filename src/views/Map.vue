@@ -118,7 +118,7 @@
                             <button
                                 v-if="isLoggedIn"
                                 id="edit-button"
-                                @click="editor.enabled = !editor.enabled"
+                                @click="toggleEditor"
                                 class="btn control-button"
                                 v-tooltip:top="'Edit Map'"
                             >
@@ -653,7 +653,9 @@
                             <i class="fas fa-trash"></i>
                             Click on an existing ledge to delete it.
                         </p>
-                        <div class="editor-button" @click="toggleDraw('Line')">
+                        <div class="editor-button"
+                             :class="{'selected': editor.polyActive}"
+                             @click="toggleDraw('Line')">
                             <h3>
                                 <i class="fas fa-plus-circle"></i>
                                 Add Ledge
@@ -683,6 +685,7 @@
                         </p>
                         <div
                             class="editor-button"
+                            :class="{'selected': editor.polyActive}"
                             @click="toggleDraw('Polygon')"
                         >
                             <h3>
@@ -740,6 +743,7 @@
                             class="editor-button"
                             data-disguise="add"
                             data-type="trespassing"
+                            :class="{'selected': editor.polyActive && editor.disguiseType === 'trespassing'}"
                             @click="
                                 toggleDraw('Polygon')
                                 editor.disguiseType = 'trespassing'
@@ -759,6 +763,7 @@
                             class="editor-button"
                             data-disguise="add"
                             data-type="hostile"
+                            :class="{'selected': editor.polyActive && editor.disguiseType === 'hostile'}"
                             @click="
                                 toggleDraw('Polygon')
                                 editor.disguiseType = 'hostile'
@@ -1494,7 +1499,8 @@ export default {
                 currentMarker: {},
                 originalLatLng: null,
                 vertices: [],
-                workingLayers: []
+                workingLayers: [],
+                polyActive: false
             },
             copyDisguiseArea: {
                 source: -1,
@@ -1621,6 +1627,9 @@ export default {
         },
         editorMenu: function(menu) {
             this.editor.mode = menu;
+            if (menu === '') {
+                this.toggleDraw('ALL');
+            }
             this.updateNodeLayerState();
         },
         buildMarker: function(node) {
@@ -1724,6 +1733,13 @@ export default {
 
             const tooltip = disguiseArea.type === 'trespassing' ? 'Trespassing' : 'Hostile Area';
             return polygon.bindTooltip(tooltip, {sticky: true});
+        },
+        toggleEditor: function() {
+            if (this.editor.enabled) {
+                this.toggleDraw('ALL');
+            }
+
+            this.editor.enabled = !this.editor.enabled;
         },
         addMarker: function(event) {
             if (!this.editor.enabled || this.editor.mode !== 'items') return
@@ -2052,12 +2068,21 @@ export default {
             this.updateNodeLayerState();
         },
         toggleDraw: function(type) {
+            if (type === 'ALL') {
+                this.map.pm.disableDraw('Line');
+                this.map.pm.disableDraw('Polygon');
+                this.editor.polyActive = false;
+                return;
+            }
+
             if (this.map.pm.Draw[type]._enabled) {
                 this.map.pm.disableDraw(type);
+                this.editor.polyActive = false;
             } else {
                 this.map.pm.enableDraw(type, {
                     snappable: false
                 });
+                this.editor.polyActive = true;
             }
         },
         initDraw: function(e) {
