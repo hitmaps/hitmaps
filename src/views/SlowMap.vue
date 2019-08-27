@@ -73,7 +73,198 @@
                     </div>
                 </div>
             </div>
-            <div id="map"></div>
+            <l-map
+                id="map"
+                ref="map"
+                @click="addMarker"
+                :minZoom="3"
+                :maxZoom="5"
+                :maxBounds="[
+                    [
+                        this.mission.topLeftCoordinate.split(',')[0],
+                        this.mission.topLeftCoordinate.split(',')[1]
+                    ],
+                    [
+                        this.mission.bottomRightCoordinate.split(',')[0],
+                        this.mission.bottomRightCoordinate.split(',')[1]
+                    ]
+                ]"
+                :crs="crs"
+                @pm:drawstart="initDraw"
+                @pm:create="pmLayer"
+                @pm:drawend="endDraw"
+            >
+                <l-tile-layer
+                    v-for="floor in range(
+                        mission.lowestFloorNumber,
+                        mission.highestFloorNumber
+                    )"
+                    :key="floor"
+                    :noWrap="true"
+                    :visible="currentLayer === floor"
+                    :url="mapUrl + floor + '/{z}/{x}/{y}.png'"
+                ></l-tile-layer>
+                <l-tile-layer
+                    v-if="mission.satelliteView"
+                    :noWrap="true"
+                    :visible="currentLayer === -99"
+                    :url="mapUrl + '-99/{z}/{x}/{y}.png'"
+                ></l-tile-layer>
+                <div
+                    v-for="floor in range(
+                        mission.lowestFloorNumber,
+                        mission.highestFloorNumber
+                    )"
+                    :key="'layer' + floor"
+                >
+                    <l-layer-group
+                        v-for="disguise in disguises"
+                        :key="floor + disguise.name"
+                        :visible="
+                            currentLayer == floor &&
+                                editor.currentDisguise == disguise.id
+                        "
+                    >
+                        <l-polygon
+                            v-for="item in disguise.areas.filter(
+                                el => el.level == floor
+                            )"
+                            :key="item.id"
+                            :lat-lngs="parseCoords(item.vertices)"
+                            :fillColor="
+                                item.type === 'trespassing' ? 'yellow' : '#f00'
+                            "
+                            :stroke="false"
+                            :weight="4"
+                            :opacity="0.75"
+                            @click="deletePoly(item, 'disguise-areas')"
+                        >
+                            <l-tooltip>
+                                {{
+                                    item.type === 'trespassing'
+                                        ? 'Trespassing'
+                                        : 'Hostile'
+                                }}
+                            </l-tooltip>
+                        </l-polygon>
+                    </l-layer-group>
+                    <l-layer-group
+                        v-for="(group, key) in layerGroups"
+                        :key="floor + key"
+                        :visible="currentLayer == floor && !isLayerHidden(key)"
+                    >
+                        <div v-if="group.name === 'Ledge'">
+                            <l-polyline
+                                v-for="ledge in ledges.filter(
+                                    el => el.level == floor
+                                )"
+                                :key="ledge.id"
+                                color="#fff"
+                                :weight="4"
+                                :opacity="0.75"
+                                :lat-lngs="parseCoords(ledge.vertices)"
+                                @click="deletePoly(ledge, 'ledges')"
+                            >
+                                <l-tooltip>Ledge</l-tooltip>
+                            </l-polyline>
+                        </div>
+                        <div v-else-if="group.name === 'Foliage'">
+                            <l-polygon
+                                v-for="item in foliage.filter(
+                                    el => el.level == floor
+                                )"
+                                :key="item.id"
+                                color="#248f24"
+                                fillColor="#248f24"
+                                :weight="4"
+                                :opacity="0.75"
+                                :lat-lngs="parseCoords(item.vertices)"
+                                @click="deletePoly(item, 'foliage')"
+                            >
+                                <l-tooltip>Foliage</l-tooltip>
+                            </l-polygon>
+                        </div>
+                        <div v-else>
+                            <l-marker
+                                v-for="item in group.items.filter(
+                                    el => el.level == floor
+                                )"
+                                :key="item.id"
+                                :latLng="item.latLng"
+                                :draggable="editor.mode === 'items'"
+                                @dragend="moveMarker($event, item)"
+                            >
+                                <l-icon
+                                    :icon-url="
+                                        '/img/map-icons/' + item.icon + '.png'
+                                    "
+                                    :icon-size="[32, 32]"
+                                    :icon-anchor="[16, 16]"
+                                    :class-name="
+                                        isSearchResult(item)
+                                            ? 'search-result'
+                                            : ''
+                                    "
+                                ></l-icon>
+                                <l-popup>
+                                    <img
+                                        v-if="item.image"
+                                        :src="'/img/png/' + item.image + '.png'"
+                                        alt="Image template holder"
+                                    />
+                                    <div data-name="name">{{ item.name }}</div>
+                                    <div data-name="group">
+                                        {{ item.group }}
+                                    </div>
+                                    <div data-name="target">
+                                        <i
+                                            v-if="item.target"
+                                            :class="'far ' + item.targetIcon"
+                                        ></i>
+                                        <span>{{ item.target }}</span>
+                                    </div>
+                                    <div data-name="notes">
+                                        <div
+                                            v-for="note in item.notes"
+                                            :key="note.id"
+                                            :class="note.type"
+                                        >
+                                            <div class="in-game-description">
+                                                In-game Description:
+                                            </div>
+                                            <div data-name="note-contents">
+                                                {{ note.text }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button
+                                            class="btn btn-danger btn-sm"
+                                            data-action="delete-btn"
+                                            @click="deleteMarker(item)"
+                                            v-tooltip:top="'Delete'"
+                                        >
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                        <button
+                                            class="btn btn-warning btn-sm"
+                                            data-action="edit-btn"
+                                            @click="editMarker(item)"
+                                            data-node-id="x"
+                                            v-tooltip:top="'Edit'"
+                                        >
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </button>
+                                    </div>
+                                </l-popup>
+                                <l-tooltip v-if="item.tooltip">
+                                    {{ item.tooltip }}
+                                </l-tooltip>
+                            </l-marker>
+                        </div>
+                    </l-layer-group>
+                </div>
+            </l-map>
             <nav class="navbar navbar-fixed-right navbar-dark">
                 <button
                     class="navbar-toggler"
@@ -118,7 +309,7 @@
                             <button
                                 v-if="isLoggedIn"
                                 id="edit-button"
-                                @click="toggleEditor"
+                                @click="editor.enabled = !editor.enabled"
                                 class="btn control-button"
                                 v-tooltip:top="'Edit Map'"
                             >
@@ -133,14 +324,15 @@
                                     <i class="fas fa-user-circle"></i>
                                 </button>
                             </router-link>
-                            <button
-                                v-if="isLoggedIn"
-                                class="btn control-button"
-                                v-tooltip:top="'Log Out'"
-                                @click="logout"
-                            >
-                                <i class="fas fa-sign-out-alt"></i>
-                            </button>
+                            <a href="#">
+                                <button
+                                    v-if="isLoggedIn"
+                                    class="btn control-button"
+                                    v-tooltip:top="'Log Out'"
+                                >
+                                    <i class="fas fa-sign-out-alt"></i>
+                                </button>
+                            </a>
                             <router-link :to="{ name: 'login' }">
                                 <button
                                     v-if="!isLoggedIn"
@@ -653,9 +845,7 @@
                             <i class="fas fa-trash"></i>
                             Click on an existing ledge to delete it.
                         </p>
-                        <div class="editor-button"
-                             :class="{'selected': editor.polyActive}"
-                             @click="toggleDraw('Line')">
+                        <div class="editor-button" @click="toggleDraw('Line')">
                             <h3>
                                 <i class="fas fa-plus-circle"></i>
                                 Add Ledge
@@ -685,7 +875,6 @@
                         </p>
                         <div
                             class="editor-button"
-                            :class="{'selected': editor.polyActive}"
                             @click="toggleDraw('Polygon')"
                         >
                             <h3>
@@ -724,7 +913,9 @@
                         <div class="search-box">
                             <select
                                 ref="disguisePicker"
-                                @change="partialChangeDisguise($event.target.value)"
+                                @change="
+                                    editor.currentDisguise = $event.target.value
+                                "
                                 name="disguise-menu-dropdown"
                                 class="selectpicker"
                                 data-style="control-button"
@@ -743,7 +934,6 @@
                             class="editor-button"
                             data-disguise="add"
                             data-type="trespassing"
-                            :class="{'selected': editor.polyActive && editor.disguiseType === 'trespassing'}"
                             @click="
                                 toggleDraw('Polygon')
                                 editor.disguiseType = 'trespassing'
@@ -763,7 +953,6 @@
                             class="editor-button"
                             data-disguise="add"
                             data-type="hostile"
-                            :class="{'selected': editor.polyActive && editor.disguiseType === 'hostile'}"
                             @click="
                                 toggleDraw('Polygon')
                                 editor.disguiseType = 'hostile'
@@ -933,7 +1122,6 @@
                             <button
                                 type="button"
                                 class="btn btn-secondary"
-                                @click="cancelMoveMarker"
                                 data-dismiss="modal"
                             >
                                 No, cancel
@@ -1426,31 +1614,26 @@
                 </div>
             </div>
         </div>
-        <script type="text/html" id="popup-template">
-            <div>
-                <img src="#" alt="Image template holder">
-                <div data-name="name">Stove</div>
-                <div data-name="group">Explosion</div>
-                <div data-name="target">
-                    <i class="far"></i>
-                    <span>Start Gas Leak</span>
-                </div>
-                <div data-name="notes"></div>
-                <div data-authenticated-only>
-                    <button class="btn btn-danger btn-sm" data-action="delete-btn" data-node-id="x" data-toggle="tooltip" title="Delete">
-                        <i class="fas fa-times"></i>
-                    </button>
-                    <button class="btn btn-warning btn-sm" data-action="edit-btn" data-node-id="x" data-toggle="tooltip" title="Edit">
-                        <i class="fas fa-pencil-alt"></i>
-                    </button>
-                </div>
-            </div>
-        </script>
     </div>
 </template>
 
 <script>
+import {
+    LMap,
+    LTileLayer,
+    LMarker,
+    LLayerGroup,
+    LTooltip,
+    LPopup,
+    LPolyline,
+    LPolygon,
+    LIcon
+} from 'vue2-leaflet'
 import Vue from 'vue'
+import 'leaflet/dist/leaflet.css'
+
+import 'leaflet.pm'
+import 'leaflet.pm/dist/leaflet.pm.css'
 
 import CxltToaster from 'cxlt-vue2-toastr'
 import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
@@ -1462,6 +1645,15 @@ Vue.use(CxltToaster)
 export default {
     name: 'map-view',
     components: {
+        LMap,
+        LTileLayer,
+        LMarker,
+        LLayerGroup,
+        LTooltip,
+        LPopup,
+        LPolyline,
+        LPolygon,
+        LIcon,
         GameButton,
         Modal
     },
@@ -1476,16 +1668,12 @@ export default {
             nodes: null,
             searchableNodes: null,
             currentLayer: 0,
-            overlays: [],
-            layerGroups: [],
-            map: null,
-            mapLayers: [],
+            crs: L.CRS.Simple,
+            layerGroups: {},
             categories: {},
             mapLoaded: false,
             hiddenLayers: [],
             searchedItem: null,
-            floorsWithSearchResults: [],
-            floorCountOverride: [],
             editor: {
                 enabled: false,
                 mode: '',
@@ -1497,10 +1685,8 @@ export default {
                 notes: [],
                 clickedPoint: {},
                 currentMarker: {},
-                originalLatLng: null,
                 vertices: [],
-                workingLayers: [],
-                polyActive: false
+                workingLayers: []
             },
             copyDisguiseArea: {
                 source: -1,
@@ -1580,6 +1766,7 @@ export default {
                     atob(localStorage.getItem('token').split('.')[1])
                 )
                 var now = new Date()
+                console.log(new Date(data.exp * 1000).getTime() - now.getTime())
                 if (new Date(data.exp * 1000).getTime() - now.getTime() > 0)
                     return true
             }
@@ -1587,10 +1774,6 @@ export default {
         }
     },
     methods: {
-        logout: function() {
-            localStorage.removeItem('token');
-            location.reload();
-        },
         noDuplicates: function(val) {
             var filtered_array = []
             for (var i = 0; i < val.length; i++) {
@@ -1613,10 +1796,7 @@ export default {
             return array
         },
         changeLevel: function(level) {
-            this.map.removeLayer(this.mapLayers[this.currentLayer]);
-            this.currentLayer = level;
-            this.map.addLayer(this.mapLayers[this.currentLayer]);
-            this.updateNodeLayerState();
+            this.currentLayer = level
         },
         collapsible: function(type, group) {
             return (
@@ -1626,120 +1806,7 @@ export default {
             )
         },
         editorMenu: function(menu) {
-            this.editor.mode = menu;
-            if (menu === '') {
-                this.toggleDraw('ALL');
-            }
-            this.updateNodeLayerState();
-        },
-        buildMarker: function(node) {
-            const that = this;
-            return L.marker([node.latitude, node.longitude], {
-                icon: L.icon({iconUrl: '/img/map-icons/' + node.icon + '.png',
-                    iconSize: [32, 32],
-                    iconAnchor: [16, 16],
-                    popupAnchor: [0, 0]
-                }),
-                custom: {
-                    id: node.id,
-                    node: node
-                },
-                riseOnHover: true
-            }).on('click', function(e) {
-                that.editor.currentMarker = node;
-            }).on('dragend', this.moveMarker);
-        },
-        buildPopup: function(element) {
-            let node = element.options.custom.node;
-
-            let $template = $($('#popup-template').html());
-            $template.find('[data-name="group"]').html(node.group).end()
-                .find('[data-name="name"]').html(node.name).end()
-                .find('[data-node-id="x"]').attr('data-node-id', node.id).end()
-                .find('[data-name="target"]').find('span').html(node.target);
-
-            if (node.target !== null && node.target !== '' && node.targetIcon !== '') {
-                $template.find('[data-name="target"]').find('i').addClass(node.targetIcon).show();
-            } else {
-                $template.find('[data-name="target"]').find('i').hide();
-            }
-
-            if (node.image !== null) {
-                $template.find('img').attr('src', '/img/png/' + node.image + '.png');
-            } else {
-                $template.find('img').remove();
-            }
-
-            for (let i in node.notes) {
-                let $noteTemplate = $($('#popup-note-template').html());
-
-                $noteTemplate.find('[data-name="note-contents"]').html(node.notes[i].text).parent().addClass(node.notes[i].type);
-
-                $template.find('[data-name="notes"]').append($noteTemplate.html());
-            }
-
-            if (!this.isLoggedIn) {
-                // Yeah, this isn't the most "secure" thing... but the editor won't work unless you're authenticated.
-                // Additionally, anyone can create an account, so it's not confidential information.
-                $template.find('[data-authenticated-only]').html('');
-            }
-
-            return $template.html();
-        },
-        buildLedge: function(ledge) {
-            const that = this;
-            const polyline = L.polyline(this.parseCoords(ledge.vertices), {
-                color: '#fff',
-                weight: 4,
-                opacity: .75,
-                custom: {
-                    id: ledge.id
-                }
-            }).on('click', function() {
-                that.editor.currentMarker = this;
-                that.deletePoly(ledge, 'ledges');
-            });
-
-            return polyline.bindTooltip('Ledge', {sticky: true});
-        },
-        buildFoliage: function(foliage) {
-            const that = this;
-            const polygon = L.polygon(this.parseCoords(foliage.vertices), {
-                color: '#248f24',
-                weight: 4,
-                opacity: .75,
-                custom: {
-                    id: foliage.id
-                }
-            }).on('click', function() {
-                that.deletePoly(foliage, 'foliage');
-            });
-
-            return polygon.bindTooltip('Foliage', {sticky: true});
-        },
-        buildDisguiseArea: function(disguiseArea) {
-            const that = this;
-            const polygon = L.polygon(this.parseCoords(disguiseArea.vertices), {
-                color: disguiseArea.type === 'trespassing' ? 'yellow' : '#f00',
-                stroke: false,
-                weight: 4,
-                opacity: .75,
-                custom: {
-                    id: disguiseArea.id
-                }
-            }).on('click', function() {
-                that.deletePoly(disguiseArea, 'disguise-areas')
-            });
-
-            const tooltip = disguiseArea.type === 'trespassing' ? 'Trespassing' : 'Hostile Area';
-            return polygon.bindTooltip(tooltip, {sticky: true});
-        },
-        toggleEditor: function() {
-            if (this.editor.enabled) {
-                this.toggleDraw('ALL');
-            }
-
-            this.editor.enabled = !this.editor.enabled;
+            this.editor.mode = menu
         },
         addMarker: function(event) {
             if (!this.editor.enabled || this.editor.mode !== 'items') return
@@ -1760,19 +1827,19 @@ export default {
             this.editor.notes = []
             $(element).modal('show')
         },
-        moveMarker: function(event) {
-            let item = event.target;
+        moveMarker: function(event, item) {
+            console.log(event)
+            if (this.editor.mode === '') {
+                //Resetting the position
+                event.target.setLatLng([item.latitude, item.longitude])
+                return
+            }
             item.latitude = event.target.getLatLng().lat
             item.longitude = event.target.getLatLng().lng
             this.editor.currentMarker = item
-            this.editor.originalLatLng = [item.options.custom.node.latitude, item.options.custom.node.longitude];
             $(this.$refs.confirmMoveModal).modal('show')
         },
-        cancelMoveMarker: function() {
-            this.editor.currentMarker.setLatLng(this.editor.originalLatLng);
-        },
-        editMarker: function() {
-            const item = this.editor.currentMarker;
+        editMarker: function(item) {
             this.editor.notes = item.notes
             this.editor.currentCategory = item.type + '|' + item.subgroup
             this.editor.clickedPoint = L.latLng(item.latitude, item.longitude)
@@ -1793,6 +1860,7 @@ export default {
         },
         confirmMove: function() {
             var data = new FormData()
+            console.log(this.editor.currentMarker)
             data.append('node-id', this.editor.currentMarker.id)
             data.append('latitude', this.editor.currentMarker.latitude)
             data.append('longitude', this.editor.currentMarker.longitude)
@@ -1892,29 +1960,23 @@ export default {
                     resp.data.data.latLng = L.latLng(
                         resp.data.data.latitude,
                         resp.data.data.longitude
-                    );
-                    let node = resp.data.data;
-
-                    let marker = this.buildMarker(node).bindPopup(this.buildPopup);
-                    if (node.tooltip !== '') {
-                        marker.bindTooltip(node.tooltip);
-                    }
-                    marker.addTo(this.overlays[node.level][node.type + '|' + node.group]);
+                    )
+                    this.layerGroups[
+                        resp.data.data.type + '|' + resp.data.data.group
+                    ].items.push(resp.data.data)
                 }
-                $(this.$refs.editModal).modal('hide');
-                this.editor.currentMarker = null;
+                $(this.$refs.editModal).modal('hide')
             })
         },
-        deleteMarker: function() {
-            const node = this.editor.currentMarker;
+        deleteMarker: function(node) {
             this.$request(false, 'nodes/delete/' + node.id).then(resp => {
+                console.log('Node successfully deleted')
                 this.layerGroups[node.type + '|' + node.group].items.splice(
                     this.layerGroups[
                         node.type + '|' + node.group
                     ].items.indexOf(node),
                     1
-                );
-                this.editor.currentMarker = null;
+                )
             })
         },
         deletePoly: function(item, type) {
@@ -1940,8 +2002,6 @@ export default {
                                     this.foliage.indexOf(foliageObject),
                                     1
                                 )
-                                this.map.removeLayer(this.editor.currentMarker);
-                                this.editor.currentMarker = null;
                             }
                         )
                     }
@@ -1968,8 +2028,6 @@ export default {
                                     this.ledges.indexOf(ledgeObject),
                                     1
                                 )
-                                this.map.removeLayer(this.editor.currentMarker);
-                                this.editor.currentMarker = null;
                             }
                         )
                     }
@@ -2002,8 +2060,6 @@ export default {
                                 disguise.areas.indexOf(disguiseArea),
                                 1
                             )
-                            this.map.removeLayer(this.editor.currentMarker);
-                            this.editor.currentMarker = null;
                         })
                     }
                     break
@@ -2016,17 +2072,6 @@ export default {
                 this.hiddenLayers.indexOf(name.split('|')[0] + '|') != -1
             )
         },
-        hideAll: function() {
-            this.hiddenLayers.push('Points of Interest|', 'Weapons and Tools|', 'Navigation|');
-            this.updateNodeLayerState();
-        },
-        toggleLayerGroup: function(layer, shouldShow) {
-            if (shouldShow) {
-                this.map.addLayer(layer);
-            } else {
-                this.map.removeLayer(layer);
-            }
-        },
         toggleLayer: function(name, hideAll) {
             if (name === '|') {
                 this.hiddenLayers = []
@@ -2034,59 +2079,53 @@ export default {
                 if (hideAll) {
                     this.hiddenLayers = ['Points of Interest|', 'Weapons and Tools|', 'Navigation|']
                 }
-            } else {
-                if (name.includes('*')) {
-                    // Case 1: Toggling top level category
-                    let prefix = name.replace('*', '')
 
-                    if (this.isLayerHidden(prefix)) {
-                        this.$delete(this.hiddenLayers, this.hiddenLayers.indexOf(prefix))
-                    } else {
-                        this.hiddenLayers = this.hiddenLayers.filter(layer => !layer.includes(prefix))
-                        this.hiddenLayers.push(prefix)
-                    }
-                }  else {
-                    // Case 2: Toggling group
-                    let topLevelCategory = name.split('|')[0]
-                    let group = name.split('|')[1]
-                    if (this.hiddenLayers.indexOf(topLevelCategory + '|') !== -1) {
-                        // Case a: Top level category is hidden
-                        this.$delete(this.hiddenLayers, this.hiddenLayers.indexOf(topLevelCategory + '|'))
-                        this.categories[topLevelCategory]
-                            .filter(category => category.type === topLevelCategory && category.group !== group)
-                            .map(category => category.group)
-                            .forEach(group => this.hiddenLayers.push(topLevelCategory + '|' + group))
-                    } else if (this.hiddenLayers.indexOf(name) !== -1) {
-                        // Case b: Group is hidden
-                        this.$delete(this.hiddenLayers, this.hiddenLayers.indexOf(name))
-                    } else {
-                        // Case c: Groups is not hidden, nor is top level category
-                        this.hiddenLayers.push(name)
-                    }
+                return
+            }
+
+            if (name.includes('*')) {
+                // Case 1: Toggling top level category
+                let prefix = name.replace('*', '')
+
+                if (this.isLayerHidden(prefix)) {
+                    this.$delete(this.hiddenLayers, this.hiddenLayers.indexOf(prefix))
+                } else {
+                    this.hiddenLayers = this.hiddenLayers.filter(layer => !layer.includes(prefix))
+                    this.hiddenLayers.push(prefix)
+                }
+            }  else {
+                // Case 2: Toggling group
+                let topLevelCategory = name.split('|')[0]
+                let group = name.split('|')[1]
+                if (this.hiddenLayers.indexOf(topLevelCategory + '|') !== -1) {
+                    // Case a: Top level category is hidden
+                    this.$delete(this.hiddenLayers, this.hiddenLayers.indexOf(topLevelCategory + '|'))
+                    this.categories[topLevelCategory]
+                        .filter(category => category.type === topLevelCategory && category.group !== group)
+                        .map(category => category.group)
+                        .forEach(group => this.hiddenLayers.push(topLevelCategory + '|' + group))
+                } else if (this.hiddenLayers.indexOf(name) !== -1) {
+                    // Case b: Group is hidden
+                    this.$delete(this.hiddenLayers, this.hiddenLayers.indexOf(name))
+                } else {
+                    // Case c: Groups is not hidden, nor is top level category
+                    this.hiddenLayers.push(name)
                 }
             }
-            this.updateNodeLayerState();
         },
         toggleDraw: function(type) {
-            if (type === 'ALL') {
-                this.map.pm.disableDraw('Line');
-                this.map.pm.disableDraw('Polygon');
-                this.editor.polyActive = false;
-                return;
-            }
-
-            if (this.map.pm.Draw[type]._enabled) {
-                this.map.pm.disableDraw(type);
-                this.editor.polyActive = false;
+            console.log(this.$refs.map.mapObject.pm.Draw)
+            if (this.$refs.map.mapObject.pm.Draw[type]._enabled) {
+                this.$refs.map.mapObject.pm.disableDraw(type)
             } else {
-                this.map.pm.enableDraw(type, {
+                this.$refs.map.mapObject.pm.enableDraw(type, {
                     snappable: false
-                });
-                this.editor.polyActive = true;
+                })
             }
         },
         initDraw: function(e) {
             e.workingLayer.on('pm:vertexadded', e => {
+                console.log(e.latlng)
                 this.editor.vertices.push([e.latlng.lat, e.latlng.lng])
             })
         },
@@ -2094,10 +2133,6 @@ export default {
             this.editor.workingLayers.push(e.layer)
         },
         endDraw: function(e) {
-            if (this.editor.vertices.length === 0) {
-                return;
-            }
-
             var data = new FormData()
             this.editor.vertices.forEach((element, index) => {
                 data.append('vertices[' + index + '][]', element[0])
@@ -2108,38 +2143,31 @@ export default {
             if (e.shape === 'Line') {
                 this.$request(true, 'ledges', data).then(resp => {
                     this.editor.vertices = []
-                    let ledge = resp.data.data;
-                    this.ledges.push(ledge)
-                    this.buildLedge(ledge).addTo(this.overlays[ledge.level]['Navigation|Ledge']);
+                    this.ledges.push(resp.data.data)
                     this.editor.workingLayers.forEach(el => {
-                        this.map.removeLayer(el)
+                        this.$refs.map.mapObject.removeLayer(el)
                     })
                     this.editor.workingLayers = []
                 })
             } else if (this.editor.mode === 'foliage') {
                 this.$request(true, 'foliage', data).then(resp => {
                     this.editor.vertices = []
-                    let foliage = resp.data.data;
-                    this.foliage.push(foliage)
-                    this.buildFoliage(foliage).addTo(this.overlays[foliage.level]['Navigation|Foliage']);
+                    this.foliage.push(resp.data.data)
                     this.editor.workingLayers.forEach(el => {
-                        this.map.removeLayer(el)
+                        this.$refs.map.mapObject.removeLayer(el)
                     })
                     this.editor.workingLayers = []
                 })
             } else if (this.editor.mode === 'disguises') {
-                const disguiseId = this.editor.currentDisguise;
-                data.append('disguiseId', disguiseId)
+                data.append('disguiseId', this.editor.currentDisguise)
                 data.append('type', this.editor.disguiseType)
                 this.$request(true, 'disguise-areas', data).then(resp => {
                     this.editor.vertices = []
-                    let disguiseArea = resp.data.data;
                     this.disguises
-                        .find(el => el.id == disguiseId)
-                        .areas.push(disguiseArea)
-                    this.buildDisguiseArea(disguiseArea).addTo(this.overlays[disguiseArea.level]['Disguises|' + disguiseArea.disguiseId]);
+                        .find(el => el.id == this.editor.currentDisguise)
+                        .areas.push(resp.data.data)
                     this.editor.workingLayers.forEach(el => {
-                        this.map.removeLayer(el)
+                        this.$refs.map.mapObject.removeLayer(el)
                     })
                     this.editor.workingLayers = []
                 })
@@ -2154,6 +2182,7 @@ export default {
             return latlngs
         },
         changeDisguise: function(disguise) {
+            console.log(disguise)
             this.editor.currentDisguise = disguise.id || disguise
             $(this.$refs.disguisePicker).selectpicker(
                 'val',
@@ -2162,125 +2191,39 @@ export default {
             $('#header-disguises')
                 .find('.name')
                 .click()
-            this.updateNodeLayerState();
-        },
-        partialChangeDisguise: function(disguise) {
-            // Uses the ID and doesn't propagate the change back.
-            this.editor.currentDisguise = disguise;
-            this.updateNodeLayerState();
         },
         calculateNumber(floor) {
-            var count = 0;
-            for (var level in this.overlays) {
-                if (parseInt(level) !== floor) {
-                    continue;
-                }
-
-                let layerGroups = this.overlays[level];
-                for (let layerGroup in layerGroups) {
-                    if (!this.isLayerHidden(layerGroup) &&
-                        !layerGroup.startsWith('Disguises|') &&
-                        !layerGroup.startsWith('Navigation|Ledge') &&
-                        !layerGroup.startsWith('Navigation|Foliage')) {
-                        count += layerGroups[layerGroup].getLayers().length;
-                    }
+            var count = 0
+            for (var [key, val] of Object.entries(this.layerGroups)) {
+                if (!this.isLayerHidden(key)) {
+                    count += val.items.filter(el => el.level == floor).length
                 }
             }
-            return count + this.floorCountOverride[floor];
+            return count
         },
         searchItem(event) {
             if (event.target.value === '') {
-                return;
+                return
             }
 
             $('.search-box[data-search="items"]')
                 .find('.bootstrap-select')
                 .addClass('item-selected')
-                .end();
-            const item = event.target.value.split(';');
-            this.searchedItem = {
-                layer: item[0],
-                name: item[1]
-            };
-            this.updateNodeLayerState();
-        },
-        updateNodeLayerState() {
-            let itemName = null;
-            let layer = null;
-            let disguiseId = null;
-
-            if (this.searchedItem !== null) {
-                itemName = this.searchedItem.name;
-                layer = this.searchedItem.layer;
+                .end()
+            var item = event.target.value.split(';')
+            if (this.isLayerHidden(item[0])) {
+                this.toggleLayer(item[0])
             }
-            if (this.editor.currentDisguise !== 'NONE') {
-                disguiseId = parseInt(this.editor.currentDisguise);
-            }
-
-            this.floorsWithSearchResults = [];
-            this.floorCountOverride = [];
-            for (const floorString in this.overlays) {
-                const floor = parseInt(floorString);
-                this.floorCountOverride[floor] = 0;
-                const floorLayers = this.overlays[floor];
-                for (const key in floorLayers) {
-                    const currentFloor = floor === parseInt(this.currentLayer);
-                    const forceOff = (layer !== key || itemName === null);
-
-                    // Find the button that toggles this layer and see if it's active or not.
-                    if (key !== 'Navigation|Ledge' &&
-                        key !== 'Navigation|Foliage' &&
-                        !key.startsWith('Disguises|')) {
-                        for (const node in floorLayers[key].getLayers()) {
-                            const nodeProperties = floorLayers[key].getLayers()[node];
-
-                            if (this.editor.mode === '') {
-                                nodeProperties.dragging.disable();
-                            } else {
-                                nodeProperties.dragging.enable();
-                            }
-
-
-                            if (currentFloor && !this.isLayerHidden(key)) {
-                                $(nodeProperties._icon).css('display', 'block');
-                            } else {
-                                $(nodeProperties._icon).css('display', 'none');
-                            }
-
-                            if (nodeProperties.options.custom.node.name === itemName && !forceOff) {
-                                if (this.isLayerHidden(key)) {
-                                    $(nodeProperties._icon).css('display', 'block');
-                                    this.floorCountOverride[floor]++;
-                                }
-                                $(nodeProperties._icon).addClass('search-result');
-                                if (this.floorsWithSearchResults.indexOf(floor) === -1) {
-                                    this.floorsWithSearchResults.push(floor);
-                                }
-                            } else {
-                                $(nodeProperties._icon).removeClass('search-result');
-                            }
-
-                            if (nodeProperties.options.custom.node.deleted === true) {
-                                this.map.removeLayer(nodeProperties);
-                            }
-                        }
-                    }
-
-                    if (key.startsWith('Disguises|')) {
-                        this.disguises.forEach(disguise => {
-                            this.toggleLayerGroup(floorLayers['Disguises|' + disguise.id],
-                                disguise.id === disguiseId && floor === parseInt(this.currentLayer));
-                        });
-                    }
-
-                    if (key === 'Navigation|Ledge' || key === 'Navigation|Foliage') {
-                        this.toggleLayerGroup(floorLayers[key], (currentFloor && !this.isLayerHidden(key)));
-                    }
-                }
-            }
+            var group = JSON.parse(JSON.stringify(this.layerGroups[item[0]]))
+            group.items = group.items.filter(el => el.name == item[1])
+            this.searchedItem = group
         },
         hasSearchResults(floor) {
-            return this.floorsWithSearchResults.indexOf(floor) !== -1;
+            if (this.searchedItem == null) return false
+            return (
+                this.searchedItem.items.filter(el => el.level == floor).length >
+                0
+            )
         },
         isSearchResult(item) {
             if (this.searchedItem == null) return false
@@ -2290,13 +2233,12 @@ export default {
             )
         },
         clearSearch() {
-            this.searchedItem = null;
+            this.searchedItem = null
             $('.search-box[data-search="items"]')
                 .find('.bootstrap-select')
                 .removeClass('item-selected')
-                .end();
-            $(this.$refs.itemSearch).selectpicker('val', '');
-            this.updateNodeLayerState();
+                .end()
+            $(this.$refs.itemSearch).selectpicker('val', '')
         },
         showCopyDisguiseModal() {
             $('#copy-disguises-modal').modal('show')
@@ -2334,10 +2276,6 @@ export default {
         }
     },
     created: function() {
-        const $body = $('body');
-        $body.on('click', '[data-action="edit-btn"]', this.editMarker);
-        $body.on('click', '[data-action="delete-btn"]', this.deleteMarker);
-
         if (this.game === null || this.game.slug !== this.$route.params.slug)
             this.$store.dispatch('loadGame', this.$route.params.slug)
         this.$request(
@@ -2372,140 +2310,39 @@ export default {
             this.nodes = resp.data.nodes
             this.searchableNodes = resp.data.searchableNodes
             resp.data.categories.forEach(category => {
-                if (!this.categories[category.type]) {
-                    this.categories[category.type] = [];
-                }
-                this.categories[category.type].push(category);
-            });
-
-            // Initialize g_overlays for each floor
-            for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                this.overlays[i] = {};
-            }
-
-            resp.data.categories.forEach(category => {
-                for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                    this.overlays[i][category.type + '|' + category.group] = L.layerGroup();
-                    this.layerGroups.push(this.overlays[i][category.type + '|' + category.group]);
-                }
-            });
-
-            // Layers for disguises
-            console.log(resp.data.disguises);
-            resp.data.disguises.forEach(disguise => {
-                for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                    this.overlays[i]['Disguises|' + disguise.id] = L.layerGroup();
-                    this.layerGroups.push(this.overlays[i]['Disguises|' + disguise.id]);
-                }
-            });
-
-            for (let typeName in resp.data.nodes) {
-                let nodeType = resp.data.nodes[typeName];
-
-                for (let groupName in nodeType.items) {
-                    let group = nodeType.items[groupName];
-                    group.items.forEach(node => {
-                        let marker = this.buildMarker(node).bindPopup(this.buildPopup);
-                        if (node.tooltip !== '') {
-                            marker.bindTooltip(node.tooltip);
-                        }
-
-                        marker.addTo(this.overlays[node.level][nodeType.name + '|' + group.name]);
-                    })
-                }
-            }
-
-            resp.data.ledges.forEach(ledge => {
-                this.buildLedge(ledge).addTo(this.overlays[ledge.level]['Navigation|Ledge']);
-            });
-
-            resp.data.foliage.forEach(foliage => {
-                this.buildFoliage(foliage).addTo(this.overlays[foliage.level]['Navigation|Foliage']);
-            });
-
-            resp.data.disguises.forEach(disguise => {
-                disguise.areas.forEach(area => {
-                    this.buildDisguiseArea(area).addTo(this.overlays[area.level]['Disguises|' + disguise.id]);
-                });
-            });
-
+                if (!this.categories[category.type])
+                    this.categories[category.type] = []
+                this.categories[category.type].push(category)
+                this.layerGroups[category.type + '|' + category.group] =
+                    resp.data.nodes[category.type].items[category.group]
+            })
+            console.log(this.layerGroups)
             this.$nextTick(() => {
-                // Build tile layers for each floor
-                for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                    let mapTileLayer = L.tileLayer(this.mapUrl + i + '/{z}/{x}/{y}.png', {
-                        noWrap: true,
-                        minZoom: 3,
-                        maxZoom: 5
-                    });
-                    this.layerGroups.push(mapTileLayer);
-                    this.mapLayers[i] = mapTileLayer;
-                }
-
-                if (this.mission.satelliteView) {
-                    let mapTileLayer = L.tileLayer(this.mapUrl + '-99/{z}/{x}/{y}.png', {
-                        noWrap: true,
-                        minZoom: 3,
-                        maxZoom: 5
-                    });
-                    this.layerGroups.push(mapTileLayer);
-                    this.mapLayers[-99] = mapTileLayer;
-                }
-
-                this.map = L.map('map', {
-                    maxZoom: 5,
-                    minZoom: 3,
-                    crs: L.CRS.Simple,
-                    layers: this.layerGroups,
-                    renderer: L.canvas()
-                }).setView([this.mission.mapCenterLatitude, this.mission.mapCenterLongitude], 3);
-                let topLeftCoordinate = this.mission.topLeftCoordinate.split(',');
-                let bottomRightCoordinate = this.mission.bottomRightCoordinate.split(',');
-                this.map.setMaxBounds([topLeftCoordinate, bottomRightCoordinate]);
-
-                const zoom = L.control.zoom({position: 'topright'});
-                zoom.addTo(this.map);
-                $('#map-control').append(zoom.getContainer());
-
-                for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                    this.map.removeLayer(this.mapLayers[i]);
-                }
-                if (this.mission.satelliteView) {
-                    this.map.removeLayer(this.mapLayers[-99]);
-                }
-
-                this.map.addLayer(this.mapLayers[this.mission.startingFloorNumber]);
-
-                // "Show" all items; CSS will handle showing / hiding
-                for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                    for (let j in this.overlays[i]) {
-                        this.toggleLayerGroup(this.overlays[i][j], true);
-                    }
-                }
-                this.updateNodeLayerState();
-
-                this.mapLoaded = true;
+                this.$refs.map.mapObject.setView(
+                    [
+                        Number(this.mission.mapCenterLatitude),
+                        Number(this.mission.mapCenterLongitude)
+                    ],
+                    3
+                )
+                $('#map-control').append(
+                    this.$refs.map.mapObject.zoomControl.getContainer()
+                )
+                this.mapLoaded = true
                 //Is not needed directly at start
                 this.$request(false, 'v1/editor/templates').then(resp => {
-                    this.editor.templates = resp.data;
+                    this.editor.templates = resp.data
                     this.$nextTick(() => {
                         $('.selectpicker').selectpicker()
                     })
-                });
+                })
                 this.$request(false, 'v1/editor/icons').then(resp => {
-                    this.editor.icons = resp.data;
+                    this.editor.icons = resp.data
                     this.$nextTick(() => {
-                        $(this.$refs.iconPicker).selectpicker('destroy');
+                        $(this.$refs.iconPicker).selectpicker('destroy')
                         $(this.$refs.iconPicker).selectpicker()
                     })
-                });
-
-                this.map.on('click', this.addMarker);
-
-                this.map.on('pm:drawstart', this.initDraw);
-
-                this.map.on('pm:create', this.pmLayer);
-
-                this.map.on('pm:drawend', this.endDraw);
+                })
             })
         })
     }
@@ -2543,9 +2380,9 @@ html {
     width: 100%;
     height: 100%;
 
-    .leaflet-control-container {
-        display: none;
-    }
+    /*.leaflet-control-container {
+          display: none;
+        }*/
 
     .leaflet-popup-close-button {
         font-size: 2rem;

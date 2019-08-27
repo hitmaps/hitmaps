@@ -1168,6 +1168,106 @@ $klein->onError(function (\Klein\Klein $klein, $msg, $type, Throwable $err) use 
     }
 });
 
+// TODO LEGACY
+$klein->respond('GET', '/api/games/[:game]/[:location]/[:missionSlug]/[:difficulty]', function (\Klein\Request $request) use ($twig, $applicationContext) {
+    $viewModel = new \ViewModels\GameMapViewModel();
+    $viewModel->difficulty = $request->difficulty;
+    $viewModel->game = $request->game;
+
+    /* @var $mission \DataAccess\Models\Mission|null */
+    $mission = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
+        ->getRepository(\DataAccess\Models\Mission::class)
+        ->findOneBy(['slug' => $request->missionSlug]);
+    if ($mission === null) {
+        bounceTo404($twig);
+    }
+
+    $viewModel->missionId = $mission->getId();
+    $viewModel->mission = $mission->getName();
+    $viewModel->missionType = $mission->getMissionType();
+    $viewModel->missionSlug = $mission->getSlug();
+    $viewModel->setTileLocation();
+
+    /* @var $location \DataAccess\Models\Location */
+    $location = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
+        ->getRepository(\DataAccess\Models\Location::class)
+        ->findOneBy(['id' => $mission->getLocationId()]);
+
+    $viewModel->locationSlug = $location->getSlug();
+    $viewModel->locationNameOne = $location->getDestination();
+    $viewModel->mapFolderName = $mission->getMapFolderName();
+    $viewModel->mapCenterLatitude = $mission->getMapCenterLatitude();
+    $viewModel->mapCenterLongitude = $mission->getMapCenterLongitude();
+    $viewModel->topLeftCoordinate = $mission->getTopLeftCoordinate();
+    $viewModel->bottomRightCoordinate = $mission->getBottomRightCoordinate();
+    $viewModel->lowestFloor = $mission->getLowestFloorNumber();
+    $viewModel->highestFloor = $mission->getHighestFloorNumber();
+    $viewModel->startingFloor = $mission->getStartingFloorNumber();
+    $viewModel->satelliteView = $mission->getSatelliteView() ? 1 : 0;
+    $viewModel->disguises = $applicationContext->get(\Doctrine\ORM\EntityManager::class)
+        ->getRepository(\DataAccess\Models\Disguise::class)
+        ->findBy(['missionId' => $mission->getId()], ['name' => 'ASC']);
+
+    if (true) {
+        /* @var $user \DataAccess\Models\User */
+        //$user = \BusinessLogic\Session\Session::read('userContext');
+        //$roles = $user->getRolesAsInts();
+
+        if (true) {
+            $viewModel->editorTitle = 'Add Change';
+            $viewModel->canDeleteNodes = true;
+        } else {
+            $viewModel->editorTitle = 'Suggest Edit';
+            $viewModel->canDeleteNodes = false;
+        }
+    }
+
+    $nodeCategories = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\NodeCategory::class)->findBy([], ['order' => 'ASC', 'group' => 'ASC']);
+    $sortedNodeCategories = [];
+
+    /* @var $nodeCategory \DataAccess\Models\NodeCategory */
+    foreach ($nodeCategories as $nodeCategory) {
+        if (!key_exists($nodeCategory->getType(), $sortedNodeCategories)) {
+            $sortedNodeCategories[$nodeCategory->getType()] = [];
+        }
+
+        $sortedNodeCategories[$nodeCategory->getType()][] = $nodeCategory;
+    }
+
+    $predeterminedItems = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Item::class)->findBy([], ['name' => 'ASC']);
+    $sortedPredeterminedItems = [];
+
+    /* @var $predeterminedItem \DataAccess\Models\Item */
+    foreach ($predeterminedItems as $predeterminedItem) {
+        if (!key_exists($predeterminedItem->getType(), $sortedPredeterminedItems)) {
+            $sortedPredeterminedItems[$predeterminedItem->getType()] = [];
+        }
+
+        $sortedPredeterminedItems[$predeterminedItem->getType()][] = $predeterminedItem;
+    }
+
+    $icons = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Icon::class)->findBy([], ['order' => 'ASC', 'icon' => 'ASC']);
+    $sortedIcons = [];
+
+    /* @var $icon \DataAccess\Models\Icon */
+    foreach ($icons as $icon) {
+        if (!key_exists($icon->getGroup(), $sortedIcons)) {
+            $sortedIcons[$icon->getGroup()] = [];
+        }
+
+        $sortedIcons[$icon->getGroup()][] = $icon;
+    }
+
+    $viewModel->predeterminedItems = $sortedPredeterminedItems;
+    $viewModel->nodeCategories = $sortedNodeCategories;
+    $viewModel->icons = $sortedIcons;
+    $viewModel->nodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($viewModel->missionId, $request->difficulty, true);
+    $viewModel->searchableNodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($viewModel->missionId, $request->difficulty, true, true);
+
+    return \Controllers\Renderer::render('map.twig', $twig, $viewModel);
+});
+
+
 $klein->dispatch();
 
 function userIsLoggedIn(\Klein\Request $request, \DI\Container $applicationContext, ?string &$outToken): bool {
