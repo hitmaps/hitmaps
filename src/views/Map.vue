@@ -133,15 +133,14 @@
                                     <i class="fas fa-user-circle"></i>
                                 </button>
                             </router-link>
-                            <a href="#">
-                                <button
-                                    v-if="isLoggedIn"
-                                    class="btn control-button"
-                                    v-tooltip:top="'Log Out'"
-                                >
-                                    <i class="fas fa-sign-out-alt"></i>
-                                </button>
-                            </a>
+                            <button
+                                v-if="isLoggedIn"
+                                class="btn control-button"
+                                v-tooltip:top="'Log Out'"
+                                @click="logout"
+                            >
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
                             <router-link :to="{ name: 'login' }">
                                 <button
                                     v-if="!isLoggedIn"
@@ -1582,6 +1581,10 @@ export default {
         }
     },
     methods: {
+        logout: function() {
+            localStorage.removeItem('token');
+            location.reload();
+        },
         noDuplicates: function(val) {
             var filtered_array = []
             for (var i = 0; i < val.length; i++) {
