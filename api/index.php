@@ -1057,7 +1057,7 @@ $klein->respond('GET', '/500', function() use ($twig) {
     return \Controllers\Renderer::render('500.twig', $twig);
 });
 
-$klein->respond('GET', '/sitemap.txt', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext, $twig) {
+$klein->respond('GET', '/api/sitemap.txt', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext, $twig) {
     $constants = new \Config\Constants();
     $pages = [];
     // Static Pages
