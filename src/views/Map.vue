@@ -2244,6 +2244,10 @@ export default {
                                 disguise.id === disguiseId && floor === parseInt(this.currentLayer));
                         });
                     }
+
+                    if (key === 'Navigation|Ledge' || key === 'Navigation|Foliage') {
+                        this.toggleLayerGroup(floorLayers[key], (currentFloor && !this.isLayerHidden(key)));
+                    }
                 }
             }
         },
