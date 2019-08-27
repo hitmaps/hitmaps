@@ -722,9 +722,7 @@
                         <div class="search-box">
                             <select
                                 ref="disguisePicker"
-                                @change="
-                                    editor.currentDisguise = $event.target.value
-                                "
+                                @change="partialChangeDisguise($event.target.value)"
                                 name="disguise-menu-dropdown"
                                 class="selectpicker"
                                 data-style="control-button"
@@ -1677,6 +1675,7 @@ export default {
             return $template.html();
         },
         buildLedge: function(ledge) {
+            const that = this;
             const polyline = L.polyline(this.parseCoords(ledge.vertices), {
                 color: '#fff',
                 weight: 4,
@@ -1685,12 +1684,14 @@ export default {
                     id: ledge.id
                 }
             }).on('click', function() {
-                this.deletePoly(ledge, 'ledges');
+                that.editor.currentMarker = this;
+                that.deletePoly(ledge, 'ledges');
             });
 
             return polyline.bindTooltip('Ledge', {sticky: true});
         },
         buildFoliage: function(foliage) {
+            const that = this;
             const polygon = L.polygon(this.parseCoords(foliage.vertices), {
                 color: '#248f24',
                 weight: 4,
@@ -1699,12 +1700,13 @@ export default {
                     id: foliage.id
                 }
             }).on('click', function() {
-                this.deletePoly(ledge, 'foliage');
+                that.deletePoly(foliage, 'foliage');
             });
 
             return polygon.bindTooltip('Foliage', {sticky: true});
         },
         buildDisguiseArea: function(disguiseArea) {
+            const that = this;
             const polygon = L.polygon(this.parseCoords(disguiseArea.vertices), {
                 color: disguiseArea.type === 'trespassing' ? 'yellow' : '#f00',
                 stroke: false,
@@ -1714,7 +1716,7 @@ export default {
                     id: disguiseArea.id
                 }
             }).on('click', function() {
-                deletePoly(disguiseArea, 'disguise-areas')
+                that.deletePoly(disguiseArea, 'disguise-areas')
             });
 
             const tooltip = disguiseArea.type === 'trespassing' ? 'Trespassing' : 'Hostile Area';
@@ -1919,6 +1921,8 @@ export default {
                                     this.foliage.indexOf(foliageObject),
                                     1
                                 )
+                                this.map.removeLayer(this.editor.currentMarker);
+                                this.editor.currentMarker = null;
                             }
                         )
                     }
@@ -1945,6 +1949,8 @@ export default {
                                     this.ledges.indexOf(ledgeObject),
                                     1
                                 )
+                                this.map.removeLayer(this.editor.currentMarker);
+                                this.editor.currentMarker = null;
                             }
                         )
                     }
@@ -1977,6 +1983,8 @@ export default {
                                 disguise.areas.indexOf(disguiseArea),
                                 1
                             )
+                            this.map.removeLayer(this.editor.currentMarker);
+                            this.editor.currentMarker = null;
                         })
                     }
                     break
@@ -2041,12 +2049,12 @@ export default {
             this.updateNodeLayerState();
         },
         toggleDraw: function(type) {
-            if (this.$refs.map.mapObject.pm.Draw[type]._enabled) {
-                this.$refs.map.mapObject.pm.disableDraw(type)
+            if (this.map.pm.Draw[type]._enabled) {
+                this.map.pm.disableDraw(type);
             } else {
-                this.$refs.map.mapObject.pm.enableDraw(type, {
+                this.map.pm.enableDraw(type, {
                     snappable: false
-                })
+                });
             }
         },
         initDraw: function(e) {
@@ -2058,6 +2066,10 @@ export default {
             this.editor.workingLayers.push(e.layer)
         },
         endDraw: function(e) {
+            if (this.editor.vertices.length === 0) {
+                return;
+            }
+
             var data = new FormData()
             this.editor.vertices.forEach((element, index) => {
                 data.append('vertices[' + index + '][]', element[0])
@@ -2068,31 +2080,38 @@ export default {
             if (e.shape === 'Line') {
                 this.$request(true, 'ledges', data).then(resp => {
                     this.editor.vertices = []
-                    this.ledges.push(resp.data.data)
+                    let ledge = resp.data.data;
+                    this.ledges.push(ledge)
+                    this.buildLedge(ledge).addTo(this.overlays[ledge.level]['Navigation|Ledge']);
                     this.editor.workingLayers.forEach(el => {
-                        this.$refs.map.mapObject.removeLayer(el)
+                        this.map.removeLayer(el)
                     })
                     this.editor.workingLayers = []
                 })
             } else if (this.editor.mode === 'foliage') {
                 this.$request(true, 'foliage', data).then(resp => {
                     this.editor.vertices = []
-                    this.foliage.push(resp.data.data)
+                    let foliage = resp.data.data;
+                    this.foliage.push(foliage)
+                    this.buildFoliage(foliage).addTo(this.overlays[foliage.level]['Navigation|Foliage']);
                     this.editor.workingLayers.forEach(el => {
-                        this.$refs.map.mapObject.removeLayer(el)
+                        this.map.removeLayer(el)
                     })
                     this.editor.workingLayers = []
                 })
             } else if (this.editor.mode === 'disguises') {
-                data.append('disguiseId', this.editor.currentDisguise)
+                const disguiseId = this.editor.currentDisguise;
+                data.append('disguiseId', disguiseId)
                 data.append('type', this.editor.disguiseType)
                 this.$request(true, 'disguise-areas', data).then(resp => {
                     this.editor.vertices = []
+                    let disguiseArea = resp.data.data;
                     this.disguises
-                        .find(el => el.id == this.editor.currentDisguise)
-                        .areas.push(resp.data.data)
+                        .find(el => el.id == disguiseId)
+                        .areas.push(disguiseArea)
+                    this.buildDisguiseArea(disguiseArea).addTo(this.overlays[disguiseArea.level]['Disguises|' + disguiseArea.disguiseId]);
                     this.editor.workingLayers.forEach(el => {
-                        this.$refs.map.mapObject.removeLayer(el)
+                        this.map.removeLayer(el)
                     })
                     this.editor.workingLayers = []
                 })
@@ -2115,6 +2134,11 @@ export default {
             $('#header-disguises')
                 .find('.name')
                 .click()
+            this.updateNodeLayerState();
+        },
+        partialChangeDisguise: function(disguise) {
+            // Uses the ID and doesn't propagate the change back.
+            this.editor.currentDisguise = disguise;
             this.updateNodeLayerState();
         },
         calculateNumber(floor) {
