@@ -6,7 +6,7 @@
     >
         <header class="row">
             <div class="col text-center site-header">
-                <h1>Interactive Maps For</h1>
+                <h1>{{ $t("interactive.maps.for") }}</h1>
                 <img
                     v-webp
                     src="/img/png/logos/hitman2.png"
