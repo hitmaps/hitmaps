@@ -1446,6 +1446,14 @@
                 </div>
             </div>
         </script>
+        <script type="text/html" id="popup-note-template" aria-hidden="true">
+            <div>
+                <div>
+                    <div class="in-game-description">In-game Description:</div>
+                    <div data-name="note-contents"></div>
+                </div>
+            </div>
+        </script>
     </div>
 </template>
 
