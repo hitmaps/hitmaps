@@ -5,6 +5,7 @@ import axios from 'axios'
 import store from './store/store'
 import titleMixin from './util/title'
 import ImageLoader from './plugins/ImageLoader'
+import i18n from './i18n'
 
 axios.defaults.withCredentials = true
 
@@ -112,5 +113,6 @@ Vue.directive('tooltip', {
 new Vue({
     store,
     router,
-    render: h => h(App),
+    i18n,
+    render: h => h(App)
 }).$mount('#app')
