@@ -2360,6 +2360,10 @@ export default {
                 this.$route.params.difficulty +
                 '/map'
         ).then(resp => {
+            if (this.$store.state.mission == null) {
+                this.$store.commit('SET_MISSION', resp.data.mission);
+            }
+
             this.$route.meta.title = resp.data.mission.name
             this.currentLayer = resp.data.mission.startingFloorNumber
             for (var group in resp.data.nodes) {
