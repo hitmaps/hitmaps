@@ -2257,7 +2257,9 @@ export default {
 
                             if (nodeProperties.options.custom.node.name === itemName && !forceOff) {
                                 if (this.isLayerHidden(key)) {
-                                    $(nodeProperties._icon).css('display', 'block');
+                                    if (currentFloor) {
+                                        $(nodeProperties._icon).css('display', 'block');
+                                    }
                                     this.floorCountOverride[floor]++;
                                 }
                                 $(nodeProperties._icon).addClass('search-result');
