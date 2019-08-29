@@ -1,3 +1,15 @@
 {
-  "interactive.maps.for": "Interactive Maps For"
+  "interactive-maps-for": "Interactive Maps For",
+  "game-type":  {
+    "Campaign": "Campaign",
+    "Game Mode": "Game Mode",
+    "Elusive Target": "Elusive Target"
+  },
+  "elusive-target": {
+    "target-arrives": "Target Arrives",
+    "briefing-icon": "Briefing Icon",
+    "mission-briefing": "Mission Briefing",
+    "coming-soon": "Coming Soon",
+    "manage-notifications": "Manage Elusive Target Notifications"
+  }
 }
