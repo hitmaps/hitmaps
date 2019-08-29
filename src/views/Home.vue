@@ -6,7 +6,7 @@
     >
         <header class="row">
             <div class="col text-center site-header">
-                <h1>{{ $t("interactive.maps.for") }}</h1>
+                <h1>{{ $t("interactive-maps-for") }}</h1>
                 <img
                     v-webp
                     src="/img/png/logos/hitman2.png"
@@ -61,7 +61,7 @@
                             />
                         </div>
                         <div class="text">
-                            <h2>{{ game.type }}</h2>
+                            <h2>{{ $t("game-type." + game.type) }}</h2>
                             <h1>{{ game.fullName }}</h1>
                         </div>
                     </div>
@@ -98,7 +98,7 @@
                                     new Date()
                             }"
                         >
-                            <div class="target-arrives">TARGET ARRIVES</div>
+                            <div class="target-arrives">{{ $t('elusive-target.target-arrives') }}</div>
                             <countdown
                                 class="elusive-countdown"
                                 :date="
@@ -114,8 +114,8 @@
                             @click="showBriefing"
                             src="/img/game-icons/briefing-transparent.png"
                             class="normal img-fluid briefing-icon float-right"
-                            alt="Briefing Icon"
-                            v-tooltip:left="'Mission Briefing'"
+                            :alt="$t('elusive-target.briefing-info')"
+                            v-tooltip:left="$t('elusive-target.mission-briefing')"
                         />
                     </div>
                     <div class="elusive-target-info">
@@ -132,12 +132,12 @@
                             />
                         </div>
                         <div class="text">
-                            <h2>Elusive Target</h2>
+                            <h2>{{ $t('game-type.Elusive Target') }}</h2>
                             <h1>
                                 {{
                                     elusiveTarget != null
                                         ? elusiveTarget.name
-                                        : 'Coming soon'
+                                        : $t('elusive-target.coming-soon')
                                 }}
                             </h1>
                         </div>
@@ -145,9 +145,7 @@
                             onclick="return false;"
                             @click="showNotificationModal"
                             class="image elusive-notification float-right notification-icon"
-                            v-tooltip:left="
-                                'Manage Elusive Target Notifications'
-                            "
+                            v-tooltip:left="$t('elusive-target.manage-notifications')"
                         >
                             <img
                                 src="/img/game-icons/notification.png"
@@ -627,6 +625,7 @@ export default {
     },
     data() {
         return {
+            test: "foobar",
             games: [],
             elusiveTargets: [],
             activeElusiveIndex: 0,
@@ -1052,6 +1051,7 @@ function updateCheckboxState(
 
                     .target-arrives {
                         display: block;
+                        text-transform: uppercase;
                     }
 
                     .elusive-countdown {
