@@ -110,9 +110,27 @@ Vue.directive('tooltip', {
     },
 });
 
+const langMixin = {
+    methods: {
+        lang: function(key, defaultString) {
+            if (this.$t && this.$te) {
+                if (this.$te(key)) {
+                    return this.$t(key)
+                }
+
+                return defaultString;
+            }
+
+            return defaultString ? defaultString : key;
+        }
+    }
+};
+
+Vue.mixin(langMixin);
+
 new Vue({
     store,
     router,
     i18n,
     render: h => h(App)
-}).$mount('#app')
+}).$mount('#app');

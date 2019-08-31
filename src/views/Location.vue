@@ -54,12 +54,12 @@
                             <img
                                 src="/img/game-icons/campaign-transparent.png"
                                 class="normal"
-                                alt="Home icon"
+                                :alt="$t('home-icon')"
                             />
                             <img
                                 src="/img/game-icons/campaign-inverted.png"
                                 class="inverted"
-                                alt="Home icon"
+                                :alt="$t('home-icon')"
                             />
                             Home
                         </router-link>
@@ -77,14 +77,14 @@
                             <img
                                 src="/img/game-icons/location-transparent.png"
                                 class="normal"
-                                alt="Location Icon"
+                                :alt="$t('location-icon')"
                             />
                             <img
                                 src="/img/game-icons/location.png"
                                 class="inverted"
-                                alt="Location Icon"
+                                :alt="$t('location-icon')"
                             />
-                            {{ location.destination }}
+                            {{ lang('locations.destinations.' + location.slug, location.destination) }}
                         </a>
                     </li>
                 </ul>
@@ -110,13 +110,13 @@
                         <img
                             src="/img/game-icons/location.png"
                             class="img-fluid"
-                            alt="Location Icon"
+                            :alt="$t('location-icon')"
                         />
                         <p>
-                            <span class="name">{{ location.destination }}</span>
+                            <span class="name">{{ lang('locations.destinations.' + location.slug, location.destination) }}</span>
                             <br />
                             <span class="country">
-                                {{ location.destinationCountry }}
+                                {{ lang('locations.countries.' + location.slug, location.destinationCountry) }}
                             </span>
                         </p>
                     </h2>

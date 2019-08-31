@@ -114,7 +114,7 @@
                             @click="showBriefing"
                             src="/img/game-icons/briefing-transparent.png"
                             class="normal img-fluid briefing-icon float-right"
-                            :alt="$t('elusive-target.briefing-info')"
+                            :alt="$t('elusive-target.briefing-icon')"
                             v-tooltip:left="$t('elusive-target.mission-briefing')"
                         />
                     </div>
