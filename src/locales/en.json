@@ -122,5 +122,81 @@
         "the-last-yardbird": "The Last Yardbird",
         "the-pen-and-the-sword": "The Pen and the Sword",
         "crime-and-punishment": "Crime and Punishment"
+    },
+    "map": {
+        "level-number": "Level {levelNumber}",
+        "satellite": "Satellite",
+        "toggle-navigation": "Toggle navigation",
+        "editor-enabled": "Editor Enabled",
+        "add-remove-items": "Add / Remove Items",
+        "add-remove-ledges": "Add / Remove Ledges",
+        "add-remove-foliage": "Add / Remove Foliage",
+        "manage-disguise-areas": "Manage Disguise Areas",
+        "edit-map": "Edit Map",
+        "login-to-edit": "Login / Register to Edit",
+        "clear-search": "Clear Search",
+        "disguises": "Disguises",
+        "none": "None",
+        "disguise-list": {
+
+        },
+        "hide-all": "Hide All",
+        "show-all": "Show All",
+        "types": {
+            "Points of Interest": "Point of Interest",
+            "Weapons and Tools": "Weapons and Tools",
+            "Navigation": "Navigation"
+        },
+        "groups": {
+            "Points of Interest|Sabotage": "Sabotage",
+            "Points of Interest|Distraction": "Distraction",
+            "Points of Interest|Poison": "Poison",
+            "Points of Interest|Misc Item": "Misc Item",
+            "Points of Interest|Intel": "Intel",
+            "Points of Interest|Disguise": "Disguise",
+            "Points of Interest|Blend In":  "Blend In",
+            "Points of Interest|Conceal Item":  "Conceal Item",
+            "Points of Interest|Weapon Crate":  "Weapon Crate",
+            "Points of Interest|Locked Door": "Locked Door",
+            "Points of Interest|Destroy Evidence": "Destroy Evidence",
+            "Points of Interest|Hiding Spot": "Hiding Spot",
+            "Points of Interest|Interaction": "Interaction",
+            "Points of Interest|Alarm": "Alarm",
+            "Points of Interest|Security Check": "Security Check",
+            "Points of Interest|Camera": "Camera",
+            "Points of Interest|Location": "Location",
+            "Weapons and Tools|Distraction": "Distraction",
+            "Weapons and Tools|Poison": "Poison",
+            "Weapons and Tools|Lethal Melee": "Lethal Melee",
+            "Weapons and Tools|Non-Lethal Melee": "Non-Lethal Melee",
+            "Weapons and Tools|Explosive": "Explosive",
+            "Weapons and Tools|Firearm": "Firearm",
+            "Weapons and Tools|Ammo": "Ammo",
+            "Navigation|Starting Location": "Starting Location",
+            "Navigation|Exit Location": "Exit Location",
+            "Navigation|Agency Pickup": "Agency Pickup",
+            "Navigation|Stairwell": "Stairwell",
+            "Navigation|Passage": "Passage",
+            "Navigation|Ways Up/Down": "Ways Up/Down",
+            "Navigation|Ledge": "Ledge",
+            "Navigation|Foliage": "Foliage"
+        },
+        "editor-menu": "Editor Menu",
+        "what-would-you-like-to-do": "What would you like to do?",
+        "click-icon-to-close": "Click the {pencilIcon} icon to close the editor menu.",
+        "click-to-add": "Click anywhere on the map to add a new item.",
+        "drag-to-move": "Drag and drop an existing item to move it.",
+        "click-item-to-delete": "Click on an existing item and then the \"Delete\" button to delete it.",
+        "close-item-menu": "Close Item Menu",
+        "click-ledge-to-delete": "Click on an existing ledge to delete it.",
+        "add-ledge": "Add Ledge",
+        "toggle-ledge-builder": "Click here to enable / disable ledge builder",
+        "close-ledge-menu": "Close Ledge Menu"
+    },
+    "profile": {
+        "profile": "Profile"
+    },
+    "authentication": {
+        "log-out": "Log Out"
     }
 }
