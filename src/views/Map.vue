@@ -12,12 +12,12 @@
                         <img
                             src="/img/game-icons/mission-inverted.png"
                             class="img-fluid"
-                            alt="Mission Icon"
+                            :alt="$t('mission-icon')"
                         />
                     </div>
                     <div class="footer-text">
-                        <h2>{{ mission.missionType }}</h2>
-                        <h1>{{ mission.name }}</h1>
+                        <h2>{{ lang('mission-types.' + mission.missionType.toLowerCase(), mission.missionType) }}</h2>
+                        <h1>{{ lang('missions.' + mission.slug, mission.name) }}</h1>
                     </div>
                     <div
                         class="loader"
@@ -54,7 +54,7 @@
                     :class="{ selected: currentLayer === i }"
                 >
                     <div @click="changeLevel(i)" class="floor">
-                        Level {{ i }}
+                        {{ $t('map.level-number', { levelNumber: i }) }}
                     </div>
                     <div
                         :class="{ 'has-search-results': hasSearchResults(i) }"
@@ -69,7 +69,7 @@
                     v-if="mission.satelliteView"
                 >
                     <div @click="changeLevel(-99)" class="floor">
-                        Satellite
+                        {{ $t('map.satellite') }}
                     </div>
                 </div>
             </div>
@@ -82,7 +82,7 @@
                     data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent"
                     aria-expanded="false"
-                    aria-label="Toggle navigation"
+                    :aria-label="$t('map.toggle-navigation')"
                 >
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -99,18 +99,18 @@
                         </router-link>
                     </div>
                     <div class="editor-enabled" v-if="editor.enabled">
-                        <h3 v-if="editor.mode === ''">Editor Enabled</h3>
+                        <h3 v-if="editor.mode === ''">{{ $t('map.editor-enabled' )}}</h3>
                         <h3 v-else-if="editor.mode === 'items'">
-                            ADD / REMOVE ITEMS
+                            {{ $t('map.add-remove-items') }}
                         </h3>
                         <h3 v-else-if="editor.mode === 'ledges'">
-                            ADD / REMOVE LEDGES
+                            {{ $t('map.add-remove-ledges') }}
                         </h3>
                         <h3 v-else-if="editor.mode === 'foliage'">
-                            ADD / REMOVE FOLIAGE
+                            {{ $t('map.add-remove-foliage') }}
                         </h3>
                         <h3 v-else-if="editor.mode === 'disguises'">
-                            MANAGE DISGUISE AREAS
+                            {{ $t('map.manage-disguise-areas') }}
                         </h3>
                     </div>
                     <div id="map-control">
@@ -120,7 +120,7 @@
                                 id="edit-button"
                                 @click="toggleEditor"
                                 class="btn control-button"
-                                v-tooltip:top="'Edit Map'"
+                                v-tooltip:top="$t('map.edit-map')"
                             >
                                 <i class="fas fa-pencil-alt"></i>
                             </button>
@@ -128,7 +128,7 @@
                                 <button
                                     v-if="isLoggedIn"
                                     class="btn control-button"
-                                    v-tooltip:top="'Profile'"
+                                    v-tooltip:top="$t('profile.profile')"
                                 >
                                     <i class="fas fa-user-circle"></i>
                                 </button>
@@ -136,7 +136,7 @@
                             <button
                                 v-if="isLoggedIn"
                                 class="btn control-button"
-                                v-tooltip:top="'Log Out'"
+                                v-tooltip:top="$t('authentication.log-out')"
                                 @click="logout"
                             >
                                 <i class="fas fa-sign-out-alt"></i>
@@ -145,9 +145,7 @@
                                 <button
                                     v-if="!isLoggedIn"
                                     class="btn control-button"
-                                    v-tooltip:bottom="
-                                        'Login / Register to edit'
-                                    "
+                                    v-tooltip:bottom="$t('map.login-to-edit')"
                                 >
                                     <i class="fas fa-sign-in-alt"></i>
                                 </button>
@@ -174,7 +172,7 @@
                                 :class="{ selected: currentLayer === i }"
                             >
                                 <div @click="changeLevel(i)" class="floor">
-                                    Level {{ i }}
+                                    {{ $t('map.level-number', { levelNumber: i }) }}
                                 </div>
                                 <div
                                     :class="{
@@ -192,7 +190,7 @@
                                 :class="{ selected: currentLayer === -99 }"
                             >
                                 <div @click="changeLevel(-99)" class="floor">
-                                    Satellite
+                                    {{ $t('map.satellite' )}}
                                 </div>
                             </div>
                         </div>
@@ -239,7 +237,7 @@
                                 @click="clearSearch"
                                 id="clear-search"
                                 class="btn control-button"
-                                v-tooltip:top="'Clear Search'"
+                                v-tooltip:top="$t('map.clear-search')"
                                 v-show="searchedItem != null"
                             >
                                 <i class="fas fa-times"></i>
@@ -264,8 +262,8 @@
                                         <span class="disguise-text">
                                             {{
                                                 currentDisguise === null
-                                                    ? 'Disguises'
-                                                    : currentDisguise.name
+                                                    ? $t('map.disguises')
+                                                    : lang('map.disguise-list.' + currentDisguise.name, currentDisguise.name)
                                             }}
                                         </span>
                                         <span class="float-right">
@@ -286,7 +284,7 @@
                                             class="full-width selected"
                                             style="background: url('/img/jpg/disguises/none.jpg'); "
                                         >
-                                            <p class="disguise-info">None</p>
+                                            <p class="disguise-info">{{ $t('map.none') }}</p>
                                         </div>
                                         <div
                                             @click="changeDisguise(disguise)"
@@ -302,7 +300,7 @@
                                             }"
                                         >
                                             <p class="disguise-info">
-                                                {{ disguise.name }}
+                                                {{ lang('map.disguise-list.' + disguise.name, disguise.name) }}
                                             </p>
                                         </div>
                                     </div>
@@ -311,7 +309,7 @@
                             <button
                                 id="clear-disguise-search"
                                 class="btn control-button"
-                                v-tooltip:top="'Clear Search'"
+                                v-tooltip:top="$t('map.clear-search')"
                                 style="display: none"
                             >
                                 <i class="fas fa-times"></i>
@@ -324,7 +322,7 @@
                                 class="btn control-button"
                             >
                                 <i class="far fa-fw fa-eye-slash"></i>
-                                Hide All
+                                {{ $t('map.hide-all') }}
                             </button>
                             <button
                                 id="show-all"
@@ -332,7 +330,7 @@
                                 class="btn control-button"
                             >
                                 <i class="far fa-fw fa-eye"></i>
-                                Show All
+                                {{ $t('map.show-all') }}
                             </button>
                         </div>
                         <div v-if="mission.missionType == 'Sniper Assassin'">
@@ -373,7 +371,7 @@
                                                 :alt="group.name + ' Icon'"
                                                 class="img-fluid"
                                             />
-                                            <span>{{ group.name }}</span>
+                                            <span>{{ lang('map.groups.' + group.name, group.name) }}</span>
                                         </div>
                                         <div
                                             v-if="group.collapsible"
@@ -449,7 +447,7 @@
                                         aria-expanded="false"
                                         :aria-controls="'body-' + index"
                                     >
-                                        {{ type.name }}
+                                        {{ lang('map.types.' + type.name, type.name) }}
                                         <span class="float-right">
                                             <i class="fas fa-caret-down"></i>
                                             <i class="fas fa-caret-up"></i>
@@ -508,7 +506,7 @@
                                                     :alt="group.name + ' Icon'"
                                                     class="img-fluid"
                                                 />
-                                                <span>{{ group.name }}</span>
+                                                <span>{{ lang('map.groups.' + type.name + '|' + group.name, group.name) }}</span>
                                             </div>
                                             <div
                                                 v-if="group.collapsible"
@@ -577,12 +575,12 @@
                         class="edit-menu"
                         v-show="editor.enabled && editor.mode === ''"
                     >
-                        <h2>Editor Menu</h2>
-                        <h3>What would you like to do?</h3>
+                        <h2>{{ $t('map.editor-menu') }}</h2>
+                        <h3>{{ $t('map.what-would-you-like-to-do') }}</h3>
                         <div class="editor-button" @click="editorMenu('items')">
                             <h3>
                                 <i class="fas fa-fw fa-map-marker-alt"></i>
-                                Add / Remove Items
+                                {{ $t('map.add-remove-items') }}
                             </h3>
                         </div>
                         <div
@@ -592,7 +590,7 @@
                         >
                             <h3>
                                 <i class="fas fa-fw fa-bezier-curve"></i>
-                                Add / Remove Ledges
+                                {{ $t('map.add-remove-ledges') }}
                             </h3>
                         </div>
                         <div
@@ -602,7 +600,7 @@
                         >
                             <h3>
                                 <i class="fas fa-fw fa-leaf"></i>
-                                Add / Remove Foliage
+                                {{ $t('map.add-remove-foliage') }}
                             </h3>
                         </div>
                         <div
@@ -612,14 +610,14 @@
                         >
                             <h3>
                                 <i class="fas fa-fw fa-user-tie"></i>
-                                Manage Disguise Areas
+                                {{ $t('map.manage-disguise-areas') }}
                             </h3>
                         </div>
-                        <p>
-                            Click the
-                            <i class="fas fa-pencil-alt"></i>
-                            icon to close the editor menu.
-                        </p>
+                        <i18n path="map.click-icon-to-close" tag="p">
+                            <span slot="pencilIcon">
+                                <i class="fas fa-pencil-alt"></i>
+                            </span>
+                        </i18n>
                     </div>
                     <div
                         class="items-menu"
@@ -627,21 +625,20 @@
                     >
                         <p>
                             <i class="fas fa-fw fa-plus-circle"></i>
-                            Click anywhere on the map to add a new item.
+                            {{ $t('map.click-to-add') }}
                         </p>
                         <p>
                             <i class="fas fa-fw fa-arrows-alt"></i>
-                            Drag and drop an existing item to move it.
+                            {{ $t('map.drag-to-move') }}
                         </p>
                         <p>
                             <i class="fas fa-fw fa-trash"></i>
-                            Click on an existing item and then the "Delete"
-                            button to delete it.
+                            {{ $t('map.click-item-to-delete') }}
                         </p>
                         <div class="editor-button" @click="editorMenu('')">
                             <h3>
                                 <i class="fas fa-times-circle"></i>
-                                Close Item Menu
+                                {{ $t('map.close-item-menu') }}
                             </h3>
                         </div>
                     </div>
@@ -651,16 +648,16 @@
                     >
                         <p data-ledge="delete-help">
                             <i class="fas fa-trash"></i>
-                            Click on an existing ledge to delete it.
+                            {{ $t('map.click-ledge-to-delete') }}
                         </p>
                         <div class="editor-button"
                              :class="{'selected': editor.polyActive}"
                              @click="toggleDraw('Line')">
                             <h3>
                                 <i class="fas fa-plus-circle"></i>
-                                Add Ledge
+                                {{ $t('map.add-ledge') }}
                             </h3>
-                            <p>Click here to enable / disable ledge builder</p>
+                            <p>{{ $t('map.toggle-ledge-builder') }}</p>
                         </div>
                         <div
                             class="editor-button"
@@ -671,7 +668,7 @@
                         >
                             <h3>
                                 <i class="fas fa-times-circle"></i>
-                                Close Ledge Menu
+                                {{ $t('map.close-ledge-menu') }}
                             </h3>
                         </div>
                     </div>
