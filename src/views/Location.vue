@@ -156,7 +156,7 @@
                                                 '/img/' + generateUrl(mission)
                                             "
                                             class="card-img-top"
-                                            alt=""
+                                            :alt="$t('mission-image')"
                                         />
                                         <img
                                             v-else
@@ -164,7 +164,7 @@
                                                 '/img/' + generateUrl(mission)
                                             "
                                             class="card-img-top"
-                                            alt=""
+                                            :alt="$t('mission-image')"
                                         />
                                         <div
                                             class="card-img-overlay d-flex flex-column justify-content-end"
@@ -176,17 +176,17 @@
                                             <img
                                                 src="/img/game-icons/mission-inverted.png"
                                                 class="normal img-fluid"
-                                                alt="Mission Icon"
+                                                :alt="$t('mission-icon')"
                                             />
                                             <img
                                                 src="/img/game-icons/mission.png"
                                                 class="inverted img-fluid"
-                                                alt="Mission Icon"
+                                                :alt="$t('mission-icon')"
                                             />
                                         </div>
                                         <div class="text">
-                                            <h2>{{ mission.missionType }}</h2>
-                                            <h1>{{ mission.name }}</h1>
+                                            <h2>{{ lang('mission-types.' + mission.missionType.toLowerCase(), mission.missionType) }}</h2>
+                                            <h1>{{ mission.missionType !== 'Elusive Target' ? lang('missions.' + mission.slug, mission.name) : mission.name }}</h1>
                                         </div>
                                     </div>
                                 </div>
@@ -240,7 +240,7 @@
                                                         "
                                                         class="inverted"
                                                     />
-                                                    {{ difficulty }}
+                                                    {{ lang('difficulties.' + difficulty, difficulty) }}
                                                 </div>
                                             </router-link>
                                         </div>
@@ -251,17 +251,17 @@
                                         <img
                                             src="/img/game-icons/mission-inverted.png"
                                             class="normal img-fluid"
-                                            alt="Mission Icon"
+                                            :alt="$t('mission-icon')"
                                         />
                                         <img
                                             src="/img/game-icons/mission.png"
                                             class="inverted img-fluid"
-                                            alt="Mission Icon"
+                                            :alt="$t('mission-icon')"
                                         />
                                     </div>
                                     <div class="text">
-                                        <h2>{{ mission.missionType }}</h2>
-                                        <h1>{{ mission.name }}</h1>
+                                        <h2>{{ lang('mission-types.' + mission.missionType.toLowerCase(), mission.missionType) }}</h2>
+                                        <h1>{{ lang('missions.' + mission.slug, mission.name) }}</h1>
                                     </div>
                                 </div>
                             </div>
