@@ -118,10 +118,17 @@ const langMixin = {
                     return this.$t(key)
                 }
 
+                console.warn("[i18n] Could not find i18n entry for key: '" + key + "'. Using '" + defaultString + "' instead.");
                 return defaultString;
             }
+            console.error('$t or $te is undefined!');
 
-            return defaultString ? defaultString : key;
+            if (defaultString) {
+                console.warn("[i18n] Could not find i18n entry for key: '" + key + "'. Using '" + defaultString + "' instead.");
+                return defaultString;
+            }
+            console.warn("[i18n] Could not find i18n entry for key: '" + key + "', and defaultString is undefined.");
+            return key;
         }
     }
 };
