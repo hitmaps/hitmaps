@@ -959,7 +959,7 @@
                                     mission.missionType != 'Sniper Assassin'
                                 "
                             >
-                                <h3>{{ $t('map.apply-template ') }}</h3>
+                                <h3>{{ $t('map.apply-template') }}</h3>
                                 <div class="form-group row">
                                     <label
                                         for="template"
@@ -987,7 +987,7 @@
                                                     :key="item.id"
                                                     :value="key + '|' + item.id"
                                                 >
-                                                    {{ lang('map.items.' + item.name, item.name) }}
+                                                    {{ lang('map.items.' + item.name.replace(/"/g, ''), item.name) }}
                                                 </option>
                                             </optgroup>
                                         </select>
