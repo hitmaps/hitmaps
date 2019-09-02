@@ -687,10 +687,10 @@
                         >
                             <h3>
                                 <i class="fas fa-plus-circle"></i>
-                                Add Foliage
+                                {{ $t('map.add-foliage') }}
                             </h3>
                             <p>
-                                Click here to enable / disable foliage builder
+                                {{ $t('map.toggle-foliage-builder') }}
                             </p>
                         </div>
                         <div
@@ -702,7 +702,7 @@
                         >
                             <h3>
                                 <i class="fas fa-times-circle"></i>
-                                Close Foliage Menu
+                                {{ $t('map.close-foliage-menu') }}
                             </h3>
                         </div>
                     </div>
@@ -712,12 +712,9 @@
                     >
                         <p data-disguise="delete-help">
                             <i class="fas fa-trash"></i>
-                            Click on an existing region to delete it.
+                            {{ $t('map.delete-existing-region') }}
                         </p>
-                        <p>
-                            Select a disguise from the dropdown below to edit
-                            its layout.
-                        </p>
+                        <p>{{ $t('map.select-disguise-for-editing') }}</p>
                         <div class="search-box">
                             <select
                                 ref="disguisePicker"
@@ -732,7 +729,7 @@
                                     :key="disguise.id"
                                     :value="disguise.id"
                                 >
-                                    {{ disguise.name }}
+                                    {{ lang('map.disguise-list.' + disguise.name, disguise.name) }}
                                 </option>
                             </select>
                         </div>
@@ -749,12 +746,9 @@
                         >
                             <h3>
                                 <i class="fas fa-plus-circle"></i>
-                                Add Trespassing Region
+                                {{ $t('map.add-trespassing-region') }}
                             </h3>
-                            <p>
-                                Click here to enable / disable trespassing
-                                region builder
-                            </p>
+                            <p>{{ $t('map.toggle-trespassing-builder') }}</p>
                         </div>
                         <div
                             class="editor-button"
@@ -769,12 +763,9 @@
                         >
                             <h3>
                                 <i class="fas fa-plus-circle"></i>
-                                Add Hostile Region
+                                {{ $t('map.add-hostile-region') }}
                             </h3>
-                            <p>
-                                Click here to enable / disable hostile region
-                                builder
-                            </p>
+                            <p>{{ $t('map.toggle-hostile-builder') }}</p>
                         </div>
                         <div
                             class="editor-button"
@@ -784,12 +775,9 @@
                         >
                             <h3>
                                 <i class="fas fa-copy"></i>
-                                Copy Regions
+                                {{ $t('map.copy-regions') }}
                             </h3>
-                            <p>
-                                Click here to copy disguise regions from one
-                                disguise to another
-                            </p>
+                            <p>{{ $t('map.click-to-copy-regions') }}</p>
                         </div>
                         <div
                             class="editor-button"
@@ -800,7 +788,7 @@
                         >
                             <h3>
                                 <i class="fas fa-times-circle"></i>
-                                Close Disguise Area Menu
+                                {{ $t('map.close-disguise-menu') }}
                             </h3>
                         </div>
                     </div>
@@ -813,14 +801,13 @@
                 role="dialog"
             >
                 <div class="alert alert-warning">
-                    When copying, any existing target disguise regions will be
-                    deleted before copying.
+                    {{ $t('map.copy-disguises-warning') }}
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="original-disguise">
-                                Source Disguise
+                                {{ $t('map.source-disguise') }}
                             </label>
                             <br />
                             <select
@@ -831,13 +818,13 @@
                                 required
                             >
                                 <option disabled selected>
-                                    Select
+                                    {{ $t('form.select') }}
                                 </option>
                                 <option
                                     v-for="disguise in disguises"
                                     :value="disguise.id"
                                 >
-                                    {{ disguise.name }}
+                                    {{ lang('map.disguise-list.' + disguise.name, disguise.name) }}
                                 </option>
                             </select>
                         </div>
@@ -845,7 +832,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="target-disguise">
-                                Target Disguise
+                                {{ $t('map.target-disguise') }}
                             </label>
                             <br />
                             <select
@@ -856,13 +843,13 @@
                                 required
                             >
                                 <option disabled selected>
-                                    Select
+                                    {{ $t('form.select') }}
                                 </option>
                                 <option
                                     v-for="disguise in disguises"
                                     :value="disguise.id"
                                 >
-                                    {{ disguise.name }}
+                                    {{ lang('map.disguise-list.' + disguise.name, disguise.name) }}
                                 </option>
                             </select>
                         </div>
@@ -877,27 +864,27 @@
                         <img
                             src="/img/game-icons/modal-continue.png"
                             class="normal img-fluid"
-                            alt="Submit Icon"
+                            :alt="$t('form.submit-icon')"
                         />
                         <img
                             src="/img/game-icons/modal-continue-inverted.png"
                             class="inverted img-fluid"
-                            alt="Submit Icon"
+                            :alt="$t('form.submit-icon')"
                         />
-                        Copy
+                        {{ $t('form.copy') }}
                     </game-button>
                     <game-button type="button" data-dismiss="modal">
                         <img
                             src="/img/game-icons/modal-close.png"
                             class="normal img-fluid"
-                            alt="Cancel Icon"
+                            :alt="$t('form.cancel-icon')"
                         />
                         <img
                             src="/img/game-icons/modal-close-inverted.png"
                             class="inverted img-fluid"
-                            alt="Cancel Icon"
+                            :alt="$t('form.cancel-icon')"
                         />
-                        Cancel
+                        {{ $t('form.cancel') }}
                     </game-button>
                 </template>
             </modal>
@@ -911,7 +898,7 @@
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Confirm Move</h5>
+                            <h5 class="modal-title">{{ $t('map.confirm-move') }}</h5>
                             <button
                                 type="button"
                                 class="close"
@@ -923,7 +910,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="alert alert-warning">
-                                Are you sure you want to re-position this item?
+                                {{ $t('map.confirm-reposition') }}
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -933,14 +920,14 @@
                                 @click="cancelMoveMarker"
                                 data-dismiss="modal"
                             >
-                                No, cancel
+                                {{ $t('form.cancel') }}
                             </button>
                             <button
                                 type="button"
                                 @click="confirmMove"
                                 class="btn btn-primary"
                             >
-                                Yes, save
+                                {{ $t('form.save') }}
                             </button>
                         </div>
                     </div>
@@ -956,7 +943,7 @@
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Test</h5>
+                            <h5 class="modal-title">{{ $t('map.add-edit-item') }}</h5>
                             <button
                                 type="button"
                                 class="close"
@@ -972,26 +959,13 @@
                                     mission.missionType != 'Sniper Assassin'
                                 "
                             >
-                                <div
-                                    class="alert alert-primary"
-                                    style="font-size: .8em"
-                                >
-                                    You can now use a template to auto-fill item
-                                    information for common items!
-                                    <b>
-                                        If you select a template, all
-                                        information in "Item Info" and "Notes"
-                                        will be replaced with the template's
-                                        information.
-                                    </b>
-                                </div>
-                                <h3>Apply Template</h3>
+                                <h3>{{ $t('map.apply-template ') }}</h3>
                                 <div class="form-group row">
                                     <label
                                         for="template"
                                         class="col sm-2 col-form-label"
                                     >
-                                        Template
+                                        {{ $t('map.template') }}
                                     </label>
                                     <div class="col-sm-10">
                                         <select
@@ -1013,7 +987,7 @@
                                                     :key="item.id"
                                                     :value="key + '|' + item.id"
                                                 >
-                                                    {{ item.name }}
+                                                    {{ lang('map.items.' + item.name, item.name) }}
                                                 </option>
                                             </optgroup>
                                         </select>
@@ -1026,38 +1000,13 @@
                                 class="alert alert-dark"
                                 style="font-size: .8em"
                             >
-                                Please indicate the following under the notes
-                                section when adding items:
+                                {{ $t('map.please-indicate-when-adding') }}
                                 <ul>
-                                    <li>
-                                        Any
-                                        <b>required</b>
-                                        items, such as needing a wrench for
-                                        loosening valves (use type
-                                        "Requirement")
-                                    </li>
-                                    <li>
-                                        Whether or not the action is
-                                        <b>suspicious</b>
-                                        when wearing a certain disguise (use
-                                        type "Warning")
-                                    </li>
-                                    <li>
-                                        If you feel something
-                                        <b>requires more information</b>
-                                        , use the "Information" type
-                                    </li>
-                                    <li>
-                                        You may add the in-game description for
-                                        items by using the "Description" type
-                                        <b>
-                                            if there is no name field provided.
-                                        </b>
-                                    </li>
-                                    <li>
-                                        Any notes with blank text will not be
-                                        added to the node
-                                    </li>
+                                    <li>{{ $t('map.required-items') }}</li>
+                                    <li>{{ $t('map.suspicious-items') }}</li>
+                                    <li>{{ $t('map.information-items') }}</li>
+                                    <li>{{ $t('map.in-game-description-items') }}</li>
+                                    <li>{{ $t('map.blank-notes') }}</li>
                                 </ul>
                             </div>
                             <div class="form-group row">
@@ -1065,7 +1014,7 @@
                                     for="subgroup"
                                     class="col-sm-2 col-form-label"
                                 >
-                                    Category
+                                    {{ $t('map.category') }}
                                 </label>
                                 <div class="col-sm-10">
                                     <select
@@ -1119,7 +1068,7 @@
                                     for="icon"
                                     class="col-sm-2 col-form-label"
                                 >
-                                    Icon
+                                    {{ $t('map.icon') }}
                                 </label>
                                 <div class="col-sm-10">
                                     <select
@@ -1162,7 +1111,7 @@
                                         for="name"
                                         class="col-sm-2 col-form-label"
                                     >
-                                        Name
+                                        {{ $t('map.name') }}
                                     </label>
                                     <div class="col-sm-10">
                                         <input
@@ -1172,8 +1121,7 @@
                                             class="form-control"
                                         />
                                         <small class="form-text text-muted">
-                                            Enter the name as it appears
-                                            in-game.
+                                            {{ $t('map.name-note') }}
                                         </small>
                                     </div>
                                 </div>
@@ -1185,7 +1133,7 @@
                                         for="action"
                                         class="col-sm-2 col-form-label"
                                     >
-                                        Action
+                                        {{ $t('map.action') }}
                                     </label>
                                     <div class="col-sm-10">
                                         <input
@@ -1195,10 +1143,7 @@
                                             class="form-control"
                                         />
                                         <small class="form-text text-muted">
-                                            Enter the action that is performed
-                                            (such as "loosen the valve", "turn
-                                            on radio", "trigger fire alarm",
-                                            etc.)
+                                            {{ $t('map.action-note') }}
                                         </small>
                                     </div>
                                 </div>
@@ -1210,7 +1155,7 @@
                                         for="target"
                                         class="col-sm-2 col-form-label"
                                     >
-                                        Target
+                                        {{ $t('map.target') }}
                                     </label>
                                     <div class="col-sm-10">
                                         <input
@@ -1220,7 +1165,7 @@
                                             class="form-control"
                                         />
                                         <small class="form-text text-muted">
-                                            Who will be poisoned?
+                                            {{ $t('map.target-note') }}
                                         </small>
                                     </div>
                                 </div>
@@ -1232,7 +1177,7 @@
                                         for="pickup-type"
                                         class="col-sm-2 col-form-label"
                                     >
-                                        Type
+                                        {{ $t('map.type') }}
                                     </label>
                                     <div class="col-sm-10">
                                         <div class="form-check">
@@ -1250,7 +1195,7 @@
                                                 class="form-check-label"
                                                 for="large"
                                             >
-                                                Pickup (Large)
+                                                {{ $t('map.pickup-large') }}
                                             </label>
                                         </div>
                                         <div class="form-check">
@@ -1267,7 +1212,7 @@
                                                 class="form-check-label"
                                                 for="small"
                                             >
-                                                Stash (Small)
+                                                {{ $t('stash.small') }}
                                             </label>
                                         </div>
                                     </div>
@@ -1280,7 +1225,7 @@
                                         for="stairwell-direction"
                                         class="col-sm-2 col-form-label"
                                     >
-                                        Direction
+                                        {{ $t('map.direction') }}
                                     </label>
                                     <div class="col-sm-10">
                                         <div class="form-check">
@@ -1298,7 +1243,7 @@
                                                 class="form-check-label"
                                                 for="up-stair"
                                             >
-                                                Up Only
+                                                {{ $t('map.direction-up') }}
                                             </label>
                                         </div>
                                         <div class="form-check">
@@ -1315,7 +1260,7 @@
                                                 class="form-check-label"
                                                 for="up-down-stair"
                                             >
-                                                Up and Down
+                                                {{ $t('map.direction-up-down') }}
                                             </label>
                                         </div>
                                         <div class="form-check">
@@ -1332,13 +1277,13 @@
                                                 class="form-check-label"
                                                 for="down-stair"
                                             >
-                                                Down Only
+                                                {{ $t('map.direction-down') }}
                                             </label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <h3>Notes</h3>
+                            <h3>{{ $t('map.notes') }}</h3>
                             <div id="suggest-notes">
                                 <div
                                     v-for="note in editor.notes"
@@ -1349,7 +1294,7 @@
                                             for="note-type[]"
                                             class="col-sm-2 col-form-label"
                                         >
-                                            Type
+                                            {{ $t('map.type') }}
                                         </label>
                                         <div class="col-sm-10">
                                             <select
@@ -1358,16 +1303,16 @@
                                                 name="note-type[]"
                                             >
                                                 <option value="requirement">
-                                                    Requirement
+                                                    {{ $t('map.requirement') }}
                                                 </option>
                                                 <option value="warning">
-                                                    Warning
+                                                    {{ $t('map.warning') }}
                                                 </option>
                                                 <option value="info">
-                                                    Information
+                                                    {{ $t('map.information') }}
                                                 </option>
                                                 <option value="description">
-                                                    Description
+                                                    {{ $t('map.description') }}
                                                 </option>
                                             </select>
                                         </div>
@@ -1377,7 +1322,7 @@
                                             for="note-text[]"
                                             class="col-sm-2 col-form-label"
                                         >
-                                            Text
+                                            {{ $t('map.text') }}
                                         </label>
                                         <div class="col-sm-10">
                                             <input
@@ -1398,7 +1343,8 @@
                                         id="add-note-button"
                                         class="btn btn-dark"
                                     >
-                                        + Add Another Note
+                                        <i class="fas fa-plus-circle"></i>
+                                        {{ $t('map.add-another-note') }}
                                     </button>
                                 </div>
                             </div>
@@ -1409,14 +1355,14 @@
                                 class="btn btn-secondary"
                                 data-dismiss="modal"
                             >
-                                Close
+                                {{ $t('form.close') }}
                             </button>
                             <button
                                 type="button"
                                 @click="saveMarker"
                                 class="btn btn-primary"
                             >
-                                Save changes
+                                {{ $t('form.save') }}
                             </button>
                         </div>
                     </div>
@@ -1446,7 +1392,7 @@
         <script type="text/html" id="popup-note-template" aria-hidden="true">
             <div>
                 <div>
-                    <div class="in-game-description">In-game Description:</div>
+                    <div class="in-game-description">{{ $t('map.in-game-description') }}</div>
                     <div data-name="note-contents"></div>
                 </div>
             </div>
