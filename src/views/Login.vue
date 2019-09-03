@@ -5,11 +5,11 @@
     >
         <header class="row">
             <div class="col text-center">
-                <h1>Interactive Maps For</h1>
+                <h1>{{ $t('interactive-maps-for') }}</h1>
                 <router-link :to="{ name: 'home' }">
                     <img src="/img/png/logos/hitman2.png" class="img-fluid" />
                 </router-link>
-                <h2>Login or Create an Account</h2>
+                <h2>{{ $t('authentication.login-or-create-an-account') }}</h2>
             </div>
         </header>
         <div class="row">
@@ -18,22 +18,18 @@
                     {{ message.messageHtml }}
                 </alert>
                 <alert v-if="this.$route.hash === '#verified'" type="success">
-                    Account verified! You may now log in.
+                    {{ $t('authentication.account-verified') }}
                 </alert>
-                <alert
-                    v-if="this.$route.hash === '#verify-failed'"
-                    type="danger"
-                >
-                    We were not able to verify your account. Make sure you
-                    clicked the activation link from the most recent email you
-                    received, and that the link did not expire.
+                <alert v-if="this.$route.hash === '#verify-failed'"
+                    type="danger">
+                    {{ $t('authentication.unable-to-verify-account') }}
                 </alert>
                 <div class="login-card">
-                    <h3>Sign In</h3>
+                    <h3>{{ $t('authentication.sign-in') }}</h3>
                     <div class="form-group email row">
                         <label for="email" class="col-md-3 col-form-label">
                             <i class="fas fa-envelope"></i>
-                            Email
+                            {{ $t('authentication.email') }}
                         </label>
                         <div class="col-md-9">
                             <input
@@ -62,7 +58,7 @@
                     <div class="form-group row">
                         <label for="password" class="col-md-3 col-form-label">
                             <i class="fas fa-key"></i>
-                            Password
+                            {{ $t('authentication.password') }}
                         </label>
                         <div class="col-md-9">
                             <input
@@ -96,7 +92,7 @@
                                             data-toggle="modal"
                                             data-target="#forgot-password"
                                         >
-                                            I forgot my password
+                                            {{ $t('authentication.forgot-password') }}
                                         </a>
                                     </div>
                                 </div>
@@ -112,14 +108,14 @@
                         <img
                             src="/img/game-icons/modal-continue.png"
                             class="normal img-fluid"
-                            alt="Notification Icon"
+                            :alt="$t('form.submit-icon')"
                         />
                         <img
                             src="/img/game-icons/modal-continue-inverted.png"
                             class="inverted img-fluid"
-                            alt="Notification Icon"
+                            :alt="$t('form.submit-icon')"
                         />
-                        Sign In
+                        {{ $t('authentication.sign-in') }}
                     </game-button>
                 </div>
                 <div class="sign-in-button">
@@ -128,14 +124,14 @@
                             <img
                                 src="/img/game-icons/modal-continue.png"
                                 class="normal img-fluid"
-                                alt="Notification Icon"
+                                :alt="$t('form.submit-icon')"
                             />
                             <img
                                 src="/img/game-icons/modal-continue-inverted.png"
                                 class="inverted img-fluid"
-                                alt="Notification Icon"
+                                :alt="$t('form.submit-icon')"
                             />
-                            Create an Account
+                            {{ $t('authentication.create-an-account') }}
                         </game-button>
                     </router-link>
                 </div>
@@ -146,15 +142,11 @@
                 modalTitle="Forgot Password?"
                 dismissable
             >
-                <p>
-                    Forgot your password? No problem! Enter your email below and
-                    we will send you an email with a link to reset your
-                    password.
-                </p>
+                <p>{{ $t('authentication.forgot-password-modal') }}</p>
                 <div class="form-group row">
                     <label for="email" class="col-form-label col-md-3">
                         <i class="fa fa-envelope"></i>
-                        Email
+                        {{ $t('authentication.email') }}
                     </label>
                     <div class="col-md-9">
                         <input
@@ -173,27 +165,27 @@
                         <img
                             src="/img/game-icons/modal-continue.png"
                             class="normal img-fluid"
-                            alt="Submit Icon"
+                            :alt="$t('form.submit-icon')"
                         />
                         <img
                             src="/img/game-icons/modal-continue-inverted.png"
                             class="inverted img-fluid"
-                            alt="Submit Icon"
+                            :alt="$t('form.submit-icon')"
                         />
-                        Submit
+                        {{ $t('form.submit') }}
                     </game-button>
                     <game-button data-dismiss="modal">
                         <img
                             src="/img/game-icons/modal-close.png"
                             class="normal img-fluid"
-                            alt="Cancel Icon"
+                            :alt="$t('form.cancel-icon')"
                         />
                         <img
                             src="/img/game-icons/modal-close-inverted.png"
                             class="inverted img-fluid"
-                            alt="Cancel Icon"
+                            :alt="$t('form.cancel-icon')"
                         />
-                        Cancel
+                        {{ $t('form.cancel') }}
                     </game-button>
                 </template>
             </modal>
