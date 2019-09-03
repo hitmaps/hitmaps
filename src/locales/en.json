@@ -9,7 +9,8 @@
         "select": "Select",
         "copy": "Copy",
         "cancel": "Cancel",
-        "save": "Save"
+        "save": "Save",
+        "submit": "Submit"
     },
     "game-type": {
         "Campaign": "Campaign",
@@ -39,7 +40,8 @@
             "3-days": "The Elusive Target is available for 3 more days",
             "1-day": "The Elusive Target is available for 1 more day",
             "ended": "The Elusive Target has left"
-        }
+        },
+        "n-days": "{days} Days"
     },
     "elusive-target-icon": "Elusive Target Icon",
     "home-icon": "Home Icon",
@@ -246,9 +248,33 @@
         "in-game-description": "In-Game Description:"
     },
     "profile": {
-        "profile": "Profile"
+        "profile": "Profile",
+        "manage-profile": "Manage Your Profile",
+        "change-name": "Change Name",
+        "name": "Name",
+        "save-name": "Save Name",
+        "change-password": "Change Password",
+        "current-password": "Current Password",
+        "new-password": "New Password",
+        "confirm-new-password": "Confirm New Password",
+        "update-password": "Update Password"
     },
     "authentication": {
-        "log-out": "Log Out"
-    }
+        "log-out": "Log Out",
+        "login-or-create-an-account": "Login or Create an Account",
+        "account-verified": "Account verified! You may now log in.",
+        "unable-to-verify-account": "We were not able to verify your account. Make sure you clicked the activation link from the most recent email you received, and that the link did not expire.",
+        "sign-in": "Sign In",
+        "email": "Email",
+        "password": "Password",
+        "forgot-password": "I forgot my password",
+        "forgot-password-modal": "Forgot your password? No problem! Enter your email below and we will send you an email with a link to reset your password.",
+        "create-an-account": "Create an Account"
+    },
+    "404": {
+        "page-not-found": "Page Not Found",
+        "janus-being-attacked": "Janus being attacked with muffins",
+        "image-caption": "It looks like we couldn't find the page you're looking for. We asked Janus to help, but he wasn't being cooperative, despite being offered several blueberry muffins."
+    },
+    "back-to-home": "Back to the homepage"
 }

@@ -4,7 +4,9 @@
             seconds | twoDigits
         }}
     </div>
-    <div v-else>{{ days }} DAYS</div>
+    <div v-else>
+        {{ $t('elusive-target.n-days', { days: days }) }}
+    </div>
 </template>
 
 <script>

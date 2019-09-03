@@ -1417,7 +1417,7 @@ export default {
         Modal
     },
     title() {
-        return this.mission ? this.mission.name : 'Loading'
+        return this.mission ? this.lang('missions.' + this.mission.slug, this.mission.name) : 'Loading'
     },
     data() {
         return {
