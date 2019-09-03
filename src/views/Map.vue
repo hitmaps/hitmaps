@@ -263,7 +263,7 @@
                                             {{
                                                 currentDisguise === null
                                                     ? $t('map.disguises')
-                                                    : lang('map.disguise-list.' + currentDisguise.name, currentDisguise.name)
+                                                    : currentDisguise.name
                                             }}
                                         </span>
                                         <span class="float-right">
@@ -300,7 +300,7 @@
                                             }"
                                         >
                                             <p class="disguise-info">
-                                                {{ lang('map.disguise-list.' + disguise.name, disguise.name) }}
+                                                {{ disguise.name }}
                                             </p>
                                         </div>
                                     </div>
@@ -729,7 +729,7 @@
                                     :key="disguise.id"
                                     :value="disguise.id"
                                 >
-                                    {{ lang('map.disguise-list.' + disguise.name, disguise.name) }}
+                                    {{ disguise.name }}
                                 </option>
                             </select>
                         </div>
@@ -824,7 +824,7 @@
                                     v-for="disguise in disguises"
                                     :value="disguise.id"
                                 >
-                                    {{ lang('map.disguise-list.' + disguise.name, disguise.name) }}
+                                    {{ disguise.name }}
                                 </option>
                             </select>
                         </div>
@@ -849,7 +849,7 @@
                                     v-for="disguise in disguises"
                                     :value="disguise.id"
                                 >
-                                    {{ lang('map.disguise-list.' + disguise.name, disguise.name) }}
+                                    {{ disguise.name }}
                                 </option>
                             </select>
                         </div>
@@ -987,7 +987,7 @@
                                                     :key="item.id"
                                                     :value="key + '|' + item.id"
                                                 >
-                                                    {{ lang('map.items.' + item.name.replace(/"/g, ''), item.name) }}
+                                                    {{ item.name }}
                                                 </option>
                                             </optgroup>
                                         </select>
