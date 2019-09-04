@@ -2,7 +2,6 @@ include:
   template: Dependency-Scanning.gitlab-ci.yml
 
 stages:
-  - test
   - Utilities
   - Prod Deploy
   - Stage Deploy
@@ -14,6 +13,9 @@ before_script:
   - apt-get install -y curl
   - apt-get install -y nodejs
   - apt-get install -y wget
+
+dependency_scanning:
+  stage: Utilities
 
 Prod Deploy API:
   image: php:7.2
