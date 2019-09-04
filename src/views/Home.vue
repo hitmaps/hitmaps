@@ -955,6 +955,7 @@ function updateCheckboxState(
             img {
                 width: 48px;
                 height: 48px;
+                margin-right: 5px;
             }
 
             .timer {
@@ -972,6 +973,7 @@ function updateCheckboxState(
                     font-size: 2rem;
                     vertical-align: middle;
                     font-weight: 600;
+                    text-transform: uppercase;
                 }
 
                 &.not-playable {
