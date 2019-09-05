@@ -5,14 +5,14 @@
     >
         <header class="row">
             <div class="col text-center site-header">
-                <h1>Page Not Found</h1>
+                <h1>{{ $t('404.page-not-found') }}</h1>
             </div>
         </header>
         <div class="row text-center">
             <div class="col">
                 <img
                     src="/img/404.gif"
-                    alt="Janus being attacked with muffins"
+                    :alt="$t('404.janus-being-attacked')"
                 />
                 <br />
                 <a
@@ -23,14 +23,10 @@
                 </a>
                 <br />
                 <br />
-                <p>
-                    It looks like we couldn't find the page you're looking for.
-                    We asked Janus to help, but he wasn't being cooperative,
-                    despite being offered several blueberry muffins.
-                </p>
+                <p>{{ $t('404.image-caption') }}</p>
                 <a href="/" style="color: white">
                     <i class="fas fa-arrow-left"></i>
-                    Back to the homepage
+                    {{ $t('back-to-home') }}
                 </a>
             </div>
         </div>
@@ -40,7 +36,7 @@
 <script>
 export default {
     name: '404',
-    title: 'Page Not Found'
+    title: $t('404.page-not-found')
 }
 </script>
 <style lang="scss" scoped>
