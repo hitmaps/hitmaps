@@ -244,12 +244,12 @@
         "information": "信息",
         "description": "说明",
         "text": "文本",
-        "add-another-note": "Add Another Note",
-        "in-game-description": "In-Game Description:"
+        "add-another-note": "添加新注释",
+        "in-game-description": "游戏内描述："
     },
     "profile": {
-        "profile": "Profile",
-        "manage-profile": "Manage Your Profile",
+        "profile": "账户",
+        "manage-profile": "账户管理",
         "change-name": "更改用户名",
         "name": "用户名",
         "save-name": "保存用户名",
@@ -262,14 +262,14 @@
     "authentication": {
         "log-out": "注销",
         "login-or-create-an-account": "登录或创建帐户",
-        "account-verified": "Account verified! You may now log in.",
-        "unable-to-verify-account": "We were not able to verify your account. Make sure you clicked the activation link from the most recent email you received, and that the link did not expire.",
+        "account-verified": "账户已核实！您可以登录了。",
+        "unable-to-verify-account": "我们无法核实您的账号。请注意查收您的最新邮件并在过期前点击其中的激活链接。",
         "sign-in": "登录",
         "email": "邮箱",
         "password": "密码",
         "confirm-password": "再次确认密码",
         "forgot-password": "忘记密码",
-        "forgot-password-modal": "Forgot your password? No problem! Enter your email below and we will send you an email with a link to reset your password.",
+        "forgot-password-modal": "忘记密码了？没关系！在下方输入您的邮箱账号，我们会给您发一封邮件来重置密码。",
         "create-an-account": "账户注册",
         "agree-to-terms": "我同意{termsOfUse}和{termsOfUse}",
         "terms-of-use": "使用条款",
@@ -279,7 +279,7 @@
     },
     "404": {
         "page-not-found": "找不到页面",
-        "janus-being-attacked": "Janus being attacked with muffins",
+        "janus-being-attacked": "杰纳斯被松饼袭击了",
         "image-caption": "It looks like we couldn't find the page you're looking for. We asked Janus to help, but he wasn't being cooperative, despite being offered several blueberry muffins."
     },
     "back-to-home": "回到主页",
