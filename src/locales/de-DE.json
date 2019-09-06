@@ -4,8 +4,8 @@
         "close-icon": "Close icon",
         "submit-icon": "Submit icon",
         "cancel-icon": "Cancel icon",
-        "close": "Close",
-        "loading": "Loading...",
+        "close": "Schließen",
+        "loading": "Wird geladen...",
         "select": "Select",
         "copy": "Copy",
         "cancel": "Cancel",
@@ -13,8 +13,8 @@
         "submit": "Submit"
     },
     "game-type": {
-        "Campaign": "Campaign",
-        "Game Mode": "Game Mode",
+        "Campaign": "Kampagne",
+        "Game Mode": "Spielmodus",
         "Elusive Target": "Elusive Target"
     },
     "elusive-target": {
