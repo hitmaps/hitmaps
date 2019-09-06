@@ -1,5 +1,5 @@
 {
-    "interactive-maps-for": "地图互动元素",
+    "interactive-maps-for": "HITMAN™ 2 地图大全",
     "form": {
         "close-icon": "关闭图标",
         "submit-icon": "提交图标",
@@ -132,7 +132,7 @@
         "crime-and-punishment": "罪与罚"
     },
     "map": {
-        "level-number": "关卡",
+        "level-number": "关卡{levelNumber}",
         "satellite": "Satellite",
         "toggle-navigation": "切换导航",
         "editor-enabled": "关闭编辑器",
@@ -261,34 +261,34 @@
     },
     "authentication": {
         "log-out": "Log Out",
-        "login-or-create-an-account": "Login or Create an Account",
+        "login-or-create-an-account": "登录或创建帐户",
         "account-verified": "Account verified! You may now log in.",
         "unable-to-verify-account": "We were not able to verify your account. Make sure you clicked the activation link from the most recent email you received, and that the link did not expire.",
-        "sign-in": "Sign In",
-        "email": "Email",
-        "password": "Password",
-        "confirm-password": "Confirm Password",
-        "forgot-password": "I forgot my password",
+        "sign-in": "登录",
+        "email": "邮箱",
+        "password": "密码",
+        "confirm-password": "再次确认密码",
+        "forgot-password": "忘记密码",
         "forgot-password-modal": "Forgot your password? No problem! Enter your email below and we will send you an email with a link to reset your password.",
-        "create-an-account": "Create an Account",
-        "agree-to-terms": "I agree to the {termsOfUse} and {privacyPolicy}",
-        "terms-of-use": "Terms of Use",
-        "privacy-policy": "Privacy Policy",
-        "register": "Register",
-        "back-to-login": "Back to Login"
+        "create-an-account": "账户注册",
+        "agree-to-terms": "我同意{termsOfUse}和{termsOfUse}",
+        "terms-of-use": "使用条款",
+        "privacy-policy": "隐私条款",
+        "register": "注册",
+        "back-to-login": "返回登录页面"
     },
     "404": {
-        "page-not-found": "Page Not Found",
+        "page-not-found": "找不到页面",
         "janus-being-attacked": "Janus being attacked with muffins",
         "image-caption": "It looks like we couldn't find the page you're looking for. We asked Janus to help, but he wasn't being cooperative, despite being offered several blueberry muffins."
     },
     "back-to-home": "Back to the homepage",
     "footer": {
-        "disclaimer": "HITMAN™, HITMAN™ 2, the HITMAN™ logo, images, and text are the property of {ioiLink}.",
+        "disclaimer": "HITMAN™， HITMAN™ 2，HITMAN™ 商标，图像，以及文字皆为 {ioiLink}所有。",
         "io-interactive": "IO Interactive",
-        "join-the-discord": "Join the HITMAN™ 2 Maps Discord",
-        "hitmanforum": "hitmanforum.com Discussion",
-        "hitman-status": "HITMAN™ Server Status - Made With <3 by Hardware",
+        "join-the-discord": "加入HITMAN™ 2 Maps Discord",
+        "hitmanforum": "hitmanforum.com 论坛",
+        "hitman-status": "HITMAN™ 服务器实时状态——创建者 <3 by Hardware",
         "hitman2maps-status": "HITMAN™ 2 Maps服务器状态",
         "about": "关于"
     }
