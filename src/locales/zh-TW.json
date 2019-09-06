@@ -13,22 +13,22 @@
         "submit": "提交"
     },
     "game-type": {
-        "Campaign": "Campaign",
-        "Game Mode": "Game Mode",
-        "Elusive Target": "Elusive Target"
+        "Campaign": "故事",
+        "Game Mode": "遊戲模式",
+        "Elusive Target": "隱密目標"
     },
     "elusive-target": {
-        "target-arrives": "Target Arrives",
-        "briefing-icon": "Briefing Icon",
-        "mission-briefing": "Mission Briefing",
-        "coming-soon": "Coming Soon",
+        "target-arrives": "距離目標到達時間：",
+        "briefing-icon": "報告圖示",
+        "mission-briefing": "任務報告",
+        "coming-soon": "即將到來",
         "notifications": {
-            "notification-icon": "Notification Icon",
-            "enroll-icon": "Enroll Icon",
-            "enroll": "Enroll",
-            "manage-notifications": "Manage Elusive Target Notifications",
-            "manage-notifications-modal-title": "Manage Notifications",
-            "checking-if-enabled": "Checking to see if notifications are enabled on this device...",
+            "notification-icon": "通知圖示",
+            "enroll-icon": "加入圖示",
+            "enroll": "加入",
+            "manage-notifications": "設定隱密目標通知",
+            "manage-notifications-modal-title": "設定通知",
+            "checking-if-enabled": "檢查在這項裝置上是否有啟動通知",
             "unsupported-browser": "Unfortunately, notifications are not supported on this device. Please try to enroll using a supported device.",
             "device-not-enrolled": "Your device is currently not set up to receive notifications. Click \"Enroll\" below to begin setting up your device.",
             "notifications-blocked": "Your device is currently blocking notifications from hitman2maps.com. Please unblock this site from your device, refresh the page, and try to enroll your device again.",
