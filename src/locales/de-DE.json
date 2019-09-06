@@ -7,10 +7,10 @@
         "close": "Schließen",
         "loading": "Lädt...",
         "select": "Select",
-        "copy": "Copy",
-        "cancel": "Cancel",
-        "save": "Save",
-        "submit": "Submit"
+        "copy": "Kopieren",
+        "cancel": "Abbrechen",
+        "save": "Speichern",
+        "submit": "Senden"
     },
     "game-type": {
         "Campaign": "Kampagne",
@@ -264,32 +264,32 @@
         "login-or-create-an-account": "Anmelden oder Konto erstellen",
         "account-verified": "Konto verifiziert! Die Anmeldung ist jetzt möglich.",
         "unable-to-verify-account": "We were not able to verify your account. Make sure you clicked the activation link from the most recent email you received, and that the link did not expire.",
-        "sign-in": "Sign In",
-        "email": "Email",
-        "password": "Password",
-        "confirm-password": "Confirm Password",
-        "forgot-password": "I forgot my password",
-        "forgot-password-modal": "Forgot your password? No problem! Enter your email below and we will send you an email with a link to reset your password.",
-        "create-an-account": "Create an Account",
-        "agree-to-terms": "I agree to the {termsOfUse} and {privacyPolicy}",
-        "terms-of-use": "Terms of Use",
-        "privacy-policy": "Privacy Policy",
-        "register": "Register",
-        "back-to-login": "Back to Login"
+        "sign-in": "Anmelden",
+        "email": "E-Mail",
+        "password": "Passwort",
+        "confirm-password": "Passwort bestätigen",
+        "forgot-password": "Ich habe mein Passwort vergessen",
+        "forgot-password-modal": "Passwort vergessen? Kein Problem! Geben Sie unten Ihre E-Mail-Adresse ein und wir schicken Ihnen einen Link um Ihr Passwort zurückzusetzen.",
+        "create-an-account": "Konto erstellen",
+        "agree-to-terms": "Ich stimme den {termsOfUse} und {privacyPolicy} zu",
+        "terms-of-use": "Nutzungsbedingungen",
+        "privacy-policy": "Datenschutzerklärung",
+        "register": "Registrieren",
+        "back-to-login": "Zurück zur Anmeldung"
     },
     "404": {
-        "page-not-found": "Page Not Found",
-        "janus-being-attacked": "Janus being attacked with muffins",
-        "image-caption": "It looks like we couldn't find the page you're looking for. We asked Janus to help, but he wasn't being cooperative, despite being offered several blueberry muffins."
+        "page-not-found": "Seite nicht gefunden",
+        "janus-being-attacked": "Janus wird von Muffins angegriffen",
+        "image-caption": "Anscheinend können wir die Seite, die du suchst, nicht finden. Wir haben Janus um Hilfe geben, aber der war nicht sehr kooperativ, obwohl wir ihm mehrere Blaubeermuffins angeboten haben."
     },
-    "back-to-home": "Back to the homepage",
+    "back-to-home": "Zurück zur Startseite",
     "footer": {
-        "disclaimer": "HITMAN™, HITMAN™ 2, the HITMAN™ logo, images, and text are the property of {ioiLink}.",
+        "disclaimer": "HITMAN™, HITMAN™ 2, das HITMAN™ Logo, Bilder und Texte sind geistiges Eigentum von {ioiLink}.",
         "io-interactive": "IO Interactive",
-        "join-the-discord": "Join the HITMAN™ 2 Maps Discord",
-        "hitmanforum": "hitmanforum.com Discussion",
-        "hitman-status": "HITMAN™ Server Status - Made With <3 by Hardware",
-        "hitman2maps-status": "HITMAN™ 2 Maps Server Status",
-        "about": "About"
+        "join-the-discord": "Dem HITMAN™ 2 Maps Discord beitreten",
+        "hitmanforum": "Diskussionsthread auf hitmanforum.com",
+        "hitman-status": "HITMAN™ Serverstatus - von Hardware mit <3 erstellt",
+        "hitman2maps-status": "HITMAN™ 2 Maps Serverstatus",
+        "about": "Impressum"
     }
 }
