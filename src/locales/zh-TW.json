@@ -2,15 +2,15 @@
     "interactive-maps-for": "可互動式地圖：",
     "form": {
         "close-icon": "關閉圖示",
-        "submit-icon": "Submit icon",
-        "cancel-icon": "Cancel icon",
-        "close": "Close",
-        "loading": "Loading...",
-        "select": "Select",
-        "copy": "Copy",
-        "cancel": "Cancel",
-        "save": "Save",
-        "submit": "Submit"
+        "submit-icon": "提交圖示",
+        "cancel-icon": "取消圖示",
+        "close": "關閉",
+        "loading": "載入中...",
+        "select": "選取",
+        "copy": "複製",
+        "cancel": "取消",
+        "save": "儲存",
+        "submit": "提交"
     },
     "game-type": {
         "Campaign": "Campaign",
