@@ -1,5 +1,5 @@
 {
-    "interactive-maps-for": "Interactive Maps For",
+    "interactive-maps-for": "Interaktive Karten für",
     "form": {
         "close-icon": "Close icon",
         "submit-icon": "Submit icon",
@@ -14,8 +14,8 @@
     },
     "game-type": {
         "Campaign": "Kampagne",
-        "Game Mode": "Spielmodus",
-        "Elusive Target": "Elusive Target"
+        "Game Mode": "Spielmodi",
+        "Elusive Target": "Schwer zu fassendes Ziel"
     },
     "elusive-target": {
         "target-arrives": "Target Arrives",
@@ -25,13 +25,13 @@
         "notifications": {
             "notification-icon": "Notification Icon",
             "enroll-icon": "Enroll Icon",
-            "enroll": "Enroll",
+            "enroll": "Anmelden",
             "manage-notifications": "Manage Elusive Target Notifications",
             "manage-notifications-modal-title": "Manage Notifications",
-            "checking-if-enabled": "Checking to see if notifications are enabled on this device...",
-            "unsupported-browser": "Unfortunately, notifications are not supported on this device. Please try to enroll using a supported device.",
-            "device-not-enrolled": "Your device is currently not set up to receive notifications. Click \"Enroll\" below to begin setting up your device.",
-            "notifications-blocked": "Your device is currently blocking notifications from hitman2maps.com. Please unblock this site from your device, refresh the page, and try to enroll your device again.",
+            "checking-if-enabled": "Prüfe, ob Mitteilungen auf diesem Gerät aktiviert sind...",
+            "unsupported-browser": "Leider werden Mitteilungen von diesem Gerät nicht unterstützt. Bitte melden Sie sich mit einem unterstützten Gerät an.",
+            "device-not-enrolled": "Ihr Gerät ist derzeit nicht eingerichtet, um Mitteilungen zu erhalten. Klicken Sie auf \"Anmelden\" um mit der Einrichtung zu beginnen.",
+            "notifications-blocked": "Ihr Gerät blockiert derzeit Mitteilungen von hitman2maps.com. Bitte geben Sie die Seite auf Ihrem Gerät frei, aktualisieren die Seite und versuchen die Anmeldung für Ihr Gerät erneut.",
             "send-me-a-notification-when": "Send me a notification when...",
             "announced": "An upcoming Elusive Target is announced",
             "playable": "The Elusive Target arrives and becomes playable",
