@@ -32,27 +32,27 @@
             "unsupported-browser": "抱歉，通知功能暂不支持您的设备，请使用支持该功能的设备登入",
             "device-not-enrolled": "你的设备目前还未开启接收通知的选项，点击下方的“登录”开始设置您的设备",
             "notifications-blocked": "您当前的设备阻止了来自hitman2maps.com的通知。请解除设备对该网站的限制，刷新网页再次重登您的设备。",
-            "send-me-a-notification-when": "Send me a notification when...",
-            "announced": "An upcoming Elusive Target is announced",
-            "playable": "The Elusive Target arrives and becomes playable",
-            "7-days": "The Elusive Target is available for 7 more days",
-            "5-days": "The Elusive Target is available for 5 more days",
-            "3-days": "The Elusive Target is available for 3 more days",
-            "1-day": "The Elusive Target is available for 1 more day",
-            "ended": "The Elusive Target has left"
+            "send-me-a-notification-when": "当....时候给我发送通知",
+            "announced": "一个即将到来的行踪不定的目标被公布",
+            "playable": "行踪不定的目标已经到达并且任务可以游玩了",
+            "7-days": "行踪不定的目标还有7天",
+            "5-days": "行踪不定的目标还有5天",
+            "3-days": "行踪不定的目标还有3天",
+            "1-day": "行踪不定的目标还有1天结束",
+            "ended": "行踪不定的目标已经离去"
         },
-        "n-days": "{days} Days"
+        "n-days": "{days}天"
     },
-    "elusive-target-icon": "Elusive Target Icon",
-    "home-icon": "Home Icon",
-    "location-icon": "Location Icon",
-    "mission-image": "Mission Image",
-    "mission-icon": "Mission Icon",
+    "elusive-target-icon": "行踪不定的目标图标",
+    "home-icon": "首页图标",
+    "location-icon": "地点图标",
+    "mission-image": "任务图像",
+    "mission-icon": "任务图标",
     "difficulties": {
-        "Casual": "Casual",
-        "Professional": "Professional",
-        "Master": "Master",
-        "Standard": "Standard"
+        "Casual": "休闲模式",
+        "Professional": "专业模式",
+        "Master": "大师模式",
+        "Standard": "标准"
     },
     "mission-types": {
         "elusive target": "Elusive Target",
