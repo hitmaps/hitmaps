@@ -33,13 +33,13 @@
             "device-not-enrolled": "Ihr Gerät ist derzeit nicht eingerichtet, um Mitteilungen zu erhalten. Klicken Sie auf \"Anmelden\" um mit der Einrichtung zu beginnen.",
             "notifications-blocked": "Ihr Gerät blockiert derzeit Mitteilungen von hitman2maps.com. Bitte geben Sie die Seite auf Ihrem Gerät frei, aktualisieren die Seite und versuchen die Anmeldung für Ihr Gerät erneut.",
             "send-me-a-notification-when": "Eine Benachrichtigung senden, wenn...",
-            "announced": "Ein schwer zu fassendes Ziel angekündigt wurde",
-            "playable": "Das schwer zu fassende Ziel verfügbar ist und gespielt werden kann",
-            "7-days": "Das schwer zu fassende Ziel noch sieben weitere Tage verfügbar ist",
-            "5-days": "Das schwer zu fassende Ziel noch fünf weitere Tage verfügbar ist",
-            "3-days": "Das schwer zu fassende Ziel noch drei weitere Tage verfügbar ist",
-            "1-day": "Das schwer zu fassende Ziel noch einen weiteren Tag verfügbar ist",
-            "ended": "Das schwer zu fassende Ziel nicht mehr verfügbar ist"
+            "announced": "Ein schwer zu fassendes Ziel wurde angekündigt",
+            "playable": "Das schwer zu fassende Ziel ist verfügbar und kann gespielt werden",
+            "7-days": "Das schwer zu fassende Ziel ist noch sieben weitere Tage verfügbar",
+            "5-days": "Das schwer zu fassende Ziel ist noch fünf weitere Tage verfügbar",
+            "3-days": "Das schwer zu fassende Ziel ist noch drei weitere Tage verfügbar",
+            "1-day": "Das schwer zu fassende Ziel ist noch einen weiteren Tag verfügbar",
+            "ended": "Das schwer zu fassende Ziel ist nicht mehr verfügbar"
         },
         "n-days": "{days} Tage"
     },
