@@ -83,7 +83,7 @@
             "siberia": "西伯利亚"
         },
         "countries": {
-            "ica-facility": "Classified",
+            "ica-facility": "分类",
             "paris": "法国",
             "sapienza": "意大利",
             "marrakesh": "摩洛哥",
@@ -115,8 +115,8 @@
         "club-27": "27俱乐部",
         "the-source": "起源",
         "freedom-fighters": "自由战士",
-        "the-vector": "The Vector",
-        "situs-inversus": "Situs Inversus",
+        "the-vector": "载体",
+        "situs-inversus": "内脏逆位",
         "patient-zero": "零号病人",
         "nightcall": "夜唤",
         "finish-line": "终点线",
@@ -132,7 +132,7 @@
         "crime-and-punishment": "罪与罚"
     },
     "map": {
-        "level-number": "Level {levelNumber}",
+        "level-number": "关卡",
         "satellite": "Satellite",
         "toggle-navigation": "Toggle navigation",
         "editor-enabled": "Editor Enabled",
