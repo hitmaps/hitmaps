@@ -4,18 +4,18 @@
         "close-icon": "Close icon",
         "submit-icon": "Submit icon",
         "cancel-icon": "Cancel icon",
-        "close": "Close",
-        "loading": "Loading...",
-        "select": "Select",
-        "copy": "Copy",
-        "cancel": "Cancel",
-        "save": "Save",
-        "submit": "Submit"
+        "close": "Fermer",
+        "loading": "Chargement...",
+        "select": "Sélectionner",
+        "copy": "Copier",
+        "cancel": "Annuler",
+        "save": "Sauvegarder",
+        "submit": "Soumettre"
     },
     "game-type": {
-        "Campaign": "Campaign",
-        "Game Mode": "Game Mode",
-        "Elusive Target": "Elusive Target"
+        "Campaign": "Campagne",
+        "Game Mode": "Mode de jeu",
+        "Elusive Target": "Cible Fugitive"
     },
     "elusive-target": {
         "target-arrives": "Target Arrives",
