@@ -39,27 +39,27 @@
             "5-days": "Неуловимая цель будет доступна следующие 5 дней",
             "3-days": "Неуловимая цель будет доступна следующие 3 дня",
             "1-day": "Неуловимая цель будет доступна еще 1 день",
-            "ended": "The Elusive Target has left"
+            "ended": "Неуловимая цель больше недоступна"
         },
-        "n-days": "{days} Days"
+        "n-days": "дней"
     },
-    "elusive-target-icon": "Elusive Target Icon",
-    "home-icon": "Home Icon",
-    "location-icon": "Location Icon",
-    "mission-image": "Mission Image",
-    "mission-icon": "Mission Icon",
+    "elusive-target-icon": "Иконка Неуловимой цели",
+    "home-icon": "Иконка \"Домой\"",
+    "location-icon": "Иконка локации",
+    "mission-image": "Изображение миссии",
+    "mission-icon": "Иконка миссии",
     "difficulties": {
-        "Casual": "Casual",
-        "Professional": "Professional",
-        "Master": "Master",
-        "Standard": "Standard"
+        "Casual": "Начинающий",
+        "Professional": "Профессионал",
+        "Master": "Мастер",
+        "Standard": "Стандарная"
     },
     "mission-types": {
-        "elusive target": "Elusive Target",
-        "mission": "Mission",
-        "special assignment": "Special Assignment",
-        "bonus episode": "Bonus Mission",
-        "patient zero": "Patient Zero",
+        "elusive target": "Неуловимая цель",
+        "mission": "Миссия",
+        "special assignment": "Особое задание",
+        "bonus episode": "Бонусная миссия",
+        "patient zero": "Нулевой пациент",
         "sniper assassin": "Sniper Assassin"
     },
     "locations": {
@@ -118,9 +118,9 @@
         "the-vector": "The Vector",
         "situs-inversus": "Situs Inversus",
         "patient-zero": "Patient Zero",
-        "nightcall": "Nightcall",
-        "finish-line": "The Finish Line",
-        "three-headed-serpent": "Three-Headed Serpent",
+        "nightcall": "Ночная смена",
+        "finish-line": "Финишная черта",
+        "three-headed-serpent": "Трехглавый змей",
         "embrace-of-the-serpent": "Embrace of the Serpent",
         "chasing-a-ghost": "Chasing a Ghost",
         "illusions-of-grandeur": "Illusions of Grandeur",
