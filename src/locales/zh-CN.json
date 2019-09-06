@@ -78,9 +78,9 @@
             "whittleton-creek": "维多顿小溪",
             "isle-of-sgail": "萨加尔岛",
             "new-york": "纽约",
-            "himmelstein": "Himmelstein",
-            "hantu-port": "Hantu Port",
-            "siberia": "Siberia"
+            "himmelstein": "希默斯坦",
+            "hantu-port": "韩都港",
+            "siberia": "西伯利亚"
         },
         "countries": {
             "ica-facility": "Classified",
@@ -93,13 +93,13 @@
             "hawkes-bay": "新西兰",
             "miami": "美国",
             "santa-fortuna": "哥伦比亚",
-            "mumbai": "India",
-            "whittleton-creek": "USA",
-            "isle-of-sgail": "North Atlantic",
-            "new-york": "USA",
-            "himmelstein": "Austria",
-            "hantu-port": "Singapore",
-            "siberia": "Russia"
+            "mumbai": "印度",
+            "whittleton-creek": "美国",
+            "isle-of-sgail": "北大西洋",
+            "new-york": "美国",
+            "himmelstein": "奥地利",
+            "hantu-port": "新加坡",
+            "siberia": "俄罗斯"
         }
     },
     "missions": {
