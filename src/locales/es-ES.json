@@ -263,13 +263,13 @@
         "log-out": "Log Out",
         "login-or-create-an-account": "Login or Create an Account",
         "account-verified": "Account verified! You may now log in.",
-        "unable-to-verify-account": "We were not able to verify your account. Make sure you clicked the activation link from the most recent email you received, and that the link did not expire.",
+        "unable-to-verify-account": "No pudimos verificar tu cuenta. Asegúrese de hacer clic en el enlace de activación del correo electrónico más reciente que recibió, y de que el enlace no caducó.",
         "sign-in": "Sign In",
         "email": "Email",
         "password": "Password",
         "confirm-password": "Confirm Password",
         "forgot-password": "I forgot my password",
-        "forgot-password-modal": "Forgot your password? No problem! Enter your email below and we will send you an email with a link to reset your password.",
+        "forgot-password-modal": "Olvidar tu contraseña? ¡No hay problema! Ingrese su correo electrónico a continuación y le enviaremos un correo electrónico con un enlace para restablecer su contraseña.",
         "create-an-account": "Create an Account",
         "agree-to-terms": "Acepto los {termsOfUse} y {privacyPolicy}",
         "terms-of-use": "Términos de Uso",
@@ -280,7 +280,7 @@
     "404": {
         "page-not-found": "Page Not Found",
         "janus-being-attacked": "Janus siendo atacado con magdalenas",
-        "image-caption": "It looks like we couldn't find the page you're looking for. We asked Janus to help, but he wasn't being cooperative, despite being offered several blueberry muffins."
+        "image-caption": "Parece que no pudimos encontrar la página que estás buscando. Le pedimos ayuda a Janus, pero no estaba cooperando, a pesar de ser que le ofrecieron varias magdalenas de arándanos."
     },
     "back-to-home": "Back to the homepage",
     "footer": {
