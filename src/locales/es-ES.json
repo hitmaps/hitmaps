@@ -29,8 +29,8 @@
             "manage-notifications": "Gestionar Notificaciones de Objetivo Elusivo",
             "manage-notifications-modal-title": "Administrar Notificaciones",
             "checking-if-enabled": "Comprobando si las notificaciones están habilitadas en este dispositivo...",
-            "unsupported-browser": "Unfortunately, notifications are not supported on this device. Please try to enroll using a supported device.",
-            "device-not-enrolled": "Your device is currently not set up to receive notifications. Click \"Enroll\" below to begin setting up your device.",
+            "unsupported-browser": "Lamentablemente, las notificaciones no son apoyado en este dispositivo. Por favor intenta inscribirse con un dispositivo soportado.",
+            "device-not-enrolled": "Su dispositivo no está configurado actualmente arriba para recibir notificaciones. Haga clic \"Inscribirse\" a continuación para empezar a configurar su dispositivo.",
             "notifications-blocked": "Your device is currently blocking notifications from hitman2maps.com. Please unblock this site from your device, refresh the page, and try to enroll your device again.",
             "send-me-a-notification-when": "Envíame una notificación cuando...",
             "announced": "Se anuncia un próximo Objetivo Esquivo",
@@ -279,7 +279,7 @@
     },
     "404": {
         "page-not-found": "Page Not Found",
-        "janus-being-attacked": "Janus being attacked with muffins",
+        "janus-being-attacked": "Janus siendo atacado con magdalenas",
         "image-caption": "It looks like we couldn't find the page you're looking for. We asked Janus to help, but he wasn't being cooperative, despite being offered several blueberry muffins."
     },
     "back-to-home": "Back to the homepage",
@@ -288,8 +288,8 @@
         "io-interactive": "IO Interactive",
         "join-the-discord": "Join the HITMAN™ 2 Maps Discord",
         "hitmanforum": "hitmanforum.com Discussion",
-        "hitman-status": "HITMAN™ Server Status - Made With <3 by Hardware",
-        "hitman2maps-status": "HITMAN™ 2 Maps Server Status",
-        "about": "About"
+        "hitman-status": "Estado del servidor HITMAN™ - Hecho Con <3 por Hardware",
+        "hitman2maps-status": "HITMAN ™ 2 Estado del servidor de mapas",
+        "about": "Acerca de"
     }
 }
