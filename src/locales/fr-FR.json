@@ -1,9 +1,9 @@
 {
-    "interactive-maps-for": "Interactive Maps For",
+    "interactive-maps-for": "Cartes interactives pour",
     "form": {
-        "close-icon": "Close icon",
-        "submit-icon": "Submit icon",
-        "cancel-icon": "Cancel icon",
+        "close-icon": "Icône Fermer",
+        "submit-icon": "Icône Soumettre",
+        "cancel-icon": "Icône Annuler",
         "close": "Fermer",
         "loading": "Chargement...",
         "select": "Sélectionner",
@@ -18,7 +18,7 @@
         "Elusive Target": "Cible Fugitive"
     },
     "elusive-target": {
-        "target-arrives": "Target Arrives",
+        "target-arrives": "La cible arrive",
         "briefing-icon": "Icône de briefing",
         "mission-briefing": "Briefing de mission",
         "coming-soon": "Bientôt disponible",
@@ -28,7 +28,7 @@
             "enroll": "Activer",
             "manage-notifications": "Gérer les notifications des cibles fugitives",
             "manage-notifications-modal-title": "Gérer les notifications",
-            "checking-if-enabled": "Checking to see if notifications are enabled on this device...",
+            "checking-if-enabled": "Vérifie si les notifications sont activées sur ce navigateur...",
             "unsupported-browser": "Unfortunately, notifications are not supported on this device. Please try to enroll using a supported device.",
             "device-not-enrolled": "Your device is currently not set up to receive notifications. Click \"Enroll\" below to begin setting up your device.",
             "notifications-blocked": "Your device is currently blocking notifications from hitman2maps.com. Please unblock this site from your device, refresh the page, and try to enroll your device again.",
