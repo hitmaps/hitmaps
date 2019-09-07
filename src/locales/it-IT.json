@@ -33,8 +33,8 @@
             "device-not-enrolled": "Your device is currently not set up to receive notifications. Click \"Enroll\" below to begin setting up your device.",
             "notifications-blocked": "Il tuo dispositivo sta attualmente bloccando le notifiche da hitman2maps.com. Per favore sblocca questo sito dal tuo dispositivo, aggiorna la pagina e prova a iscriversi nuovamente il dispositivo.",
             "send-me-a-notification-when": "Inviami una notifica quando...",
-            "announced": "Viene annunciato un Bersaglio Elusivo in arrivo",
-            "playable": "Il Bersaglio Elusivo è arrivato e giocabile",
+            "announced": "An upcoming Elusive Target is announced",
+            "playable": "The Elusive Target arrives and becomes playable",
             "7-days": "Il Bersaglio Elusivo è disponibile per altri 7 giorni",
             "5-days": "Il Bersaglio Elusivo è disponibile per altri 5 giorni",
             "3-days": "Il Bersaglio Elusivo è disponibile per altri 3 giorni",
@@ -43,7 +43,7 @@
         },
         "n-days": "{days} giorni"
     },
-    "elusive-target-icon": "Elusive Target Icon",
+    "elusive-target-icon": "Bersaglio Elusivo",
     "home-icon": "Home Icon",
     "location-icon": "Location Icon",
     "mission-image": "Mission Image",
@@ -249,7 +249,7 @@
     },
     "profile": {
         "profile": "Profilo",
-        "manage-profile": "Manage Your Profile",
+        "manage-profile": "Gestisci il tuo profilo",
         "change-name": "Cambia Nome",
         "name": "Nome",
         "save-name": "Salva nome",
@@ -262,7 +262,7 @@
     "authentication": {
         "log-out": "Log Out",
         "login-or-create-an-account": "Accedi o crea un account",
-        "account-verified": "Account verified! You may now log in.",
+        "account-verified": "Account verificato! Ora puoi accedere.",
         "unable-to-verify-account": "We were not able to verify your account. Make sure you clicked the activation link from the most recent email you received, and that the link did not expire.",
         "sign-in": "Accedi",
         "email": "Email",
@@ -271,8 +271,8 @@
         "forgot-password": "Ho dimenticato la mia password",
         "forgot-password-modal": "Forgot your password? No problem! Enter your email below and we will send you an email with a link to reset your password.",
         "create-an-account": "Crea account",
-        "agree-to-terms": "I agree to the {termsOfUse} and {privacyPolicy}",
-        "terms-of-use": "Condizioni d'uso",
+        "agree-to-terms": "Sono d'accordo con {terms_of_use} e l'{privacy_policy}",
+        "terms-of-use": "Termini d’uso",
         "privacy-policy": "Informativa sulla privacy",
         "register": "Registrati",
         "back-to-login": "Torna al Login"
