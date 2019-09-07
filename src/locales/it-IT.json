@@ -65,9 +65,9 @@
     "locations": {
         "destinations": {
             "ica-facility": "Base ICA",
-            "paris": "Paris",
+            "paris": "Parigi",
             "sapienza": "Sapienza",
-            "marrakesh": "Marrakesh",
+            "marrakesh": "Marrakech",
             "bangkok": "Bangkok",
             "colorado": "Colorado",
             "hokkaido": "Hokkaido",
@@ -76,10 +76,10 @@
             "santa-fortuna": "Santa Fortuna",
             "mumbai": "Mumbai",
             "whittleton-creek": "Whittleton Creek",
-            "isle-of-sgail": "Isle of Sgàil",
+            "isle-of-sgail": "Isola di Sgàil",
             "new-york": "New York",
             "himmelstein": "Himmelstein",
-            "hantu-port": "Hantu Port",
+            "hantu-port": "Porto di Hantu",
             "siberia": "Siberia"
         },
         "countries": {
@@ -96,7 +96,7 @@
             "mumbai": "India",
             "whittleton-creek": "Stati Uniti",
             "isle-of-sgail": "Atlantico Settentrionale",
-            "new-york": "USA",
+            "new-york": "Stati Uniti",
             "himmelstein": "Austria",
             "hantu-port": "Singapore",
             "siberia": "Russia"
