@@ -103,9 +103,9 @@
         }
     },
     "missions": {
-        "freeform-training": "Freeform Training",
-        "the-final-test": "The Final Test",
-        "the-showstopper": "The Showstopper",
+        "freeform-training": "Addestramento Libero",
+        "the-final-test": "Prova Finale",
+        "the-showstopper": "Il Guastafeste",
         "world-of-tomorrow": "Il Mondo di Domani",
         "the-icon": "The Icon",
         "landslide": "Effetto Valanga",
@@ -149,7 +149,7 @@
         "show-all": "Mostra tutto",
         "types": {
             "Points of Interest": "Punto di interesse",
-            "Weapons and Tools": "Weapons and Tools",
+            "Weapons and Tools": "Armi e Strumenti",
             "Navigation": "Navigation"
         },
         "groups": {
@@ -176,8 +176,8 @@
             "Weapons and Tools|Non-Lethal Melee": "Non-Lethal Melee",
             "Weapons and Tools|Explosive": "Explosive",
             "Weapons and Tools|Firearm": "Firearm",
-            "Weapons and Tools|Ammo": "Ammo",
-            "Navigation|Starting Location": "Starting Location",
+            "Weapons and Tools|Ammo": "Munizioni",
+            "Navigation|Starting Location": "Posizione iniziale",
             "Navigation|Exit Location": "Exit Location",
             "Navigation|Agency Pickup": "Agency Pickup",
             "Navigation|Stairwell": "Stairwell",
