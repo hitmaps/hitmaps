@@ -240,12 +240,12 @@
         "direction-down": "Down Only",
         "notes": "Notes",
         "reqirement": "Requisiti",
-        "warning": "Warning",
-        "information": "Information",
+        "warning": "Attenzione",
+        "information": "Informazioni",
         "description": "Descrizione",
         "text": "Testo",
         "add-another-note": "Aggiungi un'altra nota",
-        "in-game-description": "In-Game Description:"
+        "in-game-description": "Descrizione dal gioco:"
     },
     "profile": {
         "profile": "Profilo",
