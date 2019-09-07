@@ -140,7 +140,7 @@
         "add-remove-ledges": "Aggiungi / Rimuovi Sporgenze",
         "add-remove-foliage": "Aggiungi / Rimuovi Vegetazione",
         "manage-disguise-areas": "Manage Disguise Areas",
-        "edit-map": "Edit Map",
+        "edit-map": "Modifica mappa",
         "login-to-edit": "Accedi / Registrati per Modificare",
         "clear-search": "Azzera ricerca",
         "disguises": "Travestimenti",
@@ -155,14 +155,14 @@
         "groups": {
             "Points of Interest|Sabotage": "Sabotaggio",
             "Points of Interest|Distraction": "Distraction",
-            "Points of Interest|Poison": "Poison",
-            "Points of Interest|Misc Item": "Misc Item",
+            "Points of Interest|Poison": "Veleno",
+            "Points of Interest|Misc Item": "Oggetti vari",
             "Points of Interest|Intel": "Intel",
             "Points of Interest|Disguise": "Travestimento",
             "Points of Interest|Blend In": "Mimetizzazione",
             "Points of Interest|Conceal Item": "Nascondi Oggetto",
             "Points of Interest|Weapon Crate": "Cassa d'armi",
-            "Points of Interest|Locked Door": "Locked Door",
+            "Points of Interest|Locked Door": "Porta chiusa",
             "Points of Interest|Destroy Evidence": "Distruggi le registrazioni",
             "Points of Interest|Hiding Spot": "Nascondiglio",
             "Points of Interest|Interaction": "Interazione",
@@ -180,7 +180,7 @@
             "Navigation|Starting Location": "Posizione iniziale",
             "Navigation|Exit Location": "Exit Location",
             "Navigation|Agency Pickup": "Oggetto Infiltrato",
-            "Navigation|Stairwell": "Stairwell",
+            "Navigation|Stairwell": "Scalinata",
             "Navigation|Passage": "Passaggio",
             "Navigation|Ways Up/Down": "Ways Up/Down",
             "Navigation|Ledge": "Sporgenza",
@@ -226,11 +226,11 @@
         "category": "Category",
         "icon": "Icon",
         "name": "Nome",
-        "name-note": "Inserisci il per nome come appare nel gioco.",
+        "name-note": "Inserisci il nome per come appare nel gioco.",
         "action": "Action",
         "action-note": "Enter the action that is performed (such as \"loosen the valve\", \"turn on radio\", \"trigger fire alarm\", etc.)",
         "target": "Bersaglio",
-        "target-note": "Chi sarà avvelenato?",
+        "target-note": "Chi verrà avvelenato?",
         "type": "Type",
         "pickup-large": "Risorse dell'ICA",
         "stash-small": "Scorta Segreta",
@@ -250,13 +250,13 @@
     "profile": {
         "profile": "Profilo",
         "manage-profile": "Gestisci il tuo profilo",
-        "change-name": "Cambia Nome",
+        "change-name": "Modifica Nome",
         "name": "Nome",
         "save-name": "Salva nome",
-        "change-password": "Cambia Password",
+        "change-password": "Modifica password",
         "current-password": "Password attuale",
-        "new-password": "Nuova Password",
-        "confirm-new-password": "Conferma Nuova Password",
+        "new-password": "Nuova password",
+        "confirm-new-password": "Conferma nuova password",
         "update-password": "Aggiorna password"
     },
     "authentication": {
@@ -270,12 +270,12 @@
         "confirm-password": "Conferma password",
         "forgot-password": "Ho dimenticato la mia password",
         "forgot-password-modal": "Hai dimenticato la password? Nessun problema! Inserisci la tua email in basso e ti invieremo un'email con un link per reimpostare la tua password.",
-        "create-an-account": "Crea account",
+        "create-an-account": "Crea un account",
         "agree-to-terms": "Accetto le {terms_of_use} e l'{privacy_policy}",
         "terms-of-use": "Condizioni d'uso",
         "privacy-policy": "Informativa sulla privacy",
         "register": "Registrati",
-        "back-to-login": "Torna al Login"
+        "back-to-login": "Torna all'accesso"
     },
     "404": {
         "page-not-found": "Pagina non trovata",
@@ -284,12 +284,12 @@
     },
     "back-to-home": "Torna alla pagina principale",
     "footer": {
-        "disclaimer": "HITMAN™, HITMAN™ 2, il logo HITMAN™, le immagini e il testo sono di proprietà di {ioiLink}.",
+        "disclaimer": "HITMAN™, HITMAN™ 2, il logo HITMAN™, le immagini e i testi sono una proprietà di {ioiLink}.",
         "io-interactive": "Io Interactive",
-        "join-the-discord": "Unisciti nel Server Discord HITMAN™ 2 Maps",
+        "join-the-discord": "Unisciti al server Discord HITMAN™ 2 Maps",
         "hitmanforum": "hitmanforum.com Discussion",
         "hitman-status": "Stato dei server di HITMAN™ - Sviluppato con <3 da Hardware",
         "hitman2maps-status": "Stato dei server di HITMAN™ 2 Maps",
-        "about": "Info su"
+        "about": "Informazioni"
     }
 }
