@@ -1,26 +1,26 @@
 {
-    "interactive-maps-for": "Interactive Maps For",
+    "interactive-maps-for": "Mappe Interattive per",
     "form": {
         "close-icon": "Close icon",
         "submit-icon": "Submit icon",
         "cancel-icon": "Cancel icon",
-        "close": "Close",
-        "loading": "Loading...",
-        "select": "Select",
-        "copy": "Copy",
+        "close": "Chiudi",
+        "loading": "Caricamento...",
+        "select": "Seleziona",
+        "copy": "Copia",
         "cancel": "Cancel",
-        "save": "Save",
+        "save": "Salva",
         "submit": "Submit"
     },
     "game-type": {
-        "Campaign": "Campaign",
-        "Game Mode": "Game Mode",
-        "Elusive Target": "Elusive Target"
+        "Campaign": "Storia",
+        "Game Mode": "Modalità di gioco",
+        "Elusive Target": "Bersaglio Elusivo"
     },
     "elusive-target": {
         "target-arrives": "Target Arrives",
         "briefing-icon": "Briefing Icon",
-        "mission-briefing": "Mission Briefing",
+        "mission-briefing": "Direttive",
         "coming-soon": "Coming Soon",
         "notifications": {
             "notification-icon": "Notification Icon",
