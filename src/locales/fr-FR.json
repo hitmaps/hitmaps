@@ -29,27 +29,27 @@
             "manage-notifications": "Gérer les notifications des cibles fugitives",
             "manage-notifications-modal-title": "Gérer les notifications",
             "checking-if-enabled": "Vérifie si les notifications sont activées sur ce navigateur...",
-            "unsupported-browser": "Unfortunately, notifications are not supported on this device. Please try to enroll using a supported device.",
-            "device-not-enrolled": "Your device is currently not set up to receive notifications. Click \"Enroll\" below to begin setting up your device.",
-            "notifications-blocked": "Your device is currently blocking notifications from hitman2maps.com. Please unblock this site from your device, refresh the page, and try to enroll your device again.",
-            "send-me-a-notification-when": "Send me a notification when...",
-            "announced": "An upcoming Elusive Target is announced",
-            "playable": "The Elusive Target arrives and becomes playable",
-            "7-days": "The Elusive Target is available for 7 more days",
-            "5-days": "The Elusive Target is available for 5 more days",
-            "3-days": "The Elusive Target is available for 3 more days",
-            "1-day": "The Elusive Target is available for 1 more day",
-            "ended": "The Elusive Target has left"
+            "unsupported-browser": "Malheureusement, les notifications ne sont pas prises en charge sur ce support. Veuillez utiliser un navigateur compatible.",
+            "device-not-enrolled": "Votre navigateur n'est actuellement pas configuré pour recevoir des notifications. Cliquez sur \"S'inscrire\" ci-dessous pour commencer à configurer votre appareil.",
+            "notifications-blocked": "Votre navigateur bloque les notifications venant de hitman2maps.com. Débloquez ce site de votre navigateur, actualisez la page et réessayez de vous inscrire.",
+            "send-me-a-notification-when": "Je voudrais recevoir une notification quand...",
+            "announced": "Une prochaine cible fugitive est annoncée",
+            "playable": "La cible fugitive est disponible",
+            "7-days": "La cible fugitive est disponible encore pendant 7 jours",
+            "5-days": "La cible fugitive est disponible encore pendant 5 jours",
+            "3-days": "La cible fugitive est disponible encore pendant 3 jours",
+            "1-day": "La cible fugitive est disponible encore pendant 1 jour",
+            "ended": "La cible fugitive est terminée"
         },
-        "n-days": "{days} Days"
+        "n-days": "{days} jours"
     },
-    "elusive-target-icon": "Elusive Target Icon",
-    "home-icon": "Home Icon",
-    "location-icon": "Location Icon",
-    "mission-image": "Mission Image",
-    "mission-icon": "Mission Icon",
+    "elusive-target-icon": "Icône Cible Fugitive",
+    "home-icon": "Icône Accueil",
+    "location-icon": "Icône Localisation",
+    "mission-image": "Image de mission",
+    "mission-icon": "Icône de mission",
     "difficulties": {
-        "Casual": "Casual",
+        "Casual": "Recrue",
         "Professional": "Professionnel",
         "Master": "Maître",
         "Standard": "Standard"
@@ -57,14 +57,14 @@
     "mission-types": {
         "elusive target": "Cible Fugitive",
         "mission": "Mission",
-        "special assignment": "Special Assignment",
+        "special assignment": "Affectation Spéciale",
         "bonus episode": "Mission Bonus",
         "patient zero": "Patient Zéro",
         "sniper assassin": "Sniper Assassin"
     },
     "locations": {
         "destinations": {
-            "ica-facility": "ICA Facility",
+            "ica-facility": "Base de l'ICA",
             "paris": "Paris",
             "sapienza": "Sapienza",
             "marrakesh": "Marrakech",
