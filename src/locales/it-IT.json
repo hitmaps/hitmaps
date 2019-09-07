@@ -19,7 +19,7 @@
     },
     "elusive-target": {
         "target-arrives": "Target Arrives",
-        "briefing-icon": "Briefing Icon",
+        "briefing-icon": "Direttive",
         "mission-briefing": "Direttive",
         "coming-soon": "Coming Soon",
         "notifications": {
@@ -137,7 +137,7 @@
         "toggle-navigation": "Toggle navigation",
         "editor-enabled": "Editor Abilitato",
         "add-remove-items": "Add / Remove Items",
-        "add-remove-ledges": "Add / Remove Ledges",
+        "add-remove-ledges": "Aggiungi / Rimuovi Sporgenze",
         "add-remove-foliage": "Aggiungi / Rimuovi Vegetazione",
         "manage-disguise-areas": "Manage Disguise Areas",
         "edit-map": "Edit Map",
@@ -267,8 +267,8 @@
         "sign-in": "Sign In",
         "email": "Email",
         "password": "Password",
-        "confirm-password": "Confirm Password",
-        "forgot-password": "I forgot my password",
+        "confirm-password": "Conferma password",
+        "forgot-password": "Ho dimenticato la mia password",
         "forgot-password-modal": "Forgot your password? No problem! Enter your email below and we will send you an email with a link to reset your password.",
         "create-an-account": "Create an Account",
         "agree-to-terms": "I agree to the {termsOfUse} and {privacyPolicy}",
