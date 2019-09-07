@@ -43,11 +43,11 @@
         },
         "n-days": "{days} giorni"
     },
-    "elusive-target-icon": "Elusive Target Icon",
-    "home-icon": "Home Icon",
-    "location-icon": "Location Icon",
+    "elusive-target-icon": "Bersaglio Elusivo",
+    "home-icon": "Pagina iniziale",
+    "location-icon": "Posizione",
     "mission-image": "Immagine della missione",
-    "mission-icon": "Mission Icon",
+    "mission-icon": "Missione",
     "difficulties": {
         "Casual": "Novizio",
         "Professional": "Professionista",
@@ -150,11 +150,11 @@
         "types": {
             "Points of Interest": "Punto di interesse",
             "Weapons and Tools": "Armi e strumenti",
-            "Navigation": "Navigation"
+            "Navigation": "Navigazione"
         },
         "groups": {
             "Points of Interest|Sabotage": "Sabotaggio",
-            "Points of Interest|Distraction": "Distraction",
+            "Points of Interest|Distraction": "Diversivo",
             "Points of Interest|Poison": "Veleno",
             "Points of Interest|Misc Item": "Oggetti vari",
             "Points of Interest|Intel": "Intel",
@@ -169,7 +169,7 @@
             "Points of Interest|Alarm": "Allarme",
             "Points of Interest|Security Check": "Controllo di sicurezza",
             "Points of Interest|Camera": "Telecamera",
-            "Points of Interest|Location": "Location",
+            "Points of Interest|Location": "Posizione",
             "Weapons and Tools|Distraction": "Diversivo",
             "Weapons and Tools|Poison": "Veleno",
             "Weapons and Tools|Lethal Melee": "Corpo a corpo letale",
@@ -287,7 +287,7 @@
         "disclaimer": "HITMAN™, HITMAN™ 2, il logo HITMAN™, le immagini e i testi sono una proprietà di {ioiLink}.",
         "io-interactive": "Io Interactive",
         "join-the-discord": "Unisciti al server Discord HITMAN™ 2 Maps",
-        "hitmanforum": "hitmanforum.com Discussion",
+        "hitmanforum": "Discussioni su hitmanforum.com",
         "hitman-status": "Stato dei server di HITMAN™ - Sviluppato con <3 da Hardware",
         "hitman2maps-status": "Stato dei server di HITMAN™ 2 Maps",
         "about": "Informazioni"
