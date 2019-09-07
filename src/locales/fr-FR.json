@@ -24,8 +24,8 @@
         "coming-soon": "Bientôt disponible",
         "notifications": {
             "notification-icon": "Icône de notification",
-            "enroll-icon": "Icône activer",
-            "enroll": "Activer",
+            "enroll-icon": "Icône S'inscrire",
+            "enroll": "S'inscrire",
             "manage-notifications": "Gérer les notifications des cibles fugitives",
             "manage-notifications-modal-title": "Gérer les notifications",
             "checking-if-enabled": "Vérifie si les notifications sont activées sur ce navigateur...",
@@ -148,8 +148,8 @@
         "hide-all": "Cacher tout",
         "show-all": "Afficher tout",
         "types": {
-            "Points of Interest": "Point d'Intérêt",
-            "Weapons and Tools": "Armes et Outils",
+            "Points of Interest": "Points d'intérêt",
+            "Weapons and Tools": "Armes et outils",
             "Navigation": "Navigation"
         },
         "groups": {
@@ -159,7 +159,7 @@
             "Points of Interest|Misc Item": "Objet divers",
             "Points of Interest|Intel": "Information",
             "Points of Interest|Disguise": "Déguisement",
-            "Points of Interest|Blend In": "Se fondre dans",
+            "Points of Interest|Blend In": "Dissimulation",
             "Points of Interest|Conceal Item": "Dissimulation d'objet",
             "Points of Interest|Weapon Crate": "Caisse d'armes",
             "Points of Interest|Locked Door": "Porte verrouillée",
@@ -204,7 +204,7 @@
         "select-disguise-for-editing": "Sélectionnez un déguisement dans le menu déroulant ci-dessous pour modifier sa disposition.",
         "add-trespassing-region": "Ajouter une zone restreinte",
         "toggle-trespassing-builder": "Cliquez ici pour activer / désactiver le générateur de zone restreinte",
-        "add-hostile-region": "Ajouter une zone restreinte",
+        "add-hostile-region": "Ajouter une zone hostile",
         "toggle-hostile-builder": "Cliquez ici pour activer / désactiver le générateur de zone restreinte",
         "copy-regions": "Copier les zones",
         "click-to-copy-regions": "Cliquez ici pour copier des zones de déguisement d'un déguisement à un autre",
