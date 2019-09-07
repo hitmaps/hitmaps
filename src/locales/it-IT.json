@@ -1,9 +1,9 @@
 {
     "interactive-maps-for": "Mappe Interattive per",
     "form": {
-        "close-icon": "Chiudi",
-        "submit-icon": "Invia",
-        "cancel-icon": "Annulla",
+        "close-icon": "Close icon",
+        "submit-icon": "Submit icon",
+        "cancel-icon": "Cancel icon",
         "close": "Chiudi",
         "loading": "Caricamento...",
         "select": "Seleziona",
@@ -19,7 +19,7 @@
     },
     "elusive-target": {
         "target-arrives": "Target Arrives",
-        "briefing-icon": "Direttive",
+        "briefing-icon": "Briefing Icon",
         "mission-briefing": "Direttive",
         "coming-soon": "Coming Soon",
         "notifications": {
@@ -43,10 +43,10 @@
         },
         "n-days": "{days} giorni"
     },
-    "elusive-target-icon": "Bersaglio Elusivo",
+    "elusive-target-icon": "Elusive Target Icon",
     "home-icon": "Home Icon",
     "location-icon": "Location Icon",
-    "mission-image": "Mission Image",
+    "mission-image": "Immagine della Missione",
     "mission-icon": "Mission Icon",
     "difficulties": {
         "Casual": "Novizio",
@@ -271,8 +271,8 @@
         "forgot-password": "Ho dimenticato la mia password",
         "forgot-password-modal": "Forgot your password? No problem! Enter your email below and we will send you an email with a link to reset your password.",
         "create-an-account": "Crea account",
-        "agree-to-terms": "Sono d'accordo con {terms_of_use} e l'{privacy_policy}",
-        "terms-of-use": "Termini d’uso",
+        "agree-to-terms": "Accetto le {terms_of_use} e l'{privacy_policy}",
+        "terms-of-use": "Condizioni d'uso",
         "privacy-policy": "Informativa sulla privacy",
         "register": "Registrati",
         "back-to-login": "Torna al Login"
