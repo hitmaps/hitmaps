@@ -153,13 +153,13 @@
             "Navigation": "Navigation"
         },
         "groups": {
-            "Points of Interest|Sabotage": "Sabotage",
+            "Points of Interest|Sabotage": "Sabotaggio",
             "Points of Interest|Distraction": "Distraction",
             "Points of Interest|Poison": "Poison",
             "Points of Interest|Misc Item": "Misc Item",
             "Points of Interest|Intel": "Intel",
             "Points of Interest|Disguise": "Travestimento",
-            "Points of Interest|Blend In": "Blend In",
+            "Points of Interest|Blend In": "Mimetizzazione",
             "Points of Interest|Conceal Item": "Conceal Item",
             "Points of Interest|Weapon Crate": "Weapon Crate",
             "Points of Interest|Locked Door": "Locked Door",
@@ -248,15 +248,15 @@
         "in-game-description": "In-Game Description:"
     },
     "profile": {
-        "profile": "Profile",
+        "profile": "Profilo",
         "manage-profile": "Manage Your Profile",
         "change-name": "Change Name",
         "name": "Name",
         "save-name": "Save Name",
-        "change-password": "Change Password",
+        "change-password": "Cambia Password",
         "current-password": "Current Password",
-        "new-password": "New Password",
-        "confirm-new-password": "Confirm New Password",
+        "new-password": "Nuova Password",
+        "confirm-new-password": "Conferma Nuova Password",
         "update-password": "Update Password"
     },
     "authentication": {
