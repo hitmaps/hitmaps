@@ -250,14 +250,14 @@
     "profile": {
         "profile": "Profilo",
         "manage-profile": "Manage Your Profile",
-        "change-name": "Change Name",
-        "name": "Name",
-        "save-name": "Save Name",
+        "change-name": "Cambia Nome",
+        "name": "Nome",
+        "save-name": "Salva nome",
         "change-password": "Cambia Password",
-        "current-password": "Current Password",
+        "current-password": "Password attuale",
         "new-password": "Nuova Password",
         "confirm-new-password": "Conferma Nuova Password",
-        "update-password": "Update Password"
+        "update-password": "Aggiorna password"
     },
     "authentication": {
         "log-out": "Log Out",
