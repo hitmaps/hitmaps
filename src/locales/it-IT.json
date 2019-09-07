@@ -286,10 +286,10 @@
     "footer": {
         "disclaimer": "HITMAN™, HITMAN™ 2, the HITMAN™ logo, images, and text are the property of {ioiLink}.",
         "io-interactive": "Io Interactive",
-        "join-the-discord": "Entra nel Server Discord HITMAN™ 2 Maps",
+        "join-the-discord": "Unisciti nel Server Discord HITMAN™ 2 Maps",
         "hitmanforum": "hitmanforum.com Discussion",
-        "hitman-status": "HITMAN™ Server Status - Made With <3 by Hardware",
-        "hitman2maps-status": "HITMAN™ 2 Maps Server Status",
-        "about": "About"
+        "hitman-status": "Stato dei server di HITMAN™ - Sviluppato con <3 da Hardware",
+        "hitman2maps-status": "Stato dei server di HITMAN™ 2 Maps",
+        "about": "Info su"
     }
 }
