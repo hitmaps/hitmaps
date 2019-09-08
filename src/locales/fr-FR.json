@@ -1,9 +1,9 @@
 {
     "interactive-maps-for": "Cartes interactives pour",
     "language-modal": {
-        "change-language": "Change Language",
-        "footer": "Translations are maintained and updated by the HITMAN™️ 2 Maps community. If a translation is incorrect, please {submitACorrection}.",
-        "submit-a-correction": "submit a correction"
+        "change-language": "Changer la Langue",
+        "footer": "Les traductions sont gérées et mises à jour par la communauté HITMAN™ 2 Maps. Si une traduction est incorrecte, veuillez {submitACorrection}.",
+        "submit-a-correction": "soumettre une correction"
     },
     "form": {
         "close-icon": "Icône Fermer",
