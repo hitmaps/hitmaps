@@ -1,9 +1,9 @@
 {
-    "interactive-maps-for": "可互动式地图",
+    "interactive-maps-for": "互动式地图",
     "language-modal": {
-        "change-language": "Change Language",
-        "footer": "Translations are maintained and updated by the HITMAN™️ 2 Maps community. If a translation is incorrect, please {submitACorrection}.",
-        "submit-a-correction": "submit a correction"
+        "change-language": "界面语言设置",
+        "footer": "翻译由HITMAN™ 2 Maps社区维护和更新。如果翻译不正确，请{submitACorrection}.",
+        "submit-a-correction": "更正建议"
     },
     "form": {
         "close-icon": "关闭图标",
@@ -18,7 +18,7 @@
         "submit": "提交"
     },
     "game-type": {
-        "Campaign": "活动",
+        "Campaign": "战役",
         "Game Mode": "游戏模式",
         "Elusive Target": "行踪不定的目标"
     },
@@ -30,12 +30,12 @@
         "notifications": {
             "notification-icon": "通知图标",
             "enroll-icon": "加入图标",
-            "enroll": "加入",
+            "enroll": "添加",
             "manage-notifications": "行踪不定的目标通知管理",
             "manage-notifications-modal-title": "通知管理",
             "checking-if-enabled": "检查在当前设备是否开启通知功能",
-            "unsupported-browser": "抱歉，通知功能暂不支持您的设备，请使用支持该功能的设备加入",
-            "device-not-enrolled": "你的设备目前还未开启接收通知的选项，点击下方的“登录”开始设置您的设备",
+            "unsupported-browser": "抱歉，通知功能暂不支持您的设备，请使用支持该功能的设备",
+            "device-not-enrolled": "你的设备目前还未开启接收通知的选项，点击下方的“添加”开启接收通知。",
             "notifications-blocked": "您当前的设备阻止了来自hitman2maps.com的通知。请解除设备对该网站的限制，刷新网页并再次重登您的设备。",
             "send-me-a-notification-when": "当....时候给我发送通知",
             "announced": "一个即将到来的行踪不定的目标被公布",
