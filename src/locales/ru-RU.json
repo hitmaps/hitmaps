@@ -41,7 +41,7 @@
             "1-day": "Неуловимая цель будет доступна еще 1 день",
             "ended": "Неуловимая цель больше недоступна"
         },
-        "n-days": "дней"
+        "n-days": "{days} Days"
     },
     "elusive-target-icon": "Иконка Неуловимой цели",
     "home-icon": "Иконка \"Домой\"",
@@ -132,7 +132,7 @@
         "crime-and-punishment": "Преступление и наказание"
     },
     "map": {
-        "level-number": "Уровень",
+        "level-number": "Level {levelNumber}",
         "satellite": "Спутник",
         "toggle-navigation": "Включить навигацию",
         "editor-enabled": "Редактор запущен",
@@ -188,7 +188,7 @@
         },
         "editor-menu": "Меню редактора",
         "what-would-you-like-to-do": "Что бы вы хотели сделать?",
-        "click-icon-to-close": "Нажмите на иконку чтобы закрыть меню редактора",
+        "click-icon-to-close": "Click the {pencilIcon} icon to close the editor menu.",
         "click-to-add": "Нажмите в любом месте карты, чтобы добавить новый предмет",
         "drag-to-move": "Перетащите существующий объект",
         "click-item-to-delete": "Кликните на существующем объекте, а затем выберите \"Удалить\", чтобы удалить его",
@@ -271,7 +271,7 @@
         "forgot-password": "Я забыл мой пароль",
         "forgot-password-modal": "Забыли пароль? Не проблема! Введите свой электронный адрес ниже и мы вышлем вам письмо со ссылкой на сброс вашего пароля",
         "create-an-account": "Создать аккаунт",
-        "agree-to-terms": "Согласиться с",
+        "agree-to-terms": "I agree to the {termsOfUse} and {privacyPolicy}",
         "terms-of-use": "Пользовательское соглашение",
         "privacy-policy": "Политика конфиденциальности",
         "register": "Регистрация",
@@ -284,7 +284,7 @@
     },
     "back-to-home": "Вернуться на Главную",
     "footer": {
-        "disclaimer": "HITMAN™, HITMAN™ 2, логотип HITMAN™,  изображения и текст являются собственностью ",
+        "disclaimer": "HITMAN™, HITMAN™ 2, the HITMAN™ logo, images, and text are the property of {ioiLink}.",
         "io-interactive": "IO Interactive",
         "join-the-discord": "Присоединяйтесь к HITMAN™ 2 Maps Discord",
         "hitmanforum": "Обсуждение на hitmanforum.com",
