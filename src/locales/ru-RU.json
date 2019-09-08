@@ -11,9 +11,9 @@
         "cancel-icon": "Кнопка отмены",
         "close": "Закрыть",
         "loading": "Загрузка...",
-        "select": "Выбор",
+        "select": "Select",
         "copy": "Копировать",
-        "cancel": "Отмена",
+        "cancel": "Cancel",
         "save": "Сохранить",
         "submit": "Отправить"
     },
