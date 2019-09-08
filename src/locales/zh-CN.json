@@ -271,7 +271,7 @@
         "forgot-password": "忘记密码",
         "forgot-password-modal": "忘记密码了？没关系！在下方输入您的邮箱账号，我们会给您发一封邮件来重置密码。",
         "create-an-account": "账户注册",
-        "agree-to-terms": "我同意{termsOfUse}和{termsOfUse}",
+        "agree-to-terms": "我同意{termsOfUse}和{privacyPolicy}",
         "terms-of-use": "使用条款",
         "privacy-policy": "隐私条款",
         "register": "注册",
