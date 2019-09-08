@@ -1,5 +1,10 @@
 {
     "interactive-maps-for": "Mappe interattive per",
+    "language-modal": {
+        "change-language": "Cambia Lingua",
+        "footer": "Le traduzioni sono gestite e aggiornate dalla community di HITMAN™ ️2 Maps. Se una traduzione non è corretta, per favore {submitACorrection}.",
+        "submit-a-correction": "sottoscrivi una correzione"
+    },
     "form": {
         "close-icon": "Chiudi",
         "submit-icon": "Invia",

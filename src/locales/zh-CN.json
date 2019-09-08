@@ -1,5 +1,10 @@
 {
-    "interactive-maps-for": "可互动式地图",
+    "interactive-maps-for": "互动式地图",
+    "language-modal": {
+        "change-language": "界面语言设置",
+        "footer": "翻译由HITMAN™ 2 Maps社区维护和更新。如果翻译不正确，请{submitACorrection}.",
+        "submit-a-correction": "更正建议"
+    },
     "form": {
         "close-icon": "关闭图标",
         "submit-icon": "提交图标",
@@ -13,7 +18,7 @@
         "submit": "提交"
     },
     "game-type": {
-        "Campaign": "活动",
+        "Campaign": "战役",
         "Game Mode": "游戏模式",
         "Elusive Target": "行踪不定的目标"
     },
@@ -25,13 +30,13 @@
         "notifications": {
             "notification-icon": "通知图标",
             "enroll-icon": "加入图标",
-            "enroll": "加入",
+            "enroll": "添加",
             "manage-notifications": "行踪不定的目标通知管理",
             "manage-notifications-modal-title": "通知管理",
             "checking-if-enabled": "检查在当前设备是否开启通知功能",
-            "unsupported-browser": "抱歉，通知功能暂不支持您的设备，请使用支持该功能的设备加入",
-            "device-not-enrolled": "你的设备目前还未开启接收通知的选项，点击下方的“登录”开始设置您的设备",
-            "notifications-blocked": "您当前的设备阻止了来自hitman2maps.com的通知。请解除设备对该网站的限制，刷新网页并再次重登您的设备。",
+            "unsupported-browser": "抱歉，通知功能暂不支持您的设备，请使用支持该功能的设备",
+            "device-not-enrolled": "你的设备目前还未开启接收通知的选项，点击下方的“添加”开启接收通知。",
+            "notifications-blocked": "您当前的设备阻止了来自hitman2maps.com的通知。请解除设备对该网站的限制，刷新网页并再次重新授权该设备。",
             "send-me-a-notification-when": "当....时候给我发送通知",
             "announced": "一个即将到来的行踪不定的目标被公布",
             "playable": "行踪不定的目标已经到达并且任务可以游玩了",
@@ -123,7 +128,7 @@
         "three-headed-serpent": "三头蛇",
         "embrace-of-the-serpent": "巨蛇之拥",
         "chasing-a-ghost": "捕风捉影",
-        "illusions-of-grandeur": "壮丽幻相",
+        "illusions-of-grandeur": "壮丽幻像",
         "another-life": "往生",
         "ark-society": "方舟会",
         "golden-handshake": "离职补贴",
@@ -132,8 +137,8 @@
         "crime-and-punishment": "罪与罚"
     },
     "map": {
-        "level-number": "关卡{levelNumber}",
-        "satellite": "卫星图",
+        "level-number": "楼层{levelNumber}",
+        "satellite": "实拍地图",
         "toggle-navigation": "切换导航",
         "editor-enabled": "关闭编辑器",
         "add-remove-items": "增加/移除项目",
@@ -154,16 +159,16 @@
         },
         "groups": {
             "Points of Interest|Sabotage": "可进行的破坏活动",
-            "Points of Interest|Distraction": "可进行的分心活动",
+            "Points of Interest|Distraction": "可进行的分散注意力活动",
             "Points of Interest|Poison": "可下毒地点",
             "Points of Interest|Misc Item": "杂项",
             "Points of Interest|Intel": "情报",
             "Points of Interest|Disguise": "伪装",
-            "Points of Interest|Blend In": "可混入人群处",
-            "Points of Interest|Conceal Item": "隐藏项目",
-            "Points of Interest|Weapon Crate": "武器偷运点",
+            "Points of Interest|Blend In": "混入人群",
+            "Points of Interest|Conceal Item": "隐藏物品处",
+            "Points of Interest|Weapon Crate": "武器存放处",
             "Points of Interest|Locked Door": "上锁的门",
-            "Points of Interest|Destroy Evidence": "销毁证据的地方",
+            "Points of Interest|Destroy Evidence": "销毁摄像头记录",
             "Points of Interest|Hiding Spot": "藏身处",
             "Points of Interest|Interaction": "互动",
             "Points of Interest|Alarm": "警钟",
