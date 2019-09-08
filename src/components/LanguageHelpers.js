@@ -69,8 +69,9 @@ export default class {
             case 'ru-RU':
                 return 'ru';
             case 'zh-CN':
-            case 'zh-TW':
                 return 'cn';
+            case 'zh-TW':
+                return 'tw';
             default:
                 console.error('Failed to find flag for locale: ' + language);
                 return 'us';
