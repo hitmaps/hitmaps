@@ -115,6 +115,9 @@
                     </div>
                     <div id="map-control">
                         <div class="control-buttons">
+                            <button data-toggle="modal" class="btn control-button" data-target="#locale-modal" v-tooltip:bottom="$t('language-modal.change-language')">
+                                <country-flag :country="getCountryFlag()" />
+                            </button>
                             <button
                                 v-if="isLoggedIn"
                                 id="edit-button"
@@ -1409,6 +1412,8 @@ import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
 import GameButton from '../components/GameButton'
 import Modal from '../components/Modal'
 
+import LanguageHelpers from "../components/LanguageHelpers";
+
 Vue.use(CxltToaster)
 export default {
     name: 'map-view',
@@ -1538,6 +1543,9 @@ export default {
         }
     },
     methods: {
+        getCountryFlag: function() {
+            return LanguageHelpers.getCountryFlagForLocale(this.$i18n);
+        },
         logout: function() {
             localStorage.removeItem('token');
             location.reload();
@@ -2954,6 +2962,14 @@ html {
         &:hover {
             color: #000;
             background: #fff;
+        }
+
+        .flag {
+            margin: -20px -24px -24px -24px !important;
+            transform: scale(.50) !important;
+            -ms-transform: scale(.50) !important;
+            -webkit-transform: scale(.50) !important;
+            -moz-transform: scale(.50) !important;
         }
     }
 }

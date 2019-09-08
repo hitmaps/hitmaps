@@ -16,6 +16,8 @@ before_script:
 
 dependency_scanning:
   stage: Utilities
+  only:
+    - master
 
 Prod Deploy API:
   image: php:7.2
