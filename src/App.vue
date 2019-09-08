@@ -117,6 +117,12 @@ export default {
             return LanguageHelpers.getCountryFlagForLocale(this.$i18n);
         }
     },
+    created() {
+        let localStorageLocale = localStorage.locale;
+        if (localStorageLocale !== null) {
+            this.$i18n.locale = localStorageLocale;
+        }
+    }
 }
 </script>
 
