@@ -71,7 +71,12 @@
                     </div>
                 </div>
                 <div class="row legal">
-                    <div class="col-sm-12 text-right">
+                    <div class="col-sm-2">
+                        <span class="language-switcher" data-toggle="modal" data-target="#locale-modal">
+                            <country-flag :country="getCountryFlag()" v-tooltip:top="$t('language-modal.change-language')" />
+                        </span>
+                    </div>
+                    <div class="col-sm-10 text-right">
                         <span class="footer-link">
                             <router-link :to="{ name: 'terms-of-use' }">
                                 <i class="fas fa-gavel"></i>
@@ -96,13 +101,26 @@
                 </div>
             </div>
         </footer>
+        <locale-modal />
     </div>
 </template>
 <script>
+import LocaleModal from "./components/LocaleModal";
+import LanguageHelpers from "./components/LanguageHelpers";
 export default {
+    components: {LocaleModal},
     methods: {
         isNotInMap() {
             return this.$router.history.current.name !== 'map-view'
+        },
+        getCountryFlag() {
+            return LanguageHelpers.getCountryFlagForLocale(this.$i18n);
+        }
+    },
+    created() {
+        let localStorageLocale = localStorage.locale;
+        if (localStorageLocale !== null) {
+            this.$i18n.locale = localStorageLocale;
         }
     }
 }
@@ -122,6 +140,10 @@ body,
 
     .content {
         flex: 1 0 auto;
+    }
+
+    .language-switcher {
+        cursor: pointer;
     }
 }
 

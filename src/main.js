@@ -6,6 +6,7 @@ import store from './store/store'
 import titleMixin from './util/title'
 import ImageLoader from './plugins/ImageLoader'
 import i18n from './i18n'
+import CountryFlag from 'vue-country-flag'
 
 axios.defaults.withCredentials = true
 
@@ -50,6 +51,8 @@ Vue.prototype.$request = (post, endpoint, data) => {
         }
     })
 }
+
+Vue.component('country-flag', CountryFlag);
 
 Vue.mixin(titleMixin)
 Vue.use(ImageLoader)
