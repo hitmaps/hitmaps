@@ -271,7 +271,7 @@
         "forgot-password": "Ho dimenticato la mia password",
         "forgot-password-modal": "Hai dimenticato la password? Nessun problema! Inserisci la tua email in basso e ti invieremo un'email con un link per reimpostare la tua password.",
         "create-an-account": "Crea un account",
-        "agree-to-terms": "Accetto le {terms_of_use} e l'{privacy_policy}",
+        "agree-to-terms": "Accetto le {termsOfUse} e l'{privacyPolicy}",
         "terms-of-use": "Condizioni d'uso",
         "privacy-policy": "Informativa sulla privacy",
         "register": "Registrati",
