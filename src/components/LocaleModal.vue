@@ -35,6 +35,7 @@
             },
             setLang(iso) {
                 this.$i18n.locale = iso;
+                localStorage.locale = this.$i18n.locale;
             }
         }
     }
