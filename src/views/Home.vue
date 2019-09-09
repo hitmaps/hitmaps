@@ -595,7 +595,7 @@ export default {
     data() {
         return {
             showPromo: 1,
-            promoStartDate: '2019-09-03T19:00:00+00:00',
+            promoStartDate: '2019-09-13T19:00:00+00:00',
             promoEndDate: '2019-09-22T21:59:59+00:00',
             games: [],
             elusiveTargets: [],
