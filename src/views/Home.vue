@@ -93,8 +93,8 @@
                             />
                         </div>
                         <div class="text">
-                            <h2>Promotion</h2>
-                            <h1 style="font-size: 1.2rem">Frote7's Speedrun Competition #2</h1>
+                            <h2>Frote7's</h2>
+                            <h1>Speedrun Competition #2</h1>
                         </div>
                     </div>
                 </a>
@@ -200,23 +200,23 @@
                             <img
                                 src="/img/game-icons/elusive-target.png"
                                 class="normal img-fluid"
-                                :alt="$('elusive-target-icon')"
+                                :alt="$t('elusive-target-icon')"
                             />
                             <img
                                 src="/img/game-icons/elusive-target-inverted.png"
                                 class="inverted img-fluid"
-                                :alt="$('elusive-target-icon')"
+                                :alt="$t('elusive-target-icon')"
                             />
                         </div>
                         <div class="text">
-                            <h2>{{ $t('game-type.elusive-target') }}</h2>
+                            <h2>{{ $t('game-type.Elusive Target') }}</h2>
                             <h1>{{ $t('elusive-target.coming-soon') }}</h1>
                         </div>
                         <div
                             onclick="return false;"
                             @click="showNotificationModal"
                             class="image float-right notification-icon"
-                            v-tooltip:left="$t('elusive-target.manage-notifications')"
+                            v-tooltip:left="$t('elusive-target.notifications.manage-notifications')"
                         >
                             <img
                                 src="/img/game-icons/notification.png"
@@ -775,7 +775,7 @@ export default {
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
             setInterval(() => {
-                this.showPromo = !!this.showPromo ? 0 : 1;
+                //this.showPromo = !!this.showPromo ? 0 : 1;
             }, 5000);
         })
     }
