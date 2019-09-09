@@ -123,12 +123,12 @@
                             <img
                                 src="/img/game-icons/elusive-target.png"
                                 class="normal img-fluid"
-                                alt="Elusive Target Icon"
+                                :alt="$t('elusive-target-icon'"
                             />
                             <img
                                 src="/img/game-icons/elusive-target-inverted.png"
                                 class="inverted img-fluid"
-                                alt="Elusive Target Icon"
+                                :alt="$t('elusive-target-icon'"
                             />
                         </div>
                         <div class="text">
@@ -167,12 +167,12 @@
                             <img
                                 src="/img/game-icons/elusive-target.png"
                                 class="normal img-fluid"
-                                :alt="$('elusive-target-icon')"
+                                :alt="$t('elusive-target-icon')"
                             />
                             <img
                                 src="/img/game-icons/elusive-target-inverted.png"
                                 class="inverted img-fluid"
-                                :alt="$('elusive-target-icon')"
+                                :alt="$t('elusive-target-icon')"
                             />
                         </div>
                         <div class="text">
