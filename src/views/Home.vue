@@ -176,7 +176,7 @@
                             />
                         </div>
                         <div class="text">
-                            <h2>{{ $t('game-type.elusive-target') }}</h2>
+                            <h2>{{ $t('game-type.Elusive Target') }}</h2>
                             <h1>{{ $t('elusive-target.coming-soon') }}</h1>
                         </div>
                         <div
