@@ -67,8 +67,41 @@
                     </div>
                 </router-link>
             </div>
+            <div class="game col-lg"
+                 id="promo"
+                 v-if="showPromo === 1"
+                 :style="{
+                    backgroundImage:
+                        'url(/img/png/promo/speedrun-competition2.png)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat'
+                }">
+                <a href="#">
+                    <p>&nbsp;</p>
+                    <div class="game-info">
+                        <div class="image">
+                            <img
+                                    src="/img/game-icons/elusive-target.png"
+                                    class="normal img-fluid"
+                                    alt="Promo Icon"
+                            />
+                            <img
+                                    src="/img/game-icons/elusive-target-inverted.png"
+                                    class="inverted img-fluid"
+                                    alt="Promo Icon"
+                            />
+                        </div>
+                        <div class="text">
+                            <h2>Promotion</h2>
+                            <h1 style="font-size: 1.2rem">Frote7's Speedrun Competition #2</h1>
+                        </div>
+                    </div>
+                </a>
+            </div>
             <div
                 class="elusive-target col-lg"
+                v-if="showPromo === 0"
                 v-bind:style="{
                     backgroundImage:
                         'url(' +
@@ -553,7 +586,7 @@ export default {
     },
     data() {
         return {
-            test: "foobar",
+            showPromo: 0,
             games: [],
             elusiveTargets: [],
             activeElusiveIndex: 0,
@@ -732,15 +765,18 @@ export default {
                 this.elusiveTarget = this.elusiveTargets[0]
             }
 
-            const that = this
-            setInterval(function() {
+            var that = this;
+            /*setInterval(function() {
                 if (++that.activeElusiveIndex >= that.elusiveTargets.length) {
                     that.activeElusiveIndex = 0
                 }
 
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
-            }, 10000)
+            }, 10000);*/
+            setInterval(() => {
+                this.showPromo = !!this.showPromo ? 0 : 1;
+            }, 5000);
         })
     }
 }
