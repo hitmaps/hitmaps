@@ -67,7 +67,7 @@
                     </div>
                 </router-link>
             </div>
-            <div class="game col-lg"
+            <div class="elusive-target col-lg"
                  id="promo"
                  v-if="showPromo === 1"
                  :style="{
@@ -77,20 +77,28 @@
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat'
                 }">
-                <a href="#">
+                <a href="https://discord.gg/X2B8myT" target="_blank">
                     <p>&nbsp;</p>
+                    <div class="countdown">
+                        <img
+                                src="/img/game-icons/elusive-target-reminaing-time.png"
+                        />
+                        <div class="timer not-playable">
+                            <div class="target-arrives">{{ (new Date(promoStartDate) > new Date()) ? 'Event Begins' : 'Event Ends' }}</div>
+                            <countdown
+                                    class="elusive-countdown"
+                                    :date="
+                                    new Date(promoStartDate) >
+                                    new Date()
+                                        ? promoStartDate
+                                        : promoEndDate
+                                "
+                            ></countdown>
+                        </div>
+                    </div>
                     <div class="game-info">
                         <div class="image">
-                            <img
-                                    src="/img/game-icons/elusive-target.png"
-                                    class="normal img-fluid"
-                                    alt="Promo Icon"
-                            />
-                            <img
-                                    src="/img/game-icons/elusive-target-inverted.png"
-                                    class="inverted img-fluid"
-                                    alt="Promo Icon"
-                            />
+                            <i class="fab fa-discord fa-3x" style="width: 48px; height: 48px"></i>
                         </div>
                         <div class="text">
                             <h2>Frote7's</h2>
@@ -586,7 +594,9 @@ export default {
     },
     data() {
         return {
-            showPromo: 0,
+            showPromo: 1,
+            promoStartDate: '2019-09-03T19:00:00+00:00',
+            promoEndDate: '2019-09-22T21:59:59+00:00',
             games: [],
             elusiveTargets: [],
             activeElusiveIndex: 0,
@@ -775,7 +785,7 @@ export default {
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
             setInterval(() => {
-                //this.showPromo = !!this.showPromo ? 0 : 1;
+                this.showPromo = !!this.showPromo ? 0 : 1;
             }, 5000);
         })
     }
