@@ -121,6 +121,9 @@ export default {
         let localStorageLocale = localStorage.locale;
         if (localStorageLocale !== null) {
             this.$i18n.locale = localStorageLocale;
+        } else {
+            localStorage.locale = 'en-US';
+            this.$i18n.locale = 'en-US';
         }
     }
 }

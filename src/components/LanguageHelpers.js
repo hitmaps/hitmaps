@@ -79,6 +79,13 @@ export default class {
     }
 
     static getCountryFlagForLocale(i18n) {
-        return this.getCountryFlag(i18n.locale);
+        let locale = i18n.locale;
+        if (locale === undefined) {
+            locale = i18n.fallbackLocale;
+            i18n.locale = locale;
+            localStorage.locale = i18n.locale;
+        }
+
+        return this.getCountryFlag(locale);
     }
 }

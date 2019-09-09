@@ -67,8 +67,49 @@
                     </div>
                 </router-link>
             </div>
+            <div class="elusive-target col-lg"
+                 id="promo"
+                 v-if="showPromo === 1"
+                 :style="{
+                    backgroundImage:
+                        'url(/img/png/promo/speedrun-competition2.png)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat'
+                }">
+                <a href="https://discord.gg/X2B8myT" target="_blank">
+                    <p>&nbsp;</p>
+                    <div class="countdown">
+                        <img
+                                src="/img/game-icons/elusive-target-reminaing-time.png"
+                        />
+                        <div class="timer not-playable">
+                            <div class="target-arrives">{{ (new Date(promoStartDate) > new Date()) ? 'Event Begins' : 'Event Ends' }}</div>
+                            <countdown
+                                    class="elusive-countdown"
+                                    :date="
+                                    new Date(promoStartDate) >
+                                    new Date()
+                                        ? promoStartDate
+                                        : promoEndDate
+                                "
+                            ></countdown>
+                        </div>
+                    </div>
+                    <div class="game-info">
+                        <div class="image">
+                            <i class="fab fa-discord fa-3x" style="width: 48px; height: 48px"></i>
+                        </div>
+                        <div class="text">
+                            <h2>Frote7's</h2>
+                            <h1>Speedrun Competition #2</h1>
+                        </div>
+                    </div>
+                </a>
+            </div>
             <div
                 class="elusive-target col-lg"
+                v-if="showPromo === 0"
                 v-bind:style="{
                     backgroundImage:
                         'url(' +
@@ -183,7 +224,7 @@
                             onclick="return false;"
                             @click="showNotificationModal"
                             class="image float-right notification-icon"
-                            v-tooltip:left="$t('elusive-target.manage-notifications')"
+                            v-tooltip:left="$t('elusive-target.notifications.manage-notifications')"
                         >
                             <img
                                 src="/img/game-icons/notification.png"
@@ -553,7 +594,9 @@ export default {
     },
     data() {
         return {
-            test: "foobar",
+            showPromo: 1,
+            promoStartDate: '2019-09-03T19:00:00+00:00',
+            promoEndDate: '2019-09-22T21:59:59+00:00',
             games: [],
             elusiveTargets: [],
             activeElusiveIndex: 0,
@@ -732,15 +775,18 @@ export default {
                 this.elusiveTarget = this.elusiveTargets[0]
             }
 
-            const that = this
-            setInterval(function() {
+            var that = this;
+            /*setInterval(function() {
                 if (++that.activeElusiveIndex >= that.elusiveTargets.length) {
                     that.activeElusiveIndex = 0
                 }
 
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
-            }, 10000)
+            }, 10000);*/
+            setInterval(() => {
+                this.showPromo = !!this.showPromo ? 0 : 1;
+            }, 5000);
         })
     }
 }
