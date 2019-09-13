@@ -231,6 +231,7 @@
         "category": "Categoría",
         "icon": "Icono",
         "name": "Nombre",
+        "quantity": "Quantity",
         "name-note": "Ingresa el nombre tal como aparece en el juego.",
         "action": "Acción",
         "action-note": "Ingrese la acción eso se realiza (como \"aflojar la válvula\", \"encender la radio\", \"activar la alarma de incendio\", etc.)",
