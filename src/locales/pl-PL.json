@@ -231,6 +231,7 @@
         "category": "Category",
         "icon": "Icon",
         "name": "Name",
+        "quantity": "Quantity",
         "name-note": "Enter the name as it appears in-game.",
         "action": "Action",
         "action-note": "Enter the action that is performed (such as \"loosen the valve\", \"turn on radio\", \"trigger fire alarm\", etc.)",
