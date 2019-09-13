@@ -23,7 +23,7 @@
         "Elusive Target": "Schwer zu fassendes Ziel"
     },
     "elusive-target": {
-        "target-arrives": "Target Arrives",
+        "target-arrives": "Ziel trifft ein",
         "briefing-icon": "Missionsbesprechung Symbol",
         "mission-briefing": "Einsatzbesprechung",
         "coming-soon": "Demnächst verfügbar",
@@ -231,6 +231,7 @@
         "category": "Kategorie",
         "icon": "Symbol",
         "name": "Bezeichnung",
+        "quantity": "Quantity",
         "name-note": "Gebe die Bezeichnung so wie im Spiel ein.",
         "action": "Aktion",
         "action-note": "Gebe die Aktionsbezeichnung ein, die durchgeführt wird (beispielsweise \"Ventil öffnen\", \"Radio anschalten\", \"Feueralarm aktivieren\", etc.)",
