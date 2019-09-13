@@ -1128,7 +1128,7 @@
                                         </small>
                                     </div>
                                 </div>
-                                <div class="form-group row" v-if="currentCategory.requireName">
+                                <div class="form-group row">
                                     <label for="quantity" class="col-sm-2 col-form-label">
                                         {{ $t('map.quantity') }}
                                     </label>
