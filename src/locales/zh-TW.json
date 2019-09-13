@@ -231,6 +231,7 @@
         "category": "分類",
         "icon": "圖示",
         "name": "名稱",
+        "quantity": "Quantity",
         "name-note": "請輸入與遊戲中相符的名稱：",
         "action": "動作",
         "action-note": "請輸入被執行的動作 (像是「鬆開閥門」、「開啟收音機」、「啟動警鈴」等等)：",
