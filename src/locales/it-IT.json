@@ -231,6 +231,7 @@
         "category": "Categoria",
         "icon": "Icona",
         "name": "Nome",
+        "quantity": "Quantity",
         "name-note": "Inserisci il nome per come appare nel gioco.",
         "action": "Azione",
         "action-note": "Inserisci l'azione che viene eseguita (per esempio \"allenta la valvola\", \"accendi la radio\", \"innesca allarme antincendio\", ecc.)",

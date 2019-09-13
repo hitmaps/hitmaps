@@ -10,23 +10,23 @@
         "submit-icon": "Submit icon",
         "cancel-icon": "Cancel icon",
         "close": "Close",
-        "loading": "Loading...",
-        "select": "Select",
-        "copy": "Copy",
-        "cancel": "Cancel",
-        "save": "Save",
-        "submit": "Submit"
+        "loading": "Ładowanie...",
+        "select": "Wybierz",
+        "copy": "Kopiuj",
+        "cancel": "Anuluj",
+        "save": "Zapisz",
+        "submit": "Wyślij"
     },
     "game-type": {
-        "Campaign": "Campaign",
-        "Game Mode": "Game Mode",
-        "Elusive Target": "Elusive Target"
+        "Campaign": "Kampania",
+        "Game Mode": "Tryb gry",
+        "Elusive Target": "Nieuchwytny cel"
     },
     "elusive-target": {
-        "target-arrives": "Target Arrives",
+        "target-arrives": "Cel przybywa",
         "briefing-icon": "Briefing Icon",
         "mission-briefing": "Mission Briefing",
-        "coming-soon": "Coming Soon",
+        "coming-soon": "Wkrótce",
         "notifications": {
             "notification-icon": "Notification Icon",
             "enroll-icon": "Enroll Icon",
@@ -138,7 +138,7 @@
     },
     "map": {
         "level-number": "Level {levelNumber}",
-        "satellite": "Satellite",
+        "satellite": "Satelitarna",
         "toggle-navigation": "Toggle navigation",
         "editor-enabled": "Editor Enabled",
         "add-remove-items": "Add / Remove Items",
@@ -159,7 +159,7 @@
         },
         "groups": {
             "Points of Interest|Sabotage": "Sabotage",
-            "Points of Interest|Distraction": "Distraction",
+            "Points of Interest|Distraction": "Roztargnienie",
             "Points of Interest|Poison": "Poison",
             "Points of Interest|Misc Item": "Misc Item",
             "Points of Interest|Intel": "Intel",
@@ -231,6 +231,7 @@
         "category": "Category",
         "icon": "Icon",
         "name": "Name",
+        "quantity": "Quantity",
         "name-note": "Enter the name as it appears in-game.",
         "action": "Action",
         "action-note": "Enter the action that is performed (such as \"loosen the valve\", \"turn on radio\", \"trigger fire alarm\", etc.)",
@@ -243,7 +244,7 @@
         "direction-up": "Up Only",
         "direction-up-down": "Up and Down",
         "direction-down": "Down Only",
-        "notes": "Notes",
+        "notes": "Notatki",
         "reqirement": "Requirement",
         "warning": "Warning",
         "information": "Information",

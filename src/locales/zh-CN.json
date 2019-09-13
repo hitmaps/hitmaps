@@ -231,6 +231,7 @@
         "category": "分类",
         "icon": "图标",
         "name": "名称",
+        "quantity": "Quantity",
         "name-note": "输入游戏内的名称",
         "action": "行动",
         "action-note": "输入游戏内的动作名（例如“拧松阀门”，“打开收音机”，“触发火警”等等）",
