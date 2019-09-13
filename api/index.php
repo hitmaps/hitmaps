@@ -397,6 +397,7 @@ function transformNode(\DataAccess\Models\Node $node, \DI\Container $application
     $nodeViewModel->image = $node->getImage();
     $nodeViewModel->searchable = $node->isSearchable();
     $nodeViewModel->tooltip = $node->getTooltip();
+    $nodeViewModel->quantity = $node->getQuantity();
     switch ($nodeViewModel->icon) {
         case 'poison':
             $nodeViewModel->targetIcon = 'fa-user';

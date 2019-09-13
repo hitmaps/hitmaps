@@ -1128,6 +1128,20 @@
                                         </small>
                                     </div>
                                 </div>
+                                <div class="form-group row" v-if="currentCategory.requireName">
+                                    <label for="quantity" class="col-sm-2 col-form-label">
+                                        {{ $t('map.quantity') }}
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <select name="quantity"
+                                                v-model="currentCategory.defaultQuantity"
+                                                class="form-control">
+                                            <option v-for="n in 10" :value="n">
+                                                {{ n }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div
                                     class="form-group row"
                                     v-if="currentCategory.requireAction"
@@ -1708,6 +1722,7 @@ export default {
             if (this.currentCategory) {
                 this.currentCategory.nodeId = undefined
                 this.currentCategory.name = undefined
+                this.currentCategory.defaultQuantity = 1
                 this.currentCategory.action = undefined
                 this.currentCategory.target = undefined
             }
@@ -1745,6 +1760,7 @@ export default {
             )
             this.currentCategory.nodeId = item.id
             this.currentCategory.name = item.name
+            this.currentCategory.defaultQuantity = item.quantity
             this.currentCategory.action = item.target
             this.currentCategory.target = item.target
 
@@ -1789,6 +1805,7 @@ export default {
             this.currentCategory.name = currentTemplate.name
             this.currentCategory.action = currentTemplate.target
             this.currentCategory.target = currentTemplate.target
+            this.currentCategory.defaultQuantity = 1
             this.currentCategory.image = currentTemplate.image
 
             if (currentTemplate.description)
@@ -1825,6 +1842,7 @@ export default {
             data.append('icon', this.currentCategory.icon)
             data.append('subgroup', this.editor.currentCategory)
             data.append('name', this.currentCategory.name || '')
+            data.append('quantity', this.currentCategory.defaultQuantity || 1)
             data.append('target', this.currentCategory.target || '')
             data.append('level', this.currentLayer)
             data.append('latitude', this.editor.clickedPoint.lat)
