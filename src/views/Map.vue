@@ -1607,12 +1607,18 @@ export default {
         },
         buildMarker: function(node) {
             const that = this;
-            return L.marker([node.latitude, node.longitude], {
-                icon: L.icon({iconUrl: '/img/map-icons/' + node.icon + '.png',
+            const icon = node.icon === 'area' ?
+                new L.DivIcon({
+                    className: 'area-icon',
+                    html: node.name
+                }) :
+                L.icon({iconUrl: '/img/map-icons/' + node.icon + '.png',
                     iconSize: [32, 32],
                     iconAnchor: [16, 16],
                     popupAnchor: [0, 0]
-                }),
+                });
+            return L.marker([node.latitude, node.longitude], {
+                icon: icon,
                 custom: {
                     id: node.id,
                     node: node
@@ -2734,15 +2740,23 @@ html {
     }
 }
 
-.leaflet-marker-icon.search-result {
-    z-index: 9999 !important;
-    background: rgba(255, 0, 60, 0.75);
-    padding: 15px !important;
-    margin: -33px 0 0 -33px !important;
-    border-radius: 50%;
-    border: 2px solid #ff003c;
-    opacity: 0.85 !important;
-    box-sizing: content-box;
+.leaflet-marker-icon {
+    &.search-result {
+        z-index: 9999 !important;
+        background: rgba(255, 0, 60, 0.75);
+        padding: 15px !important;
+        margin: -33px 0 0 -33px !important;
+        border-radius: 50%;
+        border: 2px solid #ff003c;
+        opacity: 0.85 !important;
+        box-sizing: content-box;
+    }
+
+    &.area-icon {
+        color: #fff;
+        text-shadow: #000 1px 1px 1px;
+        font-size: 1.2em;
+    }
 }
 
 .accordion {
