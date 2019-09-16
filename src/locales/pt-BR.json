@@ -189,7 +189,8 @@
             "Navigation|Passage": "Passagem",
             "Navigation|Ways Up/Down": "Caminhos para cima / para baixo",
             "Navigation|Ledge": "Borda",
-            "Navigation|Foliage": "Folhagem"
+            "Navigation|Foliage": "Folhagem",
+            "Navigation|Area": "Area"
         },
         "editor-menu": "Menu do Editor",
         "what-would-you-like-to-do": "O que você gostaria de fazer?",
