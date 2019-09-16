@@ -645,7 +645,7 @@ $klein->respond('POST', '/api/nodes/move', function (\Klein\Request $request, \K
 
     $applicationContext->get(\Controllers\NodeController::class)->moveNode(intval($_POST['node-id']), $_POST['latitude'], $_POST['longitude']);
     /* @var $node \DataAccess\Models\Node */
-    $node = $applicationContext->get(\DataAccess\Repositories\NodeRepository::class)->find($_POST['node-id']);
+    $node = $applicationContext->get(\Doctrine\ORM\EntityManager::class)->getRepository(\DataAccess\Models\Node::class)->find($_POST['node-id']);
     clearAllMapCaches($node->getMissionId(), $applicationContext);
 
 

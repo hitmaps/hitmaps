@@ -1470,7 +1470,8 @@ export default {
                 originalLatLng: null,
                 vertices: [],
                 workingLayers: [],
-                polyActive: false
+                polyActive: false,
+                nodeIdToMove: -1
             },
             copyDisguiseArea: {
                 source: -1,
@@ -1745,6 +1746,7 @@ export default {
             item.latitude = event.target.getLatLng().lat
             item.longitude = event.target.getLatLng().lng
             this.editor.currentMarker = item
+            this.editor.nodeIdToMove = item.options.custom.node.id;
             this.editor.originalLatLng = [item.options.custom.node.latitude, item.options.custom.node.longitude];
             $(this.$refs.confirmMoveModal).modal('show')
         },
@@ -1774,7 +1776,7 @@ export default {
         },
         confirmMove: function() {
             var data = new FormData()
-            data.append('node-id', this.editor.currentMarker.id)
+            data.append('node-id', this.editor.nodeIdToMove)
             data.append('latitude', this.editor.currentMarker.latitude)
             data.append('longitude', this.editor.currentMarker.longitude)
             this.$request(true, 'nodes/move', data).then(() =>
