@@ -1117,12 +1117,12 @@
                                         {{ $t('map.name') }}
                                     </label>
                                     <div class="col-sm-10">
-                                        <input
+                                        <textarea
                                             type="text"
                                             name="name"
                                             v-model="currentCategory.name"
                                             class="form-control"
-                                        />
+                                        ></textarea>
                                         <small class="form-text text-muted">
                                             {{ $t('map.name-note') }}
                                         </small>
@@ -1610,7 +1610,7 @@ export default {
             const icon = node.icon === 'area' ?
                 new L.DivIcon({
                     className: 'area-icon',
-                    html: node.name
+                    html: node.name.replace(/(?:\r\n|\r|\n)/g, '<br>')
                 }) :
                 L.icon({iconUrl: '/img/map-icons/' + node.icon + '.png',
                     iconSize: [32, 32],
@@ -2756,6 +2756,7 @@ html {
         color: #fff;
         text-shadow: #000 1px 1px 1px;
         font-size: 1.2em;
+        width: 400px !important;
     }
 }
 
