@@ -284,6 +284,9 @@ class NodeController {
             case 'frisk':
                 $node->setTooltip($node->getGroup());
                 break;
+            case 'area':
+                $node->setTooltip('');
+                break;
             default:
                 $node->setTarget($postData['target']);
         }

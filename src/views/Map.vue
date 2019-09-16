@@ -666,7 +666,7 @@
                             class="editor-button"
                             @click="
                                 editorMenu('')
-                                $refs.map.mapObject.pm.disableDraw('Line')
+                                map.pm.disableDraw('Line')
                             "
                         >
                             <h3>
@@ -700,7 +700,7 @@
                             class="editor-button"
                             @click="
                                 editorMenu('')
-                                $refs.map.mapObject.pm.disableDraw('Polygon')
+                                map.pm.disableDraw('Polygon')
                             "
                         >
                             <h3>
@@ -786,7 +786,7 @@
                             class="editor-button"
                             @click="
                                 editorMenu('')
-                                $refs.map.mapObject.pm.disableDraw('Polygon')
+                                map.pm.disableDraw('Polygon')
                             "
                         >
                             <h3>
@@ -1117,12 +1117,12 @@
                                         {{ $t('map.name') }}
                                     </label>
                                     <div class="col-sm-10">
-                                        <input
+                                        <textarea
                                             type="text"
                                             name="name"
                                             v-model="currentCategory.name"
                                             class="form-control"
-                                        />
+                                        ></textarea>
                                         <small class="form-text text-muted">
                                             {{ $t('map.name-note') }}
                                         </small>
@@ -1452,7 +1452,7 @@ export default {
             mapLayers: [],
             categories: {},
             mapLoaded: false,
-            hiddenLayers: [],
+            hiddenLayers: ['Navigation|Area'],
             searchedItem: null,
             floorsWithSearchResults: [],
             floorCountOverride: [],
@@ -1470,7 +1470,8 @@ export default {
                 originalLatLng: null,
                 vertices: [],
                 workingLayers: [],
-                polyActive: false
+                polyActive: false,
+                currentMarkerNode: null
             },
             copyDisguiseArea: {
                 source: -1,
@@ -1607,12 +1608,18 @@ export default {
         },
         buildMarker: function(node) {
             const that = this;
-            return L.marker([node.latitude, node.longitude], {
-                icon: L.icon({iconUrl: '/img/map-icons/' + node.icon + '.png',
+            const icon = node.icon === 'area' ?
+                new L.DivIcon({
+                    className: 'area-icon',
+                    html: node.name.replace(/(?:\r\n|\r|\n)/g, '<br>')
+                }) :
+                L.icon({iconUrl: '/img/map-icons/' + node.icon + '.png',
                     iconSize: [32, 32],
                     iconAnchor: [16, 16],
                     popupAnchor: [0, 0]
-                }),
+                });
+            return L.marker([node.latitude, node.longitude], {
+                icon: icon,
                 custom: {
                     id: node.id,
                     node: node
@@ -1739,6 +1746,7 @@ export default {
             item.latitude = event.target.getLatLng().lat
             item.longitude = event.target.getLatLng().lng
             this.editor.currentMarker = item
+            this.editor.currentMarkerNode = item.options.custom.node;
             this.editor.originalLatLng = [item.options.custom.node.latitude, item.options.custom.node.longitude];
             $(this.$refs.confirmMoveModal).modal('show')
         },
@@ -1768,7 +1776,7 @@ export default {
         },
         confirmMove: function() {
             var data = new FormData()
-            data.append('node-id', this.editor.currentMarker.id)
+            data.append('node-id', this.editor.currentMarkerNode.id)
             data.append('latitude', this.editor.currentMarker.latitude)
             data.append('longitude', this.editor.currentMarker.longitude)
             this.$request(true, 'nodes/move', data).then(() =>
@@ -1880,18 +1888,15 @@ export default {
                 }
                 $(this.$refs.editModal).modal('hide');
                 this.editor.currentMarker = null;
+                this.updateNodeLayerState();
             })
         },
         deleteMarker: function() {
             const node = this.editor.currentMarker;
             this.$request(false, 'nodes/delete/' + node.id).then(resp => {
-                this.layerGroups[node.type + '|' + node.group].items.splice(
-                    this.layerGroups[
-                        node.type + '|' + node.group
-                    ].items.indexOf(node),
-                    1
-                );
+                node.deleted = true;
                 this.editor.currentMarker = null;
+                this.updateNodeLayerState();
             })
         },
         deletePoly: function(item, type) {
@@ -2734,15 +2739,24 @@ html {
     }
 }
 
-.leaflet-marker-icon.search-result {
-    z-index: 9999 !important;
-    background: rgba(255, 0, 60, 0.75);
-    padding: 15px !important;
-    margin: -33px 0 0 -33px !important;
-    border-radius: 50%;
-    border: 2px solid #ff003c;
-    opacity: 0.85 !important;
-    box-sizing: content-box;
+.leaflet-marker-icon {
+    &.search-result {
+        z-index: 9999 !important;
+        background: rgba(255, 0, 60, 0.75);
+        padding: 15px !important;
+        margin: -33px 0 0 -33px !important;
+        border-radius: 50%;
+        border: 2px solid #ff003c;
+        opacity: 0.85 !important;
+        box-sizing: content-box;
+    }
+
+    &.area-icon {
+        color: #fff;
+        text-shadow: #000 1px 1px 1px;
+        font-size: 1.2em;
+        width: 400px !important;
+    }
 }
 
 .accordion {
