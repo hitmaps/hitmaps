@@ -189,7 +189,8 @@
             "Navigation|Passage": "Paso",
             "Navigation|Ways Up/Down": "Maneras Arriba / Abajo",
             "Navigation|Ledge": "Repisa",
-            "Navigation|Foliage": "Follaje"
+            "Navigation|Foliage": "Follaje",
+            "Navigation|Area": "Area"
         },
         "editor-menu": "Menú del Editor",
         "what-would-you-like-to-do": "¿Qué le gustaría hacer?",
