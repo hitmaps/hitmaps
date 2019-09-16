@@ -666,7 +666,7 @@
                             class="editor-button"
                             @click="
                                 editorMenu('')
-                                $refs.map.mapObject.pm.disableDraw('Line')
+                                map.pm.disableDraw('Line')
                             "
                         >
                             <h3>
@@ -700,7 +700,7 @@
                             class="editor-button"
                             @click="
                                 editorMenu('')
-                                $refs.map.mapObject.pm.disableDraw('Polygon')
+                                map.pm.disableDraw('Polygon')
                             "
                         >
                             <h3>
@@ -786,7 +786,7 @@
                             class="editor-button"
                             @click="
                                 editorMenu('')
-                                $refs.map.mapObject.pm.disableDraw('Polygon')
+                                map.pm.disableDraw('Polygon')
                             "
                         >
                             <h3>
@@ -1471,7 +1471,7 @@ export default {
                 vertices: [],
                 workingLayers: [],
                 polyActive: false,
-                nodeIdToMove: -1
+                currentMarkerNode: null
             },
             copyDisguiseArea: {
                 source: -1,
@@ -1746,7 +1746,7 @@ export default {
             item.latitude = event.target.getLatLng().lat
             item.longitude = event.target.getLatLng().lng
             this.editor.currentMarker = item
-            this.editor.nodeIdToMove = item.options.custom.node.id;
+            this.editor.currentMarkerNode = item.options.custom.node;
             this.editor.originalLatLng = [item.options.custom.node.latitude, item.options.custom.node.longitude];
             $(this.$refs.confirmMoveModal).modal('show')
         },
@@ -1776,7 +1776,7 @@ export default {
         },
         confirmMove: function() {
             var data = new FormData()
-            data.append('node-id', this.editor.nodeIdToMove)
+            data.append('node-id', this.editor.currentMarkerNode.id)
             data.append('latitude', this.editor.currentMarker.latitude)
             data.append('longitude', this.editor.currentMarker.longitude)
             this.$request(true, 'nodes/move', data).then(() =>
@@ -1888,18 +1888,15 @@ export default {
                 }
                 $(this.$refs.editModal).modal('hide');
                 this.editor.currentMarker = null;
+                this.updateNodeLayerState();
             })
         },
         deleteMarker: function() {
             const node = this.editor.currentMarker;
             this.$request(false, 'nodes/delete/' + node.id).then(resp => {
-                this.layerGroups[node.type + '|' + node.group].items.splice(
-                    this.layerGroups[
-                        node.type + '|' + node.group
-                    ].items.indexOf(node),
-                    1
-                );
+                node.deleted = true;
                 this.editor.currentMarker = null;
+                this.updateNodeLayerState();
             })
         },
         deletePoly: function(item, type) {
