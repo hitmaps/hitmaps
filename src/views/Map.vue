@@ -1452,7 +1452,7 @@ export default {
             mapLayers: [],
             categories: {},
             mapLoaded: false,
-            hiddenLayers: [],
+            hiddenLayers: ['Navigation|Area'],
             searchedItem: null,
             floorsWithSearchResults: [],
             floorCountOverride: [],
