@@ -2,7 +2,7 @@
     "interactive-maps-for": "Interaktive Karten für",
     "language-modal": {
         "change-language": "Sprache ändern",
-        "footer": "Die Übersetzungen werden von Mitgliedern der HITMAN™️ 2 Maps-Community erstellt und aktualisiert. Wenn eine Übersetzung fehlerhaft ist, {submitACorrection}.",
+        "footer": "Die Übersetzungen werden von Mitgliedern der HITMAN™️ 2 Maps-Community erstellt und aktualisiert. {submitACorrection}, wenn eine Übersetzung fehlerhaft ist.",
         "submit-a-correction": "Korrektur einreichen"
     },
     "form": {
@@ -38,7 +38,7 @@
             "device-not-enrolled": "Ihr Gerät ist derzeit nicht eingerichtet, um Mitteilungen zu erhalten. Klicken Sie auf \"Anmelden\" um mit der Einrichtung zu beginnen.",
             "notifications-blocked": "Ihr Gerät blockiert derzeit Mitteilungen von hitman2maps.com. Bitte geben Sie die Seite auf Ihrem Gerät frei, aktualisieren die Seite und versuchen die Anmeldung für Ihr Gerät erneut.",
             "send-me-a-notification-when": "Eine Benachrichtigung senden, wenn...",
-            "announced": "Ein schwer zu fassendes Ziel wurde angekündigt",
+            "announced": "Ein schwer zu fassendes Ziel angekündigt wurde",
             "playable": "Das schwer zu fassende Ziel verfügbar ist und gespielt werden kann",
             "7-days": "Das schwer zu fassende Ziel noch sieben weitere Tage verfügbar ist",
             "5-days": "Das schwer zu fassende Ziel noch fünf weitere Tage verfügbar ist",
@@ -189,7 +189,8 @@
             "Navigation|Passage": "Durchgang",
             "Navigation|Ways Up/Down": "Hoch- / Runterklettern",
             "Navigation|Ledge": "Kante",
-            "Navigation|Foliage": "Vegetation"
+            "Navigation|Foliage": "Vegetation",
+            "Navigation|Area": "Area"
         },
         "editor-menu": "Bearbeitungsmenü",
         "what-would-you-like-to-do": "Was möchten Sie machen?",

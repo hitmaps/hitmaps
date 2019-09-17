@@ -189,7 +189,8 @@
             "Navigation|Passage": "通道",
             "Navigation|Ways Up/Down": "爬上/爬下",
             "Navigation|Ledge": "侧边",
-            "Navigation|Foliage": "草丛"
+            "Navigation|Foliage": "草丛",
+            "Navigation|Area": "Area"
         },
         "editor-menu": "菜单编辑器",
         "what-would-you-like-to-do": "你想做些什么？",
