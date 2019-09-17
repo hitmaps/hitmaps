@@ -189,7 +189,8 @@
             "Navigation|Passage": "Проход",
             "Navigation|Ways Up/Down": "Путь вверх/вниз",
             "Navigation|Ledge": "Уступ",
-            "Navigation|Foliage": "Листва"
+            "Navigation|Foliage": "Листва",
+            "Navigation|Area": "Area"
         },
         "editor-menu": "Меню редактора",
         "what-would-you-like-to-do": "Что бы вы хотели сделать?",

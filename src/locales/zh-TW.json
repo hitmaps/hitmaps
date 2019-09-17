@@ -189,7 +189,8 @@
             "Navigation|Passage": "可通過點",
             "Navigation|Ways Up/Down": "往上/往下",
             "Navigation|Ledge": "壁邊",
-            "Navigation|Foliage": "草叢"
+            "Navigation|Foliage": "草叢",
+            "Navigation|Area": "Area"
         },
         "editor-menu": "編輯選單",
         "what-would-you-like-to-do": "您想要做什麼？",
