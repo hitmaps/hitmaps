@@ -2494,6 +2494,19 @@ export default {
                 this.map.on('pm:create', this.pmLayer);
 
                 this.map.on('pm:drawend', this.endDraw);
+
+                this.map.on('zoomend', () => {
+                    let zoomLevel = this.map.getZoom();
+                    console.log(zoomLevel);
+
+                    var fonts = {
+                        3: '.8em',
+                        4: '1em',
+                        5: '1.2em'
+                    };
+
+                    $('.area-icon').css('font-size', fonts[zoomLevel]);
+                });
             })
         })
     }
@@ -2754,8 +2767,11 @@ html {
     &.area-icon {
         color: #fff;
         text-shadow: #000 1px 1px 1px;
-        font-size: 1.2em;
-        width: 400px !important;
+        font-size: 0.8em;
+        width: inherit !important;
+        height: inherit !important;
+        white-space: nowrap;
+        text-align: center;
     }
 }
 

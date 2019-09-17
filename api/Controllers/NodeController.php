@@ -286,6 +286,7 @@ class NodeController {
                 break;
             case 'area':
                 $node->setTooltip('');
+                $node->setDifficulty('ALL');
                 break;
             default:
                 $node->setTarget($postData['target']);
