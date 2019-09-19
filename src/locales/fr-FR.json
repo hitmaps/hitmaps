@@ -85,7 +85,8 @@
             "new-york": "New York",
             "himmelstein": "Himmelstein",
             "hantu-port": "Port de Hantu",
-            "siberia": "Sibérie"
+            "siberia": "Sibérie",
+            "haven-island": "Haven Island"
         },
         "countries": {
             "ica-facility": "Accès restreint",
@@ -104,7 +105,8 @@
             "new-york": "USA",
             "himmelstein": "Autriche",
             "hantu-port": "Singapour",
-            "siberia": "Russie"
+            "siberia": "Russie",
+            "haven-island": "Maldives"
         }
     },
     "missions": {
@@ -134,7 +136,8 @@
         "golden-handshake": "Parachute Doré",
         "the-last-yardbird": "The Last Yardbird",
         "the-pen-and-the-sword": "La Plume et l'Épée",
-        "crime-and-punishment": "Crime et Châtiment"
+        "crime-and-punishment": "Crime et Châtiment",
+        "the-last-resort": "The Last Resort"
     },
     "map": {
         "level-number": "Niveau {levelNumber}",
