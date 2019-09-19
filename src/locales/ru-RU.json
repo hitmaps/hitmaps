@@ -85,7 +85,8 @@
             "new-york": "Нью-Йорк",
             "himmelstein": "Химмельштейн",
             "hantu-port": "Порт Ханту",
-            "siberia": "Сибирь"
+            "siberia": "Сибирь",
+            "haven-island": "Haven Island"
         },
         "countries": {
             "ica-facility": "Засекречено",
@@ -104,7 +105,8 @@
             "new-york": "США",
             "himmelstein": "Австрия",
             "hantu-port": "Сингапур",
-            "siberia": "Россия"
+            "siberia": "Россия",
+            "haven-island": "Maldives"
         }
     },
     "missions": {
@@ -134,7 +136,8 @@
         "golden-handshake": "Выходное пособие",
         "the-last-yardbird": "Последний Птенчик",
         "the-pen-and-the-sword": "Перо и меч",
-        "crime-and-punishment": "Преступление и наказание"
+        "crime-and-punishment": "Преступление и наказание",
+        "the-last-resort": "The Last Resort"
     },
     "map": {
         "level-number": "Уровень {levelNumber}",
