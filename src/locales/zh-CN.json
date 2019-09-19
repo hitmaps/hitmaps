@@ -85,7 +85,8 @@
             "new-york": "纽约",
             "himmelstein": "希默斯坦",
             "hantu-port": "韩都港",
-            "siberia": "西伯利亚"
+            "siberia": "西伯利亚",
+            "haven-island": "Haven Island"
         },
         "countries": {
             "ica-facility": "分类",
@@ -104,7 +105,8 @@
             "new-york": "美国",
             "himmelstein": "奥地利",
             "hantu-port": "新加坡",
-            "siberia": "俄罗斯"
+            "siberia": "俄罗斯",
+            "haven-island": "Maldives"
         }
     },
     "missions": {
@@ -134,7 +136,8 @@
         "golden-handshake": "离职补贴",
         "the-last-yardbird": "最后的笼中鸟",
         "the-pen-and-the-sword": "笔与剑",
-        "crime-and-punishment": "罪与罚"
+        "crime-and-punishment": "罪与罚",
+        "the-last-resort": "The Last Resort"
     },
     "map": {
         "level-number": "楼层{levelNumber}",
