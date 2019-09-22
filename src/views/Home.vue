@@ -594,7 +594,7 @@ export default {
     },
     data() {
         return {
-            showPromo: 1,
+            showPromo: 0,
             promoStartDate: '2019-09-13T19:00:00+00:00',
             promoEndDate: '2019-09-22T21:59:59+00:00',
             games: [],
@@ -784,9 +784,6 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
-            setInterval(() => {
-                this.showPromo = !!this.showPromo ? 0 : 1;
-            }, 5000);
         })
     }
 }
