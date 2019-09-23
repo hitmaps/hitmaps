@@ -86,7 +86,7 @@
             "himmelstein": "Himmelstein",
             "hantu-port": "Porto Hantu",
             "siberia": "Sibéria",
-            "haven-island": "Haven Island"
+            "haven-island": "Ilha Haven"
         },
         "countries": {
             "ica-facility": "Confidencial",
@@ -106,7 +106,7 @@
             "himmelstein": "Áustria",
             "hantu-port": "Cingapura",
             "siberia": "Rússia",
-            "haven-island": "Maldives"
+            "haven-island": "Maldivas"
         }
     },
     "missions": {
@@ -137,7 +137,7 @@
         "the-last-yardbird": "The Last Yardbird",
         "the-pen-and-the-sword": "A Caneta e a Espada",
         "crime-and-punishment": "Crime e Castigo",
-        "the-last-resort": "The Last Resort"
+        "the-last-resort": "O último recurso"
     },
     "map": {
         "level-number": "Nível {levelNumber}",
@@ -193,7 +193,7 @@
             "Navigation|Ways Up/Down": "Caminhos para cima / para baixo",
             "Navigation|Ledge": "Borda",
             "Navigation|Foliage": "Folhagem",
-            "Navigation|Area": "Area"
+            "Navigation|Area": "Área"
         },
         "editor-menu": "Menu do Editor",
         "what-would-you-like-to-do": "O que você gostaria de fazer?",
@@ -242,8 +242,8 @@
         "target": "Alvo",
         "target-note": "Quem vai ser envenenado?",
         "type": "Tipo",
-        "pickup-large": "Pickup (Large)",
-        "stash-small": "Stash (Small)",
+        "pickup-large": "Captador (Grande)",
+        "stash-small": "Esconderijo (pequeno)",
         "direction": "Direção",
         "direction-up": "Para Cima Apenas",
         "direction-up-down": "Para Cima e Para Baixo",
