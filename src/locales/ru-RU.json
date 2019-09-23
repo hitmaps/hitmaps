@@ -86,7 +86,7 @@
             "himmelstein": "Химмельштейн",
             "hantu-port": "Порт Ханту",
             "siberia": "Сибирь",
-            "haven-island": "Haven Island"
+            "haven-island": "Остров Хейвен"
         },
         "countries": {
             "ica-facility": "Засекречено",
@@ -106,7 +106,7 @@
             "himmelstein": "Австрия",
             "hantu-port": "Сингапур",
             "siberia": "Россия",
-            "haven-island": "Maldives"
+            "haven-island": "Мальдивские острова"
         }
     },
     "missions": {
@@ -137,7 +137,7 @@
         "the-last-yardbird": "Последний Птенчик",
         "the-pen-and-the-sword": "Перо и меч",
         "crime-and-punishment": "Преступление и наказание",
-        "the-last-resort": "The Last Resort"
+        "the-last-resort": "Крайняя мера"
     },
     "map": {
         "level-number": "Уровень {levelNumber}",
@@ -193,7 +193,7 @@
             "Navigation|Ways Up/Down": "Путь вверх/вниз",
             "Navigation|Ledge": "Уступ",
             "Navigation|Foliage": "Листва",
-            "Navigation|Area": "Area"
+            "Navigation|Area": "Рабочая зона"
         },
         "editor-menu": "Меню редактора",
         "what-would-you-like-to-do": "Что бы вы хотели сделать?",
@@ -235,7 +235,7 @@
         "category": "Категория",
         "icon": "Иконка",
         "name": "Название",
-        "quantity": "Quantity",
+        "quantity": "Количество",
         "name-note": "Введите название, как отображается в игре",
         "action": "Действие",
         "action-note": "Введите совершаемое действие (например \"ослабить клапан\", \"включить радио\", \"включить пожарную сигнализацию\" и т.д.)",
