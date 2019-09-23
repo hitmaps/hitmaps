@@ -137,7 +137,7 @@
         "the-last-yardbird": "The Last Yardbird",
         "the-pen-and-the-sword": "La Plume et l'Épée",
         "crime-and-punishment": "Crime et Châtiment",
-        "the-last-resort": "The Last Resort"
+        "the-last-resort": "En dernier recours"
     },
     "map": {
         "level-number": "Niveau {levelNumber}",
@@ -193,7 +193,7 @@
             "Navigation|Ways Up/Down": "Passage vertical",
             "Navigation|Ledge": "Rebord",
             "Navigation|Foliage": "Feuillage",
-            "Navigation|Area": "Area"
+            "Navigation|Area": "Superficie"
         },
         "editor-menu": "Menu de l'éditeur",
         "what-would-you-like-to-do": "Que souhaitez-vous faire ?",
@@ -235,7 +235,7 @@
         "category": "Catégorie",
         "icon": "Icône",
         "name": "Nom",
-        "quantity": "Quantity",
+        "quantity": "Quantité",
         "name-note": "Entrez le nom tel qu'il apparaît dans le jeu.",
         "action": "Action",
         "action-note": "Entrez l'action effectuée (par exemple, \"desserrez la vanne\", \"allumez la radio\", \"déclenchez une alarme incendie\", etc.)",
