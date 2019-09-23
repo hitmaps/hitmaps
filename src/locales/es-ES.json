@@ -86,7 +86,7 @@
             "himmelstein": "Himmelstein",
             "hantu-port": "Puerto Hantu",
             "siberia": "Siberia",
-            "haven-island": "Haven Island"
+            "haven-island": "Isla del asilo"
         },
         "countries": {
             "ica-facility": "Clasificado",
@@ -106,7 +106,7 @@
             "himmelstein": "Austria",
             "hantu-port": "Singapur",
             "siberia": "Rusia",
-            "haven-island": "Maldives"
+            "haven-island": "Maldivas"
         }
     },
     "missions": {
@@ -137,7 +137,7 @@
         "the-last-yardbird": "The Last Yardbird",
         "the-pen-and-the-sword": "La Bolígrafo y la Espada",
         "crime-and-punishment": "Crimen y Castigo",
-        "the-last-resort": "The Last Resort"
+        "the-last-resort": "El ultimo recurso"
     },
     "map": {
         "level-number": "Nivel {levelNumber}",
@@ -235,7 +235,7 @@
         "category": "Categoría",
         "icon": "Icono",
         "name": "Nombre",
-        "quantity": "Quantity",
+        "quantity": "Cantidad",
         "name-note": "Ingresa el nombre tal como aparece en el juego.",
         "action": "Acción",
         "action-note": "Ingrese la acción eso se realiza (como \"aflojar la válvula\", \"encender la radio\", \"activar la alarma de incendio\", etc.)",
