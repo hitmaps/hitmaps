@@ -1758,6 +1758,7 @@ export default {
             this.editor.notes = item.notes
             this.editor.currentCategory = item.type + '|' + item.subgroup
             this.editor.clickedPoint = L.latLng(item.latitude, item.longitude)
+            this.currentCategory.icon = item.icon;
             $(this.$refs.subgroupPicker).selectpicker(
                 'val',
                 item.type + '|' + item.subgroup
@@ -1771,6 +1772,7 @@ export default {
             this.currentCategory.defaultQuantity = item.quantity
             this.currentCategory.action = item.target
             this.currentCategory.target = item.target
+            this.currentCategory.image = item.image
 
             $(this.$refs.editModal).modal('show')
         },
@@ -1872,7 +1874,10 @@ export default {
                 data.append('note-text[]', element.text)
             })
             this.$request(true, url, data).then(resp => {
-                //TODO Make this a method
+                if (this.editor.mode === 'items' && this.editor.currentMarkerNode !== null) {
+                    this.editor.currentMarkerNode.deleted = true;
+                }
+
                 if (resp.data.data.approved) {
                     resp.data.data.latLng = L.latLng(
                         resp.data.data.latitude,
