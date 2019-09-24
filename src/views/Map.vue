@@ -99,17 +99,24 @@
                         </router-link>
                     </div>
                     <div class="editor-enabled" v-if="editor.enabled">
-                        <h3 v-if="editor.mode === ''">{{ $t('map.editor-enabled' )}}</h3>
+                        <h3 v-if="editor.mode === ''">
+                            <i class="fas fa-fw fa-pencil-alt"></i>
+                            {{ $t('map.editor-enabled' )}}
+                        </h3>
                         <h3 v-else-if="editor.mode === 'items'">
+                            <i class="fas fa-fw fa-map-marker-alt"></i>
                             {{ $t('map.add-remove-items') }}
                         </h3>
                         <h3 v-else-if="editor.mode === 'ledges'">
+                            <i class="fas fa-fw fa-bezier-curve"></i>
                             {{ $t('map.add-remove-ledges') }}
                         </h3>
                         <h3 v-else-if="editor.mode === 'foliage'">
+                            <i class="fas fa-fw fa-leaf"></i>
                             {{ $t('map.add-remove-foliage') }}
                         </h3>
                         <h3 v-else-if="editor.mode === 'disguises'">
+                            <i class="fas fa-fw fa-user-tie"></i>
                             {{ $t('map.manage-disguise-areas') }}
                         </h3>
                     </div>
@@ -578,7 +585,6 @@
                         class="edit-menu"
                         v-show="editor.enabled && editor.mode === ''"
                     >
-                        <h2>{{ $t('map.editor-menu') }}</h2>
                         <h3>{{ $t('map.what-would-you-like-to-do') }}</h3>
                         <div class="editor-button" @click="editorMenu('items')">
                             <h3>
@@ -891,156 +897,135 @@
                     </game-button>
                 </template>
             </modal>
-            <div
-                class="modal"
-                ref="confirmMoveModal"
-                id="confirm-move-modal"
-                tabindex="-1"
-                role="dialog"
-            >
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">{{ $t('map.confirm-move') }}</h5>
-                            <button
-                                type="button"
-                                class="close"
-                                data-dismiss="modal"
-                                aria-label="Close"
-                            >
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="alert alert-warning">
-                                {{ $t('map.confirm-reposition') }}
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button
-                                type="button"
-                                class="btn btn-secondary"
-                                @click="cancelMoveMarker"
-                                data-dismiss="modal"
-                            >
-                                {{ $t('form.cancel') }}
-                            </button>
-                            <button
-                                type="button"
-                                @click="confirmMove"
-                                class="btn btn-primary"
-                            >
-                                {{ $t('form.save') }}
-                            </button>
-                        </div>
-                    </div>
+            <modal :modal-title="$t('map.confirm-move')"
+                   id="confirm-move-modal"
+                   tabindex="-1"
+                   role="dialog"
+                   dismissable>
+                <div class="alert alert-warning">
+                    {{ $t('map.confirm-reposition') }}
                 </div>
-            </div>
-            <div
-                class="modal"
-                ref="editModal"
-                id="editModal"
-                tabindex="-1"
-                role="dialog"
-            >
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">{{ $t('map.add-edit-item') }}</h5>
-                            <button
-                                type="button"
-                                class="close"
-                                data-dismiss="modal"
-                                aria-label="Close"
-                            >
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div
-                                v-show="
+                <template v-slot:modal-footer>
+                    <game-button type="button" @click="cancelMoveMarker" data-dismiss="modal">
+                        <img
+                                src="/img/game-icons/modal-close.png"
+                                class="normal img-fluid"
+                                :alt="$t('form.cancel-icon')"
+                        />
+                        <img
+                                src="/img/game-icons/modal-close-inverted.png"
+                                class="inverted img-fluid"
+                                :alt="$t('form.cancel-icon')"
+                        />
+                        {{ $t('form.cancel') }}
+                    </game-button>
+                    <game-button
+                            type="submit"
+                            @click="confirmMove"
+                    >
+                        <img
+                                src="/img/game-icons/modal-continue.png"
+                                class="normal img-fluid"
+                                :alt="$t('form.submit-icon')"
+                        />
+                        <img
+                                src="/img/game-icons/modal-continue-inverted.png"
+                                class="inverted img-fluid"
+                                :alt="$t('form.submit-icon')"
+                        />
+                        {{ $t('form.save') }}
+                    </game-button>
+                </template>
+            </modal>
+            <modal :modal-title="$t('map.add-edit-item')"
+                   id="editModal"
+                   tabindex="-1"
+                   role="dialog"
+                   dismissable>
+                <div
+                        v-show="
                                     mission.missionType != 'Sniper Assassin'
                                 "
+                >
+                    <h3>{{ $t('map.apply-template') }}</h3>
+                    <div class="form-group row">
+                        <label
+                                for="template"
+                                class="col sm-2 col-form-label"
+                        >
+                            {{ $t('map.template') }}
+                        </label>
+                        <div class="col-sm-10">
+                            <select
+                                    @change="applyTemplate"
+                                    name="template"
+                                    ref="templatePicker"
+                                    class="form-control selectpicker"
+                                    title="Select One"
+                                    data-live-search="true"
                             >
-                                <h3>{{ $t('map.apply-template') }}</h3>
-                                <div class="form-group row">
-                                    <label
-                                        for="template"
-                                        class="col sm-2 col-form-label"
-                                    >
-                                        {{ $t('map.template') }}
-                                    </label>
-                                    <div class="col-sm-10">
-                                        <select
-                                            @change="applyTemplate"
-                                            name="template"
-                                            ref="templatePicker"
-                                            class="form-control selectpicker"
-                                            title="Select One"
-                                            data-live-search="true"
-                                        >
-                                            <optgroup
-                                                v-for="(group,
+                                <optgroup
+                                        v-for="(group,
                                                 key) in editor.templates"
-                                                :key="key"
-                                                :label="key"
-                                            >
-                                                <option
-                                                    v-for="item in group"
-                                                    :key="item.id"
-                                                    :value="key + '|' + item.id"
-                                                >
-                                                    {{ item.name }}
-                                                </option>
-                                            </optgroup>
-                                        </select>
-                                    </div>
-                                </div>
-                                <hr />
-                            </div>
-                            <h3>Item Info</h3>
-                            <div
-                                class="alert alert-dark"
-                                style="font-size: .8em"
-                            >
-                                {{ $t('map.please-indicate-when-adding') }}
-                                <ul>
-                                    <li>{{ $t('map.required-items') }}</li>
-                                    <li>{{ $t('map.suspicious-items') }}</li>
-                                    <li>{{ $t('map.information-items') }}</li>
-                                    <li>{{ $t('map.in-game-description-items') }}</li>
-                                    <li>{{ $t('map.blank-notes') }}</li>
-                                </ul>
-                            </div>
-                            <div class="form-group row">
-                                <label
-                                    for="subgroup"
-                                    class="col-sm-2 col-form-label"
+                                        :key="key"
+                                        :label="key"
                                 >
-                                    {{ $t('map.category') }}
-                                </label>
-                                <div class="col-sm-10">
-                                    <select
-                                        @change="selectSubgroup"
-                                        name="subgroup"
-                                        ref="subgroupPicker"
-                                        class="form-control selectpicker"
-                                        title="Select One"
-                                        data-live-search="true"
+                                    <option
+                                            v-for="item in group"
+                                            :key="item.id"
+                                            :value="key + '|' + item.id"
                                     >
-                                        <optgroup
-                                            v-for="(category,
+                                        {{ item.name }}
+                                    </option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+                <h3>Item Info</h3>
+                <div
+                        class="alert alert-dark"
+                        style="font-size: .8em"
+                >
+                    {{ $t('map.please-indicate-when-adding') }}
+                    <ul>
+                        <li>{{ $t('map.required-items') }}</li>
+                        <li>{{ $t('map.suspicious-items') }}</li>
+                        <li>{{ $t('map.information-items') }}</li>
+                        <li>{{ $t('map.in-game-description-items') }}</li>
+                        <li>{{ $t('map.blank-notes') }}</li>
+                    </ul>
+                </div>
+                <div class="form-group row">
+                    <label
+                            for="subgroup"
+                            class="col-sm-2 col-form-label"
+                    >
+                        {{ $t('map.category') }}
+                    </label>
+                    <div class="col-sm-10">
+                        <select
+                                @change="selectSubgroup"
+                                name="subgroup"
+                                ref="subgroupPicker"
+                                class="form-control selectpicker"
+                                title="Select One"
+                                data-live-search="true"
+                        >
+                            <optgroup
+                                    v-for="(category,
                                             key) in categories"
-                                            :key="key"
-                                            :label="key"
-                                        >
-                                            <option
-                                                v-for="group in category"
-                                                :key="group.id"
-                                                :value="
+                                    :key="key"
+                                    :label="key"
+                            >
+                                <option
+                                        v-for="group in category"
+                                        :key="group.id"
+                                        :value="
                                                     key + '|' + group.subgroup
                                                 "
-                                                :data-content="
+                                        :data-content="
                                                     `<img height='24' width='24' src='/img/map-icons/` +
                                                         group.icon +
                                                         `.png' alt='` +
@@ -1048,49 +1033,49 @@
                                                         ` Icon'> ` +
                                                         group.group
                                                 "
-                                            >
-                                                {{ group.group }}
-                                            </option>
-                                        </optgroup>
-                                    </select>
-                                    <small
-                                        v-if="editor.currentCategory"
-                                        class="form-text text-muted"
-                                        id="note-help-text"
-                                    >
-                                        {{ currentCategory.note }}
-                                    </small>
-                                </div>
-                            </div>
-                            <div
-                                v-show="pickIconAllowed"
-                                class="form-group row"
-                                id="icon-form-group"
-                            >
-                                <label
-                                    for="icon"
-                                    class="col-sm-2 col-form-label"
                                 >
-                                    {{ $t('map.icon') }}
-                                </label>
-                                <div class="col-sm-10">
-                                    <select
-                                        name="icon"
-                                        @change="selectIcon"
-                                        ref="iconPicker"
-                                        class="form-control selectpicker"
-                                        data-live-search="true"
-                                    >
-                                        <optgroup
-                                            v-for="(group, key) in editor.icons"
-                                            :key="key"
-                                            :label="key"
-                                        >
-                                            <option
-                                                v-for="icon in group"
-                                                :key="icon.id"
-                                                :value="icon.icon"
-                                                :data-content="
+                                    {{ group.group }}
+                                </option>
+                            </optgroup>
+                        </select>
+                        <small
+                                v-if="editor.currentCategory"
+                                class="form-text text-muted"
+                                id="note-help-text"
+                        >
+                            {{ currentCategory.note }}
+                        </small>
+                    </div>
+                </div>
+                <div
+                        v-show="pickIconAllowed"
+                        class="form-group row"
+                        id="icon-form-group"
+                >
+                    <label
+                            for="icon"
+                            class="col-sm-2 col-form-label"
+                    >
+                        {{ $t('map.icon') }}
+                    </label>
+                    <div class="col-sm-10">
+                        <select
+                                name="icon"
+                                @change="selectIcon"
+                                ref="iconPicker"
+                                class="form-control selectpicker"
+                                data-live-search="true"
+                        >
+                            <optgroup
+                                    v-for="(group, key) in editor.icons"
+                                    :key="key"
+                                    :label="key"
+                            >
+                                <option
+                                        v-for="icon in group"
+                                        :key="icon.id"
+                                        :value="icon.icon"
+                                        :data-content="
                                                     `<img height='24' width='24' src='/img/map-icons/` +
                                                         icon.icon +
                                                         `.png' alt='` +
@@ -1098,293 +1083,305 @@
                                                         ` Icon'> ` +
                                                         icon.altText
                                                 "
-                                            >
-                                                {{ icon.altText }}
-                                            </option>
-                                        </optgroup>
-                                    </select>
-                                </div>
-                            </div>
-                            <div v-if="editor.currentCategory">
-                                <div
-                                    class="form-group row"
-                                    v-if="currentCategory.requireName"
                                 >
-                                    <label
-                                        for="name"
-                                        class="col-sm-2 col-form-label"
-                                    >
-                                        {{ $t('map.name') }}
-                                    </label>
-                                    <div class="col-sm-10">
+                                    {{ icon.altText }}
+                                </option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+                <div v-if="editor.currentCategory">
+                    <div
+                            class="form-group row"
+                            v-if="currentCategory.requireName"
+                    >
+                        <label
+                                for="name"
+                                class="col-sm-2 col-form-label"
+                        >
+                            {{ $t('map.name') }}
+                        </label>
+                        <div class="col-sm-10">
                                         <textarea
-                                            type="text"
-                                            name="name"
-                                            v-model="currentCategory.name"
-                                            class="form-control"
-                                        ></textarea>
-                                        <small class="form-text text-muted">
-                                            {{ $t('map.name-note') }}
-                                        </small>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="quantity" class="col-sm-2 col-form-label">
-                                        {{ $t('map.quantity') }}
-                                    </label>
-                                    <div class="col-sm-10">
-                                        <select name="quantity"
-                                                v-model="currentCategory.defaultQuantity"
-                                                class="form-control">
-                                            <option v-for="n in 10" :value="n">
-                                                {{ n }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div
-                                    class="form-group row"
-                                    v-if="currentCategory.requireAction"
-                                >
-                                    <label
-                                        for="action"
-                                        class="col-sm-2 col-form-label"
-                                    >
-                                        {{ $t('map.action') }}
-                                    </label>
-                                    <div class="col-sm-10">
-                                        <input
-                                            type="text"
-                                            name="action"
-                                            v-model="currentCategory.action"
-                                            class="form-control"
-                                        />
-                                        <small class="form-text text-muted">
-                                            {{ $t('map.action-note') }}
-                                        </small>
-                                    </div>
-                                </div>
-                                <div
-                                    class="form-group row"
-                                    v-if="currentCategory.requireTarget"
-                                >
-                                    <label
-                                        for="target"
-                                        class="col-sm-2 col-form-label"
-                                    >
-                                        {{ $t('map.target') }}
-                                    </label>
-                                    <div class="col-sm-10">
-                                        <input
-                                            type="text"
-                                            name="target"
-                                            v-model="currentCategory.target"
-                                            class="form-control"
-                                        />
-                                        <small class="form-text text-muted">
-                                            {{ $t('map.target-note') }}
-                                        </small>
-                                    </div>
-                                </div>
-                                <div
-                                    class="form-group row"
-                                    v-if="currentCategory.requirePickup"
-                                >
-                                    <label
-                                        for="pickup-type"
-                                        class="col-sm-2 col-form-label"
-                                    >
-                                        {{ $t('map.type') }}
-                                    </label>
-                                    <div class="col-sm-10">
-                                        <div class="form-check">
-                                            <input
-                                                class="form-check-input"
-                                                type="radio"
-                                                v-model="
-                                                    currentCategory.pickupType
-                                                "
-                                                name="pickup-type"
-                                                value="large"
-                                                checked
-                                            />
-                                            <label
-                                                class="form-check-label"
-                                                for="large"
-                                            >
-                                                {{ $t('map.pickup-large') }}
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input
-                                                class="form-check-input"
-                                                type="radio"
-                                                v-model="
-                                                    currentCategory.pickupType
-                                                "
-                                                name="pickup-type"
-                                                value="small"
-                                            />
-                                            <label
-                                                class="form-check-label"
-                                                for="small"
-                                            >
-                                                {{ $t('stash.small') }}
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    class="form-group row"
-                                    v-if="currentCategory.requireDirection"
-                                >
-                                    <label
-                                        for="stairwell-direction"
-                                        class="col-sm-2 col-form-label"
-                                    >
-                                        {{ $t('map.direction') }}
-                                    </label>
-                                    <div class="col-sm-10">
-                                        <div class="form-check">
-                                            <input
-                                                class="form-check-input"
-                                                type="radio"
-                                                v-model="
-                                                    currentCategory.stairwellDirection
-                                                "
-                                                name="stairwell-direction"
-                                                value="up-stair"
-                                                checked
-                                            />
-                                            <label
-                                                class="form-check-label"
-                                                for="up-stair"
-                                            >
-                                                {{ $t('map.direction-up') }}
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input
-                                                class="form-check-input"
-                                                type="radio"
-                                                v-model="
-                                                    currentCategory.stairwellDirection
-                                                "
-                                                name="stairwell-direction"
-                                                value="up-down-stair"
-                                            />
-                                            <label
-                                                class="form-check-label"
-                                                for="up-down-stair"
-                                            >
-                                                {{ $t('map.direction-up-down') }}
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input
-                                                class="form-check-input"
-                                                type="radio"
-                                                v-model="
-                                                    currentCategory.stairwellDirection
-                                                "
-                                                name="stairwell-direction"
-                                                value="down-stair"
-                                            />
-                                            <label
-                                                class="form-check-label"
-                                                for="down-stair"
-                                            >
-                                                {{ $t('map.direction-down') }}
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <h3>{{ $t('map.notes') }}</h3>
-                            <div id="suggest-notes">
-                                <div
-                                    v-for="note in editor.notes"
-                                    :key="note.type"
-                                >
-                                    <div class="form-group row">
-                                        <label
-                                            for="note-type[]"
-                                            class="col-sm-2 col-form-label"
-                                        >
-                                            {{ $t('map.type') }}
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select
-                                                v-model="note.type"
-                                                class="form-control"
-                                                name="note-type[]"
-                                            >
-                                                <option value="requirement">
-                                                    {{ $t('map.requirement') }}
-                                                </option>
-                                                <option value="warning">
-                                                    {{ $t('map.warning') }}
-                                                </option>
-                                                <option value="info">
-                                                    {{ $t('map.information') }}
-                                                </option>
-                                                <option value="description">
-                                                    {{ $t('map.description') }}
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label
-                                            for="note-text[]"
-                                            class="col-sm-2 col-form-label"
-                                        >
-                                            {{ $t('map.text') }}
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input
                                                 type="text"
-                                                name="note-text[]"
-                                                v-model="note.text"
+                                                name="name"
+                                                v-model="currentCategory.name"
                                                 class="form-control"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
+                                        ></textarea>
+                            <small class="form-text text-muted">
+                                {{ $t('map.name-note') }}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="quantity" class="col-sm-2 col-form-label">
+                            {{ $t('map.quantity') }}
+                        </label>
+                        <div class="col-sm-10">
+                            <select name="quantity"
+                                    v-model="currentCategory.defaultQuantity"
+                                    class="form-control">
+                                <option v-for="n in 10" :value="n">
+                                    {{ n }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div
+                            class="form-group row"
+                            v-if="currentCategory.requireAction"
+                    >
+                        <label
+                                for="action"
+                                class="col-sm-2 col-form-label"
+                        >
+                            {{ $t('map.action') }}
+                        </label>
+                        <div class="col-sm-10">
+                            <input
+                                    type="text"
+                                    name="action"
+                                    v-model="currentCategory.action"
+                                    class="form-control"
+                            />
+                            <small class="form-text text-muted">
+                                {{ $t('map.action-note') }}
+                            </small>
+                        </div>
+                    </div>
+                    <div
+                            class="form-group row"
+                            v-if="currentCategory.requireTarget"
+                    >
+                        <label
+                                for="target"
+                                class="col-sm-2 col-form-label"
+                        >
+                            {{ $t('map.target') }}
+                        </label>
+                        <div class="col-sm-10">
+                            <input
+                                    type="text"
+                                    name="target"
+                                    v-model="currentCategory.target"
+                                    class="form-control"
+                            />
+                            <small class="form-text text-muted">
+                                {{ $t('map.target-note') }}
+                            </small>
+                        </div>
+                    </div>
+                    <div
+                            class="form-group row"
+                            v-if="currentCategory.requirePickup"
+                    >
+                        <label
+                                for="pickup-type"
+                                class="col-sm-2 col-form-label"
+                        >
+                            {{ $t('map.type') }}
+                        </label>
+                        <div class="col-sm-10">
+                            <div class="form-check">
+                                <input
+                                        class="form-check-input"
+                                        type="radio"
+                                        v-model="
+                                                    currentCategory.pickupType
+                                                "
+                                        name="pickup-type"
+                                        value="large"
+                                        checked
+                                />
+                                <label
+                                        class="form-check-label"
+                                        for="large"
+                                >
+                                    {{ $t('map.pickup-large') }}
+                                </label>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-sm-8 offset-sm-2">
-                                    <button
-                                        type="button"
-                                        @click="editor.notes.push({})"
-                                        id="add-note-button"
-                                        class="btn btn-dark"
-                                    >
-                                        <i class="fas fa-plus-circle"></i>
-                                        {{ $t('map.add-another-note') }}
-                                    </button>
-                                </div>
+                            <div class="form-check">
+                                <input
+                                        class="form-check-input"
+                                        type="radio"
+                                        v-model="
+                                                    currentCategory.pickupType
+                                                "
+                                        name="pickup-type"
+                                        value="small"
+                                />
+                                <label
+                                        class="form-check-label"
+                                        for="small"
+                                >
+                                    {{ $t('stash.small') }}
+                                </label>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button
-                                type="button"
-                                class="btn btn-secondary"
-                                data-dismiss="modal"
-                            >
-                                {{ $t('form.close') }}
-                            </button>
-                            <button
-                                type="button"
-                                @click="saveMarker"
-                                class="btn btn-primary"
-                            >
-                                {{ $t('form.save') }}
-                            </button>
+                    </div>
+                    <div
+                            class="form-group row"
+                            v-if="currentCategory.requireDirection"
+                    >
+                        <label
+                                for="stairwell-direction"
+                                class="col-sm-2 col-form-label"
+                        >
+                            {{ $t('map.direction') }}
+                        </label>
+                        <div class="col-sm-10">
+                            <div class="form-check">
+                                <input
+                                        class="form-check-input"
+                                        type="radio"
+                                        v-model="
+                                                    currentCategory.stairwellDirection
+                                                "
+                                        name="stairwell-direction"
+                                        value="up-stair"
+                                        checked
+                                />
+                                <label
+                                        class="form-check-label"
+                                        for="up-stair"
+                                >
+                                    {{ $t('map.direction-up') }}
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input
+                                        class="form-check-input"
+                                        type="radio"
+                                        v-model="
+                                                    currentCategory.stairwellDirection
+                                                "
+                                        name="stairwell-direction"
+                                        value="up-down-stair"
+                                />
+                                <label
+                                        class="form-check-label"
+                                        for="up-down-stair"
+                                >
+                                    {{ $t('map.direction-up-down') }}
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input
+                                        class="form-check-input"
+                                        type="radio"
+                                        v-model="
+                                                    currentCategory.stairwellDirection
+                                                "
+                                        name="stairwell-direction"
+                                        value="down-stair"
+                                />
+                                <label
+                                        class="form-check-label"
+                                        for="down-stair"
+                                >
+                                    {{ $t('map.direction-down') }}
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                <h3>{{ $t('map.notes') }}</h3>
+                <div id="suggest-notes">
+                    <div
+                            v-for="note in editor.notes"
+                            :key="note.type"
+                    >
+                        <div class="form-group row">
+                            <label
+                                    for="note-type[]"
+                                    class="col-sm-2 col-form-label"
+                            >
+                                {{ $t('map.type') }}
+                            </label>
+                            <div class="col-sm-10">
+                                <select
+                                        v-model="note.type"
+                                        class="form-control"
+                                        name="note-type[]"
+                                >
+                                    <option value="requirement">
+                                        {{ $t('map.requirement') }}
+                                    </option>
+                                    <option value="warning">
+                                        {{ $t('map.warning') }}
+                                    </option>
+                                    <option value="info">
+                                        {{ $t('map.information') }}
+                                    </option>
+                                    <option value="description">
+                                        {{ $t('map.description') }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label
+                                    for="note-text[]"
+                                    class="col-sm-2 col-form-label"
+                            >
+                                {{ $t('map.text') }}
+                            </label>
+                            <div class="col-sm-10">
+                                <input
+                                        type="text"
+                                        name="note-text[]"
+                                        v-model="note.text"
+                                        class="form-control"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-8 offset-sm-2">
+                        <button
+                                type="button"
+                                @click="editor.notes.push({})"
+                                id="add-note-button"
+                                class="btn btn-dark"
+                        >
+                            <i class="fas fa-plus-circle"></i>
+                            {{ $t('map.add-another-note') }}
+                        </button>
+                    </div>
+                </div>
+                <template v-slot:modal-footer>
+                    <game-button type="button" data-dismiss="modal">
+                        <img
+                                src="/img/game-icons/modal-close.png"
+                                class="normal img-fluid"
+                                :alt="$t('form.cancel-icon')"
+                        />
+                        <img
+                                src="/img/game-icons/modal-close-inverted.png"
+                                class="inverted img-fluid"
+                                :alt="$t('form.cancel-icon')"
+                        />
+                        {{ $t('form.close') }}
+                    </game-button>
+                    <game-button
+                            type="submit"
+                            @click="saveMarker"
+                    >
+                        <img
+                                src="/img/game-icons/modal-continue.png"
+                                class="normal img-fluid"
+                                :alt="$t('form.submit-icon')"
+                        />
+                        <img
+                                src="/img/game-icons/modal-continue-inverted.png"
+                                class="inverted img-fluid"
+                                :alt="$t('form.submit-icon')"
+                        />
+                        {{ $t('form.save') }}
+                    </game-button>
+                </template>
+            </modal>
         </div>
         <script type="text/html" id="popup-template">
             <div>
@@ -1724,7 +1721,7 @@ export default {
         addMarker: function(event) {
             if (!this.editor.enabled || this.editor.mode !== 'items') return
             this.editor.clickedPoint = event.latlng
-            let element = this.$refs.editModal
+            let element = '#editModal'
             //Reset old data
             if (this.currentCategory) {
                 this.currentCategory.nodeId = undefined
@@ -1748,7 +1745,7 @@ export default {
             this.editor.currentMarker = item
             this.editor.currentMarkerNode = item.options.custom.node;
             this.editor.originalLatLng = [item.options.custom.node.latitude, item.options.custom.node.longitude];
-            $(this.$refs.confirmMoveModal).modal('show')
+            $('#confirm-move-modal').modal('show')
         },
         cancelMoveMarker: function() {
             this.editor.currentMarker.setLatLng(this.editor.originalLatLng);
@@ -1774,7 +1771,7 @@ export default {
             this.currentCategory.target = item.target
             this.currentCategory.image = item.image
 
-            $(this.$refs.editModal).modal('show')
+            $('#editModal').modal('show')
         },
         confirmMove: function() {
             var data = new FormData()
@@ -1785,7 +1782,7 @@ export default {
                     this.$toast.success({
                         message: 'Item moved!'
                     });
-                    $(this.$refs.confirmMoveModal).modal('hide')
+                    $('#confirm-move-modal').modal('hide')
                 }
             )
         },
@@ -1895,7 +1892,7 @@ export default {
                     }
                     marker.addTo(this.overlays[node.level][node.type + '|' + node.group]);
                 }
-                $(this.$refs.editModal).modal('hide');
+                $('#editModal').modal('hide');
                 this.editor.currentMarker = null;
                 let toastMessage = this.currentCategory.nodeId ? 'Item edited!' : 'Item added!';
                 this.$toast.success({
@@ -2070,9 +2067,6 @@ export default {
                 this.map.pm.disableDraw('Line');
                 this.map.pm.disableDraw('Polygon');
                 this.editor.polyActive = false;
-                this.$toast.info({
-                    message: 'Drawing tools disabled.'
-                })
                 return;
             }
 
@@ -3201,9 +3195,14 @@ html {
 .editor-enabled {
     color: #fff;
     text-transform: uppercase;
-    border: solid 2px #fff;
+    border: solid 2px #ff003c;
     text-align: center;
     margin-bottom: 5px;
+    background-color: #ff003c;
+
+    h3 {
+        margin: .5rem 0;
+    }
 }
 
 .floor-toggle {
@@ -3356,4 +3355,9 @@ html {
         border: solid 2px #fff;
     }
 }
+
+    #editModal .dropdown-toggle img {
+        background: rgba(0, 0, 0, .15);
+        border-radius: 3px;
+    }
 </style>
