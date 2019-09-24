@@ -85,7 +85,8 @@
             "new-york": "New York",
             "himmelstein": "Himmelstein",
             "hantu-port": "Hantu-Hafen",
-            "siberia": "Sibirien"
+            "siberia": "Sibirien",
+            "haven-island": "Haven Island"
         },
         "countries": {
             "ica-facility": "Geheim",
@@ -104,7 +105,8 @@
             "new-york": "USA",
             "himmelstein": "Österreich",
             "hantu-port": "Singapur",
-            "siberia": "Russland"
+            "siberia": "Russland",
+            "haven-island": "Malediven"
         }
     },
     "missions": {
@@ -134,7 +136,8 @@
         "golden-handshake": "Goldener Handschlag",
         "the-last-yardbird": "The Last Yardbird",
         "the-pen-and-the-sword": "Die Feder und das Schwert",
-        "crime-and-punishment": "Verbrechen und Strafe"
+        "crime-and-punishment": "Verbrechen und Strafe",
+        "the-last-resort": "Der letzte Ausweg"
     },
     "map": {
         "level-number": "Ebene {levelNumber}",
@@ -190,7 +193,7 @@
             "Navigation|Ways Up/Down": "Hoch- / Runterklettern",
             "Navigation|Ledge": "Kante",
             "Navigation|Foliage": "Vegetation",
-            "Navigation|Area": "Area"
+            "Navigation|Area": "Kreis"
         },
         "editor-menu": "Bearbeitungsmenü",
         "what-would-you-like-to-do": "Was möchten Sie machen?",
@@ -232,7 +235,7 @@
         "category": "Kategorie",
         "icon": "Symbol",
         "name": "Bezeichnung",
-        "quantity": "Quantity",
+        "quantity": "Anzahl",
         "name-note": "Gebe die Bezeichnung so wie im Spiel ein.",
         "action": "Aktion",
         "action-note": "Gebe die Aktionsbezeichnung ein, die durchgeführt wird (beispielsweise \"Ventil öffnen\", \"Radio anschalten\", \"Feueralarm aktivieren\", etc.)",

@@ -85,7 +85,8 @@
             "new-york": "纽约",
             "himmelstein": "希默斯坦",
             "hantu-port": "韩都港",
-            "siberia": "西伯利亚"
+            "siberia": "西伯利亚",
+            "haven-island": "避风港岛"
         },
         "countries": {
             "ica-facility": "分类",
@@ -104,7 +105,8 @@
             "new-york": "美国",
             "himmelstein": "奥地利",
             "hantu-port": "新加坡",
-            "siberia": "俄罗斯"
+            "siberia": "俄罗斯",
+            "haven-island": "马尔代夫"
         }
     },
     "missions": {
@@ -134,7 +136,8 @@
         "golden-handshake": "离职补贴",
         "the-last-yardbird": "最后的笼中鸟",
         "the-pen-and-the-sword": "笔与剑",
-        "crime-and-punishment": "罪与罚"
+        "crime-and-punishment": "罪与罚",
+        "the-last-resort": "最后的手段"
     },
     "map": {
         "level-number": "楼层{levelNumber}",
@@ -190,7 +193,7 @@
             "Navigation|Ways Up/Down": "爬上/爬下",
             "Navigation|Ledge": "侧边",
             "Navigation|Foliage": "草丛",
-            "Navigation|Area": "Area"
+            "Navigation|Area": "面积"
         },
         "editor-menu": "菜单编辑器",
         "what-would-you-like-to-do": "你想做些什么？",
@@ -232,7 +235,7 @@
         "category": "分类",
         "icon": "图标",
         "name": "名称",
-        "quantity": "Quantity",
+        "quantity": "数量",
         "name-note": "输入游戏内的名称",
         "action": "行动",
         "action-note": "输入游戏内的动作名（例如“拧松阀门”，“打开收音机”，“触发火警”等等）",

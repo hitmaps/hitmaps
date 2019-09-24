@@ -85,7 +85,8 @@
             "new-york": "紐約",
             "himmelstein": "希蒙斯坦",
             "hantu-port": "韓都港",
-            "siberia": "西伯利亞"
+            "siberia": "西伯利亞",
+            "haven-island": "避風港島"
         },
         "countries": {
             "ica-facility": "機密",
@@ -104,7 +105,8 @@
             "new-york": "美國",
             "himmelstein": "奧地利",
             "hantu-port": "新加坡",
-            "siberia": "俄羅斯"
+            "siberia": "俄羅斯",
+            "haven-island": "馬爾代夫"
         }
     },
     "missions": {
@@ -134,7 +136,8 @@
         "golden-handshake": "資遣費",
         "the-last-yardbird": "The Last Yardbird",
         "the-pen-and-the-sword": "筆與劍",
-        "crime-and-punishment": "罪惡與懲罰"
+        "crime-and-punishment": "罪惡與懲罰",
+        "the-last-resort": "最後一招"
     },
     "map": {
         "level-number": "層級 {levelNumber}",
@@ -190,7 +193,7 @@
             "Navigation|Ways Up/Down": "往上/往下",
             "Navigation|Ledge": "壁邊",
             "Navigation|Foliage": "草叢",
-            "Navigation|Area": "Area"
+            "Navigation|Area": "面積"
         },
         "editor-menu": "編輯選單",
         "what-would-you-like-to-do": "您想要做什麼？",
@@ -232,7 +235,7 @@
         "category": "分類",
         "icon": "圖示",
         "name": "名稱",
-        "quantity": "Quantity",
+        "quantity": "數量",
         "name-note": "請輸入與遊戲中相符的名稱：",
         "action": "動作",
         "action-note": "請輸入被執行的動作 (像是「鬆開閥門」、「開啟收音機」、「啟動警鈴」等等)：",
