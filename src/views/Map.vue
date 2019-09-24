@@ -1781,8 +1781,12 @@ export default {
             data.append('node-id', this.editor.currentMarkerNode.id)
             data.append('latitude', this.editor.currentMarker.latitude)
             data.append('longitude', this.editor.currentMarker.longitude)
-            this.$request(true, 'nodes/move', data).then(() =>
-                $(this.$refs.confirmMoveModal).modal('hide')
+            this.$request(true, 'nodes/move', data).then(() => {
+                    this.$toast.success({
+                        message: 'Item moved!'
+                    });
+                    $(this.$refs.confirmMoveModal).modal('hide')
+                }
             )
         },
         selectSubgroup: function(event) {
@@ -1874,7 +1878,7 @@ export default {
                 data.append('note-text[]', element.text)
             })
             this.$request(true, url, data).then(resp => {
-                if (this.editor.mode === 'items' && this.editor.currentMarkerNode !== null) {
+                if (this.editor.mode === 'items' && this.currentCategory.nodeId) {
                     this.editor.currentMarkerNode.deleted = true;
                 }
 
@@ -1893,6 +1897,10 @@ export default {
                 }
                 $(this.$refs.editModal).modal('hide');
                 this.editor.currentMarker = null;
+                let toastMessage = this.currentCategory.nodeId ? 'Item edited!' : 'Item added!';
+                this.$toast.success({
+                    message: toastMessage
+                });
                 this.updateNodeLayerState();
             })
         },
@@ -1901,6 +1909,9 @@ export default {
             this.$request(false, 'nodes/delete/' + node.id).then(resp => {
                 node.deleted = true;
                 this.editor.currentMarker = null;
+                this.$toast.success({
+                    message: 'Item deleted!'
+                });
                 this.updateNodeLayerState();
             })
         },
@@ -2059,6 +2070,9 @@ export default {
                 this.map.pm.disableDraw('Line');
                 this.map.pm.disableDraw('Polygon');
                 this.editor.polyActive = false;
+                this.$toast.info({
+                    message: 'Drawing tools disabled.'
+                })
                 return;
             }
 
@@ -2071,6 +2085,11 @@ export default {
                 });
                 this.editor.polyActive = true;
             }
+
+            let toastMessage = this.editor.polyActive ? 'Drawing tools enabled' : 'Drawing tools disabled';
+            this.$toast.info({
+                message: toastMessage
+            })
         },
         initDraw: function(e) {
             e.workingLayer.on('pm:vertexadded', e => {
