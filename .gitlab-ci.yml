@@ -6,14 +6,6 @@ stages:
   - Prod Deploy
   - Stage Deploy
 
-before_script:
-  - apt-get update
-  - apt-get install -y lftp
-  - apt-get install -y zip
-  - apt-get install -y curl
-  - apt-get install -y nodejs
-  - apt-get install -y wget
-
 dependency_scanning:
   stage: Utilities
   only:
@@ -25,6 +17,8 @@ Prod Deploy API:
   only:
     - master
   script:
+    - apt-get update
+    - apt-get install -y lftp zip curl wget
     - cd api/
     - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
     - php composer-setup.php
@@ -46,6 +40,8 @@ Prod Deploy Frontend:
   only:
     - master
   script:
+    - apt-get update
+    - apt-get install -y lftp zip curl nodejs wget
     - npm ci
     - npm run build
     - cd ci/prod/
@@ -63,6 +59,8 @@ Stage Deploy API:
   only:
     - stage
   script:
+    - apt-get update
+    - apt-get install -y lftp zip curl wget
     - cd api/
     - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
     - php composer-setup.php
@@ -84,6 +82,8 @@ Stage Deploy Frontend:
   only:
     - stage
   script:
+    - apt-get update
+    - apt-get install -y lftp zip curl nodejs wget
     - npm ci
     - npm run staging
     - cd ci/stage/
