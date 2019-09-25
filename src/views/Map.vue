@@ -1729,6 +1729,7 @@ export default {
                 this.currentCategory.defaultQuantity = 1
                 this.currentCategory.action = undefined
                 this.currentCategory.target = undefined
+                this.currentCategory.image = undefined
             }
 
             this.editor.currentCategory = undefined
