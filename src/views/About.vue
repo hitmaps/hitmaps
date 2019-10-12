@@ -42,7 +42,7 @@
                         </a>
                         <div class="media-body">
                             <h5 class="mt-0">
-                                <a href="https://www.jetbrains.com" target="_blank">JetBrains</a>
+                                <a href="https://www.jetbrains.com/?from=Hitman2Maps" target="_blank">JetBrains</a>
                             </h5>
                             <p>JetBrains provides hitman2maps with a free open-source license to all of their products.</p>
                         </div>
