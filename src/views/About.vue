@@ -37,7 +37,7 @@
                         </div>
                     </div>
                     <div class="media">
-                        <a href="https://www.jetbrains.com" target="_blank">
+                        <a href="https://www.jetbrains.com/?from=Hitman2Maps" target="_blank">
                             <img v-webp src="/img/png/logos/jetbrains.png" alt="JetBrains Logo" class="align-self-start mr-3" height="64" width="64">
                         </a>
                         <div class="media-body">
