@@ -86,7 +86,7 @@
             "himmelstein": "Himmelstein",
             "hantu-port": "Port de Hantu",
             "siberia": "Sibérie",
-            "haven-island": "Haven Island"
+            "haven-island": "Île Haven"
         },
         "countries": {
             "ica-facility": "Accès restreint",
@@ -137,7 +137,7 @@
         "the-last-yardbird": "The Last Yardbird",
         "the-pen-and-the-sword": "La Plume et l'Épée",
         "crime-and-punishment": "Crime et Châtiment",
-        "the-last-resort": "En dernier recours"
+        "the-last-resort": "Le dernier recours"
     },
     "map": {
         "level-number": "Niveau {levelNumber}",

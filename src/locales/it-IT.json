@@ -86,7 +86,7 @@
             "himmelstein": "Himmelstein",
             "hantu-port": "Porto di Hantu",
             "siberia": "Siberia",
-            "haven-island": "Haven Island"
+            "haven-island": "Isola di Haven"
         },
         "countries": {
             "ica-facility": "Località Segreta",
@@ -106,7 +106,7 @@
             "himmelstein": "Austria",
             "hantu-port": "Singapore",
             "siberia": "Russia",
-            "haven-island": "Maldives"
+            "haven-island": "Maldive"
         }
     },
     "missions": {
@@ -137,7 +137,7 @@
         "the-last-yardbird": "The Last Yardbird",
         "the-pen-and-the-sword": "La penna e la spada",
         "crime-and-punishment": "Delitto e castigo",
-        "the-last-resort": "L'ultima risorsa"
+        "the-last-resort": "L'ultima spiaggia"
     },
     "map": {
         "level-number": "Livello {levelNumber}",

@@ -76,7 +76,7 @@
             "bangkok": "曼谷",
             "colorado": "科罗拉多",
             "hokkaido": "北海道",
-            "hawkes-bay": "霍克湾",
+            "hawkes-bay": "霍克斯湾",
             "miami": "迈阿密",
             "santa-fortuna": "圣福耳图那",
             "mumbai": "孟买",
@@ -86,7 +86,7 @@
             "himmelstein": "希默斯坦",
             "hantu-port": "韩都港",
             "siberia": "西伯利亚",
-            "haven-island": "避风港岛"
+            "haven-island": "海文岛"
         },
         "countries": {
             "ica-facility": "分类",
@@ -117,7 +117,7 @@
         "the-icon": "偶像",
         "landslide": "山崩",
         "the-author": "作家",
-        "a-gilded-cage": "镀金牢笼",
+        "a-gilded-cage": "镀金笼子",
         "a-house-built-on-sand": "沙上之屋",
         "club-27": "27俱乐部",
         "the-source": "起源",
@@ -125,7 +125,7 @@
         "the-vector": "载体",
         "situs-inversus": "内脏逆位",
         "patient-zero": "零号病人",
-        "nightcall": "夜唤",
+        "nightcall": "夜之呼唤",
         "finish-line": "终点线",
         "three-headed-serpent": "三头蛇",
         "embrace-of-the-serpent": "巨蛇之拥",
@@ -137,7 +137,7 @@
         "the-last-yardbird": "最后的笼中鸟",
         "the-pen-and-the-sword": "笔与剑",
         "crime-and-punishment": "罪与罚",
-        "the-last-resort": "最后的手段"
+        "the-last-resort": "最后手段"
     },
     "map": {
         "level-number": "楼层{levelNumber}",
