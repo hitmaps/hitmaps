@@ -43,6 +43,8 @@
                         <li class="event" data-date="November 20, 2018">
                             <h3>Initial Release</h3>
                             <p>HITMAN™️ 2 Maps is officially released, calling for volunteers to help map the site</p>
+                            <img src="/img/jpg/one-year/og-site.png" alt="Screenshot of hitman2maps.com on initial release">
+                            <p class="image-caption">Screenshot of HITMAN™️ 2 Maps on initial release</p>
                         </li>
                         <li class="event" data-date="December 30, 2018">
                             <h3>Main Mission Maps Complete</h3>
@@ -52,13 +54,20 @@
                             <h3>Elusive Target Push Notifications</h3>
                             <p>Services are created to keep track of Elusive Targets via IO Interactive's public API, providing push notifications for public use.</p>
                         </li>
+                        <li class="event" data-date="April 1-2, 2019">
+                            <h3>Legacy Game Support 😉</h3>
+                            <p>For a couple days, HITMAN™️ 2 Maps supported Hitman: Codename 47 and Hitman 2: Silent Assassin. Clippy also joined in to assist users as they navigated around the site.</p>
+                            <img src="/img/jpg/one-year/april-fools.png" alt="Screenshot of hitman2maps.com on April 2, courtesy of archive.org">
+                            <p class="image-caption">Screenshot of HITMAN™️ 2 Maps on April 2. Source: archive.org</p>
+                        </li>
                         <li class="event" data-date="April 26, 2019">
                             <h3>Sniper Assassin</h3>
                             <p>Sniper Assassin maps are added for all locations.</p>
+                            <img src="/img/jpg/one-year/sniper-assassin.png" alt="Sniper Assassin tile">
                         </li>
                         <li class="event" data-date="September 7, 2019">
                             <h3>Hallo!</h3>
-                            <p>HITMAN™️ 2 Maps is translated into 11 different languages.</p>
+                            <p>HITMAN™️ 2 Maps is translated into 11 different languages, maintained by the HITMAN™️ community.</p>
                         </li>
                     </ul>
                 </div>
@@ -67,7 +76,18 @@
         <section class="the-future">
             <div class="inner-content">
                 <h3>The Future</h3>
-                <p>...</p>
+                <p>The future of HITMAN™️ 2 Maps is looking quite strong. There are two major changes that are planned throughout the rest of 2019 and 2020:</p>
+                <section class="legacy-maps">
+                    <h4>Legacy Maps</h4>
+                    <p>Slowly, but surely, legacy maps are currently planned for the site! A definitive list of titles
+                    is currently not set in store; however there are plans to include Hitman: Blood Money and potentially
+                    Hitman 2: Silent Assassin (Hitman: Absolution doesn't have an in-game map which will make things tricky).</p>
+                    <p>So... you may be asking, "if you have more than just HITMAN™️ 2, then the site name does not make sense!" Well, you would be right, until....</p>
+                </section>
+                <section class="hitmaps">
+                    <h4>HITMAN™️ 2 Maps is becoming HITMAPS!</h4>
+                    <p>TODO...</p>
+                </section>
             </div>
         </section>
     </div>
@@ -102,6 +122,14 @@
         }
 
         section.timeline {
+            img {
+                height: 500px;
+            }
+
+            .image-caption {
+                text-align: center;
+            }
+
             background: #c41e3d;
             color: #dbd4d3;
 
