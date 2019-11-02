@@ -43,7 +43,7 @@
                         <li class="event" data-date="November 20, 2018">
                             <h3>Initial Release</h3>
                             <p>HITMAN™️ 2 Maps is officially released, calling for volunteers to help map the site</p>
-                            <img src="/img/jpg/one-year/og-site.png" alt="Screenshot of hitman2maps.com on initial release">
+                            <img class="img-fluid" src="/img/jpg/one-year/og-site.png" alt="Screenshot of hitman2maps.com on initial release">
                             <p class="image-caption">Screenshot of HITMAN™️ 2 Maps on initial release</p>
                         </li>
                         <li class="event" data-date="December 30, 2018">
@@ -57,7 +57,7 @@
                         <li class="event" data-date="April 1-2, 2019">
                             <h3>Legacy Game Support 😉</h3>
                             <p>For a couple days, HITMAN™️ 2 Maps supported Hitman: Codename 47 and Hitman 2: Silent Assassin. Clippy also joined in to assist users as they navigated around the site.</p>
-                            <img src="/img/jpg/one-year/april-fools.png" alt="Screenshot of hitman2maps.com on April 2, courtesy of archive.org">
+                            <img class="img-fluid" src="/img/jpg/one-year/april-fools.png" alt="Screenshot of hitman2maps.com on April 2, courtesy of archive.org">
                             <p class="image-caption">Screenshot of HITMAN™️ 2 Maps on April 2. Source: archive.org</p>
                         </li>
                         <li class="event" data-date="April 26, 2019">
@@ -73,21 +73,43 @@
                 </div>
             </div>
         </section>
+        <section class="by-the-numbers">
+            <div class="inner-content">
+                <h4>Some Statistics</h4>
+                <p>TODO</p>
+            </div>
+        </section>
         <section class="the-future">
             <div class="inner-content">
                 <h3>The Future</h3>
                 <p>The future of HITMAN™️ 2 Maps is looking quite strong. There are two major changes that are planned throughout the rest of 2019 and 2020:</p>
                 <section class="legacy-maps">
                     <h4>Legacy Maps</h4>
-                    <p>Slowly, but surely, legacy maps are currently planned for the site! A definitive list of titles
-                    is currently not set in store; however there are plans to include Hitman: Blood Money and potentially
-                    Hitman 2: Silent Assassin (Hitman: Absolution doesn't have an in-game map which will make things tricky).</p>
-                    <p>So... you may be asking, "if you have more than just HITMAN™️ 2, then the site name does not make sense!" Well, you would be right, until....</p>
+                    <p>There are tentative plans to include maps for legacy locations, such as Hitman: Blood Money and
+                    Hitman: Contracts.  We're currently unsure about supporting Hitman: Absolution as there is no
+                    in-game map.</p>
                 </section>
-                <section class="hitmaps">
+                <section class="hold-up">
+                    <p>Hold up, but this is HITMAN™️ 2 Maps... why would you include legacy games?</p>
+                    <br>
+                    <p>Well...</p>
+                </section>
+                <section class="hitmaps text-center">
+                    <img class="img-fluid" src="/img/jpg/one-year/hitmaps-logo.png" style="height: 100px; margin-bottom: 10px;">
                     <h4>HITMAN™️ 2 Maps is becoming HITMAPS!</h4>
-                    <p>TODO...</p>
+                    <p>We've acquired the hitmaps.com domain, allowing us to provide maps across more Hitman games than
+                    just HITMAN™️ and HITMAN™️ 2. Of course, we plan on continuing with HITMAN™️ 3 (or whatever the next
+                    game is called), on top of the other games as described earlier. Over the next week, the social media
+                    channels and domain names will switch over to the HITMAPS name and artwork. Oh, and we also
+                    registered hitman3maps.com, just in case 😉.</p>
+                    <p>Needless to say, this site is in it for the long haul. We're not going away anytime soon.</p>
                 </section>
+            </div>
+        </section>
+        <section class="special-thanks">
+            <div class="inner-content">
+                <h3>Special Thanks</h3>
+                <p>TODO</p>
             </div>
         </section>
     </div>
@@ -115,10 +137,26 @@
             }
         }
 
-        .intro,
-        .the-future {
+        .intro {
             background: #ff003c;
             color: #fff;
+        }
+
+        .the-future {
+            background: url('/img/jpg/one-year/hitmaps-background.jpg') no-repeat center center fixed;
+
+            > div {
+                background: rgba(0, 0, 0, .6);
+                color: white;
+            }
+
+            .hold-up {
+                margin: 100px -50px;
+                padding: 100px;
+                font-size: 2em;
+                text-align: center;
+                background: black;
+            }
         }
 
         section.timeline {
