@@ -75,8 +75,42 @@
         </section>
         <section class="by-the-numbers">
             <div class="inner-content">
-                <h4>Some Statistics</h4>
-                <p>TODO</p>
+                <h3>Some Statistics</h3>
+                <div class="row">
+                    <div class="col">
+                        <p class="stat-number">11,998</p>
+                        <p>Items Added</p>
+                    </div>
+                    <div class="col">
+                        <p class="stat-number">40</p>
+                        <p>Site Editors</p>
+                    </div>
+                    <div class="col">
+                        <p class="stat-number">211</p>
+                        <p>Discord Members</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p class="stat-number">Chasing a Ghost</p>
+                        <p>Map With Most Items - 1,158 Items</p>
+                    </div>
+                    <div class="col">
+                        <p class="stat-number">Freeform Training</p>
+                        <p>Map With Least Items - 90 Items</p>
+                    </div>
+                    <div class="col">
+                        <p class="stat-number">The Ark Society</p>
+                        <p>Most Popular Map - 17,454 Pageviews</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p class="stat-number">Crime and Punishment</p>
+                        <p>Least Popular Map - 248 Pageviews</p>
+                    </div>
+                </div>
+                <p><i>As of November 2, 2019. Discord members does not include bot accounts.</i></p>
             </div>
         </section>
         <section class="the-future">
@@ -118,7 +152,7 @@
 <script>
     export default {
         name: 'one-year',
-        title: 'HITMAN™️ 2 Maps\' One Year Anniversary',
+        title: 'HITMAN™️ 2 Maps\' One Year Anniversary'
     }
 </script>
 
@@ -137,9 +171,20 @@
             }
         }
 
-        .intro {
+        .intro,
+        .by-the-numbers {
             background: #ff003c;
             color: #fff;
+        }
+
+        .by-the-numbers {
+            .row {
+                text-align: center;
+
+                .stat-number {
+                    font-size: 2rem;
+                }
+            }
         }
 
         .the-future {
@@ -312,8 +357,14 @@
          */
 
         section {
+            h3 {
+                font-size: 2.5rem;
+                text-transform: uppercase;
+                margin-bottom: 20px;
+            }
+
             > .inner-content {
-                padding: 30px 50px;
+                padding: 30px 50px 100px 50px;
                 font-family: 'Lato', sans-serif;
 
                 h3 {
