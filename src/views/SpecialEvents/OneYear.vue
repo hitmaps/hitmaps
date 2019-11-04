@@ -79,22 +79,24 @@
                 <div class="row">
                     <div class="col">
                         <p class="stat-number">11,998</p>
-                        <p>Items Added</p>
+                        <p>Items</p>
                     </div>
                     <div class="col">
                         <p class="stat-number">40</p>
                         <p>Site Editors</p>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col">
                         <p class="stat-number">211</p>
                         <p>Discord Members</p>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col">
                         <p class="stat-number">Chasing a Ghost</p>
                         <p>Map With Most Items - 1,158 Items</p>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col">
                         <p class="stat-number">Freeform Training</p>
                         <p>Map With Least Items - 90 Items</p>
@@ -109,6 +111,20 @@
                         <p class="stat-number">Crime and Punishment</p>
                         <p>Least Popular Map - 248 Pageviews</p>
                     </div>
+                    <div class="col">
+                        <p class="stat-number">268</p>
+                        <p>Areas of Foliage</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p class="stat-number">6,518</p>
+                        <p>Disguise Trespassing / Hostile Regions</p>
+                    </div>
+                    <div class="col">
+                        <p class="stat-number">269</p>
+                        <p>Disguises</p>
+                    </div>
                 </div>
                 <p><i>As of November 2, 2019. Discord members does not include bot accounts.</i></p>
             </div>
@@ -116,8 +132,11 @@
         <section class="the-future">
             <div class="inner-content">
                 <h3>The Future</h3>
-                <p>The future of HITMAN™️ 2 Maps is looking quite strong. There are two major changes that are planned throughout the rest of 2019 and 2020:</p>
+                <p>The future of HITMAN™️ 2 Maps is looking quite strong. Here are planned throughout the rest of 2019 and 2020:</p>
                 <section class="legacy-maps">
+                    <h4>Ghost Mode Maps</h4>
+                    <p>Ghost Mode itmes are going to be having their own dedicated home on HITMAN™️ 2 Maps. There are some Ghost Mode
+                    items already added; however they will have their own home in the near future.</p>
                     <h4>Legacy Maps</h4>
                     <p>There are tentative plans to include maps for legacy locations, such as Hitman: Blood Money and
                     Hitman: Contracts.  We're currently unsure about supporting Hitman: Absolution as there is no
@@ -143,7 +162,37 @@
         <section class="special-thanks">
             <div class="inner-content">
                 <h3>Special Thanks</h3>
-                <p>TODO</p>
+                <p>Without the help of the community, this site would not be where it is today.  I'd like to
+                thank the following for their help and what they do:</p>
+                <div class="row">
+                    <div class="col">
+                        <img v-webp src="/img/jpg/logos/ioi.jpg">
+                        <p style="font-weight: bolder">IO Interactive</p>
+                        <p>Well, it goes without saying this, but without IO Interactive, there wouldn't be HITMAN™️.
+                        Without HITMAN™️, there wouldn't be HITMAN™️ 2 Maps.</p>
+                        <p style="font-size: .5rem">(Oh, and thanks for making your game files decently easy to access.
+                        It made for making the map images <i>really</i> easy ;) )</p>
+                    </div>
+                    <div class="col">
+                        <span class="fa-stack fa-2x" style="font-size: 6.2rem">
+                            <i class="fas fa-square fa-stack-2x" style="color: #7289DA"></i>
+                            <i class="fab fa-discord fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <p style="font-weight: bolder">HITMAN™️ 2 Maps Discord Members</p>
+                        <p>The members of the HITMAN™️ 2 Maps Discord, many of them who are map editors (but not all),
+                        have given me a group of people to converse with on a daily basis. We've talked about random,
+                        off-topic nonsense to also deciding what features should be added to the site next.</p>
+                    </div>
+                    <div class="col">
+                        <img src="/img/jpg/one-year/hitmanforum.png">
+                        <p style="font-weight: bolder">Hitman Forum</p>
+                        <p>The Hitman Forum is the first place I posted about HITMAN™️ 2 Maps' creation. I honestly did
+                        not know what to expect when asking for help mapping (actually, I was worried that no one would
+                        want to help at all); however I was pleasantly surprised to find out that scores of people were
+                        willing to help map their favorite map(s). This site would still be a work in progress if it was
+                        not for them.</p>
+                    </div>
+                </div>
             </div>
         </section>
     </div>
@@ -172,17 +221,27 @@
         }
 
         .intro,
-        .by-the-numbers {
+        .by-the-numbers,
+        .special-thanks {
             background: #ff003c;
             color: #fff;
         }
 
-        .by-the-numbers {
+        .by-the-numbers,
+        .special-thanks {
             .row {
                 text-align: center;
 
                 .stat-number {
                     font-size: 2rem;
+                }
+
+                & + .row {
+                    margin-top: 20px;
+                }
+
+                img {
+                    height: 200px;
                 }
             }
         }
