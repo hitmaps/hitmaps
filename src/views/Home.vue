@@ -14,6 +14,13 @@
                 />
             </div>
         </header>
+        <div class="row dashboard">
+            <div class="col one-year">
+                <a href="/one-year">
+                    HITMAN™️ 2 Maps: One Year Later - Learn About the Past, Present, and Future of the Site
+                </a>
+            </div>
+        </div>
         <div
             class="row loading"
             v-if="games.length === 0 && elusiveTargets.length === 0"
@@ -1033,6 +1040,32 @@ function updateCheckboxState(
                     }
                 }
             }
+        }
+    }
+
+    .one-year {
+        /*background-color: rgba(0,0,0,.5);*/
+        background-repeat: no-repeat;
+        background-position: center;
+        background-image: url('/img/jpg/one-year/miami.jpg');
+        background-attachment: fixed;
+        background-size: 150%;
+        margin-left: 3px;
+        margin-right: 3px;
+        padding-left: 0;
+        padding-right: 0;
+        text-align: center;
+        border: 5px solid #fff;
+
+        a {
+            background-color: rgba(0,0,0,.5);
+            width: 100%;
+            display: block;
+            font-size: 2rem;
+            color: white;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            text-shadow: 2px 2px #000;
         }
     }
 }
