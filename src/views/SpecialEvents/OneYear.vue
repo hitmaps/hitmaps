@@ -28,44 +28,59 @@
                 <h3>Timeline</h3>
                 <div id="timeline-content">
                     <ul class="timeline">
-                        <li class="event" data-date="September 28, 2018">
+                        <li class="event">
+                            <h4>September 28, 2018</h4>
                             <h3>Development Begins</h3>
                             <p>Development begins on HITMAN™️ 2 Maps with an <a href="https://gitlab.com/mike-koch/hitman-maps/commit/06ff5ccdba274aa6871eeadb510487815539891c" target="_blank">initial README.md commit</a>.</p>
                         </li>
-                        <li class="event" data-date="November 14, 2018">
+                        <li class="event">
+                            <h4>November 14, 2018</h4>
                             <h3>Initial Discovery</h3>
                             <p>Notex on the HITMAN™️ Forums discovers HITMAN™️ 2 Maps mid-development.</p>
                         </li>
-                        <li class="event" data-date="November 16, 2018">
+                        <li class="event">
+                            <h4>November 16, 2018</h4>
                             <h3>HITMAN™️ Forum Introduction</h3>
                             <p>MrMike (creator of HITMAN™️ 2 Maps) introduces himself, to show that development is on-going</p>
                         </li>
-                        <li class="event" data-date="November 20, 2018">
+                        <li class="event">
+                            <h4>November 20, 2018</h4>
                             <h3>Initial Release</h3>
                             <p>HITMAN™️ 2 Maps is officially released, calling for volunteers to help map the site</p>
-                            <img class="img-fluid" src="/img/jpg/one-year/og-site.png" alt="Screenshot of hitman2maps.com on initial release">
+                            <a href="/img/jpg/one-year/og-site.png" target="_blank">
+                                <img class="img-fluid" src="/img/jpg/one-year/og-site.png" alt="Screenshot of hitman2maps.com on initial release">
+                            </a>
                             <p class="image-caption">Screenshot of HITMAN™️ 2 Maps on initial release</p>
                         </li>
-                        <li class="event" data-date="December 30, 2018">
+                        <li class="event">
+                            <h4>December 30, 2018</h4>
                             <h3>Main Mission Maps Complete</h3>
                             <p>Items for the main mission maps are completed, with the exception of disguise areas</p>
                         </li>
-                        <li class="event" data-date="February 16, 2019">
+                        <li class="event">
+                            <h4>February 16, 2019</h4>
                             <h3>Elusive Target Push Notifications</h3>
                             <p>Services are created to keep track of Elusive Targets via IO Interactive's public API, providing push notifications for public use.</p>
                         </li>
-                        <li class="event" data-date="April 1-2, 2019">
+                        <li class="event">
+                            <h4>April 1-2, 2019</h4>
                             <h3>Legacy Game Support 😉</h3>
                             <p>For a couple days, HITMAN™️ 2 Maps supported Hitman: Codename 47 and Hitman 2: Silent Assassin. Clippy also joined in to assist users as they navigated around the site.</p>
-                            <img class="img-fluid" src="/img/jpg/one-year/april-fools.png" alt="Screenshot of hitman2maps.com on April 2, courtesy of archive.org">
+                            <a href="/img/jpg/one-year/april-fools.png" target="_blank">
+                                <img class="img-fluid" src="/img/jpg/one-year/april-fools.png" alt="Screenshot of hitman2maps.com on April 2, courtesy of archive.org">
+                            </a>
                             <p class="image-caption">Screenshot of HITMAN™️ 2 Maps on April 2. Source: archive.org</p>
                         </li>
-                        <li class="event" data-date="April 26, 2019">
+                        <li class="event">
+                            <h4>April 26, 2019</h4>
                             <h3>Sniper Assassin</h3>
                             <p>Sniper Assassin maps are added for all locations.</p>
-                            <img src="/img/jpg/one-year/sniper-assassin.png" alt="Sniper Assassin tile">
+                            <a href="/img/jpg/one-year/sniper-assassin.png" target="_blank">
+                                <img src="/img/jpg/one-year/sniper-assassin.png" alt="Sniper Assassin tile" class="img-fluid">
+                            </a>
                         </li>
-                        <li class="event" data-date="September 7, 2019">
+                        <li class="event">
+                            <h4>September 7, 2019</h4>
                             <h3>Hallo!</h3>
                             <p>HITMAN™️ 2 Maps is translated into 11 different languages, maintained by the HITMAN™️ community.</p>
                         </li>
@@ -264,10 +279,6 @@
         }
 
         section.timeline {
-            img {
-                height: 500px;
-            }
-
             .image-caption {
                 text-align: center;
             }
@@ -365,6 +376,11 @@
                     letter-spacing: 1.5px;
                     font-weight: 400;
                     font-size: 1.4em;
+                }
+
+                h4 {
+                    font-size: .9em;
+                    font-weight: 100;
                 }
 
                 .event {
