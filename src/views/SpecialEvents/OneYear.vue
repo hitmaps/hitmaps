@@ -181,7 +181,7 @@
                 thank the following for their help and what they do:</p>
                 <div class="row">
                     <div class="col">
-                        <img v-webp src="/img/jpg/logos/ioi.jpg">
+                        <img v-webp src="/img/png/logos/ioi.png">
                         <p style="font-weight: bolder">IO Interactive</p>
                         <p>Well, it goes without saying this, but without IO Interactive, there wouldn't be HITMAN™️.
                         Without HITMAN™️, there wouldn't be HITMAN™️ 2 Maps.</p>
