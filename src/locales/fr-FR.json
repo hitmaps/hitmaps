@@ -36,7 +36,7 @@
             "checking-if-enabled": "Vérifie si les notifications sont activées sur ce navigateur...",
             "unsupported-browser": "Malheureusement, les notifications ne sont pas prises en charge sur ce support. Veuillez utiliser un navigateur compatible.",
             "device-not-enrolled": "Votre navigateur n'est actuellement pas configuré pour recevoir des notifications. Cliquez sur \"S'inscrire\" ci-dessous pour commencer à configurer votre appareil.",
-            "notifications-blocked": "Votre navigateur bloque les notifications venant de hitman2maps.com. Débloquez ce site de votre navigateur, actualisez la page et réessayez de vous inscrire.",
+            "notifications-blocked": "Votre navigateur bloque les notifications venant de hitmaps.com. Débloquez ce site de votre navigateur, actualisez la page et réessayez de vous inscrire.",
             "send-me-a-notification-when": "Je voudrais recevoir une notification quand...",
             "announced": "Une prochaine cible fugitive est annoncée",
             "playable": "La cible fugitive est disponible",

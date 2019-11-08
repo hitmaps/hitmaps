@@ -13,13 +13,13 @@
                  alt="Picture of MrMike"
                  class="img-fluid"
                  style="display: inline-block; vertical-align: text-bottom">
-            <p style="display: inline-block;margin-left: 5px;">I'm Mike Koch (MrMike), creator of hitman2maps.com. I'm currently working as a web developer while
-                working on hitman2maps.com in my spare time.</p>
-            <p>I started working on hitman2maps.com a month or so before HITMAN&trade; 2 was released, as I was not
+            <p style="display: inline-block;margin-left: 5px;">I'm Mike Koch (MrMike), creator of HITMAPS. I'm currently working as a web developer while
+                working on HITMAPS in my spare time.</p>
+            <p>I started working on HITMAPS a month or so before HITMAN&trade; 2 was released, as I was not
             seeing any progress made on hitmanmaps.com. By building a site that allows outside contributions, maps
             for all six starting locations were created far faster than I could ever imagine.</p>
             <h3>Are you Affiliated With IO Interactive or HITMAN&trade; Maps?</h3>
-            <p>Nope. Not at all. hitmanmaps.com was created by Winterbirds, which heavily influenced hitman2maps.com,
+            <p>Nope. Not at all. hitmanmaps.com was created by Winterbirds, which heavily influenced HITMAPS,
             as I wanted to provide a similar user experience to what hitmanmaps.com users were used to using.  However,
                 I've never spoken to the creator of hitmanmaps.com.</p>
             <h3>Special Thanks</h3>

@@ -48,7 +48,7 @@
                             <h3>Initial Release</h3>
                             <p>HITMAN™️ 2 Maps is officially released, calling for volunteers to help map the site</p>
                             <a href="/img/jpg/one-year/og-site.png" target="_blank">
-                                <img class="img-fluid" src="/img/jpg/one-year/og-site.png" alt="Screenshot of hitman2maps.com on initial release">
+                                <img class="img-fluid" src="/img/jpg/one-year/og-site.png" alt="Screenshot of hitmaps.com on initial release">
                             </a>
                             <p class="image-caption">Screenshot of HITMAN™️ 2 Maps on initial release</p>
                         </li>
@@ -67,7 +67,7 @@
                             <h3>Legacy Game Support 😉</h3>
                             <p>For a couple days, HITMAN™️ 2 Maps supported Hitman: Codename 47 and Hitman 2: Silent Assassin. Clippy also joined in to assist users as they navigated around the site.</p>
                             <a href="/img/jpg/one-year/april-fools.png" target="_blank">
-                                <img class="img-fluid" src="/img/jpg/one-year/april-fools.png" alt="Screenshot of hitman2maps.com on April 2, courtesy of archive.org">
+                                <img class="img-fluid" src="/img/jpg/one-year/april-fools.png" alt="Screenshot of hitmaps.com on April 2, courtesy of archive.org">
                             </a>
                             <p class="image-caption">Screenshot of HITMAN™️ 2 Maps on April 2. Source: archive.org</p>
                         </li>
