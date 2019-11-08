@@ -17,7 +17,7 @@
         <div class="row dashboard">
             <div class="col one-year">
                 <a href="/one-year">
-                    HITMAN™️ 2 Maps: One Year Later - Learn About the Past, Present, and Future of the Site
+                    HITMAPS: One Year Later - Learn About the Past, Present, and Future of the Site
                 </a>
             </div>
         </div>
