@@ -6,7 +6,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <h4>
-                            &copy; 2018 - {{ $currentYear }} hitman2maps.com
+                            &copy; 2018 - {{ $currentYear }} hitmaps.com
                         </h4>
                         <p>
                             <i18n path="footer.disclaimer">
@@ -57,7 +57,7 @@
                             </span>
                         </a>
                         <a
-                            href="https://status.hitman2maps.com"
+                            href="https://status.hitmaps.com"
                             data-toggle="tooltip"
                             :title="$t('footer.hitman2maps-status')"
                         >

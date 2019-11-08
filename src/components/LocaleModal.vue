@@ -11,7 +11,7 @@
         </div>
         <i18n path="language-modal.footer" tag="p">
             <span slot="submitACorrection">
-                <a href="https://translate.hitman2maps.com" target="_blank">{{ $t('language-modal.submit-a-correction') }}</a>
+                <a href="https://translate.hitmaps.com" target="_blank">{{ $t('language-modal.submit-a-correction') }}</a>
             </span>
         </i18n>
     </modal>
