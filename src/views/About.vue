@@ -23,7 +23,7 @@
             as I wanted to provide a similar user experience to what hitmanmaps.com users were used to using.  However,
                 I've never spoken to the creator of hitmanmaps.com.</p>
             <h3>Special Thanks</h3>
-            <p>I'd like to thank the following for making HITMAN&trade; 2 Maps what it is today:</p>
+            <p>I'd like to thank the following for making HITMAPS what it is today:</p>
             <div class="row">
                 <div class="col">
                     <div class="media">
@@ -44,7 +44,7 @@
                             <h5 class="mt-0">
                                 <a href="https://www.jetbrains.com/?from=Hitman2Maps" target="_blank">JetBrains</a>
                             </h5>
-                            <p>JetBrains provides hitman2maps with a free open-source license to all of their products.</p>
+                            <p>JetBrains provides HITMAPS with a free open-source license to all of their products.</p>
                         </div>
                     </div>
                     <div class="media">
@@ -53,13 +53,13 @@
                             <h5 class="mt-0">
                                 <a href="https://www.readme.io" target="_blank">ReadMe</a>
                             </h5>
-                            <p>ReadMe provides a free open-source license to document hitman2maps's public API.</p>
+                            <p>ReadMe provides a free open-source license to document HITMAPS's public API.</p>
                         </div>
                     </div>
                 </div>
                 <div class="col">
                     <h5>The Community</h5>
-                    <p>The community is vital to HITMAN&trade; 2 Maps. Without them, this site would not be where it is
+                    <p>The community is vital to HITMAPS. Without them, this site would not be where it is
                     today (I would not have had the motivation to do it all by myself 😂).</p>
                 </div>
             </div>
