@@ -6,12 +6,12 @@
     >
         <header class="row">
             <div class="col text-center site-header">
-                <h1>{{ $t("interactive-maps-for") }}</h1>
                 <img
                     v-webp
-                    src="/img/png/logos/hitman2.png"
+                    src="/img/png/logos/hitmaps.png"
                     class="img-fluid"
                 />
+                <h1>{{ $t('interactive-maps-for-hitman') }}</h1>
             </div>
         </header>
         <div class="row dashboard">
@@ -874,6 +874,14 @@ function updateCheckboxState(
 <style lang="scss" scoped>
 .site-header {
     margin: 0 20px;
+
+    h1 {
+        margin-top: 20px;
+    }
+
+    img {
+        max-height: 100px;
+    }
 }
 
 @media (min-width: 992px) {
