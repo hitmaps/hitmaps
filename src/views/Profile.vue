@@ -4,11 +4,15 @@
         style="background: url('/img/jpg/backgrounds/loading.jpg') no-repeat center center fixed; background-size: cover"
     >
         <header class="row">
-            <div class="col text-center">
-                <h1>{{ $t('interactive-maps-for') }}</h1>
+            <div class="col text-center site-header">
                 <router-link :to="{ name: 'home' }">
-                    <img src="/img/png/logos/hitman2.png" class="img-fluid" />
+                    <img
+                            v-webp
+                            src="/img/png/logos/hitmaps.png"
+                            class="img-fluid"
+                    />
                 </router-link>
+                <h1>{{ $t('interactive-maps-for-hitman') }}</h1>
                 <h2>{{ $t('profile.manage-profile') }}</h2>
             </div>
         </header>
@@ -251,6 +255,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.site-header {
+    margin: 0 20px;
+
+    h1 {
+        margin-top: 20px;
+    }
+
+    img {
+        max-height: 100px;
+    }
+}
+
 .row {
     .col.login {
         margin: 40px;
