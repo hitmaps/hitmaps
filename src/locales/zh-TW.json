@@ -36,7 +36,7 @@
             "checking-if-enabled": "檢查在這項裝置上是否有啟動通知",
             "unsupported-browser": "抱歉，通知無法在這項裝置上使用，請嘗試加入可支援的裝置。",
             "device-not-enrolled": "您的裝置現在沒有被設定成「接受通知」，點選下面的「加入」來開始設定您的裝置。",
-            "notifications-blocked": "您的裝置目前阻擋了來自 hitman2maps.com 的通知。請解除您裝置對於我們網站的限制，並重新整理，然後再嘗試加入您的裝置。",
+            "notifications-blocked": "您的裝置目前阻擋了來自 hitmaps.com 的通知。請解除您裝置對於我們網站的限制，並重新整理，然後再嘗試加入您的裝置。",
             "send-me-a-notification-when": "請給我個通知，當...",
             "announced": "一個即將到來的隱密目標被公告的時候",
             "playable": "隱密目標已抵達且可被遊玩的時候",

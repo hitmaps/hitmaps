@@ -29,7 +29,7 @@ Prod Deploy API:
     - bash deploy_backend.sh
   environment:
     name: Production API
-    url: https://www.hitman2maps.com/api
+    url: https://www.hitmaps.com/api
   artifacts:
     paths:
     - backend/
@@ -48,7 +48,7 @@ Prod Deploy Frontend:
     - bash deploy_frontend.sh
   environment:
     name: Production Frontend
-    url: https://www.hitman2maps.com
+    url: https://www.hitmaps.com
   artifacts:
     paths:
     - frontend/
@@ -71,7 +71,7 @@ Stage Deploy API:
     - bash deploy_backend.sh
   environment:
     name: Staging API
-    url: https://test.hitman2maps.com/api
+    url: https://test.hitmaps.com/api
   artifacts:
     paths:
     - backend/
@@ -90,7 +90,7 @@ Stage Deploy Frontend:
     - bash deploy_frontend.sh
   environment:
     name: Staging Frontend
-    url: https://test.hitman2maps.com
+    url: https://test.hitmaps.com
   artifacts:
     paths:
       - frontend/
@@ -103,4 +103,4 @@ Refresh Stage DB:
   - stage
   when: manual
   script:
-  - wget https://test.hitman2maps.com/refresh-stage-db.php?access-key=$ACCESS_KEY
+  - wget https://test.hitmaps.com/refresh-stage-db.php?access-key=$ACCESS_KEY

@@ -36,7 +36,7 @@
             "checking-if-enabled": "Checking to see if notifications are enabled on this device...",
             "unsupported-browser": "残念ながら、このデバイスでは通知はサポートされていません。\n サポートされているデバイスを使用して登録してみてください。",
             "device-not-enrolled": "Your device is currently not set up to receive notifications. Click \"Enroll\" below to begin setting up your device.",
-            "notifications-blocked": "Your device is currently blocking notifications from hitman2maps.com. Please unblock this site from your device, refresh the page, and try to enroll your device again.",
+            "notifications-blocked": "Your device is currently blocking notifications from hitmaps.com. Please unblock this site from your device, refresh the page, and try to enroll your device again.",
             "send-me-a-notification-when": "Send me a notification when...",
             "announced": "An upcoming Elusive Target is announced",
             "playable": "The Elusive Target arrives and becomes playable",

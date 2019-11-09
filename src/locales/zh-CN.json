@@ -36,7 +36,7 @@
             "checking-if-enabled": "检查在当前设备是否开启通知功能",
             "unsupported-browser": "抱歉，通知功能暂不支持您的设备，请使用支持该功能的设备",
             "device-not-enrolled": "你的设备目前还未开启接收通知的选项，点击下方的“添加”开启接收通知。",
-            "notifications-blocked": "您当前的设备阻止了来自hitman2maps.com的通知。请解除设备对该网站的限制，刷新网页并再次重新授权该设备。",
+            "notifications-blocked": "您当前的设备阻止了来自hitmaps.com的通知。请解除设备对该网站的限制，刷新网页并再次重新授权该设备。",
             "send-me-a-notification-when": "当....时候给我发送通知",
             "announced": "一个即将到来的行踪不定的目标被公布",
             "playable": "行踪不定的目标已经到达并且任务可以游玩了",
