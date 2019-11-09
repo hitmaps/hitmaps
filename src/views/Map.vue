@@ -93,7 +93,7 @@
                     <div class="header">
                         <router-link :to="{ name: 'home' }">
                             <img
-                                src="/img/png/logos/map-header.png"
+                                src="/img/png/logos/hitmaps.png"
                                 class="img-fluid"
                             />
                         </router-link>
@@ -2545,6 +2545,8 @@ html {
 
 .header {
     max-width: 368px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 
     a {
         opacity: 0.85;
