@@ -601,7 +601,7 @@ export default {
     },
     data() {
         return {
-            showPromo: 1,
+            showPromo: 0,
             promoStartDate: '2019-11-15T11:00:00+00:00',
             promoEndDate: '2019-11-24T22:59:59+00:00',
             games: [],
@@ -791,9 +791,9 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
-            setInterval(() => {
+            /*setInterval(() => {
                 this.showPromo = !!this.showPromo ? 0 : 1;
-            }, 5000);
+            }, 5000);*/
         })
     }
 }
