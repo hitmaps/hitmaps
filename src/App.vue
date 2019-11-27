@@ -56,18 +56,6 @@
                                 ></i>
                             </span>
                         </a>
-                        <a
-                            href="https://status.hitmaps.com"
-                            data-toggle="tooltip"
-                            :title="$t('footer.hitman2maps-status')"
-                        >
-                            <span class="fa-stack fa-2x">
-                                <i class="fas fa-square fa-stack-2x"></i>
-                                <i
-                                    class="fas fa-shield-check fa-stack-1x fa-inverse"
-                                ></i>
-                            </span>
-                        </a>
                     </div>
                 </div>
                 <div class="row legal">
