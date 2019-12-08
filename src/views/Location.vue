@@ -2,7 +2,7 @@
     <div
         v-webp
         class="content"
-        style="background: url('/img/jpg/backgrounds/loading.jpg') no-repeat center center fixed; background-size: cover"
+        style="background: url('https://media.hitmaps.com/img/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
     >
         <div class="site-container" v-if="game != null">
             <script type="application/ld+json">
@@ -42,7 +42,7 @@
                 v-webp
                 id="scrollspy"
                 class="navbar locations"
-                style="background: url('/img/jpg/backgrounds/loading.jpg') no-repeat center center fixed; background-size: cover"
+                style="background: url('https://media.hitmaps.com/img/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
             >
                 <ul class="nav">
                     <li v-if="locations.length > 0" class="nav-item">
