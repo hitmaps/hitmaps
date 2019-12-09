@@ -114,6 +114,11 @@ class Mission {
     public $background;
 
     /**
+     * @ORM\Column(type="string", name="tile_url")
+     */
+    public $tileUrl;
+
+    /**
      * @return mixed
      */
     public function getId(): int {
@@ -379,5 +384,19 @@ class Mission {
      */
     public function setBackground(string $background): void {
         $this->background = $background;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTileUrl() {
+        return $this->tileUrl;
+    }
+
+    /**
+     * @param mixed $tileUrl
+     */
+    public function setTileUrl($tileUrl): void {
+        $this->tileUrl = $tileUrl;
     }
 }
