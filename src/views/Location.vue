@@ -1,6 +1,5 @@
 <template>
     <div
-        v-webp
         class="content"
         style="background: url('https://media.hitmaps.com/img/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
     >
@@ -39,7 +38,6 @@
                 </div>
             </div>
             <nav
-                v-webp
                 id="scrollspy"
                 class="navbar locations"
                 style="background: url('https://media.hitmaps.com/img/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
@@ -93,14 +91,9 @@
                 v-for="location in locations"
                 :key="location.id"
                 class="location"
-                v-webp
                 v-bind:style="{
                     background:
-                        'url(/img/jpg/backgrounds/' +
-                        game.slug +
-                        '/' +
-                        location.slug +
-                        '.jpg) no-repeat center center fixed',
+                        'url(' + location.backgroundUrl + ') no-repeat center center fixed',
                     backgroundSize: 'cover'
                 }"
             >
@@ -151,10 +144,7 @@
                                                 mission.missionType !==
                                                     'Elusive Target'
                                             "
-                                            v-webp
-                                            :src="
-                                                '/img/' + generateUrl(mission)
-                                            "
+                                            :src="mission.tileUrl"
                                             class="card-img-top"
                                             :alt="$t('mission-image')"
                                         />
@@ -194,8 +184,7 @@
                             <div v-else class="card mission">
                                 <div style="position: relative">
                                     <img
-                                        v-webp
-                                        :src="'/img/' + generateUrl(mission)"
+                                        :src="mission.tileUrl"
                                         class="card-img-top"
                                         alt=""
                                     />
@@ -298,15 +287,6 @@ export default {
     },
     methods: {
         generateUrl: function(mission) {
-            if (mission.missionType !== 'Elusive Target') {
-                return (
-                    'png/mission-thumbnails/' +
-                    this.game.slug +
-                    '/' +
-                    mission.slug +
-                    '.png'
-                )
-            }
             if (this.game != null && this.game.slug == 'hitman') {
                 return 'jpg/elusive-targets/legacy/' + mission.slug + '.jpg'
             }
