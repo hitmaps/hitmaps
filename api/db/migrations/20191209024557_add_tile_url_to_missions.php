@@ -37,9 +37,7 @@ class AddTileUrlToMissions extends AbstractMigration {
         $this->execute("UPDATE `missions` SET `tile_url` = 'https://media.hitmaps.com/img/contracts/kingcobra/tile.jpg' WHERE `slug` = 'illusions-of-grandeur'");
         $this->execute("UPDATE `missions` SET `tile_url` = 'https://media.hitmaps.com/img/contracts/falcon/tile_background.jpg' WHERE `slug` = 'crime-and-punishment'");
         $this->execute("UPDATE `missions` SET `tile_url` = 'https://media.hitmaps.com/img/contracts/stingray/tile.jpg' WHERE `slug` = 'the-last-resort'");
-
-        // TODO: Need to replace this with the real image!
-        $this->execute("UPDATE `missions` SET `tile_url` = 'https://media.hitmaps.com/img/contracts/sheep/tile_fsp.jpg' WHERE `slug` = 'the-mills-reverie'");
+        $this->execute("UPDATE `missions` SET `tile_url` = 'https://media.hitmaps.com/img/contracts/escalation/contractescalation_newzealand_opuntia.jpg' WHERE `slug` = 'the-mills-reverie'");
     }
 
     public function down() {

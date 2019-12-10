@@ -1,10 +1,10 @@
 <template>
     <div>
-        <div v-if="!mapLoaded && mission != null" class="overlay" :style="'background: #ccc url(\'/img/jpg/mission-backgrounds/' + mission.background + '.jpg\') no-repeat; background-size: cover'">
+        <div v-if="!mapLoaded && mission != null" class="overlay" :style="'background: #ccc url(' + mission.backgroundUrl + ') no-repeat; background-size: cover'">
             <div class="overlay-container">
                 <img
                     class="img-fluid"
-                    :src="'/img/' + loadingTile"
+                    :src="loadingTile"
                     alt="Mission Thumbnail"
                 />
                 <div class="footer">
@@ -1490,22 +1490,16 @@ export default {
         },
         loadingTile: function() {
             if (this.mission.missionType !== 'Elusive Target') {
-                return (
-                    'png/mission-thumbnails/' +
-                    this.$route.params.slug +
-                    '/' +
-                    this.mission.slug +
-                    '.png'
-                )
+                return this.mission.tileUrl;
             }
 
             if (this.game != null && this.game.slug == 'hitman') {
                 return (
-                    'jpg/elusive-targets/legacy/' + this.mission.slug + '.jpg'
+                    '/img/jpg/elusive-targets/legacy/' + this.mission.slug + '.jpg'
                 )
             }
 
-            return 'jpg/elusive-targets/' + this.mission.slug + '.jpg'
+            return '/img/jpg/elusive-targets/' + this.mission.slug + '.jpg'
         },
         game: function() {
             return this.$store.state.game
