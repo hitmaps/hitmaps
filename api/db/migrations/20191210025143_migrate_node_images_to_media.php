@@ -7,6 +7,7 @@ class MigrateNodeImagesToMedia extends AbstractMigration {
     public function up() {
         foreach ($this->getReplacementMap() as $old => $new) {
             $this->execute("UPDATE `nodes` SET `image` = '{$new}' WHERE `image` = '{$old}'");
+            $this->execute("UPDATE `items` SET `image` = '{$new}' WHERE `image` = '{$old}'");
         }
     }
 
@@ -85,12 +86,34 @@ class MigrateNodeImagesToMedia extends AbstractMigration {
             '/weapons/pistols/hackl-9s' => 'https://media.hitmaps.com/img/unlockables/item_perspective_1e11fbea-cd51-48bf-8316-a050772d6135_0.jpg',
             '/weapons/pistols/el-matador' => 'https://media.hitmaps.com/img/unlockables/item_perspective_c44d3dc4-5e2f-403d-9f69-40111f3643db_0.jpg',
             '/weapons/pistols/kalmer-1' => 'https://media.hitmaps.com/img/unlockables/item_perspective_d0438077-24eb-4c1d-a0f3-abd53d18fc27_0.jpg',
+            '/weapons/pistols/custom-5mm' => 'https://media.hitmaps.com/img/unlockables/item_perspective_e55c71d6-cbf6-41b8-8838-2d1be1d07e1c_0.jpg',
+            '/weapons/pistols/hwk-21-2' => 'https://media.hitmaps.com/img/unlockables/item_perspective_304fd49f-0624-4691-8506-149a4b16808e_0.jpg',
+            '/weapons/pistols/ica-19' => 'https://media.hitmaps.com/img/unlockables/item_perspective_73875794-5a86-410e-84a4-1b5b2f7e5a54_0.jpg',
+            '/weapons/pistols/ica-19-fa' => 'https://media.hitmaps.com/img/unlockables/item_perspective_be4e7b4e-d895-47c1-979d-d79bfbe79a02_0.jpg',
+            '/weapons/pistols/ica-19-fa-stealth' => 'https://media.hitmaps.com/img/unlockables/item_perspective_214004ec-5c86-4c26-8403-9e83a9bcdd24_0.jpg',
+            '/weapons/pistols/ica-19-black-lilly' => 'https://media.hitmaps.com/img/unlockables/item_perspective_f93b99a3-aef6-419f-b303-59470577696d_0.jpg',
+            '/weapons/pistols/ica-19-silverballer' => 'https://media.hitmaps.com/img/unlockables/item_perspective_e70adb5b-0646-4f88-bd4a-85bea7a2a654_0.jpg',
+            '/weapons/pistols/ica-19-silverballer-2' => 'https://media.hitmaps.com/img/unlockables/item_perspective_4bbe3b64-8bce-416e-a3e9-00bcd1571980_0.jpg',
+            '/weapons/pistols/ica-19-chrome' => 'https://media.hitmaps.com/img/unlockables/item_perspective_341ba426-d52d-4ae3-97a9-40b9b3633d76_0.jpg',
+            '/weapons/pistols/krugermeier-2-2' => 'https://media.hitmaps.com/img/unlockables/item_perspective_c8a09c31-a53e-436f-8421-a4dc4115f633_0.jpg',
+            '/weapons/smgs/tac-smg' => 'https://media.hitmaps.com/img/unlockables/item_perspective_ba102d90-b8c9-47b9-97eb-b462344b46c3_0.jpg',
+            '/weapons/smgs/tac-smg-2' => 'https://media.hitmaps.com/img/unlockables/item_perspective_224822b8-7c8b-4c42-9194-8b307eadb31b_0.jpg',
+            '/weapons/smgs/tac-smg-s' => 'https://media.hitmaps.com/img/unlockables/item_perspective_7bf3a6e6-b5aa-4c88-b953-c2c378d36118_0.jpg',
+            '/weapons/smgs/tac-smg-covert' => 'https://media.hitmaps.com/img/unlockables/item_perspective_b1cb79d7-9960-4d5c-8b43-81213c8594cd_0.jpg',
+            '/weapons/shotguns/enram-hv' => 'https://media.hitmaps.com/img/unlockables/item_perspective_d5728a0f-fe8d-4e2d-9350-03cf4243c98e_0.jpg',
+            '/weapons/shotguns/enram-hv-cm' => 'https://media.hitmaps.com/img/unlockables/item_perspective_f6657618-d723-419f-a71b-84d0e93402e3_0.jpg',
+            '/weapons/shotguns/enram-hv-covert-2' => 'https://media.hitmaps.com/img/unlockables/item_perspective_b0314606-caa4-4a2c-a3e2-bd011f98cfdf_0.jpg',
+            '/weapons/rifles/shashka-a33-h' => 'https://media.hitmaps.com/img/unlockables/item_perspective_f5ebb935-9bec-422b-b772-37adc3ba23db_0.jpg',
+            '/weapons/rifles/tac-4-ar-stealth' => 'https://media.hitmaps.com/img/unlockables/item_perspective_7373fafa-7adb-4c14-ac02-225895f9eb7f_0.jpg',
+            '/weapons/rifles/tac-4-sa' => 'https://media.hitmaps.com/img/unlockables/item_perspective_7e1b2364-a190-41f7-a16d-a7d7a9a2f623_0.jpg',
+            '/weapons/pistols/hackl-9r' => 'https://media.hitmaps.com/img/unlockables/item_perspective_1cae7d71-55c8-401a-9dfb-cd0909c4f6ee_0.jpg',
         ];
     }
 
     public function down() {
         foreach ($this->getReplacementMap() as $old => $new) {
             $this->execute("UPDATE `nodes` SET `image` = '{$old}' WHERE `image` = '{$new}'");
+            $this->execute("UPDATE `items` SET `image` = '{$old}' WHERE `image` = '{$new}'");
         }
     }
 }

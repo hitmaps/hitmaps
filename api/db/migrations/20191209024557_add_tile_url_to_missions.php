@@ -30,7 +30,7 @@ class AddTileUrlToMissions extends AbstractMigration {
         $this->execute("UPDATE `missions` SET `tile_url` = 'https://media.hitmaps.com/img/contracts/polarbear/module_002_b/tile.jpg' WHERE `slug` = 'freeform-training'");
         $this->execute("UPDATE `missions` SET `tile_url` = 'https://media.hitmaps.com/img/contracts/parisnoel/tile.jpg' WHERE `slug` = 'holiday-hoarders'");
         $this->execute("UPDATE `missions` SET `tile_url` = 'https://media.hitmaps.com/img/contracts/mamushi/tile.jpg' WHERE `slug` = 'hokkaido-snow-festival'");
-        $this->execute("UPDATE `missions` SET `tile_url` = 'https://media.hitmaps.com/img/contracts/hawk/tile_background.jpg' WHERE `slug` = 'the-last-yardbird'");
+        $this->execute("UPDATE `missions` SET `tile_url` = 'https://media.hitmaps.com/img/locations/location_austria/tile.jpg' WHERE `slug` = 'the-last-yardbird'");
         $this->execute("UPDATE `missions` SET `tile_url` = 'https://media.hitmaps.com/img/contracts/seagull/tile_background.jpg' WHERE `slug` = 'the-pen-and-the-sword'");
         $this->execute("UPDATE `missions` SET `tile_url` = 'https://media.hitmaps.com/img/contracts/raccoon/tile.jpg' WHERE `slug` = 'golden-handshake'");
         $this->execute("UPDATE `missions` SET `tile_url` = 'https://media.hitmaps.com/img/contracts/anaconda/tile.jpg' WHERE `slug` = 'embrace-of-the-serpent'");
