@@ -1636,7 +1636,7 @@ export default {
             }
 
             if (node.image !== null) {
-                $template.find('img').attr('src', '/img/png/' + node.image + '.png');
+                $template.find('img').attr('src', node.image);
             } else {
                 $template.find('img').remove();
             }
