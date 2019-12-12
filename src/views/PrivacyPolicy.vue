@@ -1,7 +1,7 @@
 <template>
     <div
         class="content"
-        style="background: url('/img/jpg/backgrounds/loading.jpg') no-repeat center center fixed; background-size: cover"
+        style="background: url('https://media.hitmaps.com/img/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
     >
         <div class="inner-content">
             <h1>Privacy Policy</h1>
