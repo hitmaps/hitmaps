@@ -1171,6 +1171,21 @@
                             </small>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label for="image"
+                               class="col-sm-2 col-form-label">
+                            {{ $t('map.image-url') }}
+                        </label>
+                        <div class="col-sm-10">
+                            <input type="text"
+                                   name="image"
+                                   v-model="currentCategory.image"
+                                   class="form-control">
+                            <small class="form-text text-muted">
+                                {{ $t('map.image-url-note') }}
+                            </small>
+                        </div>
+                    </div>
                     <div
                             class="form-group row"
                             v-if="currentCategory.requirePickup"
