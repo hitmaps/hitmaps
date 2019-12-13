@@ -229,6 +229,11 @@ class NodeController {
         $node->setTarget('');
         $node->setSearchable($postData['searchable']);
         $node->setImage(isset($postData['image']) && $postData['image'] !== '' ? $postData['image'] : null);
+        if (strpos($node->getImage(), 'https://media.hitmaps.com') !== 0) {
+            // Can't link to anywhere other than https://media.hitmaps.com
+            $node->setImage(null);
+        }
+
         $node->setQuantity(isset($postData['quantity']) ? $postData['quantity'] : 1);
 
         switch ($subgroup) {

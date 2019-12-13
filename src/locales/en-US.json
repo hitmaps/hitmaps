@@ -236,6 +236,8 @@
         "category": "Category",
         "icon": "Icon",
         "name": "Name",
+        "image-url": "Image URL",
+        "image-url-note": "Images must be linked to https://media.hitmaps.com",
         "quantity": "Quantity",
         "name-note": "Enter the name as it appears in-game.",
         "action": "Action",
