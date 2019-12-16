@@ -236,6 +236,8 @@
         "category": "カテゴリ",
         "icon": "アイコン",
         "name": "名称",
+        "image-url": "Image URL",
+        "image-url-note": "Images must be linked to https://media.hitmaps.com",
         "quantity": "個数",
         "name-note": "Enter the name as it appears in-game.",
         "action": "アクション",
