@@ -7,6 +7,7 @@ import titleMixin from './util/title'
 import ImageLoader from './plugins/ImageLoader'
 import i18n from './i18n'
 import CountryFlag from 'vue-country-flag'
+import Rollbar from 'vue-rollbar'
 
 axios.defaults.withCredentials = true
 
@@ -56,6 +57,28 @@ Vue.component('country-flag', CountryFlag);
 
 Vue.mixin(titleMixin)
 Vue.use(ImageLoader)
+
+// Rollbar
+Vue.use(Rollbar, {
+    accessToken: '3cc73267a52347edbd3386afe1aa4993',
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+    enabled: true,
+    environment: 'production',
+    payload: {
+        client: {
+            javascript: {
+                code_version: '1.0',
+                source_map_enabled: true,
+                guess_uncaught_frames: true
+            }
+        }
+    }
+});
+Vue.config.errorHandler = function (err, vm, info) {
+    Vue.rollbar.error(err);
+};
+
 
 /**
  * Enable Bootstrap tooltips using Vue directive
