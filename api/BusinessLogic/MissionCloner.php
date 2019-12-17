@@ -48,6 +48,7 @@ class MissionCloner {
         $newMission->setEndEffectiveDate($endTime);
         $newMission->setMissionType(MissionType::ELUSIVE_TARGET);
         $newMission->setBackgroundUrl($originalMission->getBackgroundUrl());
+        $newMission->setTileUrl('N/A - Elusive Target');
         $this->entityManager->persist($newMission);
         $this->entityManager->flush();
 
