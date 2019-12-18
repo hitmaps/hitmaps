@@ -1229,7 +1229,7 @@
                                         class="form-check-label"
                                         for="small"
                                 >
-                                    {{ $t('stash.small') }}
+                                    {{ $t('map.stash-small') }}
                                 </label>
                             </div>
                         </div>
