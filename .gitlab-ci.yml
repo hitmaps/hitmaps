@@ -4,12 +4,12 @@ include:
 stages:
   - Prod Deploy
   - Stage Deploy
-  - Utilities
+#  - Utilities
 
-dependency_scanning:
-  stage: Utilities
-  only:
-    - master
+#dependency_scanning:
+#  stage: Utilities
+#  only:
+#    - master
 
 Prod Deploy API:
   image: php:7.2

@@ -1780,6 +1780,7 @@ export default {
             this.currentCategory.action = item.target
             this.currentCategory.target = item.target
             this.currentCategory.image = item.image
+            this.currentCategory.pickupType = item.pickupType
 
             $('#editModal').modal('show')
         },
