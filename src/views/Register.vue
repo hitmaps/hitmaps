@@ -20,6 +20,7 @@
             <div class="col-md-6 offset-md-3 register">
                 <alert
                     v-for="message in register.messages"
+                    :key="message.messageHtml"
                     :type="message.type"
                 >
                     {{ message.messageHtml }}
