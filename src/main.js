@@ -59,7 +59,7 @@ Vue.mixin(titleMixin)
 Vue.use(ImageLoader)
 
 // Rollbar
-/*Vue.use(Rollbar, {
+Vue.use(Rollbar, {
     accessToken: '3cc73267a52347edbd3386afe1aa4993',
     captureUncaught: true,
     captureUnhandledRejections: true,
@@ -77,7 +77,7 @@ Vue.use(ImageLoader)
 });
 Vue.config.errorHandler = function (err, vm, info) {
     Vue.rollbar.error(err);
-};*/
+};
 
 
 /**
@@ -108,11 +108,14 @@ Vue.directive('tooltip', {
             if (binding.modifiers.click) t.push('click');
             trigger = t.join(' ');
         }
-        $(el).tooltip({
-            title: binding.value,
-            placement: binding.arg,
-            trigger: trigger,
-            html: binding.modifiers.html
+
+        Vue.nextTick(() => {
+            $(el).tooltip({
+                title: binding.value,
+                placement: binding.arg,
+                trigger: trigger,
+                html: binding.modifiers.html
+            });
         });
     },
     update: function bsTooltipUpdate(el, binding) {
