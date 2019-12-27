@@ -59,7 +59,7 @@ Vue.mixin(titleMixin)
 Vue.use(ImageLoader)
 
 // Rollbar
-Vue.use(Rollbar, {
+/*Vue.use(Rollbar, {
     accessToken: '3cc73267a52347edbd3386afe1aa4993',
     captureUncaught: true,
     captureUnhandledRejections: true,
@@ -77,7 +77,7 @@ Vue.use(Rollbar, {
 });
 Vue.config.errorHandler = function (err, vm, info) {
     Vue.rollbar.error(err);
-};
+};*/
 
 
 /**
