@@ -246,6 +246,7 @@ class NodeController {
             case 'agency-pickup':
                 if ($postData['pickup-type'] === 'large') {
                     $node->setTarget('Agency Pickup');
+                    $node->setIcon('agency-pickup');
                     if ($node->getName() !== '') {
                         $node->setTooltip('Agency Pickup: ' . $node->getName());
                     } else {
@@ -253,8 +254,9 @@ class NodeController {
                     }
                 } else {
                     $node->setTarget('Hidden Stash');
+                    $node->setIcon('agency-pickup-stash');
                     if ($node->getName() !== '') {
-                        $node->setTarget('Hidden Stash: ' . $node->getName());
+                        $node->setTooltip('Hidden Stash: ' . $node->getName());
                     } else {
                         $node->setTooltip('Hidden Stash');
                     }
