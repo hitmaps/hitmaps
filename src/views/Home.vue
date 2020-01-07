@@ -683,7 +683,8 @@ export default {
                 threeDays: false,
                 oneDay: false,
                 ended: false
-            }
+            },
+            streams: []
         }
     },
     methods: {
@@ -854,6 +855,9 @@ export default {
             setInterval(() => {
                 this.showPromo = !!this.showPromo ? 0 : 1;
             }, 5000);
+        });
+        this.$http.get(this.$domain + '/api/twitch/roulette-rivals').then(resp => {
+            this.streams = resp.data.data;
         })
     }
 }
