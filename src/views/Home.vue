@@ -625,11 +625,31 @@
                     <h5><i class="fab fa-twitch"></i> Competitors Currently Streaming</h5>
                 </div>
                 <div class="streams">
-                    <div class="featured">
-                        <p>TODO MrMike227's stream</p>
-                    </div>
-                    <div v-for="stream in streams">
-
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 twitch-stream featured">
+                            <iframe
+                                    src="https://player.twitch.tv/?autoplay=false&channel=MrMike227"
+                                    height="270"
+                                    width="100%"
+                                    frameborder="0"
+                                    scrolling="no"
+                                    autoplay="false"
+                                    allowfullscreen="true">
+                            </iframe>
+                            <p><i class="fas fa-award"></i> MrMike227 (Creator of HITMAPS™️)</p>
+                        </div>
+                        <div v-for="stream in streams" class="col-md-6 col-sm-12 twitch-stream">
+                            <iframe
+                                    :src="'https://player.twitch.tv/?autoplay=false&channel=' + stream.user_name"
+                                    height="270"
+                                    width="100%"
+                                    frameborder="0"
+                                    scrolling="no"
+                                    autoplay="false"
+                                    allowfullscreen="true">
+                            </iframe>
+                            <p>{{ stream.user_name }}</p>
+                        </div>
                     </div>
                 </div>
             </modal>
@@ -857,7 +877,17 @@ export default {
             }, 5000);
         });
         this.$http.get(this.$domain + '/api/twitch/roulette-rivals').then(resp => {
-            this.streams = resp.data.data;
+            let streams = resp.data.data;
+
+            let filteredStreams = [];
+            streams.forEach(stream => {
+                let streamTitle = stream.title.toLowerCase();
+                if (streamTitle.includes('roulette') && streamTitle.includes('rivals')) {
+                    filteredStreams.push(stream);
+                }
+            });
+
+            this.streams = streams;
         })
     }
 }
@@ -1221,6 +1251,16 @@ function updateCheckboxState(
                     }
                 }
             }
+        }
+    }
+}
+
+.streams {
+    .twitch-stream {
+        padding: 10px;
+
+        &.featured {
+            background: #ffffcc;
         }
     }
 }
