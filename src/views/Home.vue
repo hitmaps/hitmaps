@@ -890,7 +890,7 @@ export default {
                 }
             });
 
-            this.streams = streams;
+            this.streams = filteredStreams;
         })
     }
 }
