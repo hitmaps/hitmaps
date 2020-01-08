@@ -604,20 +604,20 @@
                     </div>
                     <div class="col-md-6 col-sm-12">
                         <p>
-                            In Roulette Rivals you go headsup against another player in main missions. Once a mission is selected,
-                            an admin will spin the hitman roulette wheel (made by Kotti).
+                            In Roulette Rivals you go head-to-head against another player in main missions. Once a mission is selected,
+                            an admin will spin the <a href="https://thekotti.github.io/hitman.html" target="_blank">hitman roulette wheel</a> (made by Kotti).
                         </p>
                         <p>
-                            The admin will give the roulette restrictions info to both players, and give the sign to officially
+                            The admin will give the roulette restrictions info to both players and give the sign to officially
                             start the match. Players are allowed to use every item and spawn location they want.
                         </p>
                         <p>
-                            Whoever finishes the mission with a 5 star SA rating first in real time, wins the map. Repeat: This
+                            Whoever finishes the mission with a 5 star SA rating first in real time wins the map. Repeat: This
                             is NOT about the fastest time, but about who ever finishes the mission first with a 5 star SA rating.
                         </p>
                         <p>
                             Do you play it safe? Takes longer, but you wouldn't have to restart. Or do you play it risky to get
-                            that awesome time, with the potential of a lot of restarts.
+                            that awesome time, with the potential of a lot of restarts?
                         </p>
                         <alert type="info">Matches run from <b>January 10</b> to <b>January 19</b>!</alert>
                     </div>
