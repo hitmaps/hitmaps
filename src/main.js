@@ -108,11 +108,14 @@ Vue.directive('tooltip', {
             if (binding.modifiers.click) t.push('click');
             trigger = t.join(' ');
         }
-        $(el).tooltip({
-            title: binding.value,
-            placement: binding.arg,
-            trigger: trigger,
-            html: binding.modifiers.html
+
+        Vue.nextTick(() => {
+            $(el).tooltip({
+                title: binding.value,
+                placement: binding.arg,
+                trigger: trigger,
+                html: binding.modifiers.html
+            });
         });
     },
     update: function bsTooltipUpdate(el, binding) {
