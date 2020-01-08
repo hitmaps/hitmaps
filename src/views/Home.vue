@@ -77,7 +77,7 @@
                 }">
                 <a href="https://discord.gg/yUjhHTr" target="_blank">
                     <p>&nbsp;</p>
-                    <!--<div class="countdown">
+                    <div class="countdown" v-if="new Date(promoStartDate) > new Date()" style="background: rgba(0,0,0,.4)">
                         <img
                                 src="/img/game-icons/elusive-target-reminaing-time.png"
                         />
@@ -93,7 +93,7 @@
                                 "
                             ></countdown>
                         </div>
-                    </div>-->
+                    </div>
                     <div class="game-info">
                         <div class="image">
                             <i class="fab fa-discord fa-3x" style="width: 48px; height: 48px"></i>
@@ -658,7 +658,7 @@ export default {
     data() {
         return {
             showPromo: 1,
-            promoStartDate: '2019-11-15T11:00:00+00:00',
+            promoStartDate: '2020-01-10T00:00:00+00:00',
             promoEndDate: '2019-11-24T22:59:59+00:00',
             games: [],
             elusiveTargets: [],
@@ -1075,7 +1075,7 @@ function updateCheckboxState(
     .elusive-target {
         .countdown {
             padding: 15px 15px 0;
-            margin-bottom: 1rem;
+            padding-bottom: 1rem;
 
             img {
                 width: 48px;
