@@ -57,7 +57,7 @@ class ElusiveTargetNotificationSender {
                 $availableDays = $elusiveTarget->getEndingTime()->diff($beginningDateForComparison)->format('%a');
                 $body = "{$elusiveTarget->getName()} is arriving on {$beginningDate} and will be available for {$availableDays} days!";
                 $imageUrl = "/img/jpg{$elusiveTarget->getImageUrl()}.jpg";
-                $response = $this->firebaseClient->sendElusiveTargetMessage("{$environment}-elusive-target-coming",
+                $response = $this->firebaseClient->sendElusiveTargetMessage("hitmaps-{$environment}-elusive-target-coming",
                     $title,
                     $body,
                     "{$constants->siteDomain}/android-chrome-256x256.png",
@@ -87,7 +87,7 @@ class ElusiveTargetNotificationSender {
                 $title = "Elusive Target Arrived";
                 $body = "{$elusiveTarget->getName()} has arrived and will be available for {$availableDays} days!";
                 $imageUrl = $this->countdownComposer->composeElusiveTargetActiveImage($elusiveTarget);
-                $this->firebaseClient->sendElusiveTargetMessage("{$environment}-elusive-target-playable",
+                $this->firebaseClient->sendElusiveTargetMessage("hitmaps-{$environment}-elusive-target-playable",
                     $title,
                     $body,
                     "{$constants->siteDomain}/android-chrome-256x256.png",
@@ -109,7 +109,7 @@ class ElusiveTargetNotificationSender {
                 $title = "{$elusiveTarget->getName()} - 7 Days Left";
                 $body = "{$elusiveTarget->getName()} will be leaving in 7 days! Plan accordingly.";
                 $countdownImage = $this->countdownComposer->composeElusiveTargetImage($elusiveTarget, 7);
-                $this->firebaseClient->sendElusiveTargetMessage("{$environment}-elusive-target-7",
+                $this->firebaseClient->sendElusiveTargetMessage("hitmaps-{$environment}-elusive-target-7",
                     $title,
                     $body,
                     "{$constants->siteDomain}/android-chrome-256x256.png",
@@ -130,7 +130,7 @@ class ElusiveTargetNotificationSender {
                 $title = "{$elusiveTarget->getName()} - 5 Days Left";
                 $body = "{$elusiveTarget->getName()} will be leaving in 5 days. Be sure to eliminate the target before time is up.";
                 $countdownImage = $this->countdownComposer->composeElusiveTargetImage($elusiveTarget, 5);
-                $this->firebaseClient->sendElusiveTargetMessage("{$environment}-elusive-target-5",
+                $this->firebaseClient->sendElusiveTargetMessage("hitmaps-{$environment}-elusive-target-5",
                     $title,
                     $body,
                     "{$constants->siteDomain}/android-chrome-256x256.png",
@@ -151,7 +151,7 @@ class ElusiveTargetNotificationSender {
                 $title = "{$elusiveTarget->getName()} - 3 Days Left";
                 $body = "The contract on {$elusiveTarget->getName()} is only active for 3 more days! Eliminate the target before it's too late.";
                 $countdownImage = $this->countdownComposer->composeElusiveTargetImage($elusiveTarget, 3);
-                $this->firebaseClient->sendElusiveTargetMessage("{$environment}-elusive-target-3",
+                $this->firebaseClient->sendElusiveTargetMessage("hitmaps-{$environment}-elusive-target-3",
                     $title,
                     $body,
                     "{$constants->siteDomain}/android-chrome-256x256.png",
@@ -172,7 +172,7 @@ class ElusiveTargetNotificationSender {
                 $title = "{$elusiveTarget->getName()} - Only One Day Left";
                 $body = "{$elusiveTarget->getName()} will be leaving in just 24 hours. If you have not eliminated the target, there is not much time left!";
                 $countdownImage = $this->countdownComposer->composeElusiveTargetImage($elusiveTarget, 1);
-                $this->firebaseClient->sendElusiveTargetMessage("{$environment}-elusive-target-1",
+                $this->firebaseClient->sendElusiveTargetMessage("hitmaps-{$environment}-elusive-target-1",
                     $title,
                     $body,
                     "{$constants->siteDomain}/android-chrome-256x256.png",
@@ -193,7 +193,7 @@ class ElusiveTargetNotificationSender {
             if ($realUtcTime > $elusiveTarget->getEndingTime() && !$elusiveTarget->getEndNotificationSent()) {
                 $title = "{$elusiveTarget->getName()} Has Left";
                 $body = "{$elusiveTarget->getName()} has left and is no longer available to play.";
-                $this->firebaseClient->sendElusiveTargetMessage("{$environment}-elusive-target-end",
+                $this->firebaseClient->sendElusiveTargetMessage("hitmaps-{$environment}-elusive-target-end",
                     $title,
                     $body,
                     "{$constants->siteDomain}/android-chrome-256x256.png",
