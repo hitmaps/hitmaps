@@ -436,113 +436,192 @@
                                 style="display: none"
                             >
                                 <h6>{{ $t('elusive-target.notifications.send-me-a-notification-when') }}</h6>
-                                <div class="custom-control custom-checkbox">
-                                    <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        id="elusive-target-coming"
-                                        @change="toggleNotificationState"
-                                        :data-firebase-topic="
-                                            environment +
-                                                '-elusive-target-coming'
-                                        "
-                                        v-model="notifications.almostPlayable"
-                                    />
-                                    <label class="custom-control-label" for="elusive-target-coming">
-                                        {{ $t('elusive-target.notifications.announced') }}
-                                    </label>
-                                </div>
-                                <div class="custom-control custom-checkbox">
-                                    <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        id="elusive-target-playable"
-                                        @change="toggleNotificationState"
-                                        :data-firebase-topic="
-                                            environment +
-                                                '-elusive-target-playable'
-                                        "
-                                        v-model="notifications.becomesPlayable"
-                                    />
-                                    <label class="custom-control-label" for="elusive-target-playable">
-                                        {{ $t('elusive-target.notifications.playable') }}
-                                    </label>
-                                </div>
-                                <div class="custom-control custom-checkbox">
-                                    <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        id="elusive-target-7"
-                                        @change="toggleNotificationState"
-                                        :data-firebase-topic="
-                                            environment + '-elusive-target-7'
-                                        "
-                                        v-model="notifications.sevenDays"
-                                    />
-                                    <label class="custom-control-label" for="elusive-target-7">
-                                        {{ $t('elusive-target.notifications.7-days') }}
-                                    </label>
-                                </div>
-                                <div class="custom-control custom-checkbox">
-                                    <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        id="elusive-target-5"
-                                        @change="toggleNotificationState"
-                                        :data-firebase-topic="
-                                            environment + '-elusive-target-5'
-                                        "
-                                        v-model="notifications.fiveDays"
-                                    />
-                                    <label class="custom-control-label" for="elusive-target-5">
-                                        {{ $t('elusive-target.notifications.5-days') }}
-                                    </label>
-                                </div>
-                                <div class="custom-control custom-checkbox">
-                                    <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        id="elusive-target-3"
-                                        @change="toggleNotificationState"
-                                        :data-firebase-topic="
-                                            environment + '-elusive-target-3'
-                                        "
-                                        v-model="notifications.threeDays"
-                                    />
-                                    <label class="custom-control-label" for="elusive-target-3">
-                                        {{ $t('elusive-target.notifications.3-days') }}
-                                    </label>
-                                </div>
-                                <div class="custom-control custom-checkbox">
-                                    <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        id="elusive-target-1"
-                                        @change="toggleNotificationState"
-                                        :data-firebase-topic="
-                                            environment + '-elusive-target-1'
-                                        "
-                                        v-model="notifications.oneDay"
-                                    />
-                                    <label class="custom-control-label" for="elusive-target-1">
-                                        {{ $t('elusive-target.notifications.1-day') }}
-                                    </label>
-                                </div>
-                                <div class="custom-control custom-checkbox">
-                                    <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        id="elusive-target-end"
-                                        @change="toggleNotificationState"
-                                        :data-firebase-topic="
-                                            environment + '-elusive-target-end'
-                                        "
-                                        v-model="notifications.ended"
-                                    />
-                                    <label class="custom-control-label" for="elusive-target-end">
-                                        {{ $t('elusive-target.notifications.ended') }}
-                                    </label>
-                                </div>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <td></td>
+                                        <td>New[!]</td>
+                                        <td>Reactivated[!]</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            {{ $t('elusive-target.notifications.announced') }}
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="checkbox"
+                                                       class="custom-control-input"
+                                                       id="elusive-target-coming"
+                                                       @change="toggleNotificationState"
+                                                       :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-coming'"
+                                                       v-model="notifications.new.almostPlayable">
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="checkbox"
+                                                       class="custom-control-input"
+                                                       id="reactivation-elusive-target-coming"
+                                                       @change="toggleNotificationState"
+                                                       :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-coming'"
+                                                       v-model="notifications.reactivation.almostPlayable">
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ $t('elusive-target.notifications.playable') }}
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="checkbox"
+                                                       class="custom-control-input"
+                                                       id="elusive-target-playable"
+                                                       @change="toggleNotificationState"
+                                                       :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-playable'"
+                                                       v-model="notifications.new.becomesPlayable">
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="checkbox"
+                                                       class="custom-control-input"
+                                                       id="reactivation-elusive-target-playable"
+                                                       @change="toggleNotificationState"
+                                                       :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-playable'"
+                                                       v-model="notifications.reactivation.becomesPlayable">
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ $t('elusive-target.notifications.7-days') }}
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="checkbox"
+                                                       class="custom-control-input"
+                                                       id="elusive-target-7"
+                                                       @change="toggleNotificationState"
+                                                       :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-7'"
+                                                       v-model="notifications.new.sevenDays">
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="checkbox"
+                                                       class="custom-control-input"
+                                                       id="reactivation-elusive-target-7"
+                                                       @change="toggleNotificationState"
+                                                       :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-7'"
+                                                       v-model="notifications.reactivation.sevenDays">
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ $t('elusive-target.notifications.5-days') }}
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="checkbox"
+                                                       class="custom-control-input"
+                                                       id="elusive-target-5"
+                                                       @change="toggleNotificationState"
+                                                       :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-5'"
+                                                       v-model="notifications.new.fiveDays">
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="checkbox"
+                                                       class="custom-control-input"
+                                                       id="reactivation-elusive-target-5"
+                                                       @change="toggleNotificationState"
+                                                       :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-5'"
+                                                       v-model="notifications.reactivation.fiveDays">
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ $t('elusive-target.notifications.3-days') }}
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="checkbox"
+                                                       class="custom-control-input"
+                                                       id="elusive-target-3"
+                                                       @change="toggleNotificationState"
+                                                       :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-3'"
+                                                       v-model="notifications.new.threeDays">
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="checkbox"
+                                                       class="custom-control-input"
+                                                       id="reactivation-elusive-target-3"
+                                                       @change="toggleNotificationState"
+                                                       :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-3'"
+                                                       v-model="notifications.reactivation.threeDays">
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ $t('elusive-target.notifications.1-days') }}
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="checkbox"
+                                                       class="custom-control-input"
+                                                       id="elusive-target-1"
+                                                       @change="toggleNotificationState"
+                                                       :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-1'"
+                                                       v-model="notifications.new.oneDay">
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="checkbox"
+                                                       class="custom-control-input"
+                                                       id="reactivation-elusive-target-1"
+                                                       @change="toggleNotificationState"
+                                                       :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-1'"
+                                                       v-model="notifications.reactivation.oneDay">
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ $t('elusive-target.notifications.ended') }}
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="checkbox"
+                                                       class="custom-control-input"
+                                                       id="elusive-target-end"
+                                                       @change="toggleNotificationState"
+                                                       :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-end'"
+                                                       v-model="notifications.new.ended">
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="checkbox"
+                                                       class="custom-control-input"
+                                                       id="reactivation-elusive-target-end"
+                                                       @change="toggleNotificationState"
+                                                       :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-end'"
+                                                       v-model="notifications.reactivation.ended">
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                                 <input type="hidden" name="firebase-token" />
                             </div>
                         </div>
