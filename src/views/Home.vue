@@ -681,8 +681,8 @@ export default {
     data() {
         return {
             showPromo: 1,
-            promoStartDate: '2020-01-10T00:00:00+00:00',
-            promoEndDate: '2019-11-24T22:59:59+00:00',
+            promoStartDate: '2020-01-10T09:00:00+00:00',
+            promoEndDate: '2020-01-19T22:59:59+00:00',
             games: [],
             elusiveTargets: [],
             activeElusiveIndex: 0,
