@@ -27,8 +27,8 @@
         >
             <alert type="info">
                 As of <b>January 10, 2020</b>, all traffic from hitman2maps.com is now being redirected
-                to hitmaps.com. Due to this change, all push notification preferences have been <i>cleared</i>. Please
-                re-subscribe if you wish to continue to receive push notifications. We apologize for any inconvenience.
+                to hitmaps.com. Due to this change, all Elusive Target push notification preferences have been <i>cleared</i>. Please
+                re-subscribe if you wish to continue to receive Elusive Target push notifications. We apologize for any inconvenience.
             </alert>
             <div
                 class="game col-lg"
@@ -348,9 +348,8 @@
                         <div class="modal-body d-flex flex-column">
                             <alert type="info">
                                 As of <b>January 10, 2020</b>, all traffic from hitman2maps.com is now being redirected
-                                to hitmaps.com. Due to this change, users will be unable to modify their push notification
-                                preferences. Therefore, all notification preferences have been <i>cleared</i>. Please
-                                re-subscribe if you wish to continue to receive push notifications.
+                                to hitmaps.com. Due to this change, all Elusive Target push notification preferences have been <i>cleared</i>. Please
+                                re-subscribe if you wish to continue to receive Elusive Target push notifications. We apologize for any inconvenience.
                             </alert>
                             <div id="checking-notification-status">
                                 <h6>{{ $t('elusive-target.notifications.checking-if-enabled') }}</h6>
