@@ -25,6 +25,11 @@
             class="row dashboard"
             v-if="games.length > 0 || elusiveTargets.length > 0"
         >
+            <alert type="info">
+                As of <b>January 10, 2020</b>, all traffic from hitman2maps.com is now being redirected
+                to hitmaps.com. Due to this change, all Elusive Target push notification preferences have been <i>cleared</i>. Please
+                re-subscribe if you wish to continue to receive Elusive Target push notifications. We apologize for any inconvenience.
+            </alert>
             <div
                 class="game col-lg"
                 v-for="game in games"
@@ -341,6 +346,11 @@
                             </h5>
                         </div>
                         <div class="modal-body d-flex flex-column">
+                            <alert type="info">
+                                As of <b>January 10, 2020</b>, all traffic from hitman2maps.com is now being redirected
+                                to hitmaps.com. Due to this change, all Elusive Target push notification preferences have been <i>cleared</i>. Please
+                                re-subscribe if you wish to continue to receive Elusive Target push notifications. We apologize for any inconvenience.
+                            </alert>
                             <div id="checking-notification-status">
                                 <h6>{{ $t('elusive-target.notifications.checking-if-enabled') }}</h6>
                                 <div class="spinner-grow" role="status">
@@ -435,114 +445,164 @@
                                 id="notification-settings"
                                 style="display: none"
                             >
-                                <h6>{{ $t('elusive-target.notifications.send-me-a-notification-when') }}</h6>
-                                <div class="custom-control custom-checkbox">
-                                    <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        id="elusive-target-coming"
-                                        @change="toggleNotificationState"
-                                        :data-firebase-topic="
-                                            environment +
-                                                '-elusive-target-coming'
-                                        "
-                                        v-model="notifications.almostPlayable"
-                                    />
-                                    <label class="custom-control-label" for="elusive-target-coming">
-                                        {{ $t('elusive-target.notifications.announced') }}
-                                    </label>
-                                </div>
-                                <div class="custom-control custom-checkbox">
-                                    <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        id="elusive-target-playable"
-                                        @change="toggleNotificationState"
-                                        :data-firebase-topic="
-                                            environment +
-                                                '-elusive-target-playable'
-                                        "
-                                        v-model="notifications.becomesPlayable"
-                                    />
-                                    <label class="custom-control-label" for="elusive-target-playable">
-                                        {{ $t('elusive-target.notifications.playable') }}
-                                    </label>
-                                </div>
-                                <div class="custom-control custom-checkbox">
-                                    <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        id="elusive-target-7"
-                                        @change="toggleNotificationState"
-                                        :data-firebase-topic="
-                                            environment + '-elusive-target-7'
-                                        "
-                                        v-model="notifications.sevenDays"
-                                    />
-                                    <label class="custom-control-label" for="elusive-target-7">
-                                        {{ $t('elusive-target.notifications.7-days') }}
-                                    </label>
-                                </div>
-                                <div class="custom-control custom-checkbox">
-                                    <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        id="elusive-target-5"
-                                        @change="toggleNotificationState"
-                                        :data-firebase-topic="
-                                            environment + '-elusive-target-5'
-                                        "
-                                        v-model="notifications.fiveDays"
-                                    />
-                                    <label class="custom-control-label" for="elusive-target-5">
-                                        {{ $t('elusive-target.notifications.5-days') }}
-                                    </label>
-                                </div>
-                                <div class="custom-control custom-checkbox">
-                                    <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        id="elusive-target-3"
-                                        @change="toggleNotificationState"
-                                        :data-firebase-topic="
-                                            environment + '-elusive-target-3'
-                                        "
-                                        v-model="notifications.threeDays"
-                                    />
-                                    <label class="custom-control-label" for="elusive-target-3">
-                                        {{ $t('elusive-target.notifications.3-days') }}
-                                    </label>
-                                </div>
-                                <div class="custom-control custom-checkbox">
-                                    <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        id="elusive-target-1"
-                                        @change="toggleNotificationState"
-                                        :data-firebase-topic="
-                                            environment + '-elusive-target-1'
-                                        "
-                                        v-model="notifications.oneDay"
-                                    />
-                                    <label class="custom-control-label" for="elusive-target-1">
-                                        {{ $t('elusive-target.notifications.1-day') }}
-                                    </label>
-                                </div>
-                                <div class="custom-control custom-checkbox">
-                                    <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        id="elusive-target-end"
-                                        @change="toggleNotificationState"
-                                        :data-firebase-topic="
-                                            environment + '-elusive-target-end'
-                                        "
-                                        v-model="notifications.ended"
-                                    />
-                                    <label class="custom-control-label" for="elusive-target-end">
-                                        {{ $t('elusive-target.notifications.ended') }}
-                                    </label>
-                                </div>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <td><b>{{ $t('elusive-target.notifications.send-me-a-notification-when') }}</b></td>
+                                        <td>{{ $t('elusive-target.notifications.new-et') }}</td>
+                                        <td>{{ $t('elusive-target.notifications.reactivated-et') }}</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            {{ $t('elusive-target.notifications.announced') }}
+                                        </td>
+                                        <td>
+                                            <input type="checkbox"
+                                                   class="form-check-input"
+                                                   id="elusive-target-coming"
+                                                   @change="toggleNotificationState"
+                                                   :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-coming'"
+                                                   v-model="notifications.new.almostPlayable">
+                                        </td>
+                                        <td>
+                                            <input type="checkbox"
+                                                   class="form-check-input"
+                                                   id="reactivation-elusive-target-coming"
+                                                   @change="toggleNotificationState"
+                                                   :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-coming'"
+                                                   v-model="notifications.reactivation.almostPlayable">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ $t('elusive-target.notifications.playable') }}
+                                        </td>
+                                        <td>
+                                            <input type="checkbox"
+                                                   class="form-check-input"
+                                                   id="elusive-target-playable"
+                                                   @change="toggleNotificationState"
+                                                   :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-playable'"
+                                                   v-model="notifications.new.becomesPlayable">
+                                        </td>
+                                        <td>
+                                            <input type="checkbox"
+                                                   class="form-check-input"
+                                                   id="reactivation-elusive-target-playable"
+                                                   @change="toggleNotificationState"
+                                                   :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-playable'"
+                                                   v-model="notifications.reactivation.becomesPlayable">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ $t('elusive-target.notifications.7-days') }}
+                                        </td>
+                                        <td>
+                                            <input type="checkbox"
+                                                   class="form-check-input"
+                                                   id="elusive-target-7"
+                                                   @change="toggleNotificationState"
+                                                   :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-7'"
+                                                   v-model="notifications.new.sevenDays">
+                                        </td>
+                                        <td>
+                                            <input type="checkbox"
+                                                   class="form-check-input"
+                                                   id="reactivation-elusive-target-7"
+                                                   @change="toggleNotificationState"
+                                                   :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-7'"
+                                                   v-model="notifications.reactivation.sevenDays">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ $t('elusive-target.notifications.5-days') }}
+                                        </td>
+                                        <td>
+                                            <input type="checkbox"
+                                                   class="form-check-input"
+                                                   id="elusive-target-5"
+                                                   @change="toggleNotificationState"
+                                                   :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-5'"
+                                                   v-model="notifications.new.fiveDays">
+                                        </td>
+                                        <td>
+                                            <input type="checkbox"
+                                                   class="form-check-input"
+                                                   id="reactivation-elusive-target-5"
+                                                   @change="toggleNotificationState"
+                                                   :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-5'"
+                                                   v-model="notifications.reactivation.fiveDays">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ $t('elusive-target.notifications.3-days') }}
+                                        </td>
+                                        <td>
+                                            <input type="checkbox"
+                                                   class="form-check-input"
+                                                   id="elusive-target-3"
+                                                   @change="toggleNotificationState"
+                                                   :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-3'"
+                                                   v-model="notifications.new.threeDays">
+                                        </td>
+                                        <td>
+                                            <input type="checkbox"
+                                                   class="form-check-input"
+                                                   id="reactivation-elusive-target-3"
+                                                   @change="toggleNotificationState"
+                                                   :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-3'"
+                                                   v-model="notifications.reactivation.threeDays">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ $t('elusive-target.notifications.1-day') }}
+                                        </td>
+                                        <td>
+                                            <input type="checkbox"
+                                                   class="form-check-input"
+                                                   id="elusive-target-1"
+                                                   @change="toggleNotificationState"
+                                                   :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-1'"
+                                                   v-model="notifications.new.oneDay">
+                                        </td>
+                                        <td>
+                                            <input type="checkbox"
+                                                   class="form-check-input"
+                                                   id="reactivation-elusive-target-1"
+                                                   @change="toggleNotificationState"
+                                                   :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-1'"
+                                                   v-model="notifications.reactivation.oneDay">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ $t('elusive-target.notifications.ended') }}
+                                        </td>
+                                        <td>
+                                            <input type="checkbox"
+                                                   class="form-check-input"
+                                                   id="elusive-target-end"
+                                                   @change="toggleNotificationState"
+                                                   :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-end'"
+                                                   v-model="notifications.new.ended">
+                                        </td>
+                                        <td>
+                                            <input type="checkbox"
+                                                   class="form-check-input"
+                                                   id="reactivation-elusive-target-end"
+                                                   @change="toggleNotificationState"
+                                                   :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-end'"
+                                                   v-model="notifications.reactivation.ended">
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                                 <input type="hidden" name="firebase-token" />
                             </div>
                         </div>
@@ -690,22 +750,44 @@ export default {
             environment: null,
             token: null,
             notifications: {
-                almostPlayable: false,
-                becomesPlayable: false,
-                sevenDays: false,
-                fiveDays: false,
-                threeDays: false,
-                oneDay: false,
-                ended: false
+                new: {
+                    almostPlayable: false,
+                    becomesPlayable: false,
+                    sevenDays: false,
+                    fiveDays: false,
+                    threeDays: false,
+                    oneDay: false,
+                    ended: false
+                },
+                reactivation: {
+                    almostPlayable: false,
+                    becomesPlayable: false,
+                    sevenDays: false,
+                    fiveDays: false,
+                    threeDays: false,
+                    oneDay: false,
+                    ended: false
+                }
             },
             previousNotificationsState: {
-                almostPlayable: false,
-                becomesPlayable: false,
-                sevenDays: false,
-                fiveDays: false,
-                threeDays: false,
-                oneDay: false,
-                ended: false
+                new: {
+                    almostPlayable: false,
+                    becomesPlayable: false,
+                    sevenDays: false,
+                    fiveDays: false,
+                    threeDays: false,
+                    oneDay: false,
+                    ended: false
+                },
+                reactivation: {
+                    almostPlayable: false,
+                    becomesPlayable: false,
+                    sevenDays: false,
+                    fiveDays: false,
+                    threeDays: false,
+                    oneDay: false,
+                    ended: false
+                }
             },
             streams: []
         }
@@ -768,69 +850,101 @@ export default {
             requestPermission(0)
         },
         toggleNotificationState() {
-            let sendRequest = false
-            let requestType = ''
-            let subscribing = false
-            if (
-                this.notifications.almostPlayable !==
-                this.previousNotificationsState.almostPlayable
-            ) {
-                sendRequest = true
-                requestType = 'elusive-target-coming'
-                subscribing = this.notifications.almostPlayable
+            let sendRequest = false;
+            let requestType = '';
+            let subscribing = false;
+            //region New
+            if (this.notifications.new.almostPlayable !==
+                this.previousNotificationsState.new.almostPlayable) {
+                sendRequest = true;
+                requestType = 'elusive-target-coming';
+                subscribing = this.notifications.new.almostPlayable;
             }
-            if (
-                this.notifications.becomesPlayable !==
-                this.previousNotificationsState.becomesPlayable
-            ) {
-                sendRequest = true
-                requestType = 'elusive-target-playable'
-                subscribing = this.notifications.becomesPlayable
+            if (this.notifications.new.becomesPlayable !==
+                this.previousNotificationsState.new.becomesPlayable) {
+                sendRequest = true;
+                requestType = 'elusive-target-playable';
+                subscribing = this.notifications.new.becomesPlayable;
             }
-            if (
-                this.notifications.sevenDays !==
-                this.previousNotificationsState.sevenDays
-            ) {
-                sendRequest = true
-                requestType = 'elusive-target-7'
-                subscribing = this.notifications.sevenDays
+            if (this.notifications.new.sevenDays !==
+                this.previousNotificationsState.new.sevenDays) {
+                sendRequest = true;
+                requestType = 'elusive-target-7';
+                subscribing = this.notifications.new.sevenDays;
             }
-            if (
-                this.notifications.fiveDays !==
-                this.previousNotificationsState.fiveDays
-            ) {
-                sendRequest = true
-                requestType = 'elusive-target-5'
-                subscribing = this.notifications.fiveDays
+            if (this.notifications.new.fiveDays !==
+                this.previousNotificationsState.new.fiveDays) {
+                sendRequest = true;
+                requestType = 'elusive-target-5';
+                subscribing = this.notifications.new.fiveDays;
             }
-            if (
-                this.notifications.threeDays !==
-                this.previousNotificationsState.threeDays
-            ) {
-                sendRequest = true
-                requestType = 'elusive-target-3'
-                subscribing = this.notifications.threeDays
+            if (this.notifications.new.threeDays !==
+                this.previousNotificationsState.new.threeDays) {
+                sendRequest = true;
+                requestType = 'elusive-target-3';
+                subscribing = this.notifications.new.threeDays;
             }
-            if (
-                this.notifications.oneDay !==
-                this.previousNotificationsState.oneDay
-            ) {
-                sendRequest = true
-                requestType = 'elusive-target-1'
-                subscribing = this.notifications.oneDay
+            if (this.notifications.new.oneDay !==
+                this.previousNotificationsState.new.oneDay) {
+                sendRequest = true;
+                requestType = 'elusive-target-1';
+                subscribing = this.notifications.new.oneDay;
             }
-            if (
-                this.notifications.ended !==
-                this.previousNotificationsState.ended
-            ) {
-                sendRequest = true
-                requestType = 'elusive-target-end'
-                subscribing = this.notifications.ended
+            if (this.notifications.new.ended !==
+                this.previousNotificationsState.new.ended) {
+                sendRequest = true;
+                requestType = 'elusive-target-end';
+                subscribing = this.notifications.new.ended;
             }
+            //endregion
+            //region Reactivation
+            if (this.notifications.reactivation.almostPlayable !==
+                this.previousNotificationsState.reactivation.almostPlayable) {
+                sendRequest = true;
+                requestType = 'reactivation-elusive-target-coming';
+                subscribing = this.notifications.reactivation.almostPlayable;
+            }
+            if (this.notifications.reactivation.becomesPlayable !==
+                this.previousNotificationsState.reactivation.becomesPlayable) {
+                sendRequest = true;
+                requestType = 'reactivation-elusive-target-playable';
+                subscribing = this.notifications.reactivation.becomesPlayable;
+            }
+            if (this.notifications.reactivation.sevenDays !==
+                this.previousNotificationsState.reactivation.sevenDays) {
+                sendRequest = true;
+                requestType = 'reactivation-elusive-target-7';
+                subscribing = this.notifications.reactivation.sevenDays;
+            }
+            if (this.notifications.reactivation.fiveDays !==
+                this.previousNotificationsState.reactivation.fiveDays) {
+                sendRequest = true;
+                requestType = 'reactivation-elusive-target-5';
+                subscribing = this.notifications.reactivation.fiveDays;
+            }
+            if (this.notifications.reactivation.threeDays !==
+                this.previousNotificationsState.reactivation.threeDays) {
+                sendRequest = true;
+                requestType = 'reactivation-elusive-target-3';
+                subscribing = this.notifications.reactivation.threeDays;
+            }
+            if (this.notifications.reactivation.oneDay !==
+                this.previousNotificationsState.reactivation.oneDay) {
+                sendRequest = true;
+                requestType = 'reactivation-elusive-target-1';
+                subscribing = this.notifications.reactivation.oneDay;
+            }
+            if (this.notifications.reactivation.ended !==
+                this.previousNotificationsState.reactivation.ended) {
+                sendRequest = true;
+                requestType = 'reactivation-elusive-target-end';
+                subscribing = this.notifications.reactivation.ended;
+            }
+            //endregion
 
             let data = new FormData()
             let token = $('input[name="firebase-token"]').val()
-            let topic = this.environment + '-' + requestType
+            let topic = 'hitmaps-' + this.environment + '-' + requestType
             data.append('token', token)
             data.append('state', subscribing ? 'SUBSCRIBING' : 'UNSUBSCRIBING')
             data.append('topic', topic)
@@ -844,13 +958,24 @@ export default {
                         token + '|' + topic,
                         subscribing ? '1' : '0'
                     )
-                    this.previousNotificationsState.almostPlayable = this.notifications.almostPlayable
-                    this.previousNotificationsState.becomesPlayable = this.notifications.becomesPlayable
-                    this.previousNotificationsState.sevenDays = this.notifications.sevenDays
-                    this.previousNotificationsState.fiveDays = this.notifications.fiveDays
-                    this.previousNotificationsState.threeDays = this.notifications.threeDays
-                    this.previousNotificationsState.oneDay = this.notifications.oneDay
-                    this.previousNotificationsState.ended = this.notifications.ended
+                    //region New
+                    this.previousNotificationsState.new.almostPlayable = this.notifications.new.almostPlayable;
+                    this.previousNotificationsState.new.becomesPlayable = this.notifications.new.becomesPlayable;
+                    this.previousNotificationsState.new.sevenDays = this.notifications.new.sevenDays;
+                    this.previousNotificationsState.new.fiveDays = this.notifications.new.fiveDays;
+                    this.previousNotificationsState.new.threeDays = this.notifications.new.threeDays;
+                    this.previousNotificationsState.new.oneDay = this.notifications.new.oneDay;
+                    this.previousNotificationsState.new.ended = this.notifications.new.ended;
+                    //endregion
+                    //region Reactivation
+                    this.previousNotificationsState.reactivation.almostPlayable = this.notifications.reactivation.almostPlayable;
+                    this.previousNotificationsState.reactivation.becomesPlayable = this.notifications.reactivation.becomesPlayable;
+                    this.previousNotificationsState.reactivation.sevenDays = this.notifications.reactivation.sevenDays;
+                    this.previousNotificationsState.reactivation.fiveDays = this.notifications.reactivation.fiveDays;
+                    this.previousNotificationsState.reactivation.threeDays = this.notifications.reactivation.threeDays;
+                    this.previousNotificationsState.reactivation.oneDay = this.notifications.reactivation.oneDay;
+                    this.previousNotificationsState.reactivation.ended = this.notifications.reactivation.ended;
+                    //endregion
                 })
             }
         }
@@ -933,42 +1058,85 @@ function updateCheckboxState(
     previousNotificationsState,
     environment
 ) {
-    notifications.almostPlayable =
+    //region New
+    notifications.new.almostPlayable =
         window.localStorage.getItem(
-            token + '|' + environment + '-elusive-target-coming'
-        ) === '1'
-    notifications.becomesPlayable =
+            token + '|hitmaps-' + environment + '-elusive-target-coming'
+        ) === '1';
+    notifications.new.becomesPlayable =
         window.localStorage.getItem(
-            token + '|' + environment + '-elusive-target-playable'
-        ) === '1'
-    notifications.sevenDays =
+            token + '|hitmaps-' + environment + '-elusive-target-playable'
+        ) === '1';
+    notifications.new.sevenDays =
         window.localStorage.getItem(
-            token + '|' + environment + '-elusive-target-7'
-        ) === '1'
-    notifications.fiveDays =
+            token + '|hitmaps-' + environment + '-elusive-target-7'
+        ) === '1';
+    notifications.new.fiveDays =
         window.localStorage.getItem(
-            token + '|' + environment + '-elusive-target-5'
-        ) === '1'
-    notifications.threeDays =
+            token + '|hitmaps-' + environment + '-elusive-target-5'
+        ) === '1';
+    notifications.new.threeDays =
         window.localStorage.getItem(
-            token + '|' + environment + '-elusive-target-3'
-        ) === '1'
-    notifications.oneDay =
+            token + '|hitmaps-' + environment + '-elusive-target-3'
+        ) === '1';
+    notifications.new.oneDay =
         window.localStorage.getItem(
-            token + '|' + environment + '-elusive-target-1'
-        ) === '1'
-    notifications.ended =
+            token + '|hitmaps-' + environment + '-elusive-target-1'
+        ) === '1';
+    notifications.new.ended =
         window.localStorage.getItem(
-            token + '|' + environment + '-elusive-target-ended'
-        ) === '1'
+            token + '|hitmaps-' + environment + '-elusive-target-end'
+        ) === '1';
+    //endregion
+    //region Reactivation
+    notifications.reactivation.almostPlayable =
+        window.localStorage.getItem(
+            token + '|hitmaps-' + environment + '-reactivation-elusive-target-coming'
+        ) === '1';
+    notifications.reactivation.becomesPlayable =
+        window.localStorage.getItem(
+            token + '|hitmaps-' + environment + '-reactivation-elusive-target-playable'
+        ) === '1';
+    notifications.reactivation.sevenDays =
+        window.localStorage.getItem(
+            token + '|hitmaps-' + environment + '-reactivation-elusive-target-7'
+        ) === '1';
+    notifications.reactivation.fiveDays =
+        window.localStorage.getItem(
+            token + '|hitmaps-' + environment + '-reactivation-elusive-target-5'
+        ) === '1';
+    notifications.reactivation.threeDays =
+        window.localStorage.getItem(
+            token + '|hitmaps-' + environment + '-reactivation-elusive-target-3'
+        ) === '1';
+    notifications.reactivation.oneDay =
+        window.localStorage.getItem(
+            token + '|hitmaps-' + environment + '-reactivation-elusive-target-1'
+        ) === '1';
+    notifications.reactivation.ended =
+        window.localStorage.getItem(
+            token + '|hitmaps-' + environment + '-reactivation-elusive-target-end'
+        ) === '1';
+    //endregion
 
-    previousNotificationsState.almostPlayable = notifications.almostPlayable
-    previousNotificationsState.becomesPlayable = notifications.becomesPlayable
-    previousNotificationsState.sevenDays = notifications.sevenDays
-    previousNotificationsState.fiveDays = notifications.fiveDays
-    previousNotificationsState.threeDays = notifications.threeDays
-    previousNotificationsState.oneDay = notifications.oneDay
-    previousNotificationsState.ended = notifications.ended
+    //region New
+    previousNotificationsState.new.almostPlayable = notifications.new.almostPlayable;
+    previousNotificationsState.new.becomesPlayable = notifications.new.becomesPlayable;
+    previousNotificationsState.new.sevenDays = notifications.new.sevenDays;
+    previousNotificationsState.new.fiveDays = notifications.new.fiveDays;
+    previousNotificationsState.new.threeDays = notifications.new.threeDays;
+    previousNotificationsState.new.oneDay = notifications.new.oneDay;
+    previousNotificationsState.new.ended = notifications.new.ended;
+    //endregion
+    //region Reactivation
+    previousNotificationsState.reactivation.almostPlayable = notifications.reactivation.almostPlayable;
+    previousNotificationsState.reactivation.becomesPlayable = notifications.reactivation.becomesPlayable;
+    previousNotificationsState.reactivation.sevenDays = notifications.reactivation.sevenDays;
+    previousNotificationsState.reactivation.fiveDays = notifications.reactivation.fiveDays;
+    previousNotificationsState.reactivation.threeDays = notifications.reactivation.threeDays;
+    previousNotificationsState.reactivation.oneDay = notifications.reactivation.oneDay;
+    previousNotificationsState.reactivation.ended = notifications.reactivation.ended;
+    //endregion
 }
 </script>
 <style lang="scss" scoped>
@@ -1254,6 +1422,20 @@ function updateCheckboxState(
                     }
                 }
             }
+        }
+    }
+}
+
+#notification-settings {
+    td {
+        text-align: center;
+
+        .form-check-input {
+            margin-left: 0;
+        }
+
+        &:first-child {
+            text-align: left;
         }
     }
 }

@@ -44,7 +44,9 @@
             "5-days": "The Elusive Target is available for 5 more days",
             "3-days": "The Elusive Target is available for 3 more days",
             "1-day": "The Elusive Target is available for 1 more day",
-            "ended": "The Elusive Target has left"
+            "ended": "The Elusive Target has left",
+            "new-et": "New Elusive Target",
+            "reactivated-et": "Reactivated Elusive Target"
         },
         "n-days": "{days} Days"
     },
