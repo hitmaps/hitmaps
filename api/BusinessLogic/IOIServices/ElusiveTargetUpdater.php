@@ -138,8 +138,11 @@ class ElusiveTargetUpdater {
             }
 
             // I better remember to change this when the next HITMAN game comes out 😛
-            $reactivated = new \DateTime($elusiveTargetJson->nextWindow->start) > new \DateTime('2020-01-01 00:00:00', new \DateTimeZone('UTC'));
-            if ($reactivated) {
+            $reactivated = $elusiveTarget->getReactivated();
+            if (!$reactivated &&
+                new \DateTime($elusiveTargetJson->nextWindow->start) > new \DateTime('2020-01-01 00:00:00', new \DateTimeZone('UTC'))) {
+
+                $reactivated = true;
                 $elusiveTarget->setComingNotificationSent(false);
                 $elusiveTarget->setPlayableNotificationSent(false);
                 $elusiveTarget->setSevenDaysLeftNotificationSent(false);
