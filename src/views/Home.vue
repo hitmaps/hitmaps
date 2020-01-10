@@ -684,6 +684,7 @@
                 </div>
                 <div class="modal-header" style="padding-left: 0">
                     <h5><i class="fab fa-twitch"></i> Competitors Currently Streaming</h5>
+                    <h6>It Might not be HITMAN, but they will be competing, so give them a follow 😀</h6>
                 </div>
                 <div class="streams">
                     <div class="row">
@@ -1007,15 +1008,20 @@ export default {
         this.$http.get(this.$domain + '/api/twitch/roulette-rivals').then(resp => {
             let streams = resp.data.data;
 
-            let filteredStreams = [];
+            let priorityStreams = [];
+            let otherStreams = [];
             streams.forEach(stream => {
                 let streamTitle = stream.title.toLowerCase();
-                if (streamTitle.includes('roulette') && streamTitle.includes('rivals')) {
-                    filteredStreams.push(stream);
+                let gameId = stream.game_id;
+                if (gameId === 506342 && streamTitle.includes('roulette') && streamTitle.includes('rivals')) {
+                    priorityStreams.push(stream);
+                } else {
+                    otherStreams.push(stream);
                 }
             });
 
-            this.streams = filteredStreams;
+            this.streams = priorityStreams;
+            otherStreams.forEach(otherStream => this.streams.push(otherStream));
         })
     }
 }
