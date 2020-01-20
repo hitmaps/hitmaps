@@ -647,73 +647,6 @@
                     </div>
                 </div>
             </div>
-            <modal modal-title="Roulette Rivals"
-                   id="roulette-rivals-modal"
-                   tabindex="-1"
-                   dismissable>
-                <div class="row">
-                    <div class="col-md-6 col-sm-12">
-                        <div class="embed-responsive embed-responsive-16by9">
-                            <iframe src="https://www.youtube.com/embed/lsehCHDKbV8"
-                                    class="embed-responsive-item"
-                                    frameborder="0"
-                                    allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
-                                    allowfullscreen
-                            ></iframe>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-12">
-                        <p>
-                            In Roulette Rivals you go head-to-head against another player in main missions. Once a mission is selected,
-                            an admin will spin the <a href="https://thekotti.github.io/hitman.html" target="_blank">hitman roulette wheel</a> (made by Kotti).
-                        </p>
-                        <p>
-                            The admin will give the roulette restrictions info to both players and give the sign to officially
-                            start the match. Players are allowed to use every item and spawn location they want.
-                        </p>
-                        <p>
-                            Whoever finishes the mission with a 5 star SA rating first in real time wins the map. Repeat: This
-                            is NOT about the fastest time, but about who ever finishes the mission first with a 5 star SA rating.
-                        </p>
-                        <p>
-                            Do you play it safe? Takes longer, but you wouldn't have to restart. Or do you play it risky to get
-                            that awesome time, with the potential of a lot of restarts?
-                        </p>
-                        <alert type="info">Matches run from <b>January 10</b> to <b>January 19</b>!</alert>
-                    </div>
-                </div>
-                <div class="modal-header" style="padding-left: 0">
-                    <h5><i class="fab fa-twitch"></i> Competitors Currently Streaming</h5>
-                </div>
-                <div class="streams">
-                    <div class="row">
-                        <div class="col-md-6 col-sm-12 twitch-stream featured">
-                            <iframe
-                                    src="https://player.twitch.tv/?autoplay=false&channel=MrMike227"
-                                    height="270"
-                                    width="100%"
-                                    frameborder="0"
-                                    scrolling="no"
-                                    autoplay="false"
-                                    allowfullscreen="true">
-                            </iframe>
-                            <p><i class="fas fa-award"></i> MrMike227 (Creator of HITMAPS™️)</p>
-                        </div>
-                        <div v-for="stream in streams" class="col-md-6 col-sm-12 twitch-stream">
-                            <iframe
-                                    :src="'https://player.twitch.tv/?autoplay=false&channel=' + stream.user_name"
-                                    height="270"
-                                    width="100%"
-                                    frameborder="0"
-                                    scrolling="no"
-                                    autoplay="false"
-                                    allowfullscreen="true">
-                            </iframe>
-                            <p>{{ stream.user_name }}</p>
-                        </div>
-                    </div>
-                </div>
-            </modal>
         </div>
         <input type="hidden" name="notification-environment" />
     </div>
@@ -740,7 +673,7 @@ export default {
     },
     data() {
         return {
-            showPromo: 1,
+            showPromo: 0,
             promoStartDate: '2020-01-10T09:00:00+00:00',
             promoEndDate: '2020-01-19T22:59:59+00:00',
             games: [],
@@ -788,8 +721,7 @@ export default {
                     oneDay: false,
                     ended: false
                 }
-            },
-            streams: []
+            }
         }
     },
     methods: {
@@ -1000,23 +932,10 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
-            setInterval(() => {
+            /*setInterval(() => {
                 this.showPromo = !!this.showPromo ? 0 : 1;
-            }, 5000);
+            }, 5000);*/
         });
-        this.$http.get(this.$domain + '/api/twitch/roulette-rivals').then(resp => {
-            let streams = resp.data.data;
-
-            let filteredStreams = [];
-            streams.forEach(stream => {
-                let streamTitle = stream.title.toLowerCase();
-                if (streamTitle.includes('roulette') && streamTitle.includes('rivals')) {
-                    filteredStreams.push(stream);
-                }
-            });
-
-            this.streams = filteredStreams;
-        })
     }
 }
 
@@ -1436,16 +1355,6 @@ function updateCheckboxState(
 
         &:first-child {
             text-align: left;
-        }
-    }
-}
-
-.streams {
-    .twitch-stream {
-        padding: 10px;
-
-        &.featured {
-            background: #ffffcc;
         }
     }
 }
