@@ -1,8 +1,14 @@
 <template>
     <div
         class="content"
-        style="background: url('https://media.hitmaps.com/img/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
+        style="background: #1e1e1e no-repeat center center fixed; background-size: cover"
     >
+        <div class="ghost-mode-trailer">
+            <video autoplay loop muted>
+                <source src="/video/ghost-mode-tourney-2.webm" type="video/webm" />
+                <source src="/video/ghost-mode-tourney-2.mp4" type="video/mp4" />
+            </video>
+        </div>
         <header class="row">
             <div class="col text-center site-header">
                 <img
@@ -1059,15 +1065,48 @@ function updateCheckboxState(
 }
 </script>
 <style lang="scss" scoped>
-.site-header {
-    margin: 0 20px;
-
-    h1 {
-        margin-top: 20px;
+.ghost-mode-trailer {
+    video {
+        position: fixed;
+        left: 0;
+        top: -300px;
+        min-width: 100%;
+        min-height: 100%;
     }
 
     img {
-        max-height: 100px;
+        display: none;
+    }
+}
+
+@media (max-width: 767px) {
+    .ghost-mode-trailer {
+        display: none;
+    }
+
+    img {
+        display: block;
+        position: fixed;
+        left: 0;
+        top: 0;
+        min-width: 100%;
+        min-height: 100%;
+    }
+}
+
+header {
+    margin-top: 450px;
+
+    .site-header {
+        margin: 0 20px;
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        img {
+            max-height: 100px;
+        }
     }
 }
 
