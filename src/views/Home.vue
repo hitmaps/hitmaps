@@ -5,8 +5,8 @@
     >
         <div class="ghost-mode-trailer">
             <video autoplay loop muted>
-                <source src="/video/ghost-mode-tourney-2.webm" type="video/webm" />
-                <source src="/video/ghost-mode-tourney-2.mp4" type="video/mp4" />
+                <source src="https://media.hitmaps.com/video/ghost-mode-tourney-2.webm" type="video/webm" />
+                <source src="https://media.hitmaps.com/video/ghost-mode-tourney-2.mp4" type="video/mp4" />
             </video>
         </div>
         <header class="row">
