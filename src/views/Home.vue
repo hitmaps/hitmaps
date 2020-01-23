@@ -1,8 +1,15 @@
 <template>
     <div
         class="content"
-        style="background: url('https://media.hitmaps.com/img/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
+        style="background: #1e1e1e no-repeat center center fixed; background-size: cover"
     >
+        <div class="ghost-mode-trailer embed-responsive embed-responsive-16by9">
+            <video autoplay loop muted>
+                <source src="https://media.hitmaps.com/video/ghost-mode-tourney-2.webm" type="video/webm" />
+                <source src="https://media.hitmaps.com/video/ghost-mode-tourney-2.mp4" type="video/mp4" />
+                <img src="/img/png/promo/gm2.png" alt="Ghost Mode Tournament Teaser" title="Your browser does not support the <video> tag">
+            </video>
+        </div>
         <header class="row">
             <div class="col text-center site-header">
                 <img
@@ -21,15 +28,18 @@
                 <loader></loader>
             </div>
         </div>
-        <div
-            class="row dashboard"
-            v-if="games.length > 0 || elusiveTargets.length > 0"
-        >
+        <div class="row dashboard">
             <alert type="info">
                 As of <b>January 10, 2020</b>, all traffic from hitman2maps.com is now being redirected
                 to hitmaps.com. Due to this change, all Elusive Target push notification preferences have been <i>cleared</i>. Please
                 re-subscribe if you wish to continue to receive Elusive Target push notifications. We apologize for any inconvenience.
             </alert>
+        </div>
+        <div
+            class="row dashboard"
+            v-if="games.length > 0 || elusiveTargets.length > 0"
+        >
+
             <div
                 class="game col-lg"
                 v-for="game in games"
@@ -75,7 +85,7 @@
                  v-if="showPromo === 1"
                  :style="{
                     backgroundImage:
-                        'url(/img/png/promo/roulette-rivals.png)',
+                        'url(/img/png/promo/gm2.png)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat'
@@ -87,7 +97,7 @@
                                 src="/img/game-icons/elusive-target-reminaing-time.png"
                         />
                         <div class="timer not-playable">
-                            <div class="target-arrives">{{ (new Date(promoStartDate) > new Date()) ? 'Event Begins' : 'Event Ends' }}</div>
+                            <div class="target-arrives">{{ (new Date(promoStartDate) > new Date()) ? 'Sign-ups Opens' : 'Sign-ups Closes' }}</div>
                             <countdown
                                     class="elusive-countdown"
                                     :date="
@@ -104,13 +114,14 @@
                             <i class="fab fa-discord fa-3x" style="width: 48px; height: 48px"></i>
                         </div>
                         <div class="text">
-                            <h2>Live Competition</h2>
-                            <h1>Roulette Rivals</h1>
+                            <h2>Ghost Mode</h2>
+                            <h1>Tournament #2</h1>
                         </div>
                         <div
                                 onclick="return false;"
                                 @click="showRouletteRivalsModal"
                                 class="image elusive-notification float-right notification-icon"
+                                style="display: none"
                                 v-tooltip:left="'More Information'"
                         >
                             <img
@@ -673,9 +684,9 @@ export default {
     },
     data() {
         return {
-            showPromo: 0,
-            promoStartDate: '2020-01-10T09:00:00+00:00',
-            promoEndDate: '2020-01-19T22:59:59+00:00',
+            showPromo: 1,
+            promoStartDate: '2020-01-24T09:00:00+00:00',
+            promoEndDate: '2020-02-02T22:59:59+00:00',
             games: [],
             elusiveTargets: [],
             activeElusiveIndex: 0,
@@ -932,9 +943,9 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
-            /*setInterval(() => {
+            setInterval(() => {
                 this.showPromo = !!this.showPromo ? 0 : 1;
-            }, 5000);*/
+            }, 5000);
         });
     }
 }
@@ -1059,15 +1070,56 @@ function updateCheckboxState(
 }
 </script>
 <style lang="scss" scoped>
-.site-header {
-    margin: 0 20px;
-
-    h1 {
-        margin-top: 20px;
+.ghost-mode-trailer {
+    video {
+        position: fixed;
+        left: 0;
+        top: -300px;
+        min-width: 100%;
+        min-height: 100%;
+        height: inherit;
     }
+}
 
-    img {
-        max-height: 100px;
+@media (min-width: 768px) {
+
+}
+
+@media (max-width: 767px) {
+    .ghost-mode-trailer {
+        video {
+            top: -400px;
+        }
+        /*display: none;
+
+        img {
+            display: block;
+            position: fixed;
+            left: 0;
+            top: 0;
+            min-width: 100%;
+            min-height: 100%;
+        }*/
+    }
+}
+
+.embed-responsive-16by9::before {
+    padding-top: 21.25%;
+}
+
+header {
+    /*margin-top: 450px;*/
+
+    .site-header {
+        margin: 0 20px;
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        img {
+            max-height: 100px;
+        }
     }
 }
 
