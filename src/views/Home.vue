@@ -1,14 +1,13 @@
 <template>
     <div
         class="content"
-        style="background: #1e1e1e no-repeat center center fixed; background-size: cover"
+        style="background: url('https://media.hitmaps.com/img/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
     >
-        <div class="ghost-mode-trailer embed-responsive embed-responsive-16by9">
-            <video autoplay loop muted>
-                <source src="https://media.hitmaps.com/video/ghost-mode-tourney-2.webm" type="video/webm" />
-                <source src="https://media.hitmaps.com/video/ghost-mode-tourney-2.mp4" type="video/mp4" />
-                <img src="/img/png/promo/gm2.png" alt="Ghost Mode Tournament Teaser" title="Your browser does not support the <video> tag">
-            </video>
+        <div style="text-align: center; margin-bottom: 250px;">
+            <img class="img-fluid" src="https://media.hitmaps.com/video/GM-Title.gif" alt="Ghost Mode Logo">
+            <h2 style="color: #fff; margin-top: -20px; font-size: 3rem">TOURNAMENT <span style="font-size: 1rem">(SPONSORED BY HITMAPS&trade;)</span></h2>
+            <p style="color: #fff; font-size: 2rem;">Signups close February 2!</p>
+            <p style="color: #fff; font-size: 2rem;">Join the Discord: <a style="color: #fff" href="https://discord.gg/yUjhHTr"><i class="fab fa-discord"></i></a></p>
         </div>
         <header class="row">
             <div class="col text-center site-header">
