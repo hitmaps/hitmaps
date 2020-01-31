@@ -55,6 +55,10 @@
     "location-icon": "Location Icon",
     "mission-image": "Mission Image",
     "mission-icon": "Mission Icon",
+    "patreon": {
+        "patreon-supporters": "Patreon Supporters",
+        "patreon-supporters-description": "Patreon helps defer HITMAPS'️ operation costs.  We'd like to extend a thank you to the people below, who have pledged at the \"Mater Assassin\" level or higher."
+    },
     "difficulties": {
         "Casual": "Casual",
         "Professional": "Professional",
