@@ -659,6 +659,35 @@
             </div>
         </div>
         <input type="hidden" name="notification-environment" />
+        <div class="patreon">
+            <div class="row intro">
+                <div class="col-xs-12">
+                    <h1>
+                    <span class="fa-stack">
+                        <i class="fas fa-square fa-stack-2x"></i>
+                        <i class="fab fa-patreon fa-stack-1x fa-inverse"></i>
+                    </span>
+                        {{ $t('patreon.patreon-supporters') }}
+                    </h1>
+                    {{ $t('patreon.patreon-supporters-description') }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-sm-6 patron">
+                    <img src="https://media.hitmaps.com/patrons/mow.jpg" class="img-fluid" alt="Mow's Profile Photo">
+                    <p><b>Mow</b></p>
+                    <p>Master Assassin</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col" style="text-align: right">
+                    <a href="https://www.patreon.com/mike_koch" class="btn patreon-button">
+                        <i class="fab fa-patreon"></i>
+                        Become a Patron
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -1406,6 +1435,48 @@ header {
 
         &:first-child {
             text-align: left;
+        }
+    }
+}
+
+.patreon {
+    background: #fff;
+    padding: 40px;
+
+    .intro {
+        margin-bottom: 30px;
+
+        h1 {
+            font-family: 'nimbus_sans_lbold', sans-serif;
+            text-transform: uppercase;
+        }
+
+        i.fa-square {
+            color: #e7705c;
+        }
+    }
+
+    .patron {
+        text-align: center;
+
+        img {
+            max-height: 128px;
+            max-width: 128px;
+        }
+
+        p {
+            margin-bottom: 0;
+        }
+    }
+
+    .patreon-button {
+        margin-top: 30px;
+        border-radius: 0;
+        background: #e7705c;
+        color: #fff;
+
+        &:hover {
+            background: #cd685c;
         }
     }
 }
