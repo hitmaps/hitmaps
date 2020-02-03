@@ -818,6 +818,10 @@ $klein->respond('POST', '/api/notifications', function(\Klein\Request $request, 
     return $response->code(204);
 });
 
+$klein->respond('GET', '/api/twitch/current-streams', function() use ($applicationContext) {
+    return $applicationContext->get(\Controllers\TwitchController::class)->getCurrentStreams();
+});
+
 // Backend processes
 $klein->respond('GET', '/api/push-elusive-target-status', function() use ($applicationContext) {
     $config = new Config\Settings();

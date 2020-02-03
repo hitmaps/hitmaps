@@ -3,12 +3,6 @@
         class="content"
         style="background: url('https://media.hitmaps.com/img/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
     >
-        <div style="text-align: center; margin-bottom: 250px;">
-            <img class="img-fluid" src="https://media.hitmaps.com/video/GM-Title.gif" alt="Ghost Mode Logo">
-            <h2 style="color: #fff; margin-top: -20px; font-size: 3rem">TOURNAMENT <span style="font-size: 1rem">(SPONSORED BY HITMAPS&trade;)</span></h2>
-            <p style="color: #fff; font-size: 2rem;">Signups close February 2!</p>
-            <p style="color: #fff; font-size: 2rem;">Join the Discord: <a style="color: #fff" href="https://discord.gg/yUjhHTr"><i class="fab fa-discord"></i></a></p>
-        </div>
         <header class="row">
             <div class="col text-center site-header">
                 <img
@@ -19,20 +13,20 @@
                 <h1>{{ $t('interactive-maps-for-hitman') }}</h1>
             </div>
         </header>
-        <div
-            class="row loading"
-            v-if="games.length === 0 && elusiveTargets.length === 0"
-        >
-            <div class="loader">
-                <loader></loader>
-            </div>
-        </div>
         <div class="row dashboard">
             <alert type="info">
                 As of <b>January 10, 2020</b>, all traffic from hitman2maps.com is now being redirected
                 to hitmaps.com. Due to this change, all Elusive Target push notification preferences have been <i>cleared</i>. Please
                 re-subscribe if you wish to continue to receive Elusive Target push notifications. We apologize for any inconvenience.
             </alert>
+        </div>
+        <div
+                class="row loading"
+                v-if="games.length === 0 && elusiveTargets.length === 0"
+        >
+            <div class="loader">
+                <loader></loader>
+            </div>
         </div>
         <div
             class="row dashboard"
@@ -96,7 +90,7 @@
                                 src="/img/game-icons/elusive-target-reminaing-time.png"
                         />
                         <div class="timer not-playable">
-                            <div class="target-arrives">{{ (new Date(promoStartDate) > new Date()) ? 'Sign-ups Opens' : 'Sign-ups Closes' }}</div>
+                            <div class="target-arrives">{{ (new Date(promoStartDate) > new Date()) ? 'Matches Begin' : '' }}</div>
                             <countdown
                                     class="elusive-countdown"
                                     :date="
@@ -120,7 +114,6 @@
                                 onclick="return false;"
                                 @click="showRouletteRivalsModal"
                                 class="image elusive-notification float-right notification-icon"
-                                style="display: none"
                                 v-tooltip:left="'More Information'"
                         >
                             <img
@@ -658,6 +651,65 @@
                 </div>
             </div>
         </div>
+        <modal modal-title="Ghost Mode Tournament #2"
+               id="roulette-rivals-modal"
+               tabindex="-1"
+               dismissable>
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="embed-responsive embed-responsive-16by9"
+                         style="min-height: 310px">
+                        <iframe src="https://www.youtube.com/embed/c6q4hgt0fiE"
+                                class="embed-responsive-item"
+                                frameborder="0"
+                                allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen
+                        ></iframe>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <p>
+                        The second Ghost Mode Tournament, ran by Frote's Speedrun Community and sponsored by HITMAPS&trade;, is coming up!
+                    </p>
+                    <p>
+                        This double-elimination tournament is open to all platforms (PC, PS4, XB1) and is a separate tournament per platform.
+                        Each match is a best-of 3, except for the grand final which is best-of 5.
+                    </p>
+                    <alert type="info">Matches run from <b>February 7</b> to <b>February 23</b>!</alert>
+                </div>
+            </div>
+            <div class="modal-header" style="padding-left: 0">
+                <h5><i class="fab fa-twitch"></i> Competitors Currently Streaming</h5>
+            </div>
+            <div class="streams">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 twitch-stream featured">
+                        <iframe
+                                src="https://player.twitch.tv/?autoplay=false&channel=MrMike227"
+                                height="270"
+                                width="100%"
+                                frameborder="0"
+                                scrolling="no"
+                                autoplay="false"
+                                allowfullscreen="true">
+                        </iframe>
+                        <p><i class="fas fa-award"></i> MrMike227 (Creator of HITMAPS™️)</p>
+                    </div>
+                    <div v-for="stream in streams" class="col-md-6 col-sm-12 twitch-stream">
+                        <iframe
+                                :src="'https://player.twitch.tv/?autoplay=false&channel=' + stream.user_name"
+                                height="270"
+                                width="100%"
+                                frameborder="0"
+                                scrolling="no"
+                                autoplay="false"
+                                allowfullscreen="true">
+                        </iframe>
+                        <p>{{ stream.user_name }}</p>
+                    </div>
+                </div>
+            </div>
+        </modal>
         <input type="hidden" name="notification-environment" />
         <div class="patreon">
             <div class="row intro">
@@ -713,8 +765,8 @@ export default {
     data() {
         return {
             showPromo: 1,
-            promoStartDate: '2020-01-24T09:00:00+00:00',
-            promoEndDate: '2020-02-02T22:59:59+00:00',
+            promoStartDate: '2020-02-07T00:00:00+00:00',
+            promoEndDate: '2020-02-23T22:59:59+00:00',
             games: [],
             elusiveTargets: [],
             activeElusiveIndex: 0,
@@ -760,7 +812,8 @@ export default {
                     oneDay: false,
                     ended: false
                 }
-            }
+            },
+            streams: []
         }
     },
     methods: {
@@ -975,6 +1028,24 @@ export default {
                 this.showPromo = !!this.showPromo ? 0 : 1;
             }, 5000);
         });
+        this.$http.get(this.$domain + '/api/twitch/current-streams').then(resp => {
+            let streams = resp.data.data;
+
+            let filteredStreams = [];
+            streams.forEach(stream => {
+                // Don't display myself twice
+                if (stream['user_name'] === 'MrMike227') {
+                    return;
+                }
+
+                let streamTitle = stream.title.toLowerCase();
+                if (streamTitle.includes('ghost') && streamTitle.includes('mode')) {
+                    filteredStreams.push(stream);
+                }
+            });
+
+            this.streams = filteredStreams;
+        })
     }
 }
 
@@ -1477,6 +1548,16 @@ header {
 
         &:hover {
             background: #cd685c;
+        }
+    }
+}
+
+.streams {
+    .twitch-stream {
+        padding: 10px;
+
+        &.featured {
+            background: #ffffcc;
         }
     }
 }
