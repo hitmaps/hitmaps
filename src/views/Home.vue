@@ -678,10 +678,10 @@
                     <alert type="info">Matches run from <b>February 7</b> to <b>February 23</b>!</alert>
                 </div>
             </div>
-            <div class="modal-header" style="padding-left: 0">
+            <div class="modal-header" style="padding-left: 0; display: none">
                 <h5><i class="fab fa-twitch"></i> Competitors Currently Streaming</h5>
             </div>
-            <div class="streams">
+            <div class="streams" style="display: none">
                 <div class="row">
                     <div class="col-md-6 col-sm-12 twitch-stream featured">
                         <iframe
