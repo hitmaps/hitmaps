@@ -85,7 +85,7 @@
                 }">
                 <a href="https://discord.gg/yUjhHTr" target="_blank">
                     <p>
-                        <img src="/img/png/promo/GM-title.gif" class="img-fluid">
+                        <img src="/img/png/promo/gm-title.gif" class="img-fluid">
                     </p>
                     <div class="countdown" v-if="new Date(promoStartDate) > new Date()" style="background: rgba(0,0,0,.4)">
                         <img
