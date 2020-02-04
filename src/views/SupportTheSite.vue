@@ -22,7 +22,12 @@
                 <li>
                     <b>Master Assassin</b>
                     <ul>
-                        <li><a href="https://www.youtube.com/watch?v=gG7uCskUOrA">mow</a></li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=gG7uCskUOrA">
+                                <img style="max-height: 128px; max-width: 128px;" src="https://media.hitmaps.com/patrons/mow.jpg" class="img-fluid" alt="Mow's Profile Photo">
+                                <p>mow</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li>
