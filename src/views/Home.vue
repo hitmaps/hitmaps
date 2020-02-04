@@ -84,7 +84,9 @@
                     backgroundRepeat: 'no-repeat'
                 }">
                 <a href="https://discord.gg/yUjhHTr" target="_blank">
-                    <p>&nbsp;</p>
+                    <p>
+                        <img src="/img/png/promo/GM-title.gif" class="img-fluid">
+                    </p>
                     <div class="countdown" v-if="new Date(promoStartDate) > new Date()" style="background: rgba(0,0,0,.4)">
                         <img
                                 src="/img/game-icons/elusive-target-reminaing-time.png"
@@ -711,7 +713,7 @@
             </div>
         </modal>
         <input type="hidden" name="notification-environment" />
-        <div class="patreon">
+        <div class="patreon" style="display: none">
             <div class="row intro">
                 <div class="col-xs-12">
                     <h1>
