@@ -680,10 +680,10 @@
                     <alert type="info">Matches run from <b>February 7</b> to <b>February 23</b>!</alert>
                 </div>
             </div>
-            <div class="modal-header" style="padding-left: 0; display: none">
+            <div class="modal-header" style="padding-left: 0">
                 <h5><i class="fab fa-twitch"></i> Competitors Currently Streaming</h5>
             </div>
-            <div class="streams" style="display: none">
+            <div class="streams">
                 <div class="row">
                     <div class="col-md-6 col-sm-12 twitch-stream featured">
                         <iframe
@@ -1031,6 +1031,50 @@ export default {
             }, 5000);
         });
         this.$http.get(this.$domain + '/api/twitch/current-streams').then(resp => {
+            let whitelistedStreams = [
+                'zeekomkommer69',
+                'supremecommanderike',
+                'camthechest',
+                'pokeredface456',
+                'SheikTheGeek',
+                'mulletpride',
+                'bigdavedmr',
+                'mungadungalis',
+                'GKPunk',
+                'adoriaclub47',
+                'foppeh',
+                'mrmike227',
+                'ibbe040',
+                'vortigauntblade',
+                'tryagain_later',
+                'a_chicken_chicken',
+                'yellowzr1',
+                'chubbydarksoul',
+                'SpeedsterRunner217',
+                'chaos_agent_45',
+                'frote7',
+                'double_eagle',
+                'some_random_person',
+                'in4fun',
+                'devinvendetta',
+                'srarkady54',
+                'yannini',
+                'bongo_mann',
+                'davidredsox',
+                'gulitox',
+                'skulkwah',
+                'dribbleondosfm',
+                'johnnyaxxx',
+                'mendietinha',
+                'Ninja_frosk',
+                'the_hermit_crab',
+                'sky1yyy',
+                'silversurfers1',
+                'barg_11',
+                'therealfuzk',
+                'karma4d'
+            ];
+
             let streams = resp.data.data;
 
             let filteredStreams = [];
@@ -1041,7 +1085,7 @@ export default {
                 }
 
                 let streamTitle = stream.title.toLowerCase();
-                if (streamTitle.includes('ghost') && streamTitle.includes('mode')) {
+                if (streamTitle.includes('ghost') && streamTitle.includes('mode') && whitelistedStreams.includes(stream['user_name'])) {
                     filteredStreams.push(stream);
                 }
             });
