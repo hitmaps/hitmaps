@@ -1056,7 +1056,7 @@ export default {
                 'double_eagle',
                 'some_random_person',
                 'in4fun',
-                'devinvendetta',
+                'devilvendetta',
                 'srarkady54',
                 'yannini',
                 'bongo_mann',
