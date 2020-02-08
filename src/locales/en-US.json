@@ -71,7 +71,8 @@
         "special assignment": "Special Assignment",
         "bonus episode": "Bonus Mission",
         "patient zero": "Patient Zero",
-        "sniper assassin": "Sniper Assassin"
+        "sniper assassin": "Sniper Assassin",
+        "ghost mode": "Ghost Mode"
     },
     "locations": {
         "destinations": {
@@ -144,7 +145,8 @@
         "the-last-yardbird": "The Last Yardbird",
         "the-pen-and-the-sword": "The Pen and the Sword",
         "crime-and-punishment": "Crime and Punishment",
-        "the-last-resort": "The Last Resort"
+        "the-last-resort": "The Last Resort",
+        "miami": "Miami"
     },
     "map": {
         "level-number": "Level {levelNumber}",
