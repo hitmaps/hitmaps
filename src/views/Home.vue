@@ -1036,11 +1036,11 @@ export default {
                 'supremecommanderike',
                 'camthechest',
                 'pokeredface456',
-                'SheikTheGeek',
+                'sheikthegeek',
                 'mulletpride',
                 'bigdavedmr',
                 'mungadungalis',
-                'GKPunk',
+                'gkpunk',
                 'adoriaclub47',
                 'foppeh',
                 'mrmike227',
@@ -1050,7 +1050,7 @@ export default {
                 'a_chicken_chicken',
                 'yellowzr1',
                 'chubbydarksoul',
-                'SpeedsterRunner217',
+                'speedsterrunner217',
                 'chaos_agent_45',
                 'frote7',
                 'double_eagle',
@@ -1066,7 +1066,7 @@ export default {
                 'dribbleondosfm',
                 'johnnyaxxx',
                 'mendietinha',
-                'Ninja_frosk',
+                'ninja_frosk',
                 'the_hermit_crab',
                 'sky1yyy',
                 'silversurfers1',
@@ -1085,7 +1085,7 @@ export default {
                 }
 
                 let streamTitle = stream.title.toLowerCase();
-                if (streamTitle.includes('ghost') && streamTitle.includes('mode') && whitelistedStreams.includes(stream['user_name'])) {
+                if (streamTitle.includes('ghost') && streamTitle.includes('mode') && whitelistedStreams.includes(stream['user_name'].toLowerCase())) {
                     filteredStreams.push(stream);
                 }
             });
