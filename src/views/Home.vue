@@ -205,6 +205,7 @@
                                         ? elusiveTarget.name
                                         : $t('elusive-target.coming-soon')
                                 }}
+                                <span class="mkii" v-if="elusiveTarget.reactivated" v-tooltip="$t('elusive-target.reactivated-target')">2</span>
                             </h1>
                         </div>
                         <div
@@ -766,7 +767,7 @@ export default {
     },
     data() {
         return {
-            showPromo: 1,
+            showPromo: 0,
             promoStartDate: '2020-02-07T09:00:00+00:00',
             promoEndDate: '2020-02-23T22:59:59+00:00',
             games: [],
@@ -1026,9 +1027,9 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
-            setInterval(() => {
+            /*setInterval(() => {
                 this.showPromo = !!this.showPromo ? 0 : 1;
-            }, 5000);
+            }, 5000);*/
         });
         this.$http.get(this.$domain + '/api/twitch/current-streams').then(resp => {
             let whitelistedStreams = [
@@ -1606,5 +1607,15 @@ header {
             background: #ffffcc;
         }
     }
+}
+
+.mkii {
+    background: #ff003c;
+    color: #fff;
+    margin: 0;
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    text-align: center;
 }
 </style>
