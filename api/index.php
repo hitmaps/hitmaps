@@ -292,6 +292,7 @@ $klein->respond('GET', '/api/v1/elusive-targets', function(\Klein\Request $reque
         $viewModel->tileUrl = "{$constants->siteDomain}/img/jpg{$elusiveTarget->getImageUrl()}.jpg";
         $viewModel->videoBriefingUrl = $elusiveTarget->getVideoBriefingUrl();
         $viewModel->missionUrl = "{$missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId(), 'standard')}";
+        $viewModel->reactivated = $elusiveTarget->getReactivated();
 
         $viewModels[] = $viewModel;
     }
@@ -322,6 +323,7 @@ $klein->respond('GET', '/api/web/home', function(\Klein\Request $request, \Klein
         $viewModel->tileUrl = "{$constants->siteDomain}/img/jpg{$elusiveTarget->getImageUrl()}.jpg";
         $viewModel->videoBriefingUrl = $elusiveTarget->getVideoBriefingUrl();
         $viewModel->missionUrl = "{$missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId(), 'standard')}";
+        $viewModel->reactivated = $elusiveTarget->getReactivated();
 
         $elusiveTargetViewModels[] = $viewModel;
     }

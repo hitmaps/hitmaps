@@ -12,4 +12,5 @@ class ElusiveTargetViewModel {
     public $beginningTime;
     public $endingTime;
     public $tileUrl;
+    public $reactivated;
 }
