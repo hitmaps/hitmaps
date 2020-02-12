@@ -767,7 +767,7 @@ export default {
     },
     data() {
         return {
-            showPromo: 0,
+            showPromo: 1,
             promoStartDate: '2020-02-07T09:00:00+00:00',
             promoEndDate: '2020-02-23T22:59:59+00:00',
             games: [],
@@ -1027,9 +1027,9 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
-            /*setInterval(() => {
+            setInterval(() => {
                 this.showPromo = !!this.showPromo ? 0 : 1;
-            }, 5000);*/
+            }, 5000);
         });
         this.$http.get(this.$domain + '/api/twitch/current-streams').then(resp => {
             let whitelistedStreams = [
