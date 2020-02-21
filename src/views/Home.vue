@@ -12,6 +12,23 @@
                     src="/img/png/logos/hitmaps.png"
                     class="img-fluid"
                 />
+                <div class="row" style="margin-top: 20px;" v-if="new Date() > new Date('2020-02-23T23:59:59+00:00')">
+                    <div class="col-md-6 col-sm-12 offset-md-3">
+                        <div class="embed-responsive embed-responsive-16by9"
+                             style="min-height: 310px">
+                            <iframe
+                                    src="https://player.twitch.tv/?autoplay=false&channel=Frote7"
+                                    height="270"
+                                    width="50%"
+                                    frameborder="0"
+                                    scrolling="no"
+                                    autoplay="false"
+                                    allowfullscreen="true">
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+                <h1>{{ $t('interactive-maps-for-hitman') }}</h1>
             </div>
         </header>
         <div
