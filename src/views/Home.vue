@@ -1,25 +1,19 @@
 <template>
     <div
         class="content"
-        style="background: url('https://media.hitmaps.com/img/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
+        style="background: url('/img/jpg/promo/gm-background.jpg') no-repeat center center fixed; background-size: cover"
     >
-        <header class="row">
+        <header class="row" style="margin-top: 200px">
             <div class="col text-center site-header">
+                <h1>GRAND FINALS ON FEBRUARY 23</h1>
+                <h1>SPONSORED BY</h1>
                 <img
                     v-webp
                     src="/img/png/logos/hitmaps.png"
                     class="img-fluid"
                 />
-                <h1>{{ $t('interactive-maps-for-hitman') }}</h1>
             </div>
         </header>
-        <div class="row dashboard">
-            <alert type="info">
-                As of <b>January 10, 2020</b>, all traffic from hitman2maps.com is now being redirected
-                to hitmaps.com. Due to this change, all Elusive Target push notification preferences have been <i>cleared</i>. Please
-                re-subscribe if you wish to continue to receive Elusive Target push notifications. We apologize for any inconvenience.
-            </alert>
-        </div>
         <div
                 class="row loading"
                 v-if="games.length === 0 && elusiveTargets.length === 0"
