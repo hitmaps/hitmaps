@@ -12,7 +12,7 @@
                     src="/img/png/logos/hitmaps.png"
                     class="img-fluid"
                 />
-                <div class="row" style="margin-top: 20px;" v-if="new Date() > new Date('2020-02-23T23:59:59+00:00')">
+                <div class="row" style="margin-top: 20px;" v-if="new Date() > new Date('2020-02-23T17:00:00+00:00')">
                     <div class="col-md-6 col-sm-12 offset-md-3">
                         <div class="embed-responsive embed-responsive-16by9"
                              style="min-height: 310px">
