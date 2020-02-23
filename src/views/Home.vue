@@ -1,33 +1,15 @@
 <template>
     <div
         class="content"
-        style="background: url('/img/jpg/promo/gm-background.jpg') no-repeat center center fixed; background-size: cover"
+        style="background: url('https://media.hitmaps.com/img/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
     >
-        <header class="row" style="margin-top: 200px">
+        <header class="row">
             <div class="col text-center site-header">
-                <h1>GRAND FINALS ON FEBRUARY 23</h1>
-                <h1>SPONSORED BY</h1>
                 <img
                     v-webp
                     src="/img/png/logos/hitmaps.png"
                     class="img-fluid"
                 />
-                <div class="row" style="margin-top: 20px;" v-if="new Date() > new Date('2020-02-23T17:00:00+00:00')">
-                    <div class="col-md-6 col-sm-12 offset-md-3">
-                        <div class="embed-responsive embed-responsive-16by9"
-                             style="min-height: 310px">
-                            <iframe
-                                    src="https://player.twitch.tv/?autoplay=false&channel=Frote7"
-                                    height="270"
-                                    width="50%"
-                                    frameborder="0"
-                                    scrolling="no"
-                                    autoplay="false"
-                                    allowfullscreen="true">
-                            </iframe>
-                        </div>
-                    </div>
-                </div>
                 <h1>{{ $t('interactive-maps-for-hitman') }}</h1>
             </div>
         </header>
@@ -778,7 +760,7 @@ export default {
     },
     data() {
         return {
-            showPromo: 1,
+            showPromo: 0,
             promoStartDate: '2020-02-07T09:00:00+00:00',
             promoEndDate: '2020-02-23T22:59:59+00:00',
             games: [],
@@ -1038,9 +1020,9 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
-            setInterval(() => {
+            /*setInterval(() => {
                 this.showPromo = !!this.showPromo ? 0 : 1;
-            }, 5000);
+            }, 5000);*/
         });
         this.$http.get(this.$domain + '/api/twitch/current-streams').then(resp => {
             let whitelistedStreams = [
