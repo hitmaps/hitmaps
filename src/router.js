@@ -7,6 +7,7 @@ import PrivacyPolicy from './views/PrivacyPolicy.vue'
 import About from "./views/About";
 import OneYear from "./views/SpecialEvents/OneYear";
 import SupportTheSite from "./views/SupportTheSite";
+import Garfield from "./views/Garfield";
 
 Vue.use(Router)
 
@@ -43,6 +44,11 @@ export default new Router({
             path: '/support-the-site',
             name: 'support-the-site',
             component: SupportTheSite,
+        },
+        {
+            path: '/4dummies',
+            name: 'Hey Garfield!',
+            component: Garfield,
         },
         {
             path: '/games/:slug',
