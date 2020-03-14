@@ -78,12 +78,12 @@
                 }">
                 <a href="https://discord.gg/yUjhHTr" target="_blank">
                     <p>&nbsp;</p>
-                    <div class="countdown" v-if="new Date(currentPromo.promoStartDate) > new Date()" style="background: rgba(0,0,0,.4)">
+                    <div class="countdown" style="background: rgba(0,0,0,.4)">
                         <img
                                 src="/img/game-icons/elusive-target-reminaing-time.png"
                         />
                         <div class="timer not-playable">
-                            <div class="target-arrives">{{ (new Date(currentPromo.promoStartDate) > new Date()) ? 'Event Begin' : '' }}</div>
+                            <div class="target-arrives">{{ (new Date(currentPromo.promoStartDate) > new Date()) ? 'Event Begin' : 'Competition Ends' }}</div>
                             <countdown
                                     class="elusive-countdown"
                                     :date="
