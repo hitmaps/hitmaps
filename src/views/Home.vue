@@ -68,31 +68,29 @@
             </div>
             <div class="elusive-target col-lg"
                  id="promo"
-                 v-if="showPromo === 1"
+                 v-if="currentPromo !== 0"
                  :style="{
                     backgroundImage:
-                        'url(/img/png/promo/gm2.png)',
+                        'url(' + currentPromo.tileUrl + ')',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat'
                 }">
                 <a href="https://discord.gg/yUjhHTr" target="_blank">
-                    <p>
-                        <img src="/img/png/promo/gm-title.gif" class="img-fluid">
-                    </p>
-                    <div class="countdown" v-if="new Date(promoStartDate) > new Date()" style="background: rgba(0,0,0,.4)">
+                    <p>&nbsp;</p>
+                    <div class="countdown" v-if="new Date(currentPromo.promoStartDate) > new Date()" style="background: rgba(0,0,0,.4)">
                         <img
                                 src="/img/game-icons/elusive-target-reminaing-time.png"
                         />
                         <div class="timer not-playable">
-                            <div class="target-arrives">{{ (new Date(promoStartDate) > new Date()) ? 'Matches Begin' : '' }}</div>
+                            <div class="target-arrives">{{ (new Date(currentPromo.promoStartDate) > new Date()) ? 'Event Begin' : '' }}</div>
                             <countdown
                                     class="elusive-countdown"
                                     :date="
-                                    new Date(promoStartDate) >
+                                    new Date(currentPromo.promoStartDate) >
                                     new Date()
-                                        ? promoStartDate
-                                        : promoEndDate
+                                        ? currentPromo.promoStartDate
+                                        : currentPromo.promoEndDate
                                 "
                             ></countdown>
                         </div>
@@ -102,10 +100,10 @@
                             <i class="fab fa-discord fa-3x" style="width: 48px; height: 48px"></i>
                         </div>
                         <div class="text">
-                            <h2>Ghost Mode</h2>
-                            <h1>Tournament #2</h1>
+                            <h2>{{ currentPromo.topCaption }}</h2>
+                            <h1>{{ currentPromo.bottomCaption }}</h1>
                         </div>
-                        <div
+                        <!--<div
                                 onclick="return false;"
                                 @click="showRouletteRivalsModal"
                                 class="image elusive-notification float-right notification-icon"
@@ -121,13 +119,13 @@
                                     class="inverted img-fluid"
                                     alt="More Information Icon"
                             />
-                        </div>
+                        </div>-->
                     </div>
                 </a>
             </div>
             <div
                 class="elusive-target col-lg"
-                v-if="showPromo === 0"
+                v-if="currentPromo === 0"
                 v-bind:style="{
                     backgroundImage:
                         'url(' +
@@ -760,9 +758,24 @@ export default {
     },
     data() {
         return {
-            showPromo: 0,
-            promoStartDate: '2020-02-07T09:00:00+00:00',
-            promoEndDate: '2020-02-23T22:59:59+00:00',
+            currentPromoIndex: 0,
+            currentPromo: 0,
+            promos: [
+                {
+                    tileUrl: '/img/png/promo/sc4.png',
+                    promoStartDate: '2020-03-13T09:00:00+00:00',
+                    promoEndDate: '2020-03-22T22:59:59+00:00',
+                    topCaption: "Frote7's",
+                    bottomCaption: 'Speedrun Competition #4',
+                },
+                {
+                    tileUrl: '/img/png/promo/creative.png',
+                    promoStartDate: '2020-03-13T09:00:00+00:00',
+                    promoEndDate: '2020-03-22T22:59:59+00:00',
+                    topCaption: "Mullet's",
+                    bottomCaption: 'Creative Contest',
+                }
+            ],
             games: [],
             elusiveTargets: [],
             activeElusiveIndex: 0,
@@ -1020,11 +1033,16 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
-            /*setInterval(() => {
-                this.showPromo = !!this.showPromo ? 0 : 1;
-            }, 5000);*/
+            setInterval(() => {
+                this.currentPromo = this.currentPromoIndex === this.promos.length ?
+                    0 :
+                    this.promos[this.currentPromoIndex];
+                this.currentPromoIndex = this.currentPromoIndex === this.promos.length ?
+                    0 :
+                    this.currentPromoIndex + 1;
+            }, 5000);
         });
-        this.$http.get(this.$domain + '/api/twitch/current-streams').then(resp => {
+        /*this.$http.get(this.$domain + '/api/twitch/current-streams').then(resp => {
             let whitelistedStreams = [
                 'zeekomkommer69',
                 'supremecommanderike',
@@ -1085,7 +1103,7 @@ export default {
             });
 
             this.streams = filteredStreams;
-        })
+        })*/
     }
 }
 

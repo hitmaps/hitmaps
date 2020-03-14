@@ -59,3 +59,4 @@ if ($settings->loggingEnvironment !== 'development') {
 }
 
 ini_set('max_execution_time', 300);
+error_reporting(0);
