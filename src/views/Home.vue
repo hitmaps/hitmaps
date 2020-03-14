@@ -77,6 +77,7 @@
                     backgroundRepeat: 'no-repeat'
                 }">
                 <a href="https://discord.gg/yUjhHTr" target="_blank">
+                    <p>&nbsp;</p>
                     <div class="countdown" v-if="new Date(currentPromo.promoStartDate) > new Date()" style="background: rgba(0,0,0,.4)">
                         <img
                                 src="/img/game-icons/elusive-target-reminaing-time.png"
@@ -765,7 +766,7 @@ export default {
                     promoStartDate: '2020-03-13T09:00:00+00:00',
                     promoEndDate: '2020-03-22T22:59:59+00:00',
                     topCaption: "Frote7's",
-                    bottomCaption: 'Speedrunning Competition #4',
+                    bottomCaption: 'Speedrun Competition #4',
                 },
                 {
                     tileUrl: '/img/png/promo/creative.png',
@@ -1035,7 +1036,10 @@ export default {
             setInterval(() => {
                 this.currentPromo = this.currentPromoIndex === this.promos.length ?
                     0 :
-                    this.promos[++this.currentPromoIndex];
+                    this.promos[this.currentPromoIndex];
+                this.currentPromoIndex = this.currentPromoIndex === this.promos.length ?
+                    0 :
+                    this.currentPromoIndex + 1;
             }, 5000);
         });
         /*this.$http.get(this.$domain + '/api/twitch/current-streams').then(resp => {
