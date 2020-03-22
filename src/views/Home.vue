@@ -1033,14 +1033,14 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
-            setInterval(() => {
+            /*setInterval(() => {
                 this.currentPromo = this.currentPromoIndex === this.promos.length ?
                     0 :
                     this.promos[this.currentPromoIndex];
                 this.currentPromoIndex = this.currentPromoIndex === this.promos.length ?
                     0 :
                     this.currentPromoIndex + 1;
-            }, 5000);
+            }, 5000);*/
         });
         /*this.$http.get(this.$domain + '/api/twitch/current-streams').then(resp => {
             let whitelistedStreams = [
