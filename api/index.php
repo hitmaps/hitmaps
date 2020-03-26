@@ -1275,6 +1275,13 @@ $klein->respond('GET', '/api/games/[:game]/[:location]/[:missionSlug]/[:difficul
     return \Controllers\Renderer::render('map.twig', $twig, $viewModel);
 });
 
+//--> Roulette
+$klein->respond('GET', '/api/roulette/spin', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    $spinId = $request->spinId;
+
+    return $applicationContext->get(\Predis\Client::class)->get("hitmaps-roulette:{$spinId}");
+});
+
 
 $klein->dispatch();
 
