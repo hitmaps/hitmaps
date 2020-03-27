@@ -1277,7 +1277,7 @@ $klein->respond('GET', '/api/games/[:game]/[:location]/[:missionSlug]/[:difficul
 
 //--> Roulette
 $klein->respond('GET', '/api/roulette/spins', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    $spinId = $request->spinId;
+    $spinId = $_GET['spinId'];
 
     return $applicationContext->get(\Predis\Client::class)->get("hitmaps-roulette:{$spinId}");
 });
@@ -1297,7 +1297,13 @@ $klein->respond('POST', '/api/roulette/spins', function(\Klein\Request $request,
     ]);
 });
 
-$klein->respond('PUT', '/api/roulette/spins', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/roulette/tournaments/:tournamentId', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    $tournamentId = $request->tournamentId;
+
+    // Get tournament from DB
+});
+
+$klein->respond('POST', '/api/roulette/tournaments', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $requestBody = json_decode($request->body(), true);
     if ($requestBody === null) {
         return $response->code(400);
