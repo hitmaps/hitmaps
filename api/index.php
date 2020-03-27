@@ -1276,10 +1276,42 @@ $klein->respond('GET', '/api/games/[:game]/[:location]/[:missionSlug]/[:difficul
 });
 
 //--> Roulette
-$klein->respond('GET', '/api/roulette/spin', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/roulette/spins', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $spinId = $request->spinId;
 
     return $applicationContext->get(\Predis\Client::class)->get("hitmaps-roulette:{$spinId}");
+});
+
+$klein->respond('POST', '/api/roulette/spins', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    $requestBody = json_decode($request->body(), true);
+
+    if ($requestBody === null) {
+        return $response->code(400);
+    }
+
+    $spinId = uniqid('', true);
+    $applicationContext->get(\Predis\Client::class)->set("hitmaps-roulette:{$spinId}", $request->body());
+
+    return $response->code(200)->body([
+        'id' => $spinId
+    ]);
+});
+
+$klein->respond('PUT', '/api/roulette/spins', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    $requestBody = json_decode($request->body(), true);
+    if ($requestBody === null) {
+        return $response->code(400);
+    }
+
+    $spinId = $requestBody['spinId'];
+    $spinData = json_decode($requestBody['spinData'], true);
+    if ($spinData === null) {
+        return $response->code(400);
+    }
+
+    $applicationContext->get(\Predis\Client::class)->set("hitmaps-roulette:{$spinId}", $requestBody['spinData']);
+
+    return $response->code(204);
 });
 
 
