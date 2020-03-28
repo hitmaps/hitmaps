@@ -1349,7 +1349,7 @@ $klein->respond('POST', '/api/roulette/matchups', function(\Klein\Request $reque
     return $response->json(['matchupId' => $matchupId]);
 });
 
-$klein->respond('PATCH', '/api/roulette/matchups/:matchupId', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('PATCH', '/api/roulette/matchups/[:matchupId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $requestBody = json_decode($request->body());
 
     if ($requestBody === null) {
