@@ -1314,23 +1314,40 @@ $klein->respond('GET', '/api/roulette/matchups/[:matchupId]', function(\Klein\Re
     return $response->code(404);
 });
 
-$klein->respond('POST', '/api/roulette/tournaments', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('POST', '/api/roulette/matchups', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $requestBody = json_decode($request->body(), true);
+
     if ($requestBody === null) {
-        return $response->code(400);
+        return $response->json(['message' => 'Could not decode JSON'])->code(400);
     }
 
-    $spinId = $requestBody['spinId'];
-    $spinData = json_decode($requestBody['spinData'], true);
-    if ($spinData === null) {
-        return $response->code(400);
+    $matchupId = '';
+    $attempt = 0;
+    while ($attempt < 20) {
+        $matchupId = preg_replace("/[^A-Za-z0-9 ]/", '', uniqid('', true));
+
+        $existingMatchup = $applicationContext->get(EntityManager::class)
+            ->getRepository(RouletteMatchup::class)
+            ->findOneBy(['matchupId' => $matchupId]);
+
+        if ($existingMatchup === null) {
+            break;
+        }
+
+        $attempt++;
     }
 
-    $applicationContext->get(\Predis\Client::class)->set("hitmaps-roulette:{$spinId}", $requestBody['spinData']);
+    $rouletteMatchup = new RouletteMatchup();
+    $rouletteMatchup->setMatchupData('');
+    $rouletteMatchup->setMatchupId($matchupId);
+    $rouletteMatchup->setPlayerOneName($requestBody['playerOneName']);
+    $rouletteMatchup->setPlayerTwoName($requestBody['playerTwoName']);
 
-    return $response->code(204);
+    $applicationContext->get(EntityManager::class)->persist($rouletteMatchup);
+    $applicationContext->get(EntityManager::class)->flush();
+
+    return $response->json(['matchupId' => $matchupId]);
 });
-
 
 $klein->dispatch();
 
