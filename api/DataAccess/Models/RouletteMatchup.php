@@ -1,0 +1,111 @@
+<?php
+
+
+namespace DataAccess\Models;
+
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
+use Doctrine\ORM\PersistentCollection;
+
+/**
+ * @ORM\Entity()
+ * @ORM\Table(name="roulette_matchups")
+ */
+class RouletteMatchup {
+    /**
+     * @ORM\Id() @ORM\Column(type="integer") @ORM\GeneratedValue()
+     */
+    public $id;
+
+    /**
+     * @ORM\Column(type="string", nullable=false, name="matchup_id")
+     */
+    public $matchupId;
+
+    /**
+     * @ORM\Column(type="string", nullable=false, name="player_one_name")
+     */
+    public $playerOneName;
+
+    /**
+     * @ORM\Column(type="string", nullable=false, name="player_two_name")
+     */
+    public $playerTwoName;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, name="matchup_data")
+     */
+    public $matchupData;
+
+    /**
+     * @return mixed
+     */
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMatchupId() {
+        return $this->matchupId;
+    }
+
+    /**
+     * @param mixed $matchupId
+     */
+    public function setMatchupId($matchupId): void {
+        $this->matchupId = $matchupId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlayerOneName() {
+        return $this->playerOneName;
+    }
+
+    /**
+     * @param mixed $playerOneName
+     */
+    public function setPlayerOneName($playerOneName): void {
+        $this->playerOneName = $playerOneName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlayerTwoName() {
+        return $this->playerTwoName;
+    }
+
+    /**
+     * @param mixed $playerTwoName
+     */
+    public function setPlayerTwoName($playerTwoName): void {
+        $this->playerTwoName = $playerTwoName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMatchupData() {
+        return $this->matchupData;
+    }
+
+    /**
+     * @param mixed $matchupData
+     */
+    public function setMatchupData($matchupData): void {
+        $this->matchupData = $matchupData;
+    }
+}
