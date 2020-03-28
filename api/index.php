@@ -1349,6 +1349,27 @@ $klein->respond('POST', '/api/roulette/matchups', function(\Klein\Request $reque
     return $response->json(['matchupId' => $matchupId]);
 });
 
+$klein->respond('PATCH', '/api/roulette/matchups/:matchupId', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    $requestBody = json_decode($request->body());
+
+    if ($requestBody === null) {
+        $response->code(400);
+        return $response->json(['message' => 'Could not decode JSON']);
+    }
+
+    /* @var $matchup RouletteMatchup|null */
+    $matchup = $applicationContext->get(EntityManager::class)->getRepository(RouletteMatchup::class)->findOneBy(['matchupId' => $request->matchupId]);
+    if ($matchup === null) {
+        return $response->code(404);
+    }
+
+    if (isset($requestBody['matchupData']) && json_decode($requestBody['matchupData']) !== null) {
+        $matchup->setMatchupData($requestBody['matchupData']);
+    }
+
+    return $response->json($requestBody['matchupData']);
+});
+
 $klein->dispatch();
 
 function userIsLoggedIn(\Klein\Request $request, \DI\Container $applicationContext, ?string &$outToken): bool {
