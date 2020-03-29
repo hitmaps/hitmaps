@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="!mapLoaded && mission != null" class="overlay" :style="'background: #ccc url(' + mission.backgroundUrl + ') no-repeat; background-size: cover'">
-            <div class="overlay-container">
+            <div class="overlay-container" style="max-width: 693px">
                 <img
                     class="img-fluid"
                     :src="loadingTile"
@@ -22,6 +22,7 @@
                     <div
                         class="loader"
                         style="display: inline-block; height: 48px; float: right"
+                        v-if="!showPaymentGateway"
                     >
                         <video
                             loop
@@ -36,6 +37,46 @@
                             <source src="/video/loader.mp4" type="video/mp4" />
                         </video>
                     </div>
+                </div>
+                <div class="footer" style="border-top: solid 1px #000" v-if="showPaymentGateway && end41Campaign === 0">
+                    <p>Due to increased server costs, we are asking for a nominal fee of $1 per map to view map content.
+                        Once you have paid this cost, you do not need to pay it again. Please note that this fee is <b>per map</b>.</p>
+                    <div>
+                        <img @click="end41Campaign = 1" style="cursor: pointer" class="img-fluid" src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/buy-logo-medium.png" alt="Buy now with PayPal" />
+                        <button @click="end41Campaign = 2" style="margin-left: 10px" class="btn btn-dark">WTF, I don't want to pay for this!</button>
+                    </div>
+                </div>
+                <div class="footer" style="border-top: solid 1px #000" v-if="end41Campaign > 0">
+                    <template v-if="end41Campaign === 1">
+                        <p>
+                            While we appreciate your willingness to pay, this was just meant to be an April Fools' Day joke 🙂.
+                        </p>
+                    </template>
+                    <p v-if="end41Campaign === 2">
+                        April Fools! We'd never make you pay for any content, so don't worry; you can continue to view
+                        all maps free of charge 🙂.
+                    </p>
+                    <p>
+                        However, you are more than welcome to provide monetary support at any time.
+                        Check out the <router-link :to="{ name: 'support-the-site' }">Support the Site</router-link> page for more information.
+                    </p>
+                    <p>
+                        Click the button below to view the map you wanted to view in the first place.
+                        You will not be asked to pay for any future maps this point forward.
+                    </p>
+                    <game-button style="border: solid 1px gray" @click="mapLoaded = true">
+                        <img
+                                src="/img/game-icons/modal-continue.png"
+                                class="normal img-fluid"
+                                alt="View Map Icon"
+                        />
+                        <img
+                                src="/img/game-icons/modal-continue-inverted.png"
+                                class="inverted img-fluid"
+                                alt="View Map Icon"
+                        />
+                        View Map
+                    </game-button>
                 </div>
             </div>
         </div>
@@ -1464,6 +1505,8 @@ export default {
             mapLayers: [],
             categories: {},
             mapLoaded: false,
+            showPaymentGateway: false,
+            end41Campaign: 0,
             hiddenLayers: [],
             searchedItem: null,
             floorsWithSearchResults: [],
@@ -2500,7 +2543,9 @@ export default {
                 }
                 this.updateNodeLayerState();
 
-                this.mapLoaded = true;
+                // Disabled for 41
+                //this.mapLoaded = true;
+                this.showPaymentGateway = true;
                 //Is not needed directly at start
                 this.$request(false, 'v1/editor/templates').then(resp => {
                     this.editor.templates = resp.data;
