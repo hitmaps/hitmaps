@@ -40,6 +40,16 @@ class RouletteMatchup {
     public $matchupData;
 
     /**
+     * @ORM\Column(type="integer", nullable=true, name="player_one_last_ping")
+     */
+    public $playerOneLastPing;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true, name="player_two_last_ping")
+     */
+    public $playerTwoLastPing;
+
+    /**
      * @return mixed
      */
     public function getId() {
@@ -107,5 +117,33 @@ class RouletteMatchup {
      */
     public function setMatchupData($matchupData): void {
         $this->matchupData = $matchupData;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlayerOneLastPing() {
+        return $this->playerOneLastPing;
+    }
+
+    /**
+     * @param mixed $playerOneLastPing
+     */
+    public function setPlayerOneLastPing($playerOneLastPing): void {
+        $this->playerOneLastPing = $playerOneLastPing;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlayerTwoLastPing() {
+        return $this->playerTwoLastPing;
+    }
+
+    /**
+     * @param mixed $playerTwoLastPing
+     */
+    public function setPlayerTwoLastPing($playerTwoLastPing): void {
+        $this->playerTwoLastPing = $playerTwoLastPing;
     }
 }
