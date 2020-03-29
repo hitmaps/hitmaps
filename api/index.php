@@ -1350,7 +1350,7 @@ $klein->respond('POST', '/api/roulette/matchups', function(\Klein\Request $reque
 });
 
 $klein->respond('PATCH', '/api/roulette/matchups/[:matchupId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    $requestBody = json_decode($request->body());
+    $requestBody = json_decode($request->body(), true);
 
     if ($requestBody === null) {
         $response->code(400);
@@ -1363,9 +1363,24 @@ $klein->respond('PATCH', '/api/roulette/matchups/[:matchupId]', function(\Klein\
         return $response->code(404);
     }
 
-    if (isset($requestBody['matchupData']) && json_decode($requestBody['matchupData']) !== null) {
+    if (isset($requestBody['matchupData']) && json_decode($requestBody['matchupData'], true) !== null) {
         $matchup->setMatchupData($requestBody['matchupData']);
+    } elseif (isset($requestBody['lastPing']) && isset($requestBody['playerName'])) {
+        if ($requestBody['playerName'] === $matchup->getPlayerOneName()) {
+            $matchup->setPlayerOneLastPing($requestBody['lastPing']);
+        } elseif ($requestBody['playerName'] === $matchup->getPlayerTwoName()) {
+            $matchup->setPlayerTwoLastPing($requestBody['lastPing']);
+        } else {
+            $response->code(400);
+            return $response->json(['message' => 'Could not find player!']);
+        }
+    } else {
+        $response->code(400);
+        return $response->json(['message' => 'Request JSON not supported.']);
     }
+
+    $applicationContext->get(EntityManager::class)->persist($matchup);
+    $applicationContext->get(EntityManager::class)->flush();
 
     return $response->json($requestBody['matchupData']);
 });
