@@ -8,6 +8,7 @@ import ImageLoader from './plugins/ImageLoader'
 import i18n from './i18n'
 import CountryFlag from 'vue-country-flag'
 import Rollbar from 'vue-rollbar'
+import VueCookies from 'vue-cookies'
 
 axios.defaults.withCredentials = true
 
@@ -57,6 +58,7 @@ Vue.component('country-flag', CountryFlag);
 
 Vue.mixin(titleMixin)
 Vue.use(ImageLoader)
+Vue.use(VueCookies)
 
 // Rollbar
 /*Vue.use(Rollbar, {

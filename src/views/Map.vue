@@ -64,7 +64,7 @@
                         Click the button below to view the map you wanted to view in the first place.
                         You will not be asked to pay for any future maps this point forward.
                     </p>
-                    <game-button style="border: solid 1px gray" @click="mapLoaded = true">
+                    <game-button style="border: solid 1px gray" @click="set41Cookie">
                         <img
                                 src="/img/game-icons/modal-continue.png"
                                 class="normal img-fluid"
@@ -1607,6 +1607,10 @@ export default {
         }
     },
     methods: {
+        set41Cookie: function() {
+            Vue.$cookies.set('viewed41','Y', '3d');
+            this.mapLoaded = true;
+        },
         getCountryFlag: function() {
             return LanguageHelpers.getCountryFlagForLocale(this.$i18n);
         },
@@ -2543,9 +2547,12 @@ export default {
                 }
                 this.updateNodeLayerState();
 
-                // Disabled for 41
-                //this.mapLoaded = true;
-                this.showPaymentGateway = true;
+                if (this.$cookies.isKey('viewed41')) {
+                    this.mapLoaded = true;
+                } else {
+                    this.showPaymentGateway = true;
+                }
+
                 //Is not needed directly at start
                 this.$request(false, 'v1/editor/templates').then(resp => {
                     this.editor.templates = resp.data;
