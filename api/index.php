@@ -1343,6 +1343,8 @@ $klein->respond('POST', '/api/roulette/matchups', function(\Klein\Request $reque
     $rouletteMatchup->setMatchupId($matchupId);
     $rouletteMatchup->setPlayerOneName($requestBody['playerOneName']);
     $rouletteMatchup->setPlayerTwoName($requestBody['playerTwoName']);
+    $rouletteMatchup->setPlayerOneLastPing(0);
+    $rouletteMatchup->setPlayerTwoLastPing(0);
 
     $applicationContext->get(EntityManager::class)->persist($rouletteMatchup);
     $applicationContext->get(EntityManager::class)->flush();
