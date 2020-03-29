@@ -40,12 +40,12 @@ class RouletteMatchup {
     public $matchupData;
 
     /**
-     * @ORM\Column(type="integer", nullable=true, name="player_one_last_ping")
+     * @ORM\Column(type="string", nullable=true, name="player_one_last_ping")
      */
     public $playerOneLastPing;
 
     /**
-     * @ORM\Column(type="integer", nullable=true, name="player_two_last_ping")
+     * @ORM\Column(type="string", nullable=true, name="player_two_last_ping")
      */
     public $playerTwoLastPing;
 
