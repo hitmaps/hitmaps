@@ -14,6 +14,7 @@ $klein->respond(function(\Klein\Request $request, \Klein\Response $response) use
     if(isset($_SERVER['HTTP_ORIGIN'])) $response->header('Access-Control-Allow-Origin', $_SERVER['HTTP_ORIGIN']);
     $response->header('Access-Control-Allow-Headers', 'content-type,Authorization');
     $response->header('Access-Control-Allow-Credentials', 'true');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
 });
 
 // Public API calls
