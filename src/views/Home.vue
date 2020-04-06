@@ -103,7 +103,7 @@
                             <h2>{{ currentPromo.topCaption }}</h2>
                             <h1>{{ currentPromo.bottomCaption }}</h1>
                         </div>
-                        <!--<div
+                        <div
                                 onclick="return false;"
                                 @click="showRouletteRivalsModal"
                                 class="image elusive-notification float-right notification-icon"
@@ -119,7 +119,7 @@
                                     class="inverted img-fluid"
                                     alt="More Information Icon"
                             />
-                        </div>-->
+                        </div>
                     </div>
                 </a>
             </div>
@@ -645,12 +645,12 @@
                 </div>
             </div>
         </div>
-        <modal modal-title="Ghost Mode Tournament #2"
+        <modal modal-title="Roulette Rivals 2"
                id="roulette-rivals-modal"
                tabindex="-1"
                dismissable>
             <div class="row">
-                <div class="col-md-6 col-sm-12">
+                <!--<div class="col-md-6 col-sm-12">
                     <div class="embed-responsive embed-responsive-16by9"
                          style="min-height: 310px">
                         <iframe src="https://www.youtube.com/embed/c6q4hgt0fiE"
@@ -660,52 +660,30 @@
                                 allowfullscreen
                         ></iframe>
                     </div>
-                </div>
-                <div class="col-md-6 col-sm-12">
+                </div>-->
+                <div class="col-sm-12">
                     <p>
-                        The second Ghost Mode Tournament, ran by Frote's Speedrun Community and sponsored by HITMAPS&trade;, is coming up!
+                        In Roulette Rivals you go head-to-head against another player in main missions. Once a mission is selected,
+                        an admin will spin the roulette.
                     </p>
                     <p>
-                        This double-elimination tournament is open to all platforms (PC, PS4, XB1) and is a separate tournament per platform.
-                        Each match is a best-of 3, except for the grand final which is best-of 5.
+                        The admin will give the roulette restrictions info to both players and give the sign to officially
+                        start the match. Players are allowed to use every item and spawn location they want.
                     </p>
-                    <alert type="info">Matches run from <b>February 7</b> to <b>February 23</b>!</alert>
-                </div>
-            </div>
-            <div class="modal-header" style="padding-left: 0">
-                <h5><i class="fab fa-twitch"></i> Competitors Currently Streaming</h5>
-            </div>
-            <div class="streams">
-                <div class="row">
-                    <div class="col-md-6 col-sm-12 twitch-stream featured">
-                        <iframe
-                                src="https://player.twitch.tv/?autoplay=false&channel=MrMike227"
-                                height="270"
-                                width="100%"
-                                frameborder="0"
-                                scrolling="no"
-                                autoplay="false"
-                                allowfullscreen="true">
-                        </iframe>
-                        <p><i class="fas fa-award"></i> MrMike227 (Creator of HITMAPS™️)</p>
-                    </div>
-                    <div v-for="stream in streams" class="col-md-6 col-sm-12 twitch-stream">
-                        <iframe
-                                :src="'https://player.twitch.tv/?autoplay=false&channel=' + stream.user_name"
-                                height="270"
-                                width="100%"
-                                frameborder="0"
-                                scrolling="no"
-                                autoplay="false"
-                                allowfullscreen="true">
-                        </iframe>
-                        <p>{{ stream.user_name }}</p>
-                    </div>
+                    <p>
+                        Whoever finishes the mission with a 5 star SA rating first in real time wins the map. Repeat: This
+                        is NOT about the fastest time, but about who ever finishes the mission first with a 5 star SA rating.
+                    </p>
+                    <p>
+                        Do you play it safe? Takes longer, but you wouldn't have to restart. Or do you play it risky to get
+                        that awesome time, with the potential of a lot of restarts?
+                    </p>
+                    <alert type="info">Matches run from <b>April 10</b> to <b>April 26</b>!</alert>
                 </div>
             </div>
         </modal>
         <input type="hidden" name="notification-environment" />
-        <div class="patreon" style="display: none">
+        <!--<div class="patreon">
             <div class="row intro">
                 <div class="col-xs-12">
                     <h1>
@@ -720,9 +698,6 @@
             </div>
             <div class="row">
                 <div class="col-md-3 col-sm-6 patron">
-                    <img src="https://media.hitmaps.com/patrons/mow.jpg" class="img-fluid" alt="Mow's Profile Photo">
-                    <p><b>Mow</b></p>
-                    <p>Master Assassin</p>
                 </div>
             </div>
             <div class="row">
@@ -733,7 +708,7 @@
                     </a>
                 </div>
             </div>
-        </div>
+        </div>-->
     </div>
 </template>
 
