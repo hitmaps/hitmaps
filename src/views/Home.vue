@@ -76,7 +76,7 @@
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat'
                 }">
-                <a href="https://discord.gg/yUjhHTr" target="_blank">
+                <a href="https://discord.gg/FVxTKdU" target="_blank">
                     <p>&nbsp;</p>
                     <div class="countdown" style="background: rgba(0,0,0,.4)">
                         <img
