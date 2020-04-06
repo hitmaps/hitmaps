@@ -82,8 +82,8 @@
                         <img
                                 src="/img/game-icons/elusive-target-reminaing-time.png"
                         />
-                        <div class="timer not-playable">
-                            <div class="target-arrives">{{ (new Date(currentPromo.promoStartDate) > new Date()) ? 'Event Begin' : 'Competition Ends' }}</div>
+                        <div class="timer not-playable" v-if="new Date(currentPromo.promoStartDate) > new Date()">
+                            <div class="target-arrives">{{ (new Date(currentPromo.promoStartDate) > new Date()) ? 'Signups Close' : '' }}</div>
                             <countdown
                                     class="elusive-countdown"
                                     :date="
@@ -762,18 +762,12 @@ export default {
             currentPromo: 0,
             promos: [
                 {
-                    tileUrl: '/img/png/promo/sc4.png',
-                    promoStartDate: '2020-03-13T09:00:00+00:00',
-                    promoEndDate: '2020-03-22T22:59:59+00:00',
-                    topCaption: "Frote7's",
-                    bottomCaption: 'Speedrun Competition #4',
-                },
-                {
-                    tileUrl: '/img/png/promo/creative.png',
-                    promoStartDate: '2020-03-13T09:00:00+00:00',
-                    promoEndDate: '2020-03-22T22:59:59+00:00',
-                    topCaption: "Mullet's",
-                    bottomCaption: 'Creative Contest',
+                    tileUrl: '/img/png/promo/rr2.png',
+                    promoStartDate: '2020-04-09T23:59:59+00:00',
+                    promoEndDate: '2020-04-26T23:59:59+00:00',
+                    topCaption: "Live Competition",
+                    bottomCaption: 'Roulette Rivals 2',
+                    beforeText: 'Signups Close'
                 }
             ],
             games: [],
@@ -1033,14 +1027,14 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
-            /*setInterval(() => {
+            setInterval(() => {
                 this.currentPromo = this.currentPromoIndex === this.promos.length ?
                     0 :
                     this.promos[this.currentPromoIndex];
                 this.currentPromoIndex = this.currentPromoIndex === this.promos.length ?
                     0 :
                     this.currentPromoIndex + 1;
-            }, 5000);*/
+            }, 5000);
         });
         /*this.$http.get(this.$domain + '/api/twitch/current-streams').then(resp => {
             let whitelistedStreams = [
