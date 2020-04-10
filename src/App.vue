@@ -5,9 +5,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-6">
-                        <h4>
-                            &copy; 2018 - {{ $currentYear }} hitmaps.com
-                        </h4>
+                        <h4>&copy; 2018 - {{ $currentYear }} hitmaps.com</h4>
                         <p>
                             <i18n path="footer.disclaimer">
                                 <span slot="ioiLink">
@@ -17,38 +15,31 @@
                         </p>
                     </div>
                     <div class="col-md-6 text-right">
-                        <a
-                            href="https://discord.gg/eZqhZah"
-                            target="_blank"
-                        >
+                        <a href="https://discord.gg/eZqhZah" target="_blank">
                             <span class="fa-stack fa-2x" v-tooltip:top="$t('footer.join-the-discord')">
                                 <i class="fas fa-square fa-stack-2x"></i>
-                                <i
-                                    class="fab fa-discord fa-stack-1x fa-inverse"
-                                ></i>
+                                <i class="fab fa-discord fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
-                        <a
-                            href="https://www.hitmanforum.com/t/interactive-maps-for-hitman-2/27897"
-                            target="_blank"
-                        >
+                        <a href="https://www.hitmanforum.com/t/interactive-maps-for-hitman-2/27897" target="_blank">
                             <span class="fa-stack fa-2x" v-tooltip:top="$t('footer.hitmanforum')">
                                 <i class="fas fa-square fa-stack-2x"></i>
-                                <i
-                                    class="fas fa-comments fa-stack-1x fa-inverse"
-                                ></i>
+                                <i class="fas fa-comments fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                         <a
                             href="https://hitmanstat.us"
                             target="_blank"
-                            data-toggle="tooltip"
-                        >
+                            data-toggle="tooltip">
                             <span class="fa-stack fa-2x" v-tooltip:top="$t('footer.hitman-status')">
                                 <i class="fas fa-square fa-stack-2x"></i>
-                                <i
-                                    class="fas fa-user-tie fa-stack-1x fa-inverse"
-                                ></i>
+                                <i class="fas fa-user-tie fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                        <a href="https://twitter.com/hitmapsOfficial" target="_blank">
+                            <span class="fa-stack fa-2x" v-tooltip:top="$t('footer.twitter')">
+                                <i class="fas fa-square fa-stack-2x"></i>
+                                <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                         <a href="https://www.patreon.com/mike_koch"

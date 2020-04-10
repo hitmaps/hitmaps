@@ -683,6 +683,23 @@
             </div>
         </modal>
         <input type="hidden" name="notification-environment" />
+        <div class="patreon">
+            <div class="row intro">
+                <div class="col-xs-12">
+                    <h1>{{ $t('partnership.header') }}</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>{{ $t('partnership.paragraph-1') }}</p>
+                    <p>{{ $t('partnership.paragraph-2') }}</p>
+                    <a href="https://discord.gg/FVxTKdU" target="_blank" class="btn square-button blurple">
+                        <i class="fab fa-discord"></i>
+                        {{ $t('partnership.join-the-discord') }}
+                    </a>
+                </div>
+            </div>
+        </div>
         <!--<div class="patreon">
             <div class="row intro">
                 <div class="col-xs-12">
@@ -1564,6 +1581,19 @@ header {
 
         p {
             margin-bottom: 0;
+        }
+    }
+
+    .square-button {
+        border-radius: 0;
+
+        &.blurple {
+            background: #7289DA;
+            color: #fff;
+
+            &:hover {
+                background: #6073bf;
+            }
         }
     }
 
