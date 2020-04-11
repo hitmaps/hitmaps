@@ -1345,6 +1345,9 @@ $klein->respond('POST', '/api/roulette/matchups', function(\Klein\Request $reque
     $rouletteMatchup->setPlayerTwoName($requestBody['playerTwoName']);
     $rouletteMatchup->setPlayerOneLastPing(0);
     $rouletteMatchup->setPlayerTwoLastPing(0);
+    $spinTime = new DateTime('now', new DateTimeZone('UTC'));
+    $spinTime->modify('-1 day');
+    $rouletteMatchup->setSpinTime($spinTime);
 
     $applicationContext->get(EntityManager::class)->persist($rouletteMatchup);
     $applicationContext->get(EntityManager::class)->flush();
