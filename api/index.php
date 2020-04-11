@@ -1370,6 +1370,7 @@ $klein->respond('PATCH', '/api/roulette/matchups/[:matchupId]', function(\Klein\
     $responseProperty = '';
     if (isset($requestBody['matchupData']) && json_decode($requestBody['matchupData'], true) !== null) {
         $matchup->setMatchupData($requestBody['matchupData']);
+        $matchup->setSpinTime(new DateTime('now', new DateTimeZone('UTC')));
         $responseProperty = 'matchupData';
     } elseif (isset($requestBody['lastPing']) && isset($requestBody['playerName'])) {
         if ($requestBody['playerName'] === $matchup->getPlayerOneName()) {
