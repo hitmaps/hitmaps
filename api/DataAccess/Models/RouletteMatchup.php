@@ -50,6 +50,11 @@ class RouletteMatchup {
     public $playerTwoLastPing;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true, name="spin_time")
+     */
+    public $spinTime;
+
+    /**
      * @return mixed
      */
     public function getId() {
@@ -145,5 +150,19 @@ class RouletteMatchup {
      */
     public function setPlayerTwoLastPing($playerTwoLastPing): void {
         $this->playerTwoLastPing = $playerTwoLastPing;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSpinTime() {
+        return $this->spinTime;
+    }
+
+    /**
+     * @param mixed $spinTime
+     */
+    public function setSpinTime($spinTime): void {
+        $this->spinTime = $spinTime;
     }
 }
