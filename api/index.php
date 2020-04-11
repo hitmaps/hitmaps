@@ -1304,9 +1304,13 @@ $klein->respond('POST', '/api/roulette/spins', function(\Klein\Request $request,
 $klein->respond('GET', '/api/roulette/matchups/[:matchupId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $matchupId = $request->matchupId;
 
+    /* @var $matchup RouletteMatchup */
     $matchup = $applicationContext->get(EntityManager::class)
         ->getRepository(RouletteMatchup::class)
         ->findOneBy(['matchupId' => $matchupId]);
+
+    $matchup->currentTime = new DateTime('now', new DateTimeZone('UTC'));
+    $matchup->remainingTimeInSeconds = calculateRemainingMatchTime($matchup);
 
     if ($matchup !== null) {
         return $response->json($matchup);
@@ -1314,6 +1318,13 @@ $klein->respond('GET', '/api/roulette/matchups/[:matchupId]', function(\Klein\Re
 
     return $response->code(404);
 });
+
+function calculateRemainingMatchTime(RouletteMatchup $matchup): int {
+    $matchEndTime = (clone $matchup->getSpinTime())->modify('+1 hour');
+    $difference = $matchEndTime->diff($matchup->currentTime);
+
+    return $difference->s;
+}
 
 $klein->respond('POST', '/api/roulette/matchups', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $requestBody = json_decode($request->body(), true);
