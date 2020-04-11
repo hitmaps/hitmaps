@@ -54,6 +54,10 @@ class RouletteMatchup {
      */
     public $spinTime;
 
+    // Used for API
+    public $currentTime;
+    public $remainingTimeInSeconds;
+
     /**
      * @return mixed
      */
@@ -153,7 +157,7 @@ class RouletteMatchup {
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getSpinTime() {
         return $this->spinTime;
