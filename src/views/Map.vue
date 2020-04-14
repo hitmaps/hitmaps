@@ -2440,11 +2440,12 @@ export default {
                 this.buildFoliage(foliage).addTo(this.overlays[foliage.level]['Navigation|Foliage']);
             });
 
-            resp.data.disguises.forEach(disguise => {
+            // Disabling for iOS for now
+            /*resp.data.disguises.forEach(disguise => {
                 disguise.areas.forEach(area => {
                     this.buildDisguiseArea(area).addTo(this.overlays[area.level]['Disguises|' + disguise.id]);
                 });
-            });
+            });*/
 
             this.$nextTick(() => {
                 // Build tile layers for each floor
