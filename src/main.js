@@ -18,6 +18,12 @@ Vue.prototype.$http = axios
 Vue.prototype.$domain =
     document.location.protocol + '//' + window.location.hostname
 
+var VueMoment = require('vue-moment');
+var moment = require('moment-timezone');
+Vue.use(VueMoment, {
+    moment
+});
+
 //Better method to deciding what type of request
 Vue.prototype.$request = (post, endpoint, data) => {
     var header = {}
