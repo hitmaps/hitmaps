@@ -690,13 +690,17 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-12">
+                <div class="col-sm-6 col-xs-12">
                     <p>{{ $t('partnership.paragraph-1') }}</p>
                     <p>{{ $t('partnership.paragraph-2') }}</p>
+                    <p>{{ $t('partnership.paragraph-3') }}</p>
                     <a href="https://discord.gg/FVxTKdU" target="_blank" class="btn square-button blurple">
                         <i class="fab fa-discord"></i>
                         {{ $t('partnership.join-the-discord') }}
                     </a>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                    <img src="/img/png/promo/frote-partnership.png" class="img-fluid" alt="Various events hosted by Frote's Speedrun Community">
                 </div>
             </div>
         </div>
