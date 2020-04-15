@@ -1327,7 +1327,7 @@ function calculateRemainingMatchTime(RouletteMatchup $matchup): int {
         return 0;
     }
 
-    return ($difference->i * 60) + $difference->s;
+    return ($difference->h * 60 * 60) + ($difference->i * 60) + $difference->s;
 }
 
 $klein->respond('POST', '/api/roulette/matchups', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
