@@ -4,21 +4,14 @@
             style="background: url('https://media.hitmaps.com/img/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
     >
         <div class="inner-content">
-            <h1>404</h1>
-            <h2>Page Not Found</h2>
+            <h1>500</h1>
+            <h2>Internal Server Error</h2>
             <hr>
             <img
-                    src="/img/404.gif"
-                    alt="Janus Being Attacked With Muffins"
+                    src="/img/500.gif"
+                    alt="47 being pushed to his death"
             />
-            <br />
-            <a
-                    style="font-size: .6em; color: white"
-                    href="https://www.reddit.com/r/HiTMAN/comments/ai5ao0/death_by_muffins/"
-            >
-                u/AJNguyenYT on Reddit
-            </a>
-            <p>We couldn't find the page you were looking for. If this continues, please let us know via one of the social networks in the footer below.</p>
+            <p>It looks like something went horribly wrong. If this continues, please let us know via one of the social networks in the footer below.</p>
         </div>
         <div class="home-button">
             <router-link :to="{ name: 'home' }">
@@ -41,8 +34,8 @@
 import GameButton from "../components/GameButton";
 
 export default {
-    name: '404',
-    title: 'Page Not Found',
+    name: '500',
+    title: 'Internal Server Error',
     components: {GameButton}
 }
 </script>

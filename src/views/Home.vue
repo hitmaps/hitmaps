@@ -78,11 +78,11 @@
                 }">
                 <a href="https://discord.gg/FVxTKdU" target="_blank">
                     <p>&nbsp;</p>
-                    <div class="countdown" style="background: rgba(0,0,0,.4)">
+                    <div class="countdown" style="background: rgba(0,0,0,.4)" v-if="new Date(currentPromo.promoStartDate) > new Date()">
                         <img
                                 src="/img/game-icons/elusive-target-reminaing-time.png"
                         />
-                        <div class="timer not-playable" v-if="new Date(currentPromo.promoStartDate) > new Date()">
+                        <div class="timer not-playable">
                             <div class="target-arrives">{{ (new Date(currentPromo.promoStartDate) > new Date()) ? 'Signups Close' : '' }}</div>
                             <countdown
                                     class="elusive-countdown"
@@ -1027,6 +1027,9 @@ export default {
                     0 :
                     this.currentPromoIndex + 1;
             }, 5000);
+        }).catch(err => {
+            console.error(err);
+            this.$router.push({ name: '500' });
         });
         /*this.$http.get(this.$domain + '/api/twitch/current-streams').then(resp => {
             let whitelistedStreams = [

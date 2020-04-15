@@ -1304,9 +1304,13 @@ $klein->respond('POST', '/api/roulette/spins', function(\Klein\Request $request,
 $klein->respond('GET', '/api/roulette/matchups/[:matchupId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $matchupId = $request->matchupId;
 
+    /* @var $matchup RouletteMatchup */
     $matchup = $applicationContext->get(EntityManager::class)
         ->getRepository(RouletteMatchup::class)
         ->findOneBy(['matchupId' => $matchupId]);
+
+    $matchup->currentTime = new DateTime('now', new DateTimeZone('UTC'));
+    $matchup->remainingTimeInSeconds = calculateRemainingMatchTime($matchup);
 
     if ($matchup !== null) {
         return $response->json($matchup);
@@ -1314,6 +1318,17 @@ $klein->respond('GET', '/api/roulette/matchups/[:matchupId]', function(\Klein\Re
 
     return $response->code(404);
 });
+
+function calculateRemainingMatchTime(RouletteMatchup $matchup): int {
+    $matchEndTime = (clone $matchup->getSpinTime())->modify('+1 hour');
+    $difference = $matchEndTime->diff($matchup->currentTime);
+
+    if ($difference->invert === 0) {
+        return 0;
+    }
+
+    return ($difference->h * 60 * 60) + ($difference->i * 60) + $difference->s;
+}
 
 $klein->respond('POST', '/api/roulette/matchups', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $requestBody = json_decode($request->body(), true);
@@ -1345,6 +1360,9 @@ $klein->respond('POST', '/api/roulette/matchups', function(\Klein\Request $reque
     $rouletteMatchup->setPlayerTwoName($requestBody['playerTwoName']);
     $rouletteMatchup->setPlayerOneLastPing(0);
     $rouletteMatchup->setPlayerTwoLastPing(0);
+    $spinTime = new DateTime('now', new DateTimeZone('UTC'));
+    $spinTime->modify('-1 day');
+    $rouletteMatchup->setSpinTime($spinTime);
 
     $applicationContext->get(EntityManager::class)->persist($rouletteMatchup);
     $applicationContext->get(EntityManager::class)->flush();
@@ -1368,8 +1386,20 @@ $klein->respond('PATCH', '/api/roulette/matchups/[:matchupId]', function(\Klein\
 
     /** @noinspection PhpUnusedLocalVariableInspection */
     $responseProperty = '';
-    if (isset($requestBody['matchupData']) && json_decode($requestBody['matchupData'], true) !== null) {
+    $decodedMatchupData = json_decode($requestBody['matchupData'], true);
+    if (isset($requestBody['matchupData']) && $decodedMatchupData !== null) {
         $matchup->setMatchupData($requestBody['matchupData']);
+        if ($decodedMatchupData['show']) {
+            $spinTime = new DateTime('now', new DateTimeZone('UTC'));
+            $spinTime->modify('+2 seconds');
+            $matchup->setSpinTime($spinTime);
+
+        } else {
+            $now = new DateTime('now', new DateTimeZone('UTC'));
+            $now->modify('-2 hours');
+            $matchup->setSpinTime($now);
+        }
+
         $responseProperty = 'matchupData';
     } elseif (isset($requestBody['lastPing']) && isset($requestBody['playerName'])) {
         if ($requestBody['playerName'] === $matchup->getPlayerOneName()) {
