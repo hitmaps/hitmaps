@@ -21,10 +21,8 @@
                 <loader></loader>
             </div>
         </div>
-        <div
-            class="row dashboard"
-            v-if="games.length > 0 || elusiveTargets.length > 0"
-        >
+        <template v-if="games.length > 0 || elusiveTargets.length > 0">
+            <div class="row dashboard">
 
             <div
                 class="game col-lg"
@@ -645,6 +643,35 @@
                 </div>
             </div>
         </div>
+            <div class="row dashboard">
+                <div class="tournament col-lg">
+                    <div class="tournament-info">
+                        <div class="text">
+                            <h1>Roulette Rivals 2 (Presented by Frote's Speedrun Community)</h1>
+                            <h2>Upcoming Matches</h2>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Competitors</th>
+                            <th>Maps</th>
+                            <th>Date | Time ({{ new Date() | moment('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone, 'z') }})</th>
+                            <th>Shoutcaster(s)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="matchup in this.tournamentMatches" :key="`${matchup.participant0Name}|${matchup.participant1Name}|${matchup.platform}`">
+                            <td>{{ matchup.participant0Name }} vs {{ matchup.participant1Name }}</td>
+                            <td>{{ matchup.firstMap }} and {{ matchup.secondMap }}</td>
+                            <td>{{ matchup.matchTime | moment('ddd, D MMM') }} | {{ matchup.matchTime | moment('h:mm A') }}</td>
+                            <td><a :href="matchup.shoutcastStream" target="_blank">{{ matchup.shoutcasters }}</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </template>
         <modal modal-title="Roulette Rivals 2"
                id="roulette-rivals-modal"
                tabindex="-1"
@@ -766,6 +793,7 @@ export default {
                     beforeText: 'Signups Close'
                 }
             ],
+            tournamentMatches: [],
             games: [],
             elusiveTargets: [],
             activeElusiveIndex: 0,
@@ -1035,68 +1063,10 @@ export default {
             console.error(err);
             this.$router.push({ name: '500' });
         });
-        /*this.$http.get(this.$domain + '/api/twitch/current-streams').then(resp => {
-            let whitelistedStreams = [
-                'zeekomkommer69',
-                'supremecommanderike',
-                'camthechest',
-                'pokeredface456',
-                'sheikthegeek',
-                'mulletpride',
-                'bigdavedmr',
-                'mungadungalis',
-                'gkpunk',
-                'adoriaclub47',
-                'foppeh',
-                'mrmike227',
-                'ibbe040',
-                'vortigauntblade',
-                'tryagain_later',
-                'a_chicken_chicken',
-                'yellowzr1',
-                'chubbydarksoul',
-                'speedsterrunner217',
-                'chaos_agent_45',
-                'frote7',
-                'double_eagle',
-                'some_random_person',
-                'in4fun',
-                'devilvendetta',
-                'srarkady54',
-                'yannini',
-                'bongo_mann',
-                'davidredsox',
-                'gulitox',
-                'skulkwah',
-                'dribbleondosfm',
-                'johnnyaxxx',
-                'mendietinha',
-                'ninja_frosk',
-                'the_hermit_crab',
-                'sky1yyy',
-                'silversurfers1',
-                'barg_11',
-                'therealfuzk',
-                'karma4d'
-            ];
-
-            let streams = resp.data.data;
-
-            let filteredStreams = [];
-            streams.forEach(stream => {
-                // Don't display myself twice
-                if (stream['user_name'] === 'MrMike227') {
-                    return;
-                }
-
-                let streamTitle = stream.title.toLowerCase();
-                if (streamTitle.includes('ghost') && streamTitle.includes('mode') && whitelistedStreams.includes(stream['user_name'].toLowerCase())) {
-                    filteredStreams.push(stream);
-                }
-            });
-
-            this.streams = filteredStreams;
-        })*/
+        this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups').then(resp => {
+            this.tournamentMatches = resp.data;
+            console.info(this.tournamentMatches);
+        });
     }
 }
 
@@ -1296,6 +1266,38 @@ header {
 
 .dashboard {
     margin: 40px;
+
+    .tournament {
+        display: flex;
+        flex-direction: column;
+        color: white;
+        background: #fff;
+
+        .tournament-info {
+            padding: 15px 0;
+            color: #000;
+            text-shadow: none;
+
+            h2 {
+                color: #ff003c;
+            }
+
+            .text {
+                display: inline-block;
+                text-transform: uppercase;
+
+                h1 {
+                    font-size: 1.5rem;
+                    margin-bottom: 0;
+                }
+
+                h2 {
+                    font-size: 1rem;
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
 
     .game,
     .elusive-target {
