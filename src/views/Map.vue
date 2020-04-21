@@ -288,30 +288,26 @@
                                     aria-labelledby="header-disguises"
                                 >
                                     <div class="card-body disguises">
-                                        <div
-                                            @click="changeDisguise('NONE')"
-                                            data-disguise-id="NONE"
-                                            class="full-width selected"
-                                            style="background: url('/img/jpg/disguises/none.jpg'); "
-                                        >
-                                            <p class="disguise-info">{{ $t('map.none') }}</p>
-                                        </div>
-                                        <div
-                                            @click="changeDisguise(disguise)"
-                                            :data-disguise-id="disguise.id"
-                                            v-for="disguise in disguises"
-                                            :key="disguise.id"
-                                            class="full-width"
-                                            :style="{
-                                                background:
-                                                    'url(/img/jpg/' +
-                                                    disguise.image +
-                                                    '.jpg)'
-                                            }"
-                                        >
-                                            <p class="disguise-info">
-                                                {{ disguise.name }}
-                                            </p>
+                                        <div class="row">
+                                            <div
+                                                @click="changeDisguise('NONE')"
+                                                data-disguise-id="NONE"
+                                                class="col-lg-6 selected">
+                                                <div class="disguise-container">
+                                                    <img src="https://media.hitmaps.com/img/ui/tiles/defaultmenutilelarge.jpg" alt="None" class="img-fluid">
+                                                    <p class="disguise-info">{{ $t('map.none') }}</p>
+                                                </div>
+                                            </div>
+                                            <div @click="changeDisguise(disguise)"
+                                                 :data-disguise-id="disguise.id"
+                                                 v-for="disguise in disguises"
+                                                 :key="disguise.id"
+                                                 class="col-lg-6">
+                                                <div class="disguise-container">
+                                                    <img class="img-fluid" :src="disguise.image" alt="Disguise image">
+                                                    <p class="disguise-info">{{ disguise.name }}</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -3187,12 +3183,6 @@ html {
                     color: #fff;
                 }
             }
-
-            .disguise-info {
-                display: inline-block;
-                font-weight: bolder;
-                color: #fff;
-            }
         }
     }
 }
@@ -3362,11 +3352,20 @@ html {
 }
 
 [data-disguise-id] {
-    border: solid 2px #000;
-    border-radius: 3px;
+    .disguise-container {
+        border: solid 2px #000;
+        border-radius: 3px;
 
-    &:hover {
-        border: solid 2px #fff;
+        &:hover {
+            border: solid 2px #fff;
+        }
+
+        .disguise-info {
+            font-weight: bolder;
+            color: #000;
+            background: #fff;
+            text-align: center;
+        }
     }
 }
 
