@@ -304,28 +304,11 @@
                                                  :key="disguise.id"
                                                  class="col-lg-6">
                                                 <div class="disguise-container">
-                                                    <img class="img-fluid" src="https://media.hitmaps.com/img/unlockables/outfit_c98a6467-5dd9-4041-8bff-119445750d4d_0.jpg" alt="Disguise image">
+                                                    <img class="img-fluid" :src="disguise.image" alt="Disguise image">
                                                     <p class="disguise-info">{{ disguise.name }}</p>
                                                 </div>
                                             </div>
                                         </div>
-                                       <!-- <div
-                                            @click="changeDisguise(disguise)"
-                                            :data-disguise-id="disguise.id"
-                                            v-for="disguise in disguises"
-                                            :key="disguise.id"
-                                            class="full-width"
-                                            :style="{
-                                                background:
-                                                    'url(/img/jpg/' +
-                                                    disguise.image +
-                                                    '.jpg)'
-                                            }"
-                                        >
-                                            <p class="disguise-info">
-                                                {{ disguise.name }}
-                                            </p>
-                                        </div>-->
                                     </div>
                                 </div>
                             </div>
