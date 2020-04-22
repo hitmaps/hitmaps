@@ -2204,12 +2204,25 @@ export default {
                 .find('.bootstrap-select')
                 .addClass('item-selected')
                 .end();
-            const item = event.target.value.split(';');
+            this.doSearchItem(event.target.value);
+        },
+        doSearchItem(itemString) {
+            const item = itemString.split(';');
             this.searchedItem = {
                 layer: item[0],
                 name: item[1]
             };
             this.updateNodeLayerState();
+            this.$router.push({
+                query: Object.assign({}, this.$route.query,
+                    {
+                        item: itemString
+                    }
+                )
+            });
+        },
+        loadWithSearchedItem(itemString) {
+            $(this.$refs.itemSearch).selectpicker('val', decodeURIComponent(itemString));
         },
         updateNodeLayerState() {
             let itemName = null;
@@ -2533,6 +2546,10 @@ export default {
 
                     $('.area-icon').css('font-size', fonts[zoomLevel]);
                 });
+
+                if (this.$route.query && this.$route.query['item']) {
+                    this.loadWithSearchedItem(this.$route.query['item']);
+                }
             })
         })
     }
