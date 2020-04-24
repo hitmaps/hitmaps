@@ -55,7 +55,7 @@ class RouletteMatchup {
     public $spinTime;
 
     /**
-     * @ORM\Column(type="string", name="match_length")
+     * @ORM\Column(type="string", nullable=true, name="match_length")
      */
     public $matchLength;
 
