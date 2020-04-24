@@ -1311,6 +1311,7 @@ $klein->respond('GET', '/api/roulette/matchups/[:matchupId]', function(\Klein\Re
 
     $matchup->currentTime = new DateTime('now', new DateTimeZone('UTC'));
     $matchup->remainingTimeInSeconds = calculateRemainingMatchTime($matchup);
+    $matchup->showTimer = $matchup->getMatchLength() !== 'NO TIME LIMIT';
 
     if ($matchup !== null) {
         return $response->json($matchup);
@@ -1320,7 +1321,11 @@ $klein->respond('GET', '/api/roulette/matchups/[:matchupId]', function(\Klein\Re
 });
 
 function calculateRemainingMatchTime(RouletteMatchup $matchup): int {
-    $matchEndTime = (clone $matchup->getSpinTime())->modify('+1 hour');
+    if ($matchup->getMatchLength() === 'NO TIME LIMIT') {
+        return -1;
+    }
+
+    $matchEndTime = (clone $matchup->getSpinTime())->modify($matchup->getMatchLength());
     $difference = $matchEndTime->diff($matchup->currentTime);
 
     if ($difference->invert === 0) {
@@ -1391,9 +1396,18 @@ $klein->respond('PATCH', '/api/roulette/matchups/[:matchupId]', function(\Klein\
         $matchup->setMatchupData($requestBody['matchupData']);
         if ($decodedMatchupData['show']) {
             $spinTime = new DateTime('now', new DateTimeZone('UTC'));
-            $spinTime->modify('+2 seconds');
+            $spinTime->modify('+1 second');
             $matchup->setSpinTime($spinTime);
 
+            if (isset($decodedMatchupData['matchDuration'])) {
+                if (intval($decodedMatchupData['matchDuration']) !== -1) {
+                    $matchup->setMatchLength($decodedMatchupData['matchDuration']);
+                } else {
+                    $matchup->setMatchLength('NO TIME LIMIT');
+                }
+            } else {
+                $matchup->setMatchLength('+1 hour');
+            }
         } else {
             $now = new DateTime('now', new DateTimeZone('UTC'));
             $now->modify('-2 hours');
