@@ -1397,17 +1397,16 @@ $klein->respond('PATCH', '/api/roulette/matchups/[:matchupId]', function(\Klein\
         $matchup->setMatchupData($requestBody['matchupData']);
         if ($decodedMatchupData['show']) {
             $spinTime = new DateTime('now', new DateTimeZone('UTC'));
+            if ($decodedMatchupData['matchTime']) {
+                $spinTime = new DateTime($decodedMatchupData['matchTime']);
+            }
             $spinTime->modify('+1 second');
             $matchup->setSpinTime($spinTime);
 
-            if (isset($decodedMatchupData['matchDuration'])) {
-                if (intval($decodedMatchupData['matchDuration']) !== -1) {
-                    $matchup->setMatchLength("{$decodedMatchupData['matchDuration']} minutes");
-                } else {
-                    $matchup->setMatchLength('NO TIME LIMIT');
-                }
+            if (intval($decodedMatchupData['matchDuration']) !== -1) {
+                $matchup->setMatchLength("{$decodedMatchupData['matchDuration']} minutes");
             } else {
-                $matchup->setMatchLength('+1 hour');
+                $matchup->setMatchLength('NO TIME LIMIT');
             }
         } else {
             $now = new DateTime('now', new DateTimeZone('UTC'));
