@@ -1368,6 +1368,7 @@ $klein->respond('POST', '/api/roulette/matchups', function(\Klein\Request $reque
     $spinTime = new DateTime('now', new DateTimeZone('UTC'));
     $spinTime->modify('-1 day');
     $rouletteMatchup->setSpinTime($spinTime);
+    $rouletteMatchup->setMatchLength('60 minutes');
 
     $applicationContext->get(EntityManager::class)->persist($rouletteMatchup);
     $applicationContext->get(EntityManager::class)->flush();
@@ -1401,7 +1402,7 @@ $klein->respond('PATCH', '/api/roulette/matchups/[:matchupId]', function(\Klein\
 
             if (isset($decodedMatchupData['matchDuration'])) {
                 if (intval($decodedMatchupData['matchDuration']) !== -1) {
-                    $matchup->setMatchLength($decodedMatchupData['matchDuration']);
+                    $matchup->setMatchLength("{$decodedMatchupData['matchDuration']} minutes");
                 } else {
                     $matchup->setMatchLength('NO TIME LIMIT');
                 }
