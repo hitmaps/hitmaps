@@ -54,9 +54,15 @@ class RouletteMatchup {
      */
     public $spinTime;
 
+    /**
+     * @ORM\Column(type="string", name="match_length")
+     */
+    public $matchLength;
+
     // Used for API
     public $currentTime;
     public $remainingTimeInSeconds;
+    public $showTimer;
 
     /**
      * @return mixed
@@ -168,5 +174,19 @@ class RouletteMatchup {
      */
     public function setSpinTime($spinTime): void {
         $this->spinTime = $spinTime;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMatchLength() {
+        return $this->matchLength;
+    }
+
+    /**
+     * @param mixed $matchLength
+     */
+    public function setMatchLength($matchLength): void {
+        $this->matchLength = $matchLength;
     }
 }
