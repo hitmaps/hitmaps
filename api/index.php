@@ -1311,7 +1311,12 @@ $klein->respond('GET', '/api/roulette/matchups/[:matchupId]', function(\Klein\Re
 
     $matchup->currentTime = new DateTime('now', new DateTimeZone('UTC'));
     $matchup->remainingTimeInSeconds = calculateRemainingMatchTime($matchup);
+    $matchup->pretime = $matchup->currentTime < $matchup->getSpinTime();
+    $matchup->remainingPretimeInSeconds = calculatePretimeRemaining($matchup);
     $matchup->showTimer = $matchup->getMatchLength() !== 'NO TIME LIMIT';
+
+    // Formatting
+    $matchup->formattedSpinTime = $matchup->getSpinTime()->format(DATE_ISO8601);
 
     if ($matchup !== null) {
         return $response->json($matchup);
@@ -1327,6 +1332,16 @@ function calculateRemainingMatchTime(RouletteMatchup $matchup): int {
 
     $matchEndTime = (clone $matchup->getSpinTime())->modify($matchup->getMatchLength());
     $difference = $matchEndTime->diff($matchup->currentTime);
+
+    if ($difference->invert === 0) {
+        return 0;
+    }
+
+    return ($difference->h * 60 * 60) + ($difference->i * 60) + $difference->s;
+}
+
+function calculatePretimeRemaining(RouletteMatchup $matchup) {
+    $difference = $matchup->currentTime->diff($matchup->getSpinTime());
 
     if ($difference->invert === 0) {
         return 0;
