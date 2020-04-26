@@ -655,15 +655,15 @@
                         <div class="col-md-4 col-sm-12">
                             <h3><i class="fab fa-steam"></i> PC</h3>
                             <p>Frote7 vs. Davidredsox</p>
-                            <!--<iframe
-                                    src="https://player.twitch.tv/?channel=frote7&muted=true"
+                            <iframe
+                                    src="https://player.twitch.tv/?channel=scroobiusjib&muted=true"
                                     height="300"
                                     width="500"
                                     frameborder="0"
                                     scrolling="no"
                                     allowfullscreen="true">
-                            </iframe>-->
-                            <p><i>Live Commentary by TBD</i></p>
+                            </iframe>
+                            <p><i>Live Commentary by Scroobiusjib</i></p>
                         </div>
                         <div class="col-md-4 col-sm-12">
                             <h3><i class="fab fa-playstation"></i> PS4</h3>
