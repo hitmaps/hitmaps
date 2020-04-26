@@ -648,27 +648,50 @@
                     <div class="tournament-info">
                         <div class="text">
                             <h1>Roulette Rivals 2 (Presented by Frote's Speedrun Community)</h1>
-                            <h2>Upcoming Matches</h2>
+                            <h2>Finals - Starts on April 26, 2020 at 17:00 CEST</h2>
                         </div>
                     </div>
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Competitors</th>
-                            <th>Maps</th>
-                            <th>Date | Time ({{ new Date() | moment('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone, 'z') }})</th>
-                            <th>Shoutcaster(s)</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="matchup in this.tournamentMatches" :key="`${matchup.participant0Name}|${matchup.participant1Name}|${matchup.platform}`">
-                            <td>{{ matchup.participant0Name }} vs {{ matchup.participant1Name }}</td>
-                            <td>{{ matchup.firstMap }} and {{ matchup.secondMap }}</td>
-                            <td>{{ matchup.matchTime | moment('ddd, D MMM') }} | {{ matchup.matchTime | moment('h:mm A') }}</td>
-                            <td><a :href="matchup.shoutcastStream" target="_blank">{{ matchup.shoutcasters }}</a></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div class="row" style="color: black">
+                        <div class="col-md-4 col-sm-12">
+                            <h3><i class="fab fa-steam"></i> PC</h3>
+                            <p>Frote7 vs. Davidredsox</p>
+                            <!--<iframe
+                                    src="https://player.twitch.tv/?channel=frote7&muted=true"
+                                    height="300"
+                                    width="500"
+                                    frameborder="0"
+                                    scrolling="no"
+                                    allowfullscreen="true">
+                            </iframe>-->
+                            <p><i>Live Commentary by TBD</i></p>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <h3><i class="fab fa-playstation"></i> PS4</h3>
+                            <p>SpeedsterRunner217 vs. David Strong</p>
+                            <iframe
+                                    src="https://player.twitch.tv/?channel=frote7&muted=true"
+                                    height="300"
+                                    width="500"
+                                    frameborder="0"
+                                    scrolling="no"
+                                    allowfullscreen="true">
+                            </iframe>
+                            <p><i>Live Commentary by Frote7</i></p>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <h3><i class="fab fa-xbox"></i> Xbox</h3>
+                            <p>Ducker Gaming vs. Pokeredface</p>
+                            <iframe
+                                    src="https://player.twitch.tv/?channel=frote7&muted=true"
+                                    height="300"
+                                    width="500"
+                                    frameborder="0"
+                                    scrolling="no"
+                                    allowfullscreen="true">
+                            </iframe>
+                            <p><i>Live Commentary by Frote7</i></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </template>
