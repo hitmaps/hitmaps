@@ -643,57 +643,6 @@
                 </div>
             </div>
         </div>
-            <div class="row dashboard">
-                <div class="tournament col-lg">
-                    <div class="tournament-info">
-                        <div class="text">
-                            <h1>Roulette Rivals 2 (Presented by Frote's Speedrun Community)</h1>
-                            <h2>Finals - Starts on April 26, 2020 at 17:00 CEST</h2>
-                        </div>
-                    </div>
-                    <div class="row" style="color: black">
-                        <div class="col-md-4 col-sm-12">
-                            <h3><i class="fab fa-steam"></i> PC</h3>
-                            <p>Frote7 vs. Davidredsox</p>
-                            <iframe
-                                    src="https://player.twitch.tv/?channel=scroobiusjib&muted=true"
-                                    height="300"
-                                    width="500"
-                                    frameborder="0"
-                                    scrolling="no"
-                                    allowfullscreen="true">
-                            </iframe>
-                            <p><i>Live Commentary by Scroobiusjib</i></p>
-                        </div>
-                        <div class="col-md-4 col-sm-12">
-                            <h3><i class="fab fa-playstation"></i> PS4</h3>
-                            <p>SpeedsterRunner217 vs. David Strong</p>
-                            <iframe
-                                    src="https://player.twitch.tv/?channel=frote7&muted=true"
-                                    height="300"
-                                    width="500"
-                                    frameborder="0"
-                                    scrolling="no"
-                                    allowfullscreen="true">
-                            </iframe>
-                            <p><i>Live Commentary by Frote7</i></p>
-                        </div>
-                        <div class="col-md-4 col-sm-12">
-                            <h3><i class="fab fa-xbox"></i> Xbox</h3>
-                            <p>Ducker Gaming vs. Pokeredface</p>
-                            <iframe
-                                    src="https://player.twitch.tv/?channel=frote7&muted=true"
-                                    height="300"
-                                    width="500"
-                                    frameborder="0"
-                                    scrolling="no"
-                                    allowfullscreen="true">
-                            </iframe>
-                            <p><i>Live Commentary by Frote7</i></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </template>
         <modal modal-title="Roulette Rivals 2"
                id="roulette-rivals-modal"
@@ -806,16 +755,7 @@ export default {
         return {
             currentPromoIndex: 0,
             currentPromo: 0,
-            promos: [
-                {
-                    tileUrl: '/img/png/promo/rr2.png',
-                    promoStartDate: '2020-04-09T23:59:59+00:00',
-                    promoEndDate: '2020-04-26T23:59:59+00:00',
-                    topCaption: "Live Competition",
-                    bottomCaption: 'Roulette Rivals 2',
-                    beforeText: 'Signups Close'
-                }
-            ],
+            promos: [],
             tournamentMatches: [],
             games: [],
             elusiveTargets: [],
@@ -1074,14 +1014,14 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
-            setInterval(() => {
+            /*setInterval(() => {
                 this.currentPromo = this.currentPromoIndex === this.promos.length ?
                     0 :
                     this.promos[this.currentPromoIndex];
                 this.currentPromoIndex = this.currentPromoIndex === this.promos.length ?
                     0 :
                     this.currentPromoIndex + 1;
-            }, 5000);
+            }, 5000);*/
         }).catch(err => {
             console.error(err);
             this.$router.push({ name: '500' });
