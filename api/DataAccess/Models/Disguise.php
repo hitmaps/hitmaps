@@ -30,6 +30,16 @@ class Disguise {
     private $image;
 
     /**
+     * @ORM\Column(type="string", name="`order`")
+     */
+    private $order;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $suit;
+
+    /**
      * @return mixed
      */
     public function getId(): int {
@@ -83,5 +93,33 @@ class Disguise {
      */
     public function setImage($image): void {
         $this->image = $image;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrder() {
+        return $this->order;
+    }
+
+    /**
+     * @param mixed $order
+     */
+    public function setOrder($order): void {
+        $this->order = $order;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSuit() {
+        return $this->suit;
+    }
+
+    /**
+     * @param mixed $suit
+     */
+    public function setSuit($suit): void {
+        $this->suit = $suit;
     }
 }

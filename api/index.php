@@ -231,6 +231,8 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
             $formattedDisguise->id = $disguise->getId();
             $formattedDisguise->name = $disguise->getName();
             $formattedDisguise->image = $disguise->getImage();
+            $formattedDisguise->order = $disguise->getOrder();
+            $formattedDisguise->suit = $disguise->getSuit();
             $formattedDisguises[] = $formattedDisguise;
         }
 
