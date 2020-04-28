@@ -274,7 +274,8 @@
         "description": "Description",
         "text": "Text",
         "add-another-note": "Add Another Note",
-        "in-game-description": "In-Game Description:"
+        "in-game-description": "In-Game Description:",
+        "suit-disguise": "Suit ({suitName})"
     },
     "profile": {
         "profile": "Profile",

@@ -305,7 +305,10 @@
                                                  class="col-lg-6">
                                                 <div class="disguise-container">
                                                     <img class="img-fluid" :src="disguise.image" alt="Disguise image">
-                                                    <p class="disguise-info">{{ disguise.name }}</p>
+                                                    <i18n path="map.suit-disguise" tag="p" class="disguise-info" v-if="disguise.suit">
+                                                        <span slot="suitName">{{ disguise.name }}</span>
+                                                    </i18n>
+                                                    <p class="disguise-info" v-else>{{ disguise.name }}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -734,7 +737,7 @@
                                     :key="disguise.id"
                                     :value="disguise.id"
                                 >
-                                    {{ disguise.name }}
+                                    {{ disguise.suit ?  `Suit (${disguise.name})` : disguise.name }}
                                 </option>
                             </select>
                         </div>
@@ -829,7 +832,7 @@
                                     v-for="disguise in disguises"
                                     :value="disguise.id"
                                 >
-                                    {{ disguise.name }}
+                                    {{ disguise.suit ?  `Suit (${disguise.name})` : disguise.name }}
                                 </option>
                             </select>
                         </div>
@@ -854,7 +857,7 @@
                                     v-for="disguise in disguises"
                                     :value="disguise.id"
                                 >
-                                    {{ disguise.name }}
+                                    {{ disguise.suit ?  `Suit (${disguise.name})` : disguise.name }}
                                 </option>
                             </select>
                         </div>
