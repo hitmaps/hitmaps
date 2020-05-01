@@ -81,7 +81,7 @@
                                 src="/img/game-icons/elusive-target-reminaing-time.png"
                         />
                         <div class="timer not-playable">
-                            <div class="target-arrives">{{ (new Date(currentPromo.promoStartDate) > new Date()) ? 'Signups Close' : '' }}</div>
+                            <div class="target-arrives">{{ (new Date(currentPromo.promoStartDate) > new Date()) ? currentPromo.beforeText : currentPromo.duringText }}</div>
                             <countdown
                                     class="elusive-countdown"
                                     :date="
@@ -101,7 +101,7 @@
                             <h2>{{ currentPromo.topCaption }}</h2>
                             <h1>{{ currentPromo.bottomCaption }}</h1>
                         </div>
-                        <div
+                        <!--<div
                                 onclick="return false;"
                                 @click="showRouletteRivalsModal"
                                 class="image elusive-notification float-right notification-icon"
@@ -117,7 +117,7 @@
                                     class="inverted img-fluid"
                                     alt="More Information Icon"
                             />
-                        </div>
+                        </div>-->
                     </div>
                 </a>
             </div>
@@ -755,7 +755,17 @@ export default {
         return {
             currentPromoIndex: 0,
             currentPromo: 0,
-            promos: [],
+            promos: [
+                {
+                    tileUrl: '/img/png/promo/gm3.png',
+                    promoStartDate: '2020-05-01T06:00:00+00:00',
+                    promoEndDate: '2020-05-08T23:59:59+00:00',
+                    topCaption: "Frote7's Speedrun Community",
+                    bottomCaption: 'Ghost Mode Tourney 3',
+                    beforeText: 'Signups Open',
+                    duringText: 'Signups Close'
+                }
+            ],
             tournamentMatches: [],
             games: [],
             elusiveTargets: [],
@@ -1014,14 +1024,14 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
-            /*setInterval(() => {
+            setInterval(() => {
                 this.currentPromo = this.currentPromoIndex === this.promos.length ?
                     0 :
                     this.promos[this.currentPromoIndex];
                 this.currentPromoIndex = this.currentPromoIndex === this.promos.length ?
                     0 :
                     this.currentPromoIndex + 1;
-            }, 5000);*/
+            }, 5000);
         }).catch(err => {
             console.error(err);
             this.$router.push({ name: '500' });
