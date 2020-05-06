@@ -643,6 +643,56 @@
                 </div>
             </div>
         </div>
+            <div class="row dashboard">
+                <div class="game col-lg"
+                     style="background: url('https://media.hitmaps.com/img/story/background_whitespider.jpg') center center / cover no-repeat">
+                    <router-link
+                            :to="{ name: 'home' }"
+                    >
+                        <p>&nbsp;</p>
+                        <div class="game-info">
+                            <div class="image">
+                                <img src="/img/game-icons/campaign.png"
+                                     class="normal img-fluid"
+                                     alt="Campaign Icon"
+                                />
+                                <img src="/img/game-icons/campaign-inverted.png"
+                                        class="inverted img-fluid"
+                                        alt="Campaign Icon"
+                                />
+                            </div>
+                            <div class="text">
+                                <h2>Legacy Game [!]</h2>
+                                <h1>Hitman: Blood Money</h1>
+                            </div>
+                        </div>
+                    </router-link>
+                </div>
+                <div class="game col-lg"
+                     style="background: url('https://media.hitmaps.com/img/story/background_whitespider.jpg') center center / cover no-repeat">
+                    <router-link
+                            :to="{ name: 'home' }"
+                    >
+                        <p>&nbsp;</p>
+                        <div class="game-info">
+                            <div class="image">
+                                <img src="/img/game-icons/campaign.png"
+                                     class="normal img-fluid"
+                                     alt="Campaign Icon"
+                                />
+                                <img src="/img/game-icons/campaign-inverted.png"
+                                     class="inverted img-fluid"
+                                     alt="Campaign Icon"
+                                />
+                            </div>
+                            <div class="text">
+                                <h2>Legacy Game [!]</h2>
+                                <h1>Hitman: Absolution</h1>
+                            </div>
+                        </div>
+                    </router-link>
+                </div>
+            </div>
         </template>
         <modal modal-title="Roulette Rivals 2"
                id="roulette-rivals-modal"
