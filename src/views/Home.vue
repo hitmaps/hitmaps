@@ -643,6 +643,49 @@
                 </div>
             </div>
         </div>
+            <div class="row dashboard">
+                <div class="tournament col-lg">
+                    <div class="tournament-info">
+                        <div class="text">
+                            <h1>Ghost Mode Tournament 3 (Presented by Frote's Speedrun Community)</h1>
+                            <h2>Upcoming Matches</h2>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Competitors</th>
+                            <th>Date | Time ({{ new Date() | moment('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone, 'z') }})</th>
+                            <th>Shoutcaster(s)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="matchup in this.tournamentMatches" :key="`${matchup.participant0Name}|${matchup.participant1Name}|${matchup.platform}`">
+                            <td>{{ matchup.participant0Name }} vs {{ matchup.participant1Name }}</td>
+                            <td>{{ matchup.matchTime | moment('ddd, D MMM') }} | {{ matchup.matchTime | moment('h:mm A') }}</td>
+                            <td><a :href="matchup.shoutcastStream" target="_blank">{{ matchup.shoutcasters }}</a></td>
+                        </tr>
+                        <tr v-if="!this.tournamentMatches.length">
+                            <td colspan="3"><i>No upcoming matches</i></td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="3">
+                                <p>Maps are predetermined and are in the following order:</p>
+                                <ul style="columns: 2">
+                                    <li>Map 1: Miami</li>
+                                    <li>Map 2: Santa Fortuna</li>
+                                    <li>Map 3: Miami</li>
+                                    <li>Map 4 (if necessary): Santa Fortuna</li>
+                                    <li>Map 5 (if necessary): Competitors' Choice</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
         </template>
         <modal modal-title="Roulette Rivals 2"
                id="roulette-rivals-modal"
