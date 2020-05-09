@@ -76,7 +76,7 @@
                 }">
                 <a href="https://discord.gg/FVxTKdU" target="_blank">
                     <p>&nbsp;</p>
-                    <div class="countdown" style="background: rgba(0,0,0,.4)" v-if="new Date(currentPromo.promoStartDate) > new Date()">
+                    <div class="countdown" style="background: rgba(0,0,0,.4)" v-if="new Date() < new Date(currentPromo.promoStartDate)">
                         <img
                                 src="/img/game-icons/elusive-target-reminaing-time.png"
                         />
@@ -91,6 +91,13 @@
                                         : currentPromo.promoEndDate
                                 "
                             ></countdown>
+                        </div>
+                    </div>
+                    <div class="countdown" style="background: rgba(0,0,0,.4)"  v-else>
+                        <div class="timer not-playable">
+                            <div class="elusive-countdown" style="color: white">
+                                {{ tournamentMatches.length }} Upcoming Matches
+                            </div>
                         </div>
                     </div>
                     <div class="game-info">
@@ -798,18 +805,18 @@ export default {
         return {
             currentPromoIndex: 0,
             currentPromo: 0,
+            tournamentMatches: [],
             promos: [
                 {
                     tileUrl: '/img/png/promo/gm3.png',
                     promoStartDate: '2020-05-01T06:00:00+00:00',
-                    promoEndDate: '2020-05-08T23:59:59+00:00',
+                    promoEndDate: '2020-05-24T23:59:59+00:00',
                     topCaption: "Frote7's Speedrun Community",
                     bottomCaption: 'Ghost Mode Tourney 3',
                     beforeText: 'Signups Open',
-                    duringText: 'Signups Close'
+                    duringText: undefined
                 }
             ],
-            tournamentMatches: [],
             games: [],
             elusiveTargets: [],
             activeElusiveIndex: 0,
