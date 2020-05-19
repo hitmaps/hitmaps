@@ -45,6 +45,11 @@ class Game {
     public $tileUrl;
 
     /**
+     * @ORM\Column(type="string", name="logo_url")
+     */
+    public $logoUrl;
+
+    /**
      * @return mixed
      */
     public function getId(): int {
@@ -140,5 +145,19 @@ class Game {
      */
     public function setTileUrl($tileUrl): void {
         $this->tileUrl = $tileUrl;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLogoUrl() {
+        return $this->logoUrl;
+    }
+
+    /**
+     * @param mixed $logoUrl
+     */
+    public function setLogoUrl($logoUrl): void {
+        $this->logoUrl = $logoUrl;
     }
 }

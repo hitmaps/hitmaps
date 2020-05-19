@@ -26,8 +26,7 @@
             </script>
             <div class="text-center logo">
                 <img
-                    v-webp
-                    :src="'/img/png/logos/' + game.slug + '.png'"
+                    :src="game.logoUrl"
                     class="img-fluid"
                 />
                 <h2>{{ game.tagline }}</h2>
