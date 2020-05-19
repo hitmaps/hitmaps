@@ -75,7 +75,7 @@
                     }">
                     <a href="https://discord.gg/FVxTKdU" target="_blank">
                         <p>&nbsp;</p>
-                        <div class="countdown" style="background: rgba(0,0,0,.4)" v-if="new Date(currentPromo.promoStartDate) > new Date()">
+                        <div class="countdown" style="background: rgba(0,0,0,.4)" v-if="new Date() < new Date(currentPromo.promoStartDate)">
                             <img
                                     src="/img/game-icons/elusive-target-reminaing-time.png"
                             />
@@ -90,6 +90,13 @@
                                             : currentPromo.promoEndDate
                                     "
                                 ></countdown>
+                        </div>
+                    </div>
+                    <div class="countdown" style="background: rgba(0,0,0,.4)"  v-else>
+                        <div class="timer not-playable">
+                            <div class="elusive-countdown" style="color: white">
+                                {{ tournamentMatches.length }} Upcoming Matches
+                            </div>
                             </div>
                         </div>
                         <div class="game-info">
@@ -684,6 +691,49 @@
                     </router-link>
                 </div>
             </div>
+            <div class="row dashboard">
+                <div class="tournament col-lg">
+                    <div class="tournament-info">
+                        <div class="text">
+                            <h1>Ghost Mode Tournament 3 (Presented by Frote's Speedrun Community)</h1>
+                            <h2>Upcoming Matches</h2>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Competitors</th>
+                            <th>Date | Time ({{ new Date() | moment('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone, 'z') }})</th>
+                            <th>Shoutcaster(s)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="matchup in this.tournamentMatches" :key="`${matchup.participant0Name}|${matchup.participant1Name}|${matchup.platform}`">
+                            <td>{{ matchup.participant0Name }} vs {{ matchup.participant1Name }}</td>
+                            <td>{{ matchup.matchTime | moment('ddd, D MMM') }} | {{ matchup.matchTime | moment('h:mm A') }}</td>
+                            <td><a :href="matchup.shoutcastStream" target="_blank">{{ matchup.shoutcasters }}</a></td>
+                        </tr>
+                        <tr v-if="!this.tournamentMatches.length">
+                            <td colspan="3"><i>No upcoming matches</i></td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="3">
+                                <p>Maps are predetermined and are in the following order:</p>
+                                <ul style="columns: 2">
+                                    <li>Map 1: Miami</li>
+                                    <li>Map 2: Santa Fortuna</li>
+                                    <li>Map 3: Miami</li>
+                                    <li>Map 4 (if necessary): Santa Fortuna</li>
+                                    <li>Map 5 (if necessary): Competitors' Choice</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
         </template>
         <modal modal-title="Roulette Rivals 2"
                id="roulette-rivals-modal"
@@ -796,18 +846,18 @@ export default {
         return {
             currentPromoIndex: 0,
             currentPromo: 0,
+            tournamentMatches: [],
             promos: [
                 {
                     tileUrl: '/img/png/promo/gm3.png',
                     promoStartDate: '2020-05-01T06:00:00+00:00',
-                    promoEndDate: '2020-05-08T23:59:59+00:00',
+                    promoEndDate: '2020-05-24T23:59:59+00:00',
                     topCaption: "Frote7's Speedrun Community",
                     bottomCaption: 'Ghost Mode Tourney 3',
                     beforeText: 'Signups Open',
-                    duringText: 'Signups Close'
+                    duringText: undefined
                 }
             ],
-            tournamentMatches: [],
             games: [],
             elusiveTargets: [],
             activeElusiveIndex: 0,
