@@ -43,16 +43,76 @@ class InitialSeedAbsolutionMissions extends AbstractMigration {
             Absolution
          */
         $missions = [
-            'A Personal Contract' => ['a-personal-contract', 19],
-            'The King of Chinatown' => ['the-king-of-chinatown', 19],
-            'Terminus' => ['terminus', 19],
-            'Run For Your Life' => ['run-for-your-life', 19],
-            'Hunter and Hunted' => ['hunter-and-hunted', 19],
-            'Rosewood' => ['rosewood', 19],
-            'Welcome to Hope' => ['welcome-to-hope', 20],
-            "Birdie's Gift" => ['birdies-gift', 20],
-            'Shaving Lenny' => ['shaving-lenny', 20],
-            'End of the Road' => ['end-of-the-road', 20],
+            'A Personal Contract' => [
+                'slug' => 'a-personal-contract',
+                'location' => 19,
+                'order' => 1,
+                'tileUrl' => 'https://media.hitmaps.com/img/hitmaps-custom/a-personal-contract-1.jpg',
+                'backgroundUrl' => 'https://media.hitmaps.com/img/hitmaps-custom/absolution-chicago.jpg'
+            ],
+            'The King of Chinatown' => [
+                'slug' => 'the-king-of-chinatown',
+                'location' => 19,
+                'order' => 2,
+                'tileUrl' => 'https://media.hitmaps.com/img/hitmaps-custom/the-king-of-chinatown-1.jpg',
+                'backgroundUrl' => 'https://media.hitmaps.com/img/hitmaps-custom/absolution-chicago.jpg'
+            ],
+            'Terminus' => [
+                'slug' => 'terminus',
+                'location' => 19,
+                'order' => 3,
+                'tileUrl' => 'https://media.hitmaps.com/img/hitmaps-custom/terminus-1.jpg',
+                'backgroundUrl' => 'https://media.hitmaps.com/img/hitmaps-custom/absolution-chicago.jpg'
+            ],
+            'Run For Your Life' => [
+                'slug' => 'run-for-your-life',
+                'location' => 19,
+                'order' => 4,
+                'tileUrl' => 'https://media.hitmaps.com/img/hitmaps-custom/run-for-your-life-1.jpg',
+                'backgroundUrl' => 'https://media.hitmaps.com/img/hitmaps-custom/absolution-chicago.jpg'
+            ],
+            'Hunter and Hunted' => [
+                'slug' => 'hunter-and-hunted',
+                'location' => 19,
+                'order' => 5,
+                'tileUrl' => 'https://media.hitmaps.com/img/hitmaps-custom/hunter-and-hunted-1.jpg',
+                'backgroundUrl' => 'https://media.hitmaps.com/img/hitmaps-custom/absolution-chicago.jpg'
+            ],
+            'Rosewood' => [
+                'slug' => 'rosewood',
+                'location' => 19,
+                'order' => 6,
+                'tileUrl' => 'https://media.hitmaps.com/img/hitmaps-custom/rosewood-1.jpg',
+                'backgroundUrl' => 'https://media.hitmaps.com/img/hitmaps-custom/absolution-chicago.jpg'
+            ],
+            'Welcome to Hope' => [
+                'slug' => 'welcome-to-hope',
+                'location' => 20,
+                'order' => 1,
+                'tileUrl' => 'https://media.hitmaps.com/img/hitmaps-custom/welcome-to-hope-1.jpg',
+                'backgroundUrl' => 'https://media.hitmaps.com/img/hitmaps-custom/absolution-hope.jpg'
+            ],
+            "Birdie's Gift" => [
+                'slug' => 'birdies-gift',
+                'location' => 20,
+                'order' => 2,
+                'tileUrl' => 'https://media.hitmaps.com/img/hitmaps-custom/birdies-gift-1.jpg',
+                'backgroundUrl' => 'https://media.hitmaps.com/img/hitmaps-custom/absolution-hope.jpg'
+            ],
+            'Shaving Lenny' => [
+                'slug' => 'shaving-lenny',
+                'location' => 20,
+                'order' => 3,
+                'tileUrl' => 'https://media.hitmaps.com/img/hitmaps-custom/shaving-lenny-1.jpg',
+                'backgroundUrl' => 'https://media.hitmaps.com/img/hitmaps-custom/absolution-hope.jpg'
+            ],
+            'End of the Road' => [
+                'slug' => 'end-of-the-road',
+                'location' => 20,
+                'order' => 4,
+                'tileUrl' => 'https://media.hitmaps.com/img/hitmaps-custom/end-of-the-road-1.jpg',
+                'backgroundUrl' => 'https://media.hitmaps.com/img/hitmaps-custom/absolution-hope.jpg'
+            ],
             'Dexter Industries' => ['dexter-industries', 20],
             'Death Factory' => ['death-factory', 20],
             'Fight Night' => ['fight-night', 20],
@@ -69,18 +129,18 @@ class InitialSeedAbsolutionMissions extends AbstractMigration {
         $insertRecords = [];
         foreach ($missions as $name => $info) {
             $insertRecords[] = [
-                'location_id' => 19,
-                'name' => 'Mission Name',
-                'slug' => 'slug',
-                'order' => 0,
-                'map_folder_name' => '',
+                'location_id' => $info['location'],
+                'name' => $name,
+                'slug' => $info['slug'],
+                'order' => $info['order'],
+                'map_folder_name' => $info['slug'],
                 'map_center_latitude' => 0,
                 'map_center_longitude' => 0,
                 'lowest_floor_number' => 0,
                 'highest_floor_number' => 0,
                 'starting_floor_number' => 0,
-                'top_left_coordinate' => '0,0',
-                'bottom_right_coordinate' => '0,0',
+                'top_left_coordinate' => '-10000,10000',
+                'bottom_right_coordinate' => '10000,-10000',
                 'satellite_view' => 0,
                 'mission_type' => 'Mission',
                 'tile_url' => '',
