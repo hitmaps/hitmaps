@@ -3,11 +3,12 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class InitialSeedAbsolutionMissions extends AbstractMigration {
+class SeedAbsolutionDifficulties extends AbstractMigration {
     public function up() {
-        $this->table('missions')
-            ->insert($this->getMissions())
-            ->save();
+        foreach ($this->getMissions() as $name => $info) {
+            $this->execute("INSERT INTO `mission_to_difficulties` (`mission_id`, `difficulty`)
+                VALUES ((SELECT `id` FROM `missions` WHERE `slug` = '{$info['slug']}' AND location_id = {$info['location_id']}), 'Standard')");
+        }
     }
 
     private function getMissions() {
@@ -215,7 +216,8 @@ class InitialSeedAbsolutionMissions extends AbstractMigration {
 
     public function down() {
         foreach ($this->getMissions() as $name => $info) {
-            $this->execute("DELETE FROM `missions` WHERE `location_id` = {$info['location_id']} AND `slug` = '{$info['slug']}'");
+            $this->execute("DELETE FROM `mission_to_difficulties` WHERE
+                `mission_id` = (SELECT `id` FROM `missions` WHERE `slug` = '{$info['slug']}' AND location_id = {$info['location_id']})");
         }
     }
 }
