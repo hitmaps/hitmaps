@@ -97,7 +97,7 @@
                         <div class="timer not-playable">
                             <div class="elusive-countdown" style="color: white">
                                 <!--{{ tournamentMatches.length }} Upcoming Matches-->
-                                Grand Finals - 24 May
+                                Grand Finals - LIVE
                             </div>
                         </div>
                     </div>
