@@ -655,10 +655,72 @@
                     <div class="tournament-info">
                         <div class="text">
                             <h1>Ghost Mode Tournament 3 (Presented by Frote's Speedrun Community)</h1>
-                            <h2>Upcoming Matches</h2>
+                            <h2>Grand Finals - 24 May 2020</h2>
                         </div>
                     </div>
-                    <table class="table">
+                    <div class="row">
+                        <div class="col" style="text-align: center">
+                            <iframe
+                                    src="https://player.twitch.tv/?channel=frote7&muted=true"
+                                    height="300"
+                                    width="500"
+                                    frameborder="0"
+                                    scrolling="no"
+                                    allowfullscreen="true">
+                            </iframe>
+                        </div>
+                    </div>
+                    <div class="row" style="color: black">
+                        <div class="col-md-4 col-sm-12">
+                            <h3><i class="fab fa-steam"></i> PC</h3>
+                            <div class="row">
+                                <div class="col" style="text-align: center">
+                                    <img src="https://cdn.discordapp.com/avatars/330983885506871297/63135dcf6461a7fdfedc12f0242ad28e.png" alt="Drudini avatar" class="img-fluid"><br>
+                                    Drudini
+                                </div>
+                                <div class="col" style="text-align: center; align-self: center">
+                                    vs.
+                                </div>
+                                <div class="col" style="text-align: center">
+                                    <img src="https://cdn.discordapp.com/avatars/111578149719904256/ed996a2e88e449c5878ec510a945e6fe.png" alt="Hardware avatar" class="img-fluid">
+                                    Hardware
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <h3><i class="fab fa-playstation"></i> PS4</h3>
+                            <div class="row">
+                                <div class="col" style="text-align: center">
+                                    <img src="https://cdn.discordapp.com/avatars/609066038285434983/3cc70ff4c51a5941a19162b831afb5ca.png" alt="HITMANIST avatar" class="img-fluid"><br>
+                                    HITMANIST
+                                </div>
+                                <div class="col" style="text-align: center; align-self: center">
+                                    vs.
+                                </div>
+                                <div class="col" style="text-align: center">
+                                    <img src="https://cdn.discordapp.com/avatars/626750974660313127/a0b69b1da081252380400f1d6c5dd922.png" alt="fgdsa99 avatar" class="img-fluid">
+                                    fgdsa99
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <h3><i class="fab fa-xbox"></i> Xbox</h3>
+                            <div class="row">
+                                <div class="col" style="text-align: center">
+                                    <img src="https://cdn.discordapp.com/avatars/106192766031110144/3970494501b41e8386f3f2b9af0b3f77.png" alt="Pokeredface avatar" class="img-fluid"><br>
+                                    Pokeredface
+                                </div>
+                                <div class="col" style="text-align: center; align-self: center">
+                                    vs.
+                                </div>
+                                <div class="col" style="text-align: center">
+                                    <img src="https://cdn.discordapp.com/avatars/617092013480869888/a2c1eea0919aba8eaf3259e2810c38df.png" alt="CamTheChest avatar" class="img-fluid">
+                                    CamTheChest
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<table class="table">
                         <thead>
                         <tr>
                             <th>Competitors</th>
@@ -690,7 +752,7 @@
                             </td>
                         </tr>
                         </tfoot>
-                    </table>
+                    </table>-->
                 </div>
             </div>
         </template>
