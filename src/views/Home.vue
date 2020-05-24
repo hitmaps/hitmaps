@@ -96,7 +96,8 @@
                     <div class="countdown" style="background: rgba(0,0,0,.4)"  v-else>
                         <div class="timer not-playable">
                             <div class="elusive-countdown" style="color: white">
-                                {{ tournamentMatches.length }} Upcoming Matches
+                                <!--{{ tournamentMatches.length }} Upcoming Matches-->
+                                Grand Finals - 24 May
                             </div>
                         </div>
                     </div>
