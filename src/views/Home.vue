@@ -676,8 +676,8 @@
                             <h3><i class="fab fa-steam"></i> PC</h3>
                             <div class="row">
                                 <div class="col" style="text-align: center">
-                                    <img src="https://cdn.discordapp.com/avatars/330983885506871297/63135dcf6461a7fdfedc12f0242ad28e.png" alt="Drudini avatar" class="img-fluid"><br>
-                                    Drudini
+                                    <img src="https://cdn.discordapp.com/avatars/434746216887091222/db75d8e682c43b119193ce9f7df12ae7.png" alt="Redfox5000 avatar" class="img-fluid"><br>
+                                    Redfox5000
                                 </div>
                                 <div class="col" style="text-align: center; align-self: center">
                                     vs.
