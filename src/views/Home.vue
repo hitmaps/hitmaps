@@ -96,8 +96,7 @@
                     <div class="countdown" style="background: rgba(0,0,0,.4)"  v-else>
                         <div class="timer not-playable">
                             <div class="elusive-countdown" style="color: white">
-                                <!--{{ tournamentMatches.length }} Upcoming Matches-->
-                                Grand Finals - LIVE
+                                {{ tournamentMatches.length }} Upcoming Matches
                             </div>
                         </div>
                     </div>
@@ -651,7 +650,7 @@
                 </div>
             </div>
         </div>
-            <div class="row dashboard">
+            <!--<div class="row dashboard">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
@@ -659,69 +658,7 @@
                             <h2>Grand Finals - 24 May 2020</h2>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col" style="text-align: center">
-                            <iframe
-                                    src="https://player.twitch.tv/?channel=frote7&muted=true"
-                                    height="300"
-                                    width="500"
-                                    frameborder="0"
-                                    scrolling="no"
-                                    allowfullscreen="true">
-                            </iframe>
-                        </div>
-                    </div>
-                    <div class="row" style="color: black">
-                        <div class="col-md-4 col-sm-12">
-                            <h3><i class="fab fa-steam"></i> PC</h3>
-                            <div class="row">
-                                <div class="col" style="text-align: center">
-                                    <img src="https://cdn.discordapp.com/avatars/434746216887091222/db75d8e682c43b119193ce9f7df12ae7.png" alt="Redfox5000 avatar" class="img-fluid"><br>
-                                    Redfox5000
-                                </div>
-                                <div class="col" style="text-align: center; align-self: center">
-                                    vs.
-                                </div>
-                                <div class="col" style="text-align: center">
-                                    <img src="https://cdn.discordapp.com/avatars/111578149719904256/ed996a2e88e449c5878ec510a945e6fe.png" alt="Hardware avatar" class="img-fluid">
-                                    Hardware
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-12">
-                            <h3><i class="fab fa-playstation"></i> PS4</h3>
-                            <div class="row">
-                                <div class="col" style="text-align: center">
-                                    <img src="https://cdn.discordapp.com/avatars/609066038285434983/3cc70ff4c51a5941a19162b831afb5ca.png" alt="HITMANIST avatar" class="img-fluid"><br>
-                                    HITMANIST
-                                </div>
-                                <div class="col" style="text-align: center; align-self: center">
-                                    vs.
-                                </div>
-                                <div class="col" style="text-align: center">
-                                    <img src="https://cdn.discordapp.com/avatars/626750974660313127/a0b69b1da081252380400f1d6c5dd922.png" alt="fgdsa99 avatar" class="img-fluid">
-                                    fgdsa99
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-12">
-                            <h3><i class="fab fa-xbox"></i> Xbox</h3>
-                            <div class="row">
-                                <div class="col" style="text-align: center">
-                                    <img src="https://cdn.discordapp.com/avatars/106192766031110144/3970494501b41e8386f3f2b9af0b3f77.png" alt="Pokeredface avatar" class="img-fluid"><br>
-                                    Pokeredface
-                                </div>
-                                <div class="col" style="text-align: center; align-self: center">
-                                    vs.
-                                </div>
-                                <div class="col" style="text-align: center">
-                                    <img src="https://cdn.discordapp.com/avatars/617092013480869888/a2c1eea0919aba8eaf3259e2810c38df.png" alt="CamTheChest avatar" class="img-fluid">
-                                    CamTheChest
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--<table class="table">
+                    <table class="table">
                         <thead>
                         <tr>
                             <th>Competitors</th>
@@ -753,9 +690,9 @@
                             </td>
                         </tr>
                         </tfoot>
-                    </table>-->
+                    </table>
                 </div>
-            </div>
+            </div>-->
         </template>
         <modal modal-title="Roulette Rivals 2"
                id="roulette-rivals-modal"
@@ -795,7 +732,7 @@
             </div>
         </modal>
         <input type="hidden" name="notification-environment" />
-        <div class="patreon">
+        <div class="patreon">f
             <div class="row intro">
                 <div class="col-xs-12">
                     <h1>{{ $t('partnership.header') }}</h1>
@@ -869,17 +806,7 @@ export default {
             currentPromoIndex: 0,
             currentPromo: 0,
             tournamentMatches: [],
-            promos: [
-                {
-                    tileUrl: '/img/png/promo/gm3.png',
-                    promoStartDate: '2020-05-01T06:00:00+00:00',
-                    promoEndDate: '2020-05-24T23:59:59+00:00',
-                    topCaption: "Frote7's Speedrun Community",
-                    bottomCaption: 'Ghost Mode Tourney 3',
-                    beforeText: 'Signups Open',
-                    duringText: undefined
-                }
-            ],
+            promos: [],
             games: [],
             elusiveTargets: [],
             activeElusiveIndex: 0,
