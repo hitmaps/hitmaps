@@ -732,7 +732,7 @@
             </div>
         </modal>
         <input type="hidden" name="notification-environment" />
-        <div class="patreon">f
+        <div class="patreon">
             <div class="row intro">
                 <div class="col-xs-12">
                     <h1>{{ $t('partnership.header') }}</h1>
