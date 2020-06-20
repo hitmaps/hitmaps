@@ -1,9 +1,16 @@
 {
-    "interactive-maps-for-hitman": "Interactive Maps for the Hitman Series",
+    "interactive-maps-for-hitman": "Mappe Interattive per la serie Hitman",
     "language-modal": {
         "change-language": "Cambia Lingua",
-        "footer": "Le traduzioni sono gestite e aggiornate dalla community di HITMAN™ ️2 Maps. Se una traduzione non è corretta, per favore {submitACorrection}.",
+        "footer": "Translations are maintained and updated by the HITMAPS™️ community. If a translation is incorrect, please {submitACorrection}.",
         "submit-a-correction": "sottoscrivi una correzione"
+    },
+    "partnership": {
+        "header": "Official Partner of Frote's Speedrun Community",
+        "paragraph-1": "HITMAPS™️ is pleased to be partnered with Frote's Speedrun Community. Back in September 2019, HITMAPS™️ promoted Speedrun Competition #2, along with all future events. We are happy to announce this official partnership, which includes both software tailed towards Frote's Speedrun Community, along with the necessary infrastructure to run the software. Frote's Speedrun Community has also offered to promote HITMAPS™️ in return as HITMAPS™️ may play an important role for participants.",
+        "paragraph-2": "Frote's Speedrun Community hosts several events throughout the year, including Ghost Mode Tournaments, Roulette Rivals, and the classic Speedrun Competition. All major events involve cash prize winnings! There are also several \"mini-competitions\" that run on a weekly basis, as well as a creative contest from time to time.",
+        "paragraph-3": "Feel free to join their Discord to be notified of future events!",
+        "join-the-discord": "Join the Discord"
     },
     "form": {
         "close-icon": "Chiudi",
@@ -23,6 +30,7 @@
         "Elusive Target": "Bersaglio Elusivo"
     },
     "elusive-target": {
+        "reactivated-target": "Reactivated Target",
         "target-arrives": "Il Bersaglio Elusivo arriva",
         "briefing-icon": "Direttive",
         "mission-briefing": "Direttive",
@@ -36,7 +44,7 @@
             "checking-if-enabled": "Verifica in corso se le notifiche sono abilitate su questo dispositivo...",
             "unsupported-browser": "Le notifiche non sono supportate su questo dispositivo. Si prega di abilitare le notifiche usando un dispositivo supportato.",
             "device-not-enrolled": "Il tuo dispositivo non è impostato per ricevere le notifiche. Fai clic su \"Abilita\" per iniziare a impostare il tuo dispositivo.",
-            "notifications-blocked": "Your device is currently blocking notifications from hitmaps.com. Please unblock this site from your device, refresh the page, and try to enroll your device again.",
+            "notifications-blocked": "Il tuo dispositivo sta bloccando le notifiche da hitmaps.com. Per risolvere questo problema, sblocca questo sito dal dispositivo, aggiorna la pagina e prova ad abilitare nuovamente il dispositivo.",
             "send-me-a-notification-when": "Inviami una notifica quando...",
             "announced": "Un Bersaglio Elusivo viene annunciato",
             "playable": "Il Bersaglio Elusivo arriva e diventa disponibile",
@@ -44,7 +52,9 @@
             "5-days": "Il Bersaglio Elusivo è disponibile per altri 5 giorni",
             "3-days": "Il Bersaglio Elusivo è disponibile per altri 3 giorni",
             "1-day": "Il Bersaglio Elusivo è disponibile per un altro giorno",
-            "ended": "Il Bersaglio Elusivo è fuggito"
+            "ended": "Il Bersaglio Elusivo è fuggito",
+            "new-et": "Nuovo Bersaglio Elusivo",
+            "reactivated-et": "Reactivated Elusive Target"
         },
         "n-days": "{days} giorni"
     },
@@ -53,6 +63,10 @@
     "location-icon": "Posizione",
     "mission-image": "Immagine della missione",
     "mission-icon": "Missione",
+    "patreon": {
+        "patreon-supporters": "Patreon Supporters",
+        "patreon-supporters-description": "Patreon helps defer HITMAPS'️ operation costs.  We'd like to extend a thank you to the people below, who have pledged at the \"Master Assassin\" level or higher."
+    },
     "difficulties": {
         "Casual": "Novizio",
         "Professional": "Professionista",
@@ -65,7 +79,8 @@
         "special assignment": "Compito speciale",
         "bonus episode": "Missione bonus",
         "patient zero": "Paziente Zero",
-        "sniper assassin": "Sniper Assassin"
+        "sniper assassin": "Sniper Assassin",
+        "ghost mode": "Ghost Mode"
     },
     "locations": {
         "destinations": {
@@ -138,7 +153,8 @@
         "the-last-yardbird": "The Last Yardbird",
         "the-pen-and-the-sword": "La penna e la spada",
         "crime-and-punishment": "Delitto e castigo",
-        "the-last-resort": "L'ultima spiaggia"
+        "the-last-resort": "L'ultima spiaggia",
+        "miami": "Miami"
     },
     "map": {
         "level-number": "Livello {levelNumber}",
@@ -258,7 +274,8 @@
         "description": "Descrizione",
         "text": "Testo",
         "add-another-note": "Aggiungi un'altra nota",
-        "in-game-description": "Descrizione dal gioco:"
+        "in-game-description": "Descrizione dal gioco:",
+        "suit-disguise": "Suit ({suitName})"
     },
     "profile": {
         "profile": "Profilo",
@@ -299,10 +316,11 @@
     "footer": {
         "disclaimer": "HITMAN™, HITMAN™ 2, il logo HITMAN™, le immagini e i testi sono una proprietà di {ioiLink}.",
         "io-interactive": "Io Interactive",
-        "join-the-discord": "Unisciti al server Discord HITMAN™ 2 Maps",
+        "join-the-discord": "Join the HITMAPS™ Discord",
         "hitmanforum": "Discussioni su hitmanforum.com",
         "hitman-status": "Stato dei server di HITMAN™ - Sviluppato con <3 da Hardware",
-        "hitman2maps-status": "Stato dei server di HITMAN™ 2 Maps",
+        "twitter": "Follow HITMAPS™️ on Twitter",
+        "patreon": "Supporta il mio lavoro su Patreon",
         "about": "Informazioni"
     }
 }

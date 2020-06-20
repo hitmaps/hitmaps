@@ -1,9 +1,16 @@
 {
-    "interactive-maps-for-hitman": "为杀手™系列提供的互动地图",
+    "interactive-maps-for-hitman": "为HITMAN™系列提供的互动地图",
     "language-modal": {
         "change-language": "界面语言设置",
-        "footer": "翻译由HITMAN™ 2 Maps社区维护和更新。如果翻译不正确，请{submitACorrection}.",
+        "footer": "翻译由 HITMAPS™ 社区维护和更新。如果翻译不正确，请{submitACorrection}.",
         "submit-a-correction": "更正建议"
+    },
+    "partnership": {
+        "header": "Official Partner of Frote's Speedrun Community",
+        "paragraph-1": "HITMAPS™️ is pleased to be partnered with Frote's Speedrun Community. Back in September 2019, HITMAPS™️ promoted Speedrun Competition #2, along with all future events. We are happy to announce this official partnership, which includes both software tailed towards Frote's Speedrun Community, along with the necessary infrastructure to run the software. Frote's Speedrun Community has also offered to promote HITMAPS™️ in return as HITMAPS™️ may play an important role for participants.",
+        "paragraph-2": "Frote's Speedrun Community hosts several events throughout the year, including Ghost Mode Tournaments, Roulette Rivals, and the classic Speedrun Competition. All major events involve cash prize winnings! There are also several \"mini-competitions\" that run on a weekly basis, as well as a creative contest from time to time.",
+        "paragraph-3": "Feel free to join their Discord to be notified of future events!",
+        "join-the-discord": "Join the Discord"
     },
     "form": {
         "close-icon": "关闭图标",
@@ -23,6 +30,7 @@
         "Elusive Target": "行踪不定的目标"
     },
     "elusive-target": {
+        "reactivated-target": "重启的目标",
         "target-arrives": "距离目标到达的时间",
         "briefing-icon": "简报图标",
         "mission-briefing": "任务简报",
@@ -36,7 +44,7 @@
             "checking-if-enabled": "检查在当前设备是否开启通知功能",
             "unsupported-browser": "抱歉，通知功能暂不支持您的设备，请使用支持该功能的设备",
             "device-not-enrolled": "你的设备目前还未开启接收通知的选项，点击下方的“添加”开启接收通知。",
-            "notifications-blocked": "Your device is currently blocking notifications from hitmaps.com. Please unblock this site from your device, refresh the page, and try to enroll your device again.",
+            "notifications-blocked": "您当前的设备阻止了来自hitmaps.com的通知。请解除设备对该网站的限制，刷新网页并尝试重新授权该设备。",
             "send-me-a-notification-when": "当....时候给我发送通知",
             "announced": "一个即将到来的行踪不定的目标被公布",
             "playable": "行踪不定的目标已经到达并且任务可以游玩了",
@@ -44,7 +52,9 @@
             "5-days": "行踪不定的目标还有7天结束",
             "3-days": "行踪不定的目标还有3天结束",
             "1-day": "行踪不定的目标还有1天结束",
-            "ended": "行踪不定的目标已经离开"
+            "ended": "行踪不定的目标已经离开",
+            "new-et": "全新的行踪不定目标",
+            "reactivated-et": "重启的行踪不定目标"
         },
         "n-days": "{days}天"
     },
@@ -53,6 +63,10 @@
     "location-icon": "地点图标",
     "mission-image": "任务图像",
     "mission-icon": "任务图标",
+    "patreon": {
+        "patreon-supporters": "Patreon Supporters",
+        "patreon-supporters-description": "Patreon helps defer HITMAPS'️ operation costs.  We'd like to extend a thank you to the people below, who have pledged at the \"Master Assassin\" level or higher."
+    },
     "difficulties": {
         "Casual": "休闲模式",
         "Professional": "专业模式",
@@ -65,7 +79,8 @@
         "special assignment": "特别任务",
         "bonus episode": "奖励任务",
         "patient zero": "零号病人",
-        "sniper assassin": "狙击手刺客"
+        "sniper assassin": "狙击手刺客",
+        "ghost mode": "幽灵模式"
     },
     "locations": {
         "destinations": {
@@ -126,7 +141,7 @@
         "situs-inversus": "内脏逆位",
         "patient-zero": "零号病人",
         "nightcall": "夜之呼唤",
-        "the-mills-reverie": "The Mills Reverie",
+        "the-mills-reverie": "米尔斯白日梦",
         "finish-line": "终点线",
         "three-headed-serpent": "三头蛇",
         "embrace-of-the-serpent": "巨蛇之拥",
@@ -138,7 +153,8 @@
         "the-last-yardbird": "最后的笼中鸟",
         "the-pen-and-the-sword": "笔与剑",
         "crime-and-punishment": "罪与罚",
-        "the-last-resort": "最后手段"
+        "the-last-resort": "最后手段",
+        "miami": "迈阿密"
     },
     "map": {
         "level-number": "楼层{levelNumber}",
@@ -236,8 +252,8 @@
         "category": "分类",
         "icon": "图标",
         "name": "名称",
-        "image-url": "Image URL",
-        "image-url-note": "Images must be linked to https://media.hitmaps.com",
+        "image-url": "图片地址",
+        "image-url-note": "图像必须链接到 https://media.hitmaps.com",
         "quantity": "数量",
         "name-note": "输入游戏内的名称",
         "action": "行动",
@@ -252,13 +268,14 @@
         "direction-up-down": "上下皆可",
         "direction-down": "仅向下",
         "notes": "备注",
-        "requirement": "需求",
+        "requirement": "要求",
         "warning": "警告",
         "information": "信息",
         "description": "说明",
         "text": "文本",
         "add-another-note": "添加新注释",
-        "in-game-description": "游戏内描述："
+        "in-game-description": "游戏内描述：",
+        "suit-disguise": "Suit ({suitName})"
     },
     "profile": {
         "profile": "账户",
@@ -299,10 +316,11 @@
     "footer": {
         "disclaimer": "HITMAN™， HITMAN™ 2，HITMAN™ 商标，图像，以及文字皆为 {ioiLink}所有。",
         "io-interactive": "IO Interactive",
-        "join-the-discord": "加入HITMAN™ 2 Maps Discord",
+        "join-the-discord": "Join the HITMAPS™ Discord",
         "hitmanforum": "hitmanforum.com 论坛",
         "hitman-status": "HITMAN™ 服务器实时状态——创建者 <3 by Hardware",
-        "hitman2maps-status": "HITMAN™ 2 Maps服务器状态",
+        "twitter": "Follow HITMAPS™️ on Twitter",
+        "patreon": "在 Patreon 上支持我",
         "about": "关于"
     }
 }
