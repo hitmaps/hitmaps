@@ -2,8 +2,15 @@
     "interactive-maps-for-hitman": "Cartes interactives de la série Hitman",
     "language-modal": {
         "change-language": "Changer la Langue",
-        "footer": "Les traductions sont gérées et mises à jour par la communauté HITMAN™ 2 Maps. Si une traduction est incorrecte, veuillez {submitACorrection}.",
+        "footer": "Translations are maintained and updated by the HITMAPS™️ community. If a translation is incorrect, please {submitACorrection}.",
         "submit-a-correction": "soumettre une correction"
+    },
+    "partnership": {
+        "header": "Official Partner of Frote's Speedrun Community",
+        "paragraph-1": "HITMAPS™️ is pleased to be partnered with Frote's Speedrun Community. Back in September 2019, HITMAPS™️ promoted Speedrun Competition #2, along with all future events. We are happy to announce this official partnership, which includes both software tailed towards Frote's Speedrun Community, along with the necessary infrastructure to run the software. Frote's Speedrun Community has also offered to promote HITMAPS™️ in return as HITMAPS™️ may play an important role for participants.",
+        "paragraph-2": "Frote's Speedrun Community hosts several events throughout the year, including Ghost Mode Tournaments, Roulette Rivals, and the classic Speedrun Competition. All major events involve cash prize winnings! There are also several \"mini-competitions\" that run on a weekly basis, as well as a creative contest from time to time.",
+        "paragraph-3": "Feel free to join their Discord to be notified of future events!",
+        "join-the-discord": "Join the Discord"
     },
     "form": {
         "close-icon": "Icône Fermer",
@@ -23,6 +30,7 @@
         "Elusive Target": "Cible Fugitive"
     },
     "elusive-target": {
+        "reactivated-target": "Reactivated Target",
         "target-arrives": "La cible arrive",
         "briefing-icon": "Icône de briefing",
         "mission-briefing": "Briefing de mission",
@@ -44,7 +52,9 @@
             "5-days": "La cible fugitive est disponible encore pendant 5 jours",
             "3-days": "La cible fugitive est disponible encore pendant 3 jours",
             "1-day": "La cible fugitive est disponible encore pendant 1 jour",
-            "ended": "La cible fugitive est terminée"
+            "ended": "La cible fugitive est terminée",
+            "new-et": "New Elusive Target",
+            "reactivated-et": "Reactivated Elusive Target"
         },
         "n-days": "{days} jours"
     },
@@ -53,6 +63,10 @@
     "location-icon": "Icône Localisation",
     "mission-image": "Image de mission",
     "mission-icon": "Icône de mission",
+    "patreon": {
+        "patreon-supporters": "Patreon Supporters",
+        "patreon-supporters-description": "Patreon helps defer HITMAPS'️ operation costs.  We'd like to extend a thank you to the people below, who have pledged at the \"Master Assassin\" level or higher."
+    },
     "difficulties": {
         "Casual": "Recrue",
         "Professional": "Professionnel",
@@ -65,7 +79,8 @@
         "special assignment": "Mission Spéciale",
         "bonus episode": "Mission Bonus",
         "patient zero": "Patient Zéro",
-        "sniper assassin": "Sniper Assassin"
+        "sniper assassin": "Sniper Assassin",
+        "ghost mode": "Ghost Mode"
     },
     "locations": {
         "destinations": {
@@ -138,7 +153,8 @@
         "the-last-yardbird": "The Last Yardbird",
         "the-pen-and-the-sword": "La Plume et l'Épée",
         "crime-and-punishment": "Crime et Châtiment",
-        "the-last-resort": "Le dernier recours"
+        "the-last-resort": "Le dernier recours",
+        "miami": "Miami"
     },
     "map": {
         "level-number": "Niveau {levelNumber}",
@@ -258,7 +274,8 @@
         "description": "Description",
         "text": "Texte",
         "add-another-note": "Ajouter un autre remarque",
-        "in-game-description": "Description en jeu:"
+        "in-game-description": "Description en jeu:",
+        "suit-disguise": "Suit ({suitName})"
     },
     "profile": {
         "profile": "Profil",
@@ -299,10 +316,11 @@
     "footer": {
         "disclaimer": "HITMAN™, HITMAN™ 2, le logo HITMAN™, les images et les textes sont la propriété de {ioiLink}.",
         "io-interactive": "IO Interactive",
-        "join-the-discord": "Rejoignez le Discord HITMAN™ 2 Maps",
+        "join-the-discord": "Join the HITMAPS™ Discord",
         "hitmanforum": "Plus de discussion sur hitmanforum.com",
         "hitman-status": "Etat des serveurs d'HITMAN™ - développé avec <3 par Hardware",
-        "hitman2maps-status": "Etat des serveurs d'HITMAN™ 2 Maps",
+        "twitter": "Follow HITMAPS™️ on Twitter",
+        "patreon": "Support My Work on Patreon",
         "about": "À propos"
     }
 }
