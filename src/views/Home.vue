@@ -650,6 +650,40 @@
                 </div>
             </div>
         </div>
+            <div class="row dashboard">
+
+                <div class="game col-lg"
+                        v-bind:style="{
+                    backgroundImage:
+                        'url(https://media.hitmaps.com/img/hitmaps-custom/roulette-tile.png)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat'
+                }"
+                >
+                    <a href="https://roulette.hitmaps.com">
+                        <p>&nbsp;</p>
+                        <div class="game-info">
+                            <div class="image">
+                                <img
+                                        src="https://tournaments.hitmaps.com/img/game-icons/roulette-rivals-inverted.png"
+                                        class="normal img-fluid"
+                                        alt="Roulette Icon"
+                                />
+                                <img
+                                        src="https://tournaments.hitmaps.com/img/game-icons/roulette-rivals.png"
+                                        class="inverted img-fluid"
+                                        alt="Roulette Icon"
+                                />
+                            </div>
+                            <div class="text">
+                                <h2>Roulette</h2>
+                                <h1>HITMAPS&trade; Roulette</h1>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
             <!--<div class="row dashboard">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
