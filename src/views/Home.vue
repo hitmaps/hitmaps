@@ -650,40 +650,6 @@
                 </div>
             </div>
         </div>
-            <div class="row dashboard">
-
-                <div class="game col-lg"
-                        v-bind:style="{
-                    backgroundImage:
-                        'url(https://media.hitmaps.com/img/hitmaps-custom/roulette-tile.png)',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat'
-                }"
-                >
-                    <a href="https://roulette.hitmaps.com">
-                        <p>&nbsp;</p>
-                        <div class="game-info">
-                            <div class="image">
-                                <img
-                                        src="https://tournaments.hitmaps.com/img/game-icons/roulette-rivals-inverted.png"
-                                        class="normal img-fluid"
-                                        alt="Roulette Icon"
-                                />
-                                <img
-                                        src="https://tournaments.hitmaps.com/img/game-icons/roulette-rivals.png"
-                                        class="inverted img-fluid"
-                                        alt="Roulette Icon"
-                                />
-                            </div>
-                            <div class="text">
-                                <h2>Roulette</h2>
-                                <h1>HITMAPS&trade; Roulette</h1>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
             <!--<div class="row dashboard">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
@@ -766,6 +732,34 @@
             </div>
         </modal>
         <input type="hidden" name="notification-environment" />
+        <div class="patreon roulette">
+            <div class="row intro">
+                <div class="col-xs-12">
+                    <img src="https://roulette.hitmaps.com/img/logo.29ffa39f.png" class="img-fluid">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                    <p>
+                        [!] Introducing the HITMAPS&trade; Roulette.
+                        Initially based on Kotti's <a href="https://thekotti.github.io/hitman.html" target="_blank">Hitman Roulette</a>, HITMAPS&trade; Roulette takes Kotti's work and builds off of it to add new features, including:
+                    </p>
+                    <ul>
+                        <li><b>Tournament Mode:</b> Create a head-to-head matchup against your friend (or rival 😉). Set up match durations and send the spin to your opponent via read-only spin links. These links automatically refresh each time a new spin is sent.</li>
+                        <li><b>Fine-tuned Control:</b> Don't like a specific kill condition, but don't want to lose the rest of the spin? Simply re-spin the specific condition.</li>
+                        <li><b>Stream Overlay:</b> Using the tournament mode, you can copy a link to add as a browser source in OBS to provide a professional overlay for your streams / YouTube videos.</li>
+                    </ul>
+                    <a href="https://roulette.hitmaps.com" target="_blank" class="btn square-button">
+                        <i class="fab fa-globe"></i>
+                        Visit HITMAPS&trade; Roulette
+                    </a>
+                    <p><i>HITMAPS&trade; Roulette: The official roulette of Roulette Rivals</i></p>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                    <img src="/img/png/promo/frote-partnership.png" class="img-fluid" alt="Various events hosted by Frote's Speedrun Community">
+                </div>
+            </div>
+        </div>
         <div class="patreon">
             <div class="row intro">
                 <div class="col-xs-12">
@@ -1662,6 +1656,11 @@ header {
         &:hover {
             background: #cd685c;
         }
+    }
+
+    &.roulette {
+        background: black;
+        color: white;
     }
 }
 
