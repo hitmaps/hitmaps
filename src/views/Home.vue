@@ -734,7 +734,7 @@
         <input type="hidden" name="notification-environment" />
         <div class="patreon roulette">
             <div class="row intro">
-                <div class="col-xs-12">
+                <div class="col-6 offset-3">
                     <img src="https://roulette.hitmaps.com/img/logo.29ffa39f.png" class="img-fluid">
                 </div>
             </div>
@@ -749,14 +749,14 @@
                         <li><b>Fine-tuned Control:</b> Don't like a specific kill condition, but don't want to lose the rest of the spin? Simply re-spin the specific condition.</li>
                         <li><b>Stream Overlay:</b> Using the tournament mode, you can copy a link to add as a browser source in OBS to provide a professional overlay for your streams / YouTube videos.</li>
                     </ul>
-                    <a href="https://roulette.hitmaps.com" target="_blank" class="btn square-button">
-                        <i class="fab fa-globe"></i>
+                    <a href="https://roulette.hitmaps.com" target="_blank" class="btn square-button white">
+                        <i class="fas fa-arrow-right"></i>
                         Visit HITMAPS&trade; Roulette
                     </a>
                     <p><i>HITMAPS&trade; Roulette: The official roulette of Roulette Rivals</i></p>
                 </div>
-                <div class="col-sm-6 col-xs-12">
-                    <img src="/img/png/promo/frote-partnership.png" class="img-fluid" alt="Various events hosted by Frote's Speedrun Community">
+                <div class="col-sm-6 col-12" style="display: flex; justify-content: center">
+                    <img src="/img/jpg/roulette.jpg" class="img-fluid" alt="Roulette Partial Screenshot" style="max-height: 400px;">
                 </div>
             </div>
         </div>
@@ -1643,6 +1643,15 @@ header {
 
             &:hover {
                 background: #6073bf;
+            }
+        }
+
+        &.white {
+            background: #fff;
+            color: #000;
+
+            &:hover {
+                background: #eee;
             }
         }
     }
