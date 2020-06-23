@@ -1468,11 +1468,11 @@ $klein->respond('PATCH', '/api/roulette/matchups/[:matchupId]', function(\Klein\
 
     if ($pushBody !== null) {
         try {
-            $applicationContext->get(Client::class)->publish('ws', [
+            $applicationContext->get(Client::class)->publish('ws', json_encode([
                 'type' => 'matchupData',
                 'key' => $matchup->getMatchupId(),
-                'data' => json_encode($pushBody)
-            ]);
+                'data' => $pushBody
+            ]));
         } catch (Exception $e) {
             //-- Nothing for now. Just don't want to break anything :P
         }
