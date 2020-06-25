@@ -1323,9 +1323,10 @@ function getMatchupInformation($matchupId, $applicationContext) {
         ->findOneBy(['matchupId' => $matchupId]);
 
     $matchup->currentTime = new DateTime('now', new DateTimeZone('UTC'));
-    $matchup->remainingTimeInSeconds = calculateRemainingMatchTime($matchup);
+    $matchup->remainingTimeInSeconds = calculateRemainingMatchTime($matchup, false);
+    $matchup->remainingTimeMicroseconds = calculateRemainingMatchTime($matchup);
     $matchup->pretime = $matchup->currentTime < $matchup->getSpinTime();
-    $matchup->remainingPretimeInSeconds = calculatePretimeRemaining($matchup);
+    $matchup->remainingPretimeMicroseconds = calculatePretimeRemaining($matchup);
     $matchup->showTimer = $matchup->getMatchLength() !== 'NO TIME LIMIT';
 
     // Formatting
@@ -1334,7 +1335,7 @@ function getMatchupInformation($matchupId, $applicationContext) {
     return $matchup;
 }
 
-function calculateRemainingMatchTime(RouletteMatchup $matchup): int {
+function calculateRemainingMatchTime(RouletteMatchup $matchup, bool $includeMicroseconds = true): int {
     if ($matchup->getMatchLength() === 'NO TIME LIMIT') {
         return -1;
     }
@@ -1346,17 +1347,29 @@ function calculateRemainingMatchTime(RouletteMatchup $matchup): int {
         return 0;
     }
 
-    return ($difference->h * 60 * 60) + ($difference->i * 60) + $difference->s;
+    $remainingTimeSeconds = ($difference->h * 60 * 60) + ($difference->i * 60) + $difference->s;
+
+    if ($includeMicroseconds) {
+        return $difference * 1000000;
+    }
+
+    return $remainingTimeSeconds;
 }
 
-function calculatePretimeRemaining(RouletteMatchup $matchup) {
+function calculatePretimeRemaining(RouletteMatchup $matchup, bool $includeMicroseconds = true) {
     $difference = $matchup->getSpinTime()->diff($matchup->currentTime);
 
     if ($difference->invert === 0) {
         return 0;
     }
 
-    return ($difference->h * 60 * 60) + ($difference->i * 60) + $difference->s;
+    $remainingTimeSeconds = ($difference->h * 60 * 60) + ($difference->i * 60) + $difference->s;
+
+    if ($includeMicroseconds) {
+        return $difference * 1000000;
+    }
+
+    return $remainingTimeSeconds;
 }
 
 $klein->respond('POST', '/api/roulette/matchups', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
