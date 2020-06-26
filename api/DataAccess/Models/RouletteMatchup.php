@@ -62,11 +62,9 @@ class RouletteMatchup {
     // Used for API
     public $currentTime;
     public $remainingTimeInSeconds;
-    public $remainingTimeMicroseconds;
     public $showTimer;
     public $pretime;
     public $remainingPretimeInSeconds;
-    public $remainingPretimeMicroseconds;
     public $formattedSpinTime;
 
     /**
