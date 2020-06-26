@@ -65,6 +65,7 @@ class RouletteMatchup {
     public $showTimer;
     public $pretime;
     public $remainingPretimeInSeconds;
+    public $formattedCurrentTime;
     public $formattedSpinTime;
 
     /**

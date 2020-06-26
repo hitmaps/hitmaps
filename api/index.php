@@ -1323,13 +1323,13 @@ function getMatchupInformation($matchupId, $applicationContext) {
         ->findOneBy(['matchupId' => $matchupId]);
 
     $matchup->currentTime = new DateTime('now', new DateTimeZone('UTC'));
-    $matchup->currentTime = $matchup->currentTime->format(DATE_ISO8601);
     $matchup->remainingTimeInSeconds = calculateRemainingMatchTime($matchup);
     $matchup->pretime = $matchup->currentTime < $matchup->getSpinTime();
     $matchup->remainingPretimeInSeconds = calculatePretimeRemaining($matchup);
     $matchup->showTimer = $matchup->getMatchLength() !== 'NO TIME LIMIT';
 
     // Formatting
+    $matchup->formattedCurrentTime = $matchup->currentTime->format(DATE_ISO8601);
     $matchup->formattedSpinTime = $matchup->getSpinTime()->format(DATE_ISO8601);
 
     return $matchup;
