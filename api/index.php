@@ -1438,7 +1438,6 @@ $klein->respond('PATCH', '/api/roulette/matchups/[:matchupId]', function(\Klein\
             if ($decodedMatchupData['matchTime'] && $spinTime < new DateTime($decodedMatchupData['matchTime'])) {
                 $spinTime = new DateTime($decodedMatchupData['matchTime']);
             }
-            $spinTime->modify('+1 second');
             $matchup->setSpinTime($spinTime);
 
             if (intval($decodedMatchupData['matchDuration']) !== -1) {
