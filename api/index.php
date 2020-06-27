@@ -1307,7 +1307,8 @@ $klein->respond('POST', '/api/roulette/spins', function(\Klein\Request $request,
 $klein->respond('GET', '/api/roulette/matchups/[:matchupId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $matchupId = $request->matchupId;
 
-    $matchup = getMatchupInformation($matchupId, $applicationContext);
+    $playerName = isset($_GET['name']) ? $_GET['name'] : '';
+    $matchup = getMatchupInformation($matchupId, $applicationContext, $playerName);
 
     if ($matchup !== null) {
         return $response->json($matchup);
@@ -1316,11 +1317,23 @@ $klein->respond('GET', '/api/roulette/matchups/[:matchupId]', function(\Klein\Re
     return $response->code(404);
 });
 
-function getMatchupInformation($matchupId, $applicationContext) {
+function getMatchupInformation($matchupId, \DI\Container $applicationContext, $playerName = '') {
     /* @var $matchup RouletteMatchup */
-    $matchup = $applicationContext->get(EntityManager::class)
+    $entityManager = $applicationContext->get(EntityManager::class);
+    $matchup = $entityManager
         ->getRepository(RouletteMatchup::class)
         ->findOneBy(['matchupId' => $matchupId]);
+
+    if ($playerName !== '') {
+        $currentMillisecond = microtime(true) * 1000;
+        if ($matchup->getPlayerOneName() === $playerName) {
+            $matchup->setPlayerOneLastPing($currentMillisecond);
+        } elseif ($matchup->getPlayerTwoName() === $playerName) {
+            $matchup->setPlayerTwoLastPing($currentMillisecond);
+        }
+        $entityManager->persist($matchup);
+        $entityManager->flush();
+    }
 
     $matchup->currentTime = new DateTime('now', new DateTimeZone('UTC'));
     $matchup->remainingTimeInSeconds = calculateRemainingMatchTime($matchup);
