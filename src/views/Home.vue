@@ -732,6 +732,35 @@
             </div>
         </modal>
         <input type="hidden" name="notification-environment" />
+        <div class="patreon roulette">
+            <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                    <p>
+                        <img src="https://media.hitmaps.com/img/hitmaps-custom/roulette-logo.png" class="img-fluid">
+                    </p>
+                    <p>
+                        <i18n path="roulette.introduction">
+                                <span slot="hitmanRoulette">
+                                    <a href="https://thekotti.github.io/hitman/about.html" target="_blank">{{ $t('roulette.hitman-roulette') }}</a>
+                                </span>
+                        </i18n>
+                    </p>
+                    <ul>
+                        <li><b>{{ $t('roulette.list-item-tournament-mode.header') }}</b> {{ $t('roulette.list-item-tournament-mode.details') }}</li>
+                        <li><b>{{ $t('roulette.list-item-control.header') }}</b> {{ $t('roulette.list-item-control.details') }}</li>
+                        <li><b>{{ $t('roulette.list-item-overlay.header') }}</b> {{ $t('roulette.list-item-overlay.details') }}</li>
+                    </ul>
+                    <a href="https://roulette.hitmaps.com" target="_blank" class="btn square-button white">
+                        <i class="fas fa-arrow-right"></i>
+                        {{ $t('roulette.visit-button') }}
+                    </a>
+                    <p><i>{{ $t('roulette.footer') }}</i></p>
+                </div>
+                <div class="col-sm-6 col-12" style="display: flex; justify-content: center">
+                    <img src="/img/jpg/roulette.jpg" class="img-fluid" alt="Roulette Partial Screenshot" style="max-height: 400px;">
+                </div>
+            </div>
+        </div>
         <div class="patreon">
             <div class="row intro">
                 <div class="col-xs-12">
@@ -1617,6 +1646,15 @@ header {
                 background: #6073bf;
             }
         }
+
+        &.white {
+            background: #fff;
+            color: #000;
+
+            &:hover {
+                background: #eee;
+            }
+        }
     }
 
     .patreon-button {
@@ -1628,6 +1666,11 @@ header {
         &:hover {
             background: #cd685c;
         }
+    }
+
+    &.roulette {
+        background: black;
+        color: white;
     }
 }
 
