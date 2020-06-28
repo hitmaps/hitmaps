@@ -733,27 +733,28 @@
         </modal>
         <input type="hidden" name="notification-environment" />
         <div class="patreon roulette">
-            <div class="row intro">
-                <div class="col-6 offset-3">
-                    <img src="https://roulette.hitmaps.com/img/logo.29ffa39f.png" class="img-fluid">
-                </div>
-            </div>
             <div class="row">
                 <div class="col-sm-6 col-xs-12">
                     <p>
-                        [!] Introducing the HITMAPS&trade; Roulette.
-                        Initially based on Kotti's <a href="https://thekotti.github.io/hitman.html" target="_blank">Hitman Roulette</a>, HITMAPS&trade; Roulette takes Kotti's work and builds off of it to add new features, including:
+                        <img src="https://media.hitmaps.com/img/hitmaps-custom/roulette-logo.png" class="img-fluid">
+                    </p>
+                    <p>
+                        <i18n path="roulette.introduction">
+                                <span slot="hitmanRoulette">
+                                    <a href="https://thekotti.github.io/hitman/about.html" target="_blank">{{ $t('roulette.hitman-roulette') }}</a>
+                                </span>
+                        </i18n>
                     </p>
                     <ul>
-                        <li><b>Tournament Mode:</b> Create a head-to-head matchup against your friend (or rival 😉). Set up match durations and send the spin to your opponent via read-only spin links. These links automatically refresh each time a new spin is sent.</li>
-                        <li><b>Fine-tuned Control:</b> Don't like a specific kill condition, but don't want to lose the rest of the spin? Simply re-spin the specific condition.</li>
-                        <li><b>Stream Overlay:</b> Using the tournament mode, you can copy a link to add as a browser source in OBS to provide a professional overlay for your streams / YouTube videos.</li>
+                        <li><b>{{ $t('roulette.list-item-tournament-mode.header') }}</b> {{ $t('roulette.list-item-tournament-mode.details') }}</li>
+                        <li><b>{{ $t('roulette.list-item-control.header') }}</b> {{ $t('roulette.list-item-control.details') }}</li>
+                        <li><b>{{ $t('roulette.list-item-overlay.header') }}</b> {{ $t('roulette.list-item-overlay.details') }}</li>
                     </ul>
                     <a href="https://roulette.hitmaps.com" target="_blank" class="btn square-button white">
                         <i class="fas fa-arrow-right"></i>
-                        Visit HITMAPS&trade; Roulette
+                        {{ $t('roulette.visit-button') }}
                     </a>
-                    <p><i>HITMAPS&trade; Roulette: The official roulette of Roulette Rivals</i></p>
+                    <p><i>{{ $t('roulette.footer') }}</i></p>
                 </div>
                 <div class="col-sm-6 col-12" style="display: flex; justify-content: center">
                     <img src="/img/jpg/roulette.jpg" class="img-fluid" alt="Roulette Partial Screenshot" style="max-height: 400px;">
