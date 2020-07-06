@@ -74,7 +74,7 @@
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat'
                 }">
-                <a href="https://discord.gg/FVxTKdU" target="_blank">
+                <a href="https://tournaments.hitmaps.com" target="_blank">
                     <p>&nbsp;</p>
                     <div class="countdown" style="background: rgba(0,0,0,.4)" v-if="new Date() < new Date(currentPromo.promoStartDate)">
                         <img
@@ -835,7 +835,17 @@ export default {
             currentPromoIndex: 0,
             currentPromo: 0,
             tournamentMatches: [],
-            promos: [],
+            promos: [
+                {
+                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/rr3.jpg',
+                    promoStartDate: '2020-07-08T23:00:00+00:00',
+                    promoEndDate: '2020-07-26T23:00:00+00:00',
+                    topCaption: "Frote7's Speedrun Community",
+                    bottomCaption: 'Roulette Rivals 3',
+                    beforeText: 'Registration Open',
+                    duringText: undefined
+                }
+            ],
             games: [],
             elusiveTargets: [],
             activeElusiveIndex: 0,
