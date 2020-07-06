@@ -842,7 +842,7 @@ export default {
                     promoEndDate: '2020-07-26T23:00:00+00:00',
                     topCaption: "Frote7's Speedrun Community",
                     bottomCaption: 'Roulette Rivals 3',
-                    beforeText: 'Registration Open',
+                    beforeText: 'Registration Closes in',
                     duringText: undefined
                 }
             ],
