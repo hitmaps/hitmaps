@@ -73,7 +73,7 @@
                         backgroundPosition: 'center',
                         backgroundRepeat: 'no-repeat'
                     }">
-                    <a href="https://discord.gg/FVxTKdU" target="_blank">
+                    <a href="https://tournaments.hitmaps.com" target="_blank">
                         <p>&nbsp;</p>
                         <div class="countdown" style="background: rgba(0,0,0,.4)" v-if="new Date() < new Date(currentPromo.promoStartDate)">
                             <img
@@ -691,12 +691,12 @@
                     </router-link>
                 </div>
             </div>
-            <div class="row dashboard">
+            <!--<div class="row dashboard">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
                             <h1>Ghost Mode Tournament 3 (Presented by Frote's Speedrun Community)</h1>
-                            <h2>Upcoming Matches</h2>
+                            <h2>Grand Finals - 24 May 2020</h2>
                         </div>
                     </div>
                     <table class="table">
@@ -733,7 +733,7 @@
                         </tfoot>
                     </table>
                 </div>
-            </div>
+            </div>-->
         </template>
         <modal modal-title="Roulette Rivals 2"
                id="roulette-rivals-modal"
@@ -773,6 +773,35 @@
             </div>
         </modal>
         <input type="hidden" name="notification-environment" />
+        <div class="patreon roulette">
+            <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                    <p>
+                        <img src="https://media.hitmaps.com/img/hitmaps-custom/roulette-logo.png" class="img-fluid">
+                    </p>
+                    <p>
+                        <i18n path="roulette.introduction">
+                                <span slot="hitmanRoulette">
+                                    <a href="https://thekotti.github.io/hitman/about.html" target="_blank">{{ $t('roulette.hitman-roulette') }}</a>
+                                </span>
+                        </i18n>
+                    </p>
+                    <ul>
+                        <li><b>{{ $t('roulette.list-item-tournament-mode.header') }}</b> {{ $t('roulette.list-item-tournament-mode.details') }}</li>
+                        <li><b>{{ $t('roulette.list-item-control.header') }}</b> {{ $t('roulette.list-item-control.details') }}</li>
+                        <li><b>{{ $t('roulette.list-item-overlay.header') }}</b> {{ $t('roulette.list-item-overlay.details') }}</li>
+                    </ul>
+                    <a href="https://roulette.hitmaps.com" target="_blank" class="btn square-button white">
+                        <i class="fas fa-arrow-right"></i>
+                        {{ $t('roulette.visit-button') }}
+                    </a>
+                    <p><i>{{ $t('roulette.footer') }}</i></p>
+                </div>
+                <div class="col-sm-6 col-12" style="display: flex; justify-content: center">
+                    <img src="/img/jpg/roulette.jpg" class="img-fluid" alt="Roulette Partial Screenshot" style="max-height: 400px;">
+                </div>
+            </div>
+        </div>
         <div class="patreon">
             <div class="row intro">
                 <div class="col-xs-12">
@@ -849,12 +878,12 @@ export default {
             tournamentMatches: [],
             promos: [
                 {
-                    tileUrl: '/img/png/promo/gm3.png',
-                    promoStartDate: '2020-05-01T06:00:00+00:00',
-                    promoEndDate: '2020-05-24T23:59:59+00:00',
+                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/rr3.jpg',
+                    promoStartDate: '2020-07-08T23:00:00+00:00',
+                    promoEndDate: '2020-07-26T23:00:00+00:00',
                     topCaption: "Frote7's Speedrun Community",
-                    bottomCaption: 'Ghost Mode Tourney 3',
-                    beforeText: 'Signups Open',
+                    bottomCaption: 'Roulette Rivals 3',
+                    beforeText: 'Registration Closes in',
                     duringText: undefined
                 }
             ],
@@ -1668,6 +1697,15 @@ header {
                 background: #6073bf;
             }
         }
+
+        &.white {
+            background: #fff;
+            color: #000;
+
+            &:hover {
+                background: #eee;
+            }
+        }
     }
 
     .patreon-button {
@@ -1679,6 +1717,11 @@ header {
         &:hover {
             background: #cd685c;
         }
+    }
+
+    &.roulette {
+        background: black;
+        color: white;
     }
 }
 
