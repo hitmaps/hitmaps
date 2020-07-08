@@ -9,7 +9,7 @@ class SeedLogosForGames extends AbstractMigration {
             'hitman' => 'https://media.hitmaps.com/img/hitmaps-custom/hitman-logo.png',
             'hitman2' => 'https://media.hitmaps.com/img/hitmaps-custom/hitman2-logo.png',
             'sniper-assassin' => 'https://media.hitmaps.com/img/hitmaps-custom/hitman2-logo.png',
-            'absolution' => 'https://media.hitmaps.com/img/hitmaps-custom/absolution-logo.png',
+            'absolution' => 'https://media.hitmaps.com/img/absolution/absolution-logo.png',
         ];
 
         foreach ($gamesToLogoUrls as $slug => $logoUrl) {
