@@ -108,7 +108,7 @@
                             <h2>{{ currentPromo.topCaption }}</h2>
                             <h1>{{ currentPromo.bottomCaption }}</h1>
                         </div>
-                        <!--<div
+                        <div
                                 onclick="return false;"
                                 @click="showRouletteRivalsModal"
                                 class="image elusive-notification float-right notification-icon"
@@ -124,7 +124,7 @@
                                     class="inverted img-fluid"
                                     alt="More Information Icon"
                             />
-                        </div>-->
+                        </div>
                     </div>
                 </a>
             </div>
@@ -694,7 +694,7 @@
                 </div>
             </div>-->
         </template>
-        <modal modal-title="Roulette Rivals 2"
+        <modal modal-title="Roulette Rivals 3"
                id="roulette-rivals-modal"
                tabindex="-1"
                dismissable>
@@ -727,7 +727,7 @@
                         Do you play it safe? Takes longer, but you wouldn't have to restart. Or do you play it risky to get
                         that awesome time, with the potential of a lot of restarts?
                     </p>
-                    <alert type="info">Matches run from <b>April 10</b> to <b>April 26</b>!</alert>
+                    <alert type="info">Matches run from <b>July 10</b> to <b>July 26</b>!</alert>
                 </div>
             </div>
         </modal>
