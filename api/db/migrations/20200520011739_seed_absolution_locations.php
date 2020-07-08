@@ -18,7 +18,7 @@ class SeedAbsolutionLocations extends AbstractMigration {
                 'destination_country' => 'Illinois, USA',
                 'order' => 1,
                 'slug' => 'chicago1',
-                'background_url' => 'https://media.hitmaps.com/img/hitmaps-custom/absolution-chicago.jpg'
+                'background_url' => 'https://media.hitmaps.com/img/absolution/absolution-chicago.jpg'
             ],
             [
                 'game' => 'absolution',
@@ -26,7 +26,7 @@ class SeedAbsolutionLocations extends AbstractMigration {
                 'destination_country' => 'South Dakota, USA',
                 'order' => 2,
                 'slug' => 'hope',
-                'background_url' => 'https://media.hitmaps.com/img/hitmaps-custom/absolution-hope.jpg'
+                'background_url' => 'https://media.hitmaps.com/img/absolution/absolution-hope.jpg'
             ],
             [
                 'game' => 'absolution',
@@ -34,7 +34,7 @@ class SeedAbsolutionLocations extends AbstractMigration {
                 'destination_country' => 'Illinois, USA',
                 'order' => 3,
                 'slug' => 'chicago2',
-                'background_url' => 'https://media.hitmaps.com/img/hitmaps-custom/absolution-chicago.jpg'
+                'background_url' => 'https://media.hitmaps.com/img/absolution/absolution-chicago.jpg'
             ],
             [
                 'game' => 'absolution',
@@ -42,7 +42,7 @@ class SeedAbsolutionLocations extends AbstractMigration {
                 'destination_country' => 'England, United Kingdom',
                 'order' => 4,
                 'slug' => 'cornwall',
-                'background_url' => 'https://media.hitmaps.com/img/hitmaps-custom/hitman-absolution.jpg'
+                'background_url' => 'https://media.hitmaps.com/img/absolution/hitman-absolution.jpg'
             ]
         ];
     }

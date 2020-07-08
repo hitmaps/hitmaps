@@ -2461,32 +2461,42 @@ export default {
 
             this.$nextTick(() => {
                 // Build tile layers for each floor
-                for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                    let mapTileLayer = L.tileLayer(this.mapUrl + i + '/{z}/{x}/{y}.png', {
-                        noWrap: true,
-                        minZoom: 3,
-                        maxZoom: 5
-                    });
-                    this.layerGroups.push(mapTileLayer);
-                    this.mapLayers[i] = mapTileLayer;
+                if (false) {
+                    for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
+                        let mapTileLayer = L.tileLayer(this.mapUrl + i + '/{z}/{x}/{y}.png', {
+                            noWrap: true,
+                            minZoom: 3,
+                            maxZoom: 5
+                        });
+                        this.layerGroups.push(mapTileLayer);
+                        this.mapLayers[i] = mapTileLayer;
+                    }
+
+                    if (this.mission.satelliteView) {
+                        let mapTileLayer = L.tileLayer(this.mapUrl + '-99/{z}/{x}/{y}.png', {
+                            noWrap: true,
+                            minZoom: 3,
+                            maxZoom: 5
+                        });
+                        this.layerGroups.push(mapTileLayer);
+                        this.mapLayers[-99] = mapTileLayer;
+                    }
+                } else {
+                    // SVG
+                    // Look into this for proper SVG support? https://stackoverflow.com/a/47903153/1509431
+                    let svgImageLayer = L.imageOverlay('https://media.hitmaps.com/img/absolution/maps/a-personal-contract/01gardens.svg', [[0,0], [100,100]]);
+                    this.layerGroups.push(svgImageLayer);
+                    this.mapLayers[0] = svgImageLayer;
                 }
 
-                if (this.mission.satelliteView) {
-                    let mapTileLayer = L.tileLayer(this.mapUrl + '-99/{z}/{x}/{y}.png', {
-                        noWrap: true,
-                        minZoom: 3,
-                        maxZoom: 5
-                    });
-                    this.layerGroups.push(mapTileLayer);
-                    this.mapLayers[-99] = mapTileLayer;
-                }
 
                 this.map = L.map('map', {
-                    maxZoom: 5,
+                    maxZoom: 99,
                     minZoom: 3,
                     crs: L.CRS.Simple,
                     layers: this.layerGroups,
-                    renderer: L.canvas()
+                    renderer: L.svg()
+                    //renderer: L.canvas()
                 }).setView([this.mission.mapCenterLatitude, this.mission.mapCenterLongitude], 3);
                 let topLeftCoordinate = this.mission.topLeftCoordinate.split(',');
                 let bottomRightCoordinate = this.mission.bottomRightCoordinate.split(',');
