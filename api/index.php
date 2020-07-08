@@ -2,6 +2,7 @@
 
 use DataAccess\Models\RouletteMatchup;
 use Doctrine\ORM\EntityManager;
+use Predis\Client;
 
 require __DIR__ . '/autoload.php';
 
@@ -1285,7 +1286,7 @@ $klein->respond('GET', '/api/games/[:game]/[:location]/[:missionSlug]/[:difficul
 $klein->respond('GET', '/api/roulette/spins', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $spinId = $_GET['spinId'];
 
-    return $applicationContext->get(\Predis\Client::class)->get("hitmaps-roulette:{$spinId}");
+    return $applicationContext->get(Client::class)->get("hitmaps-roulette:{$spinId}");
 });
 
 $klein->respond('POST', '/api/roulette/spins', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
@@ -1296,7 +1297,7 @@ $klein->respond('POST', '/api/roulette/spins', function(\Klein\Request $request,
     }
 
     $spinId = uniqid('', true);
-    $applicationContext->get(\Predis\Client::class)->set("hitmaps-roulette:{$spinId}", $request->body());
+    $applicationContext->get(Client::class)->set("hitmaps-roulette:{$spinId}", $request->body());
 
     return $response->code(200)->body([
         'id' => $spinId
@@ -1306,10 +1307,33 @@ $klein->respond('POST', '/api/roulette/spins', function(\Klein\Request $request,
 $klein->respond('GET', '/api/roulette/matchups/[:matchupId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $matchupId = $request->matchupId;
 
+    $playerName = isset($_GET['name']) ? $_GET['name'] : '';
+    $matchup = getMatchupInformation($matchupId, $applicationContext, $playerName);
+
+    if ($matchup !== null) {
+        return $response->json($matchup);
+    }
+
+    return $response->code(404);
+});
+
+function getMatchupInformation($matchupId, \DI\Container $applicationContext, $playerName = '') {
     /* @var $matchup RouletteMatchup */
-    $matchup = $applicationContext->get(EntityManager::class)
+    $entityManager = $applicationContext->get(EntityManager::class);
+    $matchup = $entityManager
         ->getRepository(RouletteMatchup::class)
         ->findOneBy(['matchupId' => $matchupId]);
+
+    if ($playerName !== '') {
+        $currentMillisecond = microtime(true) * 1000;
+        if ($matchup->getPlayerOneName() === $playerName) {
+            $matchup->setPlayerOneLastPing($currentMillisecond);
+        } elseif ($matchup->getPlayerTwoName() === $playerName) {
+            $matchup->setPlayerTwoLastPing($currentMillisecond);
+        }
+        $entityManager->persist($matchup);
+        $entityManager->flush();
+    }
 
     $matchup->currentTime = new DateTime('now', new DateTimeZone('UTC'));
     $matchup->remainingTimeInSeconds = calculateRemainingMatchTime($matchup);
@@ -1318,14 +1342,11 @@ $klein->respond('GET', '/api/roulette/matchups/[:matchupId]', function(\Klein\Re
     $matchup->showTimer = $matchup->getMatchLength() !== 'NO TIME LIMIT';
 
     // Formatting
+    $matchup->formattedCurrentTime = $matchup->currentTime->format(DATE_ISO8601);
     $matchup->formattedSpinTime = $matchup->getSpinTime()->format(DATE_ISO8601);
 
-    if ($matchup !== null) {
-        return $response->json($matchup);
-    }
-
-    return $response->code(404);
-});
+    return $matchup;
+}
 
 function calculateRemainingMatchTime(RouletteMatchup $matchup): int {
     if ($matchup->getMatchLength() === 'NO TIME LIMIT') {
@@ -1417,7 +1438,6 @@ $klein->respond('PATCH', '/api/roulette/matchups/[:matchupId]', function(\Klein\
             if ($decodedMatchupData['matchTime'] && $spinTime < new DateTime($decodedMatchupData['matchTime'])) {
                 $spinTime = new DateTime($decodedMatchupData['matchTime']);
             }
-            $spinTime->modify('+1 second');
             $matchup->setSpinTime($spinTime);
 
             if (intval($decodedMatchupData['matchDuration']) !== -1) {
@@ -1449,6 +1469,27 @@ $klein->respond('PATCH', '/api/roulette/matchups/[:matchupId]', function(\Klein\
 
     $applicationContext->get(EntityManager::class)->persist($matchup);
     $applicationContext->get(EntityManager::class)->flush();
+
+    switch ($responseProperty) {
+        case 'matchupData':
+            $pushBody = getMatchupInformation($matchup->getMatchupId(), $applicationContext);
+            break;
+        default:
+            $pushBody = null;
+            break;
+    }
+
+    if ($pushBody !== null) {
+        try {
+            $applicationContext->get(Client::class)->publish('ws', json_encode([
+                'type' => 'matchupData',
+                'key' => $matchup->getMatchupId(),
+                'data' => $pushBody
+            ]));
+        } catch (Exception $e) {
+            //-- Nothing for now. Just don't want to break anything :P
+        }
+    }
 
     return $response->json($requestBody[$responseProperty]);
 });

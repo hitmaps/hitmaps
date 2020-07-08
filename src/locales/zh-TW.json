@@ -2,8 +2,15 @@
     "interactive-maps-for-hitman": "Interactive Maps for the Hitman Series",
     "language-modal": {
         "change-language": "變更語言",
-        "footer": "翻譯內容是隨時由 HITMAN™️ 2 Maps 社群 維護與更新的，若您發現翻譯內容有誤，請{submitACorrection}。",
+        "footer": "翻譯內容是隨時由 HITMAPS™️ 社群 維護與更新的，若您發現翻譯內容有誤，請{submitACorrection}。",
         "submit-a-correction": "提交修正內容"
+    },
+    "partnership": {
+        "header": "Official Partner of Frote's Speedrun Community",
+        "paragraph-1": "HITMAPS™️ is pleased to be partnered with Frote's Speedrun Community. Back in September 2019, HITMAPS™️ promoted Speedrun Competition #2, along with all future events. We are happy to announce this official partnership, which includes both software tailed towards Frote's Speedrun Community, along with the necessary infrastructure to run the software. Frote's Speedrun Community has also offered to promote HITMAPS™️ in return as HITMAPS™️ may play an important role for participants.",
+        "paragraph-2": "Frote's Speedrun Community hosts several events throughout the year, including Ghost Mode Tournaments, Roulette Rivals, and the classic Speedrun Competition. All major events involve cash prize winnings! There are also several \"mini-competitions\" that run on a weekly basis, as well as a creative contest from time to time.",
+        "paragraph-3": "Feel free to join their Discord to be notified of future events!",
+        "join-the-discord": "Join the Discord"
     },
     "form": {
         "close-icon": "關閉圖示",
@@ -23,6 +30,7 @@
         "Elusive Target": "隱密目標"
     },
     "elusive-target": {
+        "reactivated-target": "Reactivated Target",
         "target-arrives": "距離目標到達時間：",
         "briefing-icon": "報告圖示",
         "mission-briefing": "任務報告",
@@ -44,7 +52,9 @@
             "5-days": "隱密目標還有5天才結束的時候",
             "3-days": "隱密目標還有3天才結束的時候",
             "1-day": "隱密目標還有1天才結束的時候",
-            "ended": "隱密目標已經離去的時候"
+            "ended": "隱密目標已經離去的時候",
+            "new-et": "New Elusive Target",
+            "reactivated-et": "Reactivated Elusive Target"
         },
         "n-days": "{days} 天"
     },
@@ -53,6 +63,10 @@
     "location-icon": "目的地圖示",
     "mission-image": "任務圖像",
     "mission-icon": "任務圖示",
+    "patreon": {
+        "patreon-supporters": "Patreon Supporters",
+        "patreon-supporters-description": "Patreon helps defer HITMAPS'️ operation costs.  We'd like to extend a thank you to the people below, who have pledged at the \"Master Assassin\" level or higher."
+    },
     "difficulties": {
         "Casual": "休閒",
         "Professional": "專業",
@@ -65,7 +79,8 @@
         "special assignment": "特別任務",
         "bonus episode": "額外任務",
         "patient zero": "零號病患",
-        "sniper assassin": "Sniper Assassin"
+        "sniper assassin": "Sniper Assassin",
+        "ghost mode": "Ghost Mode"
     },
     "locations": {
         "destinations": {
@@ -138,7 +153,8 @@
         "the-last-yardbird": "The Last Yardbird",
         "the-pen-and-the-sword": "筆與劍",
         "crime-and-punishment": "罪惡與懲罰",
-        "the-last-resort": "最後一招"
+        "the-last-resort": "最後一招",
+        "miami": "Miami"
     },
     "map": {
         "level-number": "層級 {levelNumber}",
@@ -258,7 +274,8 @@
         "description": "說明",
         "text": "文字",
         "add-another-note": "新增額外註記",
-        "in-game-description": "遊戲內說明："
+        "in-game-description": "遊戲內說明：",
+        "suit-disguise": "Suit ({suitName})"
     },
     "profile": {
         "profile": "個人檔案",
@@ -299,10 +316,11 @@
     "footer": {
         "disclaimer": "HITMAN™、HITMAN™ 2 以及 HITMAN™ 的商標、圖示和文字均屬於 {ioiLink} 的財產。",
         "io-interactive": "IO Interactive",
-        "join-the-discord": "加入 HITMAN™ 2 Maps Discord 伺服器",
+        "join-the-discord": "Join the HITMAPS™ Discord",
         "hitmanforum": "hitmanforum.com 討論串",
         "hitman-status": "HITMAN™ 伺服器狀態查詢網 - 由相當有愛的 Hardware 大大所製作",
-        "hitman2maps-status": "HITMAN™ 2 Maps 伺服器狀態",
+        "twitter": "Follow HITMAPS™️ on Twitter",
+        "patreon": "Support My Work on Patreon",
         "about": "關於本網站"
     }
 }
