@@ -650,18 +650,19 @@
                 </div>
             </div>
         </div>
-            <!--<div class="row dashboard">
+            <div class="row dashboard">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
-                            <h1>Ghost Mode Tournament 3 (Presented by Frote's Speedrun Community)</h1>
-                            <h2>Grand Finals - 24 May 2020</h2>
+                            <h1>Roulette Rivals 3 (Presented by Frote's Speedrun Community)</h1>
+                            <h2>Upcoming Matches</h2>
                         </div>
                     </div>
                     <table class="table">
                         <thead>
                         <tr>
                             <th>Competitors</th>
+                            <th>Maps</th>
                             <th>Date | Time ({{ new Date() | moment('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone, 'z') }})</th>
                             <th>Shoutcaster(s)</th>
                         </tr>
@@ -669,6 +670,7 @@
                         <tbody>
                         <tr v-for="matchup in this.tournamentMatches" :key="`${matchup.participant0Name}|${matchup.participant1Name}|${matchup.platform}`">
                             <td>{{ matchup.participant0Name }} vs {{ matchup.participant1Name }}</td>
+                            <td>{{ matchup.firstMap }} and {{ matchup.secondMap }}</td>
                             <td>{{ matchup.matchTime | moment('ddd, D MMM') }} | {{ matchup.matchTime | moment('h:mm A') }}</td>
                             <td><a :href="matchup.shoutcastStream" target="_blank">{{ matchup.shoutcasters }}</a></td>
                         </tr>
@@ -676,7 +678,7 @@
                             <td colspan="3"><i>No upcoming matches</i></td>
                         </tr>
                         </tbody>
-                        <tfoot>
+                        <!--<tfoot>
                         <tr>
                             <td colspan="3">
                                 <p>Maps are predetermined and are in the following order:</p>
@@ -689,10 +691,10 @@
                                 </ul>
                             </td>
                         </tr>
-                        </tfoot>
+                        </tfoot>-->
                     </table>
                 </div>
-            </div>-->
+            </div>
         </template>
         <modal modal-title="Roulette Rivals 3"
                id="roulette-rivals-modal"
@@ -1115,7 +1117,7 @@ export default {
             console.error(err);
             this.$router.push({ name: '500' });
         });
-        this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups').then(resp => {
+        this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/rr3').then(resp => {
             this.tournamentMatches = resp.data;
             console.info(this.tournamentMatches);
         });
