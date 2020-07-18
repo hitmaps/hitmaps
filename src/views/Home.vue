@@ -743,7 +743,7 @@
                     <p>
                         <i18n path="roulette.introduction">
                                 <span slot="hitmanRoulette">
-                                    <a href="https://thekotti.github.io/hitman/about.html" target="_blank">{{ $t('roulette.hitman-roulette') }}</a>
+                                    <a href="https://thekotti.github.io/hitman.html" target="_blank">{{ $t('roulette.hitman-roulette') }}</a>
                                 </span>
                         </i18n>
                     </p>
