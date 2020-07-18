@@ -669,7 +669,7 @@
                         </thead>
                         <tbody>
                         <tr v-for="matchup in this.tournamentMatches" :key="`${matchup.participant0Name}|${matchup.participant1Name}|${matchup.platform}`">
-                            <td>{{ matchup.participant0Name }} vs {{ matchup.participant1Name }}</td>
+                            <td><i :class="getPlatformIcon(matchup.platform)"></i> {{ matchup.participant0Name }} vs {{ matchup.participant1Name }}</td>
                             <td>{{ matchup.firstMap }} and {{ matchup.secondMap }}</td>
                             <td>{{ matchup.matchTime | moment('ddd, D MMM') }} | {{ matchup.matchTime | moment('h:mm A') }}</td>
                             <td><a :href="matchup.shoutcastStream" target="_blank">{{ matchup.shoutcasters }}</a></td>
@@ -900,6 +900,22 @@ export default {
     methods: {
         saveGameData() {
             //this.$store.commit("SET_GAME", )
+        },
+        getPlatformIcon(platform) {
+            switch (platform) {
+                case 'steam':
+                    return 'fab fa-fw fa-steam';
+                case 'console':
+                    return 'fas fa-fw fa-gamepad';
+                case 'playstation':
+                case 'ps4':
+                    return 'fab fa-fw fa-playstation';
+                case 'xbox':
+                case 'xb1':
+                    return 'fab fa-fw fa-xbox';
+                default:
+                    return '';
+            }
         },
         showRouletteRivalsModal(e) {
             e.preventDefault();
