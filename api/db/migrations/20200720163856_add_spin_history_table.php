@@ -11,7 +11,7 @@ class AddSpinHistoryTable extends AbstractMigration {
 
         $previousSpins = $this->fetchAll('SELECT matchup_data FROM roulette_matchups');
         foreach ($previousSpins as $previousSpin) {
-            $decodedJson = json_decode($previousSpin['matchup_data']);
+            $decodedJson = json_decode($previousSpin['matchup_data'], true);
             if ($decodedJson === null) {
                 continue;
             }

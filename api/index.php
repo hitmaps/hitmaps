@@ -1473,6 +1473,14 @@ $klein->respond('PATCH', '/api/roulette/matchups/[:matchupId]', function(\Klein\
     switch ($responseProperty) {
         case 'matchupData':
             $pushBody = getMatchupInformation($matchup->getMatchupId(), $applicationContext);
+            $matchupData = json_decode($pushBody->matchupData, true);
+            if ($matchupData !== null) {
+                $spinResults = json_encode($matchupData['spinResults']);
+                $spinHistory = new \DataAccess\Models\SpinHistory();
+                $spinHistory->setSpinData($spinResults);
+                $applicationContext->get(EntityManager::class)->persist($spinHistory);
+                $applicationContext->get(EntityManager::class)->flush();
+            }
             break;
         default:
             $pushBody = null;
