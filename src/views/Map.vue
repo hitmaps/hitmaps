@@ -1,5 +1,8 @@
 <template>
     <div>
+        <div class="svgs" style="width: 100%; height: 100%">
+            <object data="https://media.hitmaps.com/img/absolution/maps/a-personal-contract/01gardens.svg"></object>
+        </div>
         <div v-if="!mapLoaded && mission != null" class="overlay" :style="'background: #ccc url(' + mission.backgroundUrl + ') no-repeat; background-size: cover'">
             <div class="overlay-container">
                 <img
@@ -2484,6 +2487,16 @@ export default {
                 } else {
                     // SVG
                     // Look into this for proper SVG support? https://stackoverflow.com/a/47903153/1509431
+                    var SVGOverlay = L.ImageOverlay.extend({
+                        options: {
+                        },
+
+                        _initImage: function () {
+                            var wasElementSupplied = this._url.tagName.toLowerCase() === 'svg';
+                            var svg = this._image = wasElementSupplied ? this._url : L.DomUtil.create('svg');
+                        }
+                    });
+
                     let svgImageLayer = L.imageOverlay('https://media.hitmaps.com/img/absolution/maps/a-personal-contract/01gardens.svg', [[0,0], [100,100]]);
                     this.layerGroups.push(svgImageLayer);
                     this.mapLayers[0] = svgImageLayer;
