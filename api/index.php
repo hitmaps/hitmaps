@@ -145,10 +145,12 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
     $cacheClient = $applicationContext->get(\BusinessLogic\Caching\CacheClient::class);
 
     /* @var $location \DataAccess\Models\Location */
-    $location = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
+    $entityManager = $applicationContext->get(EntityManager::class);
+    $location = $entityManager->getRepository(\DataAccess\Models\Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
 
     /* @var $mission \DataAccess\Models\Mission */
-    $mission = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Mission::class)->findOneBy(['locationId' => $location->getId(), 'slug' => $request->mission]);
+    $mission = $entityManager->getRepository(\DataAccess\Models\Mission::class)->findOneBy(['locationId' => $location->getId(), 'slug' => $request->mission]);
+    $mission->floorNames = $entityManager->getRepository(\DataAccess\Models\MapFloorToName::class)->findBy(['missionId' => $mission->getId()]);
 
     if ($mission === null) {
         $response->code(400);

@@ -118,6 +118,10 @@ class Mission {
      */
     public $tileUrl;
 
+    // Not used by Doctrine
+    /* @var $floorNames array */
+    public $floorNames = [];
+
     /**
      * @return mixed
      */
