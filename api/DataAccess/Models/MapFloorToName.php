@@ -7,6 +7,7 @@ namespace DataAccess\Models;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Entity()
  * @ORM\Table(name="map_floor_to_name")
  */
 class MapFloorToName {
@@ -19,6 +20,11 @@ class MapFloorToName {
      * @ORM\Column(type="integer", name="mission_id")
      */
     public $missionId;
+
+    /**
+     * @ORM\Column(type="integer", name="floor_number")
+     */
+    public $floorNumber;
 
     /**
      * @ORM\Column(type="string", name="name_key")
@@ -55,6 +61,20 @@ class MapFloorToName {
      */
     public function setMissionId(int $missionId): void {
         $this->missionId = $missionId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFloorNumber() {
+        return $this->floorNumber;
+    }
+
+    /**
+     * @param mixed $floorNumber
+     */
+    public function setFloorNumber($floorNumber): void {
+        $this->floorNumber = $floorNumber;
     }
 
     /**

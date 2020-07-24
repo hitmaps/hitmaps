@@ -1,8 +1,5 @@
 <template>
     <div>
-        <div class="svgs" style="width: 100%; height: 100%">
-            <object data="https://media.hitmaps.com/img/absolution/maps/a-personal-contract/01gardens.svg"></object>
-        </div>
         <div v-if="!mapLoaded && mission != null" class="overlay" :style="'background: #ccc url(' + mission.backgroundUrl + ') no-repeat; background-size: cover'">
             <div class="overlay-container">
                 <img
