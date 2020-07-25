@@ -87,6 +87,8 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
         foreach ($missionDifficulties as $missionDifficulty) {
             $mission->difficulties[] = $missionDifficulty->getDifficulty();
         }
+
+        $mission->floorNames = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\MapFloorToName::class)->findBy(['missionId' => $mission->getId()]);
     }
 
     return $response->json($missions);
