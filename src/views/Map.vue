@@ -54,7 +54,8 @@
                     :class="{ selected: currentLayer === i }"
                 >
                     <div @click="changeLevel(i)" class="floor">
-                        {{ $t('map.level-number', { levelNumber: i }) }}
+                        <span v-if="mission.floorNames[i]">{{ $t(mission.floorNames[i].nameKey) }}</span>
+                        <span v-else>{{ $t('map.level-number', { levelNumber: i }) }}</span>
                     </div>
                     <div
                         :class="{ 'has-search-results': hasSearchResults(i) }"
@@ -2482,21 +2483,11 @@ export default {
                         this.mapLayers[-99] = mapTileLayer;
                     }
                 } else {
-                    // SVG
-                    // Look into this for proper SVG support? https://stackoverflow.com/a/47903153/1509431
-                    var SVGOverlay = L.ImageOverlay.extend({
-                        options: {
-                        },
-
-                        _initImage: function () {
-                            var wasElementSupplied = this._url.tagName.toLowerCase() === 'svg';
-                            var svg = this._image = wasElementSupplied ? this._url : L.DomUtil.create('svg');
-                        }
-                    });
-
-                    let svgImageLayer = L.imageOverlay('https://media.hitmaps.com/img/absolution/maps/a-personal-contract/01gardens.svg', [[0,0], [100,100]]);
-                    this.layerGroups.push(svgImageLayer);
-                    this.mapLayers[0] = svgImageLayer;
+                    for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
+                        let svgImageLayer = L.imageOverlay(`https://media.hitmaps.com/img/absolution/maps/${this.mission.slug}/${i}.svg`, [[0,0], [100,100]]);
+                        this.layerGroups.push(svgImageLayer);
+                        this.mapLayers[i] = svgImageLayer;
+                    }
                 }
 
 

@@ -12,10 +12,20 @@ class SeedFloorNames extends AbstractMigration {
             ->addColumn('name_key', 'string')
          */
         foreach ($this->getRows() as $row) {
+            $firstFloor = true;
+            $highestFloorNumber = 0;
             foreach ($row['floors'] as $number => $key) {
+                if ($firstFloor) {
+                    $this->execute("UPDATE `missions` SET `lowest_floor_number` = {$number} WHERE `slug` = '{$row['slug']}'");
+                    $firstFloor = false;
+                }
+
                 $this->execute("INSERT INTO `map_floor_to_name` (`mission_id`, `floor_number`, `name_key`)
                     SELECT `id`, {$number}, '{$key}' FROM `missions` WHERE `slug` = '{$row['slug']}'");
+                $highestFloorNumber = $number;
             }
+
+            $this->execute("UPDATE `missions` SET `highest_floor_number` = {$highestFloorNumber} WHERE `slug` = '{$row['slug']}'");
         }
     }
 
