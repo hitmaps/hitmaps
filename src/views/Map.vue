@@ -42,7 +42,7 @@
         <div v-if="mission != null" class="content">
             <div
                 class="floor-toggle"
-                v-if="mission.missionType != 'Sniper Assassin'"
+                v-if="mission.missionType !== 'Sniper Assassin'"
             >
                 <div
                     v-for="i in range(
@@ -53,15 +53,20 @@
                     class="floor-info"
                     :class="{ selected: currentLayer === i }"
                 >
-                    <div @click="changeLevel(i)" class="floor">
-                        <span v-if="mission.floorNames[i]">{{ $t(mission.floorNames[i].nameKey) }}</span>
-                        <span v-else>{{ $t('map.level-number', { levelNumber: i }) }}</span>
+                    <div class="floor-header" v-if="isNewFloorType($t(mission.floorNames[i].nameKey))">
+                        <span>{{ lastFloorType }}</span>
                     </div>
-                    <div
-                        :class="{ 'has-search-results': hasSearchResults(i) }"
-                        class="item-count"
-                    >
-                        {{ calculateNumber(i) }}
+                    <div class="floor-details">
+                        <div @click="changeLevel(i)" class="floor">
+                            <span v-if="mission.floorNames[i]">{{ getFormattedFloorName($t(mission.floorNames[i].nameKey)) }}</span>
+                            <span v-else>{{ $t('map.level-number', { levelNumber: i }) }}</span>
+                        </div>
+                        <div
+                                :class="{ 'has-search-results': hasSearchResults(i) }"
+                                class="item-count"
+                        >
+                            {{ calculateNumber(i) }}
+                        </div>
                     </div>
                 </div>
                 <div
@@ -1452,6 +1457,7 @@ export default {
     },
     data() {
         return {
+            lastFloorType: '',
             disguises: [],
             ledges: [],
             foliage: [],
@@ -1548,7 +1554,7 @@ export default {
                     'Navigation|up-stair',
                     'Navigation|starting-location',
                     'Navigation|up-pipe'
-                ].indexOf(this.editor.currentCategory) == -1
+                ].indexOf(this.editor.currentCategory) === -1
             )
         },
         isLoggedIn: function() {
@@ -1564,6 +1570,37 @@ export default {
         }
     },
     methods: {
+        isNewFloorType(level) {
+            console.log(level);
+
+            if (!level.length) {
+                return;
+            }
+
+            if (!level.includes('|') && level !== this.lastFloorType) {
+                if (level !== this.lastFloorType) {
+                    this.lastFloorType = level;
+                    return true;
+                }
+
+                return false;
+            }
+
+            let type = level.split('|');
+            if (type[0] !== this.lastFloorType) {
+                this.lastFloorType = type[0];
+                return true;
+            }
+
+            return false;
+        },
+        getFormattedFloorName(level) {
+            if (level.includes('|')) {
+                return level.split('|')[1];
+            }
+
+            return level;
+        },
         getCountryFlag: function() {
             return LanguageHelpers.getCountryFlagForLocale(this.$i18n);
         },
@@ -3242,7 +3279,6 @@ html {
 
 .floor-toggle {
     z-index: 1;
-    width: 150px;
     border-radius: 3px;
     border: 2px solid #fff;
     background: rgba(22, 24, 29, 0.75);
@@ -3255,26 +3291,34 @@ html {
         font-weight: 600;
         cursor: pointer;
 
-        .floor {
-            display: inline-block;
-            padding: 10px 15px;
-            /*border-right: solid 2px #fff;*/
-            width: 100px;
+        .floor-header {
+            cursor: default;
             text-align: center;
-        }
-
-        .item-count {
-            display: inline-block;
             background: #ddd;
             color: #000;
-            //margin-left: -4px;
-            width: 46px;
-            padding: 10px 15px;
-            text-align: center;
+        }
 
-            &.has-search-results {
-                background: #ff003c;
-                color: #fff;
+        .floor-details {
+            display: flex;
+
+            .floor {
+                display: inline-block;
+                padding: 10px 15px;
+                text-align: center;
+                flex-grow: 1;
+            }
+
+            .item-count {
+                display: inline-block;
+                background: #ddd;
+                color: #000;
+                padding: 10px 15px;
+                text-align: center;
+
+                &.has-search-results {
+                    background: #ff003c;
+                    color: #fff;
+                }
             }
         }
 
