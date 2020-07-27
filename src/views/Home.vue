@@ -650,7 +650,7 @@
                 </div>
             </div>
         </div>
-            <div class="row dashboard">
+            <!--<div class="row dashboard">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
@@ -678,7 +678,7 @@
                             <td colspan="3"><i>No upcoming matches</i></td>
                         </tr>
                         </tbody>
-                        <!--<tfoot>
+                        &lt;!&ndash;<tfoot>
                         <tr>
                             <td colspan="3">
                                 <p>Maps are predetermined and are in the following order:</p>
@@ -691,10 +691,10 @@
                                 </ul>
                             </td>
                         </tr>
-                        </tfoot>-->
+                        </tfoot>&ndash;&gt;
                     </table>
                 </div>
-            </div>
+            </div>-->
         </template>
         <modal modal-title="Roulette Rivals 3"
                id="roulette-rivals-modal"
@@ -838,15 +838,6 @@ export default {
             currentPromo: 0,
             tournamentMatches: [],
             promos: [
-                {
-                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/rr3.jpg',
-                    promoStartDate: '2020-07-08T23:00:00+00:00',
-                    promoEndDate: '2020-07-26T23:00:00+00:00',
-                    topCaption: "Frote7's Speedrun Community",
-                    bottomCaption: 'Roulette Rivals 3',
-                    beforeText: 'Registration Closes in',
-                    duringText: undefined
-                }
             ],
             games: [],
             elusiveTargets: [],
@@ -1133,10 +1124,10 @@ export default {
             console.error(err);
             this.$router.push({ name: '500' });
         });
-        this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/rr3').then(resp => {
+        /*this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/rr3').then(resp => {
             this.tournamentMatches = resp.data;
             console.info(this.tournamentMatches);
-        });
+        });*/
     }
 }
 
