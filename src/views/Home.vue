@@ -857,7 +857,7 @@ export default {
                     tileUrl: 'https://media.hitmaps.com/img/hitmaps-custom/h3-header.jpg',
                     promoStartDate: '2020-07-08T23:00:00+00:00',
                     promoEndDate: '2021-02-01T23:00:00+00:00',
-                    topCaption: "Death Awaits",
+                    topCaption: "hitman.com",
                     bottomCaption: 'HITMAN™ 3',
                     beforeText: undefined,
                     duringText: 'Death Awaits'
@@ -1136,6 +1136,8 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
+            this.currentPromo = this.promos[0];
+            this.currentPromoIndex = 1;
             setInterval(() => {
                 this.currentPromo = this.currentPromoIndex === this.promos.length ?
                     0 :
