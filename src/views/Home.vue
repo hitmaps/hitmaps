@@ -74,7 +74,7 @@
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat'
                 }">
-                <a href="https://tournaments.hitmaps.com" target="_blank">
+                <a href="https://www.hitman.com" target="_blank">
                     <p>&nbsp;</p>
                     <div class="countdown" style="background: rgba(0,0,0,.4)" v-if="new Date() < new Date(currentPromo.promoStartDate)">
                         <img
@@ -94,21 +94,36 @@
                         </div>
                     </div>
                     <div class="countdown" style="background: rgba(0,0,0,.4)"  v-else>
+                        <img
+                                src="/img/game-icons/elusive-target-reminaing-time.png"
+                        />
                         <div class="timer not-playable">
-                            <div class="elusive-countdown" style="color: white">
-                                {{ tournamentMatches.length }} Upcoming Matches
+                            <div class="target-arrives">{{ (new Date(currentPromo.promoStartDate) > new Date()) ? currentPromo.beforeText : currentPromo.duringText }}</div>
+                            <div class="elusive-countdown">
+                                <!--{{ tournamentMatches.length }} Upcoming Matches-->
+                                January 2021
                             </div>
                         </div>
                     </div>
                     <div class="game-info">
                         <div class="image">
-                            <i class="fab fa-discord fa-3x" style="width: 48px; height: 48px"></i>
+                            <!--<i class="fab fa-discord fa-3x" style="width: 48px; height: 48px"></i>-->
+                            <img
+                                    src="https://media.hitmaps.com/img/hitmaps-custom/mk3.png"
+                                    class="normal img-fluid"
+                                    alt="Hitman 3 III Logo"
+                            />
+                            <img
+                                    src="https://media.hitmaps.com/img/hitmaps-custom/mk3-inverted.png"
+                                    class="inverted img-fluid"
+                                    alt="Hitman 3 III Logo"
+                            />
                         </div>
                         <div class="text">
                             <h2>{{ currentPromo.topCaption }}</h2>
                             <h1>{{ currentPromo.bottomCaption }}</h1>
                         </div>
-                        <div
+                        <!--<div
                                 onclick="return false;"
                                 @click="showRouletteRivalsModal"
                                 class="image elusive-notification float-right notification-icon"
@@ -124,7 +139,7 @@
                                     class="inverted img-fluid"
                                     alt="More Information Icon"
                             />
-                        </div>
+                        </div>-->
                     </div>
                 </a>
             </div>
@@ -838,6 +853,15 @@ export default {
             currentPromo: 0,
             tournamentMatches: [],
             promos: [
+                {
+                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-custom/h3-header.jpg',
+                    promoStartDate: '2020-07-08T23:00:00+00:00',
+                    promoEndDate: '2021-02-01T23:00:00+00:00',
+                    topCaption: "Death Awaits",
+                    bottomCaption: 'HITMAN™ 3',
+                    beforeText: undefined,
+                    duringText: 'Death Awaits'
+                }
             ],
             games: [],
             elusiveTargets: [],
