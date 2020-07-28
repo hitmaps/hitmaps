@@ -58,7 +58,7 @@
                     </div>
                     <div class="floor-details">
                         <div @click="changeLevel(i)" class="floor">
-                            <span v-if="mission.floorNames[i]">{{ getFormattedFloorName($t(mission.floorNames[i].nameKey)) }}</span>
+                            <span v-if="mission.floorNames[i] && mission.floorNames[i].nameKey">{{ getFormattedFloorName($t(mission.floorNames[i].nameKey)) }}</span>
                             <span v-else>{{ $t('map.level-number', { levelNumber: i }) }}</span>
                         </div>
                         <div
@@ -1576,7 +1576,7 @@ export default {
             console.log(level);
 
             if (!level.length) {
-                return;
+                return false;
             }
 
             if (!level.includes('|') && level !== this.lastFloorType) {
