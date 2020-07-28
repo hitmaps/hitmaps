@@ -118,6 +118,11 @@ class Mission {
      */
     public $tileUrl;
 
+    /**
+     * @ORM\Column(type="boolean", name="svg")
+     */
+    public $svg;
+
     // Not used by Doctrine
     /* @var $floorNames array */
     public $floorNames = [];
@@ -402,5 +407,19 @@ class Mission {
      */
     public function setTileUrl($tileUrl): void {
         $this->tileUrl = $tileUrl;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSvg() {
+        return $this->svg;
+    }
+
+    /**
+     * @param mixed $svg
+     */
+    public function setSvg($svg): void {
+        $this->svg = $svg;
     }
 }

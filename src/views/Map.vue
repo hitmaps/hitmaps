@@ -53,7 +53,7 @@
                     class="floor-info"
                     :class="{ selected: currentLayer === i }"
                 >
-                    <div class="floor-header" v-if="isNewFloorType($t(mission.floorNames[i].nameKey))">
+                    <div class="floor-header" v-if="mission.floorNames[i] && isNewFloorType($t(mission.floorNames[i].nameKey))">
                         <span>{{ lastFloorType }}</span>
                     </div>
                     <div class="floor-details">
@@ -74,8 +74,10 @@
                     :class="{ selected: currentLayer === -99 }"
                     v-if="mission.satelliteView"
                 >
-                    <div @click="changeLevel(-99)" class="floor">
-                        {{ $t('map.satellite') }}
+                    <div class="floor-details">
+                        <div @click="changeLevel(-99)" class="floor satellite">
+                            {{ $t('map.satellite') }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2499,7 +2501,7 @@ export default {
 
             this.$nextTick(() => {
                 // Build tile layers for each floor
-                if (false) {
+                if (!this.mission.svg) {
                     for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
                         let mapTileLayer = L.tileLayer(this.mapUrl + i + '/{z}/{x}/{y}.png', {
                             noWrap: true,
@@ -2527,14 +2529,13 @@ export default {
                     }
                 }
 
-
+                let renderer = this.mission.svg ? L.svg() : L.canvas()
                 this.map = L.map('map', {
                     maxZoom: 99,
                     minZoom: 3,
                     crs: L.CRS.Simple,
                     layers: this.layerGroups,
-                    renderer: L.svg()
-                    //renderer: L.canvas()
+                    renderer: renderer
                 }).setView([this.mission.mapCenterLatitude, this.mission.mapCenterLongitude], 3);
                 let topLeftCoordinate = this.mission.topLeftCoordinate.split(',');
                 let bottomRightCoordinate = this.mission.bottomRightCoordinate.split(',');
@@ -3164,7 +3165,6 @@ html {
 #hide-all,
 #show-all,
 .search-box .control-button {
-    height: 40px;
     border-radius: 3px;
     background: rgba(22, 24, 29, 0.75);
     color: #fff;
@@ -3303,7 +3303,7 @@ html {
 
             .floor {
                 display: inline-block;
-                padding: 10px 15px;
+                padding: 10px 20px;
                 text-align: center;
                 flex-grow: 1;
             }
@@ -3314,6 +3314,7 @@ html {
                 color: #000;
                 padding: 10px 15px;
                 text-align: center;
+                width: 50px;
 
                 &.has-search-results {
                     background: #ff003c;
