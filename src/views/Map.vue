@@ -515,13 +515,13 @@
                                                 }"
                                             >
                                                 <img
-                                                    :src="
-                                                        '/img/map-icons/' +
-                                                            group.icon +
-                                                            '.png'
-                                                    "
-                                                    :alt="group.name + ' Icon'"
-                                                    class="img-fluid"
+                                                        :src="
+                                                    '/img/map-icons/' +
+                                                        group.icon +
+                                                        '.png'
+                                                "
+                                                        :alt="group.name + ' Icon'"
+                                                        class="img-fluid"
                                                 />
                                                 <span>{{ lang('map.groups.' + type.name + '|' + group.name, group.name) }}</span>
                                             </div>
@@ -3029,8 +3029,11 @@ html {
                 display: inline-block;
                 color: #fff;
                 cursor: pointer;
-                height: 40px;
+                min-height: 40px;
                 border-radius: 3px;
+                padding-left: 32px;
+                text-indent: -32px;
+                word-break: break-all;
 
                 &.hidden {
                     text-decoration: line-through;
