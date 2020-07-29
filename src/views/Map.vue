@@ -2324,7 +2324,6 @@ export default {
                             const nodeProperties = floorLayers[key].getLayers()[node];
 
                             if (nodeProperties.options.custom.node.deleted) {
-                                console.info(`Node ${node} deleted`);
                                 continue;
                             }
 
