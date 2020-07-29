@@ -54,7 +54,7 @@
                     :class="{ selected: currentLayer === i }"
                 >
                     <div class="floor-header" v-if="floorNames[i] && floorNames[i].header">
-                        <span>{{ lastFloorType }}</span>
+                        <span>{{ floorNames[i].header }}</span>
                     </div>
                     <div class="floor-details">
                         <div @click="changeLevel(i)" class="floor">
@@ -1486,6 +1486,7 @@ export default {
                 disguiseType: null,
                 notes: [],
                 clickedPoint: {},
+                currentMarkerId: -1,
                 currentMarker: {},
                 originalLatLng: null,
                 vertices: [],
@@ -1694,7 +1695,9 @@ export default {
                 },
                 riseOnHover: true
             }).on('click', function(e) {
+                console.log(e);
                 that.editor.currentMarker = node;
+                that.editor.currentMarkerId = node.id;
             }).on('dragend', this.moveMarker);
         },
         buildPopup: function(element) {
@@ -1823,7 +1826,7 @@ export default {
             this.editor.currentMarker.setLatLng(this.editor.originalLatLng);
         },
         editMarker: function() {
-            const item = this.editor.currentMarker;
+            let item = this.editor.currentMarker;
             this.editor.notes = item.notes
             this.editor.currentCategory = item.type + '|' + item.subgroup
             this.editor.clickedPoint = L.latLng(item.latitude, item.longitude)
@@ -1949,7 +1952,7 @@ export default {
             })
             this.$request(true, url, data).then(resp => {
                 if (this.editor.mode === 'items' && this.currentCategory.nodeId) {
-                    this.editor.currentMarkerNode.deleted = true;
+                    this.editor.currentMarker.deleted = true;
                 }
 
                 if (resp.data.data.approved) {
@@ -2320,9 +2323,19 @@ export default {
                         for (const node in floorLayers[key].getLayers()) {
                             const nodeProperties = floorLayers[key].getLayers()[node];
 
+                            if (nodeProperties.options.custom.node.deleted) {
+                                console.info(`Node ${node} deleted`);
+                                continue;
+                            }
+
                             if (this.editor.mode === '') {
                                 nodeProperties.dragging.disable();
                             } else {
+                                if (!nodeProperties.dragging) {
+                                    console.log(node);
+                                    console.log(nodeProperties);
+                                }
+
                                 nodeProperties.dragging.enable();
                             }
 
