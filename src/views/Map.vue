@@ -53,13 +53,12 @@
                     class="floor-info"
                     :class="{ selected: currentLayer === i }"
                 >
-                    <div class="floor-header" v-if="mission.floorNames[i] && isNewFloorType($t(mission.floorNames[i].nameKey))">
+                    <div class="floor-header" v-if="floorNames[i] && floorNames[i].header">
                         <span>{{ lastFloorType }}</span>
                     </div>
                     <div class="floor-details">
                         <div @click="changeLevel(i)" class="floor">
-                            <span v-if="mission.floorNames[i] && mission.floorNames[i].nameKey">{{ getFormattedFloorName($t(mission.floorNames[i].nameKey)) }}</span>
-                            <span v-else>{{ $t('map.level-number', { levelNumber: i }) }}</span>
+                            <span v-if="floorNames[i] && floorNames[i].value">{{ floorNames[i].value }}</span>
                         </div>
                         <div
                                 :class="{ 'has-search-results': hasSearchResults(i) }"
@@ -1460,6 +1459,7 @@ export default {
     data() {
         return {
             lastFloorType: '',
+            floorNames: {},
             disguises: [],
             ledges: [],
             foliage: [],
@@ -1572,6 +1572,29 @@ export default {
         }
     },
     methods: {
+        buildLevelNames() {
+            if (this.mission === undefined) {
+                console.error('RIP');
+                return;
+            }
+
+            this.floorNames = {};
+            for (var i = this.mission.highestFloorNumber; i >= this.mission.lowestFloorNumber; i--) {
+                if (this.mission.floorNames[i]) {
+                    this.floorNames[i] = {
+                        header: this.isNewFloorType(this.$t(this.mission.floorNames[i].nameKey)) ? this.lastFloorType : undefined,
+                        value: this.getFormattedFloorName(this.$t(this.mission.floorNames[i].nameKey))
+                    }
+                } else {
+                    this.floorNames[i] = {
+                        header: undefined,
+                        value: this.$t('map.level-number', { levelNumber: i })
+                    }
+                }
+            }
+
+            console.info(this.floorNames);
+        },
         isNewFloorType(level) {
             console.log(level);
 
@@ -2397,6 +2420,7 @@ export default {
                 this.$store.commit('SET_MISSION', resp.data[0])
             })
         }
+
     },
     created: function() {
         const $body = $('body');
@@ -2420,6 +2444,8 @@ export default {
             if (this.$store.state.mission == null) {
                 this.$store.commit('SET_MISSION', resp.data.mission);
             }
+
+            this.buildLevelNames();
 
             this.$route.meta.title = resp.data.mission.name
             this.currentLayer = resp.data.mission.startingFloorNumber
