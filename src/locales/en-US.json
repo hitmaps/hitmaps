@@ -45,7 +45,8 @@
     "game-type": {
         "Campaign": "Campaign",
         "Game Mode": "Game Mode",
-        "Elusive Target": "Elusive Target"
+        "Elusive Target": "Elusive Target",
+        "Legacy Game": "Legacy Game"
     },
     "elusive-target": {
         "reactivated-target": "Reactivated Target",

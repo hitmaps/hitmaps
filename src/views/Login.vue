@@ -248,7 +248,7 @@ export default {
                             }
                             if (resp.data.token !== null) {
                                 localStorage.setItem('token', resp.data.token)
-                                this.$router.push({ path: this.referer })
+                                window.location.href = this.referer;
                             }
                         })
                 }
