@@ -30,6 +30,10 @@
                     class="img-fluid"
                 />
                 <h2>{{ game.tagline }}</h2>
+                <alert type="info" v-if="game.slug === 'absolution'">
+                    <p>Hitman: Absolution maps are new to HITMAPS™. We're working diligently to having items mapped; however they are not yet complete.</p>
+                    <p>We thank you for your patience while we work on mapping these levels 🙂</p>
+                </alert>
             </div>
             <div class="row loading" v-if="locations.length === 0">
                 <div class="loader">
@@ -287,10 +291,12 @@
 
 <script>
 import Loader from '../components/Loader.vue'
+import Alert from "../components/Alert";
 
 export default {
     name: 'level-select',
     components: {
+        Alert,
         Loader
     },
     computed: {
