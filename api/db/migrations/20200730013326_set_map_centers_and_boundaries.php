@@ -5,7 +5,19 @@ use Phinx\Migration\AbstractMigration;
 
 class SetMapCentersAndBoundaries extends AbstractMigration {
     public function up() {
+        foreach ($this->getRows() as $row) {
+            $this->execute("UPDATE `missions` 
+              SET `map_center_latitude` = {$row['map_center_latitude']}, `map_center_longitude` = {$row['map_center_longitude']}
+              WHERE `slug` = '{$row['slug']}'");
+        }
+    }
 
+    public function down() {
+        foreach ($this->getRows() as $row) {
+            $this->execute("UPDATE `missions` 
+              SET `map_center_latitude` = 0, `map_center_longitude` = 0
+              WHERE `slug` = '{$row['slug']}'");
+        }
     }
 
     private function getRows() {
