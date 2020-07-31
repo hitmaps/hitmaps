@@ -12,7 +12,8 @@ class AddAbsolutionGame extends AbstractMigration {
                     'full_name' => 'Hitman: Absolution',
                     'type' => 'Legacy Game',
                     'icon' => 'campaign',
-                    'tile_url' => 'https://media.hitmaps.com/img/hitmaps-custom/hitman-absolution.jpg'
+                    'tile_url' => 'https://media.hitmaps.com/img/hitmaps-custom/hitman-absolution.jpg',
+                    'tagline' => ''
                 ]
             ])->save();
     }
