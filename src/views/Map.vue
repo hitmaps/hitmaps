@@ -98,6 +98,10 @@
                     id="navbarSupportedContent"
                 >
                     <div class="header">
+                        <alert type="info" v-if="game.slug === 'absolution'">
+                            <p>Hitman: Absolution maps are new to HITMAPS™. We're working diligently to having items mapped; however they are not yet complete.</p>
+                            <p>We thank you for your patience while we work on mapping these levels 🙂</p>
+                        </alert>
                         <router-link :to="{ name: 'home' }">
                             <img
                                 src="/img/png/logos/hitmaps.png"
@@ -1441,6 +1445,7 @@ import Vue from 'vue'
 import CxltToaster from 'cxlt-vue2-toastr'
 import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
 
+import Alert from '../components/Alert'
 import GameButton from '../components/GameButton'
 import Modal from '../components/Modal'
 
@@ -1450,6 +1455,7 @@ Vue.use(CxltToaster)
 export default {
     name: 'map-view',
     components: {
+        Alert,
         GameButton,
         Modal
     },
