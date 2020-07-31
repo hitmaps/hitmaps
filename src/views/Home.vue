@@ -73,7 +73,7 @@
                         backgroundPosition: 'center',
                         backgroundRepeat: 'no-repeat'
                     }">
-                    <a href="https://tournaments.hitmaps.com" target="_blank">
+                    <a href="https://www.hitman.com" target="_blank">
                         <p>&nbsp;</p>
                         <div class="countdown" style="background: rgba(0,0,0,.4)" v-if="new Date() < new Date(currentPromo.promoStartDate)">
                             <img
@@ -93,16 +93,31 @@
                         </div>
                     </div>
                     <div class="countdown" style="background: rgba(0,0,0,.4)"  v-else>
+                        <img
+                                src="/img/game-icons/elusive-target-reminaing-time.png"
+                        />
                         <div class="timer not-playable">
-                            <div class="elusive-countdown" style="color: white">
-                                {{ tournamentMatches.length }} Upcoming Matches
+                            <div class="target-arrives">{{ (new Date(currentPromo.promoStartDate) > new Date()) ? currentPromo.beforeText : currentPromo.duringText }}</div>
+                            <div class="elusive-countdown">
+                                <!--{{ tournamentMatches.length }} Upcoming Matches-->
+                                January 2021
                             </div>
                             </div>
                         </div>
                         <div class="game-info">
                             <div class="image">
-                                <i class="fab fa-discord fa-3x" style="width: 48px; height: 48px"></i>
-                            </div>
+                                <!--<i class="fab fa-discord fa-3x" style="width: 48px; height: 48px"></i>-->
+                            <img
+                                    src="https://media.hitmaps.com/img/hitmaps-custom/mk3.png"
+                                    class="normal img-fluid"
+                                    alt="Hitman 3 III Logo"
+                            />
+                            <img
+                                    src="https://media.hitmaps.com/img/hitmaps-custom/mk3-inverted.png"
+                                    class="inverted img-fluid"
+                                    alt="Hitman 3 III Logo"
+                            />
+                        </div>
                             <div class="text">
                                 <h2>{{ currentPromo.topCaption }}</h2>
                                 <h1>{{ currentPromo.bottomCaption }}</h1>
@@ -695,21 +710,23 @@
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
-                            <h1>Ghost Mode Tournament 3 (Presented by Frote's Speedrun Community)</h1>
-                            <h2>Grand Finals - 24 May 2020</h2>
+                            <h1>Roulette Rivals 3 (Presented by Frote's Speedrun Community)</h1>
+                            <h2>Upcoming Matches</h2>
                         </div>
                     </div>
                     <table class="table">
                         <thead>
                         <tr>
                             <th>Competitors</th>
+                            <th>Maps</th>
                             <th>Date | Time ({{ new Date() | moment('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone, 'z') }})</th>
                             <th>Shoutcaster(s)</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr v-for="matchup in this.tournamentMatches" :key="`${matchup.participant0Name}|${matchup.participant1Name}|${matchup.platform}`">
-                            <td>{{ matchup.participant0Name }} vs {{ matchup.participant1Name }}</td>
+                            <td><i :class="getPlatformIcon(matchup.platform)"></i> {{ matchup.participant0Name }} vs {{ matchup.participant1Name }}</td>
+                            <td>{{ matchup.firstMap }} and {{ matchup.secondMap }}</td>
                             <td>{{ matchup.matchTime | moment('ddd, D MMM') }} | {{ matchup.matchTime | moment('h:mm A') }}</td>
                             <td><a :href="matchup.shoutcastStream" target="_blank">{{ matchup.shoutcasters }}</a></td>
                         </tr>
@@ -717,7 +734,7 @@
                             <td colspan="3"><i>No upcoming matches</i></td>
                         </tr>
                         </tbody>
-                        <tfoot>
+                        &lt;!&ndash;<tfoot>
                         <tr>
                             <td colspan="3">
                                 <p>Maps are predetermined and are in the following order:</p>
@@ -730,12 +747,12 @@
                                 </ul>
                             </td>
                         </tr>
-                        </tfoot>
+                        </tfoot>&ndash;&gt;
                     </table>
                 </div>
             </div>-->
         </template>
-        <modal modal-title="Roulette Rivals 2"
+        <modal modal-title="Roulette Rivals 3"
                id="roulette-rivals-modal"
                tabindex="-1"
                dismissable>
@@ -768,7 +785,7 @@
                         Do you play it safe? Takes longer, but you wouldn't have to restart. Or do you play it risky to get
                         that awesome time, with the potential of a lot of restarts?
                     </p>
-                    <alert type="info">Matches run from <b>April 10</b> to <b>April 26</b>!</alert>
+                    <alert type="info">Matches run from <b>July 10</b> to <b>July 26</b>!</alert>
                 </div>
             </div>
         </modal>
@@ -782,7 +799,7 @@
                     <p>
                         <i18n path="roulette.introduction">
                                 <span slot="hitmanRoulette">
-                                    <a href="https://thekotti.github.io/hitman/about.html" target="_blank">{{ $t('roulette.hitman-roulette') }}</a>
+                                    <a href="https://thekotti.github.io/hitman.html" target="_blank">{{ $t('roulette.hitman-roulette') }}</a>
                                 </span>
                         </i18n>
                     </p>
@@ -878,13 +895,13 @@ export default {
             tournamentMatches: [],
             promos: [
                 {
-                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/rr3.jpg',
+                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-custom/h3-header.jpg',
                     promoStartDate: '2020-07-08T23:00:00+00:00',
-                    promoEndDate: '2020-07-26T23:00:00+00:00',
-                    topCaption: "Frote7's Speedrun Community",
-                    bottomCaption: 'Roulette Rivals 3',
-                    beforeText: 'Registration Closes in',
-                    duringText: undefined
+                    promoEndDate: '2021-02-01T23:00:00+00:00',
+                    topCaption: "hitman.com",
+                    bottomCaption: 'HITMAN™ 3',
+                    beforeText: undefined,
+                    duringText: 'Death Awaits'
                 }
             ],
             games: [],
@@ -939,6 +956,22 @@ export default {
     methods: {
         saveGameData() {
             //this.$store.commit("SET_GAME", )
+        },
+        getPlatformIcon(platform) {
+            switch (platform) {
+                case 'steam':
+                    return 'fab fa-fw fa-steam';
+                case 'console':
+                    return 'fas fa-fw fa-gamepad';
+                case 'playstation':
+                case 'ps4':
+                    return 'fab fa-fw fa-playstation';
+                case 'xbox':
+                case 'xb1':
+                    return 'fab fa-fw fa-xbox';
+                default:
+                    return '';
+            }
         },
         showRouletteRivalsModal(e) {
             e.preventDefault();
@@ -1144,6 +1177,8 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
+            this.currentPromo = this.promos[0];
+            this.currentPromoIndex = 1;
             setInterval(() => {
                 this.currentPromo = this.currentPromoIndex === this.promos.length ?
                     0 :
@@ -1156,10 +1191,10 @@ export default {
             console.error(err);
             this.$router.push({ name: '500' });
         });
-        this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups').then(resp => {
+        /*this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/rr3').then(resp => {
             this.tournamentMatches = resp.data;
             console.info(this.tournamentMatches);
-        });
+        });*/
     }
 }
 
