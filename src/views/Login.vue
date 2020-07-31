@@ -28,6 +28,9 @@
                     type="danger">
                     {{ $t('authentication.unable-to-verify-account') }}
                 </alert>
+                <alert type="info">
+                    Registration is currently disabled
+                </alert>
                 <div class="login-card">
                     <h3>{{ $t('authentication.sign-in') }}</h3>
                     <div class="form-group email row">
@@ -122,9 +125,9 @@
                         {{ $t('authentication.sign-in') }}
                     </game-button>
                 </div>
-                <div class="sign-in-button">
+                <!--<div class="sign-in-button">
                     <router-link :to="{ name: 'register' }">
-                        <game-button>
+                        <game-button disabled>
                             <img
                                 src="/img/game-icons/modal-continue.png"
                                 class="normal img-fluid"
@@ -138,7 +141,7 @@
                             {{ $t('authentication.create-an-account') }}
                         </game-button>
                     </router-link>
-                </div>
+                </div>-->
             </div>
             <modal
                 id="forgot-password"
@@ -248,7 +251,7 @@ export default {
                             }
                             if (resp.data.token !== null) {
                                 localStorage.setItem('token', resp.data.token)
-                                this.$router.push({ path: this.referer })
+                                window.location.href = this.referer;
                             }
                         })
                 }

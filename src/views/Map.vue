@@ -42,7 +42,7 @@
         <div v-if="mission != null" class="content">
             <div
                 class="floor-toggle"
-                v-if="mission.missionType != 'Sniper Assassin'"
+                v-if="mission.missionType !== 'Sniper Assassin'"
             >
                 <div
                     v-for="i in range(
@@ -53,14 +53,19 @@
                     class="floor-info"
                     :class="{ selected: currentLayer === i }"
                 >
-                    <div @click="changeLevel(i)" class="floor">
-                        {{ $t('map.level-number', { levelNumber: i }) }}
+                    <div class="floor-header" v-if="floorNames[i] && floorNames[i].header">
+                        <span>{{ floorNames[i].header }}</span>
                     </div>
-                    <div
-                        :class="{ 'has-search-results': hasSearchResults(i) }"
-                        class="item-count"
-                    >
-                        {{ calculateNumber(i) }}
+                    <div class="floor-details">
+                        <div @click="changeLevel(i)" class="floor">
+                            <span v-if="floorNames[i] && floorNames[i].value">{{ floorNames[i].value }}</span>
+                        </div>
+                        <div
+                                :class="{ 'has-search-results': hasSearchResults(i) }"
+                                class="item-count"
+                        >
+                            {{ calculateNumber(i) }}
+                        </div>
                     </div>
                 </div>
                 <div
@@ -68,8 +73,10 @@
                     :class="{ selected: currentLayer === -99 }"
                     v-if="mission.satelliteView"
                 >
-                    <div @click="changeLevel(-99)" class="floor">
-                        {{ $t('map.satellite') }}
+                    <div class="floor-details">
+                        <div @click="changeLevel(-99)" class="floor satellite">
+                            {{ $t('map.satellite') }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -91,6 +98,10 @@
                     id="navbarSupportedContent"
                 >
                     <div class="header">
+                        <alert type="info" v-if="game.slug === 'absolution'" dismissable>
+                            <p>Hitman: Absolution maps are new to HITMAPS™. We're working diligently to having items mapped; however they are not yet complete.</p>
+                            <p>We thank you for your patience while we work on mapping these levels 🙂</p>
+                        </alert>
                         <router-link :to="{ name: 'home' }">
                             <img
                                 src="/img/png/logos/hitmaps.png"
@@ -254,7 +265,7 @@
                             </button>
                         </div>
                         <div
-                            v-if="mission.missionType != 'Sniper Assassin'"
+                            v-if="mission.missionType != 'Sniper Assassin' && disguises.length"
                             class="search-box"
                             id="search-box-disguises"
                             data-search="disguises"
@@ -507,13 +518,13 @@
                                                 }"
                                             >
                                                 <img
-                                                    :src="
-                                                        '/img/map-icons/' +
-                                                            group.icon +
-                                                            '.png'
-                                                    "
-                                                    :alt="group.name + ' Icon'"
-                                                    class="img-fluid"
+                                                        :src="
+                                                    '/img/map-icons/' +
+                                                        group.icon +
+                                                        '.png'
+                                                "
+                                                        :alt="group.name + ' Icon'"
+                                                        class="img-fluid"
                                                 />
                                                 <span>{{ lang('map.groups.' + type.name + '|' + group.name, group.name) }}</span>
                                             </div>
@@ -1434,6 +1445,7 @@ import Vue from 'vue'
 import CxltToaster from 'cxlt-vue2-toastr'
 import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
 
+import Alert from '../components/Alert'
 import GameButton from '../components/GameButton'
 import Modal from '../components/Modal'
 
@@ -1443,6 +1455,7 @@ Vue.use(CxltToaster)
 export default {
     name: 'map-view',
     components: {
+        Alert,
         GameButton,
         Modal
     },
@@ -1451,6 +1464,8 @@ export default {
     },
     data() {
         return {
+            lastFloorType: '',
+            floorNames: {},
             disguises: [],
             ledges: [],
             foliage: [],
@@ -1477,6 +1492,7 @@ export default {
                 disguiseType: null,
                 notes: [],
                 clickedPoint: {},
+                currentMarkerId: -1,
                 currentMarker: {},
                 originalLatLng: null,
                 vertices: [],
@@ -1547,7 +1563,7 @@ export default {
                     'Navigation|up-stair',
                     'Navigation|starting-location',
                     'Navigation|up-pipe'
-                ].indexOf(this.editor.currentCategory) == -1
+                ].indexOf(this.editor.currentCategory) === -1
             )
         },
         isLoggedIn: function() {
@@ -1563,6 +1579,60 @@ export default {
         }
     },
     methods: {
+        buildLevelNames() {
+            if (this.mission === undefined) {
+                console.error('RIP');
+                return;
+            }
+
+            this.floorNames = {};
+            for (var i = this.mission.highestFloorNumber; i >= this.mission.lowestFloorNumber; i--) {
+                if (this.mission.floorNames[i]) {
+                    this.floorNames[i] = {
+                        header: this.isNewFloorType(this.$t(this.mission.floorNames[i].nameKey)) ? this.lastFloorType : undefined,
+                        value: this.getFormattedFloorName(this.$t(this.mission.floorNames[i].nameKey))
+                    }
+                } else {
+                    this.floorNames[i] = {
+                        header: undefined,
+                        value: this.$t('map.level-number', { levelNumber: i })
+                    }
+                }
+            }
+
+            console.info(this.floorNames);
+        },
+        isNewFloorType(level) {
+            console.log(level);
+
+            if (!level.length) {
+                return false;
+            }
+
+            if (!level.includes('|') && level !== this.lastFloorType) {
+                if (level !== this.lastFloorType) {
+                    this.lastFloorType = level;
+                    return true;
+                }
+
+                return false;
+            }
+
+            let type = level.split('|');
+            if (type[0] !== this.lastFloorType) {
+                this.lastFloorType = type[0];
+                return true;
+            }
+
+            return false;
+        },
+        getFormattedFloorName(level) {
+            if (level.includes('|')) {
+                return level.split('|')[1];
+            }
+
+            return level;
+        },
         getCountryFlag: function() {
             return LanguageHelpers.getCountryFlagForLocale(this.$i18n);
         },
@@ -1631,7 +1701,9 @@ export default {
                 },
                 riseOnHover: true
             }).on('click', function(e) {
+                console.log(e);
                 that.editor.currentMarker = node;
+                that.editor.currentMarkerId = node.id;
             }).on('dragend', this.moveMarker);
         },
         buildPopup: function(element) {
@@ -1760,7 +1832,7 @@ export default {
             this.editor.currentMarker.setLatLng(this.editor.originalLatLng);
         },
         editMarker: function() {
-            const item = this.editor.currentMarker;
+            let item = this.editor.currentMarker;
             this.editor.notes = item.notes
             this.editor.currentCategory = item.type + '|' + item.subgroup
             this.editor.clickedPoint = L.latLng(item.latitude, item.longitude)
@@ -1886,7 +1958,7 @@ export default {
             })
             this.$request(true, url, data).then(resp => {
                 if (this.editor.mode === 'items' && this.currentCategory.nodeId) {
-                    this.editor.currentMarkerNode.deleted = true;
+                    this.editor.currentMarker.deleted = true;
                 }
 
                 if (resp.data.data.approved) {
@@ -2257,9 +2329,18 @@ export default {
                         for (const node in floorLayers[key].getLayers()) {
                             const nodeProperties = floorLayers[key].getLayers()[node];
 
+                            if (nodeProperties.options.custom.node.deleted) {
+                                continue;
+                            }
+
                             if (this.editor.mode === '') {
                                 nodeProperties.dragging.disable();
                             } else {
+                                if (!nodeProperties.dragging) {
+                                    console.log(node);
+                                    console.log(nodeProperties);
+                                }
+
                                 nodeProperties.dragging.enable();
                             }
 
@@ -2357,6 +2438,7 @@ export default {
                 this.$store.commit('SET_MISSION', resp.data[0])
             })
         }
+
     },
     created: function() {
         const $body = $('body');
@@ -2380,6 +2462,8 @@ export default {
             if (this.$store.state.mission == null) {
                 this.$store.commit('SET_MISSION', resp.data.mission);
             }
+
+            this.buildLevelNames();
 
             this.$route.meta.title = resp.data.mission.name
             this.currentLayer = resp.data.mission.startingFloorNumber
@@ -2461,32 +2545,41 @@ export default {
 
             this.$nextTick(() => {
                 // Build tile layers for each floor
-                for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                    let mapTileLayer = L.tileLayer(this.mapUrl + i + '/{z}/{x}/{y}.png', {
-                        noWrap: true,
-                        minZoom: 3,
-                        maxZoom: 5
-                    });
-                    this.layerGroups.push(mapTileLayer);
-                    this.mapLayers[i] = mapTileLayer;
+                if (!this.mission.svg) {
+                    for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
+                        let mapTileLayer = L.tileLayer(this.mapUrl + i + '/{z}/{x}/{y}.png', {
+                            noWrap: true,
+                            minZoom: this.mission.minZoom,
+                            maxZoom: this.mission.maxZoom
+                        });
+                        this.layerGroups.push(mapTileLayer);
+                        this.mapLayers[i] = mapTileLayer;
+                    }
+
+                    if (this.mission.satelliteView) {
+                        let mapTileLayer = L.tileLayer(this.mapUrl + '-99/{z}/{x}/{y}.png', {
+                            noWrap: true,
+                            minZoom: this.mission.minZoom,
+                            maxZoom: this.mission.maxZoom
+                        });
+                        this.layerGroups.push(mapTileLayer);
+                        this.mapLayers[-99] = mapTileLayer;
+                    }
+                } else {
+                    for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
+                        let svgImageLayer = L.imageOverlay(`https://media.hitmaps.com/img/absolution/maps/${this.mission.slug}/${i}.svg`, [[0,0], [100,100]]);
+                        this.layerGroups.push(svgImageLayer);
+                        this.mapLayers[i] = svgImageLayer;
+                    }
                 }
 
-                if (this.mission.satelliteView) {
-                    let mapTileLayer = L.tileLayer(this.mapUrl + '-99/{z}/{x}/{y}.png', {
-                        noWrap: true,
-                        minZoom: 3,
-                        maxZoom: 5
-                    });
-                    this.layerGroups.push(mapTileLayer);
-                    this.mapLayers[-99] = mapTileLayer;
-                }
-
+                let renderer = this.mission.svg ? L.svg() : L.canvas()
                 this.map = L.map('map', {
-                    maxZoom: 5,
-                    minZoom: 3,
+                    maxZoom: this.mission.maxZoom,
+                    minZoom: this.mission.minZoom,
                     crs: L.CRS.Simple,
                     layers: this.layerGroups,
-                    renderer: L.canvas()
+                    renderer: renderer
                 }).setView([this.mission.mapCenterLatitude, this.mission.mapCenterLongitude], 3);
                 let topLeftCoordinate = this.mission.topLeftCoordinate.split(',');
                 let bottomRightCoordinate = this.mission.bottomRightCoordinate.split(',');
@@ -2980,8 +3073,11 @@ html {
                 display: inline-block;
                 color: #fff;
                 cursor: pointer;
-                height: 40px;
+                min-height: 40px;
                 border-radius: 3px;
+                padding-left: 32px;
+                text-indent: -32px;
+                word-break: break-all;
 
                 &.hidden {
                     text-decoration: line-through;
@@ -3116,7 +3212,6 @@ html {
 #hide-all,
 #show-all,
 .search-box .control-button {
-    height: 40px;
     border-radius: 3px;
     background: rgba(22, 24, 29, 0.75);
     color: #fff;
@@ -3231,7 +3326,6 @@ html {
 
 .floor-toggle {
     z-index: 1;
-    width: 150px;
     border-radius: 3px;
     border: 2px solid #fff;
     background: rgba(22, 24, 29, 0.75);
@@ -3244,26 +3338,35 @@ html {
         font-weight: 600;
         cursor: pointer;
 
-        .floor {
-            display: inline-block;
-            padding: 10px 15px;
-            /*border-right: solid 2px #fff;*/
-            width: 100px;
+        .floor-header {
+            cursor: default;
             text-align: center;
-        }
-
-        .item-count {
-            display: inline-block;
             background: #ddd;
             color: #000;
-            //margin-left: -4px;
-            width: 46px;
-            padding: 10px 15px;
-            text-align: center;
+        }
 
-            &.has-search-results {
-                background: #ff003c;
-                color: #fff;
+        .floor-details {
+            display: flex;
+
+            .floor {
+                display: inline-block;
+                padding: 10px 20px;
+                text-align: center;
+                flex-grow: 1;
+            }
+
+            .item-count {
+                display: inline-block;
+                background: #ddd;
+                color: #000;
+                padding: 10px 15px;
+                text-align: center;
+                width: 50px;
+
+                &.has-search-results {
+                    background: #ff003c;
+                    color: #fff;
+                }
             }
         }
 

@@ -45,6 +45,8 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]?', function 
             $missions = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Mission::class)->findActiveMissionsByLocation($location->getId());
             /* @var $mission \DataAccess\Models\Mission */
             foreach ($missions as $mission) {
+                $mission->floorNames = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\MapFloorToName::class)->findBy(['missionId' => $mission->getId()]);
+
                 $missionDifficulties = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\MissionDifficulty::class)->findBy(['missionId' => $mission->getId()]);
 
                 /* @var $missionDifficulty \DataAccess\Models\MissionDifficulty */
@@ -87,6 +89,8 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
         foreach ($missionDifficulties as $missionDifficulty) {
             $mission->difficulties[] = $missionDifficulty->getDifficulty();
         }
+
+        $mission->floorNames = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\MapFloorToName::class)->findBy(['missionId' => $mission->getId()]);
     }
 
     return $response->json($missions);
@@ -145,10 +149,12 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
     $cacheClient = $applicationContext->get(\BusinessLogic\Caching\CacheClient::class);
 
     /* @var $location \DataAccess\Models\Location */
-    $location = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
+    $entityManager = $applicationContext->get(EntityManager::class);
+    $location = $entityManager->getRepository(\DataAccess\Models\Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
 
     /* @var $mission \DataAccess\Models\Mission */
-    $mission = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Mission::class)->findOneBy(['locationId' => $location->getId(), 'slug' => $request->mission]);
+    $mission = $entityManager->getRepository(\DataAccess\Models\Mission::class)->findOneBy(['locationId' => $location->getId(), 'slug' => $request->mission]);
+    $mission->floorNames = $entityManager->getRepository(\DataAccess\Models\MapFloorToName::class)->findBy(['missionId' => $mission->getId()]);
 
     if ($mission === null) {
         $response->code(400);
