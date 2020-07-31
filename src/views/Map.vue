@@ -2543,8 +2543,8 @@ export default {
                     for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
                         let mapTileLayer = L.tileLayer(this.mapUrl + i + '/{z}/{x}/{y}.png', {
                             noWrap: true,
-                            minZoom: 3,
-                            maxZoom: 5
+                            minZoom: this.mission.minZoom,
+                            maxZoom: this.mission.maxZoom
                         });
                         this.layerGroups.push(mapTileLayer);
                         this.mapLayers[i] = mapTileLayer;
@@ -2553,8 +2553,8 @@ export default {
                     if (this.mission.satelliteView) {
                         let mapTileLayer = L.tileLayer(this.mapUrl + '-99/{z}/{x}/{y}.png', {
                             noWrap: true,
-                            minZoom: 3,
-                            maxZoom: 5
+                            minZoom: this.mission.minZoom,
+                            maxZoom: this.mission.maxZoom
                         });
                         this.layerGroups.push(mapTileLayer);
                         this.mapLayers[-99] = mapTileLayer;
@@ -2569,8 +2569,8 @@ export default {
 
                 let renderer = this.mission.svg ? L.svg() : L.canvas()
                 this.map = L.map('map', {
-                    maxZoom: 99,
-                    minZoom: 3,
+                    maxZoom: this.mission.maxZoom,
+                    minZoom: this.mission.minZoom,
                     crs: L.CRS.Simple,
                     layers: this.layerGroups,
                     renderer: renderer
