@@ -119,6 +119,25 @@ class Mission {
     public $tileUrl;
 
     /**
+     * @ORM\Column(type="boolean", name="svg")
+     */
+    public $svg;
+
+    /**
+     * @ORM\Column(type="integer", name="min_zoom")
+     */
+    public $minZoom;
+
+    /**
+     * @ORM\Column(type="integer", name="max_zoom")
+     */
+    public $maxZoom;
+
+    // Not used by Doctrine
+    /* @var $floorNames array */
+    public $floorNames = [];
+
+    /**
      * @return mixed
      */
     public function getId(): int {
@@ -398,5 +417,47 @@ class Mission {
      */
     public function setTileUrl($tileUrl): void {
         $this->tileUrl = $tileUrl;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSvg() {
+        return $this->svg;
+    }
+
+    /**
+     * @param mixed $svg
+     */
+    public function setSvg($svg): void {
+        $this->svg = $svg;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMinZoom() {
+        return $this->minZoom;
+    }
+
+    /**
+     * @param mixed $minZoom
+     */
+    public function setMinZoom($minZoom): void {
+        $this->minZoom = $minZoom;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMaxZoom() {
+        return $this->maxZoom;
+    }
+
+    /**
+     * @param mixed $maxZoom
+     */
+    public function setMaxZoom($maxZoom): void {
+        $this->maxZoom = $maxZoom;
     }
 }

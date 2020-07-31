@@ -5,16 +5,16 @@
             v-if="alertHeading !== undefined"
             v-html="alertHeading"
         ></h4>
-        <slot></slot>
         <button
-            type="button"
-            class="close"
-            data-dismiss="alert"
-            aria-label="Close"
-            v-if="dismissable"
+                type="button"
+                class="close"
+                data-dismiss="alert"
+                aria-label="Close"
+                v-if="dismissable"
         >
             <span aria-hidden="true">&times;</span>
         </button>
+        <slot></slot>
     </div>
 </template>
 
