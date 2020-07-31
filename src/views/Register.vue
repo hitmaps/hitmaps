@@ -18,6 +18,11 @@
         </header>
         <div class="row">
             <div class="col-md-6 offset-md-3 register">
+                <alert type="danger">
+                    Registration is currently disabled
+                </alert>
+            </div>
+            <!--<div class="col-md-6 offset-md-3 register">
                 <alert
                     v-for="message in register.messages"
                     :key="message.messageHtml"
@@ -228,7 +233,7 @@
                         </game-button>
                     </router-link>
                 </div>
-            </div>
+            </div>-->
         </div>
     </div>
 </template>

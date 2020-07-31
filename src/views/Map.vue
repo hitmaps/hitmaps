@@ -265,7 +265,7 @@
                             </button>
                         </div>
                         <div
-                            v-if="mission.missionType != 'Sniper Assassin'"
+                            v-if="mission.missionType != 'Sniper Assassin' && disguises.length"
                             class="search-box"
                             id="search-box-disguises"
                             data-search="disguises"

@@ -25,7 +25,7 @@
             <div class="row dashboard">
                 <div
                     class="game col-lg"
-                    v-for="game in games.filter(x => x.slug === 'hitman' || x.slug === 'hitman2')"
+                    v-for="game in games.filter(x => x.slug !== 'absolution')"
                     :key="game.id"
                     v-bind:style="{
                         backgroundImage:
@@ -664,8 +664,9 @@
                     </div>
                 </div>
             </div>
-            <div class="row dashboard">
+            <!--<div class="row dashboard">
                 <div
+
                         class="game col-lg"
                         v-for="game in games.filter(x => x.slug !== 'hitman' && x.slug !== 'hitman2')"
                         :key="game.id"
@@ -705,7 +706,7 @@
                         </div>
                     </router-link>
                 </div>
-            </div>
+            </div>-->
             <!--<div class="row dashboard">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
