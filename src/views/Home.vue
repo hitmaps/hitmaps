@@ -837,7 +837,58 @@
                     </a>
                 </div>
                 <div class="col-sm-6 col-xs-12">
-                    <img src="/img/png/promo/frote-partnership.png" class="img-fluid" alt="Various events hosted by Frote's Speedrun Community">
+                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc5.png" class="d-block w-100" alt="Speedrun Competition 5">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://media.hitmaps.com/img/hitmaps-tournaments/promo/cc2.png" class="d-block w-100" alt="Mullet's Creative Contest 2">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://media.hitmaps.com/img/hitmaps-tournaments/promo/rr2.png" class="d-block w-100" alt="Roulette Rivals 2">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://media.hitmaps.com/img/hitmaps-tournaments/promo/gm3.png" class="d-block w-100" alt="Ghost Mode Tournament 3">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc4.png" class="d-block w-100" alt="Speedrun Competition 4">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://media.hitmaps.com/img/hitmaps-tournaments/promo/cc1.png" class="d-block w-100" alt="Mullet's Creative Contest">
+                            </div>
+                            <!-- Roulette Rivals 1 -->
+                            <div class="carousel-item">
+                                <img src="https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc3.png" class="d-block w-100" alt="Speedrun Competition 3">
+                            </div>
+                            <!-- GM 2 -->
+                            <div class="carousel-item">
+                                <img src="https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc2.png" class="d-block w-100" alt="Speedrun Competition 2">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc1.png" class="d-block w-100" alt="Speedrun Competition 1">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://media.hitmaps.com/img/hitmaps-tournaments/promo/featured-contracts.png" class="d-block w-100" alt="Frote's Featured Contracts">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="/img/png/promo/frote-partnership.png" class="d-block w-100" alt="Various events hosted by Frote's Speedrun Community">
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
