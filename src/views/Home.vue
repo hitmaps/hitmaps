@@ -820,7 +820,7 @@
                 </div>
             </div>
         </div>
-        <div class="patreon" :style="`background: #ccc url('${froteImages[froteImageIndex]}') center center / cover no-repeat; background-blend-mode: screen`">
+        <div class="patreon">
             <div class="row intro">
                 <div class="col-xs-12">
                     <h1>{{ $t('partnership.header') }}</h1>
@@ -835,6 +835,27 @@
                         <i class="fab fa-discord"></i>
                         {{ $t('partnership.join-the-discord') }}
                     </a>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li v-for="(image, index) in froteImages" data-target="#carouselExampleIndicators"
+                                :data-slide-to="index" :class="index === 0 ? 'active' : ''"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div v-for="(image, index) in froteImages" class="carousel-item" :class="index === 0 ? 'active' : ''">
+                                <img :src="image.url" class="d-block w-100" :alt="image.caption">
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -950,17 +971,63 @@ export default {
             },
             streams: [],
             froteImages: [
-                'https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc5.png',
-                'https://media.hitmaps.com/img/hitmaps-tournaments/promo/rr2.png',
-                'https://media.hitmaps.com/img/hitmaps-tournaments/promo/gm3.png',
-                'https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc4.png',
-                'https://media.hitmaps.com/img/hitmaps-tournaments/promo/cc1.png',
-                'https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc3.png',
-                'https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc2.png',
-                'https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc1.png',
-                'https://media.hitmaps.com/img/hitmaps-tournaments/promo/featured-contracts.png',
-            ],
-            froteImageIndex: 0
+                {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/gm4.png',
+                    caption: 'Ghost Mode Tournament 4'
+                },
+                {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/rr3.jpg',
+                    caption: 'Roulette Rivals 3'
+                },
+                {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc5.png',
+                    caption: 'Speedrun Competition 5'
+                },
+                {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/rr2.png',
+                    caption: 'Roulette Rivals 2'
+                },
+                {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/gm3.png',
+                    caption: 'Ghost Mode Tournament 3'
+                },
+                {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc4.png',
+                    caption: 'Speedrun Competition 4'
+                },
+                {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/ce1.png',
+                    caption: 'Competitive Escalation - Miami'
+                },
+                {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/cc1.png',
+                    caption: "Mullet's Creative Contest 1"
+                },
+                {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc3.png',
+                    caption: 'Speedrun Competition 3'
+                },
+                {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/rr1.png',
+                    caption: 'Roulette Rivals'
+                },
+                {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/gm2.png',
+                    caption: 'Ghost Mode Tournament 2'
+                },
+                {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/gm1.png',
+                    caption: 'Ghost Mode Tournament'
+                },
+                {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc1.png',
+                    caption: 'Speedrun Competition'
+                },
+                {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/featured-contracts.png',
+                    caption: "Frote's Featured Contracts"
+                }
+            ]
         }
     },
     methods: {
@@ -1168,13 +1235,6 @@ export default {
         }
     },
     created: function() {
-        this.froteImageIndex = 0;
-        setInterval(() => {
-            this.froteImageIndex = this.froteImageIndex === (this.froteImages.length - 1) ?
-                0 :
-                this.froteImageIndex + 1;
-        }, 5000);
-
         this.$http.get(this.$domain + '/api/web/home').then(resp => {
             this.games = resp.data.games
             this.elusiveTargets = resp.data.elusiveTargets
