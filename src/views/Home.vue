@@ -73,7 +73,7 @@
                         backgroundPosition: 'center',
                         backgroundRepeat: 'no-repeat'
                     }">
-                    <a href="https://www.hitman.com" target="_blank">
+                    <a :href="currentPromo.url" target="_blank">
                         <p>&nbsp;</p>
                         <div class="countdown" style="background: rgba(0,0,0,.4)" v-if="new Date() < new Date(currentPromo.promoStartDate)">
                             <img
@@ -99,25 +99,31 @@
                         <div class="timer not-playable">
                             <div class="target-arrives">{{ (new Date(currentPromo.promoStartDate) > new Date()) ? currentPromo.beforeText : currentPromo.duringText }}</div>
                             <div class="elusive-countdown">
-                                <!--{{ tournamentMatches.length }} Upcoming Matches-->
-                                January 2021
+                                <template v-if="currentPromo.tournament">
+                                    {{ tournamentMatches.length }} Upcoming Matches
+                                </template>
+                                <template v-else>
+                                    January 2021
+                                </template>
                             </div>
                             </div>
                         </div>
                         <div class="game-info">
                             <div class="image">
-                                <!--<i class="fab fa-discord fa-3x" style="width: 48px; height: 48px"></i>-->
-                            <img
-                                    src="https://media.hitmaps.com/img/hitmaps-custom/mk3.png"
-                                    class="normal img-fluid"
-                                    alt="Hitman 3 III Logo"
-                            />
-                            <img
-                                    src="https://media.hitmaps.com/img/hitmaps-custom/mk3-inverted.png"
-                                    class="inverted img-fluid"
-                                    alt="Hitman 3 III Logo"
-                            />
-                        </div>
+                                <i v-if="currentPromo.tournament" class="fab fa-discord fa-3x" style="width: 48px; height: 48px"></i>
+                                <img
+                                        v-if="!currentPromo.tournament"
+                                        src="https://media.hitmaps.com/img/hitmaps-custom/mk3.png"
+                                        class="normal img-fluid"
+                                        alt="Hitman 3 III Logo"
+                                />
+                                <img
+                                        v-if="!currentPromo.tournament"
+                                        src="https://media.hitmaps.com/img/hitmaps-custom/mk3-inverted.png"
+                                        class="inverted img-fluid"
+                                        alt="Hitman 3 III Logo"
+                                />
+                            </div>
                             <div class="text">
                                 <h2>{{ currentPromo.topCaption }}</h2>
                                 <h1>{{ currentPromo.bottomCaption }}</h1>
@@ -707,11 +713,11 @@
                     </router-link>
                 </div>
             </div>-->
-            <!--<div class="row dashboard">
+            <div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
-                            <h1>Roulette Rivals 3 (Presented by Frote's Speedrun Community)</h1>
+                            <h1>Ghost Mode Tournament 4 (Presented by Frote's Speedrun Community)</h1>
                             <h2>Upcoming Matches</h2>
                         </div>
                     </div>
@@ -719,7 +725,6 @@
                         <thead>
                         <tr>
                             <th>Competitors</th>
-                            <th>Maps</th>
                             <th>Date | Time ({{ new Date() | moment('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone, 'z') }})</th>
                             <th>Shoutcaster(s)</th>
                         </tr>
@@ -727,7 +732,6 @@
                         <tbody>
                         <tr v-for="matchup in this.tournamentMatches" :key="`${matchup.participant0Name}|${matchup.participant1Name}|${matchup.platform}`">
                             <td><i :class="getPlatformIcon(matchup.platform)"></i> {{ matchup.participant0Name }} vs {{ matchup.participant1Name }}</td>
-                            <td>{{ matchup.firstMap }} and {{ matchup.secondMap }}</td>
                             <td>{{ matchup.matchTime | moment('ddd, D MMM') }} | {{ matchup.matchTime | moment('h:mm A') }}</td>
                             <td><a :href="matchup.shoutcastStream" target="_blank">{{ matchup.shoutcasters }}</a></td>
                         </tr>
@@ -735,7 +739,7 @@
                             <td colspan="3"><i>No upcoming matches</i></td>
                         </tr>
                         </tbody>
-                        &lt;!&ndash;<tfoot>
+                        <tfoot>
                         <tr>
                             <td colspan="3">
                                 <p>Maps are predetermined and are in the following order:</p>
@@ -744,14 +748,14 @@
                                     <li>Map 2: Santa Fortuna</li>
                                     <li>Map 3: Miami</li>
                                     <li>Map 4 (if necessary): Santa Fortuna</li>
-                                    <li>Map 5 (if necessary): Competitors' Choice</li>
+                                    <li>Map 5 (if necessary): Random Map</li>
                                 </ul>
                             </td>
                         </tr>
-                        </tfoot>&ndash;&gt;
+                        </tfoot>
                     </table>
                 </div>
-            </div>-->
+            </div>
         </template>
         <modal modal-title="Roulette Rivals 3"
                id="roulette-rivals-modal"
@@ -914,13 +918,26 @@ export default {
             tournamentMatches: [],
             promos: [
                 {
+                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/gm4.png',
+                    promoStartDate: '2020-08-12T00:00:00+00:00',
+                    promoEndDate: '2020-08-30T23:00:00+00:00',
+                    topCaption: "Frote7's Speedrun Community",
+                    bottomCaption: 'Ghost Mode Tournament 4',
+                    beforeText: 'Registration Closes in',
+                    duringText: undefined,
+                    tournament: true,
+                    url: 'https://tournaments.hitmaps.com'
+                },
+                {
                     tileUrl: 'https://media.hitmaps.com/img/hitmaps-custom/h3-header.jpg',
                     promoStartDate: '2020-07-08T23:00:00+00:00',
                     promoEndDate: '2021-02-01T23:00:00+00:00',
                     topCaption: "hitman.com",
                     bottomCaption: 'HITMAN™ 3',
                     beforeText: undefined,
-                    duringText: 'Death Awaits'
+                    duringText: 'Death Awaits',
+                    tournament: false,
+                    url: 'https://www.hitman.com'
                 }
             ],
             games: [],
@@ -1268,10 +1285,10 @@ export default {
             console.error(err);
             this.$router.push({ name: '500' });
         });
-        /*this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/rr3').then(resp => {
+        this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/gm4').then(resp => {
             this.tournamentMatches = resp.data;
             console.info(this.tournamentMatches);
-        });*/
+        });
     }
 }
 
