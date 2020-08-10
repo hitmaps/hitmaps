@@ -911,6 +911,14 @@ export default {
         Countdown,
         Loader
     },
+    metaInfo: {
+        meta: [
+            {
+                name: 'description',
+                content: 'HITMAPS™ provides interactive maps for the Hitman series since 2018'
+            }
+        ]
+    },
     data() {
         return {
             currentPromoIndex: 0,
