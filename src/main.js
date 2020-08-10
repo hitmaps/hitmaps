@@ -8,6 +8,7 @@ import ImageLoader from './plugins/ImageLoader'
 import i18n from './i18n'
 import CountryFlag from 'vue-country-flag'
 import Rollbar from 'vue-rollbar'
+import VueMeta from 'vue-meta'
 
 axios.defaults.withCredentials = true
 
@@ -23,6 +24,8 @@ var moment = require('moment-timezone');
 Vue.use(VueMoment, {
     moment
 });
+
+Vue.use(VueMeta);
 
 //Better method to deciding what type of request
 Vue.prototype.$request = (post, endpoint, data) => {
