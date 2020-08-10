@@ -1102,7 +1102,7 @@ $klein->respond('GET', '/api/sitemap.txt', function(\Klein\Request $request, \Kl
         /* @var $locations \DataAccess\Models\Location[] */
         $locations = $locationRepository->findByGame($game->getSlug());
         foreach ($locations as $location) {
-            $pages[] = "{$constants->siteDomain}/games/{$game->getSlug()}#  {$location->getSlug()}";
+            $pages[] = "{$constants->siteDomain}/games/{$game->getSlug()}#{$location->getSlug()}";
 
             /* @var $missions \DataAccess\Models\Mission[] */
             $missions = $missionRepository->findActiveMissionsByLocation($location->getId());
