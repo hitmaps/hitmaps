@@ -1,6 +1,4 @@
-# Don't let anyone index the API endpoints
 User-agent: *
-Disallow: /api/
 Disallow: /maps/
 
-Sitemap: https://www.hitmaps.com/sitemap.txt
+Sitemap: https://www.hitmaps.com/api/sitemap.txt
