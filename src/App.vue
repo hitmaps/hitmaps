@@ -6,10 +6,17 @@
                 <div class="row">
                     <div class="col-md-6">
                         <h4>&copy; 2018 - {{ $currentYear }} hitmaps.com</h4>
-                        <p>
+                        <p style="margin-bottom: 0">
                             <i18n path="footer.disclaimer">
                                 <span slot="ioiLink">
                                     <a href="https://www.ioi.dk" target="_blank">{{ $t('footer.io-interactive') }}</a>
+                                </span>
+                            </i18n>
+                        </p>
+                        <p>
+                            <i18n path="footer.developed-by">
+                                <span slot="mikeKochLink">
+                                    <a href="https://mikeko.ch" target="_blank">Mike Koch</a>
                                 </span>
                             </i18n>
                         </p>
