@@ -98,13 +98,14 @@
                     <div class="countdown" style="background: rgba(0,0,0,.4)"  v-else>
                         <img
                                 src="/img/game-icons/elusive-target-reminaing-time.png"
+                                v-if="!currentPromo.tournament"
                         />
                         <div class="timer not-playable">
                             <div class="target-arrives">{{ (new Date(currentPromo.promoStartDate) > new Date()) ? currentPromo.beforeText : currentPromo.duringText }}</div>
                             <div class="elusive-countdown">
-                                <template v-if="currentPromo.tournament">
+                                <span v-if="currentPromo.tournament" style="color: white">
                                     {{ tournamentMatches.length }} Upcoming Matches
-                                </template>
+                                </span>
                                 <template v-else>
                                     January 2021
                                 </template>
@@ -930,7 +931,7 @@ export default {
             promos: [
                 {
                     tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/gm4.png',
-                    promoStartDate: '2020-08-12T00:00:00+00:00',
+                    promoStartDate: '2020-08-13T09:00:00+00:00',
                     promoEndDate: '2020-08-30T23:00:00+00:00',
                     topCaption: "Frote7's Speedrun Community",
                     bottomCaption: 'Ghost Mode Tournament 4',
