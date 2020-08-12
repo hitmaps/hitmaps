@@ -931,7 +931,7 @@ export default {
             promos: [
                 {
                     tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/gm4.png',
-                    promoStartDate: '2020-08-13T09:00:00+00:00',
+                    promoStartDate: '2020-08-13T07:00:00+00:00',
                     promoEndDate: '2020-08-30T23:00:00+00:00',
                     topCaption: "Frote7's Speedrun Community",
                     bottomCaption: 'Ghost Mode Tournament 4',
