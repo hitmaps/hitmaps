@@ -725,6 +725,16 @@
                             <h2>Upcoming Matches</h2>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 col-sm-12" v-for="matchup in this.tournamentMatches" :key="`${matchup.participant0Name}|${matchup.participant1Name}|${matchup.platform}`">
+                            <div class="row">
+                                <h1>Header</h1>
+                            </div>
+                            <div class="row">
+                                <h2>Info</h2>
+                            </div>
+                        </div>
+                    </div>
                     <table class="table">
                         <thead>
                         <tr>
