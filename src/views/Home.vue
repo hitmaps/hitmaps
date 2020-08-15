@@ -726,12 +726,20 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-3 col-md-6 col-sm-12" v-for="matchup in this.tournamentMatches" :key="`${matchup.participant0Name}|${matchup.participant1Name}|${matchup.platform}`">
+                        <div class="col-lg-4 col-md-6 col-sm-12" v-for="matchup in this.tournamentMatches"
+                             :key="`${matchup.participant0Name}|${matchup.participant1Name}|${matchup.platform}`"
+                             style="background: #ddd; border: solid 1px #000">
                             <div class="row">
-                                <h1>Header</h1>
+                                <div class="col">
+                                    <i :class="getPlatformIcon(matchup.platform)"></i>
+                                    <p>{{ matchup.participant0Name }} vs {{ matchup.participant1Name }}</p>
+                                </div>
                             </div>
                             <div class="row">
-                                <h2>Info</h2>
+                                <div class="col">
+                                    <p>{{ matchup.matchTime | moment('ddd, D MMM') }} | {{ matchup.matchTime | moment('h:mm A') }}</p>
+                                    <p><a :href="matchup.shoutcastStream" target="_blank">{{ matchup.shoutcasters }}</a></p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -744,11 +752,6 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="matchup in this.tournamentMatches" :key="`${matchup.participant0Name}|${matchup.participant1Name}|${matchup.platform}`">
-                            <td><i :class="getPlatformIcon(matchup.platform)"></i> {{ matchup.participant0Name }} vs {{ matchup.participant1Name }}</td>
-                            <td>{{ matchup.matchTime | moment('ddd, D MMM') }} | {{ matchup.matchTime | moment('h:mm A') }}</td>
-                            <td><a :href="matchup.shoutcastStream" target="_blank">{{ matchup.shoutcasters }}</a></td>
-                        </tr>
                         <tr v-if="!this.tournamentMatches.length">
                             <td colspan="3"><i>No upcoming matches</i></td>
                         </tr>
