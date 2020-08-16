@@ -725,7 +725,7 @@
                             <h2>Upcoming Matches</h2>
                         </div>
                     </div>
-                    <table class="table">
+                    <table class="table table-responsive">
                         <thead>
                         <tr>
                             <th>Competitors</th>
