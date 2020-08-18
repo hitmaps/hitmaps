@@ -725,39 +725,51 @@
                             <h2>Upcoming Matches</h2>
                         </div>
                     </div>
-                    <table class="table table-responsive">
-                        <thead>
-                        <tr>
-                            <th>Competitors</th>
-                            <th>Date | Time ({{ new Date() | moment('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone, 'z') }})</th>
-                            <th>Shoutcaster(s)</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="matchup in this.tournamentMatches" :key="`${matchup.participant0Name}|${matchup.participant1Name}|${matchup.platform}`">
-                            <td><i :class="getPlatformIcon(matchup.platform)"></i> {{ matchup.participant0Name }} vs {{ matchup.participant1Name }}</td>
-                            <td>{{ matchup.matchTime | moment('ddd, D MMM') }} | {{ matchup.matchTime | moment('h:mm A') }}</td>
-                            <td><a :href="matchup.shoutcastStream" target="_blank">{{ matchup.shoutcasters }}</a></td>
-                        </tr>
-                        <tr v-if="!this.tournamentMatches.length">
-                            <td colspan="3"><i>No upcoming matches</i></td>
-                        </tr>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <td colspan="3">
-                                <p>Maps are predetermined and are in the following order:</p>
-                                <ul style="columns: 2">
-                                    <li>Map 1: Miami</li>
-                                    <li>Map 2: Santa Fortuna</li>
-                                    <li>Map 3: Miami</li>
-                                    <li>Map 4 (if necessary): Santa Fortuna</li>
-                                    <li>Map 5 (if necessary): Random Map</li>
-                                </ul>
-                            </td>
-                        </tr>
-                        </tfoot>
-                    </table>
+                    <div class="row d-none d-lg-flex d-xl-flex" style="color: black; border-bottom: 2px solid #dee2e6; border-top: 1px solid #dee2e6; padding: .75rem;">
+                        <div class="col-lg-4">
+                            <b><i class="fas fa-swords"></i> Competitors</b>
+                        </div>
+                        <div class="col-lg-4">
+                            <b><i class="far fa-fw fa-calendar-alt"></i> Date | <i class="far fa-fw fa-clock"></i> Time ({{ new Date() | moment('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone, 'z') }})</b>
+                        </div>
+                        <div class="col-lg-4">
+                            <b><i class="fab fa-fw fa-twitch"></i> Shoutcaster(s)</b>
+                        </div>
+                    </div>
+                    <div class="row" v-if="!this.tournamentMatches.length" style="color: black; border-top: 1px solid #dee2e6; padding: .75rem;">
+                        <div class="col">
+                            <i>No upcoming matches</i>
+                        </div>
+                    </div>
+                    <template v-for="matchup in this.tournamentMatches">
+                        <div class="row" :key="`${matchup.participant0Name}|${matchup.participant1Name}|${matchup.platform}`"
+                             style="color: black; border-top: 1px solid #dee2e6; padding: .75rem;">
+                            <div class="col-lg-4 col-12">
+                                <i :class="getPlatformIcon(matchup.platform)"></i>
+                                <span>{{ matchup.participant0Name }} vs {{ matchup.participant1Name }}</span>
+                            </div>
+                            <div class="col-lg-4 col-12">
+                                <i class="far fa-fw fa-calendar-alt d-lg-none"></i>{{ matchup.matchTime | moment('ddd, D MMM') }} | <i class="far fa-fw fa-clock d-lg-none"></i> {{ matchup.matchTime | moment('h:mm A') }}
+                                <span class="d-lg-none">{{ new Date() | moment('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone, 'z') }}</span>
+                            </div>
+                            <div class="col-lg-4 col-12">
+                                <i class="fab fa-fw fa-twitch d-lg-none" v-if="matchup.shoutcasters"></i>
+                                <a :href="matchup.shoutcastStream" target="_blank">{{ matchup.shoutcasters }}</a>
+                            </div>
+                        </div>
+                    </template>
+                    <div class="row" style="color: black; border-top: 1px solid #dee2e6; padding: .75rem;">
+                        <div class="col">
+                            <p>Maps are predetermined and are in the following order:</p>
+                            <ul style="columns: 2">
+                                <li>Map 1: Miami</li>
+                                <li>Map 2: Santa Fortuna</li>
+                                <li>Map 3: Miami</li>
+                                <li>Map 4 (if necessary): Santa Fortuna</li>
+                                <li>Map 5 (if necessary): Random Map</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </template>
