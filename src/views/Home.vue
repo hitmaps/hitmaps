@@ -736,6 +736,11 @@
                             <b><i class="fab fa-fw fa-twitch"></i> Shoutcaster(s)</b>
                         </div>
                     </div>
+                    <div class="row" v-if="!this.tournamentMatches.length" style="color: black; border-top: 1px solid #dee2e6; padding: .75rem;">
+                        <div class="col">
+                            <i>No upcoming matches</i>
+                        </div>
+                    </div>
                     <template v-for="matchup in this.tournamentMatches">
                         <div class="row" :key="`${matchup.participant0Name}|${matchup.participant1Name}|${matchup.platform}`"
                              style="color: black; border-top: 1px solid #dee2e6; padding: .75rem;">
