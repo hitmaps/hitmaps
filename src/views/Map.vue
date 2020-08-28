@@ -1410,9 +1410,15 @@
         </div>
         <script type="text/html" id="popup-template">
             <div>
-                <img src="#" alt="Image template holder">
-                <div data-name="name">Stove</div>
-                <div data-name="group">Explosion</div>
+                <div class="image-and-name">
+                    <p class="flex-push">&nbsp;</p>
+                    <div data-name="name">Stove</div>
+                    <div data-name="group">Explosion</div>
+                </div>
+                <div class="no-image">
+                    <div data-name="name">Stove</div>
+                    <div data-name="group">Explosion</div>
+                </div>
                 <div data-name="target">
                     <i class="far"></i>
                     <span>Start Gas Leak</span>
@@ -1722,9 +1728,11 @@ export default {
             }
 
             if (node.image !== null) {
-                $template.find('img').attr('src', node.image);
+                $template.find('.image-and-name').css('background-image', `url(${node.image})`).show();
+                $template.find('.no-image').hide();
             } else {
-                $template.find('img').remove();
+                $template.find('.image-and-name').css('background-image', '').hide();
+                $template.find('.no-image').show();
             }
 
             for (let i in node.notes) {
@@ -2703,28 +2711,54 @@ html {
             margin: 0 !important;
             padding-bottom: 10px !important;
 
-            img {
-                width: 300px !important;
-                height: 200px !important;
+            .image-and-name {
+                background-position-x: center;
+                background-position-y: center;
+                background-size: cover;
+                height: 200px;
                 border-top-left-radius: 5px;
                 border-top-right-radius: 5px;
-                background: url('/img/map-icons/loader.gif') no-repeat center
-                    #fff;
+                display: flex;
+                flex-direction: column;
+                text-shadow: 2px 2px #000;
+
+                .flex-push {
+                    flex-grow: 1;
+                }
+
+                div[data-name='name'] {
+                    color: #fff;
+                    text-transform: uppercase;
+                    padding: 5px 10px;
+                    font-size: 1.3em;
+                    font-weight: bolder;
+                    background: rgba(0,0,0,.4);
+                }
+
+                div[data-name='group'] {
+                    color: #fff;
+                    text-transform: uppercase;
+                    font-weight: bolder;
+                    padding: 0 10px 5px;
+                    background: rgba(0,0,0,.4);
+                }
             }
 
-            div[data-name='name'] {
-                color: #000;
-                text-transform: uppercase;
-                padding: 10px 10px 0;
-                font-size: 1.3em;
-                font-weight: bolder;
-            }
+            .no-image {
+                div[data-name='name'] {
+                    color: #000;
+                    text-transform: uppercase;
+                    padding: 10px 10px 0;
+                    font-size: 1.3em;
+                    font-weight: bolder;
+                }
 
-            div[data-name='group'] {
-                color: #aaa;
-                text-transform: uppercase;
-                font-weight: bolder;
-                padding: 0 10px;
+                div[data-name='group'] {
+                    color: #aaa;
+                    text-transform: uppercase;
+                    font-weight: bolder;
+                    padding: 0 10px;
+                }
             }
 
             [data-name='target'] {
