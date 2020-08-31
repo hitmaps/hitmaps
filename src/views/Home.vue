@@ -4,7 +4,7 @@
         style="background: url('https://media.hitmaps.com/img/hitmaps-custom/h3-background.png') no-repeat center center fixed; background-size: cover"
     >
         <header class="row" style="margin-top: 250px; align-items: center">
-            <div class="col text-center site-header">
+            <div class="col-lg-6 col-md-12 text-center site-header">
                 <img
                     v-webp
                     src="/img/png/logos/hitmaps.png"
@@ -12,7 +12,7 @@
                 />
                 <h1>{{ $t('interactive-maps-for-hitman') }}</h1>
             </div>
-            <div class="col text-center site-header">
+            <div class="col-lg-6 col-md-12 text-center site-header">
                 <img src="https://media.hitmaps.com/img/hitmaps-custom/new-maps-await.png" class="img-fluid" alt="New Maps Await - Sometime 2021">
             </div>
         </header>
@@ -1466,7 +1466,7 @@ header {
     /*margin-top: 450px;*/
 
     .site-header {
-        margin: 0 20px;
+        /*margin: 0 20px;*/
 
         h1 {
             margin-top: 20px;
