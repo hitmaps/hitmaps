@@ -107,7 +107,7 @@
                                     {{ tournamentMatches.length }} Upcoming Matches
                                 </span>
                                 <template v-else>
-                                    January 2021
+                                    20 Jan 2021
                                 </template>
                             </div>
                             </div>
@@ -717,7 +717,7 @@
                     </router-link>
                 </div>
             </div>-->
-            <div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
+            <!--<div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
@@ -771,7 +771,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
         </template>
         <modal modal-title="Roulette Rivals 3"
                id="roulette-rivals-modal"
@@ -942,20 +942,9 @@ export default {
             tournamentMatches: [],
             promos: [
                 {
-                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/gm4.png',
-                    promoStartDate: '2020-08-13T07:00:00+00:00',
-                    promoEndDate: '2020-08-30T23:00:00+00:00',
-                    topCaption: "Frote7's Speedrun Community",
-                    bottomCaption: 'Ghost Mode Tournament 4',
-                    beforeText: 'Registration Closes in',
-                    duringText: undefined,
-                    tournament: true,
-                    url: 'https://tournaments.hitmaps.com'
-                },
-                {
                     tileUrl: 'https://media.hitmaps.com/img/hitmaps-custom/h3-header.jpg',
                     promoStartDate: '2020-07-08T23:00:00+00:00',
-                    promoEndDate: '2021-02-01T23:00:00+00:00',
+                    promoEndDate: '2021-01-20T23:00:00+00:00',
                     topCaption: "hitman.com",
                     bottomCaption: 'HITMAN™ 3',
                     beforeText: undefined,
