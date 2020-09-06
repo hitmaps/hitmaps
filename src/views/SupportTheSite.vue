@@ -43,6 +43,10 @@
                 Unless otherwise stated, these contributions are not tax-deductible in any way. You will be credited
                 below with your donation.
             </p>
+            <p>Previous Donors (donation amounts are cumulative):</p>
+            <ul>
+                <li>Finikyu - 25.00 USD</li>
+            </ul>
             <!-- region PayPal Button -->
             <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
                 <input type="hidden" name="cmd" value="_s-xclick" />
