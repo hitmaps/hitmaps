@@ -264,7 +264,8 @@
                             </div>
                             <div class="text">
                                 <h2>{{ $t('game-type.Elusive Target') }}</h2>
-                                <h1>{{ $t('elusive-target.coming-soon') }}</h1>
+                                <h1>No Active Target</h1>
+                                <!--<h1>{{ $t('elusive-target.coming-soon') }}</h1>-->
                             </div>
                             <div
                                 onclick="return false;"
