@@ -106,9 +106,6 @@
                                 <span v-if="currentPromo.tournament" style="color: white">
                                     {{ tournamentMatches.length }} Upcoming Matches
                                 </span>
-                                <template v-else-if="currentPromo.h3">
-                                    20 Jan 2021
-                                </template>
                                 <countdown
                                         v-else
                                         class="elusive-countdown"
