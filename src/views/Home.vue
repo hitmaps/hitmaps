@@ -951,6 +951,28 @@ export default {
                     duringText: 'Death Awaits',
                     tournament: false,
                     url: 'https://www.hitman.com'
+                },
+                {
+                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/sc6.png',
+                    promoStartDate: '2020-09-11T08:00:00+00:00',
+                    promoEndDate: '2020-09-20T22:00:00+00:00',
+                    topCaption: "Frote's Speedrun Community",
+                    bottomCaption: 'Speedrun Competition 6',
+                    beforeText: 'Competition Begins',
+                    duringText: 'Competition Ends',
+                    tournament: true,
+                    url: 'https://discord.gg/FVxTKd'
+                },
+                {
+                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/fuzk2.png',
+                    promoStartDate: '2020-09-11T08:00:00+00:00',
+                    promoEndDate: '2020-09-20T22:00:00+00:00',
+                    topCaption: "Frote's Speedrun Community",
+                    bottomCaption: "Fuzk's Photo Contest 2",
+                    beforeText: 'Submissions Open',
+                    duringText: 'Submissions Close',
+                    tournament: true,
+                    url: 'https://discord.gg/FVxTKd'
                 }
             ],
             games: [],
@@ -1001,6 +1023,14 @@ export default {
             },
             streams: [],
             froteImages: [
+                {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc6.png',
+                    caption: 'Speedrun Competition 6'
+                },
+                {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/fuzk2.png',
+                    caption: "Fuzk's Photo Contest 2"
+                },
                 {
                     url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/gm4.png',
                     caption: 'Ghost Mode Tournament 4'
