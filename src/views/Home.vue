@@ -859,7 +859,7 @@
                     <p>{{ $t('partnership.paragraph-1') }}</p>
                     <p>{{ $t('partnership.paragraph-2') }}</p>
                     <p>{{ $t('partnership.paragraph-3') }}</p>
-                    <a href="https://discord.gg/FVxTKdU" target="_blank" class="btn square-button blurple">
+                    <a href="https://discord.gg/3JK7zCz" target="_blank" class="btn square-button blurple">
                         <i class="fab fa-discord"></i>
                         {{ $t('partnership.join-the-discord') }}
                     </a>
@@ -971,7 +971,7 @@ export default {
                     duringText: 'Submissions Close',
                     tournament: false,
                     h3: false,
-                    url: 'https://discord.gg/FVxTKd'
+                    url: 'https://discord.gg/FVxTKdU'
                 },
                 {
                     tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/sc6square.png',
@@ -983,7 +983,7 @@ export default {
                     duringText: 'Competition Ends',
                     tournament: false,
                     h3: false,
-                    url: 'https://discord.gg/FVxTKd'
+                    url: 'https://discord.gg/FVxTKdU'
                 }
             ],
             games: [],
