@@ -124,15 +124,15 @@
                     </div>
                         <div class="game-info">
                             <div class="image">
-                                <i v-if="currentPromo.tournament" class="fab fa-discord fa-3x" style="width: 48px; height: 48px"></i>
+                                <i v-if="!currentPromo.h3" class="fab fa-discord fa-3x" style="width: 48px; height: 48px"></i>
                                 <img
-                                        v-if="!currentPromo.tournament"
+                                        v-if="currentPromo.h3"
                                         src="https://media.hitmaps.com/img/hitmaps-custom/mk3.png"
                                         class="normal img-fluid"
                                         alt="Hitman 3 III Logo"
                                 />
                                 <img
-                                        v-if="!currentPromo.tournament"
+                                        v-if="currentPromo.h3"
                                         src="https://media.hitmaps.com/img/hitmaps-custom/mk3-inverted.png"
                                         class="inverted img-fluid"
                                         alt="Hitman 3 III Logo"
