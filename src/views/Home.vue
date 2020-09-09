@@ -106,12 +106,22 @@
                                 <span v-if="currentPromo.tournament" style="color: white">
                                     {{ tournamentMatches.length }} Upcoming Matches
                                 </span>
-                                <template v-else>
+                                <template v-else-if="currentPromo.h3">
                                     20 Jan 2021
                                 </template>
-                            </div>
+                                <countdown
+                                        v-else
+                                        class="elusive-countdown"
+                                        :date="
+                                        new Date(currentPromo.promoStartDate) >
+                                        new Date()
+                                            ? currentPromo.promoStartDate
+                                            : currentPromo.promoEndDate
+                                    "
+                                ></countdown>
                             </div>
                         </div>
+                    </div>
                         <div class="game-info">
                             <div class="image">
                                 <i v-if="currentPromo.tournament" class="fab fa-discord fa-3x" style="width: 48px; height: 48px"></i>
@@ -951,6 +961,7 @@ export default {
                     beforeText: undefined,
                     duringText: 'Death Awaits',
                     tournament: false,
+                    h3: true,
                     url: 'https://www.hitman.com'
                 },
                 {
@@ -961,7 +972,8 @@ export default {
                     bottomCaption: "Fuzk's Photo Contest 2",
                     beforeText: 'Submissions Open',
                     duringText: 'Submissions Close',
-                    tournament: true,
+                    tournament: false,
+                    h3: false,
                     url: 'https://discord.gg/FVxTKd'
                 },
                 {
@@ -972,7 +984,8 @@ export default {
                     bottomCaption: 'Speedrun Competition 6',
                     beforeText: 'Competition Begins',
                     duringText: 'Competition Ends',
-                    tournament: true,
+                    tournament: false,
+                    h3: false,
                     url: 'https://discord.gg/FVxTKd'
                 }
             ],
