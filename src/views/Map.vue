@@ -66,6 +66,19 @@
                         >
                             {{ calculateNumber(i) }}
                         </div>
+                        <div @click="changeLevel(i+10)" class="floor">
+                            {{ $t('map.level-number', { levelNumber: i+10 }) }}
+                        </div>
+                        <div
+                                :class="{
+                                        'has-search-results': hasSearchResults(
+                                            i
+                                        )
+                                    }"
+                                class="item-count"
+                        >
+                            {{ calculateNumber(i) }}
+                        </div>
                     </div>
                 </div>
                 <div
@@ -171,9 +184,27 @@
                                     <i class="fas fa-sign-in-alt"></i>
                                 </button>
                             </router-link>
+                            <button @click="move('down')">D</button>
+                            <button @click="move('up')">U</button>
+                            <button @click="move('left')">L</button>
+                            <button @click="move('right')">R</button>
+                            <button @click="move('extend')">E</button>
+                            <button @click="move('contract')">C</button>
+                            <input type="text" v-model="debugStep">
+                            <button @click="move('s+')">S+</button>
+                            <button @click="move('s-')">S-</button>
+                            <button @click="move('w+')">W+</button>
+                            <button @click="move('w-')">W-</button>
+                            <button @click="move('n+')">N+</button>
+                            <button @click="move('n-')">N-</button>
+                            <button @click="move('e+')">E+</button>
+                            <button @click="move('e-')">E-</button>
                         </div>
                     </div>
                     <br />
+                    <div style="color: white">
+                        {{ debugLayerSize[0][0] }}, {{ debugLayerSize[0][1] }} / {{ debugLayerSize[1][0] }}, {{ debugLayerSize[1][1] }}
+                    </div>
                     <div
                         class="accordion"
                         id="accordion"
@@ -202,6 +233,19 @@
                                         )
                                     }"
                                     class="item-count"
+                                >
+                                    {{ calculateNumber(i) }}
+                                </div>
+                                <div @click="changeLevel(i+10)" class="floor">
+                                    {{ $t('map.level-number', { levelNumber: i+10 }) }}
+                                </div>
+                                <div
+                                        :class="{
+                                        'has-search-results': hasSearchResults(
+                                            i
+                                        )
+                                    }"
+                                        class="item-count"
                                 >
                                     {{ calculateNumber(i) }}
                                 </div>
@@ -1482,6 +1526,8 @@ export default {
             layerGroups: [],
             map: null,
             mapLayers: [],
+            debugStep: 1,
+            debugLayerSize: [[0,0],[0,0]],
             categories: {},
             mapLoaded: false,
             hiddenLayers: [],
@@ -2430,6 +2476,78 @@ export default {
                         'Disguise areas copied. Refresh the page to see the changes'
                 })
             })
+        },
+        move(direction) {
+            // [-20,-25], [-191.625,249.625]
+            // [N, W], [S, E]
+            for (var i in this.mapLayers) {
+                var bounds = this.mapLayers[i].getBounds();
+                var west = bounds.getWest();
+                var north = bounds.getNorth();
+                var south = bounds.getSouth();
+                var east = bounds.getEast();
+                console.log('WEST: ' + bounds.getWest());
+                console.log('NORTH: ' + bounds.getNorth());
+                console.log('SOUTH: ' + bounds.getSouth());
+                console.log('EAST: ' + bounds.getEast());
+
+                switch (direction) {
+                    case 'down':
+                        south -= parseFloat(this.debugStep);
+                        north -= parseFloat(this.debugStep);
+                        break;
+                    case 'up':
+                        south += parseFloat(this.debugStep);
+                        north += parseFloat(this.debugStep);
+                        break;
+                    case 'left':
+                        west -= parseFloat(this.debugStep);
+                        east -= parseFloat(this.debugStep);
+                        break;
+                    case 'right':
+                        west += parseFloat(this.debugStep);
+                        east += parseFloat(this.debugStep);
+                        break;
+                    case 'extend':
+                        north += parseFloat(this.debugStep);
+                        south -= parseFloat(this.debugStep);
+                        east += parseFloat(this.debugStep);
+                        west -= parseFloat(this.debugStep);
+                        break;
+                    case 'contract':
+                        north -= parseFloat(this.debugStep);
+                        south += parseFloat(this.debugStep);
+                        east -= parseFloat(this.debugStep);
+                        west += parseFloat(this.debugStep);
+                        break;
+                    case 'e+':
+                        east += parseFloat(this.debugStep);
+                        break;
+                    case 'e-':
+                        east -= parseFloat(this.debugStep);
+                        break;
+                    case 's+':
+                        south += parseFloat(this.debugStep);
+                        break;
+                    case 's-':
+                        south -= parseFloat(this.debugStep);
+                        break;
+                    case 'n+':
+                        north += parseFloat(this.debugStep);
+                        break;
+                    case 'n-':
+                        north -= parseFloat(this.debugStep);
+                        break;
+                    case 'w+':
+                        west += parseFloat(this.debugStep);
+                        break;
+                    case 'w-':
+                        west -= parseFloat(this.debugStep);
+                        break;
+                }
+                this.mapLayers[i].setBounds([[north, west], [south, east]]);
+                this.debugLayerSize = [[north, west], [south, east]];
+            }
         }
     },
     beforeCreate: function() {
@@ -2575,9 +2693,18 @@ export default {
                     }
                 } else {
                     for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                        let svgImageLayer = L.imageOverlay(`https://media.hitmaps.com/img/${this.game.slug}/maps/${this.mission.slug}/${i}.svg`, [[-700,-700], [700,700]]);
+                        // -0.25,.25	-191.625,249.625
+                        let svgImageLayer = L.imageOverlay(`https://media.hitmaps.com/img/${this.game.slug}/maps/${this.mission.slug}/${i}.svg`, [[32.27, -41.87], [-224.155,291.955]]);
                         this.layerGroups.push(svgImageLayer);
                         this.mapLayers[i] = svgImageLayer;
+
+                        let mapTileLayer = L.tileLayer(this.mapUrl + i + '/{z}/{x}/{y}.png', {
+                            noWrap: true,
+                            minZoom: this.mission.minZoom,
+                            maxZoom: this.mission.maxZoom
+                        });
+                        this.layerGroups.push(mapTileLayer);
+                        this.mapLayers[i+10] = mapTileLayer;
                     }
                 }
 
