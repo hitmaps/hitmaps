@@ -2575,7 +2575,7 @@ export default {
                     }
                 } else {
                     for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                        let svgImageLayer = L.imageOverlay(`https://media.hitmaps.com/img/absolution/maps/${this.mission.slug}/${i}.svg`, [[0,0], [100,100]]);
+                        let svgImageLayer = L.imageOverlay(`https://media.hitmaps.com/img/${this.game.slug}/maps/${this.mission.slug}/${i}.svg`, [[-700,-700], [700,700]]);
                         this.layerGroups.push(svgImageLayer);
                         this.mapLayers[i] = svgImageLayer;
                     }
