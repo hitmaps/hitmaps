@@ -184,21 +184,29 @@
                                     <i class="fas fa-sign-in-alt"></i>
                                 </button>
                             </router-link>
-                            <button @click="move('down')">D</button>
-                            <button @click="move('up')">U</button>
-                            <button @click="move('left')">L</button>
-                            <button @click="move('right')">R</button>
-                            <button @click="move('extend')">E</button>
-                            <button @click="move('contract')">C</button>
-                            <input type="text" v-model="debugStep">
-                            <button @click="move('s+')">S+</button>
-                            <button @click="move('s-')">S-</button>
-                            <button @click="move('w+')">W+</button>
-                            <button @click="move('w-')">W-</button>
-                            <button @click="move('n+')">N+</button>
-                            <button @click="move('n-')">N-</button>
-                            <button @click="move('e+')">E+</button>
-                            <button @click="move('e-')">E-</button>
+                        </div>
+                        <div class="control-buttons">
+                            <span style="color: white">Move Map:</span>
+                            <button class="btn control-button" @click="move('down')"><i class="fas fa-arrow-down"></i></button>
+                            <button class="btn control-button" @click="move('up')"><i class="fas fa-arrow-up"></i></button>
+                            <button class="btn control-button" @click="move('left')"><i class="fas fa-arrow-left"></i></button>
+                            <button class="btn control-button" @click="move('right')"><i class="fas fa-arrow-right"></i></button>
+                            <button class="btn control-button" @click="move('extend')"><i class="fas fa-expand-arrows-alt"></i></button>
+                            <button class="btn control-button" @click="move('contract')"><i class="fas fa-compress-arrows-alt"></i></button>
+                        </div>
+                        <div class="control-buttons">
+                            <span style="color: white">Step Amount:</span> <input type="text" v-model="debugStep">
+                        </div>
+                        <div class="control-buttons">
+                            <span style="color: white">Change Boundary:</span>
+                            <button class="btn control-button" @click="move('s+')">S+</button>
+                            <button class="btn control-button" @click="move('s-')">S-</button>
+                            <button class="btn control-button" @click="move('w+')">W+</button>
+                            <button class="btn control-button" @click="move('w-')">W-</button>
+                            <button class="btn control-button" @click="move('n+')">N+</button>
+                            <button class="btn control-button" @click="move('n-')">N-</button>
+                            <button class="btn control-button" @click="move('e+')">E+</button>
+                            <button class="btn control-button" @click="move('e-')">E-</button>
                         </div>
                     </div>
                     <br />
