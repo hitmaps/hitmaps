@@ -46,6 +46,7 @@
             <p>Previous Donors (donation amounts are cumulative):</p>
             <ul>
                 <li>Finikyu - 25.00 USD</li>
+                <li>Brian McKenzie - 5.55 USD</li>
             </ul>
             <!-- region PayPal Button -->
             <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
