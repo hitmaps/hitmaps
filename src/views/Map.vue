@@ -66,8 +66,8 @@
                         >
                             {{ calculateNumber(i) }}
                         </div>
-                        <div @click="changeLevel(i+10)" class="floor">
-                            {{ $t('map.level-number', { levelNumber: i+10 }) }}
+                        <div v-if="debugMode" @click="changeLevel(i+10)" class="floor">
+                            Debug {{ i }}
                         </div>
                         <div
                                 :class="{
@@ -75,6 +75,7 @@
                                             i
                                         )
                                     }"
+                                v-if="debugMode"
                                 class="item-count"
                         >
                             {{ calculateNumber(i) }}
@@ -149,6 +150,14 @@
                             <button data-toggle="modal" class="btn control-button" data-target="#locale-modal" v-tooltip:bottom="$t('language-modal.change-language')">
                                 <country-flag :country="getCountryFlag()" />
                             </button>
+                            <button v-if="isLoggedIn"
+                                    id="debug-button"
+                                    @click="debugMode = !debugMode"
+                                    class="btn control-button"
+                                    v-tooltip:top="$t('map.debug-mode')"
+                                    :style="debugMode ? 'background: white; color: black' : ''">
+                                <i class="fas fa-bug"></i>
+                            </button>
                             <button
                                 v-if="isLoggedIn"
                                 id="edit-button"
@@ -185,32 +194,34 @@
                                 </button>
                             </router-link>
                         </div>
-                        <div class="control-buttons">
-                            <span style="color: white">Move Map:</span>
-                            <button class="btn control-button" @click="move('down')"><i class="fas fa-arrow-down"></i></button>
-                            <button class="btn control-button" @click="move('up')"><i class="fas fa-arrow-up"></i></button>
-                            <button class="btn control-button" @click="move('left')"><i class="fas fa-arrow-left"></i></button>
-                            <button class="btn control-button" @click="move('right')"><i class="fas fa-arrow-right"></i></button>
-                            <button class="btn control-button" @click="move('extend')"><i class="fas fa-expand-arrows-alt"></i></button>
-                            <button class="btn control-button" @click="move('contract')"><i class="fas fa-compress-arrows-alt"></i></button>
-                        </div>
-                        <div class="control-buttons">
-                            <span style="color: white">Step Amount:</span> <input type="text" v-model="debugStep">
-                        </div>
-                        <div class="control-buttons">
-                            <span style="color: white">Change Boundary:</span>
-                            <button class="btn control-button" @click="move('s+')">S+</button>
-                            <button class="btn control-button" @click="move('s-')">S-</button>
-                            <button class="btn control-button" @click="move('w+')">W+</button>
-                            <button class="btn control-button" @click="move('w-')">W-</button>
-                            <button class="btn control-button" @click="move('n+')">N+</button>
-                            <button class="btn control-button" @click="move('n-')">N-</button>
-                            <button class="btn control-button" @click="move('e+')">E+</button>
-                            <button class="btn control-button" @click="move('e-')">E-</button>
-                        </div>
+                        <template v-if="debugMode">
+                            <div class="control-buttons">
+                                <span style="color: white">Move Map:</span>
+                                <button class="btn control-button" @click="move('down')"><i class="fas fa-arrow-down"></i></button>
+                                <button class="btn control-button" @click="move('up')"><i class="fas fa-arrow-up"></i></button>
+                                <button class="btn control-button" @click="move('left')"><i class="fas fa-arrow-left"></i></button>
+                                <button class="btn control-button" @click="move('right')"><i class="fas fa-arrow-right"></i></button>
+                                <button class="btn control-button" @click="move('extend')"><i class="fas fa-expand-arrows-alt"></i></button>
+                                <button class="btn control-button" @click="move('contract')"><i class="fas fa-compress-arrows-alt"></i></button>
+                            </div>
+                            <div class="control-buttons">
+                                <span style="color: white">Step Amount:</span> <input type="text" v-model="debugStep">
+                            </div>
+                            <div class="control-buttons">
+                                <span style="color: white">Change Boundary:</span>
+                                <button class="btn control-button" @click="move('s+')">S+</button>
+                                <button class="btn control-button" @click="move('s-')">S-</button>
+                                <button class="btn control-button" @click="move('w+')">W+</button>
+                                <button class="btn control-button" @click="move('w-')">W-</button>
+                                <button class="btn control-button" @click="move('n+')">N+</button>
+                                <button class="btn control-button" @click="move('n-')">N-</button>
+                                <button class="btn control-button" @click="move('e+')">E+</button>
+                                <button class="btn control-button" @click="move('e-')">E-</button>
+                            </div>
+                        </template>
                     </div>
                     <br />
-                    <div style="color: white">
+                    <div style="color: white" v-if="debugMode">
                         {{ debugLayerSize[0][0] }}, {{ debugLayerSize[0][1] }} / {{ debugLayerSize[1][0] }}, {{ debugLayerSize[1][1] }}
                     </div>
                     <div
@@ -1534,6 +1545,7 @@ export default {
             layerGroups: [],
             map: null,
             mapLayers: [],
+            debugMode: false,
             debugStep: 1,
             debugLayerSize: [[0,0],[0,0]],
             categories: {},

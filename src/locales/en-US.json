@@ -184,6 +184,7 @@
         "add-remove-ledges": "Add / Remove Ledges",
         "add-remove-foliage": "Add / Remove Foliage",
         "manage-disguise-areas": "Manage Disguise Areas",
+        "debug-mode": "Toggle Debug Mode",
         "edit-map": "Edit Map",
         "login-to-edit": "Login / Register to Edit",
         "clear-search": "Clear Search",
