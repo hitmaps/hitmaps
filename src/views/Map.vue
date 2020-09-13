@@ -2713,8 +2713,9 @@ export default {
                     }
                 } else {
                     for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                        // -0.25,.25	-191.625,249.625
-                        let svgImageLayer = L.imageOverlay(`https://media.hitmaps.com/img/${this.game.slug}/maps/${this.mission.slug}/${i}.svg`, [[32.27, -41.87], [-224.155,291.955]]);
+                        let boundingBoxTopLeft = this.mission.boundingBoxTopLeft.split(',');
+                        let boundingBoxBottomRight = this.mission.boundingBoxBottomRight.split(',');
+                        let svgImageLayer = L.imageOverlay(`https://media.hitmaps.com/img/${this.game.slug}/maps/${this.mission.slug}/${i}.svg`, [boundingBoxTopLeft, boundingBoxBottomRight]);
                         this.layerGroups.push(svgImageLayer);
                         this.mapLayers[i] = svgImageLayer;
 
