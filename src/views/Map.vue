@@ -1582,13 +1582,11 @@ export default {
         mission: function() {
             return this.$store.state.mission
         },
-        mapUrl: function() {
-            return (
-                this.$domain +
-                '/api/maps/' +
-                this.mission.mapFolderName +
-                '/tiles/'
-            )
+        tileUrl: function() {
+            return `${this.$domain}/api/maps/${this.mission.mapFolderName}/tiles/`;
+        },
+        svgMapUrl: function() {
+            return `https://media.hitmaps.com/img/${this.game.slug}/maps/${this.mission.mapFolderName}/`;
         },
         loadingTile: function() {
             if (this.mission.missionType !== 'Elusive Target') {
@@ -2693,7 +2691,7 @@ export default {
                 // Build tile layers for each floor
                 if (!this.mission.svg) {
                     for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                        let mapTileLayer = L.tileLayer(this.mapUrl + i + '/{z}/{x}/{y}.png', {
+                        let mapTileLayer = L.tileLayer(this.tileUrl + i + '/{z}/{x}/{y}.png', {
                             noWrap: true,
                             minZoom: this.mission.minZoom,
                             maxZoom: this.mission.maxZoom
@@ -2703,7 +2701,7 @@ export default {
                     }
 
                     if (this.mission.satelliteView) {
-                        let mapTileLayer = L.tileLayer(this.mapUrl + '-99/{z}/{x}/{y}.png', {
+                        let mapTileLayer = L.tileLayer(this.tileUrl + '-99/{z}/{x}/{y}.png', {
                             noWrap: true,
                             minZoom: this.mission.minZoom,
                             maxZoom: this.mission.maxZoom
@@ -2715,7 +2713,7 @@ export default {
                     for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
                         let boundingBoxTopLeft = this.mission.boundingBoxTopLeft.split(',');
                         let boundingBoxBottomRight = this.mission.boundingBoxBottomRight.split(',');
-                        let svgImageLayer = L.imageOverlay(`https://media.hitmaps.com/img/${this.game.slug}/maps/${this.mission.slug}/${i}.svg`, [boundingBoxTopLeft, boundingBoxBottomRight]);
+                        let svgImageLayer = L.imageOverlay(`${this.svgMapUrl}${i}.svg`, [boundingBoxTopLeft, boundingBoxBottomRight]);
                         this.layerGroups.push(svgImageLayer);
                         this.mapLayers[i] = svgImageLayer;
 
