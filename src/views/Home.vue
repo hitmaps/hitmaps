@@ -962,18 +962,6 @@ export default {
                     url: 'https://www.hitman.com'
                 },
                 {
-                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/fuzk2.png',
-                    promoStartDate: '2020-09-09T08:00:00+00:00',
-                    promoEndDate: '2020-09-13T22:00:00+00:00',
-                    topCaption: "Frote's Speedrun Community",
-                    bottomCaption: "Fuzk's Photo Contest 2",
-                    beforeText: 'Submissions Open',
-                    duringText: 'Submissions Close',
-                    tournament: false,
-                    h3: false,
-                    url: 'https://discord.gg/FVxTKdU'
-                },
-                {
                     tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/sc6square.png',
                     promoStartDate: '2020-09-11T08:00:00+00:00',
                     promoEndDate: '2020-09-20T22:00:00+00:00',
