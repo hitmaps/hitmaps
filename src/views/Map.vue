@@ -2717,7 +2717,7 @@ export default {
                         this.layerGroups.push(svgImageLayer);
                         this.mapLayers[i] = svgImageLayer;
 
-                        let mapTileLayer = L.tileLayer(this.mapUrl + i + '/{z}/{x}/{y}.png', {
+                        let mapTileLayer = L.tileLayer(this.tileUrl + i + '/{z}/{x}/{y}.png', {
                             noWrap: true,
                             minZoom: this.mission.minZoom,
                             maxZoom: this.mission.maxZoom
