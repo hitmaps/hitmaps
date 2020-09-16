@@ -209,14 +209,10 @@
                             </div>
                             <div class="control-buttons">
                                 <span style="color: white">Change Boundary:</span>
-                                <button class="btn control-button" @click="move('s+')">S+</button>
-                                <button class="btn control-button" @click="move('s-')">S-</button>
-                                <button class="btn control-button" @click="move('w+')">W+</button>
-                                <button class="btn control-button" @click="move('w-')">W-</button>
-                                <button class="btn control-button" @click="move('n+')">N+</button>
-                                <button class="btn control-button" @click="move('n-')">N-</button>
-                                <button class="btn control-button" @click="move('e+')">E+</button>
-                                <button class="btn control-button" @click="move('e-')">E-</button>
+                                <button class="btn control-button" @click="move('w+')"><i class="fas fa-compress-alt"></i> H</button>
+                                <button class="btn control-button" @click="move('w-')"><i class="fas fa-expand-alt"></i> H</button>
+                                <button class="btn control-button" @click="move('n+')"><i class="fas fa-expand-alt"></i> V</button>
+                                <button class="btn control-button" @click="move('n-')"><i class="fas fa-compress-alt"></i> V</button>
                             </div>
                         </template>
                     </div>
@@ -2537,18 +2533,6 @@ export default {
                         south += parseFloat(this.debugStep);
                         east -= parseFloat(this.debugStep);
                         west += parseFloat(this.debugStep);
-                        break;
-                    case 'e+':
-                        east += parseFloat(this.debugStep);
-                        break;
-                    case 'e-':
-                        east -= parseFloat(this.debugStep);
-                        break;
-                    case 's+':
-                        south += parseFloat(this.debugStep);
-                        break;
-                    case 's-':
-                        south -= parseFloat(this.debugStep);
                         break;
                     case 'n+':
                         north += parseFloat(this.debugStep);
