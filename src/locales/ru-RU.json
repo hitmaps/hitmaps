@@ -184,6 +184,7 @@
         "add-remove-ledges": "Добавить / удалить уступы",
         "add-remove-foliage": "Добавить / удалить листву",
         "manage-disguise-areas": "Управление зонами маскировок",
+        "debug-mode": "Toggle Debug Mode",
         "edit-map": "Редактор карты",
         "login-to-edit": "Войдите / зарегистрируйтесь чтобы редактировать",
         "clear-search": "Очистить поиск",
