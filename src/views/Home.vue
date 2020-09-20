@@ -960,18 +960,6 @@ export default {
                     tournament: false,
                     h3: true,
                     url: 'https://www.hitman.com'
-                },
-                {
-                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/sc6square.png',
-                    promoStartDate: '2020-09-11T08:00:00+00:00',
-                    promoEndDate: '2020-09-20T22:00:00+00:00',
-                    topCaption: "Frote's Speedrun Community",
-                    bottomCaption: 'Speedrun Competition 6',
-                    beforeText: 'Competition Begins',
-                    duringText: 'Competition Ends',
-                    tournament: false,
-                    h3: false,
-                    url: 'https://discord.gg/FVxTKdU'
                 }
             ],
             games: [],
