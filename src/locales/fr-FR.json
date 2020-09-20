@@ -184,6 +184,7 @@
         "add-remove-ledges": "Ajouter / Supprimer des rebords",
         "add-remove-foliage": "Ajouter / Supprimer du feuillage",
         "manage-disguise-areas": "Gérer les zones de déguisement",
+        "debug-mode": "Toggle Debug Mode",
         "edit-map": "Editer la carte",
         "login-to-edit": "Se connecter / s'inscrire pour éditer",
         "clear-search": "Effacer la recherche",
