@@ -66,20 +66,6 @@
                         >
                             {{ calculateNumber(i) }}
                         </div>
-                        <div v-if="debugMode" @click="changeLevel(i+10)" class="floor">
-                            Debug {{ i }}
-                        </div>
-                        <div
-                                :class="{
-                                        'has-search-results': hasSearchResults(
-                                            i
-                                        )
-                                    }"
-                                v-if="debugMode"
-                                class="item-count"
-                        >
-                            {{ calculateNumber(i) }}
-                        </div>
                     </div>
                 </div>
                 <div
@@ -251,19 +237,6 @@
                                         )
                                     }"
                                     class="item-count"
-                                >
-                                    {{ calculateNumber(i) }}
-                                </div>
-                                <div @click="changeLevel(i+10)" class="floor">
-                                    {{ $t('map.level-number', { levelNumber: i+10 }) }}
-                                </div>
-                                <div
-                                        :class="{
-                                        'has-search-results': hasSearchResults(
-                                            i
-                                        )
-                                    }"
-                                        class="item-count"
                                 >
                                     {{ calculateNumber(i) }}
                                 </div>
@@ -1668,12 +1641,8 @@ export default {
                     }
                 }
             }
-
-            console.info(this.floorNames);
         },
         isNewFloorType(level) {
-            console.log(level);
-
             if (!level.length) {
                 return false;
             }
@@ -1770,7 +1739,6 @@ export default {
                 },
                 riseOnHover: true
             }).on('click', function(e) {
-                console.log(e);
                 that.editor.currentMarker = node;
                 that.editor.currentMarkerId = node.id;
             }).on('dragend', this.moveMarker);
@@ -2503,10 +2471,6 @@ export default {
                 var north = bounds.getNorth();
                 var south = bounds.getSouth();
                 var east = bounds.getEast();
-                console.log('WEST: ' + bounds.getWest());
-                console.log('NORTH: ' + bounds.getNorth());
-                console.log('SOUTH: ' + bounds.getSouth());
-                console.log('EAST: ' + bounds.getEast());
 
                 switch (direction) {
                     case 'down':
@@ -2635,7 +2599,6 @@ export default {
             });
 
             // Layers for disguises
-            console.log(resp.data.disguises);
             resp.data.disguises.forEach(disguise => {
                 for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
                     this.overlays[i]['Disguises|' + disguise.id] = L.layerGroup();
@@ -2693,14 +2656,6 @@ export default {
                         let svgImageLayer = L.imageOverlay(`${this.svgMapUrl}${i}.svg`, [boundingBoxTopLeft, boundingBoxBottomRight]);
                         this.layerGroups.push(svgImageLayer);
                         this.mapLayers[i] = svgImageLayer;
-
-                        let mapTileLayer = L.tileLayer(this.tileUrl + i + '/{z}/{x}/{y}.png', {
-                            noWrap: true,
-                            minZoom: this.mission.minZoom,
-                            maxZoom: this.mission.maxZoom
-                        });
-                        this.layerGroups.push(mapTileLayer);
-                        this.mapLayers[i+10] = mapTileLayer;
                     }
                 }
                 if (this.mission.satelliteView) {
@@ -2772,7 +2727,6 @@ export default {
 
                 this.map.on('zoomend', () => {
                     let zoomLevel = this.map.getZoom();
-                    console.log(zoomLevel);
 
                     var fonts = {
                         3: '.8em',
