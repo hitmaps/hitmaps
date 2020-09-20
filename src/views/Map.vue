@@ -136,6 +136,14 @@
                             <button data-toggle="modal" class="btn control-button" data-target="#locale-modal" v-tooltip:bottom="$t('language-modal.change-language')">
                                 <country-flag :country="getCountryFlag()" />
                             </button>
+                            <button v-if="isLoggedIn && showDebug()"
+                                    id="debug-button"
+                                    @click="debugMode = !debugMode"
+                                    class="btn control-button"
+                                    v-tooltip:top="$t('map.debug-mode')"
+                                    :style="debugMode ? 'background: white; color: black' : ''">
+                                <i class="fas fa-bug"></i>
+                            </button>
                             <button
                                 v-if="isLoggedIn"
                                 id="edit-button"
@@ -172,8 +180,35 @@
                                 </button>
                             </router-link>
                         </div>
+                        <template v-if="debugMode">
+                            <div class="control-buttons">
+                                <span style="color: white">Move Map:</span>
+                                <button class="btn control-button" @click="move('down')"><i class="fas fa-arrow-down"></i></button>
+                                <button class="btn control-button" @click="move('up')"><i class="fas fa-arrow-up"></i></button>
+                                <button class="btn control-button" @click="move('left')"><i class="fas fa-arrow-left"></i></button>
+                                <button class="btn control-button" @click="move('right')"><i class="fas fa-arrow-right"></i></button>
+                                <button class="btn control-button" @click="move('extend')"><i class="fas fa-expand-arrows-alt"></i></button>
+                                <button class="btn control-button" @click="move('contract')"><i class="fas fa-compress-arrows-alt"></i></button>
+                            </div>
+                            <div class="control-buttons">
+                                <span style="color: white">Step Amount:</span> <input type="text" v-model="debugStep">
+                            </div>
+                            <div class="control-buttons">
+                                <span style="color: white">Width:</span>
+                                <button class="btn control-button" @click="move('w+')"><i class="fas fa-compress-alt"></i></button>
+                                <button class="btn control-button" @click="move('w-')"><i class="fas fa-expand-alt"></i></button>
+                            </div>
+                            <div class="control-buttons">
+                                <span style="color: white">Height:</span>
+                                <button class="btn control-button" @click="move('n+')"><i class="fas fa-expand-alt"></i></button>
+                                <button class="btn control-button" @click="move('n-')"><i class="fas fa-compress-alt"></i></button>
+                            </div>
+                        </template>
                     </div>
                     <br />
+                    <div style="color: white" v-if="debugMode">
+                        {{ debugLayerSize[0][0] }}, {{ debugLayerSize[0][1] }} / {{ debugLayerSize[1][0] }}, {{ debugLayerSize[1][1] }}
+                    </div>
                     <div
                         class="accordion"
                         id="accordion"
@@ -1482,6 +1517,9 @@ export default {
             layerGroups: [],
             map: null,
             mapLayers: [],
+            debugMode: false,
+            debugStep: 1,
+            debugLayerSize: [[0,0],[0,0]],
             categories: {},
             mapLoaded: false,
             hiddenLayers: [],
@@ -1516,13 +1554,11 @@ export default {
         mission: function() {
             return this.$store.state.mission
         },
-        mapUrl: function() {
-            return (
-                this.$domain +
-                '/api/maps/' +
-                this.mission.mapFolderName +
-                '/tiles/'
-            )
+        tileUrl: function() {
+            return `${this.$domain}/api/maps/${this.mission.mapFolderName}/tiles/`;
+        },
+        svgMapUrl: function() {
+            return `https://media.hitmaps.com/img/${this.game.slug}/maps/${this.mission.mapFolderName}/`;
         },
         loadingTile: function() {
             if (this.mission.missionType !== 'Elusive Target') {
@@ -1585,6 +1621,9 @@ export default {
         }
     },
     methods: {
+        showDebug() {
+            return process.env.VUE_APP_SHOW_DEBUG === 'true';
+        },
         buildLevelNames() {
             if (this.mission === undefined) {
                 console.error('RIP');
@@ -1605,12 +1644,8 @@ export default {
                     }
                 }
             }
-
-            console.info(this.floorNames);
         },
         isNewFloorType(level) {
-            console.log(level);
-
             if (!level.length) {
                 return false;
             }
@@ -1707,7 +1742,6 @@ export default {
                 },
                 riseOnHover: true
             }).on('click', function(e) {
-                console.log(e);
                 that.editor.currentMarker = node;
                 that.editor.currentMarkerId = node.id;
             }).on('dragend', this.moveMarker);
@@ -2430,6 +2464,62 @@ export default {
                         'Disguise areas copied. Refresh the page to see the changes'
                 })
             })
+        },
+        move(direction) {
+            // [-20,-25], [-191.625,249.625]
+            // [N, W], [S, E]
+            for (var i in this.mapLayers) {
+                var bounds = this.mapLayers[i].getBounds();
+                var west = bounds.getWest();
+                var north = bounds.getNorth();
+                var south = bounds.getSouth();
+                var east = bounds.getEast();
+
+                switch (direction) {
+                    case 'down':
+                        south -= parseFloat(this.debugStep);
+                        north -= parseFloat(this.debugStep);
+                        break;
+                    case 'up':
+                        south += parseFloat(this.debugStep);
+                        north += parseFloat(this.debugStep);
+                        break;
+                    case 'left':
+                        west -= parseFloat(this.debugStep);
+                        east -= parseFloat(this.debugStep);
+                        break;
+                    case 'right':
+                        west += parseFloat(this.debugStep);
+                        east += parseFloat(this.debugStep);
+                        break;
+                    case 'extend':
+                        north += parseFloat(this.debugStep);
+                        south -= parseFloat(this.debugStep);
+                        east += parseFloat(this.debugStep);
+                        west -= parseFloat(this.debugStep);
+                        break;
+                    case 'contract':
+                        north -= parseFloat(this.debugStep);
+                        south += parseFloat(this.debugStep);
+                        east -= parseFloat(this.debugStep);
+                        west += parseFloat(this.debugStep);
+                        break;
+                    case 'n+':
+                        north += parseFloat(this.debugStep);
+                        break;
+                    case 'n-':
+                        north -= parseFloat(this.debugStep);
+                        break;
+                    case 'w+':
+                        west += parseFloat(this.debugStep);
+                        break;
+                    case 'w-':
+                        west -= parseFloat(this.debugStep);
+                        break;
+                }
+                this.mapLayers[i].setBounds([[north, west], [south, east]]);
+                this.debugLayerSize = [[north, west], [south, east]];
+            }
         }
     },
     beforeCreate: function() {
@@ -2512,7 +2602,6 @@ export default {
             });
 
             // Layers for disguises
-            console.log(resp.data.disguises);
             resp.data.disguises.forEach(disguise => {
                 for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
                     this.overlays[i]['Disguises|' + disguise.id] = L.layerGroup();
@@ -2555,7 +2644,7 @@ export default {
                 // Build tile layers for each floor
                 if (!this.mission.svg) {
                     for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                        let mapTileLayer = L.tileLayer(this.mapUrl + i + '/{z}/{x}/{y}.png', {
+                        let mapTileLayer = L.tileLayer(this.tileUrl + i + '/{z}/{x}/{y}.png', {
                             noWrap: true,
                             minZoom: this.mission.minZoom,
                             maxZoom: this.mission.maxZoom
@@ -2563,22 +2652,23 @@ export default {
                         this.layerGroups.push(mapTileLayer);
                         this.mapLayers[i] = mapTileLayer;
                     }
-
-                    if (this.mission.satelliteView) {
-                        let mapTileLayer = L.tileLayer(this.mapUrl + '-99/{z}/{x}/{y}.png', {
-                            noWrap: true,
-                            minZoom: this.mission.minZoom,
-                            maxZoom: this.mission.maxZoom
-                        });
-                        this.layerGroups.push(mapTileLayer);
-                        this.mapLayers[-99] = mapTileLayer;
-                    }
                 } else {
                     for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                        let svgImageLayer = L.imageOverlay(`https://media.hitmaps.com/img/absolution/maps/${this.mission.slug}/${i}.svg`, [[0,0], [100,100]]);
+                        let boundingBoxTopLeft = this.mission.boundingBoxTopLeft.split(',');
+                        let boundingBoxBottomRight = this.mission.boundingBoxBottomRight.split(',');
+                        let svgImageLayer = L.imageOverlay(`${this.svgMapUrl}${i}.svg`, [boundingBoxTopLeft, boundingBoxBottomRight]);
                         this.layerGroups.push(svgImageLayer);
                         this.mapLayers[i] = svgImageLayer;
                     }
+                }
+                if (this.mission.satelliteView) {
+                    let mapTileLayer = L.tileLayer(this.tileUrl + '-99/{z}/{x}/{y}.png', {
+                        noWrap: true,
+                        minZoom: this.mission.minZoom,
+                        maxZoom: this.mission.maxZoom
+                    });
+                    this.layerGroups.push(mapTileLayer);
+                    this.mapLayers[-99] = mapTileLayer;
                 }
 
                 let renderer = this.mission.svg ? L.svg() : L.canvas()
@@ -2640,7 +2730,6 @@ export default {
 
                 this.map.on('zoomend', () => {
                     let zoomLevel = this.map.getZoom();
-                    console.log(zoomLevel);
 
                     var fonts = {
                         3: '.8em',
@@ -3171,7 +3260,8 @@ html {
     width: 368px;
 
     .control-buttons {
-        float: right;
+        display: flex;
+        justify-content: flex-end;
         margin-bottom: 10px;
     }
 

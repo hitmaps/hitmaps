@@ -133,6 +133,16 @@ class Mission {
      */
     public $maxZoom;
 
+    /**
+     * @ORM\Column(type="string", name="bounding_box_top_left")
+     */
+    public $boundingBoxTopLeft;
+
+    /**
+     * @ORM\Column(type="string", name="bounding_box_bottom_right")
+     */
+    public $boundingBoxBottomRight;
+
     // Not used by Doctrine
     /* @var $floorNames array */
     public $floorNames = [];
@@ -459,5 +469,33 @@ class Mission {
      */
     public function setMaxZoom($maxZoom): void {
         $this->maxZoom = $maxZoom;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBoundingBoxTopLeft() {
+        return $this->boundingBoxTopLeft;
+    }
+
+    /**
+     * @param mixed $boundingBoxTopLeft
+     */
+    public function setBoundingBoxTopLeft($boundingBoxTopLeft): void {
+        $this->boundingBoxTopLeft = $boundingBoxTopLeft;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBoundingBoxBottomRight() {
+        return $this->boundingBoxBottomRight;
+    }
+
+    /**
+     * @param mixed $boundingBoxBottomRight
+     */
+    public function setBoundingBoxBottomRight($boundingBoxBottomRight): void {
+        $this->boundingBoxBottomRight = $boundingBoxBottomRight;
     }
 }
