@@ -184,6 +184,7 @@
         "add-remove-ledges": "增加/移除壁邊",
         "add-remove-foliage": "增加/移除草叢",
         "manage-disguise-areas": "設定偽裝可使用的區域",
+        "debug-mode": "Toggle Debug Mode",
         "edit-map": "編輯地圖",
         "login-to-edit": "登入/註冊以編輯",
         "clear-search": "清除搜尋項目",
