@@ -2686,16 +2686,6 @@ export default {
                         this.layerGroups.push(mapTileLayer);
                         this.mapLayers[i] = mapTileLayer;
                     }
-
-                    if (this.mission.satelliteView) {
-                        let mapTileLayer = L.tileLayer(this.tileUrl + '-99/{z}/{x}/{y}.png', {
-                            noWrap: true,
-                            minZoom: this.mission.minZoom,
-                            maxZoom: this.mission.maxZoom
-                        });
-                        this.layerGroups.push(mapTileLayer);
-                        this.mapLayers[-99] = mapTileLayer;
-                    }
                 } else {
                     for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
                         let boundingBoxTopLeft = this.mission.boundingBoxTopLeft.split(',');
@@ -2712,6 +2702,15 @@ export default {
                         this.layerGroups.push(mapTileLayer);
                         this.mapLayers[i+10] = mapTileLayer;
                     }
+                }
+                if (this.mission.satelliteView) {
+                    let mapTileLayer = L.tileLayer(this.tileUrl + '-99/{z}/{x}/{y}.png', {
+                        noWrap: true,
+                        minZoom: this.mission.minZoom,
+                        maxZoom: this.mission.maxZoom
+                    });
+                    this.layerGroups.push(mapTileLayer);
+                    this.mapLayers[-99] = mapTileLayer;
                 }
 
                 let renderer = this.mission.svg ? L.svg() : L.canvas()
