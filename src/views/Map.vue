@@ -208,11 +208,14 @@
                                 <span style="color: white">Step Amount:</span> <input type="text" v-model="debugStep">
                             </div>
                             <div class="control-buttons">
-                                <span style="color: white">Change Boundary:</span>
-                                <button class="btn control-button" @click="move('w+')"><i class="fas fa-compress-alt"></i> H</button>
-                                <button class="btn control-button" @click="move('w-')"><i class="fas fa-expand-alt"></i> H</button>
-                                <button class="btn control-button" @click="move('n+')"><i class="fas fa-expand-alt"></i> V</button>
-                                <button class="btn control-button" @click="move('n-')"><i class="fas fa-compress-alt"></i> V</button>
+                                <span style="color: white">Width:</span>
+                                <button class="btn control-button" @click="move('w+')"><i class="fas fa-compress-alt"></i></button>
+                                <button class="btn control-button" @click="move('w-')"><i class="fas fa-expand-alt"></i></button>
+                            </div>
+                            <div class="control-buttons">
+                                <span style="color: white">Height:</span>
+                                <button class="btn control-button" @click="move('n+')"><i class="fas fa-expand-alt"></i></button>
+                                <button class="btn control-button" @click="move('n-')"><i class="fas fa-compress-alt"></i></button>
                             </div>
                         </template>
                     </div>
@@ -3301,7 +3304,8 @@ html {
     width: 368px;
 
     .control-buttons {
-        float: right;
+        display: flex;
+        justify-content: flex-end;
         margin-bottom: 10px;
     }
 
