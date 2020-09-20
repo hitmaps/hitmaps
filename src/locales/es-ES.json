@@ -184,6 +184,7 @@
         "add-remove-ledges": "Agregar / Quitar Repisas",
         "add-remove-foliage": "Agregar / Quitar Follaje",
         "manage-disguise-areas": "Administrar Areas de Disfrazar",
+        "debug-mode": "Toggle Debug Mode",
         "edit-map": "Editar Mapa",
         "login-to-edit": "Iniciar sesión / Registrarse para editar",
         "clear-search": "Borrar Búsqueda",
