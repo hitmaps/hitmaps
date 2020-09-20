@@ -136,7 +136,7 @@
                             <button data-toggle="modal" class="btn control-button" data-target="#locale-modal" v-tooltip:bottom="$t('language-modal.change-language')">
                                 <country-flag :country="getCountryFlag()" />
                             </button>
-                            <button v-if="isLoggedIn"
+                            <button v-if="isLoggedIn && showDebug()"
                                     id="debug-button"
                                     @click="debugMode = !debugMode"
                                     class="btn control-button"
@@ -1621,6 +1621,9 @@ export default {
         }
     },
     methods: {
+        showDebug() {
+            return process.env.VUE_APP_SHOW_DEBUG === 'true';
+        },
         buildLevelNames() {
             if (this.mission === undefined) {
                 console.error('RIP');
