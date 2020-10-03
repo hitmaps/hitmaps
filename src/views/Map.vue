@@ -334,6 +334,9 @@
                                     aria-labelledby="header-disguises"
                                 >
                                     <div class="card-body disguises">
+                                        <alert type="info" v-if="isIOS" dismissable>
+                                            Disguise areas are disabled due to an incompatible device.
+                                        </alert>
                                         <div class="row">
                                             <div
                                                 @click="changeDisguise('NONE')"
@@ -1491,6 +1494,7 @@ import GameButton from '../components/GameButton'
 import Modal from '../components/Modal'
 
 import LanguageHelpers from "../components/LanguageHelpers";
+import { isIOS } from 'mobile-device-detect';
 
 Vue.use(CxltToaster)
 export default {
@@ -2634,11 +2638,13 @@ export default {
             });
 
             // Disabling for iOS for now
-            /*resp.data.disguises.forEach(disguise => {
-                disguise.areas.forEach(area => {
-                    this.buildDisguiseArea(area).addTo(this.overlays[area.level]['Disguises|' + disguise.id]);
+            if (!isIOS) {
+                resp.data.disguises.forEach(disguise => {
+                    disguise.areas.forEach(area => {
+                        this.buildDisguiseArea(area).addTo(this.overlays[area.level]['Disguises|' + disguise.id]);
+                    });
                 });
-            });*/
+            }
 
             this.$nextTick(() => {
                 // Build tile layers for each floor
