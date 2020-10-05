@@ -93,32 +93,32 @@
                                             : currentPromo.promoEndDate
                                     "
                                 ></countdown>
-                        </div>
-                    </div>
-                    <div class="countdown" style="background: rgba(0,0,0,.4)"  v-else>
-                        <img
-                                src="/img/game-icons/elusive-target-reminaing-time.png"
-                                v-if="!currentPromo.tournament"
-                        />
-                        <div class="timer not-playable">
-                            <div class="target-arrives">{{ (new Date(currentPromo.promoStartDate) > new Date()) ? currentPromo.beforeText : currentPromo.duringText }}</div>
-                            <div class="elusive-countdown">
-                                <span v-if="currentPromo.tournament" style="color: white">
-                                    {{ tournamentMatches.length }} Upcoming Matches
-                                </span>
-                                <countdown
-                                        v-else
-                                        class="elusive-countdown"
-                                        :date="
-                                        new Date(currentPromo.promoStartDate) >
-                                        new Date()
-                                            ? currentPromo.promoStartDate
-                                            : currentPromo.promoEndDate
-                                    "
-                                ></countdown>
                             </div>
                         </div>
-                    </div>
+                        <div class="countdown" style="background: rgba(0,0,0,.4)"  v-else>
+                            <img
+                                    src="/img/game-icons/elusive-target-reminaing-time.png"
+                                    v-if="!currentPromo.tournament"
+                            />
+                            <div class="timer not-playable">
+                                <div class="target-arrives">{{ (new Date(currentPromo.promoStartDate) > new Date()) ? currentPromo.beforeText : currentPromo.duringText }}</div>
+                                <div class="elusive-countdown">
+                                    <span v-if="currentPromo.tournament" style="color: white">
+                                        {{ tournamentMatches.length }} Upcoming Matches
+                                    </span>
+                                    <countdown
+                                            v-else
+                                            class="elusive-countdown"
+                                            :date="
+                                            new Date(currentPromo.promoStartDate) >
+                                            new Date()
+                                                ? currentPromo.promoStartDate
+                                                : currentPromo.promoEndDate
+                                        "
+                                    ></countdown>
+                                </div>
+                            </div>
+                        </div>
                         <div class="game-info">
                             <div class="image">
                                 <i v-if="!currentPromo.h3" class="fab fa-discord fa-3x" style="width: 48px; height: 48px"></i>
@@ -859,7 +859,7 @@
                     <p>{{ $t('partnership.paragraph-1') }}</p>
                     <p>{{ $t('partnership.paragraph-2') }}</p>
                     <p>{{ $t('partnership.paragraph-3') }}</p>
-                    <a href="https://discord.gg/3JK7zCz" target="_blank" class="btn square-button blurple">
+                    <a href="https://discord.gg/FVxTKdU" target="_blank" class="btn square-button blurple">
                         <i class="fab fa-discord"></i>
                         {{ $t('partnership.join-the-discord') }}
                     </a>
@@ -950,6 +950,18 @@ export default {
             tournamentMatches: [],
             promos: [
                 {
+                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/rrwc.png',
+                    promoStartDate: '2020-10-21T23:00:00+00:00',
+                    promoEndDate: '2020-11-29T23:00:00+00:00',
+                    topCaption: "Roulette Rivals",
+                    bottomCaption: 'World Championship',
+                    beforeText: 'Registration Closes',
+                    duringText: undefined,
+                    tournament: true,
+                    h3: false,
+                    url: 'https://discord.gg/FVxTKdU'
+                },
+                {
                     tileUrl: 'https://media.hitmaps.com/img/hitmaps-custom/h3-header.jpg',
                     promoStartDate: '2020-07-08T23:00:00+00:00',
                     promoEndDate: '2021-01-20T23:00:00+00:00',
@@ -1010,6 +1022,10 @@ export default {
             },
             streams: [],
             froteImages: [
+                {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/rrwc.png',
+                    caption: 'Roulette Rivals World Championship'
+                },
                 {
                     url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc6.png',
                     caption: 'Speedrun Competition 6'
