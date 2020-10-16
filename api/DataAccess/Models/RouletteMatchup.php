@@ -59,6 +59,11 @@ class RouletteMatchup {
      */
     public $matchLength;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true, name="tournament_match_id")
+     */
+    public $tournamentMatchId;
+
     // Used for API
     public $currentTime;
     public $remainingTimeInSeconds;
@@ -192,5 +197,19 @@ class RouletteMatchup {
      */
     public function setMatchLength($matchLength): void {
         $this->matchLength = $matchLength;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTournamentMatchId() {
+        return $this->tournamentMatchId;
+    }
+
+    /**
+     * @param mixed $tournamentMatchId
+     */
+    public function setTournamentMatchId($tournamentMatchId): void {
+        $this->tournamentMatchId = $tournamentMatchId;
     }
 }
