@@ -1442,7 +1442,11 @@ $klein->respond('PATCH', '/api/roulette/matchups/[:matchupId]', function(\Klein\
     $decodedMatchupData = json_decode($requestBody['matchupData'], true);
     if (isset($requestBody['matchupData']) && $decodedMatchupData !== null) {
         $matchup->setMatchupData($requestBody['matchupData']);
-        $matchup->setWinner(null);
+
+        if ($requestBody['clearWinner']) {
+            $matchup->setWinner(null);
+        }
+
         $matchup->setPlayerOneCompleteTime(null);
         $matchup->setPlayerTwoCompleteTime(null);
         if ($decodedMatchupData['show']) {
