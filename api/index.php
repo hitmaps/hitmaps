@@ -1496,6 +1496,8 @@ $klein->respond('PATCH', '/api/roulette/matchups/[:matchupId]', function(\Klein\
                     return $response->json(['message' => 'Malformed request']);
                 }
                 $matchup->setWinner($winner);
+                $matchup->setPlayerOneCompleteTime(null);
+                $matchup->setPlayerTwoCompleteTime(null);
                 break;
             case 'reject':
                 if ($requestBody['player'] === $matchup->getPlayerOneName()) {
