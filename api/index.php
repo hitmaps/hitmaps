@@ -1508,7 +1508,7 @@ $klein->respond('PATCH', '/api/roulette/matchups/[:matchupId]', function(\Klein\
                 break;
             case 'reject':
                 if ($requestBody['player'] === $matchup->getPlayerOneName()) {
-                    $matchup->setPlayerTwoCompleteTime(null);
+                    $matchup->setPlayerOneCompleteTime(null);
                 } elseif ($requestBody['player'] === $matchup->getPlayerTwoName()) {
                     $matchup->setPlayerTwoCompleteTime(null);
                 } else {
