@@ -1469,6 +1469,43 @@ $klein->respond('PATCH', '/api/roulette/matchups/[:matchupId]', function(\Klein\
             return $response->json(['message' => 'Could not find player!']);
         }
         $responseProperty = 'lastPing';
+    } elseif (isset($requestBody['action'])) {
+        $responseProperty = 'action';
+
+        switch ($requestBody['action']) {
+            case 'complete':
+                $now = new DateTimeImmutable('now', new DateTimeZone('UTC'));
+                if ($requestBody['player'] === $matchup->getPlayerOneName()) {
+                    $matchup->setPlayerOneCompleteTime($now);
+                } elseif ($requestBody['player'] === $matchup->getPlayerTwoName()) {
+                    $matchup->setPlayerTwoCompleteTime($now);
+                } else {
+                    $response->code(400);
+                    return $response->json(['message' => 'Malformed request']);
+                }
+                break;
+            case 'verify':
+                if ($requestBody['player'] === $matchup->getPlayerOneName()) {
+                    $winner = 1;
+                } elseif ($requestBody['player'] === $matchup->getPlayerTwoName()) {
+                    $winner = 2;
+                } else {
+                    $response->code(400);
+                    return $response->json(['message' => 'Malformed request']);
+                }
+                $matchup->setWinner($winner);
+                break;
+            case 'reject':
+                if ($requestBody['player'] === $matchup->getPlayerOneName()) {
+                    $matchup->setPlayerTwoCompleteTime(null);
+                } elseif ($requestBody['player'] === $matchup->getPlayerTwoName()) {
+                    $matchup->setPlayerTwoCompleteTime(null);
+                } else {
+                    $response->code(400);
+                    return $response->json(['message' => 'Malformed request']);
+                }
+                break;
+        }
     } else {
         $response->code(400);
         return $response->json(['message' => 'Request JSON not supported.']);

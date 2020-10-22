@@ -64,6 +64,21 @@ class RouletteMatchup {
      */
     public $tournamentMatchId;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true, name="player_one_complete_time")
+     */
+    public $playerOneCompleteTime;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true, name="player_two_complete_time")
+     */
+    public $playerTwoCompleteTime;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    public $winner;
+
     // Used for API
     public $currentTime;
     public $remainingTimeInSeconds;
@@ -211,5 +226,47 @@ class RouletteMatchup {
      */
     public function setTournamentMatchId($tournamentMatchId): void {
         $this->tournamentMatchId = $tournamentMatchId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlayerOneCompleteTime() {
+        return $this->playerOneCompleteTime;
+    }
+
+    /**
+     * @param mixed $playerOneCompleteTime
+     */
+    public function setPlayerOneCompleteTime($playerOneCompleteTime): void {
+        $this->playerOneCompleteTime = $playerOneCompleteTime;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlayerTwoCompleteTime() {
+        return $this->playerTwoCompleteTime;
+    }
+
+    /**
+     * @param mixed $playerTwoCompleteTime
+     */
+    public function setPlayerTwoCompleteTime($playerTwoCompleteTime): void {
+        $this->playerTwoCompleteTime = $playerTwoCompleteTime;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWinner() {
+        return $this->winner;
+    }
+
+    /**
+     * @param mixed $winner
+     */
+    public function setWinner($winner): void {
+        $this->winner = $winner;
     }
 }
