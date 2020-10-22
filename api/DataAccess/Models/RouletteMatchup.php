@@ -87,6 +87,8 @@ class RouletteMatchup {
     public $remainingPretimeInSeconds;
     public $formattedCurrentTime;
     public $formattedSpinTime;
+    public $formattedPlayerOneCompleteTime;
+    public $formattedPlayerTwoCompleteTime;
 
     /**
      * @return mixed

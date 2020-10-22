@@ -1350,6 +1350,8 @@ function getMatchupInformation($matchupId, \DI\Container $applicationContext, $p
     // Formatting
     $matchup->formattedCurrentTime = $matchup->currentTime->format(DATE_ISO8601);
     $matchup->formattedSpinTime = $matchup->getSpinTime()->format(DATE_ISO8601);
+    $matchup->formattedPlayerOneCompleteTime = $matchup->getPlayerOneCompleteTime() ? $matchup->getPlayerOneCompleteTime()->format(DATE_ISO8601) : null;
+    $matchup->formattedPlayerTwoCompleteTime = $matchup->getPlayerTwoCompleteTime() ? $matchup->getPlayerTwoCompleteTime()->format(DATE_ISO8601) : null;
 
     return $matchup;
 }
