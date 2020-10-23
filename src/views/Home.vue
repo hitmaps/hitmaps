@@ -762,7 +762,7 @@
                                     {{ matchup.participants[1].name }} <country-flag :country="matchup.participants[1].country" size="small"></country-flag></span>
                             </div>
                             <div class="col-lg-3 col-12">
-                                {{ matchup.firstMap }} and {{ matchup.secondMap }}
+                                {{ matchup.firstMap.location }} and {{ matchup.secondMap.location }}
                             </div>
                             <div class="col-lg-3 col-12">
                                 <i class="far fa-fw fa-calendar-alt d-lg-none"></i>{{ matchup.matchTime | moment('ddd, D MMM') }} | <i class="far fa-fw fa-clock d-lg-none"></i> {{ matchup.matchTime | moment('h:mm A') }}
