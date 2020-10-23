@@ -725,22 +725,25 @@
                     </router-link>
                 </div>
             </div>-->
-            <!--<div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
+            <div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
-                            <h1>Ghost Mode Tournament 4 (Presented by Frote's Speedrun Community)</h1>
+                            <h1>Roulette Rivals World Championship (Presented by Frote's Speedrun Community)</h1>
                             <h2>Upcoming Matches</h2>
                         </div>
                     </div>
                     <div class="row d-none d-lg-flex d-xl-flex" style="color: black; border-bottom: 2px solid #dee2e6; border-top: 1px solid #dee2e6; padding: .75rem;">
-                        <div class="col-lg-4">
-                            <b><i class="fas fa-swords"></i> Competitors</b>
+                        <div class="col-lg-3">
+                            <b><i class="fas fa-fw fa-swords"></i> Competitors</b>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
+                            <b><i class="far fa-fw fa-map"></i> Maps</b>
+                        </div>
+                        <div class="col-lg-3">
                             <b><i class="far fa-fw fa-calendar-alt"></i> Date | <i class="far fa-fw fa-clock"></i> Time ({{ new Date() | moment('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone, 'z') }})</b>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <b><i class="fab fa-fw fa-twitch"></i> Shoutcaster(s)</b>
                         </div>
                     </div>
@@ -750,38 +753,31 @@
                         </div>
                     </div>
                     <template v-for="matchup in this.tournamentMatches">
-                        <div class="row" :key="`${matchup.participant0Name}|${matchup.participant1Name}|${matchup.platform}`"
+                        <div class="row" :key="`${matchup.participants[0].name}|${matchup.participants[1].name}|${matchup.platform}`"
                              style="color: black; border-top: 1px solid #dee2e6; padding: .75rem;">
-                            <div class="col-lg-4 col-12">
+                            <div class="col-lg-3 col-12">
                                 <i :class="getPlatformIcon(matchup.platform)"></i>
-                                <span>{{ matchup.participant0Name }} vs {{ matchup.participant1Name }}</span>
+                                <span>
+                                    <country-flag :country="matchup.participants[0].country" size="small"></country-flag> {{ matchup.participants[0].name }} vs
+                                    {{ matchup.participants[1].name }} <country-flag :country="matchup.participants[1].country" size="small"></country-flag></span>
                             </div>
-                            <div class="col-lg-4 col-12">
+                            <div class="col-lg-3 col-12">
+                                {{ matchup.firstMap }} and {{ matchup.secondMap }}
+                            </div>
+                            <div class="col-lg-3 col-12">
                                 <i class="far fa-fw fa-calendar-alt d-lg-none"></i>{{ matchup.matchTime | moment('ddd, D MMM') }} | <i class="far fa-fw fa-clock d-lg-none"></i> {{ matchup.matchTime | moment('h:mm A') }}
                                 <span class="d-lg-none">{{ new Date() | moment('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone, 'z') }}</span>
                             </div>
-                            <div class="col-lg-4 col-12">
+                            <div class="col-lg-3 col-12">
                                 <i class="fab fa-fw fa-twitch d-lg-none" v-if="matchup.shoutcasters"></i>
                                 <a :href="matchup.shoutcastStream" target="_blank">{{ matchup.shoutcasters }}</a>
                             </div>
                         </div>
                     </template>
-                    <div class="row" style="color: black; border-top: 1px solid #dee2e6; padding: .75rem;">
-                        <div class="col">
-                            <p>Maps are predetermined and are in the following order:</p>
-                            <ul style="columns: 2">
-                                <li>Map 1: Miami</li>
-                                <li>Map 2: Santa Fortuna</li>
-                                <li>Map 3: Miami</li>
-                                <li>Map 4 (if necessary): Santa Fortuna</li>
-                                <li>Map 5 (if necessary): Random Map</li>
-                            </ul>
-                        </div>
-                    </div>
                 </div>
-            </div>-->
+            </div>
         </template>
-        <modal modal-title="Roulette Rivals 3"
+        <modal modal-title="Roulette Rivals World Championship"
                id="roulette-rivals-modal"
                tabindex="-1"
                dismissable>
@@ -814,7 +810,7 @@
                         Do you play it safe? Takes longer, but you wouldn't have to restart. Or do you play it risky to get
                         that awesome time, with the potential of a lot of restarts?
                     </p>
-                    <alert type="info">Matches run from <b>July 10</b> to <b>July 26</b>!</alert>
+                    <alert type="info">Matches run from <b>October 23</b> to <b>November 29</b>!</alert>
                 </div>
             </div>
         </modal>
@@ -1331,7 +1327,7 @@ export default {
             console.error(err);
             this.$router.push({ name: '500' });
         });
-        this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/gm4').then(resp => {
+        this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/rrwc').then(resp => {
             this.tournamentMatches = resp.data;
             console.info(this.tournamentMatches);
         });
