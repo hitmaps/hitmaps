@@ -1,34 +1,34 @@
 {
-    "interactive-maps-for-hitman": "Interactive Maps for the Hitman Series",
+    "interactive-maps-for-hitman": "Mapas Interactivos de la Serie Hitman",
     "language-modal": {
         "change-language": "Cambiar el Idioma",
-        "footer": "Translations are maintained and updated by the HITMAPS™️ community. If a translation is incorrect, please {submitACorrection}.",
+        "footer": "Las traducciones son mantenidas y actualizadas por la comunidad de HITMAPS™. Si una traducción es incorrecta, por favor {submitACorrection}.",
         "submit-a-correction": "enviar una corrección"
     },
     "roulette": {
-        "introduction": "Introducing the HITMAPS™ Roulette. Initially based on Kotti's {hitmanRoulette}, HITMAPS™ Roulette takes Kotti's work and builds off of it to add new features, including:",
-        "hitman-roulette": "Hitman Roulette",
+        "introduction": "Introduciendo la ruleta de HITMAPS™. Basada inicialmente en la {hitmanRoulette} de Kotti, la ruleta de HITMAPS™ toma el trabajo de Kotti y se construye para añadir nuevos cambios, incluyendo:",
+        "hitman-roulette": "Ruleta de Hitman",
         "list-item-tournament-mode": {
-            "header": "Tournament Mode:",
-            "details": "Create a head-to-head matchup against your friend (or rival ;) ). Set up match durations and send the spin to your opponent via read-only spin links. These links automatically refresh each time a new spin is sent."
+            "header": "Modo Torneo:",
+            "details": "Crea un partido versus contra tus amigos (o rival ;) ). Elegí la duracion del partido y mandale el giro a tu oponente via link de solo lectura. Estos links automáticamente se refrescan cada vez que un nuevo giro es enviado."
         },
         "list-item-control": {
-            "header": "Fine-tuned Control:",
-            "details": "Don't like a specific kill condition, but don't want to lose the rest of the spin? Simply re-spin the specific condition."
+            "header": "Control Afinado:",
+            "details": "¿No te gusta una condición específica para matar, pero no queres perder el resto del giro? Simplemente gira de vuelta la condición específica."
         },
         "list-item-overlay": {
-            "header": "Stream Overlay:",
-            "details": "Using the tournament mode, you can copy a link to add as a browser source in OBS to provide a professional overlay for your streams / YouTube videos."
+            "header": "Overlay para el Stream:",
+            "details": "Usando el modo torneo, podes copiar un link para añadir a tu OBS para darte un overlay profesional para tus streams o videos de YouTube."
         },
-        "visit-button": "Visit HITMAPS™ Roulette",
-        "footer": "HITMAPS™ Roulette: The official roulette of Roulette Rivals"
+        "visit-button": "Visita la Ruleta de HITMAPS™",
+        "footer": "Ruleta de HITMAPS™: La ruleta oficial de Roulette Rivals"
     },
     "partnership": {
-        "header": "Official Partner of Frote's Speedrun Community",
-        "paragraph-1": "HITMAPS™️ is pleased to be partnered with Frote's Speedrun Community. Back in September 2019, HITMAPS™️ promoted Speedrun Competition #2, along with all future events. We are happy to announce this official partnership, which includes both software tailed towards Frote's Speedrun Community, along with the necessary infrastructure to run the software. Frote's Speedrun Community has also offered to promote HITMAPS™️ in return as HITMAPS™️ may play an important role for participants.",
-        "paragraph-2": "Frote's Speedrun Community hosts several events throughout the year, including Ghost Mode Tournaments, Roulette Rivals, and the classic Speedrun Competition. All major events involve cash prize winnings! There are also several \"mini-competitions\" that run on a weekly basis, as well as a creative contest from time to time.",
-        "paragraph-3": "Feel free to join their Discord to be notified of future events!",
-        "join-the-discord": "Join the Discord"
+        "header": "Socios Oficiales de la Comunidad de Speedrun de Frote",
+        "paragraph-1": "HITMAPS™️ esta encantado de estar asociado con la Comunidad de Speedrun de Frote. Atras en Septiembre de 2019, HITMAPS™️ promovió la Competición de Speedrun #2, acompañado de todos los futuros eventos. Estamos felices de anunciarles esta asociación, que incluye software diseñado para la Comunidad de Speedrun de Frote, junto con la infraestructura necesario para correr el software. La Comunidad de Speedrun de Frote también se ofreció para promover HITMAPS™️ en agradecimiento, HITMAPS™️ jugará un rol importante para los participantes.",
+        "paragraph-2": "La Comunidad de Speedrun de Frote hostea varios eventos durante todo el año, incluyendo Torneos de Modo Fantasma, Roulette Rivals, y la clásica Competición de Speedrun. ¡Todos los eventos grandes incluyen premios de dinero en efectivo! También hay muchas \"mini-competiciones\" que son semanales, además de concursos de creatividad después de un tiempo.",
+        "paragraph-3": "Si quieres puedes unirte a su Discord para estar notificado de futuros eventos!",
+        "join-the-discord": "Únete al Discord"
     },
     "form": {
         "close-icon": "Icono de cerca",
@@ -46,10 +46,10 @@
         "Campaign": "Campaña",
         "Game Mode": "Modo de Juego",
         "Elusive Target": "Objetivo Esquivo",
-        "Legacy Game": "Legacy Game"
+        "Legacy Game": "Juego de Legado"
     },
     "elusive-target": {
-        "reactivated-target": "Reactivated Target",
+        "reactivated-target": "Objetivo Reactivado",
         "target-arrives": "Target llega",
         "briefing-icon": "Icono Informativo",
         "mission-briefing": "Informe de la Misión",
@@ -63,7 +63,7 @@
             "checking-if-enabled": "Comprobando si las notificaciones están habilitadas en este dispositivo...",
             "unsupported-browser": "Lamentablemente, las notificaciones no son apoyado en este dispositivo. Por favor intenta inscribirse con un dispositivo soportado.",
             "device-not-enrolled": "Su dispositivo no está configurado actualmente arriba para recibir notificaciones. Haga clic \"Inscribirse\" a continuación para empezar a configurar su dispositivo.",
-            "notifications-blocked": "Your device is currently blocking notifications from hitmaps.com. Please unblock this site from your device, refresh the page, and try to enroll your device again.",
+            "notifications-blocked": "Tu dispositivo actualmente esta bloqueando las notificaciones de hitmaps.com. Por favor desbloquea este sitio de tu dispositivo, refresca la página, e intenta de nuevo.",
             "send-me-a-notification-when": "Envíame una notificación cuando...",
             "announced": "Se anuncia un próximo Objetivo Esquivo",
             "playable": "El Objetivo Esquivo llega y se vuelve jugable",
@@ -72,8 +72,8 @@
             "3-days": "The Objetivo Esquivo está disponible por 3 días más",
             "1-day": "The Objetivo Esquivo está disponible por 1 días más",
             "ended": "El Objetivo Esquivo ha dejado",
-            "new-et": "New Elusive Target",
-            "reactivated-et": "Reactivated Elusive Target"
+            "new-et": "Nuevo Objetivo Escurridizo",
+            "reactivated-et": "Objetivo Escurridizo Reactivado"
         },
         "n-days": "{days} Días"
     },
@@ -83,8 +83,8 @@
     "mission-image": "Imagen de la Misión",
     "mission-icon": "Ícono de Misión",
     "patreon": {
-        "patreon-supporters": "Patreon Supporters",
-        "patreon-supporters-description": "Patreon helps defer HITMAPS'️ operation costs.  We'd like to extend a thank you to the people below, who have pledged at the \"Master Assassin\" level or higher."
+        "patreon-supporters": "Colaboradores de Patreon",
+        "patreon-supporters-description": "Patreon ayuda a costear los costos de HITMAPS'️. Nos gustaría agradecer a la gente de abajo, que apoyaron con el nivel \"Asesino Maestro\" o más alto."
     },
     "difficulties": {
         "Casual": "Casual",
@@ -99,7 +99,7 @@
         "bonus episode": "Misión Plus",
         "patient zero": "Paciente Cero",
         "sniper assassin": "Asesino Francotirador",
-        "ghost mode": "Ghost Mode"
+        "ghost mode": "Modo Fantasma"
     },
     "locations": {
         "destinations": {
@@ -160,7 +160,7 @@
         "situs-inversus": "Situs Inversus",
         "patient-zero": "Paciente Cero",
         "nightcall": "Llamada nocturna",
-        "the-mills-reverie": "The Mills Reverie",
+        "the-mills-reverie": "La Ensoñación Mills",
         "finish-line": "La Linea Final",
         "three-headed-serpent": "Serpiente de Tres Cabezas",
         "embrace-of-the-serpent": "Abrazo de la Serpiente",
@@ -184,6 +184,7 @@
         "add-remove-ledges": "Agregar / Quitar Repisas",
         "add-remove-foliage": "Agregar / Quitar Follaje",
         "manage-disguise-areas": "Administrar Areas de Disfrazar",
+        "debug-mode": "Elegir Modo de Depuración",
         "edit-map": "Editar Mapa",
         "login-to-edit": "Iniciar sesión / Registrarse para editar",
         "clear-search": "Borrar Búsqueda",
@@ -271,8 +272,8 @@
         "category": "Categoría",
         "icon": "Icono",
         "name": "Nombre",
-        "image-url": "Image URL",
-        "image-url-note": "Images must be linked to https://media.hitmaps.com",
+        "image-url": "URL de la imágen",
+        "image-url-note": "Las imágenes deben estar vinculadas a https://media.hitmaps.com",
         "quantity": "Cantidad",
         "name-note": "Ingresa el nombre tal como aparece en el juego.",
         "action": "Acción",
@@ -294,7 +295,7 @@
         "text": "Texto",
         "add-another-note": "Añadir Otro Nota",
         "in-game-description": "Descripción del en-juego:",
-        "suit-disguise": "Suit ({suitName})"
+        "suit-disguise": "Traje ({suitName})"
     },
     "profile": {
         "profile": "Perfil",
@@ -333,154 +334,154 @@
     },
     "back-to-home": "Volver a la página de inicio",
     "footer": {
-        "disclaimer": "HITMAN™ is a trademark exclusively licensed to {ioiLink}.",
-        "developed-by": "Site developed and maintained by {mikeKochLink}.",
+        "disclaimer": "HITMAN™ es una marca comercial con licencia exclusiva para {ioiLink}.",
+        "developed-by": "Sitio creado y mantenido por {mikeKochLink}.",
         "io-interactive": "IO Interactive",
-        "join-the-discord": "Join the HITMAPS™ Discord",
+        "join-the-discord": "Únete al Discord de HITMAPS™",
         "hitmanforum": "hitmanforum.com Discusión",
         "hitman-status": "Estado del servidor HITMAN™ - Hecho Con <3 por Hardware",
-        "twitter": "Follow HITMAPS™️ on Twitter",
-        "patreon": "Support My Work on Patreon",
+        "twitter": "Sigue a HITMAPS™ en Twitter",
+        "patreon": "Apoya mi trabajo en Patreon",
         "about": "Acerca de"
     },
     "absolution": {
         "a-personal-contract": {
-            "gardens": "Gardens",
-            "greenhouse": "Greenhouse",
-            "mansion-ground-floor": "Mansion|Ground Floor",
-            "mansion-second-floor": "Mansion|Second Floor",
-            "diana": "Mansion|Diana"
+            "gardens": "Jardines",
+            "greenhouse": "Invernadero",
+            "mansion-ground-floor": "Mansión|Planta Baja",
+            "mansion-second-floor": "Mansión|Segundo Piso",
+            "diana": "Mansión|Diana"
         },
         "the-king-of-chinatown": {
-            "ground": "Chinatown Square|Ground",
-            "second-floor": "Chinatown Square|2nd Floor"
+            "ground": "Plaza del Barrio Chino|Suelo",
+            "second-floor": "Plaza del Barrio Chino|2do Piso"
         },
         "terminus": {
-            "sewers": "Terminus Hotel|Sewers",
-            "basement": "Terminus Hotel|Basement",
-            "ground": "Terminus Hotel|Ground",
-            "7-floor": "Upper Floors|7th Floor",
-            "8-floor": "Upper Floors|8th Floor"
+            "sewers": "Hotel Terminus|Alcantarillas",
+            "basement": "Hotel Terminus|Sótano",
+            "ground": "Hotel Terminus|Suelo",
+            "7-floor": "Pisos Superiores|7mo Piso",
+            "8-floor": "Pisos Superiores|8vo Piso"
         },
         "run-for-your-life": {
-            "hotel-room": "Burning Hotel|Hotel Room",
-            "hotel-roof": "Burning Hotel|Hotel Roof",
-            "library-first-floor": "Library|1st Floor",
-            "library-second-floor": "Library|2nd Floor",
-            "library-third-floor": "Library|3rd Floor",
-            "library-fourth-floor": "Library|4th Floor",
-            "pigeon-coop": "Pigeon Coop",
-            "shangri-la": "Shangri-la",
-            "train-first-floor": "Train Station|1st Floor",
-            "train-second-floor": "Train Station|2nd Floor"
+            "hotel-room": "Hotel Quemandose|Habitación del Hotel",
+            "hotel-roof": "Hotel Quemandose|Techo del Hotel",
+            "library-first-floor": "Biblioteca|1er Piso",
+            "library-second-floor": "Biblioteca|2do Piso",
+            "library-third-floor": "Biblioteca|3er Piso",
+            "library-fourth-floor": "Biblioteca|4to Piso",
+            "pigeon-coop": "Gallinero",
+            "shangri-la": "Shangri-La",
+            "train-first-floor": "Estación de Trenes|1er Piso",
+            "train-second-floor": "Estación de Trenes|2do Piso"
         },
         "hunter-and-hunted": {
-            "courtyard-tunnels": "Courtyard|Tunnels",
-            "courtyard-ground": "Courtyard|Ground",
-            "club-first-floor": "Vixen Club|1st Floor",
-            "club-second-floor": "Vixen Club|2nd Floor",
-            "club-third-floor": "Vixen Club|3rd Floor",
-            "dressing-room-first-floor": "Dressing Rooms|1st Floor",
-            "dressing-room-second-floor": "Dressing Rooms|2nd Floor",
-            "derelict-first-floor": "Derelict Building|1st Floor",
-            "derelict-second-floor": "Derelict Building|2nd Floor",
-            "store-first-floor": "Convenience Store|1st Floor",
-            "store-second-floor": "Convenience Store|2nd Floor",
-            "store-third-floor": "Convenience Store|3rd Floor",
-            "chinese-new-year-first-floor": "Chinese New Year|1st Floor",
-            "chinese-new-year-second-floor": "Chinese New Year|2nd Floor",
-            "loading-area": "Loading Area"
+            "courtyard-tunnels": "Patio|Túneles",
+            "courtyard-ground": "Patio|Suelo",
+            "club-first-floor": "Club Vixen|1er Piso",
+            "club-second-floor": "Club Vixen|2do Piso",
+            "club-third-floor": "Club Vixen|3er Piso",
+            "dressing-room-first-floor": "Vestidores|1er Piso",
+            "dressing-room-second-floor": "Vestidores|2do Piso",
+            "derelict-first-floor": "Edificio Abandonado|1er Piso",
+            "derelict-second-floor": "Edificio Abandonado|2do Piso",
+            "store-first-floor": "Tienda|1er Piso",
+            "store-second-floor": "Tienda|2do Piso",
+            "store-third-floor": "Tienda|3er Piso",
+            "chinese-new-year-first-floor": "Año Nuevo Chino|1er Piso",
+            "chinese-new-year-second-floor": "Año Nuevo Chino|2do Piso",
+            "loading-area": "Área de Carga"
         },
         "rosewood": {
-            "victorias-ward": "Victoria's Ward",
-            "hallways-first-floor": "Orphanage Halls|1st Floor",
-            "hallways-second-floor": "Orphanage Halls|2nd Floor",
-            "central-heating": "Central Heating"
+            "victorias-ward": "Sala de Victoria",
+            "hallways-first-floor": "Salas del Orfanato|1er Piso",
+            "hallways-second-floor": "Salas del Orfanato|2do Piso",
+            "central-heating": "Calefacción Central"
         },
         "welcome-to-hope": {
-            "great-balls-of-fire": "Great Balls of Fire"
+            "great-balls-of-fire": "Grandes Bolas de Fuego"
         },
         "birdies-gift": {
-            "gun-shop-ground-floor": "Gun Shop|1st Floor",
-            "gun-shop-second-floor": "Gun Shop|2nd Floor"
+            "gun-shop-ground-floor": "Tienda de Armas|1er Piso",
+            "gun-shop-second-floor": "Tienda de Armas|2do Piso"
         },
         "shaving-lenny": {
-            "streets-of-hope-first-floor": "Streets of Hope|1st Floor",
-            "streets-of-hope-second-floor": "Streets of Hope|2nd Floor",
-            "barbershop-first-floor": "Barbershop|1st Floor",
-            "barbershop-second-floor": "Barbershop|2nd Floor"
+            "streets-of-hope-first-floor": "Calles de Hope|1er Piso",
+            "streets-of-hope-second-floor": "Calles de Hope|2do Piso",
+            "barbershop-first-floor": "Barbería|1er Piso",
+            "barbershop-second-floor": "Barbería|2do Piso"
         },
         "end-of-the-road": {
-            "the-desert": "The Desert"
+            "the-desert": "El Desierto"
         },
         "dexter-industries": {
-            "dead-end": "Dead End",
-            "old-mill-first-floor": "Old Mill|1st Floor",
-            "old-mill-second-floor": "Old Mill|2nd Floor",
-            "descent-floor-1": "Descent|1st Floor",
-            "descent-floor-2": "Descent|2nd Floor",
-            "descent-floor-3": "Descent|3rd Floor",
-            "descent-floor-4": "Descent|4th Floor",
-            "descent-floor-5": "Descent|5th Floor",
-            "descent-floor-6": "Descent|6th Floor",
-            "factory-floor-1": "Factory Compound|1st Floor",
-            "factory-floor-2": "Factory Compound|2nd Floor",
-            "factory-floor-3": "Factory Compound|3rd Floor"
+            "dead-end": "Callejón sin Salida",
+            "old-mill-first-floor": "Molino Viejo|1er Piso",
+            "old-mill-second-floor": "Molino Viejo|2do Piso",
+            "descent-floor-1": "Descenso|1er Piso",
+            "descent-floor-2": "Descenso|2do Piso",
+            "descent-floor-3": "Descenso|3er Piso",
+            "descent-floor-4": "Descenso|4to Piso",
+            "descent-floor-5": "Descenso|5to Piso",
+            "descent-floor-6": "Descenso|6to Piso",
+            "factory-floor-1": "Recinto de la Fábrica|1er Piso",
+            "factory-floor-2": "Recinto de la Fábrica|2do Piso",
+            "factory-floor-3": "Recinto de la Fábrica|3er Piso"
         },
         "death-factory": {
-            "test-facility-floor-1": "Test Facility|1st Floor",
-            "test-facility-floor-2": "Test Facility|2nd Floor",
-            "test-facility-floor-3": "Test Facility|3rd Floor",
-            "test-facility-top": "Test Facility|Test Facility Top",
-            "decontamination": "Decontamination",
-            "rnd-b3": "R&D|B3",
-            "rnd-b1": "R&D|B1",
-            "rnd-floor-1": "R&D|1st Floor"
+            "test-facility-floor-1": "Instalación de Pruebas|1er Piso",
+            "test-facility-floor-2": "Instalación de Pruebas|2do Piso",
+            "test-facility-floor-3": "Instalación de Pruebas|3er Piso",
+            "test-facility-top": "Instalación de Pruebas|Parte Superior de la Instalación de Pruebas",
+            "decontamination": "Descontaminación",
+            "rnd-b3": "I+D|B3",
+            "rnd-b1": "I+D|B1",
+            "rnd-floor-1": "I+D|1er Piso"
         },
         "fight-night": {
-            "arena-floor-1": "The Arena|1st Floor",
-            "arena-floor-2": "The Arena|2nd Floor",
-            "arena-floor-3": "The Arena|3rd Floor",
-            "backstage": "Patriot's Hangar"
+            "arena-floor-1": "La Arena|1er Piso",
+            "arena-floor-2": "La Arena|2do Piso",
+            "arena-floor-3": "La Arena|3er Piso",
+            "backstage": "Hangar del Patriota"
         },
         "attack-of-the-saints": {
-            "parking-floor-1": "Parking|1st Floor",
-            "parking-floor-2": "Parking|2nd Floor",
-            "reception": "Reception",
-            "cornfield": "Cornfield"
+            "parking-floor-1": "Estacionamiento|1er Piso",
+            "parking-floor-2": "Estacionamiento|2do Piso",
+            "reception": "Recepción",
+            "cornfield": "Maizal"
         },
         "skurkys-law": {
-            "courthouse-floor-1": "Courthouse|1st Floor",
-            "courthouse-floor-2": "Courthouse|2nd Floor",
-            "holding-cells": "Holding Cells",
-            "prison-floor-1": "Prison|1st Floor",
-            "prison-floor-2": "Prison|2nd Floor"
+            "courthouse-floor-1": "Juzgado|1er Piso",
+            "courthouse-floor-2": "Juzgado|2do Piso",
+            "holding-cells": "Posesión de Celdas",
+            "prison-floor-1": "Prisión|1er Piso",
+            "prison-floor-2": "Prisión|2do Piso"
         },
         "operation-sledgehammer": {
-            "county-jail": "County Jail",
-            "outgunned": "Outgunned",
-            "burn": "Burn",
-            "hope-fair-floor-1": "Hope Fair|1st Floor",
-            "hope-fair-floor-2": "Hope Fair|2nd Floor"
+            "county-jail": "Cárcel del Condado",
+            "outgunned": "Dominado",
+            "burn": "Incendio",
+            "hope-fair-floor-1": "Feria de Hope|1er Piso",
+            "hope-fair-floor-2": "Feria de Hope|2do Piso"
         },
         "one-of-a-kind": {
-            "floor-1": "Tailor Shop|1st Floor",
-            "floor-2": "Tailor Shop|2nd Floor"
+            "floor-1": "Sastrería|1er Piso",
+            "floor-2": "Sastrería|2do Piso"
         },
         "blackwater-park": {
-            "blackwater-park": "Blackwater Park",
-            "penthouse-floor-1": "Penthouse|1st Floor",
-            "penthouse-floor-2": "Penthouse|2nd Floor"
+            "blackwater-park": "Parque Blackwater",
+            "penthouse-floor-1": "Ático|1er Piso",
+            "penthouse-floor-2": "Ático|2do Piso"
         },
         "countdown": {
-            "roof-floor-1": "Blackwater Roof|1st Floor",
-            "roof-floor-2": "Blackwater Roof|2nd Floor",
-            "roof-floor-3": "Blackwater Roof|3rd Floor"
+            "roof-floor-1": "Techo de Blackwater|1er Piso",
+            "roof-floor-2": "Techo de Blackwater|2do Piso",
+            "roof-floor-3": "Techo de Blackwater|3er Piso"
         },
         "absolution": {
-            "cemetery-entrance": "Cemetery Entrance",
-            "burnwood-family-tomb": "Burnwood Family Tomb",
-            "crematorium": "Crematorium"
+            "cemetery-entrance": "Entrada al Cementerio",
+            "burnwood-family-tomb": "Tumba de la Familia Burnwood",
+            "crematorium": "Crematorio"
         }
     }
 }

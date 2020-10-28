@@ -184,6 +184,7 @@
         "add-remove-ledges": "Kanten hinzufügen / löschen",
         "add-remove-foliage": "Vegetation hinzufügen / löschen",
         "manage-disguise-areas": "Verkleidungsgebiete bearbeiten",
+        "debug-mode": "Toggle Debug Mode",
         "edit-map": "Karte bearbeiten",
         "login-to-edit": "Zum Bearbeiten anmelden oder registrieren",
         "clear-search": "Suche leeren",
