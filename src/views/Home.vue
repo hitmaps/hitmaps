@@ -734,21 +734,32 @@
                         </div>
                     </div>
                     <template v-if="this.tournamentMatches.length">
-                        <div class="tournament-info">
-                            <div class="text">
-                                <h1>Next Match</h1>
-                            </div>
-                        </div>
-                        <div class="row">
+                        <div class="row dashboard">
                             <!-- https://media.hitmaps.com/img/hitmaps-tournaments/rrwc.png -->
-                            <div class="game col-lg" :style="{
+                            <div class="elusive-target col-lg" :style="{
                                 backgroundImage:
                                     'url(https://media.hitmaps.com/img/hitmaps-tournaments/rrwc.png)',
                                 backgroundSize: 'cover',
                                 backgroundPosition: 'center',
-                                backgroundRepeat: 'no-repeat'
+                                backgroundRepeat: 'no-repeat',
+                                paddingLeft: 0,
+                                paddingRight: 0
                             }">
                                 <div style="flex-grow: 1">&nbsp;</div>
+                                <template v-if="false">
+                                    <iframe src="https://player.twitch.tv/?channel=mrmike227" frameborder="0" allowfullscreen="true" scrolling="no" height="378" width="620"></iframe>
+                                </template>
+                                <template v-else>
+                                    <div v-if="tournamentMatches[0].shoutcastStream" class="countdown" style="background: rgba(0,0,0,.4)">
+                                        <img
+                                                src="/img/game-icons/elusive-target-reminaing-time.png"
+                                        />
+                                        <div class="timer not-playable">
+                                            <div class="target-arrives">Next Match Begins in</div>
+                                            <countdown class="elusive-countdown" :date="tournamentMatches[0].matchTime"/>
+                                        </div>
+                                    </div>
+                                </template>
                                 <div class="game-info">
                                     <div class="image">
                                         <img src="/img/game-icons/campaign.png"
