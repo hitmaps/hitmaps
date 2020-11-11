@@ -733,6 +733,39 @@
                             <h2>Upcoming Matches</h2>
                         </div>
                     </div>
+                    <template v-if="this.tournamentMatches.length">
+                        <div class="tournament-info">
+                            <div class="text">
+                                <h1>Next Match</h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- https://media.hitmaps.com/img/hitmaps-tournaments/rrwc.png -->
+                            <div class="game col-lg" :style="{
+                                backgroundImage:
+                                    'url(https://media.hitmaps.com/img/hitmaps-tournaments/rrwc.png)',
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                                backgroundRepeat: 'no-repeat'
+                            }">
+                                <div style="flex-grow: 1">&nbsp;</div>
+                                <div class="game-info">
+                                    <div class="image">
+                                        <img src="/img/game-icons/campaign.png"
+                                             class="normal img-fluid"
+                                             alt="Campaign Icon" />
+                                        <img src="/img/game-icons/campaign-inverted.png"
+                                             class="inverted img-fluid"
+                                             alt="Campaign Icon" />
+                                    </div>
+                                    <div class="text">
+                                        <h2>{{ tournamentMatches[0].firstMap.location }} and {{ tournamentMatches[0].secondMap.location }}</h2>
+                                        <h1>{{ tournamentMatches[0].participants[0].name }} vs {{ tournamentMatches[0].participants[1].name }}</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
                     <div class="row d-none d-lg-flex d-xl-flex" style="color: black; border-bottom: 2px solid #dee2e6; border-top: 1px solid #dee2e6; padding: .75rem;">
                         <div class="col-lg-3">
                             <b><i class="fas fa-fw fa-swords"></i> Competitors</b>
@@ -1591,8 +1624,6 @@ header {
                     }
                 }
             }
-
-            box-shadow: 2px 2px 2px #000;
         }
 
         .game-info,
