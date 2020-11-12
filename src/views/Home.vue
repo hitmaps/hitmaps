@@ -733,7 +733,7 @@
                             <h2>Upcoming Matches</h2>
                         </div>
                     </div>
-                    <template v-if="this.tournamentMatches.length">
+                    <template v-if="tournamentMatches.length">
                         <div class="row dashboard" style="margin: 0; margin-bottom: 40px;">
                             <div class="elusive-target col-lg" :style="{
                                 backgroundImage:
