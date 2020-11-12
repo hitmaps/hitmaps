@@ -734,8 +734,7 @@
                         </div>
                     </div>
                     <template v-if="this.tournamentMatches.length">
-                        <div class="row dashboard">
-                            <!-- https://media.hitmaps.com/img/hitmaps-tournaments/rrwc.png -->
+                        <div class="row dashboard" style="margin: 0; margin-bottom: 40px;">
                             <div class="elusive-target col-lg" :style="{
                                 backgroundImage:
                                     'url(https://media.hitmaps.com/img/hitmaps-tournaments/rrwc.png)',
@@ -746,8 +745,16 @@
                                 paddingRight: 0
                             }">
                                 <div style="flex-grow: 1">&nbsp;</div>
-                                <template v-if="false">
-                                    <iframe src="https://player.twitch.tv/?channel=mrmike227" frameborder="0" allowfullscreen="true" scrolling="no" height="378" width="620"></iframe>
+                                <template v-if="new Date(tournamentMatches[0].matchTime) - new Date() < (10*60*1000)">
+                                    <iframe
+                                            :src="`https://player.twitch.tv/?autoplay=false&channel=${getTwitchNameFromUrl(tournamentMatches[0].shoutcastStream)}&parent=${$hostname}`"
+                                            height="100%"
+                                            width="100%"
+                                            frameborder="0"
+                                            scrolling="no"
+                                            autoplay="false"
+                                            allowfullscreen="true">
+                                    </iframe>
                                 </template>
                                 <template v-else>
                                     <div v-if="tournamentMatches[0].shoutcastStream" class="countdown" style="background: rgba(0,0,0,.4)">
@@ -771,7 +778,11 @@
                                     </div>
                                     <div class="text">
                                         <h2>{{ tournamentMatches[0].firstMap.location }} and {{ tournamentMatches[0].secondMap.location }}</h2>
-                                        <h1>{{ tournamentMatches[0].participants[0].name }} vs {{ tournamentMatches[0].participants[1].name }}</h1>
+                                        <h1>
+                                            <country-flag :country="tournamentMatches[0].participants[0].country"></country-flag>
+                                            {{ tournamentMatches[0].participants[0].name }} vs
+                                            {{ tournamentMatches[0].participants[1].name }}
+                                            <country-flag :country="tournamentMatches[0].participants[1].country"></country-flag></h1>
                                     </div>
                                 </div>
                             </div>
@@ -1136,6 +1147,9 @@ export default {
     methods: {
         saveGameData() {
             //this.$store.commit("SET_GAME", )
+        },
+        getTwitchNameFromUrl(url) {
+            return url.replace(/(.*\/)*/,"")
         },
         getPlatformIcon(platform) {
             switch (platform) {
@@ -1956,5 +1970,9 @@ header {
     height: 32px;
     display: inline-block;
     text-align: center;
+}
+
+.flag {
+    vertical-align: text-top;
 }
 </style>
