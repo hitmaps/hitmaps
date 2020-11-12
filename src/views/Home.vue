@@ -733,6 +733,61 @@
                             <h2>Upcoming Matches</h2>
                         </div>
                     </div>
+                    <template v-if="tournamentMatches.length">
+                        <div class="row dashboard" style="margin: 0; margin-bottom: 40px;">
+                            <div class="elusive-target col-lg" :style="{
+                                backgroundImage:
+                                    'url(https://media.hitmaps.com/img/hitmaps-tournaments/rrwc.png)',
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                                backgroundRepeat: 'no-repeat',
+                                paddingLeft: 0,
+                                paddingRight: 0
+                            }">
+                                <div style="flex-grow: 1">&nbsp;</div>
+                                <template v-if="new Date(tournamentMatches[0].matchTime) - new Date() < (10*60*1000)">
+                                    <iframe
+                                            :src="`https://player.twitch.tv/?autoplay=false&channel=${getTwitchNameFromUrl(tournamentMatches[0].shoutcastStream)}&parent=${$hostname}`"
+                                            height="100%"
+                                            width="100%"
+                                            frameborder="0"
+                                            scrolling="no"
+                                            autoplay="false"
+                                            allowfullscreen="true">
+                                    </iframe>
+                                </template>
+                                <template v-else>
+                                    <div v-if="tournamentMatches[0].shoutcastStream" class="countdown" style="background: rgba(0,0,0,.4)">
+                                        <img
+                                                src="/img/game-icons/elusive-target-reminaing-time.png"
+                                        />
+                                        <div class="timer not-playable">
+                                            <div class="target-arrives">Next Match Begins in</div>
+                                            <countdown class="elusive-countdown" :date="tournamentMatches[0].matchTime"/>
+                                        </div>
+                                    </div>
+                                </template>
+                                <div class="game-info">
+                                    <div class="image">
+                                        <img src="/img/game-icons/campaign.png"
+                                             class="normal img-fluid"
+                                             alt="Campaign Icon" />
+                                        <img src="/img/game-icons/campaign-inverted.png"
+                                             class="inverted img-fluid"
+                                             alt="Campaign Icon" />
+                                    </div>
+                                    <div class="text">
+                                        <h2>{{ tournamentMatches[0].firstMap.location }} and {{ tournamentMatches[0].secondMap.location }}</h2>
+                                        <h1>
+                                            <country-flag :country="tournamentMatches[0].participants[0].country"></country-flag>
+                                            {{ tournamentMatches[0].participants[0].name }} vs
+                                            {{ tournamentMatches[0].participants[1].name }}
+                                            <country-flag :country="tournamentMatches[0].participants[1].country"></country-flag></h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
                     <div class="row d-none d-lg-flex d-xl-flex" style="color: black; border-bottom: 2px solid #dee2e6; border-top: 1px solid #dee2e6; padding: .75rem;">
                         <div class="col-lg-3">
                             <b><i class="fas fa-fw fa-swords"></i> Competitors</b>
@@ -1092,6 +1147,9 @@ export default {
     methods: {
         saveGameData() {
             //this.$store.commit("SET_GAME", )
+        },
+        getTwitchNameFromUrl(url) {
+            return url.replace(/(.*\/)*/,"")
         },
         getPlatformIcon(platform) {
             switch (platform) {
@@ -1591,8 +1649,6 @@ header {
                     }
                 }
             }
-
-            box-shadow: 2px 2px 2px #000;
         }
 
         .game-info,
@@ -1914,5 +1970,9 @@ header {
     height: 32px;
     display: inline-block;
     text-align: center;
+}
+
+.flag {
+    vertical-align: text-top;
 }
 </style>
