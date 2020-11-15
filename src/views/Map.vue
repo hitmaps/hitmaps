@@ -131,7 +131,7 @@
                             {{ $t('map.manage-disguise-areas') }}
                         </h3>
                     </div>
-                    <div id="map-control">
+                    <div class="map-control">
                         <div id="map-control-buttons">
                             <!-- Leaflet zoom controls -->
                         </div>
@@ -174,30 +174,30 @@
                                 </button>
                             </router-link>
                         </div>
-                        <template v-if="debugMode">
-                            <div class="control-buttons">
-                                <span style="color: white">Move Map:</span>
-                                <button class="btn control-button" @click="move('down')"><i class="fas fa-arrow-down"></i></button>
-                                <button class="btn control-button" @click="move('up')"><i class="fas fa-arrow-up"></i></button>
-                                <button class="btn control-button" @click="move('left')"><i class="fas fa-arrow-left"></i></button>
-                                <button class="btn control-button" @click="move('right')"><i class="fas fa-arrow-right"></i></button>
-                                <button class="btn control-button" @click="move('extend')"><i class="fas fa-expand-arrows-alt"></i></button>
-                                <button class="btn control-button" @click="move('contract')"><i class="fas fa-compress-arrows-alt"></i></button>
-                            </div>
-                            <div class="control-buttons">
-                                <span style="color: white">Step Amount:</span> <input type="text" v-model="debugStep">
-                            </div>
-                            <div class="control-buttons">
-                                <span style="color: white">Width:</span>
-                                <button class="btn control-button" @click="move('w+')"><i class="fas fa-compress-alt"></i></button>
-                                <button class="btn control-button" @click="move('w-')"><i class="fas fa-expand-alt"></i></button>
-                            </div>
-                            <div class="control-buttons">
-                                <span style="color: white">Height:</span>
-                                <button class="btn control-button" @click="move('n+')"><i class="fas fa-expand-alt"></i></button>
-                                <button class="btn control-button" @click="move('n-')"><i class="fas fa-compress-alt"></i></button>
-                            </div>
-                        </template>
+                    </div>
+                    <div class="map-control debug" v-if="debugMode">
+                        <div class="control-buttons">
+                            <span style="color: white">Move Map:</span>
+                            <button class="btn control-button" @click="move('down')"><i class="fas fa-arrow-down"></i></button>
+                            <button class="btn control-button" @click="move('up')"><i class="fas fa-arrow-up"></i></button>
+                            <button class="btn control-button" @click="move('left')"><i class="fas fa-arrow-left"></i></button>
+                            <button class="btn control-button" @click="move('right')"><i class="fas fa-arrow-right"></i></button>
+                            <button class="btn control-button" @click="move('extend')"><i class="fas fa-expand-arrows-alt"></i></button>
+                            <button class="btn control-button" @click="move('contract')"><i class="fas fa-compress-arrows-alt"></i></button>
+                        </div>
+                        <div class="control-buttons">
+                            <span style="color: white">Step Amount:</span> <input type="text" v-model="debugStep">
+                        </div>
+                        <div class="control-buttons">
+                            <span style="color: white">Width:</span>
+                            <button class="btn control-button" @click="move('w+')"><i class="fas fa-compress-alt"></i></button>
+                            <button class="btn control-button" @click="move('w-')"><i class="fas fa-expand-alt"></i></button>
+                        </div>
+                        <div class="control-buttons">
+                            <span style="color: white">Height:</span>
+                            <button class="btn control-button" @click="move('n+')"><i class="fas fa-expand-alt"></i></button>
+                            <button class="btn control-button" @click="move('n-')"><i class="fas fa-compress-alt"></i></button>
+                        </div>
                     </div>
                     <br />
                     <div style="color: white" v-if="debugMode">
@@ -3256,9 +3256,13 @@ html {
     }
 }
 
-#map-control {
+.map-control {
     width: 368px;
     display: flex;
+
+    &.debug {
+        flex-direction: column;
+    }
 
     .control-buttons {
         display: flex;
