@@ -1,10 +1,59 @@
 <template>
-    <p style="height: 100vh; background: white;">Logging in with Discord, please wait...</p>
+    <div
+            class="content"
+            style="background: url('https://media.hitmaps.com/img/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
+    >
+        <header class="row">
+            <div class="col text-center site-header">
+                <router-link :to="{ name: 'home' }">
+                    <img
+                            v-webp
+                            src="/img/png/logos/hitmaps.png"
+                            class="img-fluid"
+                    />
+                </router-link>
+                <h1>{{ $t('interactive-maps-for-hitman') }}</h1>
+            </div>
+        </header>
+        <div class="row">
+            <div class="col-md-6 offset-md-3 login">
+                <div class="login-card">
+                    <h3>{{ $t('authentication.login-with-discord') }}</h3>
+                    <p v-if="error !== ''">{{ $t(`authentication.${error}`) }}</p>
+                    <p v-else>{{ $t('authentication.logging-in') }}</p>
+                </div>
+                <div class="sign-in-button">
+                    <router-link :to="{ name: 'home' }">
+                        <game-button>
+                            <img src="/img/game-icons/campaign.png"
+                                 class="normal img-fluid"
+                                 alt="Return Home" />
+                            <img src="/img/game-icons/campaign-inverted.png"
+                                 class="inverted img-fluid"
+                                 alt="Return Home"
+                            />
+                            Home
+                        </game-button>
+                    </router-link>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
+    import GameButton from "../components/GameButton";
+
     export default {
         name: "DiscordAuth",
+        data() {
+            return {
+                error: ''
+            }
+        },
+        components: {
+            GameButton
+        },
         mounted() {
             // Discord Callback
             let hashes = this.$route.hash.slice(1).split('&');
@@ -31,24 +80,77 @@
                 .post(this.$domain + '/api/web/user/login', data)
                 .then(resp => {
                     if (resp.data.data !== null) {
-                        alert(resp.data.data.messages);
-                    }
-                    if (resp.data.token !== null) {
-                        localStorage.setItem('token', resp.data.token)
+                        this.error = resp.data.data.messages[0].icon;
+                    } else if (resp.data.token !== null) {
+                        localStorage.setItem('token', resp.data.token);
 
-                        // TODO Get redirect cookie location, and clear cookie
-                        // const redirectLocation = this.$cookies.get('redirect-location');
-                        // this.$cookies.remove('redirect-location');
-                        //window.location.href = redirectLocation;
+                        let redirectLocation = '/';
+                        if (this.$cookies.isKey('redirect-location')) {
+                            redirectLocation = this.$cookies.get('redirect-location');
+                            this.$cookies.remove('redirect-location');
+                        }
+
+                        window.location.href = redirectLocation;
                     }
-                })
-            // TODO: Call HITMAPS API
+                });
         }
     }
 </script>
 
 <style lang="scss" scoped>
-body {
-    background-color: white;
-}
+    .site-header {
+        margin: 0 20px;
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        img {
+            max-height: 100px;
+        }
+    }
+
+    .row {
+        .col-md-6.login {
+            background: transparent;
+            border: none;
+
+            .alert {
+                margin: 10px;
+            }
+
+            .login-card {
+                margin: 10px;
+                background: #fff;
+                padding: 1rem;
+            }
+
+            h3 {
+                font-family: 'nimbus_sans_lbold', sans-serif;
+                text-transform: uppercase;
+                border-bottom: none;
+                border-radius: 0;
+            }
+
+            .sign-in-button {
+                background: #fff;
+                padding: 0;
+                margin: 0 10px 10px;
+
+                a:hover {
+                    text-decoration: none;
+                }
+            }
+
+            .blurple {
+                background: #7289da;
+                color: #fff;
+                border: none;
+
+                &:hover {
+                    background: #6073bf;
+                }
+            }
+        }
+    }
 </style>

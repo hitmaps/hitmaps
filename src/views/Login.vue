@@ -13,14 +13,30 @@
                     />
                 </router-link>
                 <h1>{{ $t('interactive-maps-for-hitman') }}</h1>
-                <h2>{{ $t('authentication.login-or-create-an-account') }}</h2>
             </div>
         </header>
         <div class="row">
             <div class="col-md-6 offset-md-3 login">
                 <div class="login-card">
                     <h3>{{ $t('authentication.sign-in') }}</h3>
-                    <!-- TODO Add Discord button -->
+                    <a class="btn btn-dark blurple" :href="`https://discordapp.com/api/oauth2/authorize?client_id=681919936469401687&redirect_uri=${encodeURIComponent(this.$domain)}/auth&response_type=token&scope=connections%20identify%20guilds%20email`">
+                        <i class="fab fa-discord"></i>
+                        {{ $t('authentication.login-with-discord') }}
+                    </a>
+                </div>
+                <div class="sign-in-button">
+                    <router-link :to="{ name: 'home' }">
+                        <game-button>
+                            <img src="/img/game-icons/campaign.png"
+                                 class="normal img-fluid"
+                                 alt="Return Home" />
+                            <img src="/img/game-icons/campaign-inverted.png"
+                                 class="inverted img-fluid"
+                                 alt="Return Home"
+                            />
+                            Home
+                        </game-button>
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -53,12 +69,11 @@ export default {
     },
     beforeRouteEnter(to, from, next) {
         next(vm => {
-            // TODO -- set cookie
-            vm.referer = from.path
+            Vue.$cookies.set('redirect-location', from.path, '600s');
         })
     }
 }
-</script>
+</script>N
 
 <style lang="scss" scoped>
 .site-header {
@@ -102,6 +117,16 @@ export default {
 
             a:hover {
                 text-decoration: none;
+            }
+        }
+
+        .blurple {
+            background: #7289da;
+            color: #fff;
+            border: none;
+
+            &:hover {
+                background: #6073bf;
             }
         }
     }

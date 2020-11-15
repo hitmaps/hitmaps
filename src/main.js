@@ -9,6 +9,7 @@ import i18n from './i18n'
 import CountryFlag from 'vue-country-flag'
 import Rollbar from 'vue-rollbar'
 import VueMeta from 'vue-meta'
+import VueCookies from 'vue-cookies'
 
 axios.defaults.withCredentials = true
 
@@ -27,6 +28,7 @@ Vue.use(VueMoment, {
 });
 
 Vue.use(VueMeta);
+Vue.use(VueCookies);
 
 //Better method to deciding what type of request
 Vue.prototype.$request = (post, endpoint, data) => {

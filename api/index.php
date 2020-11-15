@@ -361,9 +361,9 @@ $klein->respond('POST', '/api/web/user/login', function(\Klein\Request $request,
     } catch (\BusinessLogic\Authentication\Discord\DiscordAuthenticationException | \BusinessLogic\Authentication\Discord\UserNotInServerException $e) {
         $viewModel = new \Controllers\ViewModels\LoginViewModel();
         if ($e instanceof \BusinessLogic\Authentication\Discord\DiscordAuthenticationException) {
-            $viewModel->messages[] = new \Controllers\ViewModels\AlertMessage('danger', $e->getMessage(), 'AUTH-FAILURE');
+            $viewModel->messages[] = new \Controllers\ViewModels\AlertMessage('danger', $e->getMessage(), 'error-discord-auth');
         } else {
-            $viewModel->messages[] = new \Controllers\ViewModels\AlertMessage('danger', $e->getMessage(), 'GUILD-FAILURE');
+            $viewModel->messages[] = new \Controllers\ViewModels\AlertMessage('danger', $e->getMessage(), 'error-not-in-server');
         }
 
         $responseModel = new \Controllers\ViewModels\ApiResponseModel();

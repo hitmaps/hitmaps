@@ -132,6 +132,9 @@
                         </h3>
                     </div>
                     <div id="map-control">
+                        <div id="map-control-buttons">
+                            <!-- Leaflet zoom controls -->
+                        </div>
                         <div class="control-buttons">
                             <button data-toggle="modal" class="btn control-button" data-target="#locale-modal" v-tooltip:bottom="$t('language-modal.change-language')">
                                 <country-flag :country="getCountryFlag()" />
@@ -153,15 +156,6 @@
                             >
                                 <i class="fas fa-pencil-alt"></i>
                             </button>
-                            <router-link :to="{ name: 'profile' }">
-                                <button
-                                    v-if="isLoggedIn"
-                                    class="btn control-button"
-                                    v-tooltip:top="$t('profile.profile')"
-                                >
-                                    <i class="fas fa-user-circle"></i>
-                                </button>
-                            </router-link>
                             <button
                                 v-if="isLoggedIn"
                                 class="btn control-button"
@@ -2691,7 +2685,7 @@ export default {
 
                 const zoom = L.control.zoom({position: 'topright'});
                 zoom.addTo(this.map);
-                $('#map-control').append(zoom.getContainer());
+                $('#map-control-buttons').html(zoom.getContainer());
 
                 for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
                     this.map.removeLayer(this.mapLayers[i]);
@@ -3264,10 +3258,12 @@ html {
 
 #map-control {
     width: 368px;
+    display: flex;
 
     .control-buttons {
         display: flex;
         justify-content: flex-end;
+        flex-grow: 1;
         margin-bottom: 10px;
     }
 
