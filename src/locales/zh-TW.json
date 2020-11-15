@@ -325,7 +325,11 @@
         "terms-of-use": "使用條款",
         "privacy-policy": "隱私政策",
         "register": "註冊",
-        "back-to-login": "返回至登入頁面"
+        "back-to-login": "返回至登入頁面",
+        "login-with-discord": "Login with Discord",
+        "logging-in": "Logging in with Discord, please wait...",
+        "error-not-in-server": "You must be a member of the HITMAPS™ Discord Server. Please join the server using the button in the footer, and then try logging in again.",
+        "error-discord-auth": "An error occurred when communicating with Discord. Please try again later."
     },
     "404": {
         "page-not-found": "無法找到網頁",
