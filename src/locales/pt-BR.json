@@ -325,7 +325,11 @@
         "terms-of-use": "Termos de Uso",
         "privacy-policy": "Política de Privacidade",
         "register": "Resgistrar",
-        "back-to-login": "Voltar para o Login"
+        "back-to-login": "Voltar para o Login",
+        "login-with-discord": "Login with Discord",
+        "logging-in": "Logging in with Discord, please wait...",
+        "error-not-in-server": "You must be a member of the HITMAPS™ Discord Server. Please join the server using the button in the footer, and then try logging in again.",
+        "error-discord-auth": "An error occurred when communicating with Discord. Please try again later."
     },
     "404": {
         "page-not-found": "Página Não Encontrada",
