@@ -7,7 +7,6 @@ import PrivacyPolicy from './views/PrivacyPolicy.vue'
 import About from "./views/About";
 import OneYear from "./views/SpecialEvents/OneYear";
 import SupportTheSite from "./views/SupportTheSite";
-import Garfield from "./views/Garfield";
 
 Vue.use(Router)
 
@@ -46,11 +45,6 @@ export default new Router({
             component: SupportTheSite,
         },
         {
-            path: '/4dummies',
-            name: 'Hey Garfield!',
-            component: Garfield,
-        },
-        {
             path: '/games/:slug',
             name: 'level-select',
             component: Location,
@@ -74,24 +68,13 @@ export default new Router({
                 import(/* webpackChunkName: "login" */ './views/Login.vue'),
         },
         {
-          path: '/user/register',
-          name: 'register',
-          // route level code-splitting
-          // this generates a separate chunk (about.[hash].js) for this route
-          // which is lazy-loaded when the route is visited.
-          component: () =>
-            import(/* webpackChunkName: "register" */ './views/Register.vue'),
-        },
-        {
-            path: '/user/profile',
-            name: 'profile',
+            path: '/auth',
+            name: 'auth',
             // route level code-splitting
             // this generates a separate chunk (about.[hash].js) for this route
             // which is lazy-loaded when the route is visited.
             component: () =>
-                import(
-                    /* webpackChunkName: "profile" */ './views/Profile.vue'
-                ),
+                import(/* webpackChunkName: "auth" */ './views/DiscordAuth.vue'),
         },
         {
             path: '*',
