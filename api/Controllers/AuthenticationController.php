@@ -20,8 +20,7 @@ class AuthenticationController {
         $this->loginUserService = $loginUserService;
     }
 
-    public function loginUser(string $email,
-                       string $password) {
-        return $this->loginUserService->loginWithUserAndPassword($email, $password);
+    public function loginUser(string $tokenType, string $accessToken) {
+        return $this->loginUserService->loginWithDiscordToken($tokenType, $accessToken);
     }
 }

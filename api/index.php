@@ -353,17 +353,17 @@ $klein->respond('POST', '/api/web/user/login', function(\Klein\Request $request,
     $controller = $applicationContext->get(\Controllers\AuthenticationController::class);
 
     try {
-        $token = $controller->loginUser($_POST['email'], $_POST['password']);
+        $token = $controller->loginUser($_POST['tokenType'], $_POST['accessToken']);
 
         $responseModel = new \Controllers\ViewModels\ApiResponseModel();
         $responseModel->token = $token;
         return $response->json($responseModel);
-    } catch (\BusinessLogic\Authentication\LoginFailedException | \Controllers\RecaptchaFailedException $e) {
+    } catch (\BusinessLogic\Authentication\Discord\DiscordAuthenticationException | \BusinessLogic\Authentication\Discord\UserNotInServerException $e) {
         $viewModel = new \Controllers\ViewModels\LoginViewModel();
-        if ($e instanceof \BusinessLogic\Authentication\LoginFailedException) {
-            $viewModel->messages[] = new \Controllers\ViewModels\AlertMessage('danger', 'The username or password entered is incorrect.', 'times-circle');
+        if ($e instanceof \BusinessLogic\Authentication\Discord\DiscordAuthenticationException) {
+            $viewModel->messages[] = new \Controllers\ViewModels\AlertMessage('danger', $e->getMessage(), 'AUTH-FAILURE');
         } else {
-            $viewModel->messages[] = new \Controllers\ViewModels\AlertMessage('danger', 'You must complete the captcha in order to log in.', 'times-circle');
+            $viewModel->messages[] = new \Controllers\ViewModels\AlertMessage('danger', $e->getMessage(), 'GUILD-FAILURE');
         }
 
         $responseModel = new \Controllers\ViewModels\ApiResponseModel();
