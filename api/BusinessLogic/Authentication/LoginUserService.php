@@ -77,12 +77,18 @@ class LoginUserService {
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['password' => "DISCORD|{$profileData['id']}"]);
 
         if ($user === null) {
-            $user = new User();
-            $user->setEmail($profileData['email']);
+            // Check for a legacy account
+            $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $profileData['email']]);
+
+            // Completely new user. Set basic info
+            if ($user === null) {
+                $user = new User();
+                $user->setEmail($profileData['email']);
+                $role = $this->entityManager->getRepository(UserRole::class)->findOneBy(['id' => 2]);
+                $user->getRoles()->add($role);
+            }
             $user->setName("{$profileData['username']}#{$profileData['discriminator']}");
             $user->setPassword("DISCORD|{$profileData['id']}");
-            $role = $this->entityManager->getRepository(UserRole::class)->findOneBy(['id' => 2]);
-            $user->getRoles()->add($role);
             $this->entityManager->persist($user);
             $this->entityManager->flush();
         }
