@@ -1016,11 +1016,11 @@ export default {
                 {
                     tileUrl: 'https://www.ioi.dk/wp-content/uploads/2020/11/IOI_NewProject-2.jpg',
                     promoStartDate: '2020-11-19T14:00:00+00:00',
-                    promoEndDate: '2020-11-19T14:00:01+00:00',
+                    promoEndDate: '2020-11-20T14:00:00+00:00',
                     topCaption: 'youtube.com/iointeractive',
                     bottomCaption: 'Project Announcement',
                     beforeText: 'Announcement Begins',
-                    duringText: 'Announcement Begins',
+                    duringText: 'Announcement Has Begun (Ignore this timer 😛)',
                     tournament: false,
                     h3: false,
                     url: 'https://youtube.com/iointeractive'
