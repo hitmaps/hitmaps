@@ -121,7 +121,8 @@
                         </div>
                         <div class="game-info">
                             <div class="image">
-                                <i v-if="!currentPromo.h3" class="fab fa-discord fa-3x" style="width: 48px; height: 48px"></i>
+                                <i v-if="currentPromo.bottomCaption === 'Project Announcement'" class="fab fa-youtube fa-3x" style="width: 48px; height: 48px"></i>
+                                <i v-else-if="!currentPromo.h3" class="fab fa-discord fa-3x" style="width: 48px; height: 48px"></i>
                                 <img
                                         v-if="currentPromo.h3"
                                         src="https://media.hitmaps.com/img/hitmaps-custom/mk3.png"
@@ -1013,6 +1014,18 @@ export default {
                     url: 'https://discord.gg/FVxTKdU'
                 },
                 {
+                    tileUrl: 'https://www.ioi.dk/wp-content/uploads/2020/11/IOI_NewProject-2.jpg',
+                    promoStartDate: '2020-11-19T14:00:00+00:00',
+                    promoEndDate: '2020-11-19T14:00:01+00:00',
+                    topCaption: 'youtube.com/iointeractive',
+                    bottomCaption: 'Project Announcement',
+                    beforeText: 'Announcement Begins',
+                    duringText: 'Announcement Begins',
+                    tournament: false,
+                    h3: false,
+                    url: 'https://youtube.com/iointeractive'
+                },
+                {
                     tileUrl: 'https://media.hitmaps.com/img/hitmaps-custom/h3-header.jpg',
                     promoStartDate: '2020-07-08T23:00:00+00:00',
                     promoEndDate: '2021-01-20T23:00:00+00:00',
@@ -1371,8 +1384,8 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
-            this.currentPromo = this.promos[0];
-            this.currentPromoIndex = 1;
+            this.currentPromo = this.promos[1];
+            this.currentPromoIndex = 2;
             setInterval(() => {
                 this.currentPromo = this.currentPromoIndex === this.promos.length ?
                     0 :
