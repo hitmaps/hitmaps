@@ -45,7 +45,7 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]?', function 
             $missions = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Mission::class)->findActiveMissionsByLocation($location->getId());
             /* @var $mission \DataAccess\Models\Mission */
             foreach ($missions as $mission) {
-                $mission->floorNames = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\MapFloorToName::class)->findBy(['missionId' => $mission->getId()]);
+                $mission->floorNames = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\MapFloorToName::class)->findBy(['missionId' => $mission->getId()], ['floorNumber' => 'ASC']);
 
                 $missionDifficulties = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\MissionDifficulty::class)->findBy(['missionId' => $mission->getId()]);
 
@@ -90,7 +90,7 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
             $mission->difficulties[] = $missionDifficulty->getDifficulty();
         }
 
-        $mission->floorNames = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\MapFloorToName::class)->findBy(['missionId' => $mission->getId()]);
+        $mission->floorNames = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\MapFloorToName::class)->findBy(['missionId' => $mission->getId()], ['floorNumber' => 'ASC']);
     }
 
     return $response->json($missions);
