@@ -154,7 +154,7 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
 
     /* @var $mission \DataAccess\Models\Mission */
     $mission = $entityManager->getRepository(\DataAccess\Models\Mission::class)->findOneBy(['locationId' => $location->getId(), 'slug' => $request->mission]);
-    $mission->floorNames = $entityManager->getRepository(\DataAccess\Models\MapFloorToName::class)->findBy(['missionId' => $mission->getId()]);
+    $mission->floorNames = $entityManager->getRepository(\DataAccess\Models\MapFloorToName::class)->findBy(['missionId' => $mission->getId()], ['floorNumber' => 'ASC']);
 
     if ($mission === null) {
         $response->code(400);
