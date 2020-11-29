@@ -726,7 +726,7 @@
                     </router-link>
                 </div>
             </div>-->
-            <div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
+            <!--<div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
@@ -831,14 +831,14 @@
                         </div>
                     </template>
                 </div>
-            </div>
+            </div>-->
         </template>
-        <modal modal-title="Roulette Rivals World Championship"
+        <!--<modal modal-title="Roulette Rivals World Championship"
                id="roulette-rivals-modal"
                tabindex="-1"
                dismissable>
             <div class="row">
-                <!--<div class="col-md-6 col-sm-12">
+                &lt;!&ndash;<div class="col-md-6 col-sm-12">
                     <div class="embed-responsive embed-responsive-16by9"
                          style="min-height: 310px">
                         <iframe src="https://www.youtube.com/embed/c6q4hgt0fiE"
@@ -848,7 +848,7 @@
                                 allowfullscreen
                         ></iframe>
                     </div>
-                </div>-->
+                </div>&ndash;&gt;
                 <div class="col-sm-12">
                     <p>
                         In Roulette Rivals you go head-to-head against another player in main missions. Once a mission is selected,
@@ -869,7 +869,7 @@
                     <alert type="info">Matches run from <b>October 23</b> to <b>November 29</b>!</alert>
                 </div>
             </div>
-        </modal>
+        </modal>-->
         <input type="hidden" name="notification-environment" />
         <div class="patreon roulette">
             <div class="row">
@@ -1001,18 +1001,6 @@ export default {
             currentPromo: 0,
             tournamentMatches: [],
             promos: [
-                {
-                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/rrwc.png',
-                    promoStartDate: '2020-10-21T23:00:00+00:00',
-                    promoEndDate: '2020-11-29T23:00:00+00:00',
-                    topCaption: "Roulette Rivals",
-                    bottomCaption: 'World Championship',
-                    beforeText: 'Registration Closes',
-                    duringText: undefined,
-                    tournament: true,
-                    h3: false,
-                    url: 'https://discord.gg/FVxTKdU'
-                },
                 {
                     tileUrl: 'https://media.hitmaps.com/img/hitmaps-custom/h3-header.jpg',
                     promoStartDate: '2020-07-08T23:00:00+00:00',
@@ -1372,8 +1360,8 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
-            this.currentPromo = this.promos[1];
-            this.currentPromoIndex = 2;
+            this.currentPromo = this.promos[0];
+            this.currentPromoIndex = 0;
             setInterval(() => {
                 this.currentPromo = this.currentPromoIndex === this.promos.length ?
                     0 :
