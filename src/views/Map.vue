@@ -1759,6 +1759,7 @@ export default {
                 $template.find('[data-name="target"]').find('i').hide();
             }
 
+            $template.find('.image-and-name').addClass('game-' + this.game.slug);
             if (node.image !== null) {
                 $template.find('.image-and-name').css('background-image', `url(${node.image})`).show();
                 $template.find('.no-image').hide();
@@ -2830,6 +2831,13 @@ html {
                     font-weight: bolder;
                     padding: 0 10px 5px;
                     background: rgba(0,0,0,.4);
+                }
+
+                &.game-absolution {
+                    background-color: #000;
+                    background-size: 150px 150px;
+                    background-position: center;
+                    background-repeat: no-repeat;
                 }
             }
 
