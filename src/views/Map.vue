@@ -2841,7 +2841,7 @@ html {
 
                 &.game-absolution {
                     background-color: #000;
-                    background-size: inherit;
+                    background-size: contain;
                     background-position: center;
                     background-repeat: no-repeat;
                 }
