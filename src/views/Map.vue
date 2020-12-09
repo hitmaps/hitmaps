@@ -1759,9 +1759,15 @@ export default {
                 $template.find('[data-name="target"]').find('i').hide();
             }
 
-            $template.find('.image-and-name').addClass('game-' + this.game.slug);
             if (node.image !== null) {
-                $template.find('.image-and-name').css('background-image', `url(${node.image})`).show();
+                let backgroundCss = `url(${node.image})`;
+
+                if (this.game.slug === 'absolution') {
+                    backgroundCss += ', radial-gradient(#69696a, #171718)';
+                }
+
+                $template.find('.image-and-name').addClass(`game-${this.game.slug}`)
+                    .css('background-image', backgroundCss).show();
                 $template.find('.no-image').hide();
             } else {
                 $template.find('.image-and-name').css('background-image', '').hide();
@@ -2835,7 +2841,7 @@ html {
 
                 &.game-absolution {
                     background-color: #000;
-                    background-size: 150px 150px;
+                    background-size: inherit;
                     background-position: center;
                     background-repeat: no-repeat;
                 }
