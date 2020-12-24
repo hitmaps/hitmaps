@@ -869,8 +869,6 @@ $klein->respond('GET', '/api/sitemap.txt', function(\Klein\Request $request, \Kl
     $pages[] = $constants->siteDomain;
     $pages[] = "{$constants->siteDomain}/terms-of-use";
     $pages[] = "{$constants->siteDomain}/privacy-policy";
-    $pages[] = "{$constants->siteDomain}/user/register";
-    $pages[] = "{$constants->siteDomain}/user/login";
     // Location Select
     /* @var $locationRepository \DataAccess\Repositories\LocationRepository */
     /* @var $missionRepository \DataAccess\Repositories\MissionRepository */
