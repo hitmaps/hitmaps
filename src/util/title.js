@@ -13,12 +13,14 @@ export default {
     },
     watch: {
         title: function(val) {
-            document.title = `${val} | HITMAPS™`
+            document.title = `${val} | HITMAPS™`;
+            document.getElementsByTagName('meta')['og:title'] = document.title;
         },
     },
     mounted() {
         if (this.title) {
-            document.title = `${this.title} | HITMAPS™`
+            document.title = `${this.title} | HITMAPS™`;
+            document.getElementsByTagName('meta')['og:title'] = document.title;
         }
     },
 }

@@ -992,6 +992,10 @@ export default {
             {
                 name: 'description',
                 content: 'HITMAPS™ provides interactive maps for the Hitman series since 2018'
+            },
+            {
+                name: 'og:description',
+                content: 'HITMAPS™ provides interactive maps for the Hitman series since 2018'
             }
         ]
     },
