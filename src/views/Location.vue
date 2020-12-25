@@ -333,6 +333,8 @@ export default {
     created: function() {
         if (this.game === null || this.game.slug !== this.$route.params.slug)
             this.$store.dispatch('loadGame', this.$route.params.slug)
+
+        MetaHandler.setOpengraphTag('description', `View interactive maps for all locations in ${game.fullName}`);
         this.$http
             .get(
                 this.$domain +
