@@ -1,4 +1,4 @@
-class MetaHandler {
+export default class {
     static setOpengraphTag(name, value) {
         const existingTag = document.querySelector(`meta[property="og:${name}"]`);
         if (existingTag) {

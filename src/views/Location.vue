@@ -128,7 +128,6 @@
                             class="col-xl-3 col-lg-4 col-md-6 col-sm-12"
                         >
                             <router-link
-                                @click.native="saveMissionData(mission)"
                                 :to="{
                                     name: 'map-view',
                                     params: {
@@ -209,9 +208,6 @@
                                     >
                                         <div class="row difficulties">
                                             <router-link
-                                                @click.native="
-                                                    saveMissionData(mission)
-                                                "
                                                 :to="{
                                                     name: 'map-view',
                                                     params: {
@@ -292,6 +288,7 @@
 <script>
 import Loader from '../components/Loader.vue'
 import Alert from "../components/Alert";
+import MetaHandler from "../components/MetaHandler";
 
 export default {
     name: 'level-select',
@@ -299,19 +296,15 @@ export default {
         Alert,
         Loader
     },
-    computed: {
-        game: function() {
-            return this.$store.state.game
-        }
-    },
     title() {
-        return this.$store.state.game !== null
-            ? this.$store.state.game.fullName
+        return this.game !== null
+            ? this.game.fullName
             : 'Loading'
     },
     data() {
         return {
-            locations: []
+            locations: [],
+            game: null
         }
     },
     methods: {
@@ -321,20 +314,15 @@ export default {
             }
 
             return 'jpg/elusive-targets/' + mission.slug + '.jpg'
-        },
-        saveMissionData: function(mission) {
-            if (
-                this.$store.state.mission != null &&
-                this.$store.state.mission.slug !== mission.slug
-            )
-                this.$store.commit('SET_MISSION', mission)
         }
     },
     created: function() {
-        if (this.game === null || this.game.slug !== this.$route.params.slug)
-            this.$store.dispatch('loadGame', this.$route.params.slug)
+        this.$http.get(this.$domain + '/api/v1/games/' + this.$route.params.slug)
+            .then(resp => {
+                this.game = resp.data[0];
+                MetaHandler.setOpengraphTag('description', `View interactive maps for all locations in ${this.game.fullName}`);
+            });
 
-        MetaHandler.setOpengraphTag('description', `View interactive maps for all locations in ${game.fullName}`);
         this.$http
             .get(
                 this.$domain +

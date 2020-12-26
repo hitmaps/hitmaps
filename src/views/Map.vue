@@ -1503,6 +1503,8 @@ export default {
     },
     data() {
         return {
+            game: null,
+            mission: null,
             lastFloorType: '',
             floorNames: {},
             disguises: [],
@@ -1549,9 +1551,6 @@ export default {
         }
     },
     computed: {
-        mission: function() {
-            return this.$store.state.mission
-        },
         tileUrl: function() {
             return `${this.$domain}/api/maps/${this.mission.mapFolderName}/tiles/`;
         },
@@ -1570,9 +1569,6 @@ export default {
             }
 
             return '/img/jpg/elusive-targets/' + this.mission.slug + '.jpg'
-        },
-        game: function() {
-            return this.$store.state.game
         },
         currentCategory: function() {
             if (
@@ -2528,20 +2524,20 @@ export default {
         }
     },
     beforeCreate: function() {
-        if (this.$store.state.mission == null) {
-            this.$request(
-                false,
-                'v1/games/' +
-                    this.$route.params.slug +
-                    '/locations/' +
-                    this.$route.params.location +
-                    '/missions/' +
-                    this.$route.params.mission
-            ).then(resp => {
-                this.$store.commit('SET_MISSION', resp.data[0])
-            })
-        }
+        this.$request(false, `v1/games/${this.$route.params.slug}`)
+            .then(resp => this.game = resp.data[0]);
 
+        this.$request(
+            false,
+            'v1/games/' +
+            this.$route.params.slug +
+            '/locations/' +
+            this.$route.params.location +
+            '/missions/' +
+            this.$route.params.mission
+        ).then(resp => {
+            this.mission = resp.data[0];
+        });
     },
     created: function() {
         const $body = $('body');
@@ -2562,9 +2558,7 @@ export default {
                 this.$route.params.difficulty +
                 '/map'
         ).then(resp => {
-            if (this.$store.state.mission == null) {
-                this.$store.commit('SET_MISSION', resp.data.mission);
-            }
+            this.mission = resp.data.mission;
 
             this.buildLevelNames();
 
