@@ -1486,6 +1486,7 @@ import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
 import Alert from '../components/Alert'
 import GameButton from '../components/GameButton'
 import Modal from '../components/Modal'
+import MetaHandler from '../components/MetaHandler'
 
 import LanguageHelpers from "../components/LanguageHelpers";
 import { isIOS } from 'mobile-device-detect';
@@ -2537,6 +2538,11 @@ export default {
             this.$route.params.mission
         ).then(resp => {
             this.mission = resp.data[0];
+
+            const difficulty = this.mission.difficulties.find(x => x.toLowerCase() === this.$route.params.difficulty);
+            const description = `View locations for items, disguises, and more for ${this.mission.name} (${difficulty} difficulty)`;
+            MetaHandler.setOpengraphTag('description', description);
+            MetaHandler.setMetaTag('description', description);
         });
     },
     created: function() {
