@@ -1,24 +1,34 @@
 export default class {
+    /**
+     * Also sets the appropriate Twitter tag if matches
+     */
     static setOpengraphTag(name, value) {
-        const existingTag = document.querySelector(`meta[property="og:${name}"]`);
-        if (existingTag) {
-            existingTag.remove();
-        }
+        this._innerSetTag('property', `og:${name}`, value);
 
-        let link = document.createElement('meta');
-        link.setAttribute('property', `og:${name}`);
-        link.content = value;
-        document.getElementsByTagName('head')[0].appendChild(link);
+        if (['title', 'url', 'description', 'image'].includes(name)) {
+            this.setTwitterTag(name, value);
+        }
+    }
+
+    static setTwitterTag(name, value) {
+        this._innerSetTag('name', `twitter:${name}`, value);
     }
 
     static setMetaTag(name, value) {
-        const existingTag = document.querySelector(`meta[name="${name}"]`);
+        this._innerSetTag('name', name, value);
+    }
+
+    /**
+     * Should never be called outside of this class
+     */
+    static _innerSetTag(attribute, key, value) {
+        const existingTag = document.querySelector(`meta[${attribute}="${key}"`);
         if (existingTag) {
             existingTag.remove();
         }
 
         let link = document.createElement('meta');
-        link.setAttribute('name', name);
+        link.setAttribute(attribute, key);
         link.content = value;
         document.getElementsByTagName('head')[0].appendChild(link);
     }

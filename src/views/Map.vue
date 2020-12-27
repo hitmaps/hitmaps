@@ -2543,6 +2543,7 @@ export default {
             const description = `View locations for items, disguises, and more for ${this.mission.name} (${difficulty} difficulty)`;
             MetaHandler.setOpengraphTag('description', description);
             MetaHandler.setMetaTag('description', description);
+            MetaHandler.setOpengraphTag('image', this.mission.tileUrl)
         });
     },
     created: function() {

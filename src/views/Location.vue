@@ -321,6 +321,7 @@ export default {
             .then(resp => {
                 this.game = resp.data[0];
                 MetaHandler.setOpengraphTag('description', `View interactive maps for all locations in ${this.game.fullName}`);
+                MetaHandler.setOpengraphTag('image', this.game.tileUrl);
             });
 
         this.$http
