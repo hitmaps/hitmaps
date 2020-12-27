@@ -4,6 +4,7 @@ import router from './router'
 import axios from 'axios'
 import store from './store/store'
 import titleMixin from './util/title'
+import opengraphMixin from './util/opengraph';
 import ImageLoader from './plugins/ImageLoader'
 import i18n from './i18n'
 import CountryFlag from 'vue-country-flag'
@@ -67,8 +68,9 @@ Vue.prototype.$request = (post, endpoint, data) => {
 
 Vue.component('country-flag', CountryFlag);
 
-Vue.mixin(titleMixin)
-Vue.use(ImageLoader)
+Vue.mixin(titleMixin);
+Vue.mixin(opengraphMixin);
+Vue.use(ImageLoader);
 
 // Rollbar
 /*Vue.use(Rollbar, {

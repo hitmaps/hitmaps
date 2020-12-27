@@ -976,6 +976,7 @@ import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
 import Vue from 'vue'
 import Modal from "../components/Modal";
 import Alert from "../components/Alert";
+import MetaHandler from "../components/MetaHandler";
 
 Vue.use(CxltToaster)
 export default {
@@ -991,6 +992,14 @@ export default {
         meta: [
             {
                 name: 'description',
+                content: 'HITMAPS™ provides interactive maps for the Hitman series since 2018'
+            },
+            {
+                property: 'og:description',
+                content: 'HITMAPS™ provides interactive maps for the Hitman series since 2018'
+            },
+            {
+                property: 'twitter:description',
                 content: 'HITMAPS™ provides interactive maps for the Hitman series since 2018'
             }
         ]
@@ -1341,6 +1350,8 @@ export default {
         }
     },
     created: function() {
+        MetaHandler.setOpengraphTag('image', 'https://media.hitmaps.com/img/hitmaps-custom/promo1.png');
+
         this.$http.get(this.$domain + '/api/web/home').then(resp => {
             this.games = resp.data.games
             this.elusiveTargets = resp.data.elusiveTargets

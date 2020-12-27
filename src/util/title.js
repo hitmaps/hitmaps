@@ -1,3 +1,5 @@
+import MetaHandler from "../components/MetaHandler";
+
 function getTitle(vm) {
     const { title } = vm.$options
     if (title) {
@@ -13,12 +15,14 @@ export default {
     },
     watch: {
         title: function(val) {
-            document.title = `${val} | HITMAPS™`
+            document.title = `${val} | HITMAPS™`;
+            MetaHandler.setOpengraphTag('title', document.title);
         },
     },
     mounted() {
         if (this.title) {
-            document.title = `${this.title} | HITMAPS™`
+            document.title = `${this.title} | HITMAPS™`;
+            MetaHandler.setOpengraphTag('title', document.title);
         }
     },
 }
