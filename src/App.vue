@@ -22,16 +22,16 @@
                         </p>
                     </div>
                     <div class="col-md-6 text-right">
+                        <router-link :to="{ name: 'about' }">
+                            <span class="fa-stack fa-2x" v-tooltip:top="$t('footer.about')">
+                                <i class="fas fa-square fa-stack-2x"></i>
+                                <i class="fas fa-info-circle fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </router-link>
                         <a href="https://discord.gg/eZqhZah" target="_blank">
                             <span class="fa-stack fa-2x" v-tooltip:top="$t('footer.join-the-discord')">
                                 <i class="fas fa-square fa-stack-2x"></i>
                                 <i class="fab fa-discord fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                        <a href="https://www.hitmanforum.com/t/interactive-maps-for-hitman-2/27897" target="_blank">
-                            <span class="fa-stack fa-2x" v-tooltip:top="$t('footer.hitmanforum')">
-                                <i class="fas fa-square fa-stack-2x"></i>
-                                <i class="fas fa-comments fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                         <a
@@ -82,9 +82,9 @@
                         </span>
                         |
                         <span class="footer-link">
-                            <router-link :to="{ name: 'about' }">
-                                <i class="fas fa-info-circle"></i>
-                                {{ $t('footer.about') }}
+                            <router-link :to="{ name: 'brand' }">
+                                <i class="fas fa-paint-brush"></i>
+                                Brand
                             </router-link>
                         </span>
                         |
