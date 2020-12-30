@@ -7,6 +7,7 @@ import PrivacyPolicy from './views/PrivacyPolicy.vue'
 import About from "./views/About";
 import OneYear from "./views/SpecialEvents/OneYear";
 import SupportTheSite from "./views/SupportTheSite";
+import Brand from "./views/Brand";
 
 Vue.use(Router)
 
@@ -38,6 +39,11 @@ export default new Router({
             path: '/about',
             name: 'about',
             component: About,
+        },
+        {
+            path: '/brand',
+            name: 'brand',
+            component: Brand,
         },
         {
             path: '/support-the-site',
