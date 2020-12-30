@@ -94,6 +94,13 @@
                                 {{ 'Support the Site' }}
                             </router-link>
                         </span>
+                        |
+                        <span class="footer-link">
+                            <a href="https://hitmaps.readme.io/reference" target="_blank">
+                                <i class="fas fa-code"></i>
+                                API
+                            </a>
+                        </span>
                     </div>
                 </div>
             </div>
