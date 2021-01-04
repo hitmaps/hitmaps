@@ -1,6 +1,6 @@
 {
-    "name": "HITMAPS",
-    "short_name": "HITMAPS",
+    "name": "HITMAPS™",
+    "short_name": "HITMAPS™",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
@@ -11,10 +11,15 @@
             "src": "/android-chrome-256x256.png",
             "sizes": "256x256",
             "type": "image/png"
+        },
+        {
+            "src": "/android-chrome-512x512.png",
+            "sizes":"512x512",
+            "type":"image/png"
         }
     ],
-    "theme_color": "#aabdc6",
-    "background_color": "#aabdc6",
+    "theme_color": "#ff1439",
+    "background_color": "#ff1439",
     "start_url": "https://www.hitmaps.com",
     "display": "standalone",
     "gcm_sender_id": "103953800507"

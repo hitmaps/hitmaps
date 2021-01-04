@@ -30,8 +30,8 @@
                     class="img-fluid"
                 />
                 <h2>{{ game.tagline }}</h2>
-                <alert type="info" v-if="game.slug === 'absolution'">
-                    <p>Hitman: Absolution maps are new to HITMAPS™. We're working diligently to having items mapped; however they are not yet complete.</p>
+                <alert type="info" v-if="false">
+                    <p>{whatever is next} maps are new to HITMAPS™. We're working diligently to having items mapped; however they are not yet complete.</p>
                     <p>We thank you for your patience while we work on mapping these levels 🙂</p>
                 </alert>
             </div>
@@ -481,7 +481,7 @@ export default {
                     opacity: 0.85;
 
                     &:hover {
-                        background-color: #fc003b;
+                        background-color: #ff1439;
                         opacity: 1;
 
                         img {
@@ -542,7 +542,7 @@ export default {
                     h2 {
                         font-size: 16px;
                         margin-bottom: 0;
-                        color: #fc003b;
+                        color: #ff1439;
                         font-weight: 500;
                     }
 
@@ -667,7 +667,7 @@ export default {
 
         a:hover .card-footer {
             color: white;
-            background-color: #fc003b;
+            background-color: #ff1439;
 
             .image img {
                 &.normal {

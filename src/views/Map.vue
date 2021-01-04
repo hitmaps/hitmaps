@@ -98,8 +98,8 @@
                     id="navbarSupportedContent"
                 >
                     <div class="header">
-                        <alert type="info" v-if="game.slug === 'absolution'" dismissable>
-                            <p>Hitman: Absolution maps are new to HITMAPS™. We're working diligently to having items mapped; however they are not yet complete.</p>
+                        <alert type="info" v-if="false" dismissable>
+                            <p>{whatever is new} maps are new to HITMAPS™. We're working diligently to having items mapped; however they are not yet complete.</p>
                             <p>We thank you for your patience while we work on mapping these levels 🙂</p>
                         </alert>
                         <router-link :to="{ name: 'home' }">
