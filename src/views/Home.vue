@@ -3,7 +3,7 @@
         class="content"
         style="background: url('https://media.hitmaps.com/img/hitmaps-custom/h3-background.png') no-repeat center center fixed; background-size: cover"
     >
-        <header class="row" style="margin-top: 250px; align-items: center">
+        <header class="row" style="align-items: center">
             <div class="col-lg-6 col-md-12 text-center site-header">
                 <img
                     v-webp
@@ -28,7 +28,7 @@
             <div class="row dashboard">
                 <div
                     class="game col-lg"
-                    v-for="game in games.filter(x => x.slug !== 'absolution')"
+                    v-for="game in games.filter(x => ['hitman', 'hitman2', 'hitman3'].includes(x.slug))"
                     :key="game.id"
                     v-bind:style="{
                         backgroundImage:
@@ -683,11 +683,11 @@
                     </div>
                 </div>
             </div>
-            <!--<div class="row dashboard">
+            <div class="row dashboard">
                 <div
 
                         class="game col-lg"
-                        v-for="game in games.filter(x => x.slug !== 'hitman' && x.slug !== 'hitman2')"
+                        v-for="game in games.filter(x => ['absolution', 'sniper-assassin'].includes(x.slug))"
                         :key="game.id"
                         v-bind:style="{
                         backgroundImage:
@@ -725,7 +725,7 @@
                         </div>
                     </router-link>
                 </div>
-            </div>-->
+            </div>
             <!--<div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
@@ -1633,7 +1633,7 @@ header {
             .game-info,
             .elusive-target-info {
                 color: white;
-                background: rgb(252, 0, 59);
+                background: #ff1439;
 
                 h2 {
                     color: white;
