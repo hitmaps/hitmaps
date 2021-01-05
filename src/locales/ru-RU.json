@@ -1,8 +1,8 @@
 {
-    "interactive-maps-for-hitman": "Interactive Maps for the Hitman Series",
+    "interactive-maps-for-hitman": "Интерактивные Карты для игр серии Hitman",
     "language-modal": {
         "change-language": "Изменить язык",
-        "footer": "Translations are maintained and updated by the HITMAPS™️ community. If a translation is incorrect, please {submitACorrection}.",
+        "footer": "Перевод поддерживается и обновляется коммьюнити HITMAPS™️. Если перевод неверен, пожалуйста {submitACorrection}.",
         "submit-a-correction": "предложить исправление"
     },
     "roulette": {
@@ -160,7 +160,7 @@
         "situs-inversus": "Транспозиция органов",
         "patient-zero": "Нулевой пациент",
         "nightcall": "Ночная смена",
-        "the-mills-reverie": "The Mills Reverie",
+        "the-mills-reverie": "Грезы Орсона",
         "finish-line": "Финишная черта",
         "three-headed-serpent": "Трехглавый змей",
         "embrace-of-the-serpent": "Объятия змеи",
