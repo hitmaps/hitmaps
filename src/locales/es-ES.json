@@ -325,7 +325,11 @@
         "terms-of-use": "Términos de Uso",
         "privacy-policy": "Política de Privacidad",
         "register": "Registrarse",
-        "back-to-login": "Volver a Inicio de sesión"
+        "back-to-login": "Volver a Inicio de sesión",
+        "login-with-discord": "Login with Discord",
+        "logging-in": "Logging in with Discord, please wait...",
+        "error-not-in-server": "You must be a member of the HITMAPS™ Discord Server. Please join the server using the button in the footer, and then try logging in again.",
+        "error-discord-auth": "An error occurred when communicating with Discord. Please try again later."
     },
     "404": {
         "page-not-found": "Página no encontrada",
@@ -348,8 +352,8 @@
         "a-personal-contract": {
             "gardens": "Jardines",
             "greenhouse": "Invernadero",
-            "mansion-ground-floor": "Mansión|Planta Baja",
-            "mansion-second-floor": "Mansión|Segundo Piso",
+            "mansion-ground-floor": "Mansion|1st Floor",
+            "mansion-second-floor": "Mansion|2nd Floor",
             "diana": "Mansión|Diana"
         },
         "the-king-of-chinatown": {
@@ -378,9 +382,9 @@
         "hunter-and-hunted": {
             "courtyard-tunnels": "Patio|Túneles",
             "courtyard-ground": "Patio|Suelo",
-            "club-first-floor": "Club Vixen|1er Piso",
-            "club-second-floor": "Club Vixen|2do Piso",
-            "club-third-floor": "Club Vixen|3er Piso",
+            "club-first-floor": "Vixen Club|Basement",
+            "club-second-floor": "Vixen Club|1st Floor",
+            "club-third-floor": "Vixen Club|2nd Floor",
             "dressing-room-first-floor": "Vestidores|1er Piso",
             "dressing-room-second-floor": "Vestidores|2do Piso",
             "derelict-first-floor": "Edificio Abandonado|1er Piso",
@@ -388,8 +392,8 @@
             "store-first-floor": "Tienda|1er Piso",
             "store-second-floor": "Tienda|2do Piso",
             "store-third-floor": "Tienda|3er Piso",
-            "chinese-new-year-first-floor": "Año Nuevo Chino|1er Piso",
-            "chinese-new-year-second-floor": "Año Nuevo Chino|2do Piso",
+            "chinese-new-year-first-floor": "Chinese New Year|Basement",
+            "chinese-new-year-second-floor": "Chinese New Year|1st Floor",
             "loading-area": "Área de Carga"
         },
         "rosewood": {
@@ -465,8 +469,8 @@
             "hope-fair-floor-2": "Feria de Hope|2do Piso"
         },
         "one-of-a-kind": {
-            "floor-1": "Sastrería|1er Piso",
-            "floor-2": "Sastrería|2do Piso"
+            "floor-1": "Tailor Shop|Basement",
+            "floor-2": "Tailor Shop|1st Floor"
         },
         "blackwater-park": {
             "blackwater-park": "Parque Blackwater",
