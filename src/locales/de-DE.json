@@ -1,20 +1,20 @@
 {
-    "interactive-maps-for-hitman": "Interactive Maps for the Hitman Series",
+    "interactive-maps-for-hitman": "Interaktive Karten der Hitman Serie",
     "language-modal": {
         "change-language": "Sprache ändern",
         "footer": "Die Übersetzungen werden von Mitgliedern der HITMAPS™️-Community erstellt und aktualisiert. {submitACorrection}, wenn eine Übersetzung fehlerhaft ist.",
         "submit-a-correction": "Korrektur einreichen"
     },
     "roulette": {
-        "introduction": "Introducing the HITMAPS™ Roulette. Initially based on Kotti's {hitmanRoulette}, HITMAPS™ Roulette takes Kotti's work and builds off of it to add new features, including:",
+        "introduction": "Vorstellung des HITMAPS™ Roulette. HITMAPS™ Roulette basiert ursprünglich auf Kotti's {hitmanRoulette} und nimmt Kottis Arbeit auf und baut darauf auf, um neue Funktionen hinzuzufügen, darunter folgende:",
         "hitman-roulette": "Hitman Roulette",
         "list-item-tournament-mode": {
-            "header": "Tournament Mode:",
-            "details": "Create a head-to-head matchup against your friend (or rival ;) ). Set up match durations and send the spin to your opponent via read-only spin links. These links automatically refresh each time a new spin is sent."
+            "header": "Turnier Modus:",
+            "details": "Erstelle ein Kopf-an-Kopf-Matchup gegen deinen Freund (oder deinen Rivalen; )). Richte die Spieldauer ein und sende den Spin über schreibgeschützte Spin-Links an deinen Gegner. Diese Links werden jedes Mal automatisch aktualisiert, wenn ein neuer Spin gesendet wird."
         },
         "list-item-control": {
-            "header": "Fine-tuned Control:",
-            "details": "Don't like a specific kill condition, but don't want to lose the rest of the spin? Simply re-spin the specific condition."
+            "header": "Feinabstimmung der Steuerung:",
+            "details": "Magst du keine bestimmte Bestimmungen um deinen Gegner zu eliminieren, möchtest aber den Rest des Spins nicht verlieren? Drehe einfach die spezifische Bedingung erneut."
         },
         "list-item-overlay": {
             "header": "Stream Overlay:",
@@ -376,12 +376,12 @@
             "library-fourth-floor": "Library|4th Floor",
             "pigeon-coop": "Pigeon Coop",
             "shangri-la": "Shangri-la",
-            "train-first-floor": "Train Station|1st Floor",
-            "train-second-floor": "Train Station|2nd Floor"
+            "train-first-floor": "Bahnhof|Erstes Obergeschoss",
+            "train-second-floor": "Bahnhof|Zweites Obergeschoss"
         },
         "hunter-and-hunted": {
-            "courtyard-tunnels": "Courtyard|Tunnels",
-            "courtyard-ground": "Courtyard|Ground",
+            "courtyard-tunnels": "Hof|Tunnel",
+            "courtyard-ground": "Hof|Boden",
             "club-first-floor": "Vixen Club|Basement",
             "club-second-floor": "Vixen Club|1st Floor",
             "club-third-floor": "Vixen Club|2nd Floor",
