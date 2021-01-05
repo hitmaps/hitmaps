@@ -2,7 +2,7 @@
     "interactive-maps-for-hitman": "Mappe Interattive per la serie Hitman",
     "language-modal": {
         "change-language": "Cambia Lingua",
-        "footer": "Translations are maintained and updated by the HITMAPS™️ community. If a translation is incorrect, please {submitACorrection}.",
+        "footer": "Le traduzioni sono gestite e aggiornate dalla community di HITMAPS™️. Se una traduzione non è corretta, per favore {submitACorrection}.",
         "submit-a-correction": "sottoscrivi una correzione"
     },
     "roulette": {
@@ -28,7 +28,7 @@
         "paragraph-1": "HITMAPS™️ is pleased to be partnered with Frote's Speedrun Community. Back in September 2019, HITMAPS™️ promoted Speedrun Competition #2, along with all future events. We are happy to announce this official partnership, which includes both software tailed towards Frote's Speedrun Community, along with the necessary infrastructure to run the software. Frote's Speedrun Community has also offered to promote HITMAPS™️ in return as HITMAPS™️ may play an important role for participants.",
         "paragraph-2": "Frote's Speedrun Community hosts several events throughout the year, including Ghost Mode Tournaments, Roulette Rivals, and the classic Speedrun Competition. All major events involve cash prize winnings! There are also several \"mini-competitions\" that run on a weekly basis, as well as a creative contest from time to time.",
         "paragraph-3": "Feel free to join their Discord to be notified of future events!",
-        "join-the-discord": "Join the Discord"
+        "join-the-discord": "Unisciti al nostro Discord"
     },
     "form": {
         "close-icon": "Chiudi",
