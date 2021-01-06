@@ -9,7 +9,7 @@
     "staging": "vue-cli-service build --mode staging"
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "core-js": "^3.6.1",
     "cxlt-vue2-toastr": "^1.1.1",
     "leaflet": "^1.6.0",
