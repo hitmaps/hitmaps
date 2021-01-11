@@ -6,9 +6,6 @@ use Predis\Client;
 
 require __DIR__ . '/autoload.php';
 
-$loader = new Twig_Loader_Filesystem(__DIR__ . '/resources/views');
-$twig = new Twig_Environment($loader);
-
 $klein = new \Klein\Klein();
 
 $klein->respond(function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
@@ -373,7 +370,7 @@ $klein->respond('POST', '/api/web/user/login', function(\Klein\Request $request,
     }
 });
 
-$klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext) {
+$klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
@@ -651,7 +648,7 @@ $klein->respond('GET', '/api/disguise-areas/delete/[:areaId]', function (\Klein\
     return json_encode($responseModel);
 });
 
-$klein->respond('POST', '/api/nodes/move', function (\Klein\Request $request, \Klein\Response $response) use ($twig, $applicationContext) {
+$klein->respond('POST', '/api/nodes/move', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
@@ -858,11 +855,7 @@ $klein->respond('GET', '/api/ioi/status', function(\Klein\Request $request, \Kle
     $applicationContext->get(\BusinessLogic\IOIServices\ElusiveTargetUpdater::class)->retrieveLatestElusiveTargetFromIOI();
 });
 
-$klein->respond('GET', '/500', function() use ($twig) {
-    return \Controllers\Renderer::render('500.twig', $twig);
-});
-
-$klein->respond('GET', '/api/sitemap.txt', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext, $twig) {
+$klein->respond('GET', '/api/sitemap.txt', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $constants = new \Config\Constants();
     $pages = [];
     // Static Pages
@@ -902,7 +895,9 @@ $klein->respond('GET', '/api/sitemap.txt', function(\Klein\Request $request, \Kl
     }
 
     $response->header('Content-Type', 'text/plain');
-    return \Controllers\Renderer::render('sitemap.twig', $twig, $pages);
+    $pagesTxt = implode("\n", $pages);
+
+    return $response->body($pagesTxt);
 });
 
 /* Admin Endpoints */
@@ -925,149 +920,44 @@ $klein->respond('GET', '/api/admin/migrate', function() {
     return '<pre>' . $output . '</pre>';
 });
 
-$klein->onHttpError(function (int $code, \Klein\Klein $router) use ($twig) {
+$klein->onHttpError(function (int $code, \Klein\Klein $router) {
     $router->response()->code($code);
     switch ($code) {
         case 403:
-            $router->response()->body(\Controllers\Renderer::render('403.twig', $twig, new \Controllers\ViewModels\BaseModel()));
+            $router->response()->json([
+                'message' => 'Forbidden',
+                'uri' => $router->request()->uri()
+            ]);
             break;
         case 404:
-            if (strpos($router->request()->uri(), '/api/') !== false) {
-                $router->response()->json([
-                    'message' => "Could not find route with URI {$router->request()->uri()}",
-                    'uri' => $router->request()->uri()
-                ]);
-            } else {
-                $router->response()->body(\Controllers\Renderer::render('404.twig', $twig, new \Controllers\ViewModels\BaseModel()));
-            }
+            $router->response()->json([
+                'message' => "Could not find route with URI {$router->request()->uri()}",
+                'uri' => $router->request()->uri()
+            ]);
             break;
         case 500:
-            if (strpos($router->request()->uri(), '/api/') !== false) {
-                $router->response()->json([
-                    'message' => 'It appears that something went horribly wrong, and we are unable to handle your request at this time. Please try again in a few moments.',
-                    'uri' => $router->request()->uri()
-                ]);
-            } else {
-                $router->response()->body(\Controllers\Renderer::render('500.twig', $twig, new \Controllers\ViewModels\BaseModel()));
-            }
+            $router->response()->json([
+                'message' => 'It appears that something went horribly wrong, and we are unable to handle your request at this time. Please try again in a few moments.',
+                'uri' => $router->request()->uri()
+            ]);
             break;
         default:
-            $router->response()->body("Welp, something unexpected happened with error code: {$code}");
+            $router->response()->json([
+                'message' => "Welp, something unexpected happened with error code: {$code}",
+                'uri' => $router->request()->uri()
+            ]);
     }
 });
 
-$klein->onError(function (\Klein\Klein $klein, $msg, $type, Throwable $err) use ($twig) {
+$klein->onError(function (\Klein\Klein $klein, $msg, $type, Throwable $err) {
     error_log($err);
     \Rollbar\Rollbar::log(\Rollbar\Payload\Level::ERROR, $err);
     $klein->response()->code(500);
 
-    if (strpos($klein->request()->uri(), '/api/') !== false) {
-        $klein->response()->json([
-            'message' => 'It appears that something went horribly wrong, and we are unable to handle your request at this time. Please try again in a few moments.',
-            'uri' => $klein->request()->uri()
-        ]);
-    } else {
-        $klein->response()->body(\Controllers\Renderer::render('500.twig', $twig));
-    }
-});
-
-// TODO LEGACY
-$klein->respond('GET', '/api/games/[:game]/[:location]/[:missionSlug]/[:difficulty]', function (\Klein\Request $request) use ($twig, $applicationContext) {
-    $viewModel = new \ViewModels\GameMapViewModel();
-    $viewModel->difficulty = $request->difficulty;
-    $viewModel->game = $request->game;
-
-    /* @var $mission \DataAccess\Models\Mission|null */
-    $mission = $applicationContext->get(EntityManager::class)
-        ->getRepository(\DataAccess\Models\Mission::class)
-        ->findOneBy(['slug' => $request->missionSlug]);
-    if ($mission === null) {
-        bounceTo404($twig);
-    }
-
-    $viewModel->missionId = $mission->getId();
-    $viewModel->mission = $mission->getName();
-    $viewModel->missionType = $mission->getMissionType();
-    $viewModel->missionSlug = $mission->getSlug();
-    $viewModel->setTileLocation();
-
-    /* @var $location \DataAccess\Models\Location */
-    $location = $applicationContext->get(EntityManager::class)
-        ->getRepository(\DataAccess\Models\Location::class)
-        ->findOneBy(['id' => $mission->getLocationId()]);
-
-    $viewModel->locationSlug = $location->getSlug();
-    $viewModel->locationNameOne = $location->getDestination();
-    $viewModel->mapFolderName = $mission->getMapFolderName();
-    $viewModel->mapCenterLatitude = $mission->getMapCenterLatitude();
-    $viewModel->mapCenterLongitude = $mission->getMapCenterLongitude();
-    $viewModel->topLeftCoordinate = $mission->getTopLeftCoordinate();
-    $viewModel->bottomRightCoordinate = $mission->getBottomRightCoordinate();
-    $viewModel->lowestFloor = $mission->getLowestFloorNumber();
-    $viewModel->highestFloor = $mission->getHighestFloorNumber();
-    $viewModel->startingFloor = $mission->getStartingFloorNumber();
-    $viewModel->satelliteView = $mission->getSatelliteView() ? 1 : 0;
-    $viewModel->disguises = $applicationContext->get(EntityManager::class)
-        ->getRepository(\DataAccess\Models\Disguise::class)
-        ->findBy(['missionId' => $mission->getId()], ['name' => 'ASC']);
-
-    if (true) {
-        /* @var $user \DataAccess\Models\User */
-        //$user = \BusinessLogic\Session\Session::read('userContext');
-        //$roles = $user->getRolesAsInts();
-
-        if (true) {
-            $viewModel->editorTitle = 'Add Change';
-            $viewModel->canDeleteNodes = true;
-        } else {
-            $viewModel->editorTitle = 'Suggest Edit';
-            $viewModel->canDeleteNodes = false;
-        }
-    }
-
-    $nodeCategories = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\NodeCategory::class)->findBy([], ['order' => 'ASC', 'group' => 'ASC']);
-    $sortedNodeCategories = [];
-
-    /* @var $nodeCategory \DataAccess\Models\NodeCategory */
-    foreach ($nodeCategories as $nodeCategory) {
-        if (!key_exists($nodeCategory->getType(), $sortedNodeCategories)) {
-            $sortedNodeCategories[$nodeCategory->getType()] = [];
-        }
-
-        $sortedNodeCategories[$nodeCategory->getType()][] = $nodeCategory;
-    }
-
-    $predeterminedItems = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Item::class)->findBy([], ['name' => 'ASC']);
-    $sortedPredeterminedItems = [];
-
-    /* @var $predeterminedItem \DataAccess\Models\Item */
-    foreach ($predeterminedItems as $predeterminedItem) {
-        if (!key_exists($predeterminedItem->getType(), $sortedPredeterminedItems)) {
-            $sortedPredeterminedItems[$predeterminedItem->getType()] = [];
-        }
-
-        $sortedPredeterminedItems[$predeterminedItem->getType()][] = $predeterminedItem;
-    }
-
-    $icons = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Icon::class)->findBy([], ['order' => 'ASC', 'icon' => 'ASC']);
-    $sortedIcons = [];
-
-    /* @var $icon \DataAccess\Models\Icon */
-    foreach ($icons as $icon) {
-        if (!key_exists($icon->getGroup(), $sortedIcons)) {
-            $sortedIcons[$icon->getGroup()] = [];
-        }
-
-        $sortedIcons[$icon->getGroup()][] = $icon;
-    }
-
-    $viewModel->predeterminedItems = $sortedPredeterminedItems;
-    $viewModel->nodeCategories = $sortedNodeCategories;
-    $viewModel->icons = $sortedIcons;
-    $viewModel->nodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($viewModel->missionId, $request->difficulty, true);
-    $viewModel->searchableNodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($viewModel->missionId, $request->difficulty, true, true);
-
-    return \Controllers\Renderer::render('map.twig', $twig, $viewModel);
+    $klein->response()->json([
+        'message' => 'It appears that something went horribly wrong, and we are unable to handle your request at this time. Please try again in a few moments.',
+        'uri' => $klein->request()->uri()
+    ]);
 });
 
 //--> Roulette
@@ -1371,10 +1261,6 @@ function getUserContextForToken(string $token, \DI\Container $applicationContext
     } catch (\BusinessLogic\Session\SessionException $e) {
         return null;
     }
-}
-
-function bounceTo404(Twig_Environment $twig) {
-    return \Controllers\Renderer::render('404.twig', $twig);
 }
 
 
