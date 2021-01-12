@@ -300,7 +300,7 @@
                                     aria-labelledby="header-disguises"
                                 >
                                     <div class="card-body disguises">
-                                        <alert type="info" v-if="isIOS" dismissable>
+                                        <alert type="info" v-if="false" dismissable>
                                             Disguise areas are disabled due to an incompatible device.
                                         </alert>
                                         <div class="row">
@@ -1160,7 +1160,6 @@ import Modal from '../components/Modal'
 import MetaHandler from '../components/MetaHandler'
 
 import LanguageHelpers from "../components/LanguageHelpers";
-import { isIOS } from 'mobile-device-detect';
 
 Vue.use(CxltToaster)
 export default {
@@ -1226,9 +1225,6 @@ export default {
         tileUrl: function() {
             return `${this.$domain}/api/maps/${this.mission.mapFolderName}/tiles/`;
         },
-        svgMapUrl: function() {
-            return `https://media.hitmaps.com/img/${this.game.slug}/maps/${this.mission.mapFolderName}/`;
-        },
         loadingTile: function() {
             if (this.mission.missionType !== 'Elusive Target') {
                 return this.mission.tileUrl;
@@ -1289,6 +1285,13 @@ export default {
     methods: {
         showDebug() {
             return process.env.VUE_APP_SHOW_DEBUG === 'true';
+        },
+        getSvgMapUrl() {
+            if (this.game === undefined || this.mission === undefined) {
+                return '';
+            }
+
+            return `https://media.hitmaps.com/img/${this.game.slug}/maps/${this.mission.mapFolderName}/`;
         },
         buildLevelNames() {
             if (this.mission === undefined) {
@@ -1484,6 +1487,7 @@ export default {
                     id: foliage.id
                 }
             }).on('click', function() {
+                that.editor.currentMarker = this;
                 that.deletePoly(foliage, 'foliage');
             });
 
@@ -1500,6 +1504,7 @@ export default {
                     id: disguiseArea.id
                 }
             }).on('click', function() {
+                that.editor.currentMarker = this;
                 that.deletePoly(disguiseArea, 'disguise-areas')
             });
 
@@ -1672,7 +1677,11 @@ export default {
                 data.append('note-text[]', element.text)
             })
             this.$request(true, url, data).then(resp => {
-                if (this.editor.mode === 'items' && this.currentCategory.nodeId) {
+                if (this.currentCategory.nodeId) {
+                    console.info('=====');
+                    console.info(this.editor.currentMarker);
+                    console.info(this.editor.currentMarkerNode);
+                    console.info('=====');
                     this.editor.currentMarker.deleted = true;
                 }
 
@@ -1723,15 +1732,15 @@ export default {
                             resp => {
                                 this.$toast.success({
                                     message: 'Foliage deleted!'
-                                })
+                                });
 
                                 var foliageObject = this.foliage.find(
                                     foliage => foliage.id === item.id
-                                )
+                                );
                                 this.foliage.splice(
                                     this.foliage.indexOf(foliageObject),
                                     1
-                                )
+                                );
                                 this.map.removeLayer(this.editor.currentMarker);
                                 this.editor.currentMarker = null;
                             }
@@ -2041,10 +2050,21 @@ export default {
                     if (key !== 'Navigation|Ledge' &&
                         key !== 'Navigation|Foliage' &&
                         !key.startsWith('Disguises|')) {
+                        let deletedNodes = [];
                         for (const node in floorLayers[key].getLayers()) {
                             const nodeProperties = floorLayers[key].getLayers()[node];
 
-                            if (nodeProperties.options.custom.node.deleted) {
+                            if (nodeProperties.options.custom.node.name === 'Fire Extinguisher-TEMP2') {
+                                console.info(nodeProperties.options.custom.node);
+                            }
+
+                            /*if (nodeProperties.options.custom.node.deleted) {
+                                continue;
+                            }*/
+
+                            if (nodeProperties.options.custom.node.deleted === true) {
+                                this.map.removeLayer(nodeProperties);
+                                deletedNodes.push(nodeProperties);
                                 continue;
                             }
 
@@ -2080,9 +2100,13 @@ export default {
                             } else {
                                 $(nodeProperties._icon).removeClass('search-result');
                             }
-
-                            if (nodeProperties.options.custom.node.deleted === true) {
-                                this.map.removeLayer(nodeProperties);
+                        }
+                        if (deletedNodes.length) {
+                            for (let deletedNode of deletedNodes) {
+                                const index = floorLayers[key].getLayers().indexOf(deletedNode);
+                                if (index > -1) {
+                                    floorLayers[key].getLayers().splice(index, 1);
+                                }
                             }
                         }
                     }
@@ -2236,6 +2260,7 @@ export default {
                 this.$route.params.difficulty +
                 '/map'
         ).then(resp => {
+            this.game = resp.data.game;
             this.mission = resp.data.mission;
 
             this.buildLevelNames();
@@ -2311,13 +2336,13 @@ export default {
             });
 
             // Disabling for iOS for now
-            if (!isIOS) {
+            //if (!isIOS) {
                 resp.data.disguises.forEach(disguise => {
                     disguise.areas.forEach(area => {
                         this.buildDisguiseArea(area).addTo(this.overlays[area.level]['Disguises|' + disguise.id]);
                     });
                 });
-            }
+            //}
 
             this.$nextTick(() => {
                 // Build tile layers for each floor
@@ -2335,7 +2360,7 @@ export default {
                     for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
                         let boundingBoxTopLeft = this.mission.boundingBoxTopLeft.split(',');
                         let boundingBoxBottomRight = this.mission.boundingBoxBottomRight.split(',');
-                        let svgImageLayer = L.imageOverlay(`${this.svgMapUrl}${i}.svg`, [boundingBoxTopLeft, boundingBoxBottomRight]);
+                        let svgImageLayer = L.imageOverlay(`${this.getSvgMapUrl()}${i}.svg`, [boundingBoxTopLeft, boundingBoxBottomRight]);
                         this.layerGroups.push(svgImageLayer);
                         this.mapLayers[i] = svgImageLayer;
                     }

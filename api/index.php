@@ -145,8 +145,11 @@ function buildTileUrlForMission(\DataAccess\Models\Mission $mission, string $gam
 $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $cacheClient = $applicationContext->get(\BusinessLogic\Caching\CacheClient::class);
 
-    /* @var $location \DataAccess\Models\Location */
+    /* @var $game \DataAccess\Models\Game */
     $entityManager = $applicationContext->get(EntityManager::class);
+    $game = $entityManager->getRepository(\DataAccess\Models\Game::class)->findOneBy(['slug' => $request->game]);
+
+    /* @var $location \DataAccess\Models\Location */
     $location = $entityManager->getRepository(\DataAccess\Models\Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
 
     /* @var $mission \DataAccess\Models\Mission */
@@ -167,9 +170,16 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
         ]);
     }
 
+    if ($game === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find game with slug '{$request->game}'"
+        ]);
+    }
+
     $cacheKey = \BusinessLogic\Caching\KeyBuilder::buildKey(['map', $mission->getId(), $request->difficulty]);
 
-    return $response->json($cacheClient->retrieve($cacheKey, function() use ($applicationContext, $request, $response, $location, $mission) {
+    return $response->json($cacheClient->retrieve($cacheKey, function() use ($applicationContext, $request, $response, $location, $mission, $game) {
 
 
         $nodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($mission->getId(), $request->difficulty);
@@ -241,6 +251,7 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
         }
 
         return [
+            'game' => $game,
             'mission' => $mission,
             'nodes' => $nodes,
             'searchableNodes' => $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($mission->getId(), $request->difficulty, true, true),
@@ -489,12 +500,10 @@ $klein->respond('GET', '/api/ledges/delete/[:ledgeId]', function (\Klein\Request
 
     clearAllMapCaches($ledge->getMissionId(), $applicationContext);
 
-    $response->code(200);
-
     $responseModel = new \Controllers\ViewModels\ApiResponseModel();
     $responseModel->token = $newToken;
     $responseModel->data = ['message' => 'Ledge deleted!'];
-    return json_encode($responseModel);
+    return $response->json($responseModel);
 });
 
 $klein->respond('POST', '/api/foliage', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
@@ -539,12 +548,10 @@ $klein->respond('GET', '/api/foliage/delete/[:foliageId]', function (\Klein\Requ
 
     clearAllMapCaches($foliage->getMissionId(), $applicationContext);
 
-    $response->code(200);
-
     $responseModel = new \Controllers\ViewModels\ApiResponseModel();
     $responseModel->token = $newToken;
     $responseModel->data = ['message' => 'Foliage deleted!'];
-    return json_encode($responseModel);
+    return $response->json($responseModel);
 });
 
 $klein->respond('POST', '/api/disguise-areas', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
@@ -640,12 +647,10 @@ $klein->respond('GET', '/api/disguise-areas/delete/[:areaId]', function (\Klein\
 
     clearAllMapCaches($disguiseArea->getMissionId(), $applicationContext);
 
-    $response->code(200);
-
     $responseModel = new \Controllers\ViewModels\ApiResponseModel();
     $responseModel->token = $newToken;
     $responseModel->data = ['message' => 'Disguise area deleted!'];
-    return json_encode($responseModel);
+    return $response->json($responseModel);
 });
 
 $klein->respond('POST', '/api/nodes/move', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
@@ -705,15 +710,15 @@ $klein->respond('GET', '/api/nodes/delete/[:nodeId]', function(\Klein\Request $r
     $user = getUserContextForToken($newToken, $applicationContext);
     $roles = $user->getRolesAsInts();
     if (!\BusinessLogic\UserRole::hasAccess($roles, [\BusinessLogic\UserRole::TRUSTED_EDITOR])) {
-        print json_encode(['message' => 'You do not have permission to delete nodes!']);
-        return $response->code(403);
+        $response->code(403);
+        return $response->json(['message' => 'You do not have permission to delete nodes!']);
     }
 
     /* @var $node \DataAccess\Models\Node */
     $node = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Node::class)->findOneBy(['id' => $request->nodeId]);
     if ($node === null) {
-        print json_encode(['message' => 'Could not find the node to delete!']);
-        return $response->code(404);
+        $response->code(404);
+        return $response->json(['message' => 'Could not find the node to delete!']);
     }
     $notes = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\NodeNote::class)->findBy(['nodeId' => $request->nodeId]);
     foreach ($notes as $note) {
@@ -726,8 +731,8 @@ $klein->respond('GET', '/api/nodes/delete/[:nodeId]', function(\Klein\Request $r
     $responseModel = new \Controllers\ViewModels\ApiResponseModel();
     $responseModel->token = $newToken;
     $responseModel->data = ['message' => 'Node deleted!'];
-    print json_encode($responseModel);
-    return $response->code(200);
+
+    return $response->json($responseModel);
 });
 
 /**
