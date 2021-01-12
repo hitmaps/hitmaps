@@ -1408,9 +1408,15 @@ export default {
             )
         },
         editorMenu: function(menu) {
+            let $map = $('#map');
             this.editor.mode = menu;
+            $map.removeClass(function(index, className) {
+                return (className.match (/(^|\s)hm-editor-\S+/g) || []).join(' ');
+            });
             if (menu === '') {
                 this.toggleDraw('ALL');
+            } else {
+                $map.addClass(`hm-editor-${menu}`);
             }
             this.updateNodeLayerState();
         },
@@ -2521,6 +2527,10 @@ html {
     top: 0;
     width: 100%;
     height: 100%;
+
+    &.hm-editor-items {
+        cursor: crosshair !important;
+    }
 
     .leaflet-control-container {
         display: none;
