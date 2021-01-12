@@ -53,9 +53,8 @@ export default {
 .game-modal {
     .modal-dialog {
         &.fullscreen {
-            margin: 0;
-            width: 100%;
-            max-width: 100%;
+            width: 95%;
+            max-width: 95%;
         }
 
         .modal-content {
