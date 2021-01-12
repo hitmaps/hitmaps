@@ -2,37 +2,18 @@
     <div>
         <div v-if="!mapLoaded && mission != null" class="overlay" :style="'background: #ccc url(' + mission.backgroundUrl + ') no-repeat; background-size: cover'">
             <div class="overlay-container">
-                <img
-                    class="img-fluid"
-                    :src="loadingTile"
-                    alt="Mission Thumbnail"
-                />
+                <img class="img-fluid" :src="loadingTile" alt="Mission Thumbnail" />
                 <div class="footer">
                     <div class="footer-image">
-                        <img
-                            src="/img/game-icons/mission-inverted.png"
-                            class="img-fluid"
-                            :alt="$t('mission-icon')"
-                        />
+                        <img src="/img/game-icons/mission-inverted.png" class="img-fluid" :alt="$t('mission-icon')" />
                     </div>
                     <div class="footer-text">
                         <h2>{{ lang('mission-types.' + mission.missionType.toLowerCase(), mission.missionType) }}</h2>
                         <h1>{{ lang('missions.' + mission.slug, mission.name) }}</h1>
                     </div>
-                    <div
-                        class="loader"
-                        style="display: inline-block; height: 48px; float: right"
-                    >
-                        <video
-                            loop
-                            muted
-                            autoplay
-                            style="height: 50px; width: 100px; object-fit: fill"
-                        >
-                            <source
-                                src="/video/loader.webm"
-                                type="video/webm"
-                            />
+                    <div class="loader" style="display: inline-block; height: 48px; float: right">
+                        <video loop muted autoplay style="height: 50px; width: 100px; object-fit: fill">
+                            <source src="/video/loader.webm" type="video/webm" />
                             <source src="/video/loader.mp4" type="video/mp4" />
                         </video>
                     </div>
@@ -40,10 +21,7 @@
             </div>
         </div>
         <div v-if="mission != null" class="content">
-            <div
-                class="floor-toggle"
-                v-if="mission.missionType !== 'Sniper Assassin'"
-            >
+            <div class="floor-toggle" v-if="mission.missionType !== 'Sniper Assassin'">
                 <div
                     v-for="i in range(
                         mission.lowestFloorNumber,
@@ -60,10 +38,7 @@
                         <div @click="changeLevel(i)" class="floor">
                             <span v-if="floorNames[i] && floorNames[i].value">{{ floorNames[i].value }}</span>
                         </div>
-                        <div
-                                :class="{ 'has-search-results': hasSearchResults(i) }"
-                                class="item-count"
-                        >
+                        <div :class="{ 'has-search-results': hasSearchResults(i) }" class="item-count">
                             {{ calculateNumber(i) }}
                         </div>
                     </div>
@@ -98,15 +73,12 @@
                     id="navbarSupportedContent"
                 >
                     <div class="header">
-                        <alert type="info" v-if="false" dismissable>
-                            <p>{whatever is new} maps are new to HITMAPS™. We're working diligently to having items mapped; however they are not yet complete.</p>
+                        <alert type="info" v-if="game.slug === 'hitman3'" dismissable>
+                            <p>HITMAN™ 3 maps are new to HITMAPS™. We're working diligently to having items mapped; however they are not yet complete.</p>
                             <p>We thank you for your patience while we work on mapping these levels 🙂</p>
                         </alert>
                         <router-link :to="{ name: 'home' }">
-                            <img
-                                src="/img/png/logos/hitmaps.png"
-                                class="img-fluid"
-                            />
+                            <img src="/img/png/logos/hitmaps.png" class="img-fluid" alt="HITMAPS Logo" />
                         </router-link>
                     </div>
                     <div class="editor-enabled" v-if="editor.enabled">
@@ -445,35 +417,10 @@
                                                     collapsible(type, group)
                                             "
                                         >
-                                            <ul
-                                                :style="{
-                                                    columns:
-                                                        group.items.length > 1
-                                                            ? 2
-                                                            : 1
-                                                }"
-                                            >
-                                                <li
-                                                    v-for="node in noDuplicates(
-                                                        group.items
-                                                    )"
-                                                    :key="node.name"
-                                                >
-                                                    <img
-                                                        v-if="
-                                                            node.icon !=
-                                                                group.icon
-                                                        "
-                                                        :src="
-                                                            '/img/map-icons/' +
-                                                                node.icon +
-                                                                '.png'
-                                                        "
-                                                        :alt="
-                                                            node.name + ' Icon'
-                                                        "
-                                                        class="img-fluid"
-                                                    />
+                                            <ul :style="{ columns: group.items.length > 1 ? 2 : 1 }">
+                                                <li v-for="node in noDuplicates(group.items)" :key="node.name">
+                                                    <img v-if="node.icon != group.icon" :src="'/img/map-icons/' + node.icon + '.png'"
+                                                        :alt="node.name + ' Icon'" class="img-fluid" />
                                                     {{ node.name }}
                                                 </li>
                                             </ul>
@@ -483,81 +430,42 @@
                             </div>
                         </div>
                         <div v-else>
-                            <div
-                                class="card"
-                                v-for="(type, key, index) in nodes"
-                                :key="index"
-                            >
-                                <div
-                                    class="card-header"
-                                    :id="'header-' + index"
-                                >
-                                    <div
-                                        class="name collapsed"
-                                        data-toggle="collapse"
-                                        :data-target="'#body-' + index"
-                                        aria-expanded="false"
-                                        :aria-controls="'body-' + index"
-                                    >
+                            <div class="card" v-for="(type, key, index) in nodes" :key="index">
+                                <div class="card-header" :id="'header-' + index">
+                                    <div class="name collapsed"
+                                         data-toggle="collapse"
+                                         :data-target="'#body-' + index"
+                                         aria-expanded="false"
+                                         :aria-controls="'body-' + index">
                                         {{ lang('map.types.' + type.name, type.name) }}
                                         <span class="float-right">
                                             <i class="fas fa-caret-down"></i>
                                             <i class="fas fa-caret-up"></i>
                                         </span>
                                     </div>
-                                    <div
-                                        class="visibility-toggle group-toggle"
-                                        @click="toggleLayer(type.name + '|*')"
-                                        :class="{
-                                            'map-hidden': isLayerHidden(
-                                                type.name + '|*'
-                                            )
-                                        }"
-                                    >
+                                    <div class="visibility-toggle group-toggle"
+                                         @click="toggleLayer(type.name + '|*')"
+                                         :class="{ 'map-hidden': isLayerHidden(type.name + '|*') }">
                                         <i class="far fa-eye"></i>
                                         <i class="far fa-eye-slash"></i>
                                     </div>
                                 </div>
-                                <div
-                                    :id="'body-' + index"
-                                    class="collapse"
-                                    :aria-labelledby="'header-' + index"
-                                >
+                                <div :id="'body-' + index"
+                                     class="collapse"
+                                     :aria-labelledby="'header-' + index">
                                     <div class="card-body">
-                                        <div
-                                            v-for="group in type.items"
-                                            :key="type.name + group.name"
-                                            :class="{
-                                                'full-width': group.collapsible,
-                                                'half-width': !group.collapsible
-                                            }"
-                                        >
-                                            <div
-                                                class="name"
-                                                @click="
-                                                    toggleLayer(
-                                                        type.name +
-                                                            '|' +
-                                                            group.name
-                                                    )
-                                                "
-                                                :class="{
-                                                    'map-hidden': isLayerHidden(
-                                                        type.name +
-                                                            '|' +
-                                                            group.name
-                                                    )
-                                                }"
-                                            >
-                                                <img
-                                                        :src="
-                                                    '/img/map-icons/' +
-                                                        group.icon +
-                                                        '.png'
-                                                "
-                                                        :alt="group.name + ' Icon'"
-                                                        class="img-fluid"
-                                                />
+                                        <div v-for="group in type.items"
+                                             :key="type.name + group.name"
+                                             :class="{
+                                                 'full-width': group.collapsible,
+                                                 'half-width': !group.collapsible
+                                             }">
+                                            <div class="name"
+                                                 @click="toggleLayer(type.name + '|' + group.name)"
+                                                 :class="{ 'map-hidden': isLayerHidden(type.name + '|' + group.name) }">
+                                                <img :src="'/img/map-icons/' + group.icon + '.png'"
+                                                     :alt="group.name + ' Icon'"
+                                                     class="img-fluid" />
                                                 <span>{{ lang('map.groups.' + type.name + '|' + group.name, group.name) }}</span>
                                             </div>
                                             <div
@@ -570,49 +478,19 @@
                                                 "
                                             >
                                                 <i class="fas fa-caret-up"></i>
-                                                <i
-                                                    class="fas fa-caret-down"
-                                                ></i>
+                                                <i class="fas fa-caret-down"></i>
                                             </div>
                                             <div
                                                 v-if="group.collapsible"
                                                 class="collapsible-items collapse"
-                                                :id="
-                                                    'collapsible-' +
-                                                        collapsible(type, group)
-                                                "
+                                                :id="'collapsible-' + collapsible(type, group)"
                                             >
-                                                <ul
-                                                    :style="{
-                                                        columns:
-                                                            group.items.length >
-                                                            1
-                                                                ? 2
-                                                                : 1
-                                                    }"
-                                                >
-                                                    <li
-                                                        v-for="node in noDuplicates(
-                                                            group.items
-                                                        )"
-                                                        :key="node.name"
-                                                    >
-                                                        <img
-                                                            v-if="
-                                                                node.icon !=
-                                                                    group.icon
-                                                            "
-                                                            :src="
-                                                                '/img/map-icons/' +
-                                                                    node.icon +
-                                                                    '.png'
-                                                            "
-                                                            :alt="
-                                                                node.name +
-                                                                    ' Icon'
-                                                            "
-                                                            class="img-fluid"
-                                                        />
+                                                <ul :style="{ columns: group.items.length > 1 ? 2 : 1 }">
+                                                    <li v-for="node in noDuplicates(group.items)" :key="node.name">
+                                                        <img v-if="node.icon != group.icon"
+                                                            :src="'/img/map-icons/' + node.icon + '.png'"
+                                                            :alt="node.name + ' Icon'"
+                                                            class="img-fluid" />
                                                         {{ node.name }}
                                                     </li>
                                                 </ul>
@@ -623,10 +501,7 @@
                             </div>
                         </div>
                     </div>
-                    <div
-                        class="edit-menu"
-                        v-show="editor.enabled && editor.mode === ''"
-                    >
+                    <div class="edit-menu" v-show="editor.enabled && editor.mode === ''">
                         <h3>{{ $t('map.what-would-you-like-to-do') }}</h3>
                         <div class="editor-button" @click="editorMenu('items')">
                             <h3>
@@ -634,31 +509,19 @@
                                 {{ $t('map.add-remove-items') }}
                             </h3>
                         </div>
-                        <div
-                            v-if="mission.missionType != 'Sniper Assassin'"
-                            class="editor-button"
-                            @click="editorMenu('ledges')"
-                        >
+                        <div v-if="mission.missionType != 'Sniper Assassin'" class="editor-button" @click="editorMenu('ledges')">
                             <h3>
                                 <i class="fas fa-fw fa-bezier-curve"></i>
                                 {{ $t('map.add-remove-ledges') }}
                             </h3>
                         </div>
-                        <div
-                            v-if="mission.missionType != 'Sniper Assassin'"
-                            class="editor-button"
-                            @click="editorMenu('foliage')"
-                        >
+                        <div v-if="mission.missionType != 'Sniper Assassin'" class="editor-button" @click="editorMenu('foliage')">
                             <h3>
                                 <i class="fas fa-fw fa-leaf"></i>
                                 {{ $t('map.add-remove-foliage') }}
                             </h3>
                         </div>
-                        <div
-                            v-if="mission.missionType != 'Sniper Assassin'"
-                            class="editor-button"
-                            @click="editorMenu('disguises')"
-                        >
+                        <div v-if="mission.missionType != 'Sniper Assassin'" class="editor-button" @click="editorMenu('disguises')">
                             <h3>
                                 <i class="fas fa-fw fa-user-tie"></i>
                                 {{ $t('map.manage-disguise-areas') }}
@@ -670,10 +533,7 @@
                             </span>
                         </i18n>
                     </div>
-                    <div
-                        class="items-menu"
-                        v-show="editor.enabled && editor.mode === 'items'"
-                    >
+                    <div class="items-menu" v-show="editor.enabled && editor.mode === 'items'">
                         <p>
                             <i class="fas fa-fw fa-plus-circle"></i>
                             {{ $t('map.click-to-add') }}
@@ -693,10 +553,7 @@
                             </h3>
                         </div>
                     </div>
-                    <div
-                        class="ledges-menu"
-                        v-show="editor.enabled && editor.mode === 'ledges'"
-                    >
+                    <div class="ledges-menu" v-show="editor.enabled && editor.mode === 'ledges'">
                         <p data-ledge="delete-help">
                             <i class="fas fa-trash"></i>
                             {{ $t('map.click-ledge-to-delete') }}
@@ -710,32 +567,21 @@
                             </h3>
                             <p>{{ $t('map.toggle-ledge-builder') }}</p>
                         </div>
-                        <div
-                            class="editor-button"
-                            @click="
-                                editorMenu('')
-                                map.pm.disableDraw('Line')
-                            "
-                        >
+                        <div class="editor-button"
+                             @click="editorMenu('')
+                                map.pm.disableDraw('Line')">
                             <h3>
                                 <i class="fas fa-times-circle"></i>
                                 {{ $t('map.close-ledge-menu') }}
                             </h3>
                         </div>
                     </div>
-                    <div
-                        class="foliage-menu"
-                        v-show="editor.enabled && editor.mode === 'foliage'"
-                    >
+                    <div class="foliage-menu" v-show="editor.enabled && editor.mode === 'foliage'">
                         <p data-foliage="delete-help">
                             <i class="fas fa-trash"></i>
                             Click on an existing foliage to delete it.
                         </p>
-                        <div
-                            class="editor-button"
-                            :class="{'selected': editor.polyActive}"
-                            @click="toggleDraw('Polygon')"
-                        >
+                        <div class="editor-button" :class="{'selected': editor.polyActive}" @click="toggleDraw('Polygon')">
                             <h3>
                                 <i class="fas fa-plus-circle"></i>
                                 {{ $t('map.add-foliage') }}
@@ -744,36 +590,29 @@
                                 {{ $t('map.toggle-foliage-builder') }}
                             </p>
                         </div>
-                        <div
-                            class="editor-button"
+                        <div class="editor-button"
                             @click="
                                 editorMenu('')
                                 map.pm.disableDraw('Polygon')
-                            "
-                        >
+                            ">
                             <h3>
                                 <i class="fas fa-times-circle"></i>
                                 {{ $t('map.close-foliage-menu') }}
                             </h3>
                         </div>
                     </div>
-                    <div
-                        class="disguise-trespassing-menu"
-                        v-show="editor.enabled && editor.mode === 'disguises'"
-                    >
+                    <div class="disguise-trespassing-menu" v-show="editor.enabled && editor.mode === 'disguises'">
                         <p data-disguise="delete-help">
                             <i class="fas fa-trash"></i>
                             {{ $t('map.delete-existing-region') }}
                         </p>
                         <p>{{ $t('map.select-disguise-for-editing') }}</p>
                         <div class="search-box">
-                            <select
-                                ref="disguisePicker"
-                                @change="partialChangeDisguise($event.target.value)"
-                                name="disguise-menu-dropdown"
-                                class="selectpicker"
-                                data-style="control-button"
-                            >
+                            <select ref="disguisePicker"
+                                    @change="partialChangeDisguise($event.target.value)"
+                                    name="disguise-menu-dropdown"
+                                    class="selectpicker"
+                                    data-style="control-button">
                                 <option value="NONE">None</option>
                                 <option
                                     v-for="disguise in disguises"
@@ -784,59 +623,49 @@
                                 </option>
                             </select>
                         </div>
-                        <div
-                            class="editor-button"
-                            data-disguise="add"
-                            data-type="trespassing"
-                            :class="{'selected': editor.polyActive && editor.disguiseType === 'trespassing'}"
-                            @click="
-                                toggleDraw('Polygon')
-                                editor.disguiseType = 'trespassing'
-                            "
-                            v-if="editor.currentDisguise != 'NONE'"
-                        >
+                        <div class="editor-button"
+                             data-disguise="add"
+                             data-type="trespassing"
+                             :class="{'selected': editor.polyActive && editor.disguiseType === 'trespassing'}"
+                             @click="
+                                 toggleDraw('Polygon')
+                                 editor.disguiseType = 'trespassing'"
+                             v-if="editor.currentDisguise != 'NONE'">
                             <h3>
                                 <i class="fas fa-plus-circle"></i>
                                 {{ $t('map.add-trespassing-region') }}
                             </h3>
                             <p>{{ $t('map.toggle-trespassing-builder') }}</p>
                         </div>
-                        <div
-                            class="editor-button"
-                            data-disguise="add"
-                            data-type="hostile"
-                            :class="{'selected': editor.polyActive && editor.disguiseType === 'hostile'}"
-                            @click="
-                                toggleDraw('Polygon')
-                                editor.disguiseType = 'hostile'
-                            "
-                            v-if="editor.currentDisguise != 'NONE'"
-                        >
+                        <div class="editor-button"
+                             data-disguise="add"
+                             data-type="hostile"
+                             :class="{'selected': editor.polyActive && editor.disguiseType === 'hostile'}"
+                             @click="
+                                 toggleDraw('Polygon')
+                                 editor.disguiseType = 'hostile'
+                             "
+                             v-if="editor.currentDisguise != 'NONE'">
                             <h3>
                                 <i class="fas fa-plus-circle"></i>
                                 {{ $t('map.add-hostile-region') }}
                             </h3>
                             <p>{{ $t('map.toggle-hostile-builder') }}</p>
                         </div>
-                        <div
-                            class="editor-button"
-                            data-disguise="copy"
-                            v-if="editor.currentDisguise === 'NONE'"
-                            @click="showCopyDisguiseModal"
-                        >
+                        <div class="editor-button"
+                             data-disguise="copy"
+                             v-if="editor.currentDisguise === 'NONE'"
+                             @click="showCopyDisguiseModal">
                             <h3>
                                 <i class="fas fa-copy"></i>
                                 {{ $t('map.copy-regions') }}
                             </h3>
                             <p>{{ $t('map.click-to-copy-regions') }}</p>
                         </div>
-                        <div
-                            class="editor-button"
-                            @click="
-                                editorMenu('')
-                                map.pm.disableDraw('Polygon')
-                            "
-                        >
+                        <div class="editor-button"
+                             @click="
+                                 editorMenu('')
+                                 map.pm.disableDraw('Polygon')">
                             <h3>
                                 <i class="fas fa-times-circle"></i>
                                 {{ $t('map.close-disguise-menu') }}
@@ -984,52 +813,7 @@
                    tabindex="-1"
                    role="dialog"
                    dismissable>
-                <div
-                        v-show="
-                                    mission.missionType != 'Sniper Assassin'
-                                "
-                >
-                    <h3>{{ $t('map.apply-template') }}</h3>
-                    <div class="form-group row">
-                        <label
-                                for="template"
-                                class="col sm-2 col-form-label"
-                        >
-                            {{ $t('map.template') }}
-                        </label>
-                        <div class="col-sm-10">
-                            <select
-                                    @change="applyTemplate"
-                                    name="template"
-                                    ref="templatePicker"
-                                    class="form-control selectpicker"
-                                    title="Select One"
-                                    data-live-search="true"
-                            >
-                                <optgroup
-                                        v-for="(group,
-                                                key) in editor.templates"
-                                        :key="key"
-                                        :label="key"
-                                >
-                                    <option
-                                            v-for="item in group"
-                                            :key="item.id"
-                                            :value="key + '|' + item.id"
-                                    >
-                                        {{ item.name }}
-                                    </option>
-                                </optgroup>
-                            </select>
-                        </div>
-                    </div>
-                    <hr />
-                </div>
-                <h3>Item Info</h3>
-                <div
-                        class="alert alert-dark"
-                        style="font-size: .8em"
-                >
+                <div class="alert alert-dark" style="font-size: .8em">
                     {{ $t('map.please-indicate-when-adding') }}
                     <ul>
                         <li>{{ $t('map.required-items') }}</li>
@@ -1039,93 +823,72 @@
                         <li>{{ $t('map.blank-notes') }}</li>
                     </ul>
                 </div>
+                <div v-show="mission.missionType != 'Sniper Assassin'">
+                    <h3>{{ $t('map.apply-template') }}</h3>
+                    <div class="form-group row">
+                        <label for="template" class="col sm-2 col-form-label">
+                            {{ $t('map.template') }}
+                        </label>
+                        <div class="col-sm-10">
+                            <select @change="applyTemplate"
+                                    name="template"
+                                    ref="templatePicker"
+                                    class="form-control selectpicker"
+                                    title="Select One"
+                                    data-live-search="true">
+                                <optgroup v-for="(group, key) in editor.templates" :key="key" :label="key">
+                                    <option v-for="item in group"
+                                            :key="item.id"
+                                            :value="key + '|' + item.id">
+                                        {{ item.name }}
+                                    </option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+                <h3>Item Info</h3>
                 <div class="form-group row">
-                    <label
-                            for="subgroup"
-                            class="col-sm-2 col-form-label"
-                    >
+                    <label for="subgroup" class="col-sm-2 col-form-label">
                         {{ $t('map.category') }}
                     </label>
                     <div class="col-sm-10">
-                        <select
-                                @change="selectSubgroup"
+                        <select @change="selectSubgroup"
                                 name="subgroup"
                                 ref="subgroupPicker"
                                 class="form-control selectpicker"
                                 title="Select One"
-                                data-live-search="true"
-                        >
-                            <optgroup
-                                    v-for="(category,
-                                            key) in categories"
-                                    :key="key"
-                                    :label="key"
-                            >
-                                <option
-                                        v-for="group in category"
-                                        :key="group.id"
-                                        :value="
-                                                    key + '|' + group.subgroup
-                                                "
-                                        :data-content="
-                                                    `<img height='24' width='24' src='/img/map-icons/` +
-                                                        group.icon +
-                                                        `.png' alt='` +
-                                                        group.group +
-                                                        ` Icon'> ` +
-                                                        group.group
-                                                "
-                                >
+                                data-live-search="true">
+                            <optgroup v-for="(category, key) in categories" :key="key" :label="key">
+                                <option v-for="group in category" :key="group.id" :value="key + '|' + group.subgroup"
+                                        :data-content="`<img height='24' width='24' src='/img/map-icons/${group.icon}.png' alt='${group.group} Icon'> ${group.group}`">
                                     {{ group.group }}
                                 </option>
                             </optgroup>
                         </select>
-                        <small
-                                v-if="editor.currentCategory"
-                                class="form-text text-muted"
-                                id="note-help-text"
-                        >
+                        <small v-if="editor.currentCategory"
+                               class="form-text text-muted"
+                               id="note-help-text">
                             {{ currentCategory.note }}
                         </small>
                     </div>
                 </div>
-                <div
-                        v-show="pickIconAllowed"
-                        class="form-group row"
-                        id="icon-form-group"
-                >
-                    <label
-                            for="icon"
-                            class="col-sm-2 col-form-label"
-                    >
+                <div v-show="pickIconAllowed" class="form-group row" id="icon-form-group">
+                    <label for="icon" class="col-sm-2 col-form-label">
                         {{ $t('map.icon') }}
                     </label>
                     <div class="col-sm-10">
-                        <select
-                                name="icon"
+                        <select name="icon"
                                 @change="selectIcon"
                                 ref="iconPicker"
                                 class="form-control selectpicker"
-                                data-live-search="true"
-                        >
-                            <optgroup
-                                    v-for="(group, key) in editor.icons"
-                                    :key="key"
-                                    :label="key"
-                            >
-                                <option
-                                        v-for="icon in group"
+                                data-live-search="true">
+                            <optgroup v-for="(group, key) in editor.icons" :key="key" :label="key">
+                                <option v-for="icon in group"
                                         :key="icon.id"
                                         :value="icon.icon"
-                                        :data-content="
-                                                    `<img height='24' width='24' src='/img/map-icons/` +
-                                                        icon.icon +
-                                                        `.png' alt='` +
-                                                        icon.altText +
-                                                        ` Icon'> ` +
-                                                        icon.altText
-                                                "
-                                >
+                                        :data-content="`<img height='24' width='24' src='/img/map-icons/${icon.icon}.png' alt='${icon.altText} Icon'> ${icon.altText}`">
                                     {{ icon.altText }}
                                 </option>
                             </optgroup>
@@ -1133,23 +896,17 @@
                     </div>
                 </div>
                 <div v-if="editor.currentCategory">
-                    <div
-                            class="form-group row"
-                            v-if="currentCategory.requireName"
-                    >
-                        <label
-                                for="name"
-                                class="col-sm-2 col-form-label"
-                        >
+                    <div class="form-group row" v-if="currentCategory.requireName">
+                        <label for="name" class="col-sm-2 col-form-label">
                             {{ $t('map.name') }}
                         </label>
                         <div class="col-sm-10">
-                                        <textarea
-                                                type="text"
-                                                name="name"
-                                                v-model="currentCategory.name"
-                                                class="form-control"
-                                        ></textarea>
+                            <textarea
+                                    type="text"
+                                    name="name"
+                                    v-model="currentCategory.name"
+                                    class="form-control"
+                            ></textarea>
                             <small class="form-text text-muted">
                                 {{ $t('map.name-note') }}
                             </small>
@@ -1169,45 +926,29 @@
                             </select>
                         </div>
                     </div>
-                    <div
-                            class="form-group row"
-                            v-if="currentCategory.requireAction"
-                    >
-                        <label
-                                for="action"
-                                class="col-sm-2 col-form-label"
-                        >
+                    <div class="form-group row" v-if="currentCategory.requireAction">
+                        <label for="action" class="col-sm-2 col-form-label">
                             {{ $t('map.action') }}
                         </label>
                         <div class="col-sm-10">
-                            <input
-                                    type="text"
-                                    name="action"
-                                    v-model="currentCategory.action"
-                                    class="form-control"
-                            />
+                            <input type="text"
+                                   name="action"
+                                   v-model="currentCategory.action"
+                                   class="form-control" />
                             <small class="form-text text-muted">
                                 {{ $t('map.action-note') }}
                             </small>
                         </div>
                     </div>
-                    <div
-                            class="form-group row"
-                            v-if="currentCategory.requireTarget"
-                    >
-                        <label
-                                for="target"
-                                class="col-sm-2 col-form-label"
-                        >
+                    <div class="form-group row" v-if="currentCategory.requireTarget">
+                        <label for="target" class="col-sm-2 col-form-label">
                             {{ $t('map.target') }}
                         </label>
                         <div class="col-sm-10">
-                            <input
-                                    type="text"
-                                    name="target"
-                                    v-model="currentCategory.target"
-                                    class="form-control"
-                            />
+                            <input type="text"
+                                   name="target"
+                                   v-model="currentCategory.target"
+                                   class="form-control" />
                             <small class="form-text text-muted">
                                 {{ $t('map.target-note') }}
                             </small>
@@ -1228,114 +969,67 @@
                             </small>
                         </div>
                     </div>
-                    <div
-                            class="form-group row"
-                            v-if="currentCategory.requirePickup"
-                    >
-                        <label
-                                for="pickup-type"
-                                class="col-sm-2 col-form-label"
-                        >
+                    <div class="form-group row" v-if="currentCategory.requirePickup">
+                        <label for="pickup-type" class="col-sm-2 col-form-label">
                             {{ $t('map.type') }}
                         </label>
                         <div class="col-sm-10">
                             <div class="form-check">
-                                <input
-                                        class="form-check-input"
-                                        type="radio"
-                                        v-model="
-                                                    currentCategory.pickupType
-                                                "
-                                        name="pickup-type"
-                                        value="large"
-                                        checked
-                                />
-                                <label
-                                        class="form-check-label"
-                                        for="large"
-                                >
+                                <input class="form-check-input"
+                                       type="radio"
+                                       v-model="currentCategory.pickupType"
+                                       name="pickup-type"
+                                       value="large"
+                                       checked />
+                                <label class="form-check-label" for="large">
                                     {{ $t('map.pickup-large') }}
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input
-                                        class="form-check-input"
-                                        type="radio"
-                                        v-model="
-                                                    currentCategory.pickupType
-                                                "
-                                        name="pickup-type"
-                                        value="small"
-                                />
-                                <label
-                                        class="form-check-label"
-                                        for="small"
-                                >
+                                <input class="form-check-input"
+                                       type="radio"
+                                       v-model="currentCategory.pickupType"
+                                       name="pickup-type"
+                                       value="small" />
+                                <label class="form-check-label" for="small">
                                     {{ $t('map.stash-small') }}
                                 </label>
                             </div>
                         </div>
                     </div>
-                    <div
-                            class="form-group row"
-                            v-if="currentCategory.requireDirection"
-                    >
-                        <label
-                                for="stairwell-direction"
-                                class="col-sm-2 col-form-label"
-                        >
+                    <div class="form-group row" v-if="currentCategory.requireDirection">
+                        <label for="stairwell-direction" class="col-sm-2 col-form-label">
                             {{ $t('map.direction') }}
                         </label>
                         <div class="col-sm-10">
                             <div class="form-check">
-                                <input
-                                        class="form-check-input"
-                                        type="radio"
-                                        v-model="
-                                                    currentCategory.stairwellDirection
-                                                "
-                                        name="stairwell-direction"
-                                        value="up-stair"
-                                        checked
-                                />
-                                <label
-                                        class="form-check-label"
-                                        for="up-stair"
-                                >
+                                <input class="form-check-input"
+                                       type="radio"
+                                       v-model="currentCategory.stairwellDirection"
+                                       name="stairwell-direction"
+                                       value="up-stair"
+                                       checked />
+                                <label class="form-check-label" for="up-stair">
                                     {{ $t('map.direction-up') }}
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input
-                                        class="form-check-input"
-                                        type="radio"
-                                        v-model="
-                                                    currentCategory.stairwellDirection
-                                                "
-                                        name="stairwell-direction"
-                                        value="up-down-stair"
-                                />
-                                <label
-                                        class="form-check-label"
-                                        for="up-down-stair"
-                                >
+                                <input class="form-check-input"
+                                       type="radio"
+                                       v-model="currentCategory.stairwellDirection"
+                                       name="stairwell-direction"
+                                       value="up-down-stair" />
+                                <label class="form-check-label" for="up-down-stair">
                                     {{ $t('map.direction-up-down') }}
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input
-                                        class="form-check-input"
-                                        type="radio"
-                                        v-model="
-                                                    currentCategory.stairwellDirection
-                                                "
-                                        name="stairwell-direction"
-                                        value="down-stair"
-                                />
-                                <label
-                                        class="form-check-label"
-                                        for="down-stair"
-                                >
+                                <input class="form-check-input"
+                                       type="radio"
+                                       v-model="currentCategory.stairwellDirection"
+                                       name="stairwell-direction"
+                                       value="down-stair"/>
+                                <label class="form-check-label" for="down-stair">
                                     {{ $t('map.direction-down') }}
                                 </label>
                             </div>
@@ -1344,23 +1038,15 @@
                 </div>
                 <h3>{{ $t('map.notes') }}</h3>
                 <div id="suggest-notes">
-                    <div
-                            v-for="note in editor.notes"
-                            :key="note.type"
-                    >
+                    <div v-for="note in editor.notes" :key="note.type">
                         <div class="form-group row">
-                            <label
-                                    for="note-type[]"
-                                    class="col-sm-2 col-form-label"
-                            >
+                            <label for="note-type[]" class="col-sm-2 col-form-label">
                                 {{ $t('map.type') }}
                             </label>
                             <div class="col-sm-10">
-                                <select
-                                        v-model="note.type"
+                                <select v-model="note.type"
                                         class="form-control"
-                                        name="note-type[]"
-                                >
+                                        name="note-type[]">
                                     <option value="requirement">
                                         {{ $t('map.requirement') }}
                                     </option>
@@ -1377,31 +1063,24 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label
-                                    for="note-text[]"
-                                    class="col-sm-2 col-form-label"
-                            >
+                            <label for="note-text[]" class="col-sm-2 col-form-label">
                                 {{ $t('map.text') }}
                             </label>
                             <div class="col-sm-10">
-                                <input
-                                        type="text"
-                                        name="note-text[]"
-                                        v-model="note.text"
-                                        class="form-control"
-                                />
+                                <input type="text"
+                                       name="note-text[]"
+                                       v-model="note.text"
+                                       class="form-control" />
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-8 offset-sm-2">
-                        <button
-                                type="button"
+                        <button type="button"
                                 @click="editor.notes.push({})"
                                 id="add-note-button"
-                                class="btn btn-dark"
-                        >
+                                class="btn btn-dark">
                             <i class="fas fa-plus-circle"></i>
                             {{ $t('map.add-another-note') }}
                         </button>
@@ -1409,32 +1088,13 @@
                 </div>
                 <template v-slot:modal-footer>
                     <game-button type="button" data-dismiss="modal">
-                        <img
-                                src="/img/game-icons/modal-close.png"
-                                class="normal img-fluid"
-                                :alt="$t('form.cancel-icon')"
-                        />
-                        <img
-                                src="/img/game-icons/modal-close-inverted.png"
-                                class="inverted img-fluid"
-                                :alt="$t('form.cancel-icon')"
-                        />
+                        <img src="/img/game-icons/modal-close.png" class="normal img-fluid" :alt="$t('form.cancel-icon')" />
+                        <img src="/img/game-icons/modal-close-inverted.png" class="inverted img-fluid" :alt="$t('form.cancel-icon')" />
                         {{ $t('form.close') }}
                     </game-button>
-                    <game-button
-                            type="submit"
-                            @click="saveMarker"
-                    >
-                        <img
-                                src="/img/game-icons/modal-continue.png"
-                                class="normal img-fluid"
-                                :alt="$t('form.submit-icon')"
-                        />
-                        <img
-                                src="/img/game-icons/modal-continue-inverted.png"
-                                class="inverted img-fluid"
-                                :alt="$t('form.submit-icon')"
-                        />
+                    <game-button type="submit" @click="saveMarker">
+                        <img src="/img/game-icons/modal-continue.png" class="normal img-fluid" :alt="$t('form.submit-icon')" />
+                        <img src="/img/game-icons/modal-continue-inverted.png" class="inverted img-fluid" :alt="$t('form.submit-icon')" />
                         {{ $t('form.save') }}
                     </game-button>
                 </template>
