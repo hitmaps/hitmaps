@@ -1050,18 +1050,21 @@
                             <div v-for="(note, index) in editor.notes" :key="note.type" class="note" :class="note.type">
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <button class="btn btn-light move-arrow"
-                                                :style="{'visibility': index !== editor.notes.length - 1 ? 'visible' : 'hidden'}"
-                                                @click="modifyNote('DOWN', index)">
-                                            <i class="fas fa-arrow-down"></i>
-                                        </button>
-                                        <button class="btn btn-light move-arrow"
-                                                :style="{'visibility': index !== 0 ? 'visible' : 'hidden'}"
+                                        <button class="btn btn-block btn-light move-arrow"
+                                                v-if="index !== 0"
                                                 @click="modifyNote('UP', index)">
                                             <i class="fas fa-arrow-up"></i>
+                                            Move Up
                                         </button>
-                                        <button class="btn btn-danger delete-button" @click="modifyNote('DELETE', index)">
+                                        <button class="btn btn-block btn-light move-arrow"
+                                                v-if="index !== editor.notes.length - 1"
+                                                @click="modifyNote('DOWN', index)">
+                                            <i class="fas fa-arrow-down"></i>
+                                            Move Down
+                                        </button>
+                                        <button class="btn btn-block btn-danger delete-button" @click="modifyNote('DELETE', index)">
                                             <i class="fas fa-trash"></i>
+                                            Remove
                                         </button>
                                     </div>
                                     <div class="col-sm-9">
@@ -1069,7 +1072,7 @@
                                             <label for="note-type[]" class="col-sm-2 col-form-label">
                                                 {{ $t('map.type') }}
                                             </label>
-                                            <div class="col-sm-8">
+                                            <div class="col-sm-10">
                                                 <select v-model="note.type"
                                                         class="form-control"
                                                         name="note-type[]">
@@ -1103,8 +1106,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <div class="col-sm-8 offset-sm-2">
+                        <div class="form-group row" style="margin-top: 10px">
+                            <div class="col">
                                 <button type="button"
                                         @click="editor.notes.push({})"
                                         id="add-note-button"
