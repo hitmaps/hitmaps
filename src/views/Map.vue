@@ -1047,39 +1047,58 @@
                     <div class="col-lg-6 col-md-12">
                         <h3>{{ $t('map.notes') }}</h3>
                         <div id="suggest-notes">
-                            <div v-for="note in editor.notes" :key="note.type" class="note" :class="note.type">
-                                <div class="form-group row">
-                                    <label for="note-type[]" class="col-sm-2 col-form-label">
-                                        {{ $t('map.type') }}
-                                    </label>
-                                    <div class="col-sm-10">
-                                        <select v-model="note.type"
-                                                class="form-control"
-                                                name="note-type[]">
-                                            <option value="requirement">
-                                                {{ $t('map.requirement') }}
-                                            </option>
-                                            <option value="warning">
-                                                {{ $t('map.warning') }}
-                                            </option>
-                                            <option value="info">
-                                                {{ $t('map.information') }}
-                                            </option>
-                                            <option value="description">
-                                                {{ $t('map.description') }}
-                                            </option>
-                                        </select>
+                            <div v-for="(note, index) in editor.notes" :key="note.type" class="note" :class="note.type">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <button class="btn btn-light move-arrow"
+                                                :style="{'visibility': index !== editor.notes.length - 1 ? 'visible' : 'hidden'}"
+                                                @click="modifyNote('DOWN', index)">
+                                            <i class="fas fa-arrow-down"></i>
+                                        </button>
+                                        <button class="btn btn-light move-arrow"
+                                                :style="{'visibility': index !== 0 ? 'visible' : 'hidden'}"
+                                                @click="modifyNote('UP', index)">
+                                            <i class="fas fa-arrow-up"></i>
+                                        </button>
+                                        <button class="btn btn-danger delete-button" @click="modifyNote('DELETE', index)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="note-text[]" class="col-sm-2 col-form-label">
-                                        {{ $t('map.text') }}
-                                    </label>
-                                    <div class="col-sm-10">
-                                        <input type="text"
-                                               name="note-text[]"
-                                               v-model="note.text"
-                                               class="form-control" />
+                                    <div class="col-sm-9">
+                                        <div class="form-group row">
+                                            <label for="note-type[]" class="col-sm-2 col-form-label">
+                                                {{ $t('map.type') }}
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <select v-model="note.type"
+                                                        class="form-control"
+                                                        name="note-type[]">
+                                                    <option value="requirement">
+                                                        {{ $t('map.requirement') }}
+                                                    </option>
+                                                    <option value="warning">
+                                                        {{ $t('map.warning') }}
+                                                    </option>
+                                                    <option value="info">
+                                                        {{ $t('map.information') }}
+                                                    </option>
+                                                    <option value="description">
+                                                        {{ $t('map.description') }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="note-text[]" class="col-sm-2 col-form-label">
+                                                {{ $t('map.text') }}
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text"
+                                                       name="note-text[]"
+                                                       v-model="note.text"
+                                                       class="form-control" />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1160,6 +1179,7 @@ import Modal from '../components/Modal'
 import MetaHandler from '../components/MetaHandler'
 
 import LanguageHelpers from "../components/LanguageHelpers";
+import ArrayHelpers from "../components/ArrayHelpers";
 
 Vue.use(CxltToaster)
 export default {
@@ -2216,6 +2236,19 @@ export default {
                 }
                 this.mapLayers[i].setBounds([[north, west], [south, east]]);
                 this.debugLayerSize = [[north, west], [south, east]];
+            }
+        },
+        modifyNote(action, index) {
+            switch (action) {
+                case 'DELETE':
+                    ArrayHelpers.deleteElementByIndex(this.editor.notes, index);
+                    break;
+                case 'DOWN':
+                    ArrayHelpers.moveElement(this.editor.notes, index, index + 1);
+                    break;
+                case 'UP':
+                    ArrayHelpers.moveElement(this.editor.notes, index, index - 1);
+                    break;
             }
         }
     },
@@ -3338,31 +3371,45 @@ html {
     border-radius: 3px;
 }
 
-.note {
-    padding: 15px;
+#suggest-notes {
+    .note {
+        padding: 15px;
 
-    &.requirement {
-        color: #721c24;
-        background: #f8d7da;
-        border-left: solid 3px #d00000;
-    }
+        &.requirement {
+            color: #721c24;
+            background: #f8d7da;
+            border-left: solid 3px #d00000;
+        }
 
-    &.warning {
-        color: #856404;
-        background: #fff3cd;
-        border-left: solid 3px #ffa500;
-    }
+        &.warning {
+            color: #856404;
+            background: #fff3cd;
+            border-left: solid 3px #ffa500;
+        }
 
-    &.info {
-        color: #0c5460;
-        background: #b7d4ff;
-        border-left: solid 3px #0000e0;
-    }
+        &.info {
+            color: #0c5460;
+            background: #b7d4ff;
+            border-left: solid 3px #0000e0;
+        }
 
-    &.description {
-        color: #666;
-        background: #e4e4e4;
-        border-left: solid 3px #666666;
+        &.description {
+            color: #666;
+            background: #e4e4e4;
+            border-left: solid 3px #666666;
+        }
+
+        .move-arrow {
+            color: green;
+        }
+
+        button {
+            margin-right: 10px;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
     }
 }
 </style>
