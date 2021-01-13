@@ -12,7 +12,7 @@ stages:
 #    - master
 
 Prod Deploy API:
-  image: php:7.4
+  image: php:8.0
   stage: Prod Deploy
   only:
     - master
