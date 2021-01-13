@@ -1,5 +1,6 @@
 <?php
 
+use BusinessLogic\Caching\CacheClient;
 use DataAccess\Models\RouletteMatchup;
 use Doctrine\ORM\EntityManager;
 use Predis\Client;
@@ -143,7 +144,7 @@ function buildTileUrlForMission(\DataAccess\Models\Mission $mission, string $gam
 }
 
 $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    $cacheClient = $applicationContext->get(\BusinessLogic\Caching\CacheClient::class);
+    $cacheClient = $applicationContext->get(CacheClient::class);
 
     /* @var $game \DataAccess\Models\Game */
     $entityManager = $applicationContext->get(EntityManager::class);
@@ -479,7 +480,7 @@ $klein->respond('POST', '/api/ledges', function (\Klein\Request $request, \Klein
 });
 
 function clearAllMapCaches(int $missionId, \DI\Container $applicationContext) {
-    $cacheClient = $applicationContext->get(\BusinessLogic\Caching\CacheClient::class);
+    $cacheClient = $applicationContext->get(CacheClient::class);
     $cacheClient->delete([\BusinessLogic\Caching\KeyBuilder::buildKey(['map', $missionId, 'standard']),
         \BusinessLogic\Caching\KeyBuilder::buildKey(['map', $missionId, 'professional']),
         \BusinessLogic\Caching\KeyBuilder::buildKey(['map', $missionId, 'master'])]);
@@ -923,6 +924,16 @@ $klein->respond('GET', '/api/admin/migrate', function() {
     }
 
     return '<pre>' . $output . '</pre>';
+});
+
+$klein->respond('DELETE', '/api/admin/cache', function() use ($applicationContext) {
+    $config = new Config\Settings();
+    if ($config->accessKey !== $_GET['access-key']) {
+        return http_response_code(404);
+    }
+
+    $cacheClient = $applicationContext->get(CacheClient::class);
+    $cacheClient->delete($cacheClient->keys('hitman2maps:map'));
 });
 
 $klein->onHttpError(function (int $code, \Klein\Klein $router) {

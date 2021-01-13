@@ -40,6 +40,14 @@ class CacheClient {
         $this->client->del($keys);
     }
 
+    public function keys(string $pattern) {
+        if ($this->client === null) {
+            return [];
+        }
+
+        $this->client->keys($pattern);
+    }
+
     // region All-in-ones
     public function retrieve(string $key, callable $getFromSource) {
         $cached = $this->get($key);
