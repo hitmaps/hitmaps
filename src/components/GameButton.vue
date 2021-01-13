@@ -4,6 +4,7 @@
         class="btn btn-block game-button"
         v-bind="$attrs"
         @click="$emit('click')"
+        :disabled="disabled"
     >
         <slot></slot>
     </button>
@@ -11,7 +12,12 @@
 
 <script>
 export default {
-    name: 'GameButton'
+    name: 'GameButton',
+    data() {
+        return {
+            disabled: false
+        }
+    }
 }
 </script>
 
@@ -54,7 +60,7 @@ export default {
             }
         }
 
-        &:hover {
+        &:not(:disabled):hover {
             background: #ff003c;
             color: #fff;
 
@@ -73,14 +79,8 @@ export default {
             background: #ddd;
             color: #333;
 
-            &:hover img {
-                &.normal {
-                    display: inline-block;
-                }
-
-                &.inverted {
-                    display: none;
-                }
+            &:hover {
+                cursor: not-allowed;
             }
         }
     }

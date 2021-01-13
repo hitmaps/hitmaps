@@ -92,46 +92,6 @@ export default {
                 #enroll-button {
                     margin-bottom: 10px;
                 }
-
-                .btn-block {
-                    border-radius: 0;
-                    text-transform: uppercase;
-                    background: #fff;
-                    color: #000;
-                    font-family: 'nimbus_sans_lbold', sans-serif;
-                    text-align: left;
-                    font-size: 1.3rem;
-                    transition: none;
-
-                    img {
-                        max-height: 32px;
-                        max-width: 32px;
-                        vertical-align: top;
-
-                        &.normal {
-                            display: inline-block;
-                        }
-
-                        &.inverted {
-                            display: none;
-                        }
-                    }
-
-                    &:hover {
-                        background: #ff003c;
-                        color: #fff;
-
-                        img {
-                            &.normal {
-                                display: none;
-                            }
-
-                            &.inverted {
-                                display: inline-block;
-                            }
-                        }
-                    }
-                }
             }
         }
     }
