@@ -1125,7 +1125,7 @@
                         <img src="/img/game-icons/modal-close-inverted.png" class="inverted img-fluid" :alt="$t('form.cancel-icon')" />
                         {{ $t('form.close') }}
                     </game-button>
-                    <game-button type="submit" @click="saveMarker">
+                    <game-button type="submit" @click="saveMarker" ref="saveMarkerButton">
                         <img src="/img/game-icons/modal-continue.png" class="normal img-fluid" :alt="$t('form.submit-icon')" />
                         <img src="/img/game-icons/modal-continue-inverted.png" class="inverted img-fluid" :alt="$t('form.submit-icon')" />
                         {{ $t('form.save') }}
@@ -1698,19 +1698,16 @@ export default {
             data.append(
                 'stairwell-direction',
                 this.currentCategory.stairwellDirection || ''
-            )
-            data.append('note-type[]', 'warning')
-            data.append('note-text[]', '')
+            );
+            data.append('note-type[]', 'warning');
+            data.append('note-text[]', '');
             this.editor.notes.forEach((element, index) => {
                 data.append('note-type[]', element.type)
                 data.append('note-text[]', element.text)
-            })
+            });
+            this.$refs.saveMarkerButton.disabled = true;
             this.$request(true, url, data).then(resp => {
                 if (this.currentCategory.nodeId) {
-                    console.info('=====');
-                    console.info(this.editor.currentMarker);
-                    console.info(this.editor.currentMarkerNode);
-                    console.info('=====');
                     this.editor.currentMarker.deleted = true;
                 }
 
@@ -1733,7 +1730,14 @@ export default {
                 this.$toast.success({
                     message: toastMessage
                 });
+                this.$refs.saveMarkerButton.disabled = false;
                 this.updateNodeLayerState();
+            }).catch(err => {
+                console.error(err);
+                this.$toast.error({
+                    message: 'Changes failed to save!'
+                });
+                this.$refs.saveMarkerButton.disabled = false;
             })
         },
         deleteMarker: function() {
@@ -2086,10 +2090,6 @@ export default {
                             if (nodeProperties.options.custom.node.name === 'Fire Extinguisher-TEMP2') {
                                 console.info(nodeProperties.options.custom.node);
                             }
-
-                            /*if (nodeProperties.options.custom.node.deleted) {
-                                continue;
-                            }*/
 
                             if (nodeProperties.options.custom.node.deleted === true) {
                                 this.map.removeLayer(nodeProperties);
