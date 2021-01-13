@@ -45,7 +45,7 @@ class CacheClient {
             return [];
         }
 
-        $this->client->keys($pattern);
+        return $this->client->keys($pattern);
     }
 
     // region All-in-ones

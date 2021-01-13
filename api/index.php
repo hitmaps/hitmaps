@@ -933,7 +933,7 @@ $klein->respond('DELETE', '/api/admin/cache', function(\Klein\Request $request, 
     }
 
     $cacheClient = $applicationContext->get(CacheClient::class);
-    $cacheClient->delete($cacheClient->keys('hitman2maps:map'));
+    $cacheClient->delete($cacheClient->keys('hitman2maps:map*'));
 
     return $response->code(204);
 });
