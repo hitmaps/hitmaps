@@ -926,7 +926,7 @@ $klein->respond('GET', '/api/admin/migrate', function() {
     return '<pre>' . $output . '</pre>';
 });
 
-$klein->respond('DELETE', '/api/admin/cache', function() use ($applicationContext) {
+$klein->respond('DELETE', '/api/admin/cache', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $config = new Config\Settings();
     if ($config->accessKey !== $_GET['access-key']) {
         return http_response_code(404);
@@ -934,6 +934,8 @@ $klein->respond('DELETE', '/api/admin/cache', function() use ($applicationContex
 
     $cacheClient = $applicationContext->get(CacheClient::class);
     $cacheClient->delete($cacheClient->keys('hitman2maps:map'));
+
+    return $response->code(204);
 });
 
 $klein->onHttpError(function (int $code, \Klein\Klein $router) {
