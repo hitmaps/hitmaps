@@ -7,7 +7,7 @@
         v-bind="$attrs"
         :id="id"
     >
-        <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-dialog modal-xl" role="document" :class="fullscreen ? 'fullscreen' : ''">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5
@@ -43,6 +43,7 @@ export default {
     props: {
         id: String,
         dismissable: Boolean,
+        fullscreen: Boolean,
         modalTitle: String
     }
 }
@@ -50,79 +51,46 @@ export default {
 
 <style lang="scss">
 .game-modal {
-    .modal-content {
-        background: transparent;
-        border: none;
-
-        .modal-header {
-            font-family: 'nimbus_sans_lbold', sans-serif;
-            text-transform: uppercase;
-            border-bottom: none;
-            border-radius: 0;
-
-            background: #fff;
-
-            h5 {
-                font-size: 1.5rem;
-            }
+    .modal-dialog {
+        &.fullscreen {
+            width: 95%;
+            max-width: 95%;
         }
 
-        .modal-body {
-            background: #fff;
-        }
+        .modal-content {
+            background: transparent;
+            border: none;
 
-        .modal-footer {
-            border-top: none;
-            padding-left: 0;
-            padding-right: 0;
-            padding-top: 10px;
-            display: block;
-
-            > :not(:first-child) {
-                margin: 0;
-            }
-
-            #enroll-button {
-                margin-bottom: 10px;
-            }
-
-            .btn-block {
-                border-radius: 0;
-                text-transform: uppercase;
-                background: #fff;
-                color: #000;
+            .modal-header {
                 font-family: 'nimbus_sans_lbold', sans-serif;
-                text-align: left;
-                font-size: 1.3rem;
-                transition: none;
+                text-transform: uppercase;
+                border-bottom: none;
+                border-radius: 0;
 
-                img {
-                    max-height: 32px;
-                    max-width: 32px;
-                    vertical-align: top;
+                background: #fff;
 
-                    &.normal {
-                        display: inline-block;
-                    }
+                h5 {
+                    font-size: 1.5rem;
+                }
+            }
 
-                    &.inverted {
-                        display: none;
-                    }
+            .modal-body {
+                background: #fff;
+            }
+
+            .modal-footer {
+                border-top: none;
+                padding-left: 0;
+                padding-right: 0;
+                padding-top: 10px;
+                display: block;
+
+                > :not(:first-child) {
+                    margin: 0;
                 }
 
-                &:hover {
-                    background: #ff003c;
-                    color: #fff;
-
-                    img {
-                        &.normal {
-                            display: none;
-                        }
-
-                        &.inverted {
-                            display: inline-block;
-                        }
-                    }
+                #enroll-button {
+                    margin-bottom: 10px;
                 }
             }
         }
