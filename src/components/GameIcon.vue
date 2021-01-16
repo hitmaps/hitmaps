@@ -1,5 +1,5 @@
 <template>
-    <i :class="`${getStyle()}-${getIcon()} style-${fontStyle}`"></i>
+    <i :class="`game-icon ${getStyle()}-${getIcon()} style-${fontStyle}`"></i>
 </template>
 
 <script>

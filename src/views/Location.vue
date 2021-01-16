@@ -30,14 +30,14 @@
                     class="img-fluid"
                 />
                 <h2>{{ game.tagline }}</h2>
-                <alert type="info" v-if="false">
-                    <p>{whatever is next} maps are new to HITMAPS™. We're working diligently to having items mapped; however they are not yet complete.</p>
+                <alert type="info" v-if="game.slug === 'hitman3'">
+                    <p>HITMAN™ 3 maps are new to HITMAPS™. We're working diligently to having items mapped; however they are not yet complete.</p>
                     <p>We thank you for your patience while we work on mapping these levels 🙂</p>
                 </alert>
             </div>
             <div class="row loading" v-if="locations.length === 0">
                 <div class="loader">
-                    <loader></loader>
+                    <loader />
                 </div>
             </div>
             <nav
@@ -52,17 +52,8 @@
                             class="nav-link"
                             data-target="#"
                         >
-                            <img
-                                src="/img/game-icons/campaign-transparent.png"
-                                class="normal"
-                                :alt="$t('home-icon')"
-                            />
-                            <img
-                                src="/img/game-icons/campaign-inverted.png"
-                                class="inverted"
-                                :alt="$t('home-icon')"
-                            />
-                            Home
+                            <game-icon icon="story" font-style="normal" />
+                            {{ $t('home') }}
                         </router-link>
                     </li>
                     <li
@@ -75,16 +66,7 @@
                             :href="'#' + location.slug"
                             :data-target="'#' + location.slug"
                         >
-                            <img
-                                src="/img/game-icons/location-transparent.png"
-                                class="normal"
-                                :alt="$t('location-icon')"
-                            />
-                            <img
-                                src="/img/game-icons/location.png"
-                                class="inverted"
-                                :alt="$t('location-icon')"
-                            />
+                            <game-icon icon="location" font-style="normal" />
                             {{ lang('locations.destinations.' + location.slug, location.destination) }}
                         </a>
                     </li>
@@ -103,11 +85,7 @@
                 <div class="header">
                     <a class="anchor" :id="location.slug"></a>
                     <h2>
-                        <img
-                            src="/img/game-icons/location.png"
-                            class="img-fluid"
-                            :alt="$t('location-icon')"
-                        />
+                        <game-icon icon="location" font-style="solid" />
                         <p>
                             <span class="name">{{ lang('locations.destinations.' + location.slug, location.destination) }}</span>
                             <br />
@@ -139,22 +117,10 @@
                                 }"
                                 v-if="mission.difficulties.length == 1"
                             >
-                                <div class="card mission">
+                                <div class="card mission" :style="`background: url('${generateTileUrl(mission)}') center center / cover no-repeat`">
                                     <div style="position: relative">
                                         <img
-                                            v-if="
-                                                mission.missionType !==
-                                                    'Elusive Target'
-                                            "
-                                            :src="mission.tileUrl"
-                                            class="card-img-top"
-                                            :alt="$t('mission-image')"
-                                        />
-                                        <img
-                                            v-else
-                                            :src="
-                                                '/img/' + generateUrl(mission)
-                                            "
+                                            :src="generateTileUrl(mission)"
                                             class="card-img-top"
                                             :alt="$t('mission-image')"
                                         />
@@ -165,28 +131,10 @@
                                     </div>
                                     <div class="card-footer">
                                         <div class="image" v-if="mission.missionType !== 'Ghost Mode'">
-                                            <img
-                                                src="/img/game-icons/mission-inverted.png"
-                                                class="normal img-fluid"
-                                                :alt="$t('mission-icon')"
-                                            />
-                                            <img
-                                                src="/img/game-icons/mission.png"
-                                                class="inverted img-fluid"
-                                                :alt="$t('mission-icon')"
-                                            />
+                                            <game-icon icon="mission" font-style="normal" />
                                         </div>
                                         <div class="image" v-else>
-                                            <img
-                                                    src="/img/game-icons/ghost-mode-inverted.png"
-                                                    class="normal img-fluid"
-                                                    :alt="$t('mission-icon')"
-                                            />
-                                            <img
-                                                    src="/img/game-icons/ghost-mode.png"
-                                                    class="inverted img-fluid"
-                                                    :alt="$t('mission-icon')"
-                                            />
+                                            <game-icon icon="versus" font-style="normal" />
                                         </div>
                                         <div class="text">
                                             <h2>{{ lang('mission-types.' + mission.missionType.toLowerCase(), mission.missionType) }}</h2>
@@ -195,13 +143,11 @@
                                     </div>
                                 </div>
                             </router-link>
-                            <div v-else class="card mission">
+                            <div v-else class="card mission" :style="`background: url('${generateTileUrl(mission)}') center center / cover no-repeat`">
                                 <div style="position: relative">
-                                    <img
-                                        :src="mission.tileUrl"
-                                        class="card-img-top"
-                                        alt=""
-                                    />
+                                    <img :src="generateTileUrl(mission)"
+                                         :alt="$t('mission-image')"
+                                         class="card-img-top" />
                                     <div
                                         class="card-img-overlay d-flex flex-column justify-content-end"
                                         style="padding: 0"
@@ -224,22 +170,7 @@
                                                 <div
                                                     style="padding-top: 10px; padding-bottom: 10px"
                                                 >
-                                                    <img
-                                                        :src="
-                                                            '/img/game-icons/' +
-                                                                difficulty.toLowerCase() +
-                                                                '.png'
-                                                        "
-                                                        class="normal"
-                                                    />
-                                                    <img
-                                                        :src="
-                                                            '/img/game-icons/' +
-                                                                difficulty.toLowerCase() +
-                                                                '-inverted.png'
-                                                        "
-                                                        class="inverted"
-                                                    />
+                                                    <game-icon :icon="`difficulty-${difficulty.toLowerCase()}`" font-style="solid" />
                                                     {{ lang('difficulties.' + difficulty, difficulty) }}
                                                 </div>
                                             </router-link>
@@ -248,28 +179,10 @@
                                 </div>
                                 <div class="card-footer">
                                     <div class="image" v-if="mission.missionType !== 'Ghost Mode'">
-                                        <img
-                                                src="/img/game-icons/mission-inverted.png"
-                                                class="normal img-fluid"
-                                                :alt="$t('mission-icon')"
-                                        />
-                                        <img
-                                                src="/img/game-icons/mission.png"
-                                                class="inverted img-fluid"
-                                                :alt="$t('mission-icon')"
-                                        />
+                                        <game-icon icon="mission" font-style="normal" />
                                     </div>
                                     <div class="image" v-else>
-                                        <img
-                                                src="/img/game-icons/ghost-mode-inverted.png"
-                                                class="normal img-fluid"
-                                                :alt="$t('mission-icon')"
-                                        />
-                                        <img
-                                                src="/img/game-icons/ghost-mode.png"
-                                                class="inverted img-fluid"
-                                                :alt="$t('mission-icon')"
-                                        />
+                                        <game-icon icon="versus" font-style="normal" />
                                     </div>
                                     <div class="text">
                                         <h2>{{ lang('mission-types.' + mission.missionType.toLowerCase(), mission.missionType) }}</h2>
@@ -289,10 +202,12 @@
 import Loader from '../components/Loader.vue'
 import Alert from "../components/Alert";
 import MetaHandler from "../components/MetaHandler";
+import GameIcon from "../components/GameIcon";
 
 export default {
     name: 'level-select',
     components: {
+        GameIcon,
         Alert,
         Loader
     },
@@ -308,12 +223,16 @@ export default {
         }
     },
     methods: {
-        generateUrl: function(mission) {
-            if (this.game != null && this.game.slug == 'hitman') {
-                return 'jpg/elusive-targets/legacy/' + mission.slug + '.jpg'
+        generateTileUrl: function(mission) {
+            if (mission.missionType !== 'Elusive Target') {
+                return mission.tileUrl;
             }
 
-            return 'jpg/elusive-targets/' + mission.slug + '.jpg'
+            if (this.game != null && this.game.slug == 'hitman') {
+                return '/img/jpg/elusive-targets/legacy/' + mission.slug + '.jpg'
+            }
+
+            return '/img/jpg/elusive-targets/' + mission.slug + '.jpg'
         }
     },
     created: function() {
@@ -382,13 +301,10 @@ export default {
             h2 {
                 font-size: 1.5rem;
 
-                img {
-                    display: inline-block;
+                i.game-icon {
+                    font-size: 63px;
+                    margin-right: 8px;
                     vertical-align: text-bottom;
-                    max-height: 63px;
-                    max-width: 63px;
-                    filter: drop-shadow(2px 2px 2px #000);
-                    margin-right: 7px;
                 }
 
                 p {
@@ -420,35 +336,17 @@ export default {
             color: white;
             padding: 20px;
 
-            img {
-                height: 30px;
-                width: 30px;
-
-                &.normal {
-                    display: inline-block;
-                    filter: drop-shadow(2px 2px 2px #000);
-                }
-
-                &.inverted {
-                    display: none;
-                    filter: none;
-                }
+            i.game-icon {
+                font-size: 20px;
+                padding: 4px;
+                border: solid 1px #fff;
+                border-radius: 3px;
             }
 
             &:hover,
             &:active,
             &.active {
-                background: #ff003c;
-
-                img {
-                    &.normal {
-                        display: none;
-                    }
-
-                    &.inverted {
-                        display: inline-block;
-                    }
-                }
+                background: $card-footer-background-hover;
             }
         }
     }
@@ -471,9 +369,17 @@ export default {
         .mission {
             margin-bottom: 10px;
 
+            .card-img-top {
+                visibility: hidden;
+            }
+
             .difficulties {
                 margin: 0;
                 background-color: rgba(0, 0, 0, 0.2);
+
+                i.game-icon {
+                    vertical-align: middle;
+                }
 
                 a {
                     color: white;
@@ -481,39 +387,16 @@ export default {
                     opacity: 0.85;
 
                     &:hover {
-                        background-color: #ff1439;
+                        background-color: $card-footer-background-hover;
                         opacity: 1;
-
-                        img {
-                            &.normal {
-                                display: none;
-                            }
-
-                            &.inverted {
-                                display: inline-block;
-                            }
-                        }
-                    }
-
-                    img {
-                        height: 48px;
-                        width: 48px;
-
-                        &.normal {
-                            display: inline-block;
-                        }
-
-                        &.inverted {
-                            display: none;
-                        }
                     }
                 }
             }
 
             .card-footer {
                 padding: 15px;
-                background: white;
-                color: #000;
+                background: $card-footer-background;
+                color: $card-footer-text;
                 text-shadow: none;
                 border-radius: 0;
 
@@ -521,19 +404,6 @@ export default {
                     display: inline-block;
                     vertical-align: top;
                     margin-right: 5px;
-
-                    img {
-                        height: 48px;
-                        width: 48px;
-
-                        &.normal {
-                            display: block;
-                        }
-
-                        &.inverted {
-                            display: none;
-                        }
-                    }
                 }
 
                 .text {
@@ -542,8 +412,8 @@ export default {
                     h2 {
                         font-size: 16px;
                         margin-bottom: 0;
-                        color: #ff1439;
-                        font-weight: 500;
+                        color: $card-footer-text;
+                        font-weight: 400;
                     }
 
                     h1 {
@@ -609,9 +479,9 @@ export default {
                         }
 
                         &:hover {
-                            background: #ff003c;
+                            background: $card-footer-background-hover;
                             text-decoration: none;
-                            color: #fff;
+                            color: $card-footer-text;
 
                             img.normal {
                                 display: none;
@@ -631,13 +501,7 @@ export default {
                 }
 
                 .difficulty {
-                    &:nth-child(odd) {
-                        background: #fff;
-                    }
-
-                    &:nth-child(even) {
-                        background: #eee;
-                    }
+                    background: $card-footer-background;
 
                     > a {
                         img.normal {
@@ -654,7 +518,7 @@ export default {
 
                         &:hover {
                             text-decoration: none;
-                            color: #000;
+                            color: $card-footer-text;
                         }
 
                         p {
@@ -666,22 +530,13 @@ export default {
         }
 
         a:hover .card-footer {
-            color: white;
-            background-color: #ff1439;
-
-            .image img {
-                &.normal {
-                    display: none;
-                }
-
-                &.inverted {
-                    display: block;
-                }
-            }
+            color: $card-footer-text;
+            background-color: $card-footer-background-hover;
 
             .text {
                 h2 {
-                    color: white;
+                    color: $card-footer-text;
+                    font-weight: 400;
                 }
             }
         }
@@ -689,7 +544,7 @@ export default {
 
     h2 {
         text-transform: uppercase;
-        color: #fff;
+        color: $card-footer-text;
         margin-bottom: 20px;
     }
 }

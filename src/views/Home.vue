@@ -44,7 +44,7 @@
                         <p>&nbsp;</p>
                         <div class="game-info">
                             <div class="image">
-                                <game-icon :icon="game.icon" font-style="normal"></game-icon>
+                                <game-icon :icon="game.icon" font-style="normal" />
                             </div>
                             <div class="text">
                                 <h2>{{ $t("game-type." + game.type) }}</h2>
@@ -66,7 +66,7 @@
                     <a :href="currentPromo.url" target="_blank">
                         <p>&nbsp;</p>
                         <div class="countdown" style="background: rgba(0,0,0,.4)" v-if="new Date() < new Date(currentPromo.promoStartDate)">
-                            <game-icon icon="timed" font-style="normal"></game-icon>
+                            <game-icon icon="timed" font-style="normal" />
                             <div class="timer not-playable">
                                 <div class="target-arrives">{{ (new Date(currentPromo.promoStartDate) > new Date()) ? currentPromo.beforeText : currentPromo.duringText }}</div>
                                 <countdown
@@ -81,7 +81,7 @@
                             </div>
                         </div>
                         <div class="countdown" style="background: rgba(0,0,0,.4)"  v-else>
-                            <game-icon icon="timed" font-style="normal"></game-icon>
+                            <game-icon icon="timed" font-style="normal" />
                             <div class="timer not-playable">
                                 <div class="target-arrives">{{ (new Date(currentPromo.promoStartDate) > new Date()) ? currentPromo.beforeText : currentPromo.duringText }}</div>
                                 <div class="elusive-countdown">
@@ -163,7 +163,7 @@
                     >
                         <p>&nbsp;</p>
                         <div class="countdown">
-                            <game-icon icon="timed" font-style="normal"></game-icon>
+                            <game-icon icon="timed" font-style="normal" />
                             <div
                                 class="timer"
                                 :class="{
@@ -194,7 +194,7 @@
                         </div>
                         <div class="elusive-target-info">
                             <div class="image">
-                                <game-icon icon="elusive" font-style="normal"></game-icon>
+                                <game-icon icon="elusive" font-style="normal" />
                             </div>
                             <div class="text">
                                 <h2>{{ $t('game-type.Elusive Target') }}</h2>
@@ -213,7 +213,7 @@
                                 class="image elusive-notification float-right notification-icon"
                                 v-tooltip:left="$t('elusive-target.notifications.manage-notifications')"
                             >
-                                <game-icon icon="settings" font-style="normal"></game-icon>
+                                <game-icon icon="audio" font-style="normal" />
                             </div>
                         </div>
                     </a>
@@ -221,7 +221,7 @@
                         <p>&nbsp;</p>
                         <div class="elusive-target-info">
                             <div class="image">
-                                <game-icon icon="elusive" font-style="normal"></game-icon>
+                                <game-icon icon="elusive" font-style="normal" />
                             </div>
                             <div class="text">
                                 <h2>{{ $t('game-type.Elusive Target') }}</h2>
@@ -233,7 +233,7 @@
                                 class="image float-right notification-icon"
                                 v-tooltip:left="$t('elusive-target.notifications.manage-notifications')"
                             >
-                                <game-icon icon="settings" font-style="normal"></game-icon>
+                                <game-icon icon="audio" font-style="normal" />
                             </div>
                         </div>
                     </a>
@@ -641,7 +641,7 @@
                         <p>&nbsp;</p>
                         <div class="game-info">
                             <div class="image">
-                                <game-icon :icon="game.icon" font-style="normal"></game-icon>
+                                <game-icon :icon="game.icon" font-style="normal" />
                             </div>
                             <div class="text">
                                 <h2>{{ $t("game-type." + game.type) }}</h2>
