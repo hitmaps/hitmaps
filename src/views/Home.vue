@@ -44,7 +44,7 @@
                         <p>&nbsp;</p>
                         <div class="game-info">
                             <div class="image">
-                                <i :class="`hm-story`"></i>
+                                <game-icon :icon="game.icon" font-style="solid"></game-icon>
                             </div>
                             <div class="text">
                                 <h2>{{ $t("game-type." + game.type) }}</h2>
@@ -690,20 +690,7 @@
                         <p>&nbsp;</p>
                         <div class="game-info">
                             <div class="image">
-                                <img
-                                        :src="'/img/game-icons/' + game.icon + '.png'"
-                                        class="normal img-fluid"
-                                        :alt="game.type + ' Icon'"
-                                />
-                                <img
-                                        :src="
-                                        '/img/game-icons/' +
-                                            game.icon +
-                                            '-inverted.png'
-                                    "
-                                        class="inverted img-fluid"
-                                        :alt="game.type + ' Icon'"
-                                />
+                                <game-icon :icon="game.icon" font-style="solid"></game-icon>
                             </div>
                             <div class="text">
                                 <h2>{{ $t("game-type." + game.type) }}</h2>
@@ -964,12 +951,14 @@ import Vue from 'vue'
 import Modal from "../components/Modal";
 import Alert from "../components/Alert";
 import MetaHandler from "../components/MetaHandler";
+import GameIcon from "../components/GameIcon";
 
 Vue.use(CxltToaster)
 export default {
     name: 'home',
     title: 'Home',
     components: {
+        GameIcon,
         Alert,
         Modal,
         Countdown,
@@ -1626,10 +1615,23 @@ header {
                     color: white;
                 }
 
-                .image i {
-                    line-height: 0;
-                    font-size: 48px;
-                    display: block;
+                .image {
+                    i {
+                        line-height: 0;
+                        font-size: 48px;
+                        display: block;
+                    }
+
+                    img {
+                        &.normal {
+                            display: none;
+                        }
+
+                        &.inverted {
+                            display: block;
+
+                        }
+                    }
                 }
             }
         }
@@ -1652,6 +1654,19 @@ header {
 
                 &.elusive-notification {
                     margin-right: 0;
+                }
+
+                img {
+                    height: 48px;
+                    width: 48px;
+
+                    &.normal {
+                        display: block;
+                    }
+
+                    &.inverted {
+                        display: none;
+                    }
                 }
 
                 i {
