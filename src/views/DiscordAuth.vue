@@ -25,13 +25,7 @@
                 <div class="sign-in-button">
                     <router-link :to="{ name: 'home' }">
                         <game-button>
-                            <img src="/img/game-icons/campaign.png"
-                                 class="normal img-fluid"
-                                 alt="Return Home" />
-                            <img src="/img/game-icons/campaign-inverted.png"
-                                 class="inverted img-fluid"
-                                 alt="Return Home"
-                            />
+                            <game-icon icon="story" font-style="normal" />
                             Home
                         </game-button>
                     </router-link>
@@ -43,6 +37,7 @@
 
 <script>
     import GameButton from "../components/GameButton";
+    import GameIcon from "../components/GameIcon";
 
     export default {
         name: "DiscordAuth",
@@ -52,6 +47,7 @@
             }
         },
         components: {
+            GameIcon,
             GameButton
         },
         mounted() {
@@ -121,7 +117,8 @@
 
             .login-card {
                 margin: 10px;
-                background: #fff;
+                background: $content-background;
+                color: $content-text;
                 padding: 1rem;
             }
 

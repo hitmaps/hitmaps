@@ -27,13 +27,7 @@
                 <div class="sign-in-button">
                     <router-link :to="{ name: 'home' }">
                         <game-button>
-                            <img src="/img/game-icons/campaign.png"
-                                 class="normal img-fluid"
-                                 alt="Return Home" />
-                            <img src="/img/game-icons/campaign-inverted.png"
-                                 class="inverted img-fluid"
-                                 alt="Return Home"
-                            />
+                            <game-icon icon="story" font-style="normal" />
                             Home
                         </game-button>
                     </router-link>
@@ -50,6 +44,7 @@ import Vue from 'vue'
 import Alert from '../components/Alert'
 import Modal from '../components/Modal'
 import GameButton from '../components/GameButton'
+import GameIcon from "../components/GameIcon";
 
 Vue.use(VeeValidate)
 VeeValidate.configure({
@@ -63,6 +58,7 @@ export default {
         }
     },
     components: {
+        GameIcon,
         GameButton,
         Modal,
         Alert
@@ -99,8 +95,9 @@ export default {
 
         .login-card {
             margin: 10px;
-            background: #fff;
+            background: $content-background;
             padding: 1rem;
+            color: $content-text;
         }
 
         h3 {
@@ -111,7 +108,6 @@ export default {
         }
 
         .sign-in-button {
-            background: #fff;
             padding: 0;
             margin: 0 10px 10px;
 

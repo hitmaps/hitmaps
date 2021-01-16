@@ -43,14 +43,15 @@
 
 <style lang="scss" scoped>
     * {
-        color: #000;
+        color: $content-text;
     }
 
     a {
-        color: navy;
+        color: $content-text;
+        font-weight: bolder;
 
         &:hover {
-            color: navy;
+            color: $content-text;
         }
     }
 

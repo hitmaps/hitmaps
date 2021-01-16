@@ -148,13 +148,7 @@
         <div class="home-button">
             <router-link :to="{ name: 'home' }">
                 <game-button>
-                    <img src="/img/game-icons/campaign.png"
-                         class="normal img-fluid"
-                         alt="Return Home" />
-                    <img src="/img/game-icons/campaign-inverted.png"
-                         class="inverted img-fluid"
-                         alt="Return Home"
-                    />
+                    <game-icon icon="story" font-style="normal" />
                     Home
                 </game-button>
             </router-link>
@@ -173,9 +167,14 @@
 
     > .inner-content {
         margin: 20px;
-        background-color: white;
+        background-color: $content-background;
+        color: $content-text;
         padding: 20px;
         font-family: 'nimbus_sans_lbold', sans-serif;
+
+        hr {
+            background: $content-text;
+        }
 
         h1 {
             text-transform: uppercase;
@@ -200,9 +199,10 @@
 
 <script>
 import GameButton from "../components/GameButton";
+import GameIcon from "../components/GameIcon";
 export default {
     name: 'terms-of-use',
-    components: {GameButton},
+    components: {GameIcon, GameButton},
     title: 'Terms of Use',
 }
 </script>

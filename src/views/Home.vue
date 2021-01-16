@@ -236,72 +236,31 @@
                         </div>
                     </a>
                 </div>
-                <div
-                    ref="briefing"
-                    v-if="elusiveTarget != null"
-                    class="modal game-modal fade"
-                    id="briefing-modal"
-                    tabindex="-1"
-                    role="dialog"
-                    aria-labelledby="briefing-modal-label"
-                    aria-hidden="true"
-                >
-                    <div class="modal-dialog modal-xl" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="briefing-modal-label">
-                                    {{ elusiveTarget.name }}
-                                </h5>
-                            </div>
-                            <div class="modal-body d-flex flex-column">
-                                <div class="row">
-                                    <div
-                                        v-if="
-                                            elusiveTarget.videoBriefingUrl != null
-                                        "
-                                        class="col-xl"
-                                    >
-                                        <div
-                                            class="embed-responsive embed-responsive-16by9"
-                                        >
-                                            <iframe
-                                                :src="
-                                                    elusiveTarget.videoBriefingUrl
-                                                "
-                                                class="embed-responsive-item"
-                                                frameborder="0"
-                                                allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
-                                                allowfullscreen
-                                            ></iframe>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl">
-                                        <p v-html="elusiveTarget.briefing"></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button
-                                    type="button"
-                                    class="btn btn-block btn-secondary"
-                                    data-dismiss="modal"
-                                >
-                                    <img
-                                        src="/img/game-icons/modal-close.png"
-                                        class="normal img-fluid"
-                                        :alt="$t('form.close-icon')"
-                                    />
-                                    <img
-                                        src="/img/game-icons/modal-close-inverted.png"
-                                        class="inverted img-fluid"
-                                        :alt="$t('form.close-icon')"
-                                    />
-                                    {{ $t('form.close') }}
-                                </button>
+                <modal v-if="elusiveTarget != null"
+                       id="briefing-modal"
+                       :modal-title="elusiveTarget.name">
+                    <div class="row">
+                        <div v-if="elusiveTarget.videoBriefingUrl != null" class="col-xl">
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe :src="elusiveTarget.videoBriefingUrl"
+                                        class="embed-responsive-item"
+                                        frameborder="0"
+                                        allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+                                        allowfullscreen
+                                ></iframe>
                             </div>
                         </div>
+                        <div class="col-xl">
+                            <p v-html="elusiveTarget.briefing">[briefing]</p>
+                        </div>
                     </div>
-                </div>
+                    <template v-slot:modal-footer>
+                        <game-button data-dismiss="modal">
+                            <game-icon icon="failed" font-style="normal"/>
+                            {{ $t('form.close') }}
+                        </game-button>
+                    </template>
+                </modal>
                 <modal ref="notification-modal"
                        id="notification-modal"
                        :modal-title="$t('elusive-target.notifications.manage-notifications-modal-title')">
@@ -1048,7 +1007,7 @@ export default {
             $('#roulette-rivals-modal').modal('show')
         },
         showBriefing(e) {
-            $(this.$refs.briefing).modal('show')
+            $('#briefing-modal').modal('show')
         },
         showNotificationModal(e) {
             e.preventDefault();
