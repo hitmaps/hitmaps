@@ -1,5 +1,7 @@
 <template>
-    <i :class="`game-icon ${getStyle()}-${getIcon()} style-${fontStyle}`"></i>
+    <i :class="`game-icon ${getStyle()}-${getIcon()} style-${fontStyle} ${extraClasses}`"
+       @click="$emit('click')"
+       v-bind="$attrs"></i>
 </template>
 
 <script>
@@ -7,7 +9,8 @@
         name: "GameIcon",
         props: {
             icon: String,
-            fontStyle: String
+            fontStyle: String,
+            extraClasses: String
         },
         methods: {
             getStyle() {

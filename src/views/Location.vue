@@ -347,6 +347,12 @@ export default {
             &:active,
             &.active {
                 background: $card-footer-background-hover;
+
+                i {
+                    color: $card-footer-background-hover;
+                    background: $card-footer-text;
+                    text-shadow: none;
+                }
             }
         }
     }
@@ -532,6 +538,11 @@ export default {
         a:hover .card-footer {
             color: $card-footer-text;
             background-color: $card-footer-background-hover;
+
+            i {
+                color: $card-footer-background-hover;
+                background: $card-footer-text;
+            }
 
             .text {
                 h2 {

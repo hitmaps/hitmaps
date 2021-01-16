@@ -67,15 +67,25 @@ export default {
                 border-bottom: none;
                 border-radius: 0;
 
-                background: #fff;
+                background: $modal-background;
+                color: $modal-text-color;
 
                 h5 {
                     font-size: 1.5rem;
                 }
+
+                .close {
+                    color: $modal-text-color;
+                }
             }
 
             .modal-body {
-                background: #fff;
+                background: $modal-background;
+                color: $modal-text-color;
+
+                td {
+                    color: $modal-text-color;
+                }
             }
 
             .modal-footer {

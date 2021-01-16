@@ -183,14 +183,12 @@
                                     "
                                 ></countdown>
                             </div>
-                            <img
-                                onclick="return false;"
-                                @click="showBriefing"
-                                src="/img/game-icons/briefing-transparent.png"
-                                class="normal img-fluid briefing-icon float-right"
-                                :alt="$t('elusive-target.briefing-icon')"
-                                v-tooltip:left="$t('elusive-target.mission-briefing')"
-                            />
+                            <game-icon @click="showBriefing"
+                                       onclick="return false;"
+                                       icon="background"
+                                       font-style="normal"
+                                       extra-classes="normal briefing-icon float-right"
+                                       v-tooltip:left="$t('elusive-target.mission-briefing')" />
                         </div>
                         <div class="elusive-target-info">
                             <div class="image">
@@ -304,322 +302,274 @@
                         </div>
                     </div>
                 </div>
-                <div
-                    ref="notification-modal"
-                    class="modal game-modal fade"
-                    id="notification-modal"
-                    tabindex="-1"
-                    role="dialog"
-                    aria-labelledby="notification-modal-label"
-                    aria-hidden="true"
-                >
-                    <div class="modal-dialog modal-xl" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5
-                                    class="modal-title"
-                                    id="notification-modal-label"
-                                >
-                                    {{ $t('elusive-target.notifications.manage-notifications-modal-title') }}
-                                </h5>
-                            </div>
-                            <div class="modal-body d-flex flex-column">
-                                <div id="checking-notification-status">
-                                    <h6>{{ $t('elusive-target.notifications.checking-if-enabled') }}</h6>
-                                    <div class="spinner-grow" role="status">
-                                        <span class="sr-only">{{ $t('form.loading') }}</span>
-                                    </div>
-                                </div>
-                                <div
-                                    id="notifications-unsupported"
-                                    style="display: none"
-                                >
-                                    <h6>{{ $t('elusive-target.notifications.unsupported-browser') }}</h6>
-                                    <ul>
-                                        <li>
-                                            iOS
-                                            <ul>
-                                                <li>
-                                                    <a href="https://itunes.apple.com/us/app/google-chrome/id535886823?mt=8">
-                                                        Google Chrome
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="https://itunes.apple.com/us/app/firefox-web-browser/id989804926?mt=8">
-                                                        Firefox
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="https://itunes.apple.com/us/app/opera-touch-web-browser/id1411869974?mt=8">
-                                                        Opera
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="https://itunes.apple.com/us/app/brave-browser-fast-adblocker/id1052879175">
-                                                        Brave
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            Android
-                                            <ul>
-                                                <li>
-                                                    <a href="https://play.google.com/store/apps/details?id=com.android.chrome&hl=en_US">
-                                                        Google Chrome
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="https://play.google.com/store/apps/details?id=org.mozilla.firefox&hl=en_US">
-                                                        Firefox
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="https://play.google.com/store/apps/details?id=com.brave.browser&hl=en_US">
-                                                        Brave
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            Desktop
-                                            <ul>
-                                                <li>
-                                                    <a href="https://www.google.com/chrome/">
-                                                        Google Chrome
-                                                    </a>
-                                                </li>
-                                                <li>Microsoft Edge</li>
-                                                <li>
-                                                    <a href="https://www.mozilla.org/en-US/firefox/new/">
-                                                        Firefox
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="https://www.opera.com/computer">
-                                                        Opera
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div id="enrollment-required" style="display: none">
-                                    <h6>{{ $t('elusive-target.notifications.device-not-enrolled') }}</h6>
-                                    <p id="error-container"></p>
-                                </div>
-                                <div
-                                    id="notifications-blocked"
-                                    style="display: none"
-                                >
-                                    <h6>{{ $t('elusive-target.notifications.notifications-blocked') }}</h6>
-                                </div>
-                                <div
-                                    id="notification-settings"
-                                    style="display: none"
-                                >
-                                    <table class="table">
-                                        <thead>
-                                        <tr>
-                                            <td><b>{{ $t('elusive-target.notifications.send-me-a-notification-when') }}</b></td>
-                                            <td>{{ $t('elusive-target.notifications.new-et') }}</td>
-                                            <td>{{ $t('elusive-target.notifications.reactivated-et') }}</td>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>
-                                                {{ $t('elusive-target.notifications.announced') }}
-                                            </td>
-                                            <td>
-                                                <input type="checkbox"
-                                                       class="form-check-input"
-                                                       id="elusive-target-coming"
-                                                       @change="toggleNotificationState"
-                                                       :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-coming'"
-                                                       v-model="notifications.new.almostPlayable">
-                                            </td>
-                                            <td>
-                                                <input type="checkbox"
-                                                       class="form-check-input"
-                                                       id="reactivation-elusive-target-coming"
-                                                       @change="toggleNotificationState"
-                                                       :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-coming'"
-                                                       v-model="notifications.reactivation.almostPlayable">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                {{ $t('elusive-target.notifications.playable') }}
-                                            </td>
-                                            <td>
-                                                <input type="checkbox"
-                                                       class="form-check-input"
-                                                       id="elusive-target-playable"
-                                                       @change="toggleNotificationState"
-                                                       :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-playable'"
-                                                       v-model="notifications.new.becomesPlayable">
-                                            </td>
-                                            <td>
-                                                <input type="checkbox"
-                                                       class="form-check-input"
-                                                       id="reactivation-elusive-target-playable"
-                                                       @change="toggleNotificationState"
-                                                       :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-playable'"
-                                                       v-model="notifications.reactivation.becomesPlayable">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                {{ $t('elusive-target.notifications.7-days') }}
-                                            </td>
-                                            <td>
-                                                <input type="checkbox"
-                                                       class="form-check-input"
-                                                       id="elusive-target-7"
-                                                       @change="toggleNotificationState"
-                                                       :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-7'"
-                                                       v-model="notifications.new.sevenDays">
-                                            </td>
-                                            <td>
-                                                <input type="checkbox"
-                                                       class="form-check-input"
-                                                       id="reactivation-elusive-target-7"
-                                                       @change="toggleNotificationState"
-                                                       :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-7'"
-                                                       v-model="notifications.reactivation.sevenDays">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                {{ $t('elusive-target.notifications.5-days') }}
-                                            </td>
-                                            <td>
-                                                <input type="checkbox"
-                                                       class="form-check-input"
-                                                       id="elusive-target-5"
-                                                       @change="toggleNotificationState"
-                                                       :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-5'"
-                                                       v-model="notifications.new.fiveDays">
-                                            </td>
-                                            <td>
-                                                <input type="checkbox"
-                                                       class="form-check-input"
-                                                       id="reactivation-elusive-target-5"
-                                                       @change="toggleNotificationState"
-                                                       :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-5'"
-                                                       v-model="notifications.reactivation.fiveDays">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                {{ $t('elusive-target.notifications.3-days') }}
-                                            </td>
-                                            <td>
-                                                <input type="checkbox"
-                                                       class="form-check-input"
-                                                       id="elusive-target-3"
-                                                       @change="toggleNotificationState"
-                                                       :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-3'"
-                                                       v-model="notifications.new.threeDays">
-                                            </td>
-                                            <td>
-                                                <input type="checkbox"
-                                                       class="form-check-input"
-                                                       id="reactivation-elusive-target-3"
-                                                       @change="toggleNotificationState"
-                                                       :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-3'"
-                                                       v-model="notifications.reactivation.threeDays">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                {{ $t('elusive-target.notifications.1-day') }}
-                                            </td>
-                                            <td>
-                                                <input type="checkbox"
-                                                       class="form-check-input"
-                                                       id="elusive-target-1"
-                                                       @change="toggleNotificationState"
-                                                       :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-1'"
-                                                       v-model="notifications.new.oneDay">
-                                            </td>
-                                            <td>
-                                                <input type="checkbox"
-                                                       class="form-check-input"
-                                                       id="reactivation-elusive-target-1"
-                                                       @change="toggleNotificationState"
-                                                       :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-1'"
-                                                       v-model="notifications.reactivation.oneDay">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                {{ $t('elusive-target.notifications.ended') }}
-                                            </td>
-                                            <td>
-                                                <input type="checkbox"
-                                                       class="form-check-input"
-                                                       id="elusive-target-end"
-                                                       @change="toggleNotificationState"
-                                                       :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-end'"
-                                                       v-model="notifications.new.ended">
-                                            </td>
-                                            <td>
-                                                <input type="checkbox"
-                                                       class="form-check-input"
-                                                       id="reactivation-elusive-target-end"
-                                                       @change="toggleNotificationState"
-                                                       :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-end'"
-                                                       v-model="notifications.reactivation.ended">
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                    <input type="hidden" name="firebase-token" />
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button
-                                    type="button"
-                                    class="btn btn-block btn-secondary"
-                                    id="enroll-button"
-                                    style="display: none"
-                                    @click="enroll"
-                                >
-                                    <img
-                                        src="/img/game-icons/modal-continue.png"
-                                        class="normal img-fluid"
-                                        :alt="$t('elusive-target.notifications.enroll-icon')"
-                                    />
-                                    <img
-                                        src="/img/game-icons/modal-continue-inverted.png"
-                                        class="inverted img-fluid"
-                                        :alt="$t('elusive-target.notifications.enroll-icon')"
-                                    />
-                                    {{ $t('elusive-target.notifications.enroll') }}
-                                </button>
-                                <button
-                                    type="button"
-                                    class="btn btn-block btn-secondary"
-                                    data-dismiss="modal"
-                                >
-                                    <img
-                                        src="/img/game-icons/modal-close.png"
-                                        class="normal img-fluid"
-                                        :alt="$t('form.close-icon')"
-                                    />
-                                    <img
-                                        src="/img/game-icons/modal-close-inverted.png"
-                                        class="inverted img-fluid"
-                                        :alt="$t('form.close-icon')"
-                                    />
-                                    {{ $t('form.close') }}
-                                </button>
-                            </div>
+                <modal ref="notification-modal"
+                       id="notification-modal"
+                       :modal-title="$t('elusive-target.notifications.manage-notifications-modal-title')">
+                    <div id="checking-notification-status">
+                        <h6>{{ $t('elusive-target.notifications.checking-if-enabled') }}</h6>
+                        <div class="spinner-grow" role="status">
+                            <span class="sr-only">{{ $t('form.loading') }}</span>
                         </div>
                     </div>
-                </div>
+                    <div
+                            id="notifications-unsupported"
+                            style="display: none"
+                    >
+                        <h6>{{ $t('elusive-target.notifications.unsupported-browser') }}</h6>
+                        <ul>
+                            <li>
+                                iOS
+                                <ul>
+                                    <li>
+                                        <a href="https://itunes.apple.com/us/app/google-chrome/id535886823?mt=8">
+                                            Google Chrome
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://itunes.apple.com/us/app/firefox-web-browser/id989804926?mt=8">
+                                            Firefox
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://itunes.apple.com/us/app/opera-touch-web-browser/id1411869974?mt=8">
+                                            Opera
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://itunes.apple.com/us/app/brave-browser-fast-adblocker/id1052879175">
+                                            Brave
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                Android
+                                <ul>
+                                    <li>
+                                        <a href="https://play.google.com/store/apps/details?id=com.android.chrome&hl=en_US">
+                                            Google Chrome
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://play.google.com/store/apps/details?id=org.mozilla.firefox&hl=en_US">
+                                            Firefox
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://play.google.com/store/apps/details?id=com.brave.browser&hl=en_US">
+                                            Brave
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                Desktop
+                                <ul>
+                                    <li>
+                                        <a href="https://www.google.com/chrome/">
+                                            Google Chrome
+                                        </a>
+                                    </li>
+                                    <li>Microsoft Edge</li>
+                                    <li>
+                                        <a href="https://www.mozilla.org/en-US/firefox/new/">
+                                            Firefox
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.opera.com/computer">
+                                            Opera
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="enrollment-required" style="display: none">
+                        <h6>{{ $t('elusive-target.notifications.device-not-enrolled') }}</h6>
+                        <p id="error-container"></p>
+                    </div>
+                    <div
+                            id="notifications-blocked"
+                            style="display: none"
+                    >
+                        <h6>{{ $t('elusive-target.notifications.notifications-blocked') }}</h6>
+                    </div>
+                    <div
+                            id="notification-settings"
+                            style="display: none"
+                    >
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <td><b>{{ $t('elusive-target.notifications.send-me-a-notification-when') }}</b></td>
+                                <td>{{ $t('elusive-target.notifications.new-et') }}</td>
+                                <td>{{ $t('elusive-target.notifications.reactivated-et') }}</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    {{ $t('elusive-target.notifications.announced') }}
+                                </td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input"
+                                           id="elusive-target-coming"
+                                           @change="toggleNotificationState"
+                                           :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-coming'"
+                                           v-model="notifications.new.almostPlayable">
+                                </td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input"
+                                           id="reactivation-elusive-target-coming"
+                                           @change="toggleNotificationState"
+                                           :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-coming'"
+                                           v-model="notifications.reactivation.almostPlayable">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ $t('elusive-target.notifications.playable') }}
+                                </td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input"
+                                           id="elusive-target-playable"
+                                           @change="toggleNotificationState"
+                                           :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-playable'"
+                                           v-model="notifications.new.becomesPlayable">
+                                </td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input"
+                                           id="reactivation-elusive-target-playable"
+                                           @change="toggleNotificationState"
+                                           :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-playable'"
+                                           v-model="notifications.reactivation.becomesPlayable">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ $t('elusive-target.notifications.7-days') }}
+                                </td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input"
+                                           id="elusive-target-7"
+                                           @change="toggleNotificationState"
+                                           :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-7'"
+                                           v-model="notifications.new.sevenDays">
+                                </td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input"
+                                           id="reactivation-elusive-target-7"
+                                           @change="toggleNotificationState"
+                                           :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-7'"
+                                           v-model="notifications.reactivation.sevenDays">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ $t('elusive-target.notifications.5-days') }}
+                                </td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input"
+                                           id="elusive-target-5"
+                                           @change="toggleNotificationState"
+                                           :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-5'"
+                                           v-model="notifications.new.fiveDays">
+                                </td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input"
+                                           id="reactivation-elusive-target-5"
+                                           @change="toggleNotificationState"
+                                           :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-5'"
+                                           v-model="notifications.reactivation.fiveDays">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ $t('elusive-target.notifications.3-days') }}
+                                </td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input"
+                                           id="elusive-target-3"
+                                           @change="toggleNotificationState"
+                                           :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-3'"
+                                           v-model="notifications.new.threeDays">
+                                </td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input"
+                                           id="reactivation-elusive-target-3"
+                                           @change="toggleNotificationState"
+                                           :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-3'"
+                                           v-model="notifications.reactivation.threeDays">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ $t('elusive-target.notifications.1-day') }}
+                                </td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input"
+                                           id="elusive-target-1"
+                                           @change="toggleNotificationState"
+                                           :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-1'"
+                                           v-model="notifications.new.oneDay">
+                                </td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input"
+                                           id="reactivation-elusive-target-1"
+                                           @change="toggleNotificationState"
+                                           :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-1'"
+                                           v-model="notifications.reactivation.oneDay">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ $t('elusive-target.notifications.ended') }}
+                                </td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input"
+                                           id="elusive-target-end"
+                                           @change="toggleNotificationState"
+                                           :data-firebase-topic="'hitmaps-' + environment + '-elusive-target-end'"
+                                           v-model="notifications.new.ended">
+                                </td>
+                                <td>
+                                    <input type="checkbox"
+                                           class="form-check-input"
+                                           id="reactivation-elusive-target-end"
+                                           @change="toggleNotificationState"
+                                           :data-firebase-topic="'hitmaps-' + environment + '-reactivation-elusive-target-end'"
+                                           v-model="notifications.reactivation.ended">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <input type="hidden" name="firebase-token" />
+                    </div>
+                    <template v-slot:modal-footer>
+                        <game-button id="enroll-button" style="display: none" @click="enroll">
+                            <game-icon icon="arrow-right" font-style="normal" />
+                            {{ $t('elusive-target.notifications.enroll') }}
+                        </game-button>
+                        <game-button data-dismiss="modal">
+                            <game-icon icon="failed" font-style="normal" />
+                            {{ $t('form.close') }}
+                        </game-button>
+                    </template>
+                </modal>
             </div>
             <div class="row dashboard">
                 <div
@@ -903,12 +853,14 @@ import Modal from "../components/Modal";
 import Alert from "../components/Alert";
 import MetaHandler from "../components/MetaHandler";
 import GameIcon from "../components/GameIcon";
+import GameButton from "../components/GameButton";
 
 Vue.use(CxltToaster)
 export default {
     name: 'home',
     title: 'Home',
     components: {
+        GameButton,
         GameIcon,
         Alert,
         Modal,
@@ -940,7 +892,7 @@ export default {
                 {
                     tileUrl: 'https://media.hitmaps.com/img/hitmaps-custom/h3-header.jpg',
                     promoStartDate: '2020-07-08T23:00:00+00:00',
-                    promoEndDate: '2021-01-20T23:00:00+00:00',
+                    promoEndDate: '2021-01-20T13:00:00+00:00',
                     topCaption: "hitman.com",
                     bottomCaption: 'HITMAN™ 3',
                     beforeText: undefined,
@@ -1093,17 +1045,15 @@ export default {
             }
         },
         showRouletteRivalsModal(e) {
-            e.preventDefault();
             $('#roulette-rivals-modal').modal('show')
         },
         showBriefing(e) {
-            e.preventDefault()
             $(this.$refs.briefing).modal('show')
         },
         showNotificationModal(e) {
-            e.preventDefault()
-            const that = this
-            $(this.$refs['notification-modal']).modal('show')
+            e.preventDefault();
+            const that = this;
+            $('#notification-modal').modal('show');
             if (
                 H2MAPS_FIREBASE.messagingSupported !== undefined &&
                 !H2MAPS_FIREBASE.messagingSupported
@@ -1661,10 +1611,16 @@ header {
             padding: 15px 15px 0;
             padding-bottom: 1rem;
 
-            i {
+            i.game-icon {
                 color: $elusive-countdown;
                 border-color: $elusive-countdown;
                 margin-right: 5px;
+
+                &.briefing-icon {
+                    color: white;
+                    border-color: white;
+                    margin-right: 0;
+                }
             }
 
             .timer {
@@ -1703,7 +1659,7 @@ header {
     }
 }
 
-.game-modal {
+/*.game-modal {
     .modal-content {
         background: transparent;
         border: none;
@@ -1781,7 +1737,7 @@ header {
             }
         }
     }
-}
+}*/
 
 #notification-settings {
     td {
