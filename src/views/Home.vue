@@ -44,20 +44,7 @@
                         <p>&nbsp;</p>
                         <div class="game-info">
                             <div class="image">
-                                <img
-                                    :src="'/img/game-icons/' + game.icon + '.png'"
-                                    class="normal img-fluid"
-                                    :alt="game.type + ' Icon'"
-                                />
-                                <img
-                                    :src="
-                                        '/img/game-icons/' +
-                                            game.icon +
-                                            '-inverted.png'
-                                    "
-                                    class="inverted img-fluid"
-                                    :alt="game.type + ' Icon'"
-                                />
+                                <i :class="`hm-story`"></i>
                             </div>
                             <div class="text">
                                 <h2>{{ $t("game-type." + game.type) }}</h2>
@@ -1639,14 +1626,10 @@ header {
                     color: white;
                 }
 
-                .image img {
-                    &.normal {
-                        display: none;
-                    }
-
-                    &.inverted {
-                        display: block;
-                    }
+                .image i {
+                    line-height: 0;
+                    font-size: 48px;
+                    display: block;
                 }
             }
         }
@@ -1671,17 +1654,10 @@ header {
                     margin-right: 0;
                 }
 
-                img {
-                    height: 48px;
-                    width: 48px;
-
-                    &.normal {
-                        display: block;
-                    }
-
-                    &.inverted {
-                        display: none;
-                    }
+                i {
+                    line-height: 0;
+                    font-size: 48px;
+                    display: block;
                 }
             }
 
