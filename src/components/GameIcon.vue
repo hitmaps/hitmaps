@@ -1,5 +1,5 @@
 <template>
-    <i :class="`${getStyle()}-${getIcon()}`"></i>
+    <i :class="`${getStyle()}-${getIcon()} style-${fontStyle}`"></i>
 </template>
 
 <script>
@@ -36,6 +36,14 @@
     i {
         line-height: 0;
         font-size: 48px;
-        display: block;
+        display: inline-block;
+
+        &.style-normal {
+            font-size: 32px;
+            padding: 6px;
+            border: solid 2px #fff;
+            border-radius: 5px;
+            vertical-align: top;
+        }
     }
 </style>

@@ -44,7 +44,7 @@
                         <p>&nbsp;</p>
                         <div class="game-info">
                             <div class="image">
-                                <game-icon :icon="game.icon" font-style="solid"></game-icon>
+                                <game-icon :icon="game.icon" font-style="normal"></game-icon>
                             </div>
                             <div class="text">
                                 <h2>{{ $t("game-type." + game.type) }}</h2>
@@ -66,9 +66,7 @@
                     <a :href="currentPromo.url" target="_blank">
                         <p>&nbsp;</p>
                         <div class="countdown" style="background: rgba(0,0,0,.4)" v-if="new Date() < new Date(currentPromo.promoStartDate)">
-                            <img
-                                    src="/img/game-icons/elusive-target-reminaing-time.png"
-                            />
+                            <game-icon icon="timed" font-style="normal"></game-icon>
                             <div class="timer not-playable">
                                 <div class="target-arrives">{{ (new Date(currentPromo.promoStartDate) > new Date()) ? currentPromo.beforeText : currentPromo.duringText }}</div>
                                 <countdown
@@ -83,10 +81,7 @@
                             </div>
                         </div>
                         <div class="countdown" style="background: rgba(0,0,0,.4)"  v-else>
-                            <img
-                                    src="/img/game-icons/elusive-target-reminaing-time.png"
-                                    v-if="!currentPromo.tournament"
-                            />
+                            <game-icon icon="timed" font-style="normal"></game-icon>
                             <div class="timer not-playable">
                                 <div class="target-arrives">{{ (new Date(currentPromo.promoStartDate) > new Date()) ? currentPromo.beforeText : currentPromo.duringText }}</div>
                                 <div class="elusive-countdown">
@@ -168,9 +163,7 @@
                     >
                         <p>&nbsp;</p>
                         <div class="countdown">
-                            <img
-                                src="/img/game-icons/elusive-target-reminaing-time.png"
-                            />
+                            <game-icon icon="timed" font-style="normal"></game-icon>
                             <div
                                 class="timer"
                                 :class="{
@@ -201,16 +194,7 @@
                         </div>
                         <div class="elusive-target-info">
                             <div class="image">
-                                <img
-                                    src="/img/game-icons/elusive-target.png"
-                                    class="normal img-fluid"
-                                    :alt="$t('elusive-target-icon')"
-                                />
-                                <img
-                                    src="/img/game-icons/elusive-target-inverted.png"
-                                    class="inverted img-fluid"
-                                    :alt="$t('elusive-target-icon')"
-                                />
+                                <game-icon icon="elusive" font-style="normal"></game-icon>
                             </div>
                             <div class="text">
                                 <h2>{{ $t('game-type.Elusive Target') }}</h2>
@@ -229,16 +213,7 @@
                                 class="image elusive-notification float-right notification-icon"
                                 v-tooltip:left="$t('elusive-target.notifications.manage-notifications')"
                             >
-                                <img
-                                    src="/img/game-icons/notification.png"
-                                    class="normal img-fluid"
-                                    :alt="$t('elusive-target.notifications.notification-icon')"
-                                />
-                                <img
-                                    src="/img/game-icons/notification-inverted.png"
-                                    class="inverted img-fluid"
-                                    :alt="$t('elusive-target.notifications.notification-icon')"
-                                />
+                                <game-icon icon="settings" font-style="normal"></game-icon>
                             </div>
                         </div>
                     </a>
@@ -246,21 +221,11 @@
                         <p>&nbsp;</p>
                         <div class="elusive-target-info">
                             <div class="image">
-                                <img
-                                    src="/img/game-icons/elusive-target.png"
-                                    class="normal img-fluid"
-                                    :alt="$t('elusive-target-icon')"
-                                />
-                                <img
-                                    src="/img/game-icons/elusive-target-inverted.png"
-                                    class="inverted img-fluid"
-                                    :alt="$t('elusive-target-icon')"
-                                />
+                                <game-icon icon="elusive" font-style="normal"></game-icon>
                             </div>
                             <div class="text">
                                 <h2>{{ $t('game-type.Elusive Target') }}</h2>
-                                <h1>No Active Target</h1>
-                                <!--<h1>{{ $t('elusive-target.coming-soon') }}</h1>-->
+                                <h1>{{ $t('elusive-target.coming-soon') }}</h1>
                             </div>
                             <div
                                 onclick="return false;"
@@ -268,16 +233,7 @@
                                 class="image float-right notification-icon"
                                 v-tooltip:left="$t('elusive-target.notifications.manage-notifications')"
                             >
-                                <img
-                                    src="/img/game-icons/notification.png"
-                                    class="normal img-fluid"
-                                    :alt="$t('elusive-target.notifications.notification-icon')"
-                                />
-                                <img
-                                    src="/img/game-icons/notification-inverted.png"
-                                    class="inverted img-fluid"
-                                    :alt="$t('elusive-target.notifications.notification-icon')"
-                                />
+                                <game-icon icon="settings" font-style="normal"></game-icon>
                             </div>
                         </div>
                     </a>
@@ -368,11 +324,6 @@
                                 </h5>
                             </div>
                             <div class="modal-body d-flex flex-column">
-                                <alert type="info">
-                                    As of <b>January 10, 2020</b>, all traffic from hitman2maps.com is now being redirected
-                                    to hitmaps.com. Due to this change, all Elusive Target push notification preferences have been <i>cleared</i>. Please
-                                    re-subscribe if you wish to continue to receive Elusive Target push notifications. We apologize for any inconvenience.
-                                </alert>
                                 <div id="checking-notification-status">
                                     <h6>{{ $t('elusive-target.notifications.checking-if-enabled') }}</h6>
                                     <div class="spinner-grow" role="status">
@@ -690,7 +641,7 @@
                         <p>&nbsp;</p>
                         <div class="game-info">
                             <div class="image">
-                                <game-icon :icon="game.icon" font-style="solid"></game-icon>
+                                <game-icon :icon="game.icon" font-style="normal"></game-icon>
                             </div>
                             <div class="text">
                                 <h2>{{ $t("game-type." + game.type) }}</h2>
@@ -1608,18 +1559,17 @@ header {
         &:hover {
             .game-info,
             .elusive-target-info {
-                color: white;
-                background: #ff1439;
+                color: $card-footer-text;
+                background: $card-footer-background-hover;
 
                 h2 {
-                    color: white;
+                    color: $card-footer-text;
                 }
 
                 .image {
                     i {
-                        line-height: 0;
-                        font-size: 48px;
-                        display: block;
+                        color: $card-footer-background-hover;
+                        background: $card-footer-text;
                     }
 
                     img {
@@ -1639,12 +1589,13 @@ header {
         .game-info,
         .elusive-target-info {
             padding: 15px;
-            background: white;
-            color: #000;
+            background: $card-footer-background;
+            color: $card-footer-text;
             text-shadow: none;
 
             h2 {
-                color: #ff003c;
+                color: $card-footer-text;
+                font-weight: 400;
             }
 
             .image {
@@ -1669,10 +1620,8 @@ header {
                     }
                 }
 
+
                 i {
-                    line-height: 0;
-                    font-size: 48px;
-                    display: block;
                 }
             }
 
@@ -1712,9 +1661,9 @@ header {
             padding: 15px 15px 0;
             padding-bottom: 1rem;
 
-            img {
-                width: 48px;
-                height: 48px;
+            i {
+                color: $elusive-countdown;
+                border-color: $elusive-countdown;
                 margin-right: 5px;
             }
 
@@ -1723,13 +1672,13 @@ header {
                 vertical-align: middle;
 
                 .target-arrives {
-                    color: #fff;
+                    color: $elusive-countdown-header;
                     line-height: 0;
                     display: none;
                 }
 
                 .elusive-countdown {
-                    color: #fef30a;
+                    color: $elusive-countdown;
                     font-size: 2rem;
                     vertical-align: middle;
                     font-weight: 600;
@@ -1750,32 +1699,6 @@ header {
                     }
                 }
             }
-        }
-    }
-
-    .one-year {
-        /*background-color: rgba(0,0,0,.5);*/
-        background-repeat: no-repeat;
-        background-position: center;
-        background-image: url('/img/jpg/one-year/miami.jpg');
-        background-attachment: fixed;
-        background-size: 150%;
-        margin-left: 3px;
-        margin-right: 3px;
-        padding-left: 0;
-        padding-right: 0;
-        text-align: center;
-        border: 5px solid #fff;
-
-        a {
-            background-color: rgba(0,0,0,.5);
-            width: 100%;
-            display: block;
-            font-size: 2rem;
-            color: white;
-            padding-top: 20px;
-            padding-bottom: 20px;
-            text-shadow: 2px 2px #000;
         }
     }
 }
