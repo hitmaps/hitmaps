@@ -1,11 +1,11 @@
 <template>
     <div>
         <div v-if="!mapLoaded && mission != null" class="overlay" :style="'background: #ccc url(' + mission.backgroundUrl + ') no-repeat; background-size: cover'">
-            <div class="overlay-container">
-                <img class="img-fluid" :src="loadingTile" alt="Mission Thumbnail" />
+            <div class="overlay-container" :style="`background: url('${loadingTile}') center center / cover no-repeat`">
+                <img class="img-fluid" :src="loadingTile" alt="Mission Thumbnail" style="visibility: hidden" />
                 <div class="footer">
                     <div class="footer-image">
-                        <img src="/img/game-icons/mission-inverted.png" class="img-fluid" :alt="$t('mission-icon')" />
+                        <game-icon icon="mission" font-style="normal" />
                     </div>
                     <div class="footer-text">
                         <h2>{{ lang('mission-types.' + mission.missionType.toLowerCase(), mission.missionType) }}</h2>
@@ -736,35 +736,17 @@
                     </div>
                 </div>
                 <template v-slot:modal-footer>
+                    <game-button type="button" data-dismiss="modal">
+                        <game-icon icon="failed" font-style="normal" />
+                        {{ $t('form.cancel') }}
+                    </game-button>
                     <game-button
                         type="submit"
                         id="copy-disguise-regions-btn"
                         @click="copyDisguiseAreas"
                     >
-                        <img
-                            src="/img/game-icons/modal-continue.png"
-                            class="normal img-fluid"
-                            :alt="$t('form.submit-icon')"
-                        />
-                        <img
-                            src="/img/game-icons/modal-continue-inverted.png"
-                            class="inverted img-fluid"
-                            :alt="$t('form.submit-icon')"
-                        />
+                        <game-icon icon="check" font-style="normal" />
                         {{ $t('form.copy') }}
-                    </game-button>
-                    <game-button type="button" data-dismiss="modal">
-                        <img
-                            src="/img/game-icons/modal-close.png"
-                            class="normal img-fluid"
-                            :alt="$t('form.cancel-icon')"
-                        />
-                        <img
-                            src="/img/game-icons/modal-close-inverted.png"
-                            class="inverted img-fluid"
-                            :alt="$t('form.cancel-icon')"
-                        />
-                        {{ $t('form.cancel') }}
                     </game-button>
                 </template>
             </modal>
@@ -778,32 +760,11 @@
                 </div>
                 <template v-slot:modal-footer>
                     <game-button type="button" @click="cancelMoveMarker" data-dismiss="modal">
-                        <img
-                                src="/img/game-icons/modal-close.png"
-                                class="normal img-fluid"
-                                :alt="$t('form.cancel-icon')"
-                        />
-                        <img
-                                src="/img/game-icons/modal-close-inverted.png"
-                                class="inverted img-fluid"
-                                :alt="$t('form.cancel-icon')"
-                        />
+                        <game-icon icon="failed" font-style="normal" />
                         {{ $t('form.cancel') }}
                     </game-button>
-                    <game-button
-                            type="submit"
-                            @click="confirmMove"
-                    >
-                        <img
-                                src="/img/game-icons/modal-continue.png"
-                                class="normal img-fluid"
-                                :alt="$t('form.submit-icon')"
-                        />
-                        <img
-                                src="/img/game-icons/modal-continue-inverted.png"
-                                class="inverted img-fluid"
-                                :alt="$t('form.submit-icon')"
-                        />
+                    <game-button type="submit" @click="confirmMove">
+                        <game-icon icon="check" font-style="normal" />
                         {{ $t('form.save') }}
                     </game-button>
                 </template>
@@ -1121,13 +1082,11 @@
                 </div>
                 <template v-slot:modal-footer>
                     <game-button type="button" data-dismiss="modal">
-                        <img src="/img/game-icons/modal-close.png" class="normal img-fluid" :alt="$t('form.cancel-icon')" />
-                        <img src="/img/game-icons/modal-close-inverted.png" class="inverted img-fluid" :alt="$t('form.cancel-icon')" />
+                        <game-icon icon="failed" font-style="normal" />
                         {{ $t('form.close') }}
                     </game-button>
                     <game-button type="submit" @click="saveMarker" ref="saveMarkerButton">
-                        <img src="/img/game-icons/modal-continue.png" class="normal img-fluid" :alt="$t('form.submit-icon')" />
-                        <img src="/img/game-icons/modal-continue-inverted.png" class="inverted img-fluid" :alt="$t('form.submit-icon')" />
+                        <game-icon icon="check" font-style="normal" />
                         {{ $t('form.save') }}
                     </game-button>
                 </template>
@@ -1183,11 +1142,13 @@ import MetaHandler from '../components/MetaHandler'
 
 import LanguageHelpers from "../components/LanguageHelpers";
 import ArrayHelpers from "../components/ArrayHelpers";
+import GameIcon from "../components/GameIcon";
 
 Vue.use(CxltToaster)
 export default {
     name: 'map-view',
     components: {
+        GameIcon,
         Alert,
         GameButton,
         Modal
@@ -3325,9 +3286,8 @@ html {
         box-shadow: 5px 5px 40px #000;
 
         .footer {
-            /* White background */
-            background: #fff;
-            color: #000;
+            background: $card-footer-background;
+            color: $card-footer-text;
             text-align: left;
             padding: 10px;
 
@@ -3335,11 +3295,6 @@ html {
                 display: inline-block;
                 vertical-align: top;
                 margin-right: 5px;
-
-                img {
-                    height: 48px;
-                    width: 48px;
-                }
             }
 
             .footer-text {
@@ -3354,7 +3309,8 @@ html {
                 h2 {
                     font-size: 1rem;
                     margin-bottom: 0;
-                    color: #ff003c;
+                    color: $card-footer-text;
+                    font-weight: 400;
                 }
             }
         }

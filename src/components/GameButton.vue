@@ -23,18 +23,22 @@ export default {
 
 <style lang="scss" scoped>
 .game-button {
-    background: #fff;
+    background: $game-button-background;
     margin: 0 10px 10px 0;
 
     &.btn-block {
         border-radius: 0;
         text-transform: uppercase;
-        background: #fff;
-        color: #000;
+        background: $game-button-background;
+        color: $game-button-text;
         font-family: 'nimbus_sans_lbold', sans-serif;
         text-align: left;
         font-size: 1.3rem;
         transition: none;
+
+        i.game-icon {
+            font-size: 20px;
+        }
 
         img {
             max-width: 32px;
@@ -61,8 +65,13 @@ export default {
         }
 
         &:not(:disabled):hover {
-            background: #ff003c;
-            color: #fff;
+            background: $game-button-background-hover;
+            color: $game-button-text;
+
+            i.game-icon {
+                background: $game-button-text;
+                color: $game-button-background-hover;
+            }
 
             img {
                 &.normal {
@@ -76,8 +85,8 @@ export default {
         }
 
         &:disabled {
-            background: #ddd;
-            color: #333;
+            background: $game-button-disabled-background;
+            color: $game-button-disabled-text;
 
             &:hover {
                 cursor: not-allowed;

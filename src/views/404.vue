@@ -23,13 +23,7 @@
         <div class="home-button">
             <router-link :to="{ name: 'home' }">
                 <game-button>
-                    <img src="/img/game-icons/campaign.png"
-                         class="normal img-fluid"
-                         alt="Return Home" />
-                    <img src="/img/game-icons/campaign-inverted.png"
-                         class="inverted img-fluid"
-                         alt="Return Home"
-                    />
+                    <game-icon icon="story" font-style="normal" />
                     Home
                 </game-button>
             </router-link>
@@ -39,11 +33,12 @@
 
 <script>
 import GameButton from "../components/GameButton";
+import GameIcon from "../components/GameIcon";
 
 export default {
     name: '404',
     title: 'Page Not Found',
-    components: {GameButton}
+    components: {GameIcon, GameButton}
 }
 </script>
 <style lang="scss" scoped>
@@ -57,10 +52,15 @@ export default {
         }
 
         > .inner-content {
-            background-color: white;
+            background-color: $content-background;
+            color: $content-text;
             margin: 20px;
             padding: 20px;
             font-family: 'nimbus_sans_lbold', sans-serif;
+
+            hr {
+                background: $content-text;
+            }
 
             h1 {
                 text-transform: uppercase;

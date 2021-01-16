@@ -5,13 +5,6 @@ namespace Controllers;
 
 
 use BusinessLogic\Authentication\LoginUserService;
-use BusinessLogic\Authentication\RegisterNewUserCommand;
-use BusinessLogic\Authentication\VerifyUserCommand;
-use Config\Constants;
-use Config\Settings;
-use Controllers\ViewModels\BaseModel;
-use ReCaptcha\ReCaptcha;
-use ReCaptcha\RequestMethod\CurlPost;
 
 class AuthenticationController {
     private $loginUserService;

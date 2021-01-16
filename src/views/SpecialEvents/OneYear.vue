@@ -214,8 +214,10 @@
 </template>
 
 <script>
+    import GameIcon from "../../components/GameIcon";
     export default {
         name: 'one-year',
+        components: {GameIcon},
         title: 'HITMAN™️ 2 Maps\' One Year Anniversary'
     }
 </script>
