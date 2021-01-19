@@ -22,6 +22,7 @@
         "abraham/twitteroauth": "^2.0",
         "firebase/php-jwt": "^5.0",
         "predis/predis": "^1.1",
-        "nicklaw5/twitch-api-php": "^2.1"
+        "nicklaw5/twitch-api-php": "^2.1",
+        "symfony/yaml": "^5.2"
     }
 }
