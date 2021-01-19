@@ -28,7 +28,7 @@
             <div class="row dashboard">
                 <div
                     class="game col-lg"
-                    v-for="game in games.filter(x => ['hitman', 'hitman2', 'hitman3'].includes(x.slug))"
+                    v-for="game in games.filter(x => ['hitman', 'hitman2'].includes(x.slug))"
                     :key="game.id"
                     v-bind:style="{
                         backgroundImage:
