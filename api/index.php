@@ -49,7 +49,9 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]?', function 
 
                 /* @var $missionDifficulty \DataAccess\Models\MissionDifficulty */
                 foreach ($missionDifficulties as $missionDifficulty) {
-                    $mission->difficulties[] = $missionDifficulty->getDifficulty();
+                    if ($missionDifficulty->isVisible()) {
+                        $mission->difficulties[] = $missionDifficulty->getDifficulty();
+                    }
                 }
             }
             $location->missions = $missions;
@@ -85,7 +87,9 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
 
         /* @var $missionDifficulty \DataAccess\Models\MissionDifficulty */
         foreach ($missionDifficulties as $missionDifficulty) {
-            $mission->difficulties[] = $missionDifficulty->getDifficulty();
+            if ($missionDifficulty->isVisible()) {
+                $mission->difficulties[] = $missionDifficulty->getDifficulty();
+            }
         }
 
         $mission->floorNames = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\MapFloorToName::class)->findBy(['missionId' => $mission->getId()], ['floorNumber' => 'ASC']);
@@ -893,6 +897,10 @@ $klein->respond('GET', '/api/sitemap.txt', function(\Klein\Request $request, \Kl
                     ->findBy(['missionId' => $mission->getId()]);
 
                 foreach ($difficulties as $difficulty) {
+                    if (!$difficulty->isVisible()) {
+                        continue;
+                    }
+
                     $formattedDifficulty = strtolower($difficulty->getDifficulty());
                     $pages[] = "{$constants->siteDomain}/games/{$game->getSlug()}/{$location->getSlug()}/{$mission->getSlug()}/{$formattedDifficulty}";
                 }

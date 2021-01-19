@@ -26,6 +26,11 @@ class MissionDifficulty {
     private $difficulty;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $visible;
+
+    /**
      * @return mixed
      */
     public function getId() {
@@ -65,5 +70,19 @@ class MissionDifficulty {
      */
     public function setDifficulty($difficulty): void {
         $this->difficulty = $difficulty;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function isVisible() {
+        return $this->visible;
+    }
+
+    /**
+     * @param mixed $visible
+     */
+    public function setVisible($visible): void {
+        $this->visible = $visible;
     }
 }
