@@ -847,20 +847,7 @@ export default {
             currentPromoIndex: 0,
             currentPromo: 0,
             tournamentMatches: [],
-            promos: [
-                {
-                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-custom/h3-header.jpg',
-                    promoStartDate: '2020-07-08T23:00:00+00:00',
-                    promoEndDate: '2021-01-20T13:00:00+00:00',
-                    topCaption: "hitman.com",
-                    bottomCaption: 'HITMAN™ 3',
-                    beforeText: undefined,
-                    duringText: 'Death Awaits',
-                    tournament: false,
-                    h3: true,
-                    url: 'https://www.hitman.com'
-                }
-            ],
+            promos: [],
             games: [],
             elusiveTargets: [],
             activeElusiveIndex: 0,
@@ -1207,7 +1194,7 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
-            this.currentPromo = this.promos[0];
+            this.currentPromo = 0;
             this.currentPromoIndex = 0;
             setInterval(() => {
                 this.currentPromo = this.currentPromoIndex === this.promos.length ?
