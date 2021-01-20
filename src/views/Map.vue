@@ -1182,6 +1182,7 @@ export default {
             floorsWithSearchResults: [],
             floorCountOverride: [],
             editor: {
+                nodeId: undefined,
                 enabled: false,
                 mode: '',
                 templates: null,
@@ -1223,16 +1224,14 @@ export default {
             return '/img/jpg/elusive-targets/' + this.mission.slug + '.jpg'
         },
         currentCategory: function() {
-            if (
-                this.editor.currentCategory == '' ||
+            if (this.editor.currentCategory == '' ||
                 this.editor.currentCategory === null ||
-                this.editor.currentCategory === undefined
-            )
-                return
-            var split = this.editor.currentCategory.split('|')
-            return this.categories[split[0]].find(
-                element => element.subgroup == split[1]
-            )
+                this.editor.currentCategory === undefined) {
+                return;
+            }
+
+            let split = this.editor.currentCategory.split('|')
+            return this.categories[split[0]].find(element => element.subgroup == split[1]);
         },
         currentDisguise: function() {
             if (this.editor.currentDisguise === 'NONE') return null
@@ -1514,12 +1513,12 @@ export default {
             let element = '#editModal'
             //Reset old data
             if (this.currentCategory) {
-                this.currentCategory.nodeId = undefined
-                this.currentCategory.name = undefined
-                this.currentCategory.defaultQuantity = 1
-                this.currentCategory.action = undefined
-                this.currentCategory.target = undefined
-                this.currentCategory.image = undefined
+                this.editor.nodeId = undefined;
+                this.currentCategory.name = undefined;
+                this.currentCategory.defaultQuantity = 1;
+                this.currentCategory.action = undefined;
+                this.currentCategory.target = undefined;
+                this.currentCategory.image = undefined;
             }
 
             this.editor.currentCategory = undefined
@@ -1555,13 +1554,13 @@ export default {
                 'val',
                 this.currentCategory.icon
             )
-            this.currentCategory.nodeId = item.id
-            this.currentCategory.name = item.name
-            this.currentCategory.defaultQuantity = item.quantity
-            this.currentCategory.action = item.target
-            this.currentCategory.target = item.target
-            this.currentCategory.image = item.image
-            this.currentCategory.pickupType = item.pickupType
+            this.editor.nodeId = item.id;
+            this.currentCategory.name = item.name;
+            this.currentCategory.defaultQuantity = item.quantity;
+            this.currentCategory.action = item.target;
+            this.currentCategory.target = item.target;
+            this.currentCategory.image = item.image;
+            this.currentCategory.pickupType = item.pickupType;
 
             $('#editModal').modal('show')
         },
@@ -1635,9 +1634,9 @@ export default {
         saveMarker: function() {
             var url = 'nodes'
             var data = new FormData()
-            if (this.currentCategory.nodeId) {
-                data.append('id', this.currentCategory.nodeId)
-                url = 'nodes/edit/' + this.currentCategory.nodeId
+            if (this.editor.nodeId) {
+                data.append('id', this.editor.nodeId)
+                url = 'nodes/edit/' + this.editor.nodeId
             } else {
                 data.append('id', -1)
             }
@@ -1668,7 +1667,7 @@ export default {
             });
             this.$refs.saveMarkerButton.disabled = true;
             this.$request(true, url, data).then(resp => {
-                if (this.currentCategory.nodeId) {
+                if (this.editor.nodeId) {
                     this.editor.currentMarker.deleted = true;
                 }
 
@@ -1687,7 +1686,7 @@ export default {
                 }
                 $('#editModal').modal('hide');
                 this.editor.currentMarker = null;
-                let toastMessage = this.currentCategory.nodeId ? 'Item edited!' : 'Item added!';
+                let toastMessage = this.editor.nodeId ? 'Item edited!' : 'Item added!';
                 this.$toast.success({
                     message: toastMessage
                 });
