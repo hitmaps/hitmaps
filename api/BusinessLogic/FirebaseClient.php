@@ -12,21 +12,17 @@ class FirebaseClient {
     public function subscribeToTopic(string $topicId, string $token): array {
         $client = self::buildClient();
 
-        return $client->getMessaging()
-            ->subscribeToTopic(Firebase\Messaging\Topic::fromValue($topicId), $token);
+        return $client->subscribeToTopic(Firebase\Messaging\Topic::fromValue($topicId), $token);
     }
 
-    private static function buildClient(): Firebase {
-        return (new Factory())
-            ->withServiceAccount(__DIR__ . '/../Config/firebase-service-account.json')
-            ->create();
+    private static function buildClient(): Firebase\Messaging {
+        return (new Factory())->withServiceAccount(__DIR__ . '/../Config/firebase-service-account.json')->createMessaging();
     }
 
     public function unsubscribeFromTopic(string $topicId, string $token): array {
         $client = self::buildClient();
 
-        return $client->getMessaging()
-            ->unsubscribeFromTopic(Firebase\Messaging\Topic::fromValue($topicId), $token);
+        return $client->unsubscribeFromTopic(Firebase\Messaging\Topic::fromValue($topicId), $token);
     }
 
     public function sendElusiveTargetMessage(string $topicId, string $title, string $body, string $iconUrl, ?string $imageUrl = null, ?string $mapUrl = null): array {
@@ -51,7 +47,6 @@ class FirebaseClient {
 
         $message = $message->withWebPushConfig($config);
 
-        return $client->getMessaging()
-            ->send($message);
+        return $client->send($message);
     }
 }
