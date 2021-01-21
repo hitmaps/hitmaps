@@ -17,9 +17,8 @@ class FirebaseClient {
     }
 
     private static function buildClient(): Firebase {
-        $serviceAccount = ServiceAccount::fromJsonFile(__DIR__ . '/../Config/firebase-service-account.json');
         return (new Factory())
-            ->withServiceAccount($serviceAccount)
+            ->withServiceAccount(__DIR__ . '/../Config/firebase-service-account.json')
             ->create();
     }
 
