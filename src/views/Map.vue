@@ -1627,7 +1627,7 @@ export default {
                 })
             if (currentTemplate.information)
                 this.editor.notes.push({
-                    type: 'information',
+                    type: 'info',
                     text: currentTemplate.information
                 })
         },
@@ -2384,7 +2384,7 @@ export default {
                     crs: L.CRS.Simple,
                     layers: this.layerGroups,
                     renderer: renderer
-                }).setView([this.mission.mapCenterLatitude, this.mission.mapCenterLongitude], 3);
+                }).setView([this.mission.mapCenterLatitude, this.mission.mapCenterLongitude], this.mission.minZoom);
                 let topLeftCoordinate = this.mission.topLeftCoordinate.split(',');
                 let bottomRightCoordinate = this.mission.bottomRightCoordinate.split(',');
                 this.map.setMaxBounds([topLeftCoordinate, bottomRightCoordinate]);
