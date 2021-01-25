@@ -1,7 +1,7 @@
 <template>
     <div
         class="content"
-        style="background: url('https://media.hitmaps.com/img/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
+        style="background: url('https://media.hitmaps.com/img/hitman3/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
     >
         <header class="row">
             <div class="col text-center site-header">

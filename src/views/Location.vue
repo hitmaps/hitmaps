@@ -1,7 +1,7 @@
 <template>
     <div
         class="content"
-        style="background: url('https://media.hitmaps.com/img/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
+        style="background: url('https://media.hitmaps.com/img/hitman3/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
     >
         <div class="site-container" v-if="game != null">
             <script type="application/ld+json">
@@ -43,7 +43,7 @@
             <nav
                 id="scrollspy"
                 class="navbar locations"
-                style="background: url('https://media.hitmaps.com/img/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
+                style="background: url('https://media.hitmaps.com/img/hitman3/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
             >
                 <ul class="nav">
                     <li v-if="locations.length > 0" class="nav-item">

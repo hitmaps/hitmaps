@@ -1,19 +1,12 @@
 <template>
     <div
         class="content"
-        style="background: url('https://media.hitmaps.com/img/hitmaps-custom/h3-background.png') no-repeat center center fixed; background-size: cover"
+        style="background: url('https://media.hitmaps.com/img/hitman3/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
     >
-        <header class="row" style="align-items: center">
-            <div class="col-lg-6 col-md-12 text-center site-header">
-                <img
-                    v-webp
-                    src="/img/png/logos/hitmaps.png"
-                    class="img-fluid"
-                />
+        <header class="row">
+            <div class="col text-center site-header">
+                <img v-webp src="/img/png/logos/hitmaps.png" class="img-fluid">
                 <h1>{{ $t('interactive-maps-for-hitman') }}</h1>
-            </div>
-            <div class="col-lg-6 col-md-12 text-center site-header">
-                <img src="https://media.hitmaps.com/img/hitmaps-custom/new-maps-await.png" class="img-fluid" alt="New Maps Await - Sometime 2021">
             </div>
         </header>
         <div
@@ -28,7 +21,7 @@
             <div class="row dashboard">
                 <div
                     class="game col-lg"
-                    v-for="game in games.filter(x => ['hitman', 'hitman2'].includes(x.slug))"
+                    v-for="game in games.filter(x => ['hitman', 'hitman2', 'hitman3'].includes(x.slug))"
                     :key="game.id"
                     v-bind:style="{
                         backgroundImage:

@@ -309,7 +309,7 @@
                                                 data-disguise-id="NONE"
                                                 class="col-lg-6 selected">
                                                 <div class="disguise-container">
-                                                    <img src="https://media.hitmaps.com/img/ui/tiles/defaultmenutilelarge.jpg" alt="None" class="img-fluid">
+                                                    <img src="https://media.hitmaps.com/img/hitman3/ui/tiles/any_disguise.jpg" alt="None" class="img-fluid">
                                                     <p class="disguise-info">{{ $t('map.none') }}</p>
                                                 </div>
                                             </div>
