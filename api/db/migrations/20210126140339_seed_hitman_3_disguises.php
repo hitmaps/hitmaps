@@ -455,5 +455,9 @@ final class SeedHitman3Disguises extends AbstractMigration {
                 'suit' => 0
             ],
         ];
+
+        $this->table('disguises')
+            ->insert($disguises)
+            ->save();
     }
 }
