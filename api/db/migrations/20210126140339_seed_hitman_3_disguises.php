@@ -16,14 +16,14 @@ final class SeedHitman3Disguises extends AbstractMigration {
             [
                 'mission_id' => $slugToId['on-top-of-the-world'],
                 'name' => 'Skydiving Suit',
-                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables/outfit_c4146f27-81a9-42ef-b3c7-87a9d60b87fe_0.jpg',
+                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables_override/47_outfits_gecko_skydiving.jpg',
                 'order' => 0,
                 'suit' => 1
             ],
             [
                 'mission_id' => $slugToId['on-top-of-the-world'],
                 'name' => 'Ashen Suit',
-                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables/outfit_07ab08e1-013e-439d-a98b-3b7e8c9f13bc_0.jpg',
+                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables_override/47_outfits_gecko.jpg',
                 'order' => 0,
                 'suit' => 1
             ],
@@ -115,7 +115,7 @@ final class SeedHitman3Disguises extends AbstractMigration {
             [
                 'mission_id' => $slugToId['death-in-the-family'],
                 'name' => 'Classic Cut Long Coat Suit',
-                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables/outfit_44a55c52-4207-4c69-b17f-554b3df962b9_0.jpg',
+                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables_override/47_outfits_bulldog.jpg',
                 'order' => 0,
                 'suit' => 1
             ],
@@ -180,7 +180,7 @@ final class SeedHitman3Disguises extends AbstractMigration {
             [
                 'mission_id' => $slugToId['apex-predator'],
                 'name' => 'Number Six',
-                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables/outfit_19e3757f-01b5-4821-97c3-1a1045646531_0.jpg',
+                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables_override/47_outfits_fox.jpg',
                 'order' => 0,
                 'suit' => 1
             ],
@@ -259,7 +259,7 @@ final class SeedHitman3Disguises extends AbstractMigration {
             [
                 'mission_id' => $slugToId['end-of-an-era'],
                 'name' => 'Neon City Suit',
-                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables/outfit_90ad022f-0789-413f-bf3d-603c1237c9b1_0.jpg',
+                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables_override/47_outfits_rat.jpg',
                 'order' => 0,
                 'suit' => 1
             ],
@@ -345,35 +345,42 @@ final class SeedHitman3Disguises extends AbstractMigration {
             [
                 'mission_id' => $slugToId['the-farewell'],
                 'name' => 'Black & White Tuxedo',
-                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables/outfit_d5f19325-01e7-46f2-bf3b-7f4ad7c15b91_0.jpg',
+                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables_override/47_outfits_llama.jpg',
                 'order' => 0,
                 'suit' => 1
             ],
             [
                 'mission_id' => $slugToId['the-farewell'],
+                'name' => 'Asako Chef',
+                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables/outfit_8d105591-dfbe-46aa-8520-f00f986b57e2_0.jpg',
+                'order' => 0,
+                'suit' => 0
+            ],
+            [
+                'mission_id' => $slugToId['the-farewell'],
                 'name' => 'Bodyguard',
-                'image' => '',
+                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables/outfit_aa7dc754-702a-401b-8f84-e806e958869c_0.jpg',
                 'order' => 0,
                 'suit' => 0
             ],
             [
                 'mission_id' => $slugToId['the-farewell'],
                 'name' => 'Chief Winemaker',
-                'image' => '',
+                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables/outfit_af56d687-ba1b-44c8-8061-fd4a4a1222a3_0.jpg',
                 'order' => 0,
                 'suit' => 0
             ],
             [
                 'mission_id' => $slugToId['the-farewell'],
                 'name' => 'Winery Worker',
-                'image' => '',
+                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables/outfit_bbdfca80-abef-4b43-953e-9a46c3eee2eb_0.jpg',
                 'order' => 0,
                 'suit' => 0
             ],
             [
                 'mission_id' => $slugToId['the-farewell'],
                 'name' => 'Mercenary',
-                'image' => '',
+                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables/outfit_69d4d32b-0fc9-4fde-8817-fafd98c13365_0.jpg',
                 'order' => 0,
                 'suit' => 0
             ],
@@ -387,7 +394,7 @@ final class SeedHitman3Disguises extends AbstractMigration {
             [
                 'mission_id' => $slugToId['the-farewell'],
                 'name' => 'Gaucho',
-                'image' => '',
+                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables/outfit_e887e53a-6b02-455d-88be-284af6d88e94_0.jpg',
                 'order' => 0,
                 'suit' => 0
             ],
@@ -402,6 +409,48 @@ final class SeedHitman3Disguises extends AbstractMigration {
                 'mission_id' => $slugToId['the-farewell'],
                 'name' => 'Waiter',
                 'image' => 'https://media.hitmaps.com/img/hitman3/unlockables/outfit_cac0081e-9eb0-4fbf-ba23-70c2815f0874_0.jpg',
+                'order' => 0,
+                'suit' => 0
+            ],
+            [
+                'mission_id' => $slugToId['the-farewell'],
+                'name' => 'Head of Security',
+                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables/outfit_16df6808-97ac-4c3a-8d4b-7ddacfc8a7ea_0.jpg',
+                'order' => 0,
+                'suit' => 0
+            ],
+            [
+                'mission_id' => $slugToId['the-farewell'],
+                'name' => 'Tactical Wetsuit',
+                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables/outfit_08022e2c-4954-4b63-b632-3ac50d018292_0.jpg',
+                'order' => 0,
+                'suit' => 0
+            ],
+            [
+                'mission_id' => $slugToId['the-farewell'],
+                'name' => 'Providence Herald',
+                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables/outfit_f5b24132-7a6b-4a3f-868d-193b8692a52b_0.jpg',
+                'order' => 0,
+                'suit' => 0
+            ],
+            [
+                'mission_id' => $slugToId['the-farewell'],
+                'name' => 'Corvo Black',
+                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables/outfit_214b2143-3277-44cd-b20f-344747fc23d9_0.jpg',
+                'order' => 0,
+                'suit' => 0
+            ],
+            [
+                'mission_id' => $slugToId['the-farewell'],
+                'name' => "47's Signature Suit",
+                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables/outfit_6c129ec5-41cb-43f1-837d-ebff54f260c6_0.jpg',
+                'order' => 0,
+                'suit' => 1
+            ],
+            [
+                'mission_id' => $slugToId['the-farewell'],
+                'name' => 'Tango Musician',
+                'image' => 'https://media.hitmaps.com/img/hitman3/unlockables/outfit_6ab03e04-9e88-4237-a596-96e3135420ab_0.jpg',
                 'order' => 0,
                 'suit' => 0
             ],
