@@ -424,7 +424,7 @@ final class SeedHitman3Disguises extends AbstractMigration {
                 'name' => 'Tactical Wetsuit',
                 'image' => 'https://media.hitmaps.com/img/hitman3/unlockables/outfit_08022e2c-4954-4b63-b632-3ac50d018292_0.jpg',
                 'order' => 0,
-                'suit' => 0
+                'suit' => 1
             ],
             [
                 'mission_id' => $slugToId['the-farewell'],
@@ -442,7 +442,7 @@ final class SeedHitman3Disguises extends AbstractMigration {
             ],
             [
                 'mission_id' => $slugToId['the-farewell'],
-                'name' => "47's Signature Suit",
+                'name' => "47's Signature Suit with Gloves",
                 'image' => 'https://media.hitmaps.com/img/hitman3/unlockables/outfit_6c129ec5-41cb-43f1-837d-ebff54f260c6_0.jpg',
                 'order' => 0,
                 'suit' => 1
