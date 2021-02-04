@@ -90,7 +90,7 @@ class ElusiveTarget {
     private $reactivated;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", name="game_id")
      */
     private $gameId;
 
