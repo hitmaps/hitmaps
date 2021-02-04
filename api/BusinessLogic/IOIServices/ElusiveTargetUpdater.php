@@ -4,6 +4,7 @@ namespace BusinessLogic\IOIServices;
 use BusinessLogic\MissionCloner;
 use Config\Settings;
 use DataAccess\Models\ElusiveTarget;
+use DataAccess\Models\Game;
 use DataAccess\Models\Mission;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
@@ -16,53 +17,78 @@ class ElusiveTargetUpdater {
         // HITMAN
         "Paris, France" => [
             'slug' => 'the-showstopper',
-            'tileSaveLocation' => '/elusive-targets/legacy/'
+            'tileSaveLocation' => '/elusive-targets/hitman/'
         ],
         "Sapienza, Italy" => [
             'slug' => 'world-of-tomorrow',
-            'tileSaveLocation' => '/elusive-targets/legacy/'
+            'tileSaveLocation' => '/elusive-targets/hitman/'
         ],
         "Marrakesh, Morocco" => [
             'slug' => 'a-gilded-cage',
-            'tileSaveLocation' => '/elusive-targets/legacy/'
+            'tileSaveLocation' => '/elusive-targets/hitman/'
         ],
         "Bangkok, Thailand" => [
             'slug' => 'club-27',
-            'tileSaveLocation' => '/elusive-targets/legacy/'
+            'tileSaveLocation' => '/elusive-targets/hitman/'
         ],
         "Colorado, USA" => [
             'slug' => 'freedom-fighters',
-            'tileSaveLocation' => '/elusive-targets/legacy/'
+            'tileSaveLocation' => '/elusive-targets/hitman/'
         ],
         "Hokkaido, Japan" => [
             'slug' => 'situs-inversus',
-            'tileSaveLocation' => '/elusive-targets/legacy/'
+            'tileSaveLocation' => '/elusive-targets/hitman/'
         ],
         // HITMAN 2
         "Hawke's Bay, New Zealand" => [
             'slug' => 'nightcall',
-            'tileSaveLocation' => '/elusive-targets/'
+            'tileSaveLocation' => '/elusive-targets/hitman2/'
         ],
         "Miami, USA" => [
             'slug' => 'finish-line',
-            'tileSaveLocation' => '/elusive-targets/'
+            'tileSaveLocation' => '/elusive-targets/hitman2/'
         ],
         "Santa Fortuna, Colombia" => [
             'slug' => 'three-headed-serpent',
-            'tileSaveLocation' => '/elusive-targets/'
+            'tileSaveLocation' => '/elusive-targets/hitman2/'
         ],
         "Mumbai, India" => [
             'slug' => 'chasing-a-ghost',
-            'tileSaveLocation' => '/elusive-targets/'
+            'tileSaveLocation' => '/elusive-targets/hitman2/'
         ],
         "Whittleton Creek, USA" => [
             'slug' => 'another-life',
-            'tileSaveLocation' => '/elusive-targets/'
+            'tileSaveLocation' => '/elusive-targets/hitman2/'
         ],
         "Isle of Sgàil, North Atlantic" => [
             'slug' => 'ark-society',
-            'tileSaveLocation' => '/elusive-targets/'
-        ]
+            'tileSaveLocation' => '/elusive-targets/hitman2/'
+        ],
+        // HITMAN 3
+        "Dubai, United Arab Emirates" => [
+            'slug' => 'on-top-of-the-world',
+            'tileSaveLocation' => '/elusive-targets/hitman3/'
+        ],
+        "Dartmoor, England" => [
+            'slug' => 'death-in-the-family',
+            'tileSaveLocation' => '/elusive-targets/hitman3/'
+        ],
+        "Berlin, Germany" => [
+            'slug' => 'apex-predator',
+            'tileSaveLocation' => '/elusive-targets/hitman3/'
+        ],
+        "Chongqing, China" => [
+            'slug' => 'end-of-an-era',
+            'tileSaveLocation' => '/elusive-targets/hitman3/'
+        ],
+        "Mendoza, Argentina" => [
+            'slug' => 'the-farewell',
+            'tileSaveLocation' => '/elusive-targets/hitman3/'
+        ],
+        "Carpathian Mountains, Romania" => [
+            'slug' => 'untouchable',
+            'tileSaveLocation' => '/elusive-targets/hitman3/'
+        ],
     ];
 
     public function __construct(EntityManager $entityManager, MissionCloner $missionCloner) {
@@ -88,13 +114,16 @@ class ElusiveTargetUpdater {
         }
 
         $responseJson = json_decode($response->getBody());
-        $elusiveTargetJsons = $responseJson->elusives->{'pc2-service.hitman.io'};
+        $elusiveTargetJsons = $responseJson->elusives->{'epic.hm3-service.hitman.io'};
         if (empty($elusiveTargetJsons)) {
             return false;
         }
 
+        /* @var $hitman3Game Game */
+        $hitman3Game = $this->entityManager->getRepository(Game::class)->findOneBy(['slug' => 'hitman3']);
+
         foreach ($elusiveTargetJsons as $elusiveTargetJson) {
-            $elusiveTarget = $this->entityManager->getRepository(ElusiveTarget::class)->findOneBy(['name' => $elusiveTargetJson->name]);
+            $elusiveTarget = $this->entityManager->getRepository(ElusiveTarget::class)->findOneBy(['name' => $elusiveTargetJson->name, 'gameId' => $hitman3Game->getId()]);
 
             if ($elusiveTarget === null) {
                 $locationInfo = $this->locationToSlugMap[$elusiveTargetJson->location];
@@ -137,10 +166,10 @@ class ElusiveTargetUpdater {
                 $elusiveTarget->setMissionId($newMissionId);
             }
 
-            // I better remember to change this when the next HITMAN game comes out 😛
-            $reactivated = $elusiveTarget->getReactivated();
+            // TODO Uncomment when ETs are reactivated
+            /*$reactivated = $elusiveTarget->getReactivated();
             if (!$reactivated &&
-                new \DateTime($elusiveTargetJson->nextWindow->start) > new \DateTime('2020-01-01 00:00:00', new \DateTimeZone('UTC'))) {
+                new \DateTime($elusiveTargetJson->nextWindow->start) > new \DateTime('2099-01-01 00:00:00', new \DateTimeZone('UTC'))) {
 
                 $reactivated = true;
                 $elusiveTarget->setComingNotificationSent(false);
@@ -150,9 +179,9 @@ class ElusiveTargetUpdater {
                 $elusiveTarget->setThreeDaysLeftNotificationSent(false);
                 $elusiveTarget->setOneDayLeftNotificationSent(false);
                 $elusiveTarget->setEndNotificationSent(false);
-            }
+            }*/
             $elusiveTarget->setBriefing($elusiveTargetJson->description);
-            $elusiveTarget->setReactivated($reactivated);
+            $elusiveTarget->setReactivated(false);
             $elusiveTarget->setBeginningTime(new \DateTime($elusiveTargetJson->nextWindow->start));
             $elusiveTarget->setEndingTime(new \DateTime($elusiveTargetJson->nextWindow->end));
             $this->entityManager->persist($elusiveTarget);

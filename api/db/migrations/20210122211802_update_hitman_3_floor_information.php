@@ -60,7 +60,7 @@ final class UpdateHitman3FloorInformation extends AbstractMigration {
                   `lowest_floor_number` = {$map['lowest_floor_number']}, 
                   `highest_floor_number` = {$map['highest_floor_number']},
                   `map_center_latitude` = '{$map['map_center_latitude']}',
-                  `map_center_longitude` = '{$map['map_center_longidue']}'
+                  `map_center_longitude` = '{$map['map_center_longitude']}'
               WHERE `slug` = '{$map['slug']}'");
         }
     }

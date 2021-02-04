@@ -90,6 +90,11 @@ class ElusiveTarget {
     private $reactivated;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $gameId;
+
+    /**
      * @return mixed
      */
     public function getId(): int {
@@ -320,5 +325,19 @@ class ElusiveTarget {
      */
     public function setReactivated($reactivated): void {
         $this->reactivated = $reactivated;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGameId() {
+        return $this->gameId;
+    }
+
+    /**
+     * @param mixed $gameId
+     */
+    public function setGameId($gameId): void {
+        $this->gameId = $gameId;
     }
 }
