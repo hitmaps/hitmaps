@@ -1201,10 +1201,10 @@ export default {
             console.error(err);
             this.$router.push({ name: '500' });
         });
-        this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/rrwc').then(resp => {
+        /*this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/rrwc').then(resp => {
             this.tournamentMatches = resp.data;
             console.info(this.tournamentMatches);
-        });
+        });*/
     }
 }
 
