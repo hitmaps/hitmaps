@@ -890,6 +890,10 @@ export default {
             streams: [],
             froteImages: [
                 {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/rr4.png',
+                    caption: 'Roulette Rivals 4'
+                },
+                {
                     url: 'https://media.hitmaps.com/img/hitmaps-tournaments/rrwc.png',
                     caption: 'Roulette Rivals World Championship'
                 },
