@@ -74,7 +74,7 @@
                             </div>
                         </div>
                         <div class="countdown" style="background: rgba(0,0,0,.4)"  v-else>
-                            <game-icon icon="timed" font-style="normal" />
+                            <game-icon icon="timed" font-style="normal" v-if="!currentPromo.tournament" />
                             <div class="timer not-playable">
                                 <div class="target-arrives">{{ (new Date(currentPromo.promoStartDate) > new Date()) ? currentPromo.beforeText : currentPromo.duringText }}</div>
                                 <div class="elusive-countdown">
@@ -553,11 +553,11 @@
                     </router-link>
                 </div>
             </div>
-            <!--<div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
+            <div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
-                            <h1>Roulette Rivals World Championship (Presented by Frote's Speedrun Community)</h1>
+                            <h1>Roulette Rivals 4 (Presented by Frote's Speedrun Community)</h1>
                             <h2>Upcoming Matches</h2>
                         </div>
                     </div>
@@ -565,7 +565,7 @@
                         <div class="row dashboard" style="margin: 0; margin-bottom: 40px;">
                             <div class="elusive-target col-lg" :style="{
                                 backgroundImage:
-                                    'url(https://media.hitmaps.com/img/hitmaps-tournaments/rrwc.png)',
+                                    'url(https://media.hitmaps.com/img/hitmaps-tournaments/rr4.png)',
                                 backgroundSize: 'cover',
                                 backgroundPosition: 'center',
                                 backgroundRepeat: 'no-repeat',
@@ -586,9 +586,7 @@
                                 </template>
                                 <template v-else>
                                     <div v-if="tournamentMatches[0].shoutcastStream" class="countdown" style="background: rgba(0,0,0,.4)">
-                                        <img
-                                                src="/img/game-icons/elusive-target-reminaing-time.png"
-                                        />
+                                        <game-icon font-style="normal" icon="timed" />
                                         <div class="timer not-playable">
                                             <div class="target-arrives">Next Match Begins in</div>
                                             <countdown class="elusive-countdown" :date="tournamentMatches[0].matchTime"/>
@@ -597,26 +595,17 @@
                                 </template>
                                 <div class="game-info">
                                     <div class="image">
-                                        <img src="/img/game-icons/campaign.png"
-                                             class="normal img-fluid"
-                                             alt="Campaign Icon" />
-                                        <img src="/img/game-icons/campaign-inverted.png"
-                                             class="inverted img-fluid"
-                                             alt="Campaign Icon" />
+                                        <game-icon font-style="normal" icon="versus" />
                                     </div>
                                     <div class="text">
                                         <h2>{{ tournamentMatches[0].firstMap.location }} and {{ tournamentMatches[0].secondMap.location }}</h2>
-                                        <h1>
-                                            <country-flag :country="tournamentMatches[0].participants[0].country"></country-flag>
-                                            {{ tournamentMatches[0].participants[0].name }} vs
-                                            {{ tournamentMatches[0].participants[1].name }}
-                                            <country-flag :country="tournamentMatches[0].participants[1].country"></country-flag></h1>
+                                        <h1>{{ tournamentMatches[0].participants[0].name }} vs {{ tournamentMatches[0].participants[1].name }}</h1>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </template>
-                    <div class="row d-none d-lg-flex d-xl-flex" style="color: black; border-bottom: 2px solid #dee2e6; border-top: 1px solid #dee2e6; padding: .75rem;">
+                    <div class="row d-none d-lg-flex d-xl-flex" style="border-bottom: 2px solid #dee2e6; border-top: 1px solid #dee2e6; padding: .75rem;">
                         <div class="col-lg-3">
                             <b><i class="fas fa-fw fa-swords"></i> Competitors</b>
                         </div>
@@ -630,19 +619,17 @@
                             <b><i class="fab fa-fw fa-twitch"></i> Shoutcaster(s)</b>
                         </div>
                     </div>
-                    <div class="row" v-if="!this.tournamentMatches.length" style="color: black; border-top: 1px solid #dee2e6; padding: .75rem;">
+                    <div class="row" v-if="!this.tournamentMatches.length" style="border-top: 1px solid #dee2e6; padding: .75rem;">
                         <div class="col">
                             <i>No upcoming matches</i>
                         </div>
                     </div>
                     <template v-for="matchup in this.tournamentMatches">
                         <div class="row" :key="`${matchup.participants[0].name}|${matchup.participants[1].name}|${matchup.platform}`"
-                             style="color: black; border-top: 1px solid #dee2e6; padding: .75rem;">
+                             style="border-top: 1px solid #dee2e6; padding: .75rem;">
                             <div class="col-lg-3 col-12">
-                                <i :class="getPlatformIcon(matchup.platform)"></i>
-                                <span>
-                                    <country-flag :country="matchup.participants[0].country" size="small"></country-flag> {{ matchup.participants[0].name }} vs
-                                    {{ matchup.participants[1].name }} <country-flag :country="matchup.participants[1].country" size="small"></country-flag></span>
+                                <!--<tournament-platform-icon :platforms="matchup.platformIcons" />-->
+                                <span>{{ matchup.participants[0].name }} vs {{ matchup.participants[1].name }}</span>
                             </div>
                             <div class="col-lg-3 col-12">
                                 {{ matchup.firstMap.location }} and {{ matchup.secondMap.location }}
@@ -658,7 +645,7 @@
                         </div>
                     </template>
                 </div>
-            </div>-->
+            </div>
         </template>
         <!--<modal modal-title="Roulette Rivals World Championship"
                id="roulette-rivals-modal"
@@ -806,12 +793,14 @@ import Alert from "../components/Alert";
 import MetaHandler from "../components/MetaHandler";
 import GameIcon from "../components/GameIcon";
 import GameButton from "../components/GameButton";
+import TournamentPlatformIcon from "../components/TournamentPlatformIcon";
 
 Vue.use(CxltToaster)
 export default {
     name: 'home',
     title: 'Home',
     components: {
+        TournamentPlatformIcon,
         GameButton,
         GameIcon,
         Alert,
@@ -840,7 +829,20 @@ export default {
             currentPromoIndex: 0,
             currentPromo: 0,
             tournamentMatches: [],
-            promos: [],
+            promos: [
+                {
+                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/rr4.png',
+                    promoStartDate: '2021-02-19T00:00:00+00:00',
+                    promoEndDate: '2021-03-08T00:00:00+00:00',
+                    topCaption: "Community Tournament",
+                    bottomCaption: 'Roulette Rivals 4',
+                    beforeText: 'Registration Closes',
+                    duringText: undefined,
+                    tournament: true,
+                    h3: false,
+                    url: 'https://discord.gg/FVxTKdU'
+                }
+            ],
             games: [],
             elusiveTargets: [],
             activeElusiveIndex: 0,
@@ -1191,8 +1193,8 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
-            this.currentPromo = 0;
-            this.currentPromoIndex = 0;
+            this.currentPromo = this.promos[0];
+            this.currentPromoIndex = 1;
             setInterval(() => {
                 this.currentPromo = this.currentPromoIndex === this.promos.length ?
                     0 :
@@ -1205,10 +1207,10 @@ export default {
             console.error(err);
             this.$router.push({ name: '500' });
         });
-        /*this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/rrwc').then(resp => {
+        this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/rr4').then(resp => {
             this.tournamentMatches = resp.data;
             console.info(this.tournamentMatches);
-        });*/
+        });
     }
 }
 
@@ -1413,15 +1415,15 @@ header {
         display: flex;
         flex-direction: column;
         color: white;
-        background: #fff;
+        background: $content-background;
 
         .tournament-info {
             padding: 15px 0;
-            color: #000;
+            color: $content-text;
             text-shadow: none;
 
             h2 {
-                color: #ff003c;
+                color: $content-text;
             }
 
             .text {
@@ -1437,6 +1439,14 @@ header {
                     font-size: 1rem;
                     margin-bottom: 0;
                 }
+            }
+        }
+
+        a {
+            color: $content-text;
+
+            &:hover {
+                color: #ddd;
             }
         }
     }
@@ -1463,6 +1473,11 @@ header {
                     i {
                         color: $card-footer-background-hover;
                         background: $card-footer-text;
+
+                        &.fa-discord {
+                            background: inherit;
+                            color: $card-footer-text;
+                        }
                     }
 
                     img {
