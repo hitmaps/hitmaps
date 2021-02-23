@@ -117,10 +117,10 @@
                                 }"
                                 v-if="mission.difficulties.length == 1"
                             >
-                                <div class="card mission" :style="`background: url('${generateTileUrl(mission)}') center center / cover no-repeat`">
+                                <div class="card mission" :style="`background: url('${mission.tileUrl}') center center / cover no-repeat`">
                                     <div style="position: relative">
                                         <img
-                                            :src="generateTileUrl(mission)"
+                                            :src="mission.tileUrl"
                                             class="card-img-top"
                                             :alt="$t('mission-image')"
                                         />
@@ -143,9 +143,9 @@
                                     </div>
                                 </div>
                             </router-link>
-                            <div v-else class="card mission" :style="`background: url('${generateTileUrl(mission)}') center center / cover no-repeat`">
+                            <div v-else class="card mission" :style="`background: url('${mission.tileUrl}') center center / cover no-repeat`">
                                 <div style="position: relative">
-                                    <img :src="generateTileUrl(mission)"
+                                    <img :src="mission.tileUrl"
                                          :alt="$t('mission-image')"
                                          class="card-img-top" />
                                     <div
@@ -220,19 +220,6 @@ export default {
         return {
             locations: [],
             game: null
-        }
-    },
-    methods: {
-        generateTileUrl: function(mission) {
-            if (mission.missionType !== 'Elusive Target') {
-                return mission.tileUrl;
-            }
-
-            if (this.game != null && this.game.slug == 'hitman') {
-                return '/img/jpg/elusive-targets/legacy/' + mission.slug + '.jpg'
-            }
-
-            return '/img/jpg/elusive-targets/' + mission.slug + '.jpg'
         }
     },
     created: function() {
