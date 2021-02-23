@@ -142,20 +142,27 @@ class ElusiveTargetUpdater {
                     return false;
                 }
 
+                $image = file_get_contents($elusiveTargetJson->tile);
+
                 $saveName = str_replace(' ', '-', strtolower($elusiveTargetJson->name));
+                $fileName = "{$locationInfo['tileSaveLocation']}{$saveName}";
+                $saveLocation =__DIR__ . "/../../../img/jpg{$fileName}.jpg";
+                file_put_contents($saveLocation, $image);
+                $settings = new Settings();
+                $mediaLibraryPath = $settings->mediaLibraryPath;
+                exec("mv ${saveLocation} ${mediaLibraryPath}/actors${$fileName}");
+
                 $newMissionId = $this->missionCloner->cloneMissionForElusiveTarget($mission->getSlug(),
                     'professional',
                     $elusiveTargetJson->name,
                     $saveName,
                     new \DateTime($elusiveTargetJson->nextWindow->start),
-                    new \DateTime($elusiveTargetJson->nextWindow->end));
+                    new \DateTime($elusiveTargetJson->nextWindow->end),
+                    "https://media.hitmaps.com/img/hitman3/actors{$fileName}");
 
                 $elusiveTarget = new ElusiveTarget();
                 $elusiveTarget->setName($elusiveTargetJson->name);
-                $image = file_get_contents($elusiveTargetJson->tile);
-                $fileName = "{$locationInfo['tileSaveLocation']}{$saveName}";
-                file_put_contents(__DIR__ . "/../../../img/jpg{$fileName}.jpg", $image);
-                $elusiveTarget->setImageUrl($fileName);
+                $elusiveTarget->setImageUrl("https://media.hitmaps.com/img/hitman3/actors{$fileName}");
                 $elusiveTarget->setComingNotificationSent(false);
                 $elusiveTarget->setPlayableNotificationSent(false);
                 $elusiveTarget->setSevenDaysLeftNotificationSent(false);

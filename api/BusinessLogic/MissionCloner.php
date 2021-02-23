@@ -20,7 +20,8 @@ class MissionCloner {
                                  string $elusiveTargetName,
                                  string $elusiveTargetSlug,
                                  \DateTime $beginningTime,
-                                 \DateTime $endTime) {
+                                 \DateTime $endTime,
+                                 string $tileUrl) {
         /* @var $originalMission Mission */
         $originalMission = $this->entityManager->getRepository(Mission::class)->findOneBy(['slug' => $originalMissionSlug]);
 
@@ -48,7 +49,12 @@ class MissionCloner {
         $newMission->setEndEffectiveDate($endTime);
         $newMission->setMissionType(MissionType::ELUSIVE_TARGET);
         $newMission->setBackgroundUrl($originalMission->getBackgroundUrl());
-        $newMission->setTileUrl('N/A - Elusive Target');
+        $newMission->setTileUrl($tileUrl);
+        $newMission->setSvg($originalMission->getSvg());
+        $newMission->setMinZoom($originalMission->getMinZoom());
+        $newMission->setMaxZoom($originalMission->getMaxZoom());
+        $newMission->setBoundingBoxTopLeft($originalMission->getBoundingBoxTopLeft());
+        $newMission->setBoundingBoxBottomRight($originalMission->getBoundingBoxBottomRight());
         $this->entityManager->persist($newMission);
         $this->entityManager->flush();
 
