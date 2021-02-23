@@ -171,6 +171,7 @@ class ElusiveTargetUpdater {
                 $elusiveTarget->setOneDayLeftNotificationSent(false);
                 $elusiveTarget->setEndNotificationSent(false);
                 $elusiveTarget->setMissionId($newMissionId);
+                $elusiveTarget->setGameId($hitman3Game->getId());
             }
 
             // TODO Uncomment when ETs are reactivated

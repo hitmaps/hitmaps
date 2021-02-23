@@ -59,8 +59,8 @@ class MissionCloner {
         $this->entityManager->flush();
 
         // Copy all nodes
-        $copyNodesSql = "INSERT INTO `nodes` (mission_id, type, subgroup, name, target, level, latitude, longitude, difficulty, `group`, approved, created_by, date_created, icon, searchable, image, original_id, tooltip)
-            SELECT {$newMission->getId()}, type, subgroup, `name`, target, `level`, latitude, longitude, 'standard', `group`, approved, created_by, date_created, icon, searchable, image, `id`, tooltip
+        $copyNodesSql = "INSERT INTO `nodes` (mission_id, type, subgroup, name, target, level, latitude, longitude, difficulty, `group`, approved, created_by, date_created, icon, searchable, image, original_id, tooltip, quantity)
+            SELECT {$newMission->getId()}, type, subgroup, `name`, target, `level`, latitude, longitude, 'standard', `group`, approved, created_by, date_created, icon, searchable, image, `id`, tooltip, quantity
             FROM `nodes`
             WHERE `mission_id` = {$originalMission->getId()}
             AND `difficulty` = '{$originalDifficulty}'";
@@ -102,6 +102,8 @@ class MissionCloner {
             $newDisguise->setName($disguise->getName());
             $newDisguise->setImage($disguise->getImage());
             $newDisguise->setMissionId($newMission->getId());
+            $newDisguise->setOrder($disguise->getOrder());
+            $newDisguise->setSuit($disguise->getSuit());
             $this->entityManager->persist($newDisguise);
             $this->entityManager->flush();
 
@@ -126,6 +128,7 @@ class MissionCloner {
         $missionDifficulty = new MissionDifficulty();
         $missionDifficulty->setMissionId($newMission->getId());
         $missionDifficulty->setDifficulty('Standard');
+        $missionDifficulty->setVisible(true);
         $this->entityManager->persist($missionDifficulty);
         $this->entityManager->flush();
 

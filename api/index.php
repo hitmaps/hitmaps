@@ -346,7 +346,7 @@ $klein->respond('GET', '/api/web/home', function(\Klein\Request $request, \Klein
         $viewModel->name = $elusiveTarget->getName();
         $viewModel->briefing = $elusiveTarget->getBriefing();
         $viewModel->endingTime = $elusiveTarget->getEndingTime()->format(DateTime::ATOM);
-        $viewModel->tileUrl = "{$constants->siteDomain}/img/jpg{$elusiveTarget->getImageUrl()}.jpg";
+        $viewModel->tileUrl = $elusiveTarget->getImageUrl();
         $viewModel->videoBriefingUrl = $elusiveTarget->getVideoBriefingUrl();
         $viewModel->missionUrl = "{$missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId(), 'standard')}";
         $viewModel->reactivated = $elusiveTarget->getReactivated();
