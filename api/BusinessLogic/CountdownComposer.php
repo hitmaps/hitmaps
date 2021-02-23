@@ -2,6 +2,7 @@
 namespace BusinessLogic;
 
 
+use Config\Settings;
 use DataAccess\Models\ElusiveTarget;
 
 class CountdownComposer {
@@ -22,8 +23,9 @@ class CountdownComposer {
     }
 
     public function composeElusiveTargetActiveImage(ElusiveTarget $elusiveTarget): string {
+        $settings = new Settings();
         $overlay = new \Imagick(__DIR__ . "/../../img/png/elusive-target-overlays/countdown/mission-active.png");
-        $originalImage = new \Imagick(__DIR__ . "/../../img/jpg{$elusiveTarget->getImageUrl()}.jpg");
+        $originalImage = new \Imagick(str_replace('https://media.hitmaps.com/img/hitman3', $settings->mediaLibraryPath, $elusiveTarget->getImageUrl()));
 
         $originalImage->compositeImage($overlay, \Imagick::COMPOSITE_DEFAULT, 0, 0);
         $compositeUrl = "/img/jpg/elusive-targets/countdowns/{$elusiveTarget->getId()}-active.jpg";

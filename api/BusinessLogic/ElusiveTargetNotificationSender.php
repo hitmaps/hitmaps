@@ -72,14 +72,13 @@ class ElusiveTargetNotificationSender {
                 $title = $message['title'];
                 $body = $message['body'];
                 $firebaseEnvironment = $message['firebaseEnvironment'];
-                $imageUrl = "/img/jpg{$elusiveTarget->getImageUrl()}.jpg";
                 $response = $this->firebaseClient->sendElusiveTargetMessage("hitmaps-{$firebaseEnvironment}-elusive-target-coming",
                     $title,
                     $body,
                     "{$constants->siteDomain}/android-chrome-256x256.png",
-                    "{$constants->siteDomain}{$imageUrl}",
+                    $elusiveTarget->getImageUrl(),
                     $url);
-                $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/../..{$imageUrl}"]);
+                $media = $twitter->upload('media/upload', ['media' => str_replace('https://media.hitmaps.com/img/hitman3', $settings->mediaLibraryPath, $elusiveTarget->getImageUrl())]);
                 $twitter->post('statuses/update', [
                     'status' => $body,
                     'media_ids' => $media->media_id_string
