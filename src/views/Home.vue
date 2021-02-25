@@ -58,7 +58,7 @@
                     }">
                     <a :href="currentPromo.url" target="_blank">
                         <p>&nbsp;</p>
-                        <div class="countdown" style="background: rgba(0,0,0,.4)" v-if="new Date() < new Date(currentPromo.promoStartDate)">
+                        <div class="countdown" v-if="new Date() < new Date(currentPromo.promoStartDate)">
                             <game-icon icon="timed" font-style="normal" />
                             <div class="timer not-playable">
                                 <div class="target-arrives">{{ (new Date(currentPromo.promoStartDate) > new Date()) ? currentPromo.beforeText : currentPromo.duringText }}</div>
@@ -73,7 +73,7 @@
                                 ></countdown>
                             </div>
                         </div>
-                        <div class="countdown" style="background: rgba(0,0,0,.4)"  v-else>
+                        <div class="countdown" v-else>
                             <game-icon icon="timed" font-style="normal" v-if="!currentPromo.tournament" />
                             <div class="timer not-playable">
                                 <div class="target-arrives">{{ (new Date(currentPromo.promoStartDate) > new Date()) ? currentPromo.beforeText : currentPromo.duringText }}</div>
@@ -585,7 +585,7 @@
                                     </iframe>
                                 </template>
                                 <template v-else>
-                                    <div v-if="tournamentMatches[0].shoutcastStream" class="countdown" style="background: rgba(0,0,0,.4)">
+                                    <div v-if="tournamentMatches[0].shoutcastStream" class="countdown">
                                         <game-icon font-style="normal" icon="timed" />
                                         <div class="timer not-playable">
                                             <div class="target-arrives">Next Match Begins in</div>
@@ -1568,6 +1568,7 @@ header {
         .countdown {
             padding: 15px 15px 0;
             padding-bottom: 1rem;
+            background: rgba(0,0,0,.4);
 
             i.game-icon {
                 color: $elusive-countdown;
