@@ -230,14 +230,21 @@ class ElusiveTargetNotificationSender {
     }
 
     private function postTweet(string $body, ElusiveTarget $elusiveTarget, TwitterOAuth $twitter, ?string $imagePath = null) {
-        $imageContents = file_get_contents($elusiveTarget->getImageUrl());
-        $uniqid = uniqid($elusiveTarget->getName(), true);
-        file_put_contents($uniqid, $imageContents);
+        $uniqid = null;
+        if ($imagePath === null) {
+            $imageContents = file_get_contents($elusiveTarget->getImageUrl());
+            $uniqid = uniqid($elusiveTarget->getName(), true);
+            file_put_contents($uniqid, $imageContents);
+        }
+
         $media = $twitter->upload('media/upload', ['media' => $imagePath ?? $uniqid]);
         $twitter->post('statuses/update', [
             'status' => $body,
             'media_ids' => $media->media_id_string
         ]);
-        @unlink($uniqid);
+
+        if ($imagePath === null) {
+            @unlink($uniqid);
+        }
     }
 }
