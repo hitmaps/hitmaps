@@ -58,13 +58,13 @@ class ElusiveTargetNotificationSender {
                 if ($elusiveTarget->getReactivated()) {
                     $message = [
                         'title' => 'Reactivated Elusive Target Arriving',
-                        'body' => "{$elusiveTarget->getName()} will be reactivated on {$beginningDate} and will be available for {$availableDays} days!",
+                        'body' => "{$elusiveTarget->getName()} will be reactivated on {$beginningDate} for {$availableDays} days!",
                         'firebaseEnvironment' => "{$environment}-reactivation"
                     ];
                 } else {
                     $message = [
                         'title' => 'Elusive Target Arriving',
-                        'body' => "{$elusiveTarget->getName()} is arriving on {$beginningDate} and will be available for {$availableDays} days!",
+                        'body' => "{$elusiveTarget->getName()} will arrive on {$beginningDate} for {$availableDays} days!",
                         'firebaseEnvironment' => $environment
                     ];
                 }
@@ -88,7 +88,7 @@ class ElusiveTargetNotificationSender {
                 $this->entityManager->persist($elusiveTarget);
                 $this->entityManager->flush();
 
-                Rollbar::info("Sent Notification: {$elusiveTarget->getName()} is arriving on {$beginningDate} and will be available for {$availableDays} days!", ['firebaseResponse' => $response]);
+                Rollbar::info("Sent Notification: {$elusiveTarget->getName()} will arrive on {$beginningDate} for {$availableDays} days!", ['firebaseResponse' => $response]);
                 return;
             }
 
@@ -112,7 +112,7 @@ class ElusiveTargetNotificationSender {
                 }
 
                 $title = $message['title'];
-                $body = "{$elusiveTarget->getName()} has arrived and will be available for {$availableDays} days!";
+                $body = "{$elusiveTarget->getName()} arrived and will be available for {$availableDays} days!";
                 $firebaseEnvironment = $message['firebaseEnvironment'];
                 $imageUrl = $this->countdownComposer->composeElusiveTargetActiveImage($elusiveTarget);
                 $this->firebaseClient->sendElusiveTargetMessage("hitmaps-{$firebaseEnvironment}-elusive-target-playable",
@@ -157,7 +157,7 @@ class ElusiveTargetNotificationSender {
             }
             if ($availableDays <= '5' && $availableDays > '3' && !$elusiveTarget->getFiveDaysLeftNotificationSent()) {
                 $title = "{$elusiveTarget->getName()} - 5 Days Left";
-                $body = "{$elusiveTarget->getName()} will be leaving in 5 days. Be sure to eliminate the target before time is up.";
+                $body = "{$elusiveTarget->getName()} will be leaving in 5 days. Be sure to complete the contract before time is up.";
                 $firebaseEnvironment = $elusiveTarget->getReactivated() ? "{$environment}-reactivation" : $environment;
                 $countdownImage = $this->countdownComposer->composeElusiveTargetImage($elusiveTarget, 5);
                 $this->firebaseClient->sendElusiveTargetMessage("hitmaps-{$firebaseEnvironment}-elusive-target-5",
@@ -179,7 +179,7 @@ class ElusiveTargetNotificationSender {
             }
             if ($availableDays <= '3' && $availableDays > '1' && !$elusiveTarget->getThreeDaysLeftNotificationSent()) {
                 $title = "{$elusiveTarget->getName()} - 3 Days Left";
-                $body = "The contract on {$elusiveTarget->getName()} is only active for 3 more days! Eliminate the target before it's too late.";
+                $body = "The contract on {$elusiveTarget->getName()} is only active for 3 more days! Complete the contract before it's too late.";
                 $firebaseEnvironment = $elusiveTarget->getReactivated() ? "{$environment}-reactivation" : $environment;
                 $countdownImage = $this->countdownComposer->composeElusiveTargetImage($elusiveTarget, 3);
                 $this->firebaseClient->sendElusiveTargetMessage("hitmaps-{$firebaseEnvironment}-elusive-target-3",
@@ -201,7 +201,7 @@ class ElusiveTargetNotificationSender {
             }
             if ($availableDays <= '1' && $availableDays > '0' && !$elusiveTarget->getOneDayLeftNotificationSent()) {
                 $title = "{$elusiveTarget->getName()} - Only One Day Left";
-                $body = "{$elusiveTarget->getName()} will be leaving in just 24 hours. If you have not eliminated the target, there is not much time left!";
+                $body = "{$elusiveTarget->getName()} will be leaving in just 24 hours. If you have not taken care of {$elusiveTarget->getName()}, there is not much time left!";
                 $firebaseEnvironment = $elusiveTarget->getReactivated() ? "{$environment}-reactivation" : $environment;
                 $countdownImage = $this->countdownComposer->composeElusiveTargetImage($elusiveTarget, 1);
                 $this->firebaseClient->sendElusiveTargetMessage("hitmaps-{$firebaseEnvironment}-elusive-target-1",
@@ -224,7 +224,7 @@ class ElusiveTargetNotificationSender {
 
             if ($realUtcTime > $elusiveTarget->getEndingTime() && !$elusiveTarget->getEndNotificationSent()) {
                 $title = "{$elusiveTarget->getName()} Has Left";
-                $body = "{$elusiveTarget->getName()} has left and is no longer available to play.";
+                $body = "The contract on {$elusiveTarget->getName()} has ended.";
                 $firebaseEnvironment = $elusiveTarget->getReactivated() ? "{$environment}-reactivation" : $environment;
                 $this->firebaseClient->sendElusiveTargetMessage("hitmaps-{$firebaseEnvironment}-elusive-target-end",
                     $title,
