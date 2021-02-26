@@ -26,9 +26,7 @@ class FirebaseClient {
     }
 
     public function sendElusiveTargetMessage(string $topicId, string $title, string $body, string $iconUrl, ?string $imageUrl = null, ?string $mapUrl = null): array {
-        $notification = Firebase\Messaging\Notification::create()
-            ->withTitle($title)
-            ->withBody($body);
+        $notification = Firebase\Messaging\Notification::create($title, $body);
 
         $client = self::buildClient();
 
