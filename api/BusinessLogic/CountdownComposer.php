@@ -23,9 +23,12 @@ class CountdownComposer {
     }
 
     public function composeElusiveTargetActiveImage(ElusiveTarget $elusiveTarget): string {
-        $settings = new Settings();
         $overlay = new \Imagick(__DIR__ . "/../../img/png/elusive-target-overlays/countdown/mission-active.png");
-        $originalImage = new \Imagick(str_replace('https://media.hitmaps.com/img/hitman3', $settings->mediaLibraryPath, $elusiveTarget->getImageUrl()));
+
+        $imageContents = file_get_contents($elusiveTarget->getImageUrl());
+        $uniqid = uniqid('et-composed', true);
+        file_put_contents($uniqid, $imageContents);
+        $originalImage = new \Imagick($uniqid);
 
         $originalImage->compositeImage($overlay, \Imagick::COMPOSITE_DEFAULT, 0, 0);
         $compositeUrl = "/img/jpg/elusive-targets/countdowns/{$elusiveTarget->getId()}-active.jpg";

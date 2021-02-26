@@ -28,9 +28,7 @@ class ElusiveTargetNotificationSender {
 
     public function sendElusiveTargetNotification() {
         // Get the active ET from the database
-        /* @var $missionRepository MissionRepository */
         /* @var $elusiveTargetRepository ElusiveTargetRepository */
-        $missionRepository = $this->entityManager->getRepository(Mission::class);
         $elusiveTargetRepository = $this->entityManager->getRepository(ElusiveTarget::class);
 
         /* @var $elusiveTargets ElusiveTarget[] */
@@ -49,7 +47,6 @@ class ElusiveTargetNotificationSender {
             $currentUtcTimeForNumberOfDays = new \DateTime('now', new \DateTimeZone('UTC'));
             $currentUtcTimeForNumberOfDays->modify('-1 day');
             $availableDays = $elusiveTarget->getEndingTime()->diff($currentUtcTimeForNumberOfDays)->format('%a');
-            $url = $constants->siteDomain . $missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId(), 'professional');
 
             if (!$elusiveTarget->getComingNotificationSent()) {
                 $beginningDateForComparison = $elusiveTarget->getBeginningTime();
@@ -69,20 +66,9 @@ class ElusiveTargetNotificationSender {
                     ];
                 }
 
-                $title = $message['title'];
-                $body = $message['body'];
-                $firebaseEnvironment = $message['firebaseEnvironment'];
-                $response = $this->firebaseClient->sendElusiveTargetMessage("hitmaps-{$firebaseEnvironment}-elusive-target-coming",
-                    $title,
-                    $body,
-                    "{$constants->siteDomain}/android-chrome-256x256.png",
-                    $elusiveTarget->getImageUrl(),
-                    $url);
-                $media = $twitter->upload('media/upload', ['media' => str_replace('https://media.hitmaps.com/img/hitman3', $settings->mediaLibraryPath, $elusiveTarget->getImageUrl())]);
-                $twitter->post('statuses/update', [
-                    'status' => $body,
-                    'media_ids' => $media->media_id_string
-                ]);
+                $response = $this->sendWebPush("hitmaps-%s-elusive-target-coming", $message, $elusiveTarget);
+
+                $this->postTweet($message['body'], $elusiveTarget, $twitter);
 
                 $elusiveTarget->setComingNotificationSent(true);
                 $this->entityManager->persist($elusiveTarget);
@@ -111,21 +97,15 @@ class ElusiveTargetNotificationSender {
                     ];
                 }
 
-                $title = $message['title'];
-                $body = "{$elusiveTarget->getName()} arrived and will be available for {$availableDays} days!";
-                $firebaseEnvironment = $message['firebaseEnvironment'];
+                $message['body'] = "{$elusiveTarget->getName()} arrived and will be available for {$availableDays} days!";
                 $imageUrl = $this->countdownComposer->composeElusiveTargetActiveImage($elusiveTarget);
-                $this->firebaseClient->sendElusiveTargetMessage("hitmaps-{$firebaseEnvironment}-elusive-target-playable",
-                    $title,
-                    $body,
-                    "{$constants->siteDomain}/android-chrome-256x256.png",
-                    "{$constants->siteDomain}{$imageUrl}",
-                    $url);
-                $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/../..{$imageUrl}"]);
-                $twitter->post('statuses/update', [
-                    'status' => $body,
-                    'media_ids' => $media->media_id_string
-                ]);
+
+                $this->sendWebPush("hitmaps-%s-elusive-target-playable",
+                    $message,
+                    $elusiveTarget,
+                    "{$constants->siteDomain}{$imageUrl}");
+
+                $this->postTweet($message['body'], $elusiveTarget, $twitter, __DIR__ . "/../..{$imageUrl}");
 
                 $elusiveTarget->setPlayableNotificationSent(true);
                 $this->entityManager->persist($elusiveTarget);
@@ -134,21 +114,19 @@ class ElusiveTargetNotificationSender {
             }
 
             if ($availableDays <= '7' && $availableDays > '5' && !$elusiveTarget->getSevenDaysLeftNotificationSent()) {
-                $title = "{$elusiveTarget->getName()} - 7 Days Left";
-                $body = "{$elusiveTarget->getName()} will be leaving in 7 days! Plan accordingly.";
-                $firebaseEnvironment = $elusiveTarget->getReactivated() ? "{$environment}-reactivation" : $environment;
+                $message = [
+                    'title' => "{$elusiveTarget->getName()} - 7 Days Left",
+                    'body' => "{$elusiveTarget->getName()} will be leaving in 7 days! Plan accordingly.",
+                    'firebaseEnvironment' => $elusiveTarget->getReactivated() ? "{$environment}-reactivation" : $environment
+                ];
                 $countdownImage = $this->countdownComposer->composeElusiveTargetImage($elusiveTarget, 7);
-                $this->firebaseClient->sendElusiveTargetMessage("hitmaps-{$firebaseEnvironment}-elusive-target-7",
-                    $title,
-                    $body,
-                    "{$constants->siteDomain}/android-chrome-256x256.png",
-                    "{$constants->siteDomain}{$countdownImage}",
-                    $url);
-                $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/../..{$countdownImage}"]);
-                $twitter->post('statuses/update', [
-                    'status' => $body,
-                    'media_ids' => $media->media_id_string
-                ]);
+
+                $this->sendWebPush("hitmaps-%s-elusive-target-7",
+                    $message,
+                    $elusiveTarget,
+                    "{$constants->siteDomain}{$countdownImage}");
+
+                $this->postTweet($message['body'], $elusiveTarget, $twitter, __DIR__ . "/../..{$countdownImage}");
 
                 $elusiveTarget->setSevenDaysLeftNotificationSent(true);
                 $this->entityManager->persist($elusiveTarget);
@@ -156,21 +134,19 @@ class ElusiveTargetNotificationSender {
                 return;
             }
             if ($availableDays <= '5' && $availableDays > '3' && !$elusiveTarget->getFiveDaysLeftNotificationSent()) {
-                $title = "{$elusiveTarget->getName()} - 5 Days Left";
-                $body = "{$elusiveTarget->getName()} will be leaving in 5 days. Be sure to complete the contract before time is up.";
-                $firebaseEnvironment = $elusiveTarget->getReactivated() ? "{$environment}-reactivation" : $environment;
+                $message = [
+                    'title' => "{$elusiveTarget->getName()} - 5 Days Left",
+                    'body' => "{$elusiveTarget->getName()} will be leaving in 5 days. Be sure to complete the contract before time is up.",
+                    'firebaseEnvironment' => $elusiveTarget->getReactivated() ? "{$environment}-reactivation" : $environment
+                ];
                 $countdownImage = $this->countdownComposer->composeElusiveTargetImage($elusiveTarget, 5);
-                $this->firebaseClient->sendElusiveTargetMessage("hitmaps-{$firebaseEnvironment}-elusive-target-5",
-                    $title,
-                    $body,
-                    "{$constants->siteDomain}/android-chrome-256x256.png",
-                    "{$constants->siteDomain}{$countdownImage}",
-                    $url);
-                $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/../..{$countdownImage}"]);
-                $twitter->post('statuses/update', [
-                    'status' => $body,
-                    'media_ids' => $media->media_id_string
-                ]);
+
+                $this->sendWebPush("hitmaps-%s-elusive-target-5",
+                    $message,
+                    $elusiveTarget,
+                    "{$constants->siteDomain}{$countdownImage}");
+
+                $this->postTweet($message['body'], $elusiveTarget, $twitter, __DIR__ . "/../..{$countdownImage}");
 
                 $elusiveTarget->setFiveDaysLeftNotificationSent(true);
                 $this->entityManager->persist($elusiveTarget);
@@ -178,21 +154,19 @@ class ElusiveTargetNotificationSender {
                 return;
             }
             if ($availableDays <= '3' && $availableDays > '1' && !$elusiveTarget->getThreeDaysLeftNotificationSent()) {
-                $title = "{$elusiveTarget->getName()} - 3 Days Left";
-                $body = "The contract on {$elusiveTarget->getName()} is only active for 3 more days! Complete the contract before it's too late.";
-                $firebaseEnvironment = $elusiveTarget->getReactivated() ? "{$environment}-reactivation" : $environment;
+                $message = [
+                    'title' => "{$elusiveTarget->getName()} - 3 Days Left",
+                    'body' => "The contract on {$elusiveTarget->getName()} is only active for 3 more days! Complete the contract before it's too late.",
+                    'firebaseEnvironment' => $elusiveTarget->getReactivated() ? "{$environment}-reactivation" : $environment
+                ];
                 $countdownImage = $this->countdownComposer->composeElusiveTargetImage($elusiveTarget, 3);
-                $this->firebaseClient->sendElusiveTargetMessage("hitmaps-{$firebaseEnvironment}-elusive-target-3",
-                    $title,
-                    $body,
-                    "{$constants->siteDomain}/android-chrome-256x256.png",
-                    "{$constants->siteDomain}{$countdownImage}",
-                    $url);
-                $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/../..{$countdownImage}"]);
-                $twitter->post('statuses/update', [
-                    'status' => $body,
-                    'media_ids' => $media->media_id_string
-                ]);
+
+                $this->sendWebPush("hitmaps-%s-elusive-target-3",
+                    $message,
+                    $elusiveTarget,
+                    "{$constants->siteDomain}{$countdownImage}");
+
+                $this->postTweet($message['body'], $elusiveTarget, $twitter, __DIR__ . "/../..{$countdownImage}");
 
                 $elusiveTarget->setThreeDaysLeftNotificationSent(true);
                 $this->entityManager->persist($elusiveTarget);
@@ -200,21 +174,19 @@ class ElusiveTargetNotificationSender {
                 return;
             }
             if ($availableDays <= '1' && $availableDays > '0' && !$elusiveTarget->getOneDayLeftNotificationSent()) {
-                $title = "{$elusiveTarget->getName()} - Only One Day Left";
-                $body = "{$elusiveTarget->getName()} will be leaving in just 24 hours. If you have not taken care of {$elusiveTarget->getName()}, there is not much time left!";
-                $firebaseEnvironment = $elusiveTarget->getReactivated() ? "{$environment}-reactivation" : $environment;
+                $message = [
+                    'title' => "{$elusiveTarget->getName()} - Only One Day Left",
+                    'body' => "{$elusiveTarget->getName()} will be leaving in just 24 hours. If you have not taken care of {$elusiveTarget->getName()}, there is not much time left!",
+                    'firebaseEnvironment' => $elusiveTarget->getReactivated() ? "{$environment}-reactivation" : $environment
+                ];
                 $countdownImage = $this->countdownComposer->composeElusiveTargetImage($elusiveTarget, 1);
-                $this->firebaseClient->sendElusiveTargetMessage("hitmaps-{$firebaseEnvironment}-elusive-target-1",
-                    $title,
-                    $body,
-                    "{$constants->siteDomain}/android-chrome-256x256.png",
-                    "{$constants->siteDomain}{$countdownImage}",
-                    $url);
-                $media = $twitter->upload('media/upload', ['media' => __DIR__ . "/../..{$countdownImage}"]);
-                $twitter->post('statuses/update', [
-                    'status' => $body,
-                    'media_ids' => $media->media_id_string
-                ]);
+
+                $this->sendWebPush("hitmaps-%s-elusive-target-1",
+                    $message,
+                    $elusiveTarget,
+                    "{$constants->siteDomain}{$countdownImage}");
+
+                $this->postTweet($message['body'], $elusiveTarget, $twitter, __DIR__ . "/../..{$countdownImage}");
 
                 $elusiveTarget->setOneDayLeftNotificationSent(true);
                 $this->entityManager->persist($elusiveTarget);
@@ -223,14 +195,15 @@ class ElusiveTargetNotificationSender {
             }
 
             if ($realUtcTime > $elusiveTarget->getEndingTime() && !$elusiveTarget->getEndNotificationSent()) {
-                $title = "{$elusiveTarget->getName()} Has Left";
-                $body = "The contract on {$elusiveTarget->getName()} has ended.";
-                $firebaseEnvironment = $elusiveTarget->getReactivated() ? "{$environment}-reactivation" : $environment;
-                $this->firebaseClient->sendElusiveTargetMessage("hitmaps-{$firebaseEnvironment}-elusive-target-end",
-                    $title,
-                    $body,
-                    "{$constants->siteDomain}/android-chrome-256x256.png",
-                    $constants->siteDomain);
+                $message = [
+                    'title' => "{$elusiveTarget->getName()} Has Left",
+                    'body' => "The contract on {$elusiveTarget->getName()} has ended.",
+                    'firebaseEnvironment' => $elusiveTarget->getReactivated() ? "{$environment}-reactivation" : $environment
+                ];
+
+                $this->sendWebPush("hitmaps-%s-elusive-target-end",
+                    $message,
+                    $elusiveTarget);
 
                 $elusiveTarget->setEndNotificationSent(true);
                 $this->countdownComposer->deleteAllCompositeImages($elusiveTarget);
@@ -239,5 +212,32 @@ class ElusiveTargetNotificationSender {
                 return;
             }
         }
+    }
+
+    private function sendWebPush(string $topic, array $message, ElusiveTarget $elusiveTarget, ?string $imageUrl = null) {
+        /* @var $missionRepository MissionRepository */
+        $missionRepository = $this->entityManager->getRepository(Mission::class);
+
+        $constants = new Constants();
+        $firebaseEnvironment = $message['firebaseEnvironment'];
+        $url = $constants->siteDomain . $missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId(), 'standard');
+        return $this->firebaseClient->sendElusiveTargetMessage(sprintf($topic, $firebaseEnvironment),
+            $message['title'],
+            $message['body'],
+            "{$constants->siteDomain}/android-chrome-256x256.png",
+            $imageUrl ?? $elusiveTarget->getImageUrl(),
+            $url);
+    }
+
+    private function postTweet(string $body, ElusiveTarget $elusiveTarget, TwitterOAuth $twitter, ?string $imagePath = null) {
+        $imageContents = file_get_contents($elusiveTarget->getImageUrl());
+        $uniqid = uniqid($elusiveTarget->getName(), true);
+        file_put_contents($uniqid, $imageContents);
+        $media = $twitter->upload('media/upload', ['media' => $imagePath ?? $uniqid]);
+        $twitter->post('statuses/update', [
+            'status' => $body,
+            'media_ids' => $media->media_id_string
+        ]);
+        @unlink($uniqid);
     }
 }
