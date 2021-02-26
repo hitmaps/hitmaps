@@ -92,7 +92,7 @@ class ElusiveTargetNotificationSender {
                     ];
                 } else {
                     $message = [
-                        'title' => 'Elusive Target Arriving',
+                        'title' => 'Elusive Target Arrived',
                         'firebaseEnvironment' => $environment
                     ];
                 }
