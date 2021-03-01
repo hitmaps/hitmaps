@@ -9,7 +9,11 @@ class CountdownComposer {
     public function composeElusiveTargetImage(ElusiveTarget $elusiveTarget, int $numberOfDays): string {
         $dayOrDays = $numberOfDays === 1 ? 'day' : 'days';
         $overlay = new \Imagick(__DIR__ . "/../../img/png/elusive-target-overlays/countdown/{$numberOfDays}-{$dayOrDays}-remaining.png");
-        $originalImage = new \Imagick(__DIR__ . "/../../img/jpg{$elusiveTarget->getImageUrl()}.jpg");
+
+        $imageContents = file_get_contents($elusiveTarget->getImageUrl());
+        $uniqid = uniqid('et-composed', true);
+        file_put_contents($uniqid, $imageContents);
+        $originalImage = new \Imagick($uniqid);
 
         $originalImage->compositeImage($overlay, \Imagick::COMPOSITE_DEFAULT, 0, 0);
         $compositeUrl = "/img/jpg/elusive-targets/countdowns/{$elusiveTarget->getId()}-{$numberOfDays}.jpg";
@@ -18,6 +22,8 @@ class CountdownComposer {
 
         $overlay->destroy();
         $originalImage->destroy();
+
+        @unlink($uniqid);
 
         return $compositeUrl;
     }
@@ -37,6 +43,8 @@ class CountdownComposer {
 
         $overlay->destroy();
         $originalImage->destroy();
+
+        @unlink($uniqid);
 
         return $compositeUrl;
     }
