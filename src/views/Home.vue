@@ -829,20 +829,7 @@ export default {
             currentPromoIndex: 0,
             currentPromo: 0,
             tournamentMatches: [],
-            promos: [
-                {
-                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/rr4.png',
-                    promoStartDate: '2021-02-19T00:00:00+00:00',
-                    promoEndDate: '2021-03-08T00:00:00+00:00',
-                    topCaption: "Community Tournament",
-                    bottomCaption: 'Roulette Rivals 4',
-                    beforeText: 'Registration Closes',
-                    duringText: undefined,
-                    tournament: true,
-                    h3: false,
-                    url: 'https://discord.gg/FVxTKdU'
-                }
-            ],
+            promos: [],
             games: [],
             elusiveTargets: [],
             activeElusiveIndex: 0,
@@ -1193,8 +1180,8 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
-            this.currentPromo = this.promos[0];
-            this.currentPromoIndex = 1;
+            this.currentPromo = 0;
+            this.currentPromoIndex = 0;
             setInterval(() => {
                 this.currentPromo = this.currentPromoIndex === this.promos.length ?
                     0 :
