@@ -553,7 +553,7 @@
                     </router-link>
                 </div>
             </div>
-            <div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
+<!--            <div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
@@ -628,7 +628,7 @@
                         <div class="row" :key="`${matchup.participants[0].name}|${matchup.participants[1].name}|${matchup.platform}`"
                              style="border-top: 1px solid #dee2e6; padding: .75rem;">
                             <div class="col-lg-3 col-12">
-                                <!--<tournament-platform-icon :platforms="matchup.platformIcons" />-->
+                                &lt;!&ndash;<tournament-platform-icon :platforms="matchup.platformIcons" />&ndash;&gt;
                                 <span>{{ matchup.participants[0].name }} vs {{ matchup.participants[1].name }}</span>
                             </div>
                             <div class="col-lg-3 col-12">
@@ -645,7 +645,7 @@
                         </div>
                     </template>
                 </div>
-            </div>
+            </div>-->
         </template>
         <!--<modal modal-title="Roulette Rivals World Championship"
                id="roulette-rivals-modal"
