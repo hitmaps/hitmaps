@@ -829,7 +829,32 @@ export default {
             currentPromoIndex: 0,
             currentPromo: 0,
             tournamentMatches: [],
-            promos: [],
+            promos: [
+                {
+                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/sc7.png',
+                    promoStartDate: '2021-03-18T00:00:00+00:00',
+                    promoEndDate: '2021-03-27T22:00:00+00:00',
+                    topCaption: "Frote's Speedrun Community",
+                    bottomCaption: 'Speedrun Competition 7',
+                    beforeText: '-',
+                    duringText: 'Competition Ends',
+                    tournament: false,
+                    h3: false,
+                    url: 'https://discord.gg/YB5sWNGRdE'
+                },
+                {
+                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/fuzk3.png',
+                    promoStartDate: '2021-03-18T00:00:00+00:00',
+                    promoEndDate: '2021-03-27T22:00:00+00:00',
+                    topCaption: "Frote's Speedrun Community",
+                    bottomCaption: "Fuzk's Photo Contest 3",
+                    beforeText: '-',
+                    duringText: 'Submissions Close',
+                    tournament: false,
+                    h3: false,
+                    url: 'https://discord.gg/YB5sWNGRdE'
+                }
+            ],
             games: [],
             elusiveTargets: [],
             activeElusiveIndex: 0,
@@ -878,6 +903,14 @@ export default {
             },
             streams: [],
             froteImages: [
+                /*{
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/sc7.png',
+                    caption: 'Speedrun Competition 7'
+                },*/
+                {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/fuzk3.png',
+                    caption: "Fuzk's Photo Contest 3"
+                },
                 {
                     url: 'https://media.hitmaps.com/img/hitmaps-tournaments/rr4.png',
                     caption: 'Roulette Rivals 4'
