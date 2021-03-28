@@ -830,30 +830,6 @@ export default {
             currentPromo: 0,
             tournamentMatches: [],
             promos: [
-                {
-                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/sc7.png',
-                    promoStartDate: '2021-03-18T00:00:00+00:00',
-                    promoEndDate: '2021-03-27T22:00:00+00:00',
-                    topCaption: "Frote's Speedrun Community",
-                    bottomCaption: 'Speedrun Competition 7',
-                    beforeText: '-',
-                    duringText: 'Competition Ends',
-                    tournament: false,
-                    h3: false,
-                    url: 'https://discord.gg/YB5sWNGRdE'
-                },
-                {
-                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/fuzk3.png',
-                    promoStartDate: '2021-03-18T00:00:00+00:00',
-                    promoEndDate: '2021-03-27T22:00:00+00:00',
-                    topCaption: "Frote's Speedrun Community",
-                    bottomCaption: "Fuzk's Photo Contest 3",
-                    beforeText: '-',
-                    duringText: 'Submissions Close',
-                    tournament: false,
-                    h3: false,
-                    url: 'https://discord.gg/YB5sWNGRdE'
-                }
             ],
             games: [],
             elusiveTargets: [],
