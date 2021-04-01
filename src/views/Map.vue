@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="!mapLoaded && mission != null" class="overlay" :style="'background: #ccc url(' + mission.backgroundUrl + ') no-repeat; background-size: cover'">
-            <div class="overlay-container" :style="`background: url('${loadingTile}') center center / cover no-repeat`">
+            <div class="overlay-container" :style="`background: url('${loadingTile}') center center / cover no-repeat`" style="max-width: 693px">
                 <img class="img-fluid" :src="loadingTile" alt="Mission Thumbnail" style="visibility: hidden" />
                 <div class="footer">
                     <div class="footer-image">
@@ -11,13 +11,44 @@
                         <h2>{{ lang('mission-types.' + mission.missionType.toLowerCase(), mission.missionType) }}</h2>
                         <h1>{{ lang('missions.' + mission.slug, mission.name) }}</h1>
                     </div>
-                    <div class="loader" style="display: inline-block; height: 48px; float: right">
+                    <div class="loader" style="display: inline-block; height: 48px; float: right" v-if="!showPaymentGateway">
                         <video loop muted autoplay style="height: 50px; width: 100px; object-fit: fill">
                             <source src="/video/loader.webm" type="video/webm" />
                             <source src="/video/loader.mp4" type="video/mp4" />
                         </video>
                     </div>
                 </div>
+              <div class="footer" style="border-top: solid 1px #fff" v-if="showPaymentGateway && end41Campaign === 0">
+                <p>Due to increased server costs, we are asking for a nominal fee of $1 per map to view map content.
+                  Once you have paid this cost, you do not need to pay it again. Please note that this fee is <b>per map</b>.</p>
+                <div>
+                  <img @click="end41Campaign = 1" style="cursor: pointer" class="img-fluid" src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/buy-logo-medium.png" alt="Buy now with PayPal" />
+                  <button @click="end41Campaign = 2" style="margin-left: 10px" class="btn btn-dark">WTF, I don't want to pay for this!</button>
+                </div>
+              </div>
+              <div class="footer" style="border-top: solid 1px #fff" v-if="end41Campaign > 0">
+                <template v-if="end41Campaign === 1">
+                  <p>
+                    While we appreciate your willingness to pay, this was just meant to be an April Fools' Day joke 🙂.
+                  </p>
+                </template>
+                <p v-if="end41Campaign === 2">
+                  April Fools! We'd never make you pay for any content, so don't worry; you can continue to view
+                  all maps free of charge 🙂.
+                </p>
+                <p>
+                  However, you are more than welcome to provide monetary support at any time.
+                  Check out the <router-link :to="{ name: 'support-the-site' }">Support the Site</router-link> page for more information.
+                </p>
+                <p>
+                  Click the button below to view the map you wanted to view in the first place.
+                  You will not be asked to pay for any future maps this point forward.
+                </p>
+                <game-button style="border: solid 1px gray" @click="set41Cookie">
+                    <game-icon icon="arrow-right" font-style="normal" />
+                    View Map
+                </game-button>
+              </div>
             </div>
         </div>
         <div v-if="mission != null" class="content">
@@ -1177,6 +1208,8 @@ export default {
             debugLayerSize: [[0,0],[0,0]],
             categories: {},
             mapLoaded: false,
+            showPaymentGateway: false,
+            end41Campaign: 0,
             hiddenLayers: [],
             searchedItem: null,
             floorsWithSearchResults: [],
@@ -1266,6 +1299,10 @@ export default {
         }
     },
     methods: {
+        set41Cookie: function() {
+            Vue.$cookies.set('viewed41','Y', '3d');
+            this.mapLoaded = true;
+        },
         showDebug() {
             return process.env.VUE_APP_SHOW_DEBUG === 'true';
         },
@@ -2410,7 +2447,11 @@ export default {
                 }
                 this.updateNodeLayerState();
 
-                this.mapLoaded = true;
+                if (this.$cookies.isKey('viewed41')) {
+                    this.mapLoaded = true;
+                } else {
+                    this.showPaymentGateway = true;
+                }
                 //Is not needed directly at start
                 this.$request(false, 'v1/editor/templates').then(resp => {
                     this.editor.templates = resp.data;
