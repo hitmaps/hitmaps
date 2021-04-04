@@ -17,26 +17,37 @@
                 <i class="fab fa-patreon"></i>
                 Become a Patron
             </a>
-            <p>Current Patrons:</p>
-            <ul>
-                <li>
-                    <b>Master Assassin</b>
-                    <ul>
-                        <li>
+            <h4>Current Patrons:</h4>
+            <div class="row">
+                <div class="col-sm-12">
+                    <h5>Master Assassin</h5>
+                    <div class="row patron-card">
+                        <div class="col-sm-4">
                             <a href="https://www.youtube.com/watch?v=gG7uCskUOrA">
-                                <img style="max-height: 128px; max-width: 128px;" src="https://media.hitmaps.com/patrons/mow.jpg" class="img-fluid" alt="Mow's Profile Photo">
-                                <p>mow</p>
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <img src="https://media.hitmaps.com/patrons/mow.jpg" class="img-fluid" alt="Mow's Profile Photo">
+                                    </div>
+                                    <div class="col-xs-8">
+                                        mow
+                                    </div>
+                                </div>
                             </a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <b>Assassin</b>
-                    <ul>
-                        <li>Notex</li>
-                    </ul>
-                </li>
-            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <h5>Assassin</h5>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <a href="//www.notex.app" target="_blank">Notex</a>
+                        </div>
+                        <div class="col-sm-4">
+                            Some Random Person
+                        </div>
+                    </div>
+                </div>
+            </div>
             <h3 style="margin-top: 20px;">PayPal</h3>
             <p>
                 I currently accept tips/contributions via PayPal. Simply click the button below to make a contribution.
@@ -137,6 +148,15 @@ export default {
 
             &:hover {
                 background: #003060;
+            }
+        }
+
+        .patron-card {
+            max-height: 100px;
+
+            img {
+                height: 100px;
+                max-height: 100px;
             }
         }
     }
