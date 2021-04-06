@@ -13,7 +13,7 @@
                 you will receive certain perks. Becoming a patron will result in a monthly contribution. Simply click
                 the button below to become a patron.
             </p>
-            <a href="https://www.patreon.com/mike_koch" class="btn patreon-button">
+            <a href="https://www.patreon.com/mrmike227" class="btn patreon-button">
                 <i class="fab fa-patreon"></i>
                 Become a Patron
             </a>

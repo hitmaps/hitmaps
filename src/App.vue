@@ -49,7 +49,7 @@
                                 <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
-                        <a href="https://www.patreon.com/mike_koch"
+                        <a href="https://www.patreon.com/mrmike227"
                            target="_blank"
                            data-toggle="tooltip"
                            class="patreon-button">

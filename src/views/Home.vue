@@ -772,7 +772,7 @@
             </div>
             <div class="row">
                 <div class="col" style="text-align: right">
-                    <a href="https://www.patreon.com/mike_koch" class="btn patreon-button">
+                    <a href="https://www.patreon.com/mrmike227" class="btn patreon-button">
                         <i class="fab fa-patreon"></i>
                         Become a Patron
                     </a>
