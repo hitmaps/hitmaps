@@ -17,36 +17,39 @@
                 <i class="fab fa-patreon"></i>
                 Become a Patron
             </a>
-            <p>Current Patrons:</p>
-            <ul>
-                <li>
-                    <b>Master Assassin</b>
-                    <ul>
-                        <li>
-                            <a href="https://www.youtube.com/watch?v=gG7uCskUOrA">
-                                <img style="max-height: 128px; max-width: 128px;" src="https://media.hitmaps.com/patrons/mow.jpg" class="img-fluid" alt="Mow's Profile Photo">
-                                <p>mow</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <b>Assassin</b>
-                    <ul>
-                        <li>Notex</li>
-                    </ul>
-                </li>
-            </ul>
+            <h4>Current Patrons:</h4>
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <patron link="https://www.youtube.com/watch?v=gG7uCskUOrA"
+                                image="https://media.hitmaps.com/patrons/mow.jpg"
+                                name="mow" tier="Master Assassin"/>
+                    </div>
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-3">
+                        <patron link="https://notex.app" name="Notex" tier="Assassin"/>
+                    </div>
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-3">
+                        <patron name="Some Random Person" tier="Assassin"/>
+                    </div>
+                </div>
+            </div>
             <h3 style="margin-top: 20px;">PayPal</h3>
             <p>
                 I currently accept tips/contributions via PayPal. Simply click the button below to make a contribution.
                 Unless otherwise stated, these contributions are not tax-deductible in any way. You will be credited
                 below with your donation.
             </p>
-            <p>Previous Donors (donation amounts are cumulative):</p>
+            <p>Previous Donors (contribution amounts are cumulative):</p>
             <ul>
+                <li>David Thompson - 50.00 USD</li>
                 <li>Finikyu - 25.00 USD</li>
+                <li>TimothyMark - 10.47 USD</li>
+                <li>Jonathan Rokosz - 10.00 USD</li>
+                <li>Spencer Sabet - 6.00 USD</li>
                 <li>Brian McKenzie - 5.55 USD</li>
+                <li>Somdy Alafac - 5.00 USD</li>
             </ul>
             <!-- region PayPal Button -->
             <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
@@ -74,9 +77,10 @@
 <script>
 import GameButton from "../components/GameButton";
 import GameIcon from "../components/GameIcon";
+import Patron from "../components/Patron";
 export default {
     name: 'support-the-site',
-    components: {GameIcon, GameButton},
+    components: {Patron, GameIcon, GameButton},
     title: 'Support the Site',
 }
 </script>
