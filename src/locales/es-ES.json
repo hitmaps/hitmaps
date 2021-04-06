@@ -488,5 +488,13 @@
             "burnwood-family-tomb": "Tumba de la Familia Burnwood",
             "crematorium": "Crematorio"
         }
+    },
+    "hitman3": {
+        "untouchable": {
+            "lab": "Lab Area",
+            "pre-bar": "Militia Zone|Beginning to Bar",
+            "post-bar": "Militia Zone|After Bar to Offices",
+            "offices": "Offices"
+        }
     }
 }
