@@ -18,33 +18,20 @@
                 Become a Patron
             </a>
             <h4>Current Patrons:</h4>
-            <div class="row">
-                <div class="col-sm-12">
-                    <h5>Master Assassin</h5>
-                    <div class="row patron-card">
-                        <div class="col-sm-4">
-                            <a href="https://www.youtube.com/watch?v=gG7uCskUOrA">
-                                <div class="row">
-                                    <div class="col-xs-4">
-                                        <img src="https://media.hitmaps.com/patrons/mow.jpg" class="img-fluid" alt="Mow's Profile Photo">
-                                    </div>
-                                    <div class="col-xs-8">
-                                        mow
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <patron link="https://www.youtube.com/watch?v=gG7uCskUOrA"
+                                image="https://media.hitmaps.com/patrons/mow.jpg"
+                                name="mow" tier="Master Assassin"/>
                     </div>
-                </div>
-                <div class="col-sm-12">
-                    <h5>Assassin</h5>
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <a href="//www.notex.app" target="_blank">Notex</a>
-                        </div>
-                        <div class="col-sm-4">
-                            Some Random Person
-                        </div>
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-3">
+                        <patron link="https://notex.app" name="Notex" tier="Assassin"/>
+                    </div>
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-3">
+                        <patron name="Some Random Person" tier="Assassin"/>
                     </div>
                 </div>
             </div>
@@ -54,10 +41,15 @@
                 Unless otherwise stated, these contributions are not tax-deductible in any way. You will be credited
                 below with your donation.
             </p>
-            <p>Previous Donors (donation amounts are cumulative):</p>
+            <p>Previous Donors (contribution amounts are cumulative):</p>
             <ul>
+                <li>David Thompson - 50.00 USD</li>
                 <li>Finikyu - 25.00 USD</li>
+                <li>TimothyMark - 10.47 USD</li>
+                <li>Jonathan Rokosz - 10.00 USD</li>
+                <li>Spencer Sabet - 6.00 USD</li>
                 <li>Brian McKenzie - 5.55 USD</li>
+                <li>Somdy Alafac - 5.00 USD</li>
             </ul>
             <!-- region PayPal Button -->
             <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
@@ -85,9 +77,10 @@
 <script>
 import GameButton from "../components/GameButton";
 import GameIcon from "../components/GameIcon";
+import Patron from "../components/Patron";
 export default {
     name: 'support-the-site',
-    components: {GameIcon, GameButton},
+    components: {Patron, GameIcon, GameButton},
     title: 'Support the Site',
 }
 </script>
@@ -148,15 +141,6 @@ export default {
 
             &:hover {
                 background: #003060;
-            }
-        }
-
-        .patron-card {
-            max-height: 100px;
-
-            img {
-                height: 100px;
-                max-height: 100px;
             }
         }
     }
