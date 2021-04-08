@@ -13,465 +13,238 @@
                 the privacy policy. We'd rather not have to worry about this legal
                 mumbo-jumbo in a courtroom setting! 😉
             </alert>
-            <div id="ppBody">
-                <div class="ppConsistencies">
-                    <div class="col-2">
-                        <div class="quick-links text-center">
-                            Information Collection
-                        </div>
-                    </div>
-                    <div class="col-2">
-                        <div class="quick-links text-center">Information Usage</div>
-                    </div>
-                    <div class="col-2">
-                        <div class="quick-links text-center">
-                            Information Protection
-                        </div>
-                    </div>
-                    <div class="col-2">
-                        <div class="quick-links text-center">Cookie Usage</div>
-                    </div>
-                    <div class="col-2">
-                        <div class="quick-links text-center">
-                            3rd Party Disclosure
-                        </div>
-                    </div>
-                    <div class="col-2">
-                        <div class="quick-links text-center">3rd Party Links</div>
-                    </div>
-                    <div class="col-2"></div>
-                </div>
-                <div style="clear:both;height:10px;"></div>
-                <div class="ppConsistencies">
-                    <div class="col-2">
-                        <div class="col-12 quick-links2 gen-text-center">
-                            Google AdSense
-                        </div>
-                    </div>
-                    <div class="col-2">
-                        <div class="col-12 quick-links2 gen-text-center">
-                            Fair Information Practices
-                            <div
-                                    class="col-8 gen-text-left gen-xs-text-center"
-                                    style="font-size:12px;position:relative;left:20px;"
-                            >
-                                Fair information<br />
-                                Practices
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-2">
-                        <div class="col-12 quick-links2 gen-text-center coppa-pad">
-                            COPPA
-                        </div>
-                    </div>
-                    <div class="col-2">
-                        <div
-                                class="col-12 quick-links2 quick4 gen-text-center caloppa-pad"
-                        >
-                            CalOPPA
-                        </div>
-                    </div>
-                    <div class="col-2">
-                        <div class="quick-links2 gen-text-center">
-                            Our Contact Information<br />
-                        </div>
-                    </div>
-                </div>
-                <div style="clear:both;height:10px;"></div>
-                <div class="innerText">
-                    This privacy policy has been compiled to better serve those who
-                    are concerned with how their 'Personally Identifiable
-                    Information' (PII) is being used online. PII, as described in US
-                    privacy law and information security, is information that can be
-                    used on its own or with other information to identify, contact,
-                    or locate a single person, or to identify an individual in
-                    context. Please read our privacy policy carefully to get a clear
-                    understanding of how we collect, use, protect or otherwise
-                    handle your Personally Identifiable Information in accordance
-                    with our website.<br />
-                </div>
-
-                <span id="infoCo"></span><br />
-                <div class="grayText">
-                    <strong
-                    >What personal information do we collect from the people
-                        that visit our blog, website or app?</strong
-                    >
-                </div>
-                <br />
-                <div class="innerText">
-                    When ordering or registering on our site, as appropriate, you
-                    may be asked to enter your name, email address or other details
-                    to help you with your experience.
-                </div>
-                <br />
-                <div class="grayText">
-                    <strong>When do we collect information?</strong>
-                </div>
-                <br />
-                <div class="innerText">
-                    We collect information from you when you register on our site or
-                    enter information on our site.
-                </div>
-                <br />
-                <span id="infoUs"></span><br />
-                <div class="grayText">
-                    <strong>How do we use your information? </strong>
-                </div>
-                <br />
-                <div class="innerText">
-                    We may use the information we collect from you when you
-                    register, make a purchase, sign up for our newsletter, respond
-                    to a survey or marketing communication, surf the website, or use
-                    certain other site features in the following ways:<br /><br />
-                </div>
-
-                <div class="innerText">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>&bull;</strong> To
-                    personalize your experience and to allow us to deliver the type
-                    of content and product offerings in which you are most
-                    interested.
-                </div>
-                <span id="infoPro"></span><br />
-                <div class="grayText">
-                    <strong>How do we protect your information?</strong>
-                </div>
-                <br />
-                <div class="innerText">
-                    We do not use vulnerability scanning and/or scanning to PCI
-                    standards.
-                </div>
-                <div class="innerText">
-                    We only provide articles and information. We never ask for
-                    credit card numbers.
-                </div>
-                <div class="innerText">
-                    We do not use Malware Scanning.<br /><br />
-                </div>
-                <div class="innerText">
-                    Your personal information is contained behind secured networks
-                    and is only accessible by a limited number of persons who have
-                    special access rights to such systems, and are required to keep
-                    the information confidential. In addition, all sensitive/credit
-                    information you supply is encrypted via Secure Socket Layer
-                    (SSL) technology.
-                </div>
-                <br />
-                <div class="innerText">
-                    We implement a variety of security measures when a user enters,
-                    submits, or accesses their information to maintain the safety of
-                    your personal information.
-                </div>
-                <br />
-                <div class="innerText">
-                    All transactions are processed through a gateway provider and
-                    are not stored or processed on our servers.
-                </div>
-                <span id="coUs"></span><br />
-                <div class="grayText"><strong>Do we use 'cookies'?</strong></div>
-                <br />
-                <div class="innerText">
-                    Yes. Cookies are small files that a site or its service provider
-                    transfers to your computer's hard drive through your Web browser
-                    (if you allow) that enables the site's or service provider's
-                    systems to recognize your browser and capture and remember
-                    certain information. For instance, we use cookies to help us
-                    remember and process the items in your shopping cart. They are
-                    also used to help us understand your preferences based on
-                    previous or current site activity, which enables us to provide
-                    you with improved services. We also use cookies to help us
-                    compile aggregate data about site traffic and site interaction
-                    so that we can offer better site experiences and tools in the
-                    future.
-                </div>
-                <div class="innerText">
-                    <br /><strong>We use cookies to:</strong>
-                </div>
-                <div class="innerText">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <strong>&bull;</strong> Understand and save user's preferences
-                    for future visits.
-                </div>
-                <div class="innerText">
-                    <br />You can choose to have your computer warn you each time a
-                    cookie is being sent, or you can choose to turn off all cookies.
-                    You do this through your browser settings. Since browser is a
-                    little different, look at your browser's Help Menu to learn the
-                    correct way to modify your cookies.<br />
-                </div>
-
-                <div class="innerText">
-                    <br /><strong
-                >If users disable cookies in their browser:</strong
-                >
-                </div>
-                <br />
-                <div class="innerText">
-                    If you turn cookies off it will turn off some of the features of
-                    the site.
-                </div>
-                <span id="trDi"></span><br />
-                <div class="grayText"><strong>Third-party disclosure</strong></div>
-                <br />
-                <div class="innerText">
-                    We do not sell, trade, or otherwise transfer to outside parties
-                    your Personally Identifiable Information unless we provide users
-                    with advance notice. This does not include website hosting
-                    partners and other parties who assist us in operating our
-                    website, conducting our business, or serving our users, so long
-                    as those parties agree to keep this information confidential. We
-                    may also release information when it's release is appropriate to
-                    comply with the law, enforce our site policies, or protect ours
-                    or others' rights, property or safety. <br /><br />
-                    However, non-personally identifiable visitor information may be
-                    provided to other parties for marketing, advertising, or other
-                    uses.
-                </div>
-                <span id="trLi"></span><br />
-                <div class="grayText"><strong>Third-party links</strong></div>
-                <br />
-                <div class="innerText">
-                    Occasionally, at our discretion, we may include or offer
-                    third-party products or services on our website. These
-                    third-party sites have separate and independent privacy
-                    policies. We therefore have no responsibility or liability for
-                    the content and activities of these linked sites. Nonetheless,
-                    we seek to protect the integrity of our site and welcome any
-                    feedback about these sites.
-                </div>
-                <span id="gooAd"></span><br />
-                <div class="blueText"><strong>Google</strong></div>
-                <br />
-                <div><br /><strong>We have implemented the following:</strong></div>
-                <br />
-                <div>
-                    We, along with third-party vendors such as Google use
-                    first-party cookies (such as the Google Analytics cookies) and
-                    third-party cookies (such as the DoubleClick cookie) or other
-                    third-party identifiers together to compile data regarding user
-                    interactions with ad impressions and other ad service functions
-                    as they relate to our website.
-                </div>
-                <div>
-                    <br /><strong>Opting out:</strong><br />Users can set
-                    preferences for how Google advertises to you using the Google Ad
-                    Settings page. Alternatively, you can opt out by visiting the
-                    Network Advertising Initiative Opt Out page or by using the
-                    Google Analytics Opt Out Browser add on. Most adblock software
-                    blocks Google Analytics.
-                </div>
-                <span id="calOppa"></span><br />
-                <div class="blueText">
-                    <strong>California Online Privacy Protection Act</strong>
-                </div>
-                <br />
-                <div class="innerText">
-                    CalOPPA is the first state law in the nation to require
-                    commercial websites and online services to post a privacy
-                    policy. The law's reach stretches well beyond California to
-                    require any person or company in the United States (and
-                    conceivably the world) that operates websites collecting
-                    Personally Identifiable Information from California consumers to
-                    post a conspicuous privacy policy on its website stating exactly
-                    the information being collected and those individuals or
-                    companies with whom it is being shared. - See more at:
-                    http://consumercal.org/california-online-privacy-protection-act-caloppa/#sthash.0FdRbT51.dpuf<br />
-                </div>
-
-                <div class="innerText">
-                    <br /><strong
-                >According to CalOPPA, we agree to the following:</strong
-                ><br />
-                </div>
-                <div class="innerText">Users can visit our site anonymously.</div>
-                <div class="innerText">
-                    Once this privacy policy is created, we will add a link to it on
-                    our home page or as a minimum, on the first significant page
-                    after entering our website.<br />
-                </div>
-
-                <div class="innerText">
-                    Our Privacy Policy link includes the word 'Privacy' and can
-                    easily be found on the page specified above.
-                </div>
-                <div class="innerText">
-                    <br />You will be notified of any Privacy Policy changes:
-                </div>
-                <div class="innerText">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>&bull;</strong> On our
-                    Privacy Policy Page<br />
-                </div>
-                <div class="innerText">Can change your personal information:</div>
-                <div class="innerText">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>&bull;</strong> By
-                    logging in to your account
-                </div>
-                <div class="innerText">
-                    <br /><strong
-                >How does our site handle Do Not Track signals?</strong
-                ><br />
-                </div>
-                <div class="innerText">
-                    We honor Do Not Track signals and Do Not Track, plant cookies,
-                    or use advertising when a Do Not Track (DNT) browser mechanism
-                    is in place. We don't honor them because it is not handled
-                    automatically by Google Analytics
-                </div>
-                <div class="innerText">
-                    <br /><strong
-                >Does our site allow third-party behavioral
-                    tracking?</strong
-                ><br />
-                </div>
-                <div class="innerText">
-                    It's also important to note that we do not allow third-party
-                    behavioral tracking
-                </div>
-                <span id="coppAct"></span><br />
-                <div class="blueText">
-                    <strong>COPPA (Children Online Privacy Protection Act)</strong>
-                </div>
-                <br />
-                <div class="innerText">
-                    When it comes to the collection of personal information from
-                    children under the age of 13 years old, the Children's Online
-                    Privacy Protection Act (COPPA) puts parents in control. The
-                    Federal Trade Commission, United States' consumer protection
-                    agency, enforces the COPPA Rule, which spells out what operators
-                    of websites and online services must do to protect children's
-                    privacy and safety online.<br /><br />
-                </div>
-
-                <div class="innerText">
-                    We do not specifically market to children under the age of 13
-                    years old.
-                </div>
-                <span id="ftcFip"></span><br />
-                <div class="blueText">
-                    <strong>Fair Information Practices</strong>
-                </div>
-                <br />
-                <div class="innerText">
-                    The Fair Information Practices Principles form the backbone of
-                    privacy law in the United States and the concepts they include
-                    have played a significant role in the development of data
-                    protection laws around the globe. Understanding the Fair
-                    Information Practice Principles and how they should be
-                    implemented is critical to comply with the various privacy laws
-                    that protect personal information.<br /><br />
-                </div>
-
-                <div class="innerText">
-                    <strong
-                    >In order to be in line with Fair Information Practices we
-                        will take the following responsive action, should a data
-                        breach occur:</strong
-                    >
-                </div>
-                <div class="innerText">We will notify you via email</div>
-                <div class="innerText">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>&bull;</strong> Within 7
-                    business days
-                </div>
-                <div class="innerText">
-                    We will notify the users via in-site notification
-                </div>
-                <div class="innerText">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>&bull;</strong> Within 7
-                    business days
-                </div>
-                <div class="innerText">
-                    <br />We also agree to the Individual Redress Principle which
-                    requires that individuals have the right to legally pursue
-                    enforceable rights against data collectors and processors who
-                    fail to adhere to the law. This principle requires not only that
-                    individuals have enforceable rights against data users, but also
-                    that individuals have recourse to courts or government agencies
-                    to investigate and/or prosecute non-compliance by data
-                    processors.
-                </div>
-                <span id="canSpam"></span><br />
-                <div class="blueText"><strong>CAN SPAM Act</strong></div>
-                <br />
-                <div class="innerText">
-                    The CAN-SPAM Act is a law that sets the rules for commercial
-                    email, establishes requirements for commercial messages, gives
-                    recipients the right to have emails stopped from being sent to
-                    them, and spells out tough penalties for violations.<br /><br />
-                </div>
-
-                <div class="innerText">
-                    <strong>We collect your email address in order to:</strong>
-                </div>
-                <div class="innerText">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>&bull;</strong> Send
-                    information, respond to inquiries, and/or other requests or
-                    questions
-                </div>
-                <div class="innerText">
-                    <br /><strong
-                >To be in accordance with CANSPAM, we agree to the
-                    following:</strong
-                >
-                </div>
-                <div class="innerText">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>&bull;</strong> Not use
-                    false or misleading subjects or email addresses.
-                </div>
-                <div class="innerText">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>&bull;</strong> Identify
-                    the message as an advertisement in some reasonable way.
-                </div>
-                <div class="innerText">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>&bull;</strong> Include
-                    the physical address of our business or site headquarters.
-                </div>
-                <div class="innerText">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>&bull;</strong> Monitor
-                    third-party email marketing services for compliance, if one is
-                    used.
-                </div>
-                <div class="innerText">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>&bull;</strong> Honor
-                    opt-out/unsubscribe requests quickly.
-                </div>
-                <div class="innerText">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>&bull;</strong> Allow
-                    users to unsubscribe by using the link at the bottom of each
-                    email.
-                </div>
-                <div class="innerText">
-                    <strong
-                    ><br />If at any time you would like to unsubscribe from
-                        receiving future emails, you can email us at</strong
-                    >
-                </div>
-                <div class="innerText">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>&bull;</strong> Follow
-                    the instructions at the bottom of each email.
-                </div>
-                and we will promptly remove you from
-                <strong>ALL</strong> correspondence.
-            </div>
-            <br /><span id="ourCon"></span><br />
-            <div class="blueText"><strong>Contacting Us</strong></div>
-            <br />
-            <div class="innerText">
-                If there are any questions regarding this privacy policy, you may
-                contact us using the information below.<br /><br />
-            </div>
-
-            <div class="innerText">hitmaps.com</div>
-            OH
-            <div class="innerText">USA</div>
-            <div class="innerText">mkoch227@gmail.com</div>
-            <div class="innerText"><br />Last Edited on 2019-11-07</div>
+            <p>HITMAPS operates several websites including <a href="https://www.hitmaps.com">hitmaps.com</a>,
+                <a href="https://roulette.hitmaps.com">roulette.hitmaps.com</a>, and
+                <a href="https://tournaments.hitmaps.com">tournaments.hitmaps.com</a>. It is HITMAPS' policy to respect
+                your privacy regarding any information we may collect while operating our websites.
+            </p>
+            <h2>What This Policy Covers</h2>
+            <p>This Privacy Policy applies to information that we collect about you when you use our websites.</p>
+            <p>Throughout this Privacy Policy, we’ll refer to our websites collectively as “Services.”</p>
+            <p>Below we explain how we collect, use, and share information about you, along with the choices that you have with respect to that information.</p>
+            <h2>Information We Collect</h2>
+            <p>We only collect information about you if we have a reason to do so–for example, to provide our Services, to communicate with you, or to make our Services better.</p>
+            <p>We collect information in two ways: if and when you provide information to us and automatically through operating our Services. Let’s go over the information that we collect.</p>
+            <h3>Information You Provide to Us</h3>
+            <p>It’s probably no surprise that we collect information that you provide to us. The amount and type of information depends on the context and how we use the information. Here are some examples:</p>
+            <ul>
+                <li>
+                    <strong>(hitmaps.com) Basic Account Information:</strong> We ask for basic information from you in
+                    order to set up your account. For example, when you log in via Discord, we will collect and store
+                    your unique Discord ID and email address, so we can properly identify you in the future.
+                </li>
+                <li>
+                    <strong>(tournaments.hitmaps.com) Basic Account Information:</strong> We ask for basic information from
+                    you if you choose to register for an upcoming tournament. This information may include:
+                    <ul>
+                        <li>Name</li>
+                        <li>Unique Discord Identifier</li>
+                        <li>Country of Residence</li>
+                        <li>Twitch <i>or</i> YouTube Channel Name</li>
+                    </ul>
+                </li>
+            </ul>
+            <h3>Information We Collect Automatically</h3>
+            <p>We also collect some information automatically:</p>
+            <ul>
+                <li>
+                    <strong>Log Information:</strong> Like most online service providers, we collect information that
+                    web browsers, mobile devices, and servers typically make available, such as the browser type, IP
+                    address, unique device identifiers, language preference, referring site, the date and time of
+                    access, operating system, and mobile network information. We collect log information when you use
+                    our Services–for example, when you create or make changes to items on maps.
+                </li>
+                <li>
+                    <strong>Usage Information:</strong> We collect information about your usage of our Services. For
+                    example, we collect information about the pages you visit or site parts that you check the most. We
+                    use this information to, for example, provide our Services to you, as well as get insights on how
+                    people use our Services, so we can make our Services better. We use Google Analytics to aggregate
+                    this information, and we are not able to personally identify you with this information.
+                </li>
+                <li>
+                    <strong>Location Information:</strong> We may determine the approximate location of your device from
+                    your IP address. We collect and use this information to, for example, calculate how many people
+                    visit our Services from certain geographic regions.
+                </li>
+                <li>
+                    <strong>Information from Cookies &amp; Other Technologies:</strong> A cookie is a string of
+                    information that a website stores on a visitor’s computer, and that the visitor’s browser provides
+                    to the website each time the visitor returns. HITMAPS uses cookies to help us identify and track
+                    visitors, usage, and access preferences for our Services.
+                </li>
+            </ul>
+            <p>
+                And, we will only keep your personal information for as long as it is necessary for the purposes set out
+                in this privacy policy, unless a longer retention period is required or permitted by law (such as tax,
+                accounting or other legal requirements).
+            </p>
+            <h2>How And Why We Use Information</h2>
+            <h3>Purposes for Using Information</h3>
+            <p>We use information about you as mentioned above and for the purposes listed below:</p>
+            <ul>
+                <li>To provide our Services–for example, to set up and maintain your account;</li>
+                <li>
+                    To further develop and improve our Services–for example by adding new features that we think our
+                    users will enjoy;
+                </li>
+                <li>
+                    To monitor and analyze trends and better understand how users interact with our Services, which
+                    helps us improve our Services and make them easier to use;
+                </li>
+                <li>
+                    To monitor and prevent any problems with our Services, protect the security of our Services, detect
+                    and prevent fraudulent transactions and other illegal activities, fight spam, and protect the rights
+                    and property of HITMAPS and others, which may result in us declining a transaction or the use of our
+                    Services; and
+                </li>
+                <li>To personalize your experience using our Services.</li>
+            </ul>
+            <h3>Legal Bases for Collecting and Using Information</h3>
+            <p>
+                A note here for those in the European Union about our legal grounds for processing information about you
+                under EU data protection laws, which is that our use of your information is based on the grounds that:
+            </p>
+            <p>
+                (1) The use is necessary in order to fulfill our commitments to you under our Terms of Service or other
+                agreements with you or is necessary to administer your account–for example, in order to enable access to
+                our website on your device; or
+            </p>
+            <p>(2) The use is necessary for compliance with a legal obligation; or</p>
+            <p>(3) The use is necessary in order to protect your vital interests or those of another person; or</p>
+            <p>
+                (4) We have a legitimate interest in using your information–for example, to provide and update our
+                Services, to improve our Services so that we can offer you an even better user experience, to safeguard
+                our Services, to communicate with you, to monitor and prevent any problems with our Services, and to
+                personalize your experience; or
+            </p>
+            <p>(5) You have given us your consent–for example before we place certain cookies on your device and access and analyze them later on.</p>
+            <h2>Sharing Information</h2>
+            <h3>How We Share Information</h3>
+            <p>We do not sell our users’ private personal information.</p>
+            <p>
+                We share information about you in the limited circumstances spelled out below and with appropriate
+                safeguards on your privacy:
+            </p>
+            <ul>
+                <li>
+                    <strong>Legal Requests:</strong> We may disclose information about you in response to a subpoena,
+                    court order, or other governmental request.
+                </li>
+                <li>
+                    <strong>To Protect Rights, Property, and Others:</strong> We may disclose information about you when
+                    we believe in good faith that disclosure is reasonably necessary to protect the property or rights
+                    of HITMAPS, third parties, or the public at large. For example, if we have a good faith belief that
+                    there is an imminent danger of death or serious physical injury, we may disclose information related
+                    to the emergency without delay.
+                </li>
+                <li>
+                    <strong>Business Transfers:</strong> In connection with any merger, sale of company assets, or
+                    acquisition of all or a portion of our business by another company, user information would likely be
+                    one of the assets that is transferred or acquired by a third party. If any of these events were to
+                    happen, this Privacy Policy would continue to apply to your information and the party receiving your
+                    information may continue to use your information, but only consistent with this Privacy Policy.
+                </li>
+                <li>
+                    <strong>With Your Consent:</strong> We may share and disclose information with your consent or at
+                    your direction. For example, we may share your information with third parties with which you
+                    authorize us to do so, such as the social media services that you connect to our site.
+                </li>
+            </ul>
+            <h2>Security</h2>
+            <p>
+                While no online service is 100% secure, we work very hard to protect information about you against
+                unauthorized access, use, alteration, or destruction, and take reasonable measures to do so, such as
+                monitoring our Services for potential vulnerabilities and attacks.
+            </p>
+            <h2>Choices</h2>
+            <p>You have several choices available when it comes to information about you:</p>
+            <ul>
+                <li>
+                    <strong>Set Your Browser to Reject Cookies:</strong> At this time, it is not known whether or not
+                    HITMAPS responds to "do not track" signals across all of our Services. However, you can usually
+                    choose to set your browser to remove or reject browser cookies before using HITMAPS' websites, with
+                    the drawback that certain features of HITMAPS' websites may not function properly without the aid of
+                    cookies.
+                </li>
+                <li>
+                    <strong>Request Account Deletion:</strong> While we’d be very sad to see you go, if you no longer
+                    want to use our Services :( :( :( :(, you can request to have your hitmaps.com information deleted.
+                    Please keep in mind that we may continue to retain your information after this request, as described
+                    in Information We Collect above–for example, when that information is reasonably needed to comply
+                    with (or demonstrate our compliance with) legal obligations such as law enforcement requests, or
+                    reasonably needed for our legitimate business interests.
+                </li>
+            </ul>
+            <h2>Your Rights</h2>
+            <p>
+                If you are located in certain countries, including those that fall under the scope of the European
+                General Data Protection Regulation (AKA the “GDPR”), data protection laws give you rights with respect
+                to your personal data, subject to any exemptions provided by the law, including the rights to:
+            </p>
+            <ul>
+                <li>Request access to your personal data;</li>
+                <li>Request correction or deletion of your personal data;</li>
+                <li>Object to our use and processing of your personal data;</li>
+                <li>Request that we limit our use and processing of your personal data; and</li>
+                <li>Request portability of your personal data.</li>
+            </ul>
+            <p>
+                You can usually access, correct, or delete your personal data using your account settings and tools that
+                we offer, but if you aren’t able to do that, or you would like to contact us about one of the other
+                rights, scroll down to How to Reach Us to, well, find out how to reach us.
+            </p>
+            <p>EU individuals also have the right to make a complaint to a government supervisory authority.</p>
+            <h2>How to Reach Us</h2>
+            <p>
+                If you have a question about this Privacy Policy, or you would like to contact us about any of the rights
+                mentioned in the Your Rights section above, please contact us via one of the social media links in the
+                footer at the bottom-right of this webpage.
+            </p>
+            <h2>Other Things You Should Know</h2>
+            <h3>Transferring Information</h3>
+            <p>
+                Because HITMAPS’ Services are offered worldwide, the information about you that we process when you use
+                the Services in the EU may be used, stored, and/or accessed by individuals operating outside the
+                European Economic Area (EEA). This is required for the purposes listed in the How and Why We Use
+                Information section above. When providing information about you to entities outside the EEA, we will
+                take appropriate measures to ensure that the recipient protects your personal information adequately in
+                accordance with this Privacy Policy as required by applicable law.
+            </p>
+            <h3>Ads and Analytics Services Provided by Others</h3>
+            <p>
+                Other parties may also provide analytics services via our Services. These analytics providers may set
+                tracking technologies (like cookies) to collect information about your use of our Services and across
+                other websites and online services. These technologies allow these third parties to recognize your
+                device to compile information about you or others who use your device. This information allows us and
+                other companies to, among other things, analyze and track usage. Please note this Privacy Policy only
+                covers the collection of information by HITMAPS and does not cover the collection of information by any
+                third party advertisers or analytics providers.
+            </p>
+            <h3>List of Sub-processors</h3>
+            <p>HITMAPS uses the following products/services (which are all GDPR compliant):</p>
+            <ul>
+                <li><strong>Digital Ocean:</strong> for storing data.</li>
+                <li><strong>PayPal:</strong> for facilitating one-time "support the site" payments.</li>
+                <li><strong>Google Analytics:</strong> for analyzing the browsing behavior of our users and visitors.</li>
+            </ul>
+            <h2>Privacy Policy Changes</h2>
+            <p>
+                Although most changes are likely to be minor, HITMAPS may change its Privacy Policy from time to time,
+                and in HITMAPS' sole discretion. HITMAPS encourages visitors to frequently check this page for any
+                changes to its Privacy Policy.
+            </p>
+            <div class="innerText"><br />Last Edited on 2021-04-07</div>
             <p>Prior Versions:</p>
             <ul>
-                <li><a href="https://gitlab.com/mike-koch/hitman-maps/raw/fb501f0270bf2d9b31f575057bb45db54d79ce42/src/views/PrivacyPolicy.vue">2019-07-29 to 2019-11-07</a></li>
-                <li><a href="https://gitlab.com/mike-koch/hitman-maps/raw/0866c005b0a73e452eadc05cbda57ffc993614eb/src/views/PrivacyPolicy.vue">2018-12-09 to 2019-07-29</a></li>
+                <li><a href="https://gitlab.com/hitmaps/hitmaps/raw/e26e1d858c423c9aae67e57a29921972d33e73a3/src/views/PrivacyPolicy.vue">2019-11-07 to 2021-04-07</a></li>
+                <li><a href="https://gitlab.com/hitmaps/hitmaps/raw/034635c6d616a5dd502b25399ea6114230ebb04f/src/views/PrivacyPolicy.vue">2019-07-29 to 2019-11-07</a></li>
+                <li><a href="https://gitlab.com/hitmaps/hitmaps/raw/f9e9c8340994ec81660ea6e7a26b95ae39eaf0a5/src/views/PrivacyPolicy.vue">2018-12-09 to 2019-07-29</a></li>
             </ul>
+            <p>
+                This "Privacy Policy" is based on UptimeRobot's Privacy Policy, the geniuses who monitor this site to
+                let us know whenever HITMAPS goes down, and also powers
+                <a href="https://status.hitmaps.com">https://status.hitmaps.com</a>.
+            </p>
         </div>
         <div class="home-button">
             <router-link :to="{ name: 'home' }">
@@ -510,7 +283,7 @@ export default {
         color: $content-text;
         margin: 20px;
         padding: 20px;
-        font-family: 'nimbus_sans_lbold', sans-serif;
+        font-family: 'nimbus_sans_lregular', sans-serif;
 
         hr {
             background: $content-text;
@@ -518,10 +291,16 @@ export default {
 
         h1 {
             text-transform: uppercase;
+            font-family: 'nimbus_sans_lbold', sans-serif;
         }
 
         h2 {
             font-size: 1.25rem;
+            font-family: 'nimbus_sans_lbold', sans-serif;
+        }
+
+        h3 {
+            font-family: 'nimbus_sans_lbold', sans-serif;
         }
     }
 }
