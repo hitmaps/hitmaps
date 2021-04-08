@@ -6,7 +6,7 @@
         <div class="inner-content">
             <h1>Terms of Use</h1>
             <hr>
-            <h3>Terminology</h3>
+            <h2>Terminology</h2>
             <p>
                 "HITMAPS" ("we", "site", "the site", "the service",
                 "hitmaps.com") refers to the HITMAPS website. These terms
@@ -15,7 +15,7 @@
                 last updated (shown below) and set forth by the HITMAPS
                 administration.
             </p>
-            <h3>Usage</h3>
+            <h2>Usage</h2>
             <p>
                 By using any service or product from or visiting the website of
                 HITMAPS, you automatically agree to the following terms. You
@@ -25,8 +25,8 @@
                 website will constitute acknowledgement of the modified terms of
                 use.
             </p>
-            <h3>Terms</h3>
-            <h4>General</h4>
+            <h2>Terms</h2>
+            <h3>General</h3>
             <ul>
                 <li>
                     All servers that contain / run site data are hosted off-site. We
@@ -68,7 +68,7 @@
                     matters.
                 </li>
             </ul>
-            <h4>User-Submitted Data</h4>
+            <h3>User-Submitted Data</h3>
             <ul>
                 <li>
                     The site allows users from the public to submit content which
@@ -128,17 +128,15 @@
                 </li>
             </ul>
             <p>
-                <b
-                ><i
-                >These terms are subject to change at any time without
+                <b>
+                    <i>These terms are subject to change at any time without
                     notice. The current terms of use will be available on the
                     HITMAPS website. Changes to these terms must be
-                    approved by the site administration.</i
-                ></b
-                >
+                    approved by the site administration.</i>
+                </b>
             </p>
 
-            <div><br />Last Updated on 2019-11-07</div>
+            <div><br>Last Updated on 2019-11-07</div>
             <p>Prior Versions:</p>
             <ul>
                 <li><a href="https://gitlab.com/mike-koch/hitman-maps/raw/fb501f0270bf2d9b31f575057bb45db54d79ce42/src/views/TermsOfUse.vue">2019-07-29 to 2019-11-07</a></li>
@@ -170,7 +168,7 @@
         background-color: $content-background;
         color: $content-text;
         padding: 20px;
-        font-family: 'nimbus_sans_lbold', sans-serif;
+        font-family: 'nimbus_sans_lregular', sans-serif;
 
         hr {
             background: $content-text;
@@ -178,20 +176,15 @@
 
         h1 {
             text-transform: uppercase;
+            font-family: 'nimbus_sans_lbold', sans-serif;
         }
 
         h2 {
-            font-size: 1.25rem;
+            font-family: 'nimbus_sans_lbold', sans-serif;
         }
 
-        p {
-            font-family: 'Roboto', 'Arial', sans-serif;
-            font-weight: lighter;
-        }
-
-        li {
-            font-family: 'Roboto', 'Arial', sans-serif;
-            font-weight: lighter;
+        h3 {
+            font-family: 'nimbus_sans_lbold', sans-serif;
         }
     }
 }
