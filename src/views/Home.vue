@@ -685,32 +685,75 @@
             </div>
         </modal>-->
         <input type="hidden" name="notification-environment" />
-        <div class="patreon roulette">
+        <div class="patreon community-server">
+            <div class="row intro">
+                <div class="col-xs-12">
+                    <h1>{{ $t('community-server.header') }}</h1>
+                    <p>{{ $t('community-server.intro') }}</p>
+                    <p>
+                        <i18n path="community-server.download-instructions">
+                            <span slot="serverPatcher">
+                                <a href="#" target="_blank">{{ $t('community-server.server-patcher') }}</a>
+                            </span>
+                            <span slot="serverUrl">
+                                <code>gm.hitmaps.com</code>
+                            </span>
+                        </i18n>
+                    </p>
+                    <p>{{ $t('community-server.disclaimer') }}</p>
+                </div>
+            </div>
             <div class="row">
-                <div class="col-sm-6 col-xs-12">
+                <div class="col-lg-6 roulette">
                     <p>
                         <img src="https://media.hitmaps.com/img/hitmaps-custom/roulette-logo.png" class="img-fluid">
                     </p>
-                    <p>
-                        <i18n path="roulette.introduction">
-                                <span slot="hitmanRoulette">
-                                    <a href="https://thekotti.github.io/hitman.html" target="_blank">{{ $t('roulette.hitman-roulette') }}</a>
-                                </span>
-                        </i18n>
-                    </p>
-                    <ul>
-                        <li><b>{{ $t('roulette.list-item-tournament-mode.header') }}</b> {{ $t('roulette.list-item-tournament-mode.details') }}</li>
-                        <li><b>{{ $t('roulette.list-item-control.header') }}</b> {{ $t('roulette.list-item-control.details') }}</li>
-                        <li><b>{{ $t('roulette.list-item-overlay.header') }}</b> {{ $t('roulette.list-item-overlay.details') }}</li>
-                    </ul>
-                    <a href="https://roulette.hitmaps.com" target="_blank" class="btn square-button white">
-                        <i class="fas fa-arrow-right"></i>
-                        {{ $t('roulette.visit-button') }}
-                    </a>
-                    <p><i>{{ $t('roulette.footer') }}</i></p>
+                    <div class="row">
+                        <div class="col-lg-7 col-xs-12">
+                            <p>{{ $t('community-server.roulette.in-game-intro') }}</p>
+                            <p>{{ $t('community-server.roulette.available-for-h3-users') }}</p>
+                        </div>
+                        <div class="col-lg-5 col-xs-12">
+                            <img src="https://media.hitmaps.com/img/hitmaps-custom/sample-in-game-spin.png" class="img-fluid" alt="Screenshot of In-Game Spin">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-lg-7 col-xs-12">
+                            <p>
+                                <i18n path="roulette.introduction">
+                                    <span slot="hitmanRoulette">
+                                        <a href="https://thekotti.github.io/hitman.html" target="_blank">{{ $t('roulette.hitman-roulette') }}</a>
+                                    </span>
+                                </i18n>
+                            </p>
+                            <ul>
+                                <li><b>{{ $t('roulette.list-item-tournament-mode.header') }}</b> {{ $t('roulette.list-item-tournament-mode.details') }}</li>
+                                <li><b>{{ $t('roulette.list-item-control.header') }}</b> {{ $t('roulette.list-item-control.details') }}</li>
+                                <li><b>{{ $t('roulette.list-item-overlay.header') }}</b> {{ $t('roulette.list-item-overlay.details') }}</li>
+                            </ul>
+                            <a href="https://roulette.hitmaps.com" target="_blank" class="btn square-button white">
+                                <i class="fas fa-arrow-right"></i>
+                                {{ $t('roulette.visit-button') }}
+                            </a>
+                            <p><i>{{ $t('roulette.footer') }}</i></p>
+                        </div>
+                        <div class="col-lg-5 col-xs-12">
+                            <img src="https://media.hitmaps.com/img/hitmaps-custom/sample-website-spin.png" class="img-fluid" alt="Screenshot of Website Spin">
+                        </div>
+                    </div>
+
                 </div>
-                <div class="col-sm-6 col-12" style="display: flex; justify-content: center">
-                    <img src="/img/jpg/roulette.jpg" class="img-fluid" alt="Roulette Partial Screenshot" style="max-height: 400px;">
+                <div class="col-lg-6 ghost-mode">
+                    <h2>
+                        <game-icon icon="versus" font-style="solid"></game-icon>
+                        {{ $t('mission-types.ghost mode') }}
+                    </h2>
+                    <p>{{ $t('community-server.ghost-mode.intro') }}</p>
+                    <p>{{ $t('community-server.ghost-mode.available-for-h2-users') }}</p>
+                    <div class="ghost-mode-image">
+                        <img src="https://media.hitmaps.com/img/hitman3/gamemodes/briefing_ghostmode.jpg" alt="Ghost Mode Image" class="img-fluid">
+                    </div>
                 </div>
             </div>
         </div>
@@ -1771,9 +1814,28 @@ header {
         }
     }
 
-    &.roulette {
+    &.community-server, &.roulette {
         background: black;
         color: white;
+
+        hr {
+            color: white;
+            background: white;
+        }
+
+        .ghost-mode {
+            h2 {
+                text-transform: uppercase;
+
+                i {
+                    vertical-align: middle;
+                }
+            }
+
+            .ghost-mode-image {
+                text-align: center;
+            }
+        }
     }
 }
 
