@@ -693,7 +693,7 @@
                     <p>
                         <i18n path="community-server.download-instructions">
                             <span slot="serverPatcher">
-                                <a href="#" target="_blank">{{ $t('community-server.server-patcher') }}</a>
+                                <a href="https://gitlab.com/grappigegovert/localghost/-/jobs/artifacts/master/download?job=build_patcher" target="_blank">{{ $t('community-server.server-patcher') }}</a>
                             </span>
                             <span slot="serverUrl">
                                 <code>gm.hitmaps.com</code>
