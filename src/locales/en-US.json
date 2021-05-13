@@ -21,7 +21,7 @@
         }
     },
     "roulette": {
-        "introduction": "The HITMAP™ Roulette website is still available as well. Initially based on Kotti's {hitmanRoulette}, HITMAPS™ Roulette takes Kotti's work and builds off of it to add new features, including:",
+        "introduction": "The HITMAPS™ Roulette website is still available as well. Initially based on Kotti's {hitmanRoulette}, HITMAPS™ Roulette takes Kotti's work and builds off of it to add new features, including:",
         "hitman-roulette": "Hitman Roulette",
         "list-item-tournament-mode": {
             "header": "Tournament Mode:",
