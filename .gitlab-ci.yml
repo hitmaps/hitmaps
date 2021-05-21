@@ -51,7 +51,7 @@ Prod Deploy Frontend:
     url: https://www.hitmaps.com
   artifacts:
     paths:
-      - frontend/
+      - dist/frontend/
 
 Stage Deploy API:
   image: php:7.2
