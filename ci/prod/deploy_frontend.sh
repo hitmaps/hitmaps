@@ -1,10 +1,10 @@
 #!/bin/bash
 
-cd ../../dist
-
+cd ../../dist/
 mkdir frontend
 TARGETDIR=frontend;for file in *;do test "$file" != "$TARGETDIR" && cp -r "$file" "$TARGETDIR/";done
 
+cd frontend
 zip -r ../frontend.zip . > ../zip_output.txt
 cd ../
 rm -rf frontend
