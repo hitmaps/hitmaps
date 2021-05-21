@@ -4,7 +4,9 @@ cd ../../dist/
 mkdir frontend
 TARGETDIR=frontend;for file in *;do test "$file" != "$TARGETDIR" && cp -r "$file" "$TARGETDIR/";done
 
-zip -r ./frontend.zip frontend/ > ../zip_output.txt
+cd frontend
+zip -r ../frontend.zip . > ../zip_output.txt
+cd ../
 rm -rf frontend
 mkdir frontend
 mv frontend.zip frontend
