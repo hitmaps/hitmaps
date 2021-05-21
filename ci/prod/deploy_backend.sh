@@ -10,10 +10,6 @@ rm -rf ci
 rm -rf .git
 rm -rf api/maps/
 
-# Put the current commit hash into cachehash.txt
-rm api/Config/cachehash.txt
-echo $CI_COMMIT_SHORT_SHA > api/Config/cachehash.txt
-
 zip -r ../backend.zip . > ../zip_output.txt
 cd ../
 rm -rf backend
@@ -23,5 +19,5 @@ mv zip_output.txt backend
 
 lftp -d -e "set ssl:verify-certificate no; mirror -P $NUMBER_OF_CONCURRENT_UPLOADS -Rv backend/ $REMOTE_DIR; quit;" ftp://$USERNAME:$PASSWORD@$HOST
 
-curl https://www.hitmaps.com/unzip-build.php?zip=backend\&access-key=$ACCESS_KEY
-curl https://www.hitmaps.com/api/admin/migrate?access-key=$ACCESS_KEY
+#curl https://www.hitmaps.com/unzip-build.php?zip=backend\&access-key=$ACCESS_KEY
+#curl https://www.hitmaps.com/api/admin/migrate?access-key=$ACCESS_KEY
