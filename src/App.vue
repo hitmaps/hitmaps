@@ -28,7 +28,7 @@
                                 <i class="fas fa-info-circle fa-stack-1x fa-inverse"></i>
                             </span>
                         </router-link>
-                        <a href="https://discord.gg/eZqhZah" target="_blank">
+                        <a href="https://discord.gg/RssFsajjjX" target="_blank">
                             <span class="fa-stack fa-2x" v-tooltip:top="$t('footer.join-the-discord')">
                                 <i class="fas fa-square fa-stack-2x"></i>
                                 <i class="fab fa-discord fa-stack-1x fa-inverse"></i>
