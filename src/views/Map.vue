@@ -1057,10 +1057,9 @@
                                                 {{ $t('map.text') }}
                                             </label>
                                             <div class="col-sm-10">
-                                                <input type="text"
-                                                       name="note-text[]"
+                                                <textarea name="note-text[]"
                                                        v-model="note.text"
-                                                       class="form-control" />
+                                                       class="form-control"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -1408,10 +1407,10 @@ export default {
             let node = element.options.custom.node;
 
             let $template = $($('#popup-template').html());
-            $template.find('[data-name="group"]').html(node.group).end()
-                .find('[data-name="name"]').html(node.name).end()
+            $template.find('[data-name="group"]').text(node.group).end()
+                .find('[data-name="name"]').text(node.name).end()
                 .find('[data-node-id="x"]').attr('data-node-id', node.id).end()
-                .find('[data-name="target"]').find('span').html(node.target);
+                .find('[data-name="target"]').find('span').text(node.target);
 
             if (node.target !== null && node.target !== '' && node.targetIcon !== '') {
                 $template.find('[data-name="target"]').find('i').addClass(node.targetIcon).show();
@@ -1437,7 +1436,7 @@ export default {
             for (let i in node.notes) {
                 let $noteTemplate = $($('#popup-note-template').html());
 
-                $noteTemplate.find('[data-name="note-contents"]').html(node.notes[i].text).parent().addClass(node.notes[i].type);
+                $noteTemplate.find('[data-name="note-contents"]').text(node.notes[i].text).parent().addClass(node.notes[i].type);
 
                 $template.find('[data-name="notes"]').append($noteTemplate.html());
             }
@@ -2321,7 +2320,12 @@ export default {
                     group.items.forEach(node => {
                         let marker = this.buildMarker(node).bindPopup(this.buildPopup);
                         if (node.tooltip !== '') {
-                            marker.bindTooltip(node.tooltip);
+                            const tooltip = node.tooltip.replace(/&/g, "&amp;")
+                                .replace(/</g, "&lt;")
+                                .replace(/>/g, "&gt;")
+                                .replace(/"/g, "&quot;")
+                                .replace(/'/g, "&#039;");
+                            marker.bindTooltip(tooltip);
                         }
 
                         marker.addTo(this.overlays[node.level][nodeType.name + '|' + group.name]);
@@ -2578,6 +2582,7 @@ html {
 
                 > div {
                     padding: 10px;
+                    white-space: pre-line;
 
                     &:not(:last-child) {
                         margin-bottom: 10px;
