@@ -146,7 +146,7 @@ class ElusiveTargetUpdater {
 
                 $saveName = str_replace(' ', '-', strtolower($elusiveTargetJson->name));
                 $fileName = "{$locationInfo['tileSaveLocation']}{$saveName}.jpg";
-                $saveLocation =__DIR__ . "/{$fileName}";
+                $saveLocation =__DIR__ . "/{$saveName}.jpg";
                 file_put_contents($saveLocation, $image);
                 $settings = new Settings();
                 $mediaLibraryPath = $settings->mediaLibraryPath;
