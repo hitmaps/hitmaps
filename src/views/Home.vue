@@ -553,7 +553,7 @@
                     </router-link>
                 </div>
             </div>
-            <div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
+            <!--<div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
@@ -644,7 +644,7 @@
                         </div>
                     </template>
                 </div>
-            </div>
+            </div>-->
         </template>
         <!--<modal modal-title="Roulette Rivals World Championship"
                id="roulette-rivals-modal"
@@ -873,14 +873,26 @@ export default {
             tournamentMatches: [],
             promos: [
                 {
-                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/rr5-temp.png',
-                    promoStartDate: '2021-05-13T00:00:00+00:00',
-                    promoEndDate: '2021-06-10T00:00:00+00:00',
+                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/contract-jam-square.png',
+                    promoStartDate: '2021-06-12T00:00:00+00:00',
+                    promoEndDate: '2021-06-13T00:00:00+00:00',
+                    topCaption: "SC8 Contract Contest",
+                    bottomCaption: 'Contract Jam',
+                    beforeText: 'Event Begins',
+                    duringText: 'Event Ends',
+                    tournament: false,
+                    h3: false,
+                    url: 'https://discord.gg/FVxTKdU'
+                },
+                {
+                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/sc8square.png',
+                    promoStartDate: '2021-06-18T14:00:00+00:00',
+                    promoEndDate: '2021-06-28T00:00:00+00:00',
                     topCaption: "Community Tournament",
-                    bottomCaption: 'Roulette Rivals 5',
-                    beforeText: 'Registration Closes',
-                    duringText: undefined,
-                    tournament: true,
+                    bottomCaption: 'Speedrun Competition 8',
+                    beforeText: 'Event Begins',
+                    duringText: 'Submissions Due In',
+                    tournament: false,
                     h3: false,
                     url: 'https://discord.gg/FVxTKdU'
                 }
@@ -933,10 +945,18 @@ export default {
             },
             streams: [],
             froteImages: [
-                /*{
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/sc7.png',
-                    caption: 'Speedrun Competition 7'
-                },*/
+                {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc8.png',
+                    caption: 'Speedrun Competition 8'
+                },
+                {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/rr5.png',
+                    caption: 'Roulette Rivals 5'
+                },
+                {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc7.jpg',
+                    caption: 'Speedrun Competition 7 - Artwork by BigDave'
+                },
                 {
                     url: 'https://media.hitmaps.com/img/hitmaps-tournaments/fuzk3.png',
                     caption: "Fuzk's Photo Contest 3"
@@ -964,54 +984,6 @@ export default {
                 {
                     url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/rr3.jpg',
                     caption: 'Roulette Rivals 3'
-                },
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc5.png',
-                    caption: 'Speedrun Competition 5'
-                },
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/rr2.png',
-                    caption: 'Roulette Rivals 2'
-                },
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/gm3.png',
-                    caption: 'Ghost Mode Tournament 3'
-                },
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc4.png',
-                    caption: 'Speedrun Competition 4'
-                },
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/ce1.png',
-                    caption: 'Competitive Escalation - Miami'
-                },
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/cc1.png',
-                    caption: "Mullet's Creative Contest 1"
-                },
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc3.png',
-                    caption: 'Speedrun Competition 3'
-                },
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/rr1.png',
-                    caption: 'Roulette Rivals'
-                },
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/gm2.png',
-                    caption: 'Ghost Mode Tournament 2'
-                },
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/gm1.png',
-                    caption: 'Ghost Mode Tournament'
-                },
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc1.png',
-                    caption: 'Speedrun Competition'
-                },
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/featured-contracts.png',
-                    caption: "Frote's Featured Contracts"
                 }
             ]
         }
@@ -1257,10 +1229,10 @@ export default {
             console.error(err);
             this.$router.push({ name: '500' });
         });
-        this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/rr5').then(resp => {
+        /*this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/rr5').then(resp => {
             this.tournamentMatches = resp.data;
             console.info(this.tournamentMatches);
-        });
+        });*/
     }
 }
 
