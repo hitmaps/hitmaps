@@ -5,8 +5,23 @@
         "footer": "Die Übersetzungen werden von Mitgliedern der HITMAPS™️-Community erstellt und aktualisiert. {submitACorrection}, wenn eine Übersetzung fehlerhaft ist.",
         "submit-a-correction": "Korrektur einreichen"
     },
+    "community-server": {
+        "header": "Gemeinschaft Server",
+        "intro": "The HITMAPS Community Game Server provides custom (and retired) game modes for all players who legitimately own HITMAN 2 or HITMAN 3. Below are the current game modes supported on the community server.",
+        "download-instructions": "Um sich zu verbinden, laden Sie einfach den {serverPatcher} herunter, wählen Sie {serverUrl} in der Auswahlliste und starten Sie HITMAN 2 oder HITMAN 3, um sich zu verbinden.",
+        "server-patcher": "server patcher",
+        "disclaimer": "Community Servers are not approved or supported by IO Interactive, so do not contact them for any issues. Instead, contact HITMAPS.",
+        "roulette": {
+            "in-game-intro": "Das HITMAPS™ In-Game-Roulette übernimmt den Kern der HITMAPS™-Roulette-Webseite und bringt ihn direkt ins Spiel. So können Sie die Drehbedingungen im Spiel sehen und werden sofort benachrichtigt, wenn Sie scheitern. Mit mehr als 16 Milliarden möglichen Aufträge gibt es eine fast unendliche Anzahl von Möglichkeiten, Ihre Ziele auszuschalten.",
+            "available-for-h3-users": "Das HITMAPS™-In-Game-Roulette ist für PC-Spieler verfügbar, die HITMAN 3 besitzen."
+        },
+        "ghost-mode": {
+            "intro": "Ghost Mode for HITMAN 2 has returned as an unofficial game mode on the HITMAPS community server! You and a friend can connect to the community server and invite each other to a friendly Ghost Mode match using Steam's invite system.  Matchmaking is not supported on the community server.",
+            "available-for-h2-users": "Ghost Mode ist verfügbar für PC Spieler, die HITMAN 2 besitzen."
+        }
+    },
     "roulette": {
-        "introduction": "Vorstellung des HITMAPS™ Roulette. HITMAPS™ Roulette basiert ursprünglich auf Kotti's {hitmanRoulette} und nimmt Kottis Arbeit auf und baut darauf auf, um neue Funktionen hinzuzufügen, darunter folgende:",
+        "introduction": "The HITMAPS™ Roulette website is still available as well. Initially based on Kotti's {hitmanRoulette}, HITMAPS™ Roulette takes Kotti's work and builds off of it to add new features, including:",
         "hitman-roulette": "Hitman Roulette",
         "list-item-tournament-mode": {
             "header": "Turnier Modus:",

@@ -5,8 +5,23 @@
         "footer": "翻译由 HITMAPS™ 社区维护和更新。如果翻译不正确，请{submitACorrection}.",
         "submit-a-correction": "更正建议"
     },
+    "community-server": {
+        "header": "Community Server",
+        "intro": "The HITMAPS Community Game Server provides custom (and retired) game modes for all players who legitimately own HITMAN 2 or HITMAN 3. Below are the current game modes supported on the community server.",
+        "download-instructions": "To connect, simply download the {serverPatcher}, select {serverUrl} in the dropdown, and launch HITMAN 2 or HITMAN 3 to connect.",
+        "server-patcher": "server patcher",
+        "disclaimer": "Community Servers are not approved or supported by IO Interactive, so do not contact them for any issues. Instead, contact HITMAPS.",
+        "roulette": {
+            "in-game-intro": "The HITMAPS™ In-Game Roulette takes the core of the HITMAPS™ Roulette website and brings it directly in-game, allowing you to see spin conditions in-game, and be instantly notified when you fail. With 16 billion+ possible contracts, there's an almost endless number of ways to take out your targets.",
+            "available-for-h3-users": "The HITMAPS™ In-Game Roulette is available for PC players who own HITMAN 3."
+        },
+        "ghost-mode": {
+            "intro": "Ghost Mode for HITMAN 2 has returned as an unofficial game mode on the HITMAPS community server! You and a friend can connect to the community server and invite each other to a friendly Ghost Mode match using Steam's invite system.  Matchmaking is not supported on the community server.",
+            "available-for-h2-users": "Ghost Mode is available for PC players who own HITMAN 2."
+        }
+    },
     "roulette": {
-        "introduction": "Introducing the HITMAPS™ Roulette. Initially based on Kotti's {hitmanRoulette}, HITMAPS™ Roulette takes Kotti's work and builds off of it to add new features, including:",
+        "introduction": "The HITMAPS™ Roulette website is still available as well. Initially based on Kotti's {hitmanRoulette}, HITMAPS™ Roulette takes Kotti's work and builds off of it to add new features, including:",
         "hitman-roulette": "Hitman Roulette",
         "list-item-tournament-mode": {
             "header": "Tournament Mode:",
