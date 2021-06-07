@@ -40,7 +40,11 @@ mkdir backend
 mv backend.zip backend
 mv zip_output.txt backend
 
-lftp -d -e "set ssl:verify-certificate no; mirror -P $NUMBER_OF_CONCURRENT_UPLOADS -Rv backend/ $REMOTE_DIR; quit;" ftp://$USERNAME:$PASSWORD@$HOST
+cd backend
+echo 'Uploading backend.zip'
+scp -r backend.zip $USERNAME@$HOST:$PROD_UPLOAD_DIR/backend.zip
+echo 'Uploading zip_output.txt'
+scp -r zip_output.txt $USERNAME@$HOST:$PROD_UPLOAD_DIR/zip_output.txt
 
 curl https://www.hitmaps.com/unzip-build.php?zip=backend\&access-key=$ACCESS_KEY
 #curl https://www.hitmaps.com/api/admin/migrate?access-key=$ACCESS_KEY
