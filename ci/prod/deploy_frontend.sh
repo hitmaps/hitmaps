@@ -12,6 +12,8 @@ mkdir frontend
 mv frontend.zip frontend
 mv zip_output.txt frontend
 
-lftp -d -e "set ssl:verify-certificate no; mirror -P $NUMBER_OF_CONCURRENT_UPLOADS -Rv frontend/ $REMOTE_DIR; quit;" ftp://$USERNAME:$PASSWORD@$HOST
+cd frontend
+scp -r frontend/frontend.zip $USERNAME@$HOST:frontend.zip
+scp -r frontend/zip_output.txt $USERNAME@$HOST:zip_output.txt
 
 #curl https://www.hitmaps.com/unzip-build.php?zip=frontend\&access-key=$ACCESS_KEY
