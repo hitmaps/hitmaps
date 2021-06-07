@@ -5,8 +5,23 @@
         "footer": "Las traducciones son mantenidas y actualizadas por la comunidad de HITMAPS™. Si una traducción es incorrecta, por favor {submitACorrection}.",
         "submit-a-correction": "enviar una corrección"
     },
+    "community-server": {
+        "header": "Community Server",
+        "intro": "The HITMAPS Community Game Server provides custom (and retired) game modes for all players who legitimately own HITMAN 2 or HITMAN 3. Below are the current game modes supported on the community server.",
+        "download-instructions": "To connect, simply download the {serverPatcher}, select {serverUrl} in the dropdown, and launch HITMAN 2 or HITMAN 3 to connect.",
+        "server-patcher": "server patcher",
+        "disclaimer": "Community Servers are not approved or supported by IO Interactive, so do not contact them for any issues. Instead, contact HITMAPS.",
+        "roulette": {
+            "in-game-intro": "The HITMAPS™ In-Game Roulette takes the core of the HITMAPS™ Roulette website and brings it directly in-game, allowing you to see spin conditions in-game, and be instantly notified when you fail. With 16 billion+ possible contracts, there's an almost endless number of ways to take out your targets.",
+            "available-for-h3-users": "The HITMAPS™ In-Game Roulette is available for PC players who own HITMAN 3."
+        },
+        "ghost-mode": {
+            "intro": "Ghost Mode for HITMAN 2 has returned as an unofficial game mode on the HITMAPS community server! You and a friend can connect to the community server and invite each other to a friendly Ghost Mode match using Steam's invite system.  Matchmaking is not supported on the community server.",
+            "available-for-h2-users": "Ghost Mode is available for PC players who own HITMAN 2."
+        }
+    },
     "roulette": {
-        "introduction": "Introduciendo la ruleta de HITMAPS™. Basada inicialmente en la {hitmanRoulette} de Kotti, la ruleta de HITMAPS™ toma el trabajo de Kotti y se construye para añadir nuevos cambios, incluyendo:",
+        "introduction": "The HITMAPS™ Roulette website is still available as well. Initially based on Kotti's {hitmanRoulette}, HITMAPS™ Roulette takes Kotti's work and builds off of it to add new features, including:",
         "hitman-roulette": "Ruleta de Hitman",
         "list-item-tournament-mode": {
             "header": "Modo Torneo:",
@@ -79,7 +94,7 @@
     },
     "elusive-target-icon": "Objetivo Esquivo Icono",
     "home-icon": "Icono de Inicio",
-    "home": "Home",
+    "home": "Inicio",
     "location-icon": "Icono de Ubicación",
     "mission-image": "Imagen de la Misión",
     "mission-icon": "Ícono de Misión",
@@ -327,10 +342,10 @@
         "privacy-policy": "Política de Privacidad",
         "register": "Registrarse",
         "back-to-login": "Volver a Inicio de sesión",
-        "login-with-discord": "Login with Discord",
-        "logging-in": "Logging in with Discord, please wait...",
-        "error-not-in-server": "You must be a member of the HITMAPS™ Discord Server. Please join the server using the button in the footer, and then try logging in again.",
-        "error-discord-auth": "An error occurred when communicating with Discord. Please try again later."
+        "login-with-discord": "Iniciar sesión con Discord",
+        "logging-in": "Iniciando sesión con Discord, espere por favor...",
+        "error-not-in-server": "Necesitas ser miembro del servidor de Discord de HITMAPS™. Por favor únete al servidor usando el botón al pie de página, e intenta iniciar sesión de nuevo.",
+        "error-discord-auth": "Ocurrió un error de comunicación con Discord. Por favor intenta de nuevo mas tarde."
     },
     "404": {
         "page-not-found": "Página no encontrada",
