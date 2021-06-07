@@ -73,10 +73,6 @@
                     id="navbarSupportedContent"
                 >
                     <div class="header">
-                        <alert type="info" v-if="game.slug === 'hitman3'" dismissable>
-                            <p>HITMAN™ 3 maps are new to HITMAPS™. We're working diligently to having items mapped; however they are not yet complete.</p>
-                            <p>We thank you for your patience while we work on mapping these levels 🙂</p>
-                        </alert>
                         <router-link :to="{ name: 'home' }">
                             <img src="/img/png/logos/hitmaps.png" class="img-fluid" alt="HITMAPS Logo" />
                         </router-link>
