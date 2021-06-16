@@ -873,18 +873,6 @@ export default {
             tournamentMatches: [],
             promos: [
                 {
-                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/contract-jam-square.png',
-                    promoStartDate: '2021-06-12T00:00:00+00:00',
-                    promoEndDate: '2021-06-13T00:00:00+00:00',
-                    topCaption: "SC8 Contract Contest",
-                    bottomCaption: 'Contract Jam',
-                    beforeText: 'Event Begins',
-                    duringText: 'Event Ends',
-                    tournament: false,
-                    h3: false,
-                    url: 'https://discord.gg/FVxTKdU'
-                },
-                {
                     tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/sc8square.png',
                     promoStartDate: '2021-06-18T14:00:00+00:00',
                     promoEndDate: '2021-06-28T00:00:00+00:00',
