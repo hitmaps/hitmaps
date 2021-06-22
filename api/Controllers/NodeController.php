@@ -38,11 +38,11 @@ class NodeController {
         $this->nodeCategoryRepository = $entityManager->getRepository(NodeCategory::class);
     }
 
-    public function getNodesForMission(int $missionid, string $difficulty, bool $distinctOnly = false, bool $searchableOnly = false): array {
+    public function getNodesForMission(int $missionid, ?string $difficulty = null, bool $distinctOnly = false, bool $searchableOnly = false): array {
         /* @var $mission Mission */
         $mission = $this->entityManager->getRepository(Mission::class)->findOneBy(['id' => $missionid]);
         
-        $nodesWithNotes = $this->nodeRepository->findByMissionAndDifficulty($missionid, $difficulty);
+        $nodesWithNotes = $this->nodeRepository->findByMission($missionid);
 
         $groups = [
             'Points of Interest' => new TopLevelCategoryViewModel('Points of Interest'),
@@ -131,7 +131,7 @@ class NodeController {
                 $nodeViewModel->level = $node->getLevel();
                 $nodeViewModel->latitude = $node->getLatitude();
                 $nodeViewModel->longitude = $node->getLongitude();
-                $nodeViewModel->difficulty = $node->getDifficulty();
+                $nodeViewModel->difficulties = $node->getDifficulties();
                 $nodeViewModel->group = $node->getGroup();
                 $nodeViewModel->image = $node->getImage();
                 $nodeViewModel->tooltip = $node->getTooltip();

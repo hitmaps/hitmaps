@@ -107,8 +107,7 @@
                                     params: {
                                         slug: location.game,
                                         location: location.slug,
-                                        mission: mission.slug,
-                                        difficulty: mission.difficulties[0].toLowerCase()
+                                        mission: mission.slug
                                     }
                                 }"
                                 v-if="mission.difficulties.length == 1"
@@ -155,8 +154,7 @@
                                                     params: {
                                                         slug: location.game,
                                                         location: location.slug,
-                                                        mission: mission.slug,
-                                                        difficulty: difficulty.toLowerCase()
+                                                        mission: mission.slug
                                                     }
                                                 }"
                                                 v-for="difficulty in mission.difficulties"

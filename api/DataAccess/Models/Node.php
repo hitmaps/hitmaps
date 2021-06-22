@@ -62,11 +62,6 @@ class Node {
     public $longitude;
 
     /**
-     * @ORM\Column(type="string")
-     */
-    public $difficulty;
-
-    /**
      * @ORM\Column(type="string", name="`group`")
      */
     public $group;
@@ -105,6 +100,9 @@ class Node {
      * @ORM\Column(type="integer")
      */
     public $quantity;
+
+    // Not tied via DM
+    public $difficulties = [];
 
     public function __construct() {
         $this->dateCreated = new \DateTime("now");
@@ -250,20 +248,6 @@ class Node {
         $this->longitude = $longitude;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDifficulty(): string {
-        return $this->difficulty;
-    }
-
-    /**
-     * @param mixed $difficulty
-     */
-    public function setDifficulty(string $difficulty): void {
-        $this->difficulty = $difficulty;
-    }
-
     public function setGroup(string $group): void {
         $this->group = $group;
     }
@@ -371,5 +355,19 @@ class Node {
      */
     public function setQuantity(int $quantity): void {
         $this->quantity = $quantity;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDifficulties() {
+        return $this->difficulties;
+    }
+
+    /**
+     * @param mixed $difficulties
+     */
+    public function setDifficulties($difficulties): void {
+        $this->difficulties = $difficulties;
     }
 }

@@ -212,11 +212,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div
-                            class="search-box"
-                            id="search-box-items"
-                            data-search="items"
-                        >
+                        <div class="search-box">
+                            <div v-for="difficulty in nodeDifficulties">
+                                {{ difficulty }}
+                            </div>
+                        </div>
+                        <div class="search-box" id="search-box-items" data-search="items">
                             <select
                                 @change="searchItem"
                                 ref="itemSearch"
@@ -1161,6 +1162,7 @@ export default {
             ledges: [],
             foliage: [],
             nodes: null,
+            nodeDifficulties: [],
             searchableNodes: null,
             currentLayer: 0,
             overlays: [],
@@ -1644,7 +1646,6 @@ export default {
             data.append('level', this.currentLayer)
             data.append('latitude', this.editor.clickedPoint.lat)
             data.append('longitude', this.editor.clickedPoint.lng)
-            data.append('difficulty', this.$route.params.difficulty)
             data.append('group', this.currentCategory.group || '')
             data.append('searchable', +this.currentCategory.searchable)
             data.append('image', this.currentCategory.image || '')
@@ -2247,15 +2248,7 @@ export default {
             this.$store.dispatch('loadGame', this.$route.params.slug)
         this.$request(
             false,
-            'v1/games/' +
-                this.$route.params.slug +
-                '/locations/' +
-                this.$route.params.location +
-                '/missions/' +
-                this.$route.params.mission +
-                '/' +
-                this.$route.params.difficulty +
-                '/map'
+            `v1/games/${this.$route.params.slug}/locations/${this.$route.params.location}/missions/${this.$route.params.mission}/map`
         ).then(resp => {
             this.game = resp.data.game;
             this.mission = resp.data.mission;
@@ -2276,11 +2269,12 @@ export default {
                     )
                 }
             }
-            this.disguises = resp.data.disguises
-            this.ledges = resp.data.ledges
-            this.foliage = resp.data.foliage
-            this.nodes = resp.data.nodes
-            this.searchableNodes = resp.data.searchableNodes
+            this.disguises = resp.data.disguises;
+            this.ledges = resp.data.ledges;
+            this.foliage = resp.data.foliage;
+            this.nodes = resp.data.nodes;
+            this.nodeDifficulties = resp.data.nodeDifficulties;
+            this.searchableNodes = resp.data.searchableNodes;
             resp.data.categories.forEach(category => {
                 if (!this.categories[category.type]) {
                     this.categories[category.type] = [];
