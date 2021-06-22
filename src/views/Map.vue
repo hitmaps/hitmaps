@@ -213,8 +213,42 @@
                             </div>
                         </div>
                         <div class="search-box">
-                            <div v-for="difficulty in nodeDifficulties">
-                                {{ difficulty }}
+                            <div class="card">
+                                <div class="card-header" id="header-difficulties">
+                                    <div
+                                        class="name collapsed control-button"
+                                        data-toggle="collapse"
+                                        data-target="#body-difficulties"
+                                        aria-expanded="false"
+                                        aria-controls="body-difficulties"
+                                    >
+                                        <game-icon :icon="`difficulty-${selectedDifficulty}`" font-style="solid" />
+                                        <span class="disguise-text">
+                                            {{ selectedDifficulty | capitalize }}
+                                        </span>
+                                        <span class="float-right">
+                                            <i class="fas fa-caret-down"></i>
+                                            <i class="fas fa-caret-up"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div
+                                    id="body-difficulties"
+                                    class="collapse"
+                                    aria-labelledby="header-difficulties"
+                                >
+                                    <div class="card-body difficulties">
+                                        <div @click="alert('Would have changed difficulty')"
+                                             v-for="difficulty in nodeDifficulties"
+                                             :key="difficulty"
+                                             class="col-lg-6">
+                                            <div class="disguise-container" :class="difficulty === selectedDifficulty ? 'active' : ''">
+                                                <game-icon :icon="`difficulty-${difficulty}`" font-style="solid" />
+                                                <div>{{ difficulty | capitalize }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="search-box" id="search-box-items" data-search="items">
@@ -1163,6 +1197,7 @@ export default {
             foliage: [],
             nodes: null,
             nodeDifficulties: [],
+            selectedDifficulty: '',
             searchableNodes: null,
             currentLayer: 0,
             overlays: [],
@@ -2274,6 +2309,7 @@ export default {
             this.foliage = resp.data.foliage;
             this.nodes = resp.data.nodes;
             this.nodeDifficulties = resp.data.nodeDifficulties;
+            this.selectedDifficulty = this.nodeDifficulties.includes('professional') ? 'professional' : 'standard';
             this.searchableNodes = resp.data.searchableNodes;
             resp.data.categories.forEach(category => {
                 if (!this.categories[category.type]) {
