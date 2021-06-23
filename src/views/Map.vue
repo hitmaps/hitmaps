@@ -167,7 +167,6 @@
                             <button class="btn control-button" @click="move('n-')"><i class="fas fa-compress-alt"></i></button>
                         </div>
                     </div>
-                    <br />
                     <div style="color: white" v-if="debugMode">
                         {{ debugLayerSize[0][0] }}, {{ debugLayerSize[0][1] }} / {{ debugLayerSize[1][0] }}, {{ debugLayerSize[1][1] }}
                     </div>
@@ -212,44 +211,17 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="search-box">
-                            <div class="card">
-                                <div class="card-header" id="header-difficulties">
-                                    <div
-                                        class="name collapsed control-button"
-                                        data-toggle="collapse"
-                                        data-target="#body-difficulties"
-                                        aria-expanded="false"
-                                        aria-controls="body-difficulties"
-                                    >
-                                        <game-icon :icon="`difficulty-${selectedDifficulty}`" font-style="solid" />
-                                        <span class="disguise-text">
-                                            {{ selectedDifficulty | capitalize }}
-                                        </span>
-                                        <span class="float-right">
-                                            <i class="fas fa-caret-down"></i>
-                                            <i class="fas fa-caret-up"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div
-                                    id="body-difficulties"
-                                    class="collapse"
-                                    aria-labelledby="header-difficulties"
-                                >
-                                    <div class="card-body difficulties">
-                                        <div @click="alert('Would have changed difficulty')"
-                                             v-for="difficulty in nodeDifficulties"
-                                             :key="difficulty"
-                                             class="col-lg-6">
-                                            <div class="disguise-container" :class="difficulty === selectedDifficulty ? 'active' : ''">
-                                                <game-icon :icon="`difficulty-${difficulty}`" font-style="solid" />
-                                                <div>{{ difficulty | capitalize }}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="difficulty-selector">
+                          <div class="row">
+                            <div class="col-lg-6 col-xs-12 difficulty"
+                                 :class="difficulty === selectedDifficulty ? 'active' : ''"
+                                 @click="selectedDifficulty = difficulty"
+                                 v-for="difficulty in missionDifficulties"
+                                 :key="difficulty.id">
+                                <game-icon :icon="`difficulty-${$options.filters.lowercase(difficulty.difficulty)}`" font-style="solid" />
+                                <span>{{ $t(`difficulties.${difficulty.difficulty}`) }}</span>
                             </div>
+                          </div>
                         </div>
                         <div class="search-box" id="search-box-items" data-search="items">
                             <select
@@ -1196,7 +1168,7 @@ export default {
             ledges: [],
             foliage: [],
             nodes: null,
-            nodeDifficulties: [],
+            missionDifficulties: [],
             selectedDifficulty: '',
             searchableNodes: null,
             currentLayer: 0,
@@ -2308,8 +2280,12 @@ export default {
             this.ledges = resp.data.ledges;
             this.foliage = resp.data.foliage;
             this.nodes = resp.data.nodes;
-            this.nodeDifficulties = resp.data.nodeDifficulties;
-            this.selectedDifficulty = this.nodeDifficulties.includes('professional') ? 'professional' : 'standard';
+            this.missionDifficulties = resp.data.missionDifficulties;
+            if (this.missionDifficulties.some(x => x.difficulty === 'Professional')) {
+                this.selectedDifficulty = this.missionDifficulties.find(x => x.difficulty === 'Professional');
+            } else {
+                this.selectedDifficulty = this.missionDifficulties.find(x => x.difficulty === 'Standard');
+            }
             this.searchableNodes = resp.data.searchableNodes;
             resp.data.categories.forEach(category => {
                 if (!this.categories[category.type]) {
@@ -3083,6 +3059,54 @@ html {
             cursor: pointer;
             opacity: 1;
             border-color: #fff;
+        }
+    }
+}
+
+.difficulty-selector {
+    border-radius: 3px;
+    background: rgba(22, 24, 29, 0.75);
+    color: #fff;
+    box-shadow: none;
+    border: solid 2px #2a2d31;
+    opacity: 0.85;
+    margin-bottom: 25px;
+
+    .row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .difficulty {
+        margin-left: 0;
+        margin-right: 0;
+        text-align: center;
+        padding-top: 6px;
+        padding-bottom: 6px;
+        cursor: pointer;
+
+        &:first-child.active {
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+        }
+
+        &:last-child.active {
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
+        }
+
+        &.active {
+            background: #fff;
+            color: #000;
+        }
+
+        i {
+            font-size: 20px;
+            padding-right: 5px;
+        }
+
+        &:not(:last-child) {
+            border-right: solid 2px #2a2d31;
         }
     }
 }

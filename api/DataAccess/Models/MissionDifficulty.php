@@ -13,22 +13,22 @@ class MissionDifficulty {
     /**
      * @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
      */
-    private $id;
+    public $id;
 
     /**
      * @ORM\Column(type="integer", name="mission_id")
      */
-    private $missionId;
+    public $missionId;
 
     /**
      * @ORM\Column(type="string")
      */
-    private $difficulty;
+    public $difficulty;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $visible;
+    public $visible;
 
     /**
      * @return mixed

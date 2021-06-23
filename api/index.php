@@ -15,6 +15,7 @@ use DataAccess\Models\Game;
 use DataAccess\Models\Location;
 use DataAccess\Models\MapFloorToName;
 use DataAccess\Models\Mission;
+use DataAccess\Models\MissionDifficulty;
 use DataAccess\Models\NodeCategory;
 use DataAccess\Models\NodeDifficulty;
 use DataAccess\Models\RouletteMatchup;
@@ -61,9 +62,9 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]?', function 
             foreach ($missions as $mission) {
                 $mission->floorNames = $applicationContext->get(EntityManager::class)->getRepository(MapFloorToName::class)->findBy(['missionId' => $mission->getId()], ['floorNumber' => 'ASC']);
 
-                $missionDifficulties = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\MissionDifficulty::class)->findBy(['missionId' => $mission->getId()]);
+                $missionDifficulties = $applicationContext->get(EntityManager::class)->getRepository(MissionDifficulty::class)->findBy(['missionId' => $mission->getId()]);
 
-                /* @var $missionDifficulty \DataAccess\Models\MissionDifficulty */
+                /* @var $missionDifficulty MissionDifficulty */
                 foreach ($missionDifficulties as $missionDifficulty) {
                     if ($missionDifficulty->isVisible()) {
                         $mission->difficulties[] = $missionDifficulty->getDifficulty();
@@ -99,9 +100,9 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
 
     /* @var $mission Mission */
     foreach ($missions as $mission) {
-        $missionDifficulties = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\MissionDifficulty::class)->findBy(['missionId' => $mission->getId()]);
+        $missionDifficulties = $applicationContext->get(EntityManager::class)->getRepository(MissionDifficulty::class)->findBy(['missionId' => $mission->getId()]);
 
-        /* @var $missionDifficulty \DataAccess\Models\MissionDifficulty */
+        /* @var $missionDifficulty MissionDifficulty */
         foreach ($missionDifficulties as $missionDifficulty) {
             if ($missionDifficulty->isVisible()) {
                 $mission->difficulties[] = $missionDifficulty->getDifficulty();
@@ -273,13 +274,12 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
             $formattedDisguises[] = $formattedDisguise;
         }
 
-        /* @var $nodeDifficultyRepository \DataAccess\Repositories\NodeDifficultyRepository */
-        $nodeDifficultyRepository = $applicationContext->get(EntityManager::class)->getRepository(NodeDifficulty::class);
-
         return [
             'game' => $game,
             'mission' => $mission,
-            'nodeDifficulties' => $nodeDifficultyRepository->getDifficultiesForMission($mission->getId()),
+            'missionDifficulties' => $applicationContext->get(EntityManager::class)
+                ->getRepository(MissionDifficulty::class)
+                ->findBy(['missionId' => $mission->getId()]),
             'nodes' => $nodes,
             'searchableNodes' => $applicationContext->get(NodeController::class)->getNodesForMission($mission->getId(), $request->difficulty, true, true),
             'categories' => $nodeCategories,
@@ -914,8 +914,8 @@ $klein->respond('GET', '/api/sitemap.txt', function(\Klein\Request $request, \Kl
             /* @var $missions Mission[] */
             $missions = $missionRepository->findActiveMissionsByLocation($location->getId());
             foreach ($missions as $mission) {
-                /* @var $difficulties \DataAccess\Models\MissionDifficulty[] */
-                $difficulties = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\MissionDifficulty::class)
+                /* @var $difficulties MissionDifficulty[] */
+                $difficulties = $applicationContext->get(EntityManager::class)->getRepository(MissionDifficulty::class)
                     ->findBy(['missionId' => $mission->getId()]);
 
                 foreach ($difficulties as $difficulty) {
