@@ -871,20 +871,7 @@ export default {
             currentPromoIndex: 0,
             currentPromo: 0,
             tournamentMatches: [],
-            promos: [
-                {
-                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/sc8square.png',
-                    promoStartDate: '2021-06-18T14:00:00+00:00',
-                    promoEndDate: '2021-06-28T00:00:00+00:00',
-                    topCaption: "Community Tournament",
-                    bottomCaption: 'Speedrun Competition 8',
-                    beforeText: 'Event Begins',
-                    duringText: 'Submissions Due In',
-                    tournament: false,
-                    h3: false,
-                    url: 'https://discord.gg/FVxTKdU'
-                }
-            ],
+            promos: [],
             games: [],
             elusiveTargets: [],
             activeElusiveIndex: 0,
