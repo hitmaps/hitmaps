@@ -215,7 +215,7 @@
                           <div class="row">
                             <div class="col-lg-6 col-xs-12 difficulty"
                                  :class="difficulty === selectedDifficulty ? 'active' : ''"
-                                 @click="selectedDifficulty = difficulty"
+                                 @click="updateDifficulty(difficulty)"
                                  v-for="difficulty in missionDifficulties"
                                  :key="difficulty.id">
                                 <game-icon :icon="`difficulty-${$options.filters.lowercase(difficulty.difficulty)}`" font-style="solid" />
@@ -2019,6 +2019,10 @@ export default {
         loadWithSearchedItem(itemString) {
             $(this.$refs.itemSearch).selectpicker('val', decodeURIComponent(itemString));
         },
+        updateDifficulty(difficulty) {
+            this.selectedDifficulty = difficulty;
+            this.updateNodeLayerState();
+        },
         updateNodeLayerState() {
             let itemName = null;
             let layer = null;
@@ -2072,7 +2076,7 @@ export default {
                             }
 
 
-                            if (currentFloor && !this.isLayerHidden(key)) {
+                            if (currentFloor && !this.isLayerHidden(key) && nodeProperties.options.custom.node.difficulties.includes(this.selectedDifficulty.difficulty.toLowerCase())) {
                                 $(nodeProperties._icon).css('display', 'block');
                             } else {
                                 $(nodeProperties._icon).css('display', 'none');
