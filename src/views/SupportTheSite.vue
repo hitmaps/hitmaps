@@ -52,7 +52,9 @@
                 <li>Jonathan Rokosz - 10.00 USD</li>
                 <li>Spencer Sabet - 6.00 USD</li>
                 <li>Brian McKenzie - 5.55 USD</li>
+                <li>Esther de Bruin - 5.00 USD</li>
                 <li>Somdy Alafac - 5.00 USD</li>
+                <li>Nikjojo - 3.00 USD</li>
             </ul>
             <!-- region PayPal Button -->
             <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
