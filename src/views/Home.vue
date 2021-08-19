@@ -553,11 +553,11 @@
                     </router-link>
                 </div>
             </div>
-            <!--<div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
+            <div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
-                            <h1>Roulette Rivals 5 (Presented by Frote's Speedrun Community)</h1>
+                            <h1>Roulette Rivals 6 (Presented by Frote's Speedrun Community)</h1>
                             <h2>Upcoming Matches</h2>
                         </div>
                     </div>
@@ -565,7 +565,7 @@
                         <div class="row dashboard" style="margin: 0; margin-bottom: 40px;">
                             <div class="elusive-target col-lg" :style="{
                                 backgroundImage:
-                                    'url(https://media.hitmaps.com/img/hitmaps-tournaments/rr5-temp.png)',
+                                    'url(https://media.hitmaps.com/img/hitmaps-tournaments/rr6.png)',
                                 backgroundSize: 'cover',
                                 backgroundPosition: 'center',
                                 backgroundRepeat: 'no-repeat',
@@ -598,7 +598,9 @@
                                         <game-icon font-style="normal" icon="versus" />
                                     </div>
                                     <div class="text">
-                                        <h2>{{ tournamentMatches[0].firstMap.location }} and {{ tournamentMatches[0].secondMap.location }}</h2>
+                                        <h2>
+                                            {{ tournamentMatches[0].mapSelections.filter(x => x.selectionType === 'PICK').map(x => x.mapInfo.location).join(' / ') }}
+                                        </h2>
                                         <h1>{{ tournamentMatches[0].participants[0].name }} vs {{ tournamentMatches[0].participants[1].name }}</h1>
                                     </div>
                                 </div>
@@ -631,7 +633,7 @@
                                 <span>{{ matchup.participants[0].name }} vs {{ matchup.participants[1].name }}</span>
                             </div>
                             <div class="col-lg-3 col-12">
-                                {{ matchup.firstMap.location }} and {{ matchup.secondMap.location }}
+                                {{ matchup.mapSelections.filter(x => x.selectionType === 'PICK').map(x => x.mapInfo.location).join(', ') }}
                             </div>
                             <div class="col-lg-3 col-12">
                                 <i class="far fa-fw fa-calendar-alt d-lg-none"></i>{{ matchup.matchTime | moment('ddd, D MMM') }} | <i class="far fa-fw fa-clock d-lg-none"></i> {{ matchup.matchTime | moment('h:mm A') }}
@@ -644,7 +646,7 @@
                         </div>
                     </template>
                 </div>
-            </div>-->
+            </div>
         </template>
         <!--<modal modal-title="Roulette Rivals World Championship"
                id="roulette-rivals-modal"
@@ -871,7 +873,20 @@ export default {
             currentPromoIndex: 0,
             currentPromo: 0,
             tournamentMatches: [],
-            promos: [],
+            promos: [
+                {
+                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/rr6.png',
+                    promoStartDate: '2021-08-19T00:00:00+00:00',
+                    promoEndDate: '2021-09-13T00:00:00+00:00',
+                    topCaption: "Community Tournament",
+                    bottomCaption: 'Roulette Rivals 6',
+                    beforeText: 'Registration Closes',
+                    duringText: undefined,
+                    tournament: true,
+                    h3: false,
+                    url: 'https://discord.gg/FVxTKdU'
+                }
+            ],
             games: [],
             elusiveTargets: [],
             activeElusiveIndex: 0,
@@ -1190,8 +1205,8 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
-            this.currentPromo = 0;
-            this.currentPromoIndex = 0;
+            this.currentPromo = this.promos[0];
+            this.currentPromoIndex = 1;
             setInterval(() => {
                 this.currentPromo = this.currentPromoIndex === this.promos.length ?
                     0 :
@@ -1204,10 +1219,10 @@ export default {
             console.error(err);
             this.$router.push({ name: '500' });
         });
-        /*this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/rr5').then(resp => {
+        this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/rr6').then(resp => {
             this.tournamentMatches = resp.data;
             console.info(this.tournamentMatches);
-        });*/
+        });
     }
 }
 
