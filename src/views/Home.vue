@@ -553,7 +553,7 @@
                     </router-link>
                 </div>
             </div>
-            <div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
+<!--            <div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
@@ -646,7 +646,7 @@
                         </div>
                     </template>
                 </div>
-            </div>
+            </div>-->
         </template>
         <!--<modal modal-title="Roulette Rivals World Championship"
                id="roulette-rivals-modal"
@@ -874,18 +874,6 @@ export default {
             currentPromo: 0,
             tournamentMatches: [],
             promos: [
-                {
-                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/rr6.png',
-                    promoStartDate: '2021-08-19T00:00:00+00:00',
-                    promoEndDate: '2021-09-13T00:00:00+00:00',
-                    topCaption: "Community Tournament",
-                    bottomCaption: 'Roulette Rivals 6',
-                    beforeText: 'Registration Closes',
-                    duringText: undefined,
-                    tournament: true,
-                    h3: false,
-                    url: 'https://discord.gg/FVxTKdU'
-                }
             ],
             games: [],
             elusiveTargets: [],
@@ -936,6 +924,10 @@ export default {
             streams: [],
             froteImages: [
                 {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/rr6.png',
+                    caption: 'Roulette Rivals 6'
+                },
+                {
                     url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc8.png',
                     caption: 'Speedrun Competition 8'
                 },
@@ -970,10 +962,6 @@ export default {
                 {
                     url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/gm4.png',
                     caption: 'Ghost Mode Tournament 4'
-                },
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/rr3.jpg',
-                    caption: 'Roulette Rivals 3'
                 }
             ]
         }
@@ -1205,8 +1193,8 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
-            this.currentPromo = this.promos[0];
-            this.currentPromoIndex = 1;
+            this.currentPromo = 0;
+            this.currentPromoIndex = 0;
             setInterval(() => {
                 this.currentPromo = this.currentPromoIndex === this.promos.length ?
                     0 :
