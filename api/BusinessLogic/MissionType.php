@@ -11,4 +11,6 @@ abstract class MissionType {
     const ELUSIVE_TARGET = "Elusive Target";
     const SNIPER_ASSASSIN = "Sniper Assassin";
     const SPECIAL_ASSIGNMENT = "Special Assignment";
+    const ESCALATION = "Escalation";
+    const GHOST_MODE = "Ghost Mode";
 }
