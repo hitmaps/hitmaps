@@ -64,6 +64,7 @@ class LocationsController {
                     $missionViewModel->campaign = $keyValueCampaigns[$mission->getCampaignId()];
                 }
                 $locationViewModel->missions[] = $missionViewModel;
+                $missionViewModel->setIcon();
             }
 
             $viewModel->locations[] = $locationViewModel;
