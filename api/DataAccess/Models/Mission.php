@@ -164,6 +164,10 @@ class Mission {
         if ($this->missionType === MissionType::GHOST_MODE) {
             $this->icon = 'versus';
         }
+
+        if ($this->missionType === MissionType::ELUSIVE_TARGET) {
+            $this->icon = 'elusive';
+        }
     }
 
     /**
