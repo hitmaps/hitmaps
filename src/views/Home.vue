@@ -797,7 +797,7 @@
                 </div>
             </div>
         </div>
-        <!--<div class="patreon">
+        <div class="patreon community-server">
             <div class="row intro">
                 <div class="col-xs-12">
                     <h1>
@@ -811,7 +811,8 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3 col-sm-6 patron">
+                <div class="col-sm-3">
+                    <patron name="Kobalt" tier="Silent Assassin"/>
                 </div>
             </div>
             <div class="row">
@@ -822,7 +823,7 @@
                     </a>
                 </div>
             </div>
-        </div>-->
+        </div>
     </div>
 </template>
 
@@ -838,12 +839,14 @@ import MetaHandler from "../components/MetaHandler";
 import GameIcon from "../components/GameIcon";
 import GameButton from "../components/GameButton";
 import TournamentPlatformIcon from "../components/TournamentPlatformIcon";
+import Patron from "../components/Patron";
 
 Vue.use(CxltToaster)
 export default {
     name: 'home',
     title: 'Home',
     components: {
+        Patron,
         TournamentPlatformIcon,
         GameButton,
         GameIcon,
