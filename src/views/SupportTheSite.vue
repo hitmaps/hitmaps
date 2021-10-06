@@ -21,7 +21,7 @@
             <div class="col-sm-12">
                 <div class="row">
                     <div class="col-sm-3">
-                        <patron name="Kobalt" tier="Silent Assassin"/>
+                        <patron image="https://media.hitmaps.com/patrons/kobalt.png" name="Kobalt" tier="Silent Assassin"/>
                     </div>
                     <div class="col-sm-1"></div>
                     <div class="col-sm-3">
