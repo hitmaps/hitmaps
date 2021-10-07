@@ -115,23 +115,12 @@
                                 <h2>{{ currentPromo.topCaption }}</h2>
                                 <h1>{{ currentPromo.bottomCaption }}</h1>
                             </div>
-                            <!--<div
-                                    onclick="return false;"
-                                    @click="showRouletteRivalsModal"
-                                    class="image elusive-notification float-right notification-icon"
-                                    v-tooltip:left="'More Information'"
-                            >
-                                <img
-                                        src="/img/game-icons/briefing-transparent.png"
-                                        class="normal img-fluid"
-                                        alt="More Information Icon"
-                                />
-                                <img
-                                        src="/img/game-icons/briefing-inverted.png"
-                                        class="inverted img-fluid"
-                                        alt="More Information Icon"
-                                />
-                            </div>-->
+                            <game-icon @click="showRouletteRivalsModal"
+                                       onclick="return false;"
+                                       icon="background"
+                                       font-style="normal"
+                                       extra-classes="normal briefing-icon float-right"
+                                       v-tooltip:left="'More Information'" />
                         </div>
                     </a>
                 </div>
@@ -648,23 +637,31 @@
                 </div>
             </div>-->
         </template>
-        <!--<modal modal-title="Roulette Rivals World Championship"
+        <modal modal-title="Roulette Rivals World Championship"
                id="roulette-rivals-modal"
                tabindex="-1"
                dismissable>
             <div class="row">
-                &lt;!&ndash;<div class="col-md-6 col-sm-12">
+                <div class="col-md-6 col-sm-12">
                     <div class="embed-responsive embed-responsive-16by9"
                          style="min-height: 310px">
-                        <iframe src="https://www.youtube.com/embed/c6q4hgt0fiE"
+                        <iframe src="https://www.youtube.com/embed/k9t7PPLEZp8"
                                 class="embed-responsive-item"
                                 frameborder="0"
                                 allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
                                 allowfullscreen
                         ></iframe>
                     </div>
-                </div>&ndash;&gt;
-                <div class="col-sm-12">
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <alert type="info">
+                        <ul>
+                            <li><b>Signups Open</b>: Oct 3 - Oct 17</li>
+                            <li><b>Group Stage</b>: Oct 22 - Nov 14</li>
+                            <li><b>KO Stages</b>: Nov 15 - Dec 11</li>
+                            <li><b>Grand Finals</b>: December 12</li>
+                        </ul>
+                    </alert>
                     <p>
                         In Roulette Rivals you go head-to-head against another player in main missions. Once a mission is selected,
                         an admin will spin the roulette.
@@ -681,10 +678,15 @@
                         Do you play it safe? Takes longer, but you wouldn't have to restart. Or do you play it risky to get
                         that awesome time, with the potential of a lot of restarts?
                     </p>
-                    <alert type="info">Matches run from <b>October 23</b> to <b>November 29</b>!</alert>
                 </div>
             </div>
-        </modal>-->
+            <template v-slot:modal-footer>
+                <game-button data-dismiss="modal">
+                    <game-icon icon="failed" font-style="normal"/>
+                    {{ $t('form.close') }}
+                </game-button>
+            </template>
+        </modal>
         <input type="hidden" name="notification-environment" />
         <div class="patreon community-server">
             <div class="row intro">
@@ -877,6 +879,18 @@ export default {
             currentPromo: 0,
             tournamentMatches: [],
             promos: [
+                {
+                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/rrwc-2021-tile.png',
+                    promoStartDate: '2021-10-18T00:00:00+00:00',
+                    promoEndDate: '2021-12-12T23:59:59+00:00',
+                    topCaption: "Community Tournament",
+                    bottomCaption: 'RRWC',
+                    beforeText: 'Registration Closes',
+                    duringText: undefined,
+                    tournament: true,
+                    h3: false,
+                    url: 'https://discord.gg/FVxTKdU'
+                }
             ],
             games: [],
             elusiveTargets: [],
@@ -1196,8 +1210,8 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
-            this.currentPromo = 0;
-            this.currentPromoIndex = 0;
+            this.currentPromo = this.promos[0];
+            this.currentPromoIndex = 1;
             setInterval(() => {
                 this.currentPromo = this.currentPromoIndex === this.promos.length ?
                     0 :
