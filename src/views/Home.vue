@@ -542,11 +542,11 @@
                     </router-link>
                 </div>
             </div>
-<!--            <div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
+            <div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
-                            <h1>Roulette Rivals 6 (Presented by Frote's Speedrun Community)</h1>
+                            <h1>Roulette Rivals World Championship (Presented by Frote's Speedrun Community)</h1>
                             <h2>Upcoming Matches</h2>
                         </div>
                     </div>
@@ -635,7 +635,7 @@
                         </div>
                     </template>
                 </div>
-            </div>-->
+            </div>
         </template>
         <modal modal-title="Roulette Rivals World Championship"
                id="roulette-rivals-modal"
@@ -1224,7 +1224,7 @@ export default {
             console.error(err);
             this.$router.push({ name: '500' });
         });
-        this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/rr6').then(resp => {
+        this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/rrwc-2021').then(resp => {
             this.tournamentMatches = resp.data;
             console.info(this.tournamentMatches);
         });
