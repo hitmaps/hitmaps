@@ -554,7 +554,7 @@
                         <div class="row dashboard" style="margin: 0; margin-bottom: 40px;">
                             <div class="elusive-target col-lg" :style="{
                                 backgroundImage:
-                                    'url(https://media.hitmaps.com/img/hitmaps-tournaments/rr6.png)',
+                                    'url(https://media.hitmaps.com/img/hitmaps-tournaments/rrwc-2021-tile.png)',
                                 backgroundSize: 'cover',
                                 backgroundPosition: 'center',
                                 backgroundRepeat: 'no-repeat',
