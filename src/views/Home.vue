@@ -881,7 +881,7 @@ export default {
             promos: [
                 {
                     tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/rrwc-2021-tile.png',
-                    promoStartDate: '2021-10-18T00:00:00+00:00',
+                    promoStartDate: '2021-10-17T22:00:00+00:00',
                     promoEndDate: '2021-12-12T23:59:59+00:00',
                     topCaption: "Community Tournament",
                     bottomCaption: 'RRWC',
