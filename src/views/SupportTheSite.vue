@@ -25,14 +25,18 @@
                     </div>
                     <div class="col-sm-1"></div>
                     <div class="col-sm-3">
-                        <patron link="https://notex.app" name="Notex" tier="Assassin"/>
+                        <patron image="https://media.hitmaps.com/patrons/barbegue.png" link="https://twitch.tv/barbegue" name="Barbegue" tier="Master Assassin"/>
                     </div>
                     <div class="col-sm-1"></div>
                     <div class="col-sm-3">
-                        <patron name="Some Random Person" tier="Assassin"/>
+                        <patron link="https://notex.app" name="Notex" tier="Assassin"/>
                     </div>
                 </div>
                 <div class="row" style="margin-top: 20px">
+                    <div class="col-sm-3">
+                        <patron name="Some Random Person" tier="Assassin"/>
+                    </div>
+                    <div class="col-sm-1"></div>
                     <div class="col-sm-3">
                         <patron name="ChromeX" tier="Assassin" />
                     </div>

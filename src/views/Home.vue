@@ -822,6 +822,9 @@
                 <div class="col-sm-3">
                     <patron image="https://media.hitmaps.com/patrons/kobalt.png" name="Kobalt" tier="Silent Assassin"/>
                 </div>
+                <div class="col-sm-3">
+                    <patron image="https://media.hitmaps.com/patrons/barbegue.png" link="https://twitch.tv/barbegue" name="Barbegue" tier="Master Assassin"/>
+                </div>
             </div>
             <div class="row">
                 <div class="col" style="text-align: right">
