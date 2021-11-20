@@ -16,9 +16,10 @@ class NodeDifficulty {
     private $id;
 
     /**
-     * @ORM\Column(type="integer", name="node_id")
+     * @ORM\ManyToOne(targetEntity="Node", inversedBy="difficulties")
+     * @ORM\JoinColumn(name="node_id", referencedColumnName="id")
      */
-    private $nodeId;
+    public $node;
 
     /**
      * @ORM\Column(type="string")
@@ -42,15 +43,15 @@ class NodeDifficulty {
     /**
      * @return mixed
      */
-    public function getNodeId() {
-        return $this->nodeId;
+    public function getNode() {
+        return $this->node;
     }
 
     /**
-     * @param mixed $nodeId
+     * @param mixed $node
      */
-    public function setNodeId($nodeId): void {
-        $this->nodeId = $nodeId;
+    public function setNode($node): void {
+        $this->node = $node;
     }
 
     /**

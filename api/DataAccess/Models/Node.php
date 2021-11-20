@@ -4,6 +4,7 @@
 namespace DataAccess\Models;
 
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -101,8 +102,17 @@ class Node {
      */
     public $quantity;
 
-    // Not tied via DM
-    public $difficulties = [];
+    /**
+     * @ORM\OneToMany(targetEntity="NodeDifficulty", mappedBy="node", fetch="EAGER")
+     * @var $difficulties Collection
+     */
+    private $difficulties;
+
+    /**
+     * @ORM\OneToMany(targetEntity="NodeNote", mappedBy="node", fetch="EAGER")
+     * @var $notes Collection
+     */
+    private $notes;
 
     public function __construct() {
         $this->dateCreated = new \DateTime("now");
@@ -369,5 +379,19 @@ class Node {
      */
     public function setDifficulties($difficulties): void {
         $this->difficulties = $difficulties;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getNotes(): Collection {
+        return $this->notes;
+    }
+
+    /**
+     * @param Collection $notes
+     */
+    public function setNotes(Collection $notes): void {
+        $this->notes = $notes;
     }
 }

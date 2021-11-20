@@ -12,6 +12,7 @@ use Controllers\ViewModels\Sidebar\TopLevelCategoryViewModel;
 use DataAccess\Models\Mission;
 use DataAccess\Models\Node;
 use DataAccess\Models\NodeCategory;
+use DataAccess\Models\NodeDifficulty;
 use DataAccess\Models\NodeNote;
 use DataAccess\Models\User;
 use DataAccess\Repositories\NodeRepository;
@@ -41,58 +42,27 @@ class NodeController {
     public function getNodesForMission(int $missionid, ?string $difficulty = null, bool $distinctOnly = false, bool $searchableOnly = false): array {
         /* @var $mission Mission */
         $mission = $this->entityManager->getRepository(Mission::class)->findOneBy(['id' => $missionid]);
-        
-        $nodesWithNotes = $this->nodeRepository->findByMission($missionid);
 
-        $groups = [
-            'Points of Interest' => new TopLevelCategoryViewModel('Points of Interest'),
-            'Weapons and Tools' => new TopLevelCategoryViewModel('Weapons and Tools'),
-            'Navigation' => new TopLevelCategoryViewModel('Navigation'),
-        ];
-
-        $forSniperAssassin = $mission->getMissionType() === MissionType::SNIPER_ASSASSIN;
-        $nodeCategories = $this->nodeCategoryRepository->findBy(['forMission' => !$forSniperAssassin, 'forSniperAssassin' => $forSniperAssassin ], ['order' => 'ASC', 'id' => 'ASC']);
-        foreach ($nodeCategories as $nodeCategory) {
-            /* @var $nodeCategory NodeCategory */
-            $categoryViewModel = new CategoryViewModel();
-            $categoryViewModel->name = $nodeCategory->getGroup();
-            $categoryViewModel->icon = $nodeCategory->getIcon();
-            $categoryViewModel->collapsible = $nodeCategory->getCollapsible();
-            $categoryViewModel->order = $nodeCategory->getOrder();
-
-            /* @var $topLevelCategory TopLevelCategoryViewModel */
-            $topLevelCategory = $groups[$nodeCategory->getType()];
-
-            $topLevelCategory->items[$nodeCategory->getGroup()] = $categoryViewModel;
-        }
+        /* @var $nodes Node[] */
+        $nodes = $this->nodeRepository->findBy(['missionId' => $missionid, 'approved' => true],
+            ['group' => 'ASC', 'name' => 'ASC']);
 
         $addedNodes = [];
         /* @var $nodeViewModel NodeWithNotesViewModel */
-        $nodeViewModel = null;
-        foreach ($nodesWithNotes as $entity) {
-            if ($entity === null) {
-                continue;
-            }
+        $nodeViewModels = null;
+        foreach ($nodes as $node) {
+            $nodeViewModel = new NodeWithNotesViewModel();
 
-            if ($entity instanceof NodeNote) {
-                /* @var $note NodeNote */
-                $note = $entity;
-                if ($nodeViewModel === null) {
-                    continue;
-                }
-
+            /* @var $note NodeNote */
+            foreach ($node->getNotes()->toArray() as $note) {
                 $innerViewModel = new NodeNoteViewModel();
                 $innerViewModel->id = $note->getId();
                 $innerViewModel->type = $note->getType();
                 $innerViewModel->text = $note->getText();
 
                 $nodeViewModel->notes[] = $innerViewModel;
-                continue;
             }
 
-            /* @var $node Node */
-            $node = $entity;
-            $nodeViewModel = null;
             /* @var $notes NodeNote[] */
             if ($searchableOnly && !$node->isSearchable()) {
                 continue;
@@ -105,7 +75,6 @@ class NodeController {
                 $node->getName() === null ||
                 $node->getName() === '' ||
                 !in_array($type . $group . $node->getName(), $addedNodes)) {
-                $nodeViewModel = new NodeWithNotesViewModel();
                 $nodeViewModel->id = $node->getId();
                 $nodeViewModel->missionId = $node->getMissionId();
                 $nodeViewModel->type = $node->getType();
@@ -131,17 +100,18 @@ class NodeController {
                 $nodeViewModel->level = $node->getLevel();
                 $nodeViewModel->latitude = $node->getLatitude();
                 $nodeViewModel->longitude = $node->getLongitude();
-                $nodeViewModel->difficulties = $node->getDifficulties();
+
+                /* @var $difficulty NodeDifficulty */
+                foreach ($node->getDifficulties()->toArray() as $difficulty) {
+                    $nodeViewModel->difficulties[] = $difficulty->getDifficulty();
+                }
+
                 $nodeViewModel->group = $node->getGroup();
                 $nodeViewModel->image = $node->getImage();
                 $nodeViewModel->tooltip = $node->getTooltip();
                 $nodeViewModel->quantity = $node->getQuantity();
-                $nodeViewModel->notes = [];
 
-                /* @var $categoryViewModel CategoryViewModel */
-                $categoryViewModel = $groups[$type]->items[$group];
-
-                $categoryViewModel->items[] = $nodeViewModel;
+                $nodeViewModels[] = $nodeViewModel;
 
                 if ($distinctOnly && $node->getName() !== null && $node->getName() !== '') {
                     $addedNodes[] = $type . $group . $node->getName();
@@ -149,7 +119,7 @@ class NodeController {
             }
         }
 
-        return $groups;
+        return $nodeViewModels;
     }
 
     public function createNode(int $missionId, string $difficulty, array $postData, User $user): Node {
