@@ -115,23 +115,12 @@
                                 <h2>{{ currentPromo.topCaption }}</h2>
                                 <h1>{{ currentPromo.bottomCaption }}</h1>
                             </div>
-                            <!--<div
-                                    onclick="return false;"
-                                    @click="showRouletteRivalsModal"
-                                    class="image elusive-notification float-right notification-icon"
-                                    v-tooltip:left="'More Information'"
-                            >
-                                <img
-                                        src="/img/game-icons/briefing-transparent.png"
-                                        class="normal img-fluid"
-                                        alt="More Information Icon"
-                                />
-                                <img
-                                        src="/img/game-icons/briefing-inverted.png"
-                                        class="inverted img-fluid"
-                                        alt="More Information Icon"
-                                />
-                            </div>-->
+                            <game-icon @click="showRouletteRivalsModal"
+                                       onclick="return false;"
+                                       icon="background"
+                                       font-style="normal"
+                                       extra-classes="normal briefing-icon float-right"
+                                       v-tooltip:left="'More Information'" />
                         </div>
                     </a>
                 </div>
@@ -553,11 +542,11 @@
                     </router-link>
                 </div>
             </div>
-            <!--<div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
+            <div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
-                            <h1>Roulette Rivals 5 (Presented by Frote's Speedrun Community)</h1>
+                            <h1>Roulette Rivals World Championship (Presented by Frote's Speedrun Community)</h1>
                             <h2>Upcoming Matches</h2>
                         </div>
                     </div>
@@ -565,7 +554,7 @@
                         <div class="row dashboard" style="margin: 0; margin-bottom: 40px;">
                             <div class="elusive-target col-lg" :style="{
                                 backgroundImage:
-                                    'url(https://media.hitmaps.com/img/hitmaps-tournaments/rr5-temp.png)',
+                                    'url(https://media.hitmaps.com/img/hitmaps-tournaments/rrwc-2021-tile.png)',
                                 backgroundSize: 'cover',
                                 backgroundPosition: 'center',
                                 backgroundRepeat: 'no-repeat',
@@ -598,8 +587,13 @@
                                         <game-icon font-style="normal" icon="versus" />
                                     </div>
                                     <div class="text">
-                                        <h2>{{ tournamentMatches[0].firstMap.location }} and {{ tournamentMatches[0].secondMap.location }}</h2>
-                                        <h1>{{ tournamentMatches[0].participants[0].name }} vs {{ tournamentMatches[0].participants[1].name }}</h1>
+                                        <h2>
+                                            {{ tournamentMatches[0].mapSelections.filter(x => x.selectionType === 'PICK').map(x => x.mapInfo.location).join(' / ') }}
+                                        </h2>
+                                        <h1>
+                                            <country-flag :country="tournamentMatches[0].participants[0].country" /> {{ tournamentMatches[0].participants[0].name }} vs
+                                            {{ tournamentMatches[0].participants[1].name }} <country-flag :country="tournamentMatches[0].participants[1].country" />
+                                        </h1>
                                     </div>
                                 </div>
                             </div>
@@ -628,10 +622,13 @@
                         <div class="row" :key="`${matchup.participants[0].name}|${matchup.participants[1].name}|${matchup.platform}`"
                              style="border-top: 1px solid #dee2e6; padding: .75rem;">
                             <div class="col-lg-3 col-12">
-                                <span>{{ matchup.participants[0].name }} vs {{ matchup.participants[1].name }}</span>
+                                <span>
+                                    <country-flag :country="matchup.participants[0].country" /> {{ matchup.participants[0].name }} vs
+                                    {{ matchup.participants[1].name }} <country-flag :country="matchup.participants[1].country" />
+                                </span>
                             </div>
                             <div class="col-lg-3 col-12">
-                                {{ matchup.firstMap.location }} and {{ matchup.secondMap.location }}
+                                {{ matchup.mapSelections.filter(x => x.selectionType === 'PICK').map(x => x.mapInfo.location).join(', ') }}
                             </div>
                             <div class="col-lg-3 col-12">
                                 <i class="far fa-fw fa-calendar-alt d-lg-none"></i>{{ matchup.matchTime | moment('ddd, D MMM') }} | <i class="far fa-fw fa-clock d-lg-none"></i> {{ matchup.matchTime | moment('h:mm A') }}
@@ -644,25 +641,33 @@
                         </div>
                     </template>
                 </div>
-            </div>-->
+            </div>
         </template>
-        <!--<modal modal-title="Roulette Rivals World Championship"
+        <modal modal-title="Roulette Rivals World Championship"
                id="roulette-rivals-modal"
                tabindex="-1"
                dismissable>
             <div class="row">
-                &lt;!&ndash;<div class="col-md-6 col-sm-12">
+                <div class="col-md-6 col-sm-12">
                     <div class="embed-responsive embed-responsive-16by9"
                          style="min-height: 310px">
-                        <iframe src="https://www.youtube.com/embed/c6q4hgt0fiE"
+                        <iframe src="https://www.youtube.com/embed/k9t7PPLEZp8"
                                 class="embed-responsive-item"
                                 frameborder="0"
                                 allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
                                 allowfullscreen
                         ></iframe>
                     </div>
-                </div>&ndash;&gt;
-                <div class="col-sm-12">
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <alert type="info">
+                        <ul>
+                            <li><b>Signups Open</b>: Oct 3 - Oct 17</li>
+                            <li><b>Group Stage</b>: Oct 22 - Nov 14</li>
+                            <li><b>KO Stages</b>: Nov 15 - Dec 11</li>
+                            <li><b>Grand Finals</b>: December 12</li>
+                        </ul>
+                    </alert>
                     <p>
                         In Roulette Rivals you go head-to-head against another player in main missions. Once a mission is selected,
                         an admin will spin the roulette.
@@ -679,10 +684,15 @@
                         Do you play it safe? Takes longer, but you wouldn't have to restart. Or do you play it risky to get
                         that awesome time, with the potential of a lot of restarts?
                     </p>
-                    <alert type="info">Matches run from <b>October 23</b> to <b>November 29</b>!</alert>
                 </div>
             </div>
-        </modal>-->
+            <template v-slot:modal-footer>
+                <game-button data-dismiss="modal">
+                    <game-icon icon="failed" font-style="normal"/>
+                    {{ $t('form.close') }}
+                </game-button>
+            </template>
+        </modal>
         <input type="hidden" name="notification-environment" />
         <div class="patreon community-server">
             <div class="row intro">
@@ -795,7 +805,7 @@
                 </div>
             </div>
         </div>
-        <!--<div class="patreon">
+        <div class="patreon community-server">
             <div class="row intro">
                 <div class="col-xs-12">
                     <h1>
@@ -809,7 +819,12 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3 col-sm-6 patron">
+                <div class="col-sm-3">
+                    <patron image="https://media.hitmaps.com/patrons/kobalt.png" name="Kobalt" tier="Silent Assassin"/>
+                </div>
+                <div class="col-sm-1"></div>
+                <div class="col-sm-3">
+                    <patron image="https://media.hitmaps.com/patrons/barbegue.png" link="https://twitch.tv/barbegue" name="Barbegue" tier="Master Assassin"/>
                 </div>
             </div>
             <div class="row">
@@ -820,7 +835,7 @@
                     </a>
                 </div>
             </div>
-        </div>-->
+        </div>
     </div>
 </template>
 
@@ -836,12 +851,14 @@ import MetaHandler from "../components/MetaHandler";
 import GameIcon from "../components/GameIcon";
 import GameButton from "../components/GameButton";
 import TournamentPlatformIcon from "../components/TournamentPlatformIcon";
+import Patron from "../components/Patron";
 
 Vue.use(CxltToaster)
 export default {
     name: 'home',
     title: 'Home',
     components: {
+        Patron,
         TournamentPlatformIcon,
         GameButton,
         GameIcon,
@@ -873,14 +890,14 @@ export default {
             tournamentMatches: [],
             promos: [
                 {
-                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/sc8square.png',
-                    promoStartDate: '2021-06-18T14:00:00+00:00',
-                    promoEndDate: '2021-06-28T00:00:00+00:00',
+                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/rrwc-2021-tile.png',
+                    promoStartDate: '2021-10-17T22:00:00+00:00',
+                    promoEndDate: '2021-12-12T23:59:59+00:00',
                     topCaption: "Community Tournament",
-                    bottomCaption: 'Speedrun Competition 8',
-                    beforeText: 'Event Begins',
-                    duringText: 'Submissions Due In',
-                    tournament: false,
+                    bottomCaption: 'RRWC',
+                    beforeText: 'Registration Closes',
+                    duringText: undefined,
+                    tournament: true,
                     h3: false,
                     url: 'https://discord.gg/FVxTKdU'
                 }
@@ -934,6 +951,10 @@ export default {
             streams: [],
             froteImages: [
                 {
+                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/rr6.png',
+                    caption: 'Roulette Rivals 6'
+                },
+                {
                     url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc8.png',
                     caption: 'Speedrun Competition 8'
                 },
@@ -968,10 +989,6 @@ export default {
                 {
                     url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/gm4.png',
                     caption: 'Ghost Mode Tournament 4'
-                },
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/rr3.jpg',
-                    caption: 'Roulette Rivals 3'
                 }
             ]
         }
@@ -1203,8 +1220,8 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
-            this.currentPromo = 0;
-            this.currentPromoIndex = 0;
+            this.currentPromo = this.promos[0];
+            this.currentPromoIndex = 1;
             setInterval(() => {
                 this.currentPromo = this.currentPromoIndex === this.promos.length ?
                     0 :
@@ -1217,10 +1234,10 @@ export default {
             console.error(err);
             this.$router.push({ name: '500' });
         });
-        /*this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/rr5').then(resp => {
+        this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/rrwc-2021').then(resp => {
             this.tournamentMatches = resp.data;
             console.info(this.tournamentMatches);
-        });*/
+        });
     }
 }
 

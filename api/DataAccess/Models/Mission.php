@@ -4,6 +4,7 @@
 namespace DataAccess\Models;
 
 
+use BusinessLogic\MissionType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -146,6 +147,28 @@ class Mission {
     // Not used by Doctrine
     /* @var $floorNames array */
     public $floorNames = [];
+
+    // Not used by Doctrine
+    public $icon = '';
+
+    public function setIcon() {
+        $this->icon = str_replace(' ', '-', mb_strtolower($this->missionType));
+
+        if ($this->missionType === MissionType::PROLOGUE ||
+            $this->missionType === MissionType::BONUS_MISSION ||
+            $this->missionType === MissionType::PATIENT_ZERO ||
+            $this->missionType === MissionType::SPECIAL_ASSIGNMENT) {
+            $this->icon = 'mission';
+        }
+
+        if ($this->missionType === MissionType::GHOST_MODE) {
+            $this->icon = 'versus';
+        }
+
+        if ($this->missionType === MissionType::ELUSIVE_TARGET) {
+            $this->icon = 'elusive';
+        }
+    }
 
     /**
      * @return mixed

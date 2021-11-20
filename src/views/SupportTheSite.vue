@@ -21,20 +21,22 @@
             <div class="col-sm-12">
                 <div class="row">
                     <div class="col-sm-3">
-                        <patron link="https://www.youtube.com/watch?v=gG7uCskUOrA"
-                                image="https://media.hitmaps.com/patrons/mow.jpg"
-                                name="mow" tier="Master Assassin"/>
+                        <patron image="https://media.hitmaps.com/patrons/kobalt.png" name="Kobalt" tier="Silent Assassin"/>
+                    </div>
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-3">
+                        <patron image="https://media.hitmaps.com/patrons/barbegue.png" link="https://twitch.tv/barbegue" name="Barbegue" tier="Master Assassin"/>
                     </div>
                     <div class="col-sm-1"></div>
                     <div class="col-sm-3">
                         <patron link="https://notex.app" name="Notex" tier="Assassin"/>
                     </div>
-                    <div class="col-sm-1"></div>
+                </div>
+                <div class="row" style="margin-top: 20px">
                     <div class="col-sm-3">
                         <patron name="Some Random Person" tier="Assassin"/>
                     </div>
-                </div>
-                <div class="row" style="margin-top: 20px">
+                    <div class="col-sm-1"></div>
                     <div class="col-sm-3">
                         <patron name="ChromeX" tier="Assassin" />
                     </div>
@@ -58,7 +60,9 @@
                 <li>Jonathan Rokosz - 10.00 USD</li>
                 <li>Spencer Sabet - 6.00 USD</li>
                 <li>Brian McKenzie - 5.55 USD</li>
+                <li>Esther de Bruin - 5.00 USD</li>
                 <li>Somdy Alafac - 5.00 USD</li>
+                <li>Nikjojo - 3.00 USD</li>
             </ul>
             <!-- region PayPal Button -->
             <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">

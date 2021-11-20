@@ -18,8 +18,9 @@ Vue.config.productionTip = false
 //For Copyright
 Vue.prototype.$currentYear = new Date().getFullYear()
 Vue.prototype.$http = axios
-Vue.prototype.$domain =
-    document.location.protocol + '//' + window.location.hostname
+Vue.prototype.$domain = window.location.hostname.includes('localhost') ?
+    'http://localhost:8000' :
+    `${document.location.protocol}//${window.location.hostname}`;
 Vue.prototype.$hostname = window.location.hostname;
 
 var VueMoment = require('vue-moment');

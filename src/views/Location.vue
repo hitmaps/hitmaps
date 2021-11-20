@@ -125,11 +125,8 @@
                                         ></div>
                                     </div>
                                     <div class="card-footer">
-                                        <div class="image" v-if="mission.missionType !== 'Ghost Mode'">
-                                            <game-icon icon="mission" font-style="normal" />
-                                        </div>
-                                        <div class="image" v-else>
-                                            <game-icon icon="versus" font-style="normal" />
+                                        <div class="image">
+                                            <game-icon :icon="mission.icon" font-style="normal" />
                                         </div>
                                         <div class="text">
                                             <h2>{{ lang('mission-types.' + mission.missionType.toLowerCase(), mission.missionType) }}</h2>
@@ -172,11 +169,8 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <div class="image" v-if="mission.missionType !== 'Ghost Mode'">
-                                        <game-icon icon="mission" font-style="normal" />
-                                    </div>
-                                    <div class="image" v-else>
-                                        <game-icon icon="versus" font-style="normal" />
+                                    <div class="image">
+                                        <game-icon :icon="mission.icon" font-style="normal" />
                                     </div>
                                     <div class="text">
                                         <h2>{{ lang('mission-types.' + mission.missionType.toLowerCase(), mission.missionType) }}</h2>

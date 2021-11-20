@@ -70,6 +70,7 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]?', function 
                         $mission->difficulties[] = $missionDifficulty->getDifficulty();
                     }
                 }
+                $mission->setIcon();
             }
             $location->missions = $missions;
         }
