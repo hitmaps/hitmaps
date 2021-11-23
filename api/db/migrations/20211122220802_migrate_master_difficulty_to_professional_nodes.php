@@ -15,6 +15,7 @@ final class MigrateMasterDifficultyToProfessionalNodes extends AbstractMigration
             AND master.difficulty = 'master'
             AND prof.latitude = master.latitude
             AND prof.longitude = master.longitude
+            AND prof.level = master.level
             AND prof.name = master.name
         ");
 

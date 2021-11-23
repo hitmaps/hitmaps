@@ -3,12 +3,9 @@
 namespace Controllers;
 
 
-use BusinessLogic\MissionType;
 use BusinessLogic\UserRole;
 use Controllers\ViewModels\NodeNoteViewModel;
 use Controllers\ViewModels\NodeWithNotesViewModel;
-use Controllers\ViewModels\Sidebar\CategoryViewModel;
-use Controllers\ViewModels\Sidebar\TopLevelCategoryViewModel;
 use DataAccess\Models\Mission;
 use DataAccess\Models\Node;
 use DataAccess\Models\NodeCategory;
@@ -26,17 +23,9 @@ class NodeController {
     /* @var $nodeRepository NodeRepository */
     private $nodeRepository;
 
-    /* @var $nodeNoteRepository ObjectRepository */
-    private $nodeNoteRepository;
-
-    /* @var $nodeCategoryRepository ObjectRepository */
-    private $nodeCategoryRepository;
-
     public function __construct(EntityManager $entityManager) {
         $this->entityManager = $entityManager;
         $this->nodeRepository = $entityManager->getRepository(Node::class);
-        $this->nodeNoteRepository = $entityManager->getRepository(NodeNote::class);
-        $this->nodeCategoryRepository = $entityManager->getRepository(NodeCategory::class);
     }
 
     public function getNodesForMission(int $missionid, ?string $difficulty = null, bool $distinctOnly = false, bool $searchableOnly = false): array {

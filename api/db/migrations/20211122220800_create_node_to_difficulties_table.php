@@ -8,6 +8,10 @@ final class CreateNodeToDifficultiesTable extends AbstractMigration {
         $this->table('node_to_difficulties')
             ->addColumn('node_id', 'integer')
             ->addColumn('difficulty', 'string')
+            ->addIndex(['node_id', 'difficulty'], [
+                'unique' => true,
+                'name' => 'idx_node_id_difficulty'
+            ])
             ->create();
     }
 }
