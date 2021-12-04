@@ -165,7 +165,7 @@ function buildTileUrlForMission(Mission $mission, string $game, \DI\Container $a
     }
 }
 
-$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/map', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/map/[:difficulty]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $cacheClient = $applicationContext->get(CacheClient::class);
 
     /* @var $game Game */
@@ -205,7 +205,7 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
     $cacheKey = KeyBuilder::buildKey(['map', $mission->getId(), $request->difficulty]);
 
     return $response->json($cacheClient->retrieve($cacheKey, function() use ($applicationContext, $request, $response, $location, $mission, $game) {
-        $nodes = $applicationContext->get(NodeController::class)->getNodesForMission($mission->getId(), $request->difficulty);
+        $nodes = $applicationContext->get(NodeController::class)->getNodesForMissionV1($mission->getId(), $request->difficulty);
         $forSniperAssassin = $mission->getMissionType() === MissionType::SNIPER_ASSASSIN;
         $nodeCategories = $applicationContext->get(EntityManager::class)->getRepository(NodeCategory::class)->findBy(
             ['forMission' => !$forSniperAssassin, 'forSniperAssassin' => $forSniperAssassin],
@@ -282,7 +282,7 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
                 ->getRepository(MissionDifficulty::class)
                 ->findBy(['missionId' => $mission->getId()]),
             'nodes' => $nodes,
-            'searchableNodes' => $applicationContext->get(NodeController::class)->getNodesForMission($mission->getId(), $request->difficulty, true, true),
+            'searchableNodes' => $applicationContext->get(NodeController::class)->getNodesForMissionV1($mission->getId(), $request->difficulty, true, true),
             'categories' => $nodeCategories,
             'ledges' => $formattedLedges,
             'foliage' => $formattedFoliage,
@@ -767,7 +767,7 @@ $klein->respond('GET', '/api/nodes/delete/[:nodeId]', function(\Klein\Request $r
  * @deprecated Should use /api/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map instead
  */
 $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
-    $nodes = $applicationContext->get(NodeController::class)->getNodesForMission($_GET['missionId'], $_GET['difficulty']);
+    $nodes = $applicationContext->get(NodeController::class)->getNodesForMissionV1($_GET['missionId'], $_GET['difficulty']);
     $nodeCategories = $applicationContext->get(EntityManager::class)->getRepository(NodeCategory::class)->findAll();
 
     /* @var $ledges \DataAccess\Models\Ledge[] */

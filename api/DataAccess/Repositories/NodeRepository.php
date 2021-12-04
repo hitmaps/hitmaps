@@ -3,8 +3,6 @@
 namespace DataAccess\Repositories;
 
 
-use DataAccess\Models\Node;
-use DataAccess\Models\NodeDifficulty;
 use Doctrine\ORM\EntityRepository;
 
 class NodeRepository extends EntityRepository {
