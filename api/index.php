@@ -165,6 +165,7 @@ function buildTileUrlForMission(Mission $mission, string $game, \DI\Container $a
     }
 }
 
+//region Map Data
 $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $cacheClient = $applicationContext->get(CacheClient::class);
 
@@ -278,9 +279,6 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
         return [
             'game' => $game,
             'mission' => $mission,
-            'missionDifficulties' => $applicationContext->get(EntityManager::class)
-                ->getRepository(MissionDifficulty::class)
-                ->findBy(['missionId' => $mission->getId()]),
             'nodes' => $nodes,
             'searchableNodes' => $applicationContext->get(NodeController::class)->getNodesForMissionV1($mission->getId(), $request->difficulty, true, true),
             'categories' => $nodeCategories,
@@ -289,6 +287,132 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
             'disguises' => $formattedDisguises];
     }));
 });
+
+$klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:mission]/map', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    $cacheClient = $applicationContext->get(CacheClient::class);
+
+    /* @var $game Game */
+    $entityManager = $applicationContext->get(EntityManager::class);
+    $game = $entityManager->getRepository(Game::class)->findOneBy(['slug' => $request->game]);
+
+    /* @var $location Location */
+    $location = $entityManager->getRepository(Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
+
+    /* @var $mission Mission */
+    $mission = $entityManager->getRepository(Mission::class)->findOneBy(['locationId' => $location->getId(), 'slug' => $request->mission]);
+    $mission->floorNames = $entityManager->getRepository(MapFloorToName::class)->findBy(
+        ['missionId' => $mission->getId()],
+        ['floorNumber' => 'ASC']);
+
+    if ($mission === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find mission with game '{$request->game}', location '{$request->location}', and mission slug '{$request->mission}'"
+        ]);
+    }
+
+    if ($location === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find location with game '{$request->game}' and location slug '{$request->location}'"
+        ]);
+    }
+
+    if ($game === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find game with slug '{$request->game}'"
+        ]);
+    }
+
+    $cacheKey = KeyBuilder::buildKey(['map', $mission->getId()]);
+
+    return $response->json($cacheClient->retrieve($cacheKey, function() use ($applicationContext, $request, $response, $location, $mission, $game) {
+        $nodes = $applicationContext->get(NodeController::class)->getNodesForMissionV2($mission->getId());
+        $forSniperAssassin = $mission->getMissionType() === MissionType::SNIPER_ASSASSIN;
+        $nodeCategories = $applicationContext->get(EntityManager::class)->getRepository(NodeCategory::class)->findBy(
+            ['forMission' => !$forSniperAssassin, 'forSniperAssassin' => $forSniperAssassin],
+            ['order' => 'ASC', 'group' => 'ASC']);
+
+        /* @var $ledges \DataAccess\Models\Ledge[] */
+        $ledges = $applicationContext->get(LedgeController::class)->getLedgesForMission($mission->getId());
+        $formattedLedges = [];
+        foreach ($ledges as $ledge) {
+            $viewModel = new LedgeViewModel();
+            $viewModel->id = $ledge->getId();
+            $viewModel->missionId = $ledge->getMissionId();
+            $viewModel->level = $ledge->getLevel();
+            $viewModel->vertices = explode('|', $ledge->getVertices());
+            $formattedLedges[] = $viewModel;
+        }
+
+        /* @var $foliage \DataAccess\Models\Foliage[] */
+        $foliage = $applicationContext->get(FoliageController::class)->getFoliageForMission($mission->getId());
+        $formattedFoliage = [];
+        foreach ($foliage as $innerFoliage) {
+            $viewModel = new LedgeViewModel();
+            $viewModel->id = $innerFoliage->getId();
+            $viewModel->missionId = $innerFoliage->getMissionId();
+            $viewModel->level = $innerFoliage->getLevel();
+            $viewModel->vertices = explode('|', $innerFoliage->getVertices());
+            $formattedFoliage[] = $viewModel;
+        }
+
+        /* @var $disguiseRepository \DataAccess\Repositories\DisguiseRepository */
+        $disguiseRepository = $applicationContext->get(EntityManager::class)
+            ->getRepository(Disguise::class);
+
+        /* @var $disguises Disguise[] */
+        $disguisesWithAreas = $disguiseRepository->findByMission($mission->getId());
+        $formattedDisguises = [];
+
+        /* @var $formattedDisguise DisguiseViewModel */
+        $formattedDisguise = null;
+        foreach ($disguisesWithAreas as $disguiseOrArea) {
+            if ($disguiseOrArea === null) {
+                continue;
+            }
+
+            if ($disguiseOrArea instanceof DisguiseArea) {
+                /* @var $area DisguiseArea */
+                $area = $disguiseOrArea;
+                $areaViewModel = new DisguiseAreaViewModel();
+                $areaViewModel->id = $area->getId();
+                $areaViewModel->missionId = $area->getMissionId();
+                $areaViewModel->disguiseId = $area->getDisguiseId();
+                $areaViewModel->level = $area->getLevel();
+                $areaViewModel->type = $area->getType();
+                $areaViewModel->vertices = explode('|', $area->getVertices());
+                $formattedDisguise->areas[] = $areaViewModel;
+                continue;
+            }
+
+            /* @var $disguise Disguise */
+            $disguise = $disguiseOrArea;
+            $formattedDisguise = new DisguiseViewModel();
+            $formattedDisguise->id = $disguise->getId();
+            $formattedDisguise->name = $disguise->getName();
+            $formattedDisguise->image = $disguise->getImage();
+            $formattedDisguise->order = $disguise->getOrder();
+            $formattedDisguise->suit = $disguise->getSuit();
+            $formattedDisguises[] = $formattedDisguise;
+        }
+
+        return [
+            'game' => $game,
+            'mission' => $mission,
+            'missionDifficulties' => $applicationContext->get(EntityManager::class)
+                ->getRepository(MissionDifficulty::class)
+                ->findBy(['missionId' => $mission->getId()]),
+            'nodes' => $nodes,
+            'searchableNodes' => $applicationContext->get(NodeController::class)->getNodesForMissionV2($mission->getId(), null, true, true),
+            'categories' => $nodeCategories,
+            'ledges' => $formattedLedges,
+            'foliage' => $formattedFoliage,
+            'disguises' => $formattedDisguises];
+    }));
+});
+//endregion
 
 $klein->respond('GET', '/api/v1/editor/templates', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $templates = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Item::class)->findBy([], ['name' => 'ASC']);
