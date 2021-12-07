@@ -2259,7 +2259,7 @@ export default {
             this.$store.dispatch('loadGame', this.$route.params.slug)
         this.$request(
             false,
-            `v1/games/${this.$route.params.slug}/locations/${this.$route.params.location}/missions/${this.$route.params.mission}/map/${this.$route.params.difficulty}`
+            `v1/games/${this.$route.params.slug}/locations/${this.$route.params.location}/missions/${this.$route.params.mission}/${this.$route.params.difficulty}/map`
         ).then(resp => {
             this.game = resp.data.game;
             this.mission = resp.data.mission;

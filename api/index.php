@@ -165,7 +165,7 @@ function buildTileUrlForMission(Mission $mission, string $game, \DI\Container $a
     }
 }
 
-$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/map/[:difficulty]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $cacheClient = $applicationContext->get(CacheClient::class);
 
     /* @var $game Game */
