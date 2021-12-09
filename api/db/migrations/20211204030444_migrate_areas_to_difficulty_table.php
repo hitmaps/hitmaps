@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-final class MigrateAreasToDifficultyTable extends AbstractMigration {
+final class MigrateAreasToMissionVariantTable extends AbstractMigration {
     public function up(): void {
-        $this->query("INSERT INTO `node_to_difficulties` (`node_id`, `difficulty_id`) 
+        $this->query("INSERT INTO `node_to_mission_variants` (`node_id`, `variant_id`) 
             SELECT `nodes`.`id`, `mission_to_difficulties`.`id`
             FROM `nodes` 
             INNER JOIN `mission_to_difficulties`

@@ -5,7 +5,7 @@ use Phinx\Migration\AbstractMigration;
 
 final class MigrateProfessionalAndStandardNodesToNewTable extends AbstractMigration {
     public function up() {
-        $this->query("INSERT INTO `node_to_difficulties` (`node_id`, `difficulty_id`) 
+        $this->query("INSERT INTO `node_to_mission_variants` (`node_id`, `variant_id`) 
             SELECT `nodes`.`id`, `mission_to_difficulties`.`id`
             FROM `nodes` 
             INNER JOIN `mission_to_difficulties`
@@ -15,6 +15,6 @@ final class MigrateProfessionalAndStandardNodesToNewTable extends AbstractMigrat
     }
 
     public function down() {
-        $this->query("DELETE FROM `node_to_difficulties`");
+        $this->query("DELETE FROM `node_to_mission_variants`");
     }
 }

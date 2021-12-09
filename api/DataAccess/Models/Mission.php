@@ -106,8 +106,8 @@ class Mission {
     public $missionType;
 
     // Not used by Doctrine
-    /* @var $difficulties string[] */
-    public $difficulties = [];
+    /* @var $variants string[] */
+    public $variants = [];
 
     /**
      * @ORM\Column(type="string", name="background_url")

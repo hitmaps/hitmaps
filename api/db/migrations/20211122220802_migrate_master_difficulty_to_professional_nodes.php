@@ -6,7 +6,7 @@ use Phinx\Migration\AbstractMigration;
 final class MigrateMasterDifficultyToProfessionalNodes extends AbstractMigration {
     public function up(): void {
         $this->execute("
-        INSERT INTO `node_to_difficulties` (`node_id`, `difficulty_id`)
+        INSERT INTO `node_to_mission_variants` (`node_id`, `variant_id`)
         SELECT `prof`.`id`, `mission_to_difficulties`.`id`
         FROM `nodes` `prof`
         INNER JOIN `mission_to_difficulties`

@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Table(name="mission_to_difficulties")
  */
-class MissionDifficulty {
+class MissionVariant {
     /**
      * @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
      */
