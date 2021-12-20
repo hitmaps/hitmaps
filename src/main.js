@@ -35,7 +35,7 @@ Vue.use(VueCookies);
 //Better method to deciding what type of request
 Vue.prototype.$request = (post, endpoint, data) => {
     var header = {}
-    if (localStorage.getItem('token') != null) {
+    if (localStorage.getItem('token') !== null) {
         header = {
             Authorization: 'Bearer ' + localStorage.getItem('token'),
         }

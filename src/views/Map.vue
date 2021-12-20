@@ -211,18 +211,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="difficulty-selector">
-                          <div class="row">
-                            <div class="col-lg-6 col-xs-12 difficulty"
-                                 :class="variant === selectedVariant ? 'active' : ''"
-                                 @click="updateVariant(variant)"
-                                 v-for="variant in variants"
-                                 :key="variant.id">
-                                <game-icon :icon="`difficulty-${$options.filters.lowercase(variant.variant)}`" font-style="solid" />
-                                <span>{{ $t(`difficulties.${variant.variant}`) }}</span>
-                            </div>
-                          </div>
-                        </div>
                         <div class="search-box" id="search-box-items" data-search="items">
                             <select
                                 @change="searchItem"
@@ -2009,10 +1997,15 @@ export default {
         },
         doSearchItem(itemString) {
             const item = itemString.split(';');
-            this.searchedItem = {
-                layer: item[0],
-                name: item[1]
-            };
+            if (item.length === 1) {
+                this.searchedItem = itemString;
+            } else {
+                this.searchedItem = {
+                    layer: item[0],
+                    name: item[1]
+                };
+            }
+
             this.updateNodeLayerState();
             this.$router.push({
                 query: Object.assign({}, this.$route.query,
@@ -2031,12 +2024,10 @@ export default {
         },
         updateNodeLayerState() {
             let itemName = null;
-            let layer = null;
             let disguiseId = null;
 
             if (this.searchedItem !== null) {
-                itemName = this.searchedItem.name;
-                layer = this.searchedItem.layer;
+                itemName = typeof this.searchedItem === 'string' ? this.searchedItem : this.searchedItem.name;
             }
             if (this.editor.currentDisguise !== 'NONE') {
                 disguiseId = parseInt(this.editor.currentDisguise);
@@ -2045,6 +2036,16 @@ export default {
             this.floorsWithSearchResults = [];
             this.floorCountOverride = [];
             // TODO Replace with nodes lambda
+            for (let floor = this.mission.lowestFloorNumber; floor <= this.mission.highestFloorNumber; floor++) {
+                this.floorCountOverride[floor] = 0;
+
+                // 1. Update nodes
+
+                // 2. Update disguise regions
+
+                // 3. Update foliage / ledges
+            }
+
             /*for (const floorString in this.overlays) {
                 const floor = parseInt(floorString);
                 this.floorCountOverride[floor] = 0;
@@ -2239,35 +2240,26 @@ export default {
         this.$request(false, `v1/games/${this.$route.params.slug}`)
             .then(resp => this.game = resp.data[0]);
 
-        this.$request(
-            false,
-            'v1/games/' +
-            this.$route.params.slug +
-            '/locations/' +
-            this.$route.params.location +
-            '/missions/' +
-            this.$route.params.mission
-        ).then(resp => {
-            this.mission = resp.data[0];
+        this.$request(false, `v1/games/${this.$route.params.slug}/locations/${this.$route.params.location}/missions/${this.$route.params.mission}`)
+            .then(resp => {
+                this.mission = resp.data[0];
 
-            const difficulty = this.mission.difficulties.find(x => x.toLowerCase() === this.$route.params.difficulty);
-            const description = `View locations for items, disguises, and more for ${this.mission.name} (${difficulty} difficulty)`;
-            MetaHandler.setOpengraphTag('description', description);
-            MetaHandler.setMetaTag('description', description);
-            MetaHandler.setOpengraphTag('image', this.mission.tileUrl)
-        });
+                const difficulty = this.mission.variants.find(x => x.toLowerCase() === this.$route.params.difficulty);
+                const description = `View locations for items, disguises, and more for ${this.mission.name} (${difficulty})`;
+                MetaHandler.setOpengraphTag('description', description);
+                MetaHandler.setMetaTag('description', description);
+                MetaHandler.setOpengraphTag('image', this.mission.tileUrl);
+            });
     },
     created: function() {
         const $body = $('body');
         $body.on('click', '[data-action="edit-btn"]', this.editMarker);
         $body.on('click', '[data-action="delete-btn"]', this.deleteMarker);
 
-        if (this.game === null || this.game.slug !== this.$route.params.slug)
-            this.$store.dispatch('loadGame', this.$route.params.slug)
-        this.$request(
-            false,
-            `v2/games/${this.$route.params.slug}/locations/${this.$route.params.location}/missions/${this.$route.params.mission}/map`
-        ).then(resp => {
+        if (this.game === null || this.game.slug !== this.$route.params.slug){
+            this.$store.dispatch('loadGame', this.$route.params.slug);
+        }
+        this.$request(false, `v2/games/${this.$route.params.slug}/locations/${this.$route.params.location}/missions/${this.$route.params.mission}/map`).then(resp => {
             this.game = resp.data.game;
             this.mission = resp.data.mission;
 
