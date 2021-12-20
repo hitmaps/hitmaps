@@ -10,12 +10,14 @@ use Controllers\ViewModels\NodeWithNotesViewModel;
 use Controllers\ViewModels\Sidebar\CategoryViewModel;
 use Controllers\ViewModels\Sidebar\TopLevelCategoryViewModel;
 use DataAccess\Models\Mission;
+use DataAccess\Models\MissionVariant;
 use DataAccess\Models\Node;
 use DataAccess\Models\NodeCategory;
 use DataAccess\Models\NodeDifficulty;
 use DataAccess\Models\NodeNote;
 use DataAccess\Models\User;
 use DataAccess\Repositories\NodeRepository;
+use Doctrine\DBAL\Logging\DebugStack;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ObjectRepository;
 
@@ -144,8 +146,11 @@ class NodeController {
         $mission = $this->entityManager->getRepository(Mission::class)->findOneBy(['id' => $missionid]);
 
         /* @var $nodes Node[] */
-        $nodes = $this->nodeRepository->findBy(['missionId' => $missionid, 'approved' => true],
-            ['group' => 'ASC', 'name' => 'ASC']);
+        $logger = new DebugStack();
+        $this->entityManager->getConnection()->getConfiguration()->setSQLLogger($logger);
+        $nodes = $this->nodeRepository->findByMissionV2($missionid);
+        /*$nodes = $this->nodeRepository->findBy(['missionId' => $missionid, 'approved' => true],
+            ['group' => 'ASC', 'name' => 'ASC']);*/
 
         $addedNodes = [];
         /* @var $nodeViewModel NodeWithNotesViewModel */
@@ -153,36 +158,34 @@ class NodeController {
         foreach ($nodes as $node) {
             $nodeViewModel = new NodeWithNotesViewModel();
 
-            /* @var $note NodeNote */
-            foreach ($node->getNotes()->toArray() as $note) {
+            foreach ($node['notes'] as $note) {
                 $innerViewModel = new NodeNoteViewModel();
-                $innerViewModel->id = $note->getId();
-                $innerViewModel->type = $note->getType();
-                $innerViewModel->text = $note->getText();
+                $innerViewModel->id = $note['id'];
+                $innerViewModel->type = $note['type'];
+                $innerViewModel->text = $note['text'];
 
                 $nodeViewModel->notes[] = $innerViewModel;
             }
 
-            /* @var $notes NodeNote[] */
-            if ($searchableOnly && !$node->isSearchable()) {
+            if ($searchableOnly && !$node['searchable']) {
                 continue;
             }
 
-            $type = $node->getType();
-            $group = $node->getGroup();
+            $type = $node['type'];
+            $group = $node['group'];
 
             if (!$distinctOnly ||
-                $node->getName() === null ||
-                $node->getName() === '' ||
-                !in_array($type . $group . $node->getName(), $addedNodes)) {
-                $nodeViewModel->id = $node->getId();
-                $nodeViewModel->missionId = $node->getMissionId();
-                $nodeViewModel->type = $node->getType();
-                $nodeViewModel->icon = $node->getIcon();
-                $nodeViewModel->subgroup = $node->getSubgroup();
-                $nodeViewModel->name = $node->getName();
-                $nodeViewModel->target = $node->getTarget();
-                $nodeViewModel->searchable = $node->isSearchable();
+                $node['name'] === null ||
+                $node['name'] === '' ||
+                !in_array($type . $group . $node['name'], $addedNodes)) {
+                $nodeViewModel->id = $node['id'];
+                $nodeViewModel->missionId = $node['missionId'];
+                $nodeViewModel->type = $node['type'];
+                $nodeViewModel->icon = $node['icon'];
+                $nodeViewModel->subgroup = $node['subgroup'];
+                $nodeViewModel->name = $node['name'];
+                $nodeViewModel->target = $node['target'];
+                $nodeViewModel->searchable = $node['searchable'];
                 switch ($nodeViewModel->icon) {
                     case 'poison':
                         $nodeViewModel->targetIcon = 'fa-user';
@@ -197,24 +200,23 @@ class NodeController {
                         break;
                 }
 
-                $nodeViewModel->level = $node->getLevel();
-                $nodeViewModel->latitude = $node->getLatitude();
-                $nodeViewModel->longitude = $node->getLongitude();
+                $nodeViewModel->level = $node['level'];
+                $nodeViewModel->latitude = $node['latitude'];
+                $nodeViewModel->longitude = $node['longitude'];
 
-                /* @var $difficulty NodeDifficulty */
-                foreach ($node->getDifficulties()->toArray() as $difficulty) {
-                    $nodeViewModel->difficulties[] = $difficulty->getDifficulty();
+                foreach ($node['variants'] as $missionVariant) {
+                    $nodeViewModel->missionVariants[] = $missionVariant['difficulty'];
                 }
 
-                $nodeViewModel->group = $node->getGroup();
-                $nodeViewModel->image = $node->getImage();
-                $nodeViewModel->tooltip = $node->getTooltip();
-                $nodeViewModel->quantity = $node->getQuantity();
+                $nodeViewModel->group = $node['group'];
+                $nodeViewModel->image = $node['image'];
+                $nodeViewModel->tooltip = $node['tooltip'];
+                $nodeViewModel->quantity = $node['quantity'];
 
                 $nodeViewModels[] = $nodeViewModel;
 
-                if ($distinctOnly && $node->getName() !== null && $node->getName() !== '') {
-                    $addedNodes[] = $type . $group . $node->getName();
+                if ($distinctOnly && $node['name'] !== null && $node['name'] !== '') {
+                    $addedNodes[] = $type . $group . $node['name'];
                 }
             }
         }

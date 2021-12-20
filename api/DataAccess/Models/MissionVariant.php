@@ -21,9 +21,9 @@ class MissionVariant {
     public $missionId;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", name="difficulty")
      */
-    public $difficulty;
+    public $variant;
 
     /**
      * @ORM\Column(type="boolean")
@@ -61,15 +61,15 @@ class MissionVariant {
     /**
      * @return mixed
      */
-    public function getDifficulty() {
-        return $this->difficulty;
+    public function getVariant() {
+        return $this->variant;
     }
 
     /**
-     * @param mixed $difficulty
+     * @param mixed $variant
      */
-    public function setDifficulty($difficulty): void {
-        $this->difficulty = $difficulty;
+    public function setVariant($variant): void {
+        $this->variant = $variant;
     }
 
     /**

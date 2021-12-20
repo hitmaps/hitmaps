@@ -67,7 +67,7 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]?', function 
                 /* @var $missionVariant MissionVariant */
                 foreach ($missionVariants as $missionVariant) {
                     if ($missionVariant->isVisible()) {
-                        $mission->variants[] = $missionVariant->getDifficulty();
+                        $mission->variants[] = $missionVariant->getVariant();
                     }
                 }
                 $mission->setIcon();
@@ -106,7 +106,7 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
         /* @var $missionVariant MissionVariant */
         foreach ($missionVariants as $missionVariant) {
             if ($missionVariant->isVisible()) {
-                $mission->difficulties[] = $missionVariant->getDifficulty();
+                $mission->difficulties[] = $missionVariant->getVariant();
             }
         }
 
@@ -401,7 +401,7 @@ $klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:m
         return [
             'game' => $game,
             'mission' => $mission,
-            'missionDifficulties' => $applicationContext->get(EntityManager::class)
+            'variants' => $applicationContext->get(EntityManager::class)
                 ->getRepository(MissionVariant::class)
                 ->findBy(['missionId' => $mission->getId()]),
             'nodes' => $nodes,

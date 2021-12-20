@@ -103,10 +103,14 @@ class Node {
     public $quantity;
 
     /**
-     * @ORM\OneToMany(targetEntity="NodeDifficulty", mappedBy="node", fetch="EAGER")
-     * @var $difficulties Collection
+     * @ORM\ManyToMany(targetEntity="MissionVariant")
+     * @ORM\JoinTable(name="node_to_mission_variants",
+     *                joinColumns={@ORM\JoinColumn(name="node_id", referencedColumnName="id")},
+     *                inverseJoinColumns={@ORM\JoinColumn(name="variant_id", referencedColumnName="id", unique=true)}
+     *               )
+     * @var $variants Collection
      */
-    private $difficulties;
+    private $variants;
 
     /**
      * @ORM\OneToMany(targetEntity="NodeNote", mappedBy="node", fetch="EAGER")
@@ -368,17 +372,17 @@ class Node {
     }
 
     /**
-     * @return mixed
+     * @return Collection
      */
-    public function getDifficulties() {
-        return $this->difficulties;
+    public function getVariants(): Collection {
+        return $this->variants;
     }
 
     /**
-     * @param mixed $difficulties
+     * @param mixed $variants
      */
-    public function setDifficulties($difficulties): void {
-        $this->difficulties = $difficulties;
+    public function setVariants($variants): void {
+        $this->variants = $variants;
     }
 
     /**

@@ -214,12 +214,12 @@
                         <div class="difficulty-selector">
                           <div class="row">
                             <div class="col-lg-6 col-xs-12 difficulty"
-                                 :class="difficulty === selectedDifficulty ? 'active' : ''"
-                                 @click="updateDifficulty(difficulty)"
-                                 v-for="difficulty in missionDifficulties"
-                                 :key="difficulty.id">
-                                <game-icon :icon="`difficulty-${$options.filters.lowercase(difficulty.difficulty)}`" font-style="solid" />
-                                <span>{{ $t(`difficulties.${difficulty.difficulty}`) }}</span>
+                                 :class="variant === selectedVariant ? 'active' : ''"
+                                 @click="updateVariant(variant)"
+                                 v-for="variant in variants"
+                                 :key="variant.id">
+                                <game-icon :icon="`difficulty-${$options.filters.lowercase(variant.variant)}`" font-style="solid" />
+                                <span>{{ $t(`difficulties.${variant.variant}`) }}</span>
                             </div>
                           </div>
                         </div>
@@ -1168,12 +1168,10 @@ export default {
             ledges: [],
             foliage: [],
             nodes: null,
-            missionDifficulties: [],
-            selectedDifficulty: '',
+            variants: [],
+            selectedVariant: '',
             searchableNodes: null,
             currentLayer: 0,
-            overlays: [],
-            layerGroups: [],
             map: null,
             mapLayers: [],
             debugMode: false,
@@ -1685,7 +1683,9 @@ export default {
                     if (node.tooltip !== '') {
                         marker.bindTooltip(node.tooltip);
                     }
-                    marker.addTo(this.overlays[node.level][node.type + '|' + node.group]);
+
+                    // TODO Update
+                    //marker.addTo(this.overlays[node.level][node.type + '|' + node.group]);
                 }
                 $('#editModal').modal('hide');
                 this.editor.currentMarker = null;
@@ -1912,7 +1912,9 @@ export default {
                     this.editor.vertices = []
                     let ledge = resp.data.data;
                     this.ledges.push(ledge)
-                    this.buildLedge(ledge).addTo(this.overlays[ledge.level]['Navigation|Ledge']);
+
+                    // TODO Update
+                    //this.buildLedge(ledge).addTo(this.overlays[ledge.level]['Navigation|Ledge']);
                     this.editor.workingLayers.forEach(el => {
                         this.map.removeLayer(el)
                     })
@@ -1922,8 +1924,9 @@ export default {
                 this.$request(true, 'foliage', data).then(resp => {
                     this.editor.vertices = []
                     let foliage = resp.data.data;
-                    this.foliage.push(foliage)
-                    this.buildFoliage(foliage).addTo(this.overlays[foliage.level]['Navigation|Foliage']);
+                    this.foliage.push(foliage);
+                    // TODO Update
+                    //this.buildFoliage(foliage).addTo(this.overlays[foliage.level]['Navigation|Foliage']);
                     this.editor.workingLayers.forEach(el => {
                         this.map.removeLayer(el)
                     })
@@ -1939,7 +1942,8 @@ export default {
                     this.disguises
                         .find(el => el.id == disguiseId)
                         .areas.push(disguiseArea)
-                    this.buildDisguiseArea(disguiseArea).addTo(this.overlays[disguiseArea.level]['Disguises|' + disguiseArea.disguiseId]);
+                    // TODO Update
+                    //this.buildDisguiseArea(disguiseArea).addTo(this.overlays[disguiseArea.level]['Disguises|' + disguiseArea.disguiseId]);
                     this.editor.workingLayers.forEach(el => {
                         this.map.removeLayer(el)
                     })
@@ -1972,7 +1976,9 @@ export default {
             this.updateNodeLayerState();
         },
         calculateNumber(floor) {
-            var count = 0;
+            // TODO Replace with nodes lambda
+            return 0;
+            /*var count = 0;
             for (var level in this.overlays) {
                 if (parseInt(level) !== floor) {
                     continue;
@@ -1988,7 +1994,7 @@ export default {
                     }
                 }
             }
-            return count + this.floorCountOverride[floor];
+            return count + this.floorCountOverride[floor];*/
         },
         searchItem(event) {
             if (event.target.value === '') {
@@ -2019,8 +2025,8 @@ export default {
         loadWithSearchedItem(itemString) {
             $(this.$refs.itemSearch).selectpicker('val', decodeURIComponent(itemString));
         },
-        updateDifficulty(difficulty) {
-            this.selectedDifficulty = difficulty;
+        updateVariant(variant) {
+            this.selectedVariant = variant;
             this.updateNodeLayerState();
         },
         updateNodeLayerState() {
@@ -2038,7 +2044,8 @@ export default {
 
             this.floorsWithSearchResults = [];
             this.floorCountOverride = [];
-            for (const floorString in this.overlays) {
+            // TODO Replace with nodes lambda
+            /*for (const floorString in this.overlays) {
                 const floor = parseInt(floorString);
                 this.floorCountOverride[floor] = 0;
                 const floorLayers = this.overlays[floor];
@@ -2118,7 +2125,7 @@ export default {
                         this.toggleLayerGroup(floorLayers[key], (currentFloor && !this.isLayerHidden(key)));
                     }
                 }
-            }
+            }*/
         },
         hasSearchResults(floor) {
             return this.floorsWithSearchResults.indexOf(floor) !== -1;
@@ -2259,36 +2266,26 @@ export default {
             this.$store.dispatch('loadGame', this.$route.params.slug)
         this.$request(
             false,
-            `v1/games/${this.$route.params.slug}/locations/${this.$route.params.location}/missions/${this.$route.params.mission}/${this.$route.params.difficulty}/map`
+            `v2/games/${this.$route.params.slug}/locations/${this.$route.params.location}/missions/${this.$route.params.mission}/map`
         ).then(resp => {
             this.game = resp.data.game;
             this.mission = resp.data.mission;
 
             this.buildLevelNames();
 
-            this.$route.meta.title = resp.data.mission.name
-            this.currentLayer = resp.data.mission.startingFloorNumber
-            for (var group in resp.data.nodes) {
-                for (var subgroup in resp.data.nodes[group].items) {
-                    resp.data.nodes[group].items[subgroup].items.forEach(
-                        item => {
-                            item.latLng = L.latLng(
-                                item.latitude,
-                                item.longitude
-                            )
-                        }
-                    )
-                }
-            }
+            this.$route.meta.title = resp.data.mission.name;
+            this.currentLayer = resp.data.mission.startingFloorNumber;
+            resp.data.nodes.forEach(item => item.latLng = L.latLng(item.latitude, item.longitude));
+
             this.disguises = resp.data.disguises;
             this.ledges = resp.data.ledges;
             this.foliage = resp.data.foliage;
             this.nodes = resp.data.nodes;
-            this.missionDifficulties = resp.data.missionDifficulties;
-            if (this.missionDifficulties.some(x => x.difficulty === 'Professional')) {
-                this.selectedDifficulty = this.missionDifficulties.find(x => x.difficulty === 'Professional');
+            this.variants = resp.data.variants;
+            if (this.variants.some(x => x.variant === 'Professional')) {
+                this.selectedVariant = this.variants.find(x => x.variant === 'Professional');
             } else {
-                this.selectedDifficulty = this.missionDifficulties.find(x => x.difficulty === 'Standard');
+                this.selectedVariant = this.variants.find(x => x.variant === 'Standard');
             }
             this.searchableNodes = resp.data.searchableNodes;
             resp.data.categories.forEach(category => {
@@ -2299,14 +2296,14 @@ export default {
             });
 
             // Initialize g_overlays for each floor
-            for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
+            // TODO idk what to do with this right now
+            /*for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
                 this.overlays[i] = {};
             }
 
             resp.data.categories.forEach(category => {
                 for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
                     this.overlays[i][category.type + '|' + category.group] = L.layerGroup();
-                    this.layerGroups.push(this.overlays[i][category.type + '|' + category.group]);
                 }
             });
 
@@ -2314,9 +2311,8 @@ export default {
             resp.data.disguises.forEach(disguise => {
                 for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
                     this.overlays[i]['Disguises|' + disguise.id] = L.layerGroup();
-                    this.layerGroups.push(this.overlays[i]['Disguises|' + disguise.id]);
                 }
-            });
+            });*/
 
             for (let typeName in resp.data.nodes) {
                 let nodeType = resp.data.nodes[typeName];
@@ -2334,24 +2330,24 @@ export default {
                             marker.bindTooltip(tooltip);
                         }
 
-                        marker.addTo(this.overlays[node.level][nodeType.name + '|' + group.name]);
+                        //marker.addTo(this.overlays[node.level][nodeType.name + '|' + group.name]);
                     })
                 }
             }
 
             resp.data.ledges.forEach(ledge => {
-                this.buildLedge(ledge).addTo(this.overlays[ledge.level]['Navigation|Ledge']);
+                //this.buildLedge(ledge).addTo(this.overlays[ledge.level]['Navigation|Ledge']);
             });
 
             resp.data.foliage.forEach(foliage => {
-                this.buildFoliage(foliage).addTo(this.overlays[foliage.level]['Navigation|Foliage']);
+                //this.buildFoliage(foliage).addTo(this.overlays[foliage.level]['Navigation|Foliage']);
             });
 
             // Disabling for iOS for now
             //if (!isIOS) {
                 resp.data.disguises.forEach(disguise => {
                     disguise.areas.forEach(area => {
-                        this.buildDisguiseArea(area).addTo(this.overlays[area.level]['Disguises|' + disguise.id]);
+                        //this.buildDisguiseArea(area).addTo(this.overlays[area.level]['Disguises|' + disguise.id]);
                     });
                 });
             //}
@@ -2360,31 +2356,25 @@ export default {
                 // Build tile layers for each floor
                 if (!this.mission.svg) {
                     for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                        let mapTileLayer = L.tileLayer(this.tileUrl + i + '/{z}/{x}/{y}.png', {
+                        this.mapLayers[i] = L.tileLayer(this.tileUrl + i + '/{z}/{x}/{y}.png', {
                             noWrap: true,
                             minZoom: this.mission.minZoom,
                             maxZoom: this.mission.maxZoom
                         });
-                        this.layerGroups.push(mapTileLayer);
-                        this.mapLayers[i] = mapTileLayer;
                     }
                 } else {
                     for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
                         let boundingBoxTopLeft = this.mission.boundingBoxTopLeft.split(',');
                         let boundingBoxBottomRight = this.mission.boundingBoxBottomRight.split(',');
-                        let svgImageLayer = L.imageOverlay(`${this.getSvgMapUrl()}${i}.svg`, [boundingBoxTopLeft, boundingBoxBottomRight]);
-                        this.layerGroups.push(svgImageLayer);
-                        this.mapLayers[i] = svgImageLayer;
+                        this.mapLayers[i] = L.imageOverlay(`${this.getSvgMapUrl()}${i}.svg`, [boundingBoxTopLeft, boundingBoxBottomRight]);
                     }
                 }
                 if (this.mission.satelliteView) {
-                    let mapTileLayer = L.tileLayer(this.tileUrl + '-99/{z}/{x}/{y}.png', {
+                    this.mapLayers[-99] = L.tileLayer(this.tileUrl + '-99/{z}/{x}/{y}.png', {
                         noWrap: true,
                         minZoom: this.mission.minZoom,
                         maxZoom: this.mission.maxZoom
                     });
-                    this.layerGroups.push(mapTileLayer);
-                    this.mapLayers[-99] = mapTileLayer;
                 }
 
                 let renderer = this.mission.svg ? L.svg() : L.canvas()
@@ -2392,7 +2382,7 @@ export default {
                     maxZoom: this.mission.maxZoom,
                     minZoom: this.mission.minZoom,
                     crs: L.CRS.Simple,
-                    layers: this.layerGroups,
+                    layers: Object.values(this.mapLayers),
                     renderer: renderer
                 }).setView([this.mission.mapCenterLatitude, this.mission.mapCenterLongitude], this.mission.minZoom);
                 let topLeftCoordinate = this.mission.topLeftCoordinate.split(',');
@@ -2414,9 +2404,9 @@ export default {
 
                 // "Show" all items; CSS will handle showing / hiding
                 for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                    for (let j in this.overlays[i]) {
+                    /*for (let j in this.overlays[i]) {
                         this.toggleLayerGroup(this.overlays[i][j], true);
-                    }
+                    }*/
                 }
                 this.updateNodeLayerState();
 

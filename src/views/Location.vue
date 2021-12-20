@@ -110,7 +110,6 @@
                                         mission: mission.slug
                                     }
                                 }"
-                                v-if="mission.difficulties.length == 1"
                             >
                                 <div class="card mission" :style="`background: url('${mission.tileUrl}') center center / cover no-repeat`">
                                     <div style="position: relative">
@@ -135,49 +134,6 @@
                                     </div>
                                 </div>
                             </router-link>
-                            <div v-else class="card mission" :style="`background: url('${mission.tileUrl}') center center / cover no-repeat`">
-                                <div style="position: relative">
-                                    <img :src="mission.tileUrl"
-                                         :alt="$t('mission-image')"
-                                         class="card-img-top" />
-                                    <div
-                                        class="card-img-overlay d-flex flex-column justify-content-end"
-                                        style="padding: 0"
-                                    >
-                                        <div class="row difficulties">
-                                            <router-link
-                                                :to="{
-                                                    name: 'map-view',
-                                                    params: {
-                                                        slug: location.game,
-                                                        location: location.slug,
-                                                        mission: mission.slug
-                                                    }
-                                                }"
-                                                v-for="difficulty in mission.difficulties"
-                                                :key="difficulty"
-                                                class="col"
-                                            >
-                                                <div
-                                                    style="padding-top: 10px; padding-bottom: 10px"
-                                                >
-                                                    <game-icon :icon="`difficulty-${difficulty.toLowerCase()}`" font-style="solid" />
-                                                    {{ lang('difficulties.' + difficulty, difficulty) }}
-                                                </div>
-                                            </router-link>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                    <div class="image">
-                                        <game-icon :icon="mission.icon" font-style="normal" />
-                                    </div>
-                                    <div class="text">
-                                        <h2>{{ lang('mission-types.' + mission.missionType.toLowerCase(), mission.missionType) }}</h2>
-                                        <h1>{{ lang('missions.' + mission.slug, mission.name) }}</h1>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
