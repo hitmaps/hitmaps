@@ -23,13 +23,13 @@
         <div v-if="mission != null" class="content">
             <div class="floor-toggle" v-if="mission.missionType !== 'Sniper Assassin'">
                 <div
-                    v-for="i in range(
+                        v-for="i in range(
                         mission.lowestFloorNumber,
                         mission.highestFloorNumber
                     ).reverse()"
-                    :key="i"
-                    class="floor-info"
-                    :class="{ selected: currentLayer === i }"
+                        :key="i"
+                        class="floor-info"
+                        :class="{ selected: currentLayer === i }"
                 >
                     <div class="floor-header" v-if="floorNames[i] && floorNames[i].header">
                         <span>{{ floorNames[i].header }}</span>
@@ -44,9 +44,9 @@
                     </div>
                 </div>
                 <div
-                    class="floor-info text-center "
-                    :class="{ selected: currentLayer === -99 }"
-                    v-if="mission.satelliteView"
+                        class="floor-info text-center "
+                        :class="{ selected: currentLayer === -99 }"
+                        v-if="mission.satelliteView"
                 >
                     <div class="floor-details">
                         <div @click="changeLevel(-99)" class="floor satellite">
@@ -58,19 +58,19 @@
             <div id="map"></div>
             <nav class="navbar navbar-fixed-right navbar-dark">
                 <button
-                    class="navbar-toggler"
-                    type="button"
-                    data-toggle="collapse"
-                    data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent"
-                    aria-expanded="false"
-                    :aria-label="$t('map.toggle-navigation')"
+                        class="navbar-toggler"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent"
+                        aria-expanded="false"
+                        :aria-label="$t('map.toggle-navigation')"
                 >
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div
-                    class="collapse navbar-collapse"
-                    id="navbarSupportedContent"
+                        class="collapse navbar-collapse"
+                        id="navbarSupportedContent"
                 >
                     <div class="header">
                         <router-link :to="{ name: 'home' }">
@@ -116,27 +116,27 @@
                                 <i class="fas fa-bug"></i>
                             </button>
                             <button
-                                v-if="isLoggedIn"
-                                id="edit-button"
-                                @click="toggleEditor"
-                                class="btn control-button"
-                                v-tooltip:top="$t('map.edit-map')"
+                                    v-if="isLoggedIn"
+                                    id="edit-button"
+                                    @click="toggleEditor"
+                                    class="btn control-button"
+                                    v-tooltip:top="$t('map.edit-map')"
                             >
                                 <i class="fas fa-pencil-alt"></i>
                             </button>
                             <button
-                                v-if="isLoggedIn"
-                                class="btn control-button"
-                                v-tooltip:top="$t('authentication.log-out')"
-                                @click="logout"
+                                    v-if="isLoggedIn"
+                                    class="btn control-button"
+                                    v-tooltip:top="$t('authentication.log-out')"
+                                    @click="logout"
                             >
                                 <i class="fas fa-sign-out-alt"></i>
                             </button>
                             <router-link :to="{ name: 'login' }">
                                 <button
-                                    v-if="!isLoggedIn"
-                                    class="btn control-button"
-                                    v-tooltip:bottom="$t('map.login-to-edit')"
+                                        v-if="!isLoggedIn"
+                                        class="btn control-button"
+                                        v-tooltip:bottom="$t('map.login-to-edit')"
                                 >
                                     <i class="fas fa-sign-in-alt"></i>
                                 </button>
@@ -171,69 +171,81 @@
                         {{ debugLayerSize[0][0] }}, {{ debugLayerSize[0][1] }} / {{ debugLayerSize[1][0] }}, {{ debugLayerSize[1][1] }}
                     </div>
                     <div
-                        class="accordion"
-                        id="accordion"
-                        v-show="!editor.enabled"
+                            class="accordion"
+                            id="accordion"
+                            v-show="!editor.enabled"
                     >
                         <div
-                            class="floor-toggle"
-                            v-if="mission.missionType != 'Sniper Assassin'"
+                                class="floor-toggle"
+                                v-if="mission.missionType != 'Sniper Assassin'"
                         >
                             <div
-                                v-for="i in range(
+                                    v-for="i in range(
                                     mission.lowestFloorNumber,
                                     mission.highestFloorNumber
                                 ).reverse()"
-                                :key="i"
-                                class="floor-info"
-                                :class="{ selected: currentLayer === i }"
+                                    :key="i"
+                                    class="floor-info"
+                                    :class="{ selected: currentLayer === i }"
                             >
                                 <div @click="changeLevel(i)" class="floor">
                                     {{ $t('map.level-number', { levelNumber: i }) }}
                                 </div>
                                 <div
-                                    :class="{
+                                        :class="{
                                         'has-search-results': hasSearchResults(
                                             i
                                         )
                                     }"
-                                    class="item-count"
+                                        class="item-count"
                                 >
                                     {{ calculateNumber(i) }}
                                 </div>
                             </div>
                             <div
-                                class="floor-info text-center "
-                                :class="{ selected: currentLayer === -99 }"
+                                    class="floor-info text-center "
+                                    :class="{ selected: currentLayer === -99 }"
                             >
                                 <div @click="changeLevel(-99)" class="floor">
                                     {{ $t('map.satellite' )}}
                                 </div>
                             </div>
                         </div>
+                        <div class="difficulty-selector">
+                            <div class="row">
+                                <div class="col-lg-6 col-xs-12 difficulty"
+                                     :class="difficulty === selectedVariant ? 'active' : ''"
+                                     @click="updateVariant(difficulty)"
+                                     v-for="difficulty in variants"
+                                     :key="difficulty.id">
+                                    <game-icon :icon="`difficulty-${$options.filters.lowercase(difficulty.variant)}`" font-style="solid" />
+                                    <span>{{ $t(`difficulties.${difficulty.variant}`) }}</span>
+                                </div>
+                            </div>
+                        </div>
                         <div class="search-box" id="search-box-items" data-search="items">
                             <select
-                                @change="searchItem"
-                                ref="itemSearch"
-                                name="search"
-                                class="selectpicker"
-                                data-live-search="true"
-                                data-title="<i class='fas fa-fw fa-search'></i> Search"
-                                data-style="control-button"
+                                    @change="searchItem"
+                                    ref="itemSearch"
+                                    name="search"
+                                    class="selectpicker"
+                                    data-live-search="true"
+                                    data-title="<i class='fas fa-fw fa-search'></i> Search"
+                                    data-style="control-button"
                             >
                                 <template
-                                    v-for="(type, key) in searchableNodes"
+                                        v-for="(type, key) in searchableNodes"
                                 >
                                     <optgroup
-                                        v-for="group in type.items"
-                                        :key="key + group.name"
-                                        :label="group.name"
+                                            v-for="group in type.items"
+                                            :key="key + group.name"
+                                            :label="group.name"
                                     >
                                         <option
-                                            v-for="node in group.items"
-                                            :key="node.name"
-                                            :data-layer="key + '|' + group.name"
-                                            :value="
+                                                v-for="node in group.items"
+                                                :key="node.name"
+                                                :data-layer="key + '|' + group.name"
+                                                :value="
                                                 key +
                                                     '|' +
                                                     group.name +
@@ -247,29 +259,29 @@
                                 </template>
                             </select>
                             <button
-                                @click="clearSearch"
-                                id="clear-search"
-                                class="btn control-button"
-                                v-tooltip:top="$t('map.clear-search')"
-                                v-show="searchedItem != null"
+                                    @click="clearSearch"
+                                    id="clear-search"
+                                    class="btn control-button"
+                                    v-tooltip:top="$t('map.clear-search')"
+                                    v-show="searchedItem != null"
                             >
                                 <i class="fas fa-times"></i>
                             </button>
                         </div>
                         <div
-                            v-if="mission.missionType != 'Sniper Assassin' && disguises.length"
-                            class="search-box"
-                            id="search-box-disguises"
-                            data-search="disguises"
+                                v-if="mission.missionType != 'Sniper Assassin' && disguises.length"
+                                class="search-box"
+                                id="search-box-disguises"
+                                data-search="disguises"
                         >
                             <div class="card">
                                 <div class="card-header" id="header-disguises">
                                     <div
-                                        class="name collapsed control-button"
-                                        data-toggle="collapse"
-                                        data-target="#body-disguises"
-                                        aria-expanded="false"
-                                        aria-controls="body-disguises"
+                                            class="name collapsed control-button"
+                                            data-toggle="collapse"
+                                            data-target="#body-disguises"
+                                            aria-expanded="false"
+                                            aria-controls="body-disguises"
                                     >
                                         <i class="far fa-fw fa-user-tie"></i>
                                         <span class="disguise-text">
@@ -286,9 +298,9 @@
                                     </div>
                                 </div>
                                 <div
-                                    id="body-disguises"
-                                    class="collapse"
-                                    aria-labelledby="header-disguises"
+                                        id="body-disguises"
+                                        class="collapse"
+                                        aria-labelledby="header-disguises"
                                 >
                                     <div class="card-body disguises">
                                         <alert type="info" v-if="false" dismissable>
@@ -296,9 +308,9 @@
                                         </alert>
                                         <div class="row">
                                             <div
-                                                @click="changeDisguise('NONE')"
-                                                data-disguise-id="NONE"
-                                                class="col-lg-6 selected">
+                                                    @click="changeDisguise('NONE')"
+                                                    data-disguise-id="NONE"
+                                                    class="col-lg-6 selected">
                                                 <div class="disguise-container">
                                                     <img src="https://media.hitmaps.com/img/hitman3/ui/tiles/any_disguise.jpg" alt="None" class="img-fluid">
                                                     <p class="disguise-info">{{ $t('map.none') }}</p>
@@ -322,27 +334,27 @@
                                 </div>
                             </div>
                             <button
-                                id="clear-disguise-search"
-                                class="btn control-button"
-                                v-tooltip:top="$t('map.clear-search')"
-                                style="display: none"
+                                    id="clear-disguise-search"
+                                    class="btn control-button"
+                                    v-tooltip:top="$t('map.clear-search')"
+                                    style="display: none"
                             >
                                 <i class="fas fa-times"></i>
                             </button>
                         </div>
                         <div class="hide-or-select-all">
                             <button
-                                id="hide-all"
-                                @click="toggleLayer('|', true)"
-                                class="btn control-button"
+                                    id="hide-all"
+                                    @click="toggleLayer('|', true)"
+                                    class="btn control-button"
                             >
                                 <i class="far fa-fw fa-eye-slash"></i>
                                 {{ $t('map.hide-all') }}
                             </button>
                             <button
-                                id="show-all"
-                                @click="toggleLayer('|', false)"
-                                class="btn control-button"
+                                    id="show-all"
+                                    @click="toggleLayer('|', false)"
+                                    class="btn control-button"
                             >
                                 <i class="far fa-fw fa-eye"></i>
                                 {{ $t('map.show-all') }}
@@ -350,49 +362,49 @@
                         </div>
                         <div v-if="mission.missionType == 'Sniper Assassin'">
                             <div
-                                v-for="(type, key, index) in nodes"
-                                :key="index"
-                                class="card"
+                                    v-for="(type, key, index) in nodes"
+                                    :key="index"
+                                    class="card"
                             >
                                 <div class="card-body">
                                     <div
-                                        v-show="group.items.length > 0"
-                                        v-for="group in type.items"
-                                        :key="type.name + group.name"
-                                        :class="{
+                                            v-show="group.items.length > 0"
+                                            v-for="group in type.items"
+                                            :key="type.name + group.name"
+                                            :class="{
                                             'full-width': group.collapsible,
                                             'half-width': !group.collapsible
                                         }"
                                     >
                                         <div
-                                            class="name"
-                                            @click="
+                                                class="name"
+                                                @click="
                                                 toggleLayer(
                                                     type.name + '|' + group.name
                                                 )
                                             "
-                                            :class="{
+                                                :class="{
                                                 'map-hidden': isLayerHidden(
                                                     type.name + '|' + group.name
                                                 )
                                             }"
                                         >
                                             <img
-                                                :src="
+                                                    :src="
                                                     '/img/map-icons/' +
                                                         group.icon +
                                                         '.png'
                                                 "
-                                                :alt="group.name + ' Icon'"
-                                                class="img-fluid"
+                                                    :alt="group.name + ' Icon'"
+                                                    class="img-fluid"
                                             />
                                             <span>{{ lang('map.groups.' + group.name, group.name) }}</span>
                                         </div>
                                         <div
-                                            v-if="group.collapsible"
-                                            class="visibility-toggle collapsed"
-                                            data-toggle="collapse"
-                                            :data-target="
+                                                v-if="group.collapsible"
+                                                class="visibility-toggle collapsed"
+                                                data-toggle="collapse"
+                                                :data-target="
                                                 '#collapsible-' +
                                                     collapsible(type, group)
                                             "
@@ -401,9 +413,9 @@
                                             <i class="fas fa-caret-down"></i>
                                         </div>
                                         <div
-                                            v-if="group.collapsible"
-                                            class="collapsible-items collapse"
-                                            :id="
+                                                v-if="group.collapsible"
+                                                class="collapsible-items collapse"
+                                                :id="
                                                 'collapsible-' +
                                                     collapsible(type, group)
                                             "
@@ -411,7 +423,7 @@
                                             <ul :style="{ columns: group.items.length > 1 ? 2 : 1 }">
                                                 <li v-for="node in noDuplicates(group.items)" :key="node.name">
                                                     <img v-if="node.icon != group.icon" :src="'/img/map-icons/' + node.icon + '.png'"
-                                                        :alt="node.name + ' Icon'" class="img-fluid" />
+                                                         :alt="node.name + ' Icon'" class="img-fluid" />
                                                     {{ node.name }}
                                                 </li>
                                             </ul>
@@ -460,10 +472,10 @@
                                                 <span>{{ lang('map.groups.' + type.name + '|' + group.name, group.name) }}</span>
                                             </div>
                                             <div
-                                                v-if="group.collapsible"
-                                                class="visibility-toggle collapsed"
-                                                data-toggle="collapse"
-                                                :data-target="
+                                                    v-if="group.collapsible"
+                                                    class="visibility-toggle collapsed"
+                                                    data-toggle="collapse"
+                                                    :data-target="
                                                     '#collapsible-' +
                                                         collapsible(type, group)
                                                 "
@@ -472,16 +484,16 @@
                                                 <i class="fas fa-caret-down"></i>
                                             </div>
                                             <div
-                                                v-if="group.collapsible"
-                                                class="collapsible-items collapse"
-                                                :id="'collapsible-' + collapsible(type, group)"
+                                                    v-if="group.collapsible"
+                                                    class="collapsible-items collapse"
+                                                    :id="'collapsible-' + collapsible(type, group)"
                                             >
                                                 <ul :style="{ columns: group.items.length > 1 ? 2 : 1 }">
                                                     <li v-for="node in noDuplicates(group.items)" :key="node.name">
                                                         <img v-if="node.icon != group.icon"
-                                                            :src="'/img/map-icons/' + node.icon + '.png'"
-                                                            :alt="node.name + ' Icon'"
-                                                            class="img-fluid" />
+                                                             :src="'/img/map-icons/' + node.icon + '.png'"
+                                                             :alt="node.name + ' Icon'"
+                                                             class="img-fluid" />
                                                         {{ node.name }}
                                                     </li>
                                                 </ul>
@@ -582,7 +594,7 @@
                             </p>
                         </div>
                         <div class="editor-button"
-                            @click="
+                             @click="
                                 editorMenu('')
                                 map.pm.disableDraw('Polygon')
                             ">
@@ -606,9 +618,9 @@
                                     data-style="control-button">
                                 <option value="NONE">None</option>
                                 <option
-                                    v-for="disguise in disguises"
-                                    :key="disguise.id"
-                                    :value="disguise.id"
+                                        v-for="disguise in disguises"
+                                        :key="disguise.id"
+                                        :value="disguise.id"
                                 >
                                     {{ disguise.suit ?  `Suit (${disguise.name})` : disguise.name }}
                                 </option>
@@ -666,10 +678,10 @@
                 </div>
             </nav>
             <modal
-                modal-title="Copy Disguise Regions"
-                id="copy-disguises-modal"
-                tabindex="-1"
-                role="dialog"
+                    modal-title="Copy Disguise Regions"
+                    id="copy-disguises-modal"
+                    tabindex="-1"
+                    role="dialog"
             >
                 <div class="alert alert-warning">
                     {{ $t('map.copy-disguises-warning') }}
@@ -682,18 +694,18 @@
                             </label>
                             <br />
                             <select
-                                id="original-disguise"
-                                name="original-disguise"
-                                class="selectpicker"
-                                v-model="copyDisguiseArea.source"
-                                required
+                                    id="original-disguise"
+                                    name="original-disguise"
+                                    class="selectpicker"
+                                    v-model="copyDisguiseArea.source"
+                                    required
                             >
                                 <option disabled selected>
                                     {{ $t('form.select') }}
                                 </option>
                                 <option
-                                    v-for="disguise in disguises"
-                                    :value="disguise.id"
+                                        v-for="disguise in disguises"
+                                        :value="disguise.id"
                                 >
                                     {{ disguise.suit ?  `Suit (${disguise.name})` : disguise.name }}
                                 </option>
@@ -707,18 +719,18 @@
                             </label>
                             <br />
                             <select
-                                id="target-disguise"
-                                name="target-disguise"
-                                class="selectpicker"
-                                v-model="copyDisguiseArea.destination"
-                                required
+                                    id="target-disguise"
+                                    name="target-disguise"
+                                    class="selectpicker"
+                                    v-model="copyDisguiseArea.destination"
+                                    required
                             >
                                 <option disabled selected>
                                     {{ $t('form.select') }}
                                 </option>
                                 <option
-                                    v-for="disguise in disguises"
-                                    :value="disguise.id"
+                                        v-for="disguise in disguises"
+                                        :value="disguise.id"
                                 >
                                     {{ disguise.suit ?  `Suit (${disguise.name})` : disguise.name }}
                                 </option>
@@ -732,9 +744,9 @@
                         {{ $t('form.cancel') }}
                     </game-button>
                     <game-button
-                        type="submit"
-                        id="copy-disguise-regions-btn"
-                        @click="copyDisguiseAreas"
+                            type="submit"
+                            id="copy-disguise-regions-btn"
+                            @click="copyDisguiseAreas"
                     >
                         <game-icon icon="check" font-style="normal" />
                         {{ $t('form.copy') }}
@@ -1049,8 +1061,8 @@
                                             </label>
                                             <div class="col-sm-10">
                                                 <textarea name="note-text[]"
-                                                       v-model="note.text"
-                                                       class="form-control"></textarea>
+                                                          v-model="note.text"
+                                                          class="form-control"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -1120,2305 +1132,2311 @@
 </template>
 
 <script>
-import Vue from 'vue'
+    import Vue from 'vue'
 
-import CxltToaster from 'cxlt-vue2-toastr'
-import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
+    import CxltToaster from 'cxlt-vue2-toastr'
+    import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
 
-import Alert from '../components/Alert'
-import GameButton from '../components/GameButton'
-import Modal from '../components/Modal'
-import MetaHandler from '../components/MetaHandler'
+    import Alert from '../components/Alert'
+    import GameButton from '../components/GameButton'
+    import Modal from '../components/Modal'
+    import MetaHandler from '../components/MetaHandler'
 
-import LanguageHelpers from "../components/LanguageHelpers";
-import ArrayHelpers from "../components/ArrayHelpers";
-import GameIcon from "../components/GameIcon";
+    import LanguageHelpers from "../components/LanguageHelpers";
+    import ArrayHelpers from "../components/ArrayHelpers";
+    import GameIcon from "../components/GameIcon";
 
-Vue.use(CxltToaster)
-export default {
-    name: 'map-view',
-    components: {
-        GameIcon,
-        Alert,
-        GameButton,
-        Modal
-    },
-    title() {
-        return this.mission ? this.lang('missions.' + this.mission.slug, this.mission.name) : 'Loading'
-    },
-    data() {
-        return {
-            game: null,
-            mission: null,
-            lastFloorType: '',
-            floorNames: {},
-            disguises: [],
-            ledges: [],
-            foliage: [],
-            nodes: null,
-            variants: [],
-            selectedVariant: '',
-            searchableNodes: null,
-            currentLayer: 0,
-            map: null,
-            mapLayers: [],
-            debugMode: false,
-            debugStep: 1,
-            debugLayerSize: [[0,0],[0,0]],
-            categories: {},
-            mapLoaded: false,
-            hiddenLayers: [],
-            searchedItem: null,
-            floorsWithSearchResults: [],
-            floorCountOverride: [],
-            editor: {
-                nodeId: undefined,
-                enabled: false,
-                mode: '',
-                templates: null,
-                icons: null,
-                currentCategory: null,
-                currentDisguise: 'NONE',
-                disguiseType: null,
-                notes: [],
-                clickedPoint: {},
-                currentMarkerId: -1,
-                currentMarker: {},
-                originalLatLng: null,
-                vertices: [],
-                workingLayers: [],
-                polyActive: false,
-                currentMarkerNode: null
-            },
-            copyDisguiseArea: {
-                source: -1,
-                destination: -1
-            }
-        }
-    },
-    computed: {
-        tileUrl: function() {
-            return `${this.$domain}/api/maps/${this.mission.mapFolderName}/tiles/`;
+    Vue.use(CxltToaster)
+    export default {
+        name: 'map-view',
+        components: {
+            GameIcon,
+            Alert,
+            GameButton,
+            Modal
         },
-        loadingTile: function() {
-            if (this.mission.missionType !== 'Elusive Target') {
-                return this.mission.tileUrl;
-            }
-
-            if (this.game != null && this.game.slug == 'hitman') {
-                return (
-                    '/img/jpg/elusive-targets/legacy/' + this.mission.slug + '.jpg'
-                )
-            }
-
-            return '/img/jpg/elusive-targets/' + this.mission.slug + '.jpg'
+        title() {
+            return this.mission ? this.lang('missions.' + this.mission.slug, this.mission.name) : 'Loading'
         },
-        currentCategory: function() {
-            if (this.editor.currentCategory == '' ||
-                this.editor.currentCategory === null ||
-                this.editor.currentCategory === undefined) {
-                return;
-            }
-
-            let split = this.editor.currentCategory.split('|')
-            return this.categories[split[0]].find(element => element.subgroup == split[1]);
-        },
-        currentDisguise: function() {
-            if (this.editor.currentDisguise === 'NONE') return null
-            return this.disguises.find(
-                element => element.id == this.editor.currentDisguise
-            )
-        },
-        pickIconAllowed: function() {
-            if (!this.editor.currentCategory) return true
-            return (
-                [
-                    'Navigation|agency-pickup',
-                    'Navigation|exit-location',
-                    'Navigation|ledge',
-                    'Navigation|foliage',
-                    'Navigation|up-stair',
-                    'Navigation|starting-location',
-                    'Navigation|up-pipe'
-                ].indexOf(this.editor.currentCategory) === -1
-            )
-        },
-        isLoggedIn: function() {
-            if (localStorage.getItem('token') != null) {
-                var data = JSON.parse(
-                    atob(localStorage.getItem('token').split('.')[1])
-                )
-                var now = new Date()
-                if (new Date(data.exp * 1000).getTime() - now.getTime() > 0)
-                    return true
-            }
-            return false
-        }
-    },
-    methods: {
-        showDebug() {
-            return process.env.VUE_APP_SHOW_DEBUG === 'true';
-        },
-        getSvgMapUrl() {
-            if (this.game === undefined || this.mission === undefined) {
-                return '';
-            }
-
-            return `https://media.hitmaps.com/img/${this.game.slug}/maps/${this.mission.mapFolderName}/`;
-        },
-        buildLevelNames() {
-            if (this.mission === undefined) {
-                console.error('RIP');
-                return;
-            }
-
-            this.floorNames = {};
-            for (var i = this.mission.highestFloorNumber; i >= this.mission.lowestFloorNumber; i--) {
-                if (this.mission.floorNames[i]) {
-                    this.floorNames[i] = {
-                        header: this.isNewFloorType(this.$t(this.mission.floorNames[i].nameKey)) ? this.lastFloorType : undefined,
-                        value: this.getFormattedFloorName(this.$t(this.mission.floorNames[i].nameKey))
-                    }
-                } else {
-                    this.floorNames[i] = {
-                        header: undefined,
-                        value: this.$t('map.level-number', { levelNumber: i })
-                    }
+        data() {
+            return {
+                game: null,
+                mission: null,
+                lastFloorType: '',
+                floorNames: {},
+                disguises: [],
+                ledges: [],
+                foliage: [],
+                nodes: null,
+                variants: [],
+                selectedVariant: '',
+                searchableNodes: null,
+                currentLayer: 0,
+                overlays: [],
+                layerGroups: [],
+                map: null,
+                mapLayers: [],
+                debugMode: false,
+                debugStep: 1,
+                debugLayerSize: [[0,0],[0,0]],
+                categories: {},
+                mapLoaded: false,
+                hiddenLayers: [],
+                searchedItem: null,
+                floorsWithSearchResults: [],
+                floorCountOverride: [],
+                editor: {
+                    nodeId: undefined,
+                    enabled: false,
+                    mode: '',
+                    templates: null,
+                    icons: null,
+                    currentCategory: null,
+                    currentDisguise: 'NONE',
+                    disguiseType: null,
+                    notes: [],
+                    clickedPoint: {},
+                    currentMarkerId: -1,
+                    currentMarker: {},
+                    originalLatLng: null,
+                    vertices: [],
+                    workingLayers: [],
+                    polyActive: false,
+                    currentMarkerNode: null
+                },
+                copyDisguiseArea: {
+                    source: -1,
+                    destination: -1
                 }
             }
         },
-        isNewFloorType(level) {
-            if (!level.length) {
-                return false;
-            }
+        computed: {
+            tileUrl: function() {
+                return `${this.$domain}/api/maps/${this.mission.mapFolderName}/tiles/`;
+            },
+            loadingTile: function() {
+                if (this.mission.missionType !== 'Elusive Target') {
+                    return this.mission.tileUrl;
+                }
 
-            if (!level.includes('|') && level !== this.lastFloorType) {
-                if (level !== this.lastFloorType) {
-                    this.lastFloorType = level;
+                if (this.game != null && this.game.slug == 'hitman') {
+                    return (
+                        '/img/jpg/elusive-targets/legacy/' + this.mission.slug + '.jpg'
+                    )
+                }
+
+                return '/img/jpg/elusive-targets/' + this.mission.slug + '.jpg'
+            },
+            currentCategory: function() {
+                if (this.editor.currentCategory == '' ||
+                    this.editor.currentCategory === null ||
+                    this.editor.currentCategory === undefined) {
+                    return;
+                }
+
+                let split = this.editor.currentCategory.split('|')
+                return this.categories[split[0]].find(element => element.subgroup == split[1]);
+            },
+            currentDisguise: function() {
+                if (this.editor.currentDisguise === 'NONE') return null
+                return this.disguises.find(
+                    element => element.id == this.editor.currentDisguise
+                )
+            },
+            pickIconAllowed: function() {
+                if (!this.editor.currentCategory) return true
+                return (
+                    [
+                        'Navigation|agency-pickup',
+                        'Navigation|exit-location',
+                        'Navigation|ledge',
+                        'Navigation|foliage',
+                        'Navigation|up-stair',
+                        'Navigation|starting-location',
+                        'Navigation|up-pipe'
+                    ].indexOf(this.editor.currentCategory) === -1
+                )
+            },
+            isLoggedIn: function() {
+                if (localStorage.getItem('token') != null) {
+                    var data = JSON.parse(
+                        atob(localStorage.getItem('token').split('.')[1])
+                    )
+                    var now = new Date()
+                    if (new Date(data.exp * 1000).getTime() - now.getTime() > 0)
+                        return true
+                }
+                return false
+            }
+        },
+        methods: {
+            showDebug() {
+                return process.env.VUE_APP_SHOW_DEBUG === 'true';
+            },
+            getSvgMapUrl() {
+                if (this.game === undefined || this.mission === undefined) {
+                    return '';
+                }
+
+                return `https://media.hitmaps.com/img/${this.game.slug}/maps/${this.mission.mapFolderName}/`;
+            },
+            buildLevelNames() {
+                if (this.mission === undefined) {
+                    console.error('RIP');
+                    return;
+                }
+
+                this.floorNames = {};
+                for (var i = this.mission.highestFloorNumber; i >= this.mission.lowestFloorNumber; i--) {
+                    if (this.mission.floorNames[i]) {
+                        this.floorNames[i] = {
+                            header: this.isNewFloorType(this.$t(this.mission.floorNames[i].nameKey)) ? this.lastFloorType : undefined,
+                            value: this.getFormattedFloorName(this.$t(this.mission.floorNames[i].nameKey))
+                        }
+                    } else {
+                        this.floorNames[i] = {
+                            header: undefined,
+                            value: this.$t('map.level-number', { levelNumber: i })
+                        }
+                    }
+                }
+            },
+            isNewFloorType(level) {
+                if (!level.length) {
+                    return false;
+                }
+
+                if (!level.includes('|') && level !== this.lastFloorType) {
+                    if (level !== this.lastFloorType) {
+                        this.lastFloorType = level;
+                        return true;
+                    }
+
+                    return false;
+                }
+
+                let type = level.split('|');
+                if (type[0] !== this.lastFloorType) {
+                    this.lastFloorType = type[0];
                     return true;
                 }
 
                 return false;
-            }
-
-            let type = level.split('|');
-            if (type[0] !== this.lastFloorType) {
-                this.lastFloorType = type[0];
-                return true;
-            }
-
-            return false;
-        },
-        getFormattedFloorName(level) {
-            if (level.includes('|')) {
-                return level.split('|')[1];
-            }
-
-            return level;
-        },
-        getCountryFlag: function() {
-            return LanguageHelpers.getCountryFlagForLocale(this.$i18n);
-        },
-        logout: function() {
-            localStorage.removeItem('token');
-            location.reload();
-        },
-        noDuplicates: function(val) {
-            var filtered_array = []
-            for (var i = 0; i < val.length; i++) {
-                if (
-                    filtered_array.findIndex(el => el.name === val[i].name) ===
-                    -1
-                ) {
-                    filtered_array.push(val[i])
+            },
+            getFormattedFloorName(level) {
+                if (level.includes('|')) {
+                    return level.split('|')[1];
                 }
-            }
-            return filtered_array
-        },
-        range: function(min, max) {
-            var array = [],
-                j = 0
-            for (var i = min; i <= max; i++) {
-                array[j] = i
-                j++
-            }
-            return array
-        },
-        changeLevel: function(level) {
-            this.map.removeLayer(this.mapLayers[this.currentLayer]);
-            this.currentLayer = level;
-            this.map.addLayer(this.mapLayers[this.currentLayer]);
-            this.updateNodeLayerState();
-        },
-        collapsible: function(type, group) {
-            return (
-                type.name.replace(/ /g, '_') +
-                '-' +
-                group.name.replace(/ /g, '_')
-            )
-        },
-        editorMenu: function(menu) {
-            let $map = $('#map');
-            this.editor.mode = menu;
-            $map.removeClass(function(index, className) {
-                return (className.match (/(^|\s)hm-editor-\S+/g) || []).join(' ');
-            });
-            if (menu === '') {
-                this.toggleDraw('ALL');
-            } else {
-                $map.addClass(`hm-editor-${menu}`);
-            }
-            this.updateNodeLayerState();
-        },
-        buildMarker: function(node) {
-            const that = this;
-            const icon = node.icon === 'area' ?
-                new L.DivIcon({
-                    className: 'area-icon',
-                    html: node.name.replace(/(?:\r\n|\r|\n)/g, '<br>')
-                }) :
-                L.icon({iconUrl: '/img/map-icons/' + node.icon + '.png',
-                    iconSize: [32, 32],
-                    iconAnchor: [16, 16],
-                    popupAnchor: [0, 0]
+
+                return level;
+            },
+            getCountryFlag: function() {
+                return LanguageHelpers.getCountryFlagForLocale(this.$i18n);
+            },
+            logout: function() {
+                localStorage.removeItem('token');
+                location.reload();
+            },
+            noDuplicates: function(val) {
+                var filtered_array = []
+                for (var i = 0; i < val.length; i++) {
+                    if (
+                        filtered_array.findIndex(el => el.name === val[i].name) ===
+                        -1
+                    ) {
+                        filtered_array.push(val[i])
+                    }
+                }
+                return filtered_array
+            },
+            range: function(min, max) {
+                var array = [],
+                    j = 0
+                for (var i = min; i <= max; i++) {
+                    array[j] = i
+                    j++
+                }
+                return array
+            },
+            changeLevel: function(level) {
+                this.map.removeLayer(this.mapLayers[this.currentLayer]);
+                this.currentLayer = level;
+                this.map.addLayer(this.mapLayers[this.currentLayer]);
+                this.updateNodeLayerState();
+            },
+            collapsible: function(type, group) {
+                return (
+                    type.name.replace(/ /g, '_') +
+                    '-' +
+                    group.name.replace(/ /g, '_')
+                )
+            },
+            editorMenu: function(menu) {
+                let $map = $('#map');
+                this.editor.mode = menu;
+                $map.removeClass(function(index, className) {
+                    return (className.match (/(^|\s)hm-editor-\S+/g) || []).join(' ');
                 });
-            return L.marker([node.latitude, node.longitude], {
-                icon: icon,
-                custom: {
-                    id: node.id,
-                    node: node
-                },
-                riseOnHover: true
-            }).on('click', function(e) {
-                that.editor.currentMarker = node;
-                that.editor.currentMarkerId = node.id;
-            }).on('dragend', this.moveMarker);
-        },
-        buildPopup: function(element) {
-            let node = element.options.custom.node;
-
-            let $template = $($('#popup-template').html());
-            $template.find('[data-name="group"]').text(node.group).end()
-                .find('[data-name="name"]').text(node.name).end()
-                .find('[data-node-id="x"]').attr('data-node-id', node.id).end()
-                .find('[data-name="target"]').find('span').text(node.target);
-
-            if (node.target !== null && node.target !== '' && node.targetIcon !== '') {
-                $template.find('[data-name="target"]').find('i').addClass(node.targetIcon).show();
-            } else {
-                $template.find('[data-name="target"]').find('i').hide();
-            }
-
-            if (node.image !== null) {
-                let backgroundCss = `url(${node.image})`;
-
-                if (this.game.slug === 'absolution') {
-                    backgroundCss += ', radial-gradient(#69696a, #171718)';
+                if (menu === '') {
+                    this.toggleDraw('ALL');
+                } else {
+                    $map.addClass(`hm-editor-${menu}`);
                 }
-
-                $template.find('.image-and-name').addClass(`game-${this.game.slug}`)
-                    .css('background-image', backgroundCss).show();
-                $template.find('.no-image').hide();
-            } else {
-                $template.find('.image-and-name').css('background-image', '').hide();
-                $template.find('.no-image').show();
-            }
-
-            for (let i in node.notes) {
-                let $noteTemplate = $($('#popup-note-template').html());
-
-                $noteTemplate.find('[data-name="note-contents"]').text(node.notes[i].text).parent().addClass(node.notes[i].type);
-
-                $template.find('[data-name="notes"]').append($noteTemplate.html());
-            }
-
-            if (!this.isLoggedIn) {
-                // Yeah, this isn't the most "secure" thing... but the editor won't work unless you're authenticated.
-                // Additionally, anyone can create an account, so it's not confidential information.
-                $template.find('[data-authenticated-only]').html('');
-            }
-
-            return $template.html();
-        },
-        buildLedge: function(ledge) {
-            const that = this;
-            const polyline = L.polyline(this.parseCoords(ledge.vertices), {
-                color: '#fff',
-                weight: 4,
-                opacity: .75,
-                custom: {
-                    id: ledge.id
-                }
-            }).on('click', function() {
-                that.editor.currentMarker = this;
-                that.deletePoly(ledge, 'ledges');
-            });
-
-            return polyline.bindTooltip('Ledge', {sticky: true});
-        },
-        buildFoliage: function(foliage) {
-            const that = this;
-            const polygon = L.polygon(this.parseCoords(foliage.vertices), {
-                color: '#248f24',
-                weight: 4,
-                opacity: .75,
-                custom: {
-                    id: foliage.id
-                }
-            }).on('click', function() {
-                that.editor.currentMarker = this;
-                that.deletePoly(foliage, 'foliage');
-            });
-
-            return polygon.bindTooltip('Foliage', {sticky: true});
-        },
-        buildDisguiseArea: function(disguiseArea) {
-            const that = this;
-            const polygon = L.polygon(this.parseCoords(disguiseArea.vertices), {
-                color: disguiseArea.type === 'trespassing' ? 'yellow' : '#f00',
-                stroke: false,
-                weight: 4,
-                opacity: .75,
-                custom: {
-                    id: disguiseArea.id
-                }
-            }).on('click', function() {
-                that.editor.currentMarker = this;
-                that.deletePoly(disguiseArea, 'disguise-areas')
-            });
-
-            const tooltip = disguiseArea.type === 'trespassing' ? 'Trespassing' : 'Hostile Area';
-            return polygon.bindTooltip(tooltip, {sticky: true});
-        },
-        toggleEditor: function() {
-            if (this.editor.enabled) {
-                this.toggleDraw('ALL');
-            }
-
-            this.editor.enabled = !this.editor.enabled;
-        },
-        addMarker: function(event) {
-            if (!this.editor.enabled || this.editor.mode !== 'items') return
-            this.editor.clickedPoint = event.latlng
-            let element = '#editModal'
-            //Reset old data
-            if (this.currentCategory) {
-                this.editor.nodeId = undefined;
-                this.currentCategory.name = undefined;
-                this.currentCategory.defaultQuantity = 1;
-                this.currentCategory.action = undefined;
-                this.currentCategory.target = undefined;
-                this.currentCategory.image = undefined;
-            }
-
-            this.editor.currentCategory = undefined
-            $(this.$refs.subgroupPicker).selectpicker('val', -1)
-            $(this.$refs.iconPicker).selectpicker('val', -1)
-            $(this.$refs.templatePicker).selectpicker('val', -1)
-            this.editor.notes = []
-            $(element).modal('show')
-        },
-        moveMarker: function(event) {
-            let item = event.target;
-            item.latitude = event.target.getLatLng().lat
-            item.longitude = event.target.getLatLng().lng
-            this.editor.currentMarker = item
-            this.editor.currentMarkerNode = item.options.custom.node;
-            this.editor.originalLatLng = [item.options.custom.node.latitude, item.options.custom.node.longitude];
-            $('#confirm-move-modal').modal('show')
-        },
-        cancelMoveMarker: function() {
-            this.editor.currentMarker.setLatLng(this.editor.originalLatLng);
-        },
-        editMarker: function() {
-            let item = this.editor.currentMarker;
-            this.editor.notes = item.notes
-            this.editor.currentCategory = item.type + '|' + item.subgroup
-            this.editor.clickedPoint = L.latLng(item.latitude, item.longitude)
-            this.currentCategory.icon = item.icon;
-            $(this.$refs.subgroupPicker).selectpicker(
-                'val',
-                item.type + '|' + item.subgroup
-            )
-            $(this.$refs.iconPicker).selectpicker(
-                'val',
-                this.currentCategory.icon
-            )
-            this.editor.nodeId = item.id;
-            this.currentCategory.name = item.name;
-            this.currentCategory.defaultQuantity = item.quantity;
-            this.currentCategory.action = item.target;
-            this.currentCategory.target = item.target;
-            this.currentCategory.image = item.image;
-            this.currentCategory.pickupType = item.pickupType;
-
-            $('#editModal').modal('show')
-        },
-        confirmMove: function() {
-            var data = new FormData()
-            data.append('node-id', this.editor.currentMarkerNode.id)
-            data.append('latitude', this.editor.currentMarker.latitude)
-            data.append('longitude', this.editor.currentMarker.longitude)
-            this.$request(true, 'nodes/move', data).then(() => {
-                    this.$toast.success({
-                        message: 'Item moved!'
+                this.updateNodeLayerState();
+            },
+            buildMarker: function(node) {
+                const that = this;
+                const icon = node.icon === 'area' ?
+                    new L.DivIcon({
+                        className: 'area-icon',
+                        html: node.name.replace(/(?:\r\n|\r|\n)/g, '<br>')
+                    }) :
+                    L.icon({iconUrl: '/img/map-icons/' + node.icon + '.png',
+                        iconSize: [32, 32],
+                        iconAnchor: [16, 16],
+                        popupAnchor: [0, 0]
                     });
-                    $('#confirm-move-modal').modal('hide')
+                return L.marker([node.latitude, node.longitude], {
+                    icon: icon,
+                    custom: {
+                        id: node.id,
+                        node: node
+                    },
+                    riseOnHover: true
+                }).on('click', function(e) {
+                    that.editor.currentMarker = node;
+                    that.editor.currentMarkerId = node.id;
+                }).on('dragend', this.moveMarker);
+            },
+            buildPopup: function(element) {
+                let node = element.options.custom.node;
+
+                let $template = $($('#popup-template').html());
+                $template.find('[data-name="group"]').text(node.group).end()
+                    .find('[data-name="name"]').text(node.name).end()
+                    .find('[data-node-id="x"]').attr('data-node-id', node.id).end()
+                    .find('[data-name="target"]').find('span').text(node.target);
+
+                if (node.target !== null && node.target !== '' && node.targetIcon !== '') {
+                    $template.find('[data-name="target"]').find('i').addClass(node.targetIcon).show();
+                } else {
+                    $template.find('[data-name="target"]').find('i').hide();
                 }
-            )
-        },
-        selectSubgroup: function(event) {
-            if (event.target.value == '') return
-            this.editor.currentCategory = event.target.value
-            $(this.$refs.iconPicker).selectpicker(
-                'val',
-                this.currentCategory.icon
-            )
-        },
-        selectIcon: function(event) {
-            if (event.target.value == '') return
-            this.currentCategory.icon = event.target.value
-        },
-        applyTemplate: function(event) {
-            if (event.target.value == '') return
-            var split = event.target.value.split('|')
-            var currentTemplate = this.editor.templates[split[0]].find(
-                element => element.id == split[1]
-            )
-            $(this.$refs.subgroupPicker).selectpicker(
-                'val',
-                currentTemplate.type + '|' + currentTemplate.subgroup
-            )
-            this.$refs.subgroupPicker.dispatchEvent(new Event('change'))
-            $(this.$refs.iconPicker).selectpicker('val', currentTemplate.icon)
-            //Dunno if this is needed
-            this.$refs.iconPicker.dispatchEvent(new Event('change'))
 
-            this.currentCategory.name = currentTemplate.name
-            this.currentCategory.action = currentTemplate.target
-            this.currentCategory.target = currentTemplate.target
-            this.currentCategory.defaultQuantity = 1
-            this.currentCategory.image = currentTemplate.image
+                if (node.image !== null) {
+                    let backgroundCss = `url(${node.image})`;
 
-            if (currentTemplate.description)
-                this.editor.notes.push({
-                    type: 'description',
-                    text: currentTemplate.description
-                })
-            if (currentTemplate.requirement)
-                this.editor.notes.push({
-                    type: 'requirement',
-                    text: currentTemplate.requirement
-                })
-            if (currentTemplate.warning)
-                this.editor.notes.push({
-                    type: 'warning',
-                    text: currentTemplate.warning
-                })
-            if (currentTemplate.information)
-                this.editor.notes.push({
-                    type: 'info',
-                    text: currentTemplate.information
-                })
-        },
-        saveMarker: function() {
-            var url = 'nodes'
-            var data = new FormData()
-            if (this.editor.nodeId) {
-                data.append('id', this.editor.nodeId)
-                url = 'nodes/edit/' + this.editor.nodeId
-            } else {
-                data.append('id', -1)
-            }
-            data.append('mission-id', this.mission.id)
-            data.append('icon', this.currentCategory.icon)
-            data.append('subgroup', this.editor.currentCategory)
-            data.append('name', this.currentCategory.name || '')
-            data.append('quantity', this.currentCategory.defaultQuantity || 1)
-            data.append('target', this.currentCategory.target || '')
-            data.append('level', this.currentLayer)
-            data.append('latitude', this.editor.clickedPoint.lat)
-            data.append('longitude', this.editor.clickedPoint.lng)
-            data.append('group', this.currentCategory.group || '')
-            data.append('searchable', +this.currentCategory.searchable)
-            data.append('image', this.currentCategory.image || '')
-            data.append('action', this.currentCategory.action || '')
-            data.append('pickup-type', this.currentCategory.pickupType || '')
-            data.append(
-                'stairwell-direction',
-                this.currentCategory.stairwellDirection || ''
-            );
-            data.append('note-type[]', 'warning');
-            data.append('note-text[]', '');
-            this.editor.notes.forEach((element, index) => {
-                data.append('note-type[]', element.type)
-                data.append('note-text[]', element.text)
-            });
-            this.$refs.saveMarkerButton.disabled = true;
-            this.$request(true, url, data).then(resp => {
+                    if (this.game.slug === 'absolution') {
+                        backgroundCss += ', radial-gradient(#69696a, #171718)';
+                    }
+
+                    $template.find('.image-and-name').addClass(`game-${this.game.slug}`)
+                        .css('background-image', backgroundCss).show();
+                    $template.find('.no-image').hide();
+                } else {
+                    $template.find('.image-and-name').css('background-image', '').hide();
+                    $template.find('.no-image').show();
+                }
+
+                for (let i in node.notes) {
+                    let $noteTemplate = $($('#popup-note-template').html());
+
+                    $noteTemplate.find('[data-name="note-contents"]').text(node.notes[i].text).parent().addClass(node.notes[i].type);
+
+                    $template.find('[data-name="notes"]').append($noteTemplate.html());
+                }
+
+                if (!this.isLoggedIn) {
+                    // Yeah, this isn't the most "secure" thing... but the editor won't work unless you're authenticated.
+                    // Additionally, anyone can create an account, so it's not confidential information.
+                    $template.find('[data-authenticated-only]').html('');
+                }
+
+                return $template.html();
+            },
+            buildLedge: function(ledge) {
+                const that = this;
+                const polyline = L.polyline(this.parseCoords(ledge.vertices), {
+                    color: '#fff',
+                    weight: 4,
+                    opacity: .75,
+                    custom: {
+                        id: ledge.id
+                    }
+                }).on('click', function() {
+                    that.editor.currentMarker = this;
+                    that.deletePoly(ledge, 'ledges');
+                });
+
+                return polyline.bindTooltip('Ledge', {sticky: true});
+            },
+            buildFoliage: function(foliage) {
+                const that = this;
+                const polygon = L.polygon(this.parseCoords(foliage.vertices), {
+                    color: '#248f24',
+                    weight: 4,
+                    opacity: .75,
+                    custom: {
+                        id: foliage.id
+                    }
+                }).on('click', function() {
+                    that.editor.currentMarker = this;
+                    that.deletePoly(foliage, 'foliage');
+                });
+
+                return polygon.bindTooltip('Foliage', {sticky: true});
+            },
+            buildDisguiseArea: function(disguiseArea) {
+                const that = this;
+                const polygon = L.polygon(this.parseCoords(disguiseArea.vertices), {
+                    color: disguiseArea.type === 'trespassing' ? 'yellow' : '#f00',
+                    stroke: false,
+                    weight: 4,
+                    opacity: .75,
+                    custom: {
+                        id: disguiseArea.id
+                    }
+                }).on('click', function() {
+                    that.editor.currentMarker = this;
+                    that.deletePoly(disguiseArea, 'disguise-areas')
+                });
+
+                const tooltip = disguiseArea.type === 'trespassing' ? 'Trespassing' : 'Hostile Area';
+                return polygon.bindTooltip(tooltip, {sticky: true});
+            },
+            toggleEditor: function() {
+                if (this.editor.enabled) {
+                    this.toggleDraw('ALL');
+                }
+
+                this.editor.enabled = !this.editor.enabled;
+            },
+            addMarker: function(event) {
+                if (!this.editor.enabled || this.editor.mode !== 'items') return
+                this.editor.clickedPoint = event.latlng
+                let element = '#editModal'
+                //Reset old data
+                if (this.currentCategory) {
+                    this.editor.nodeId = undefined;
+                    this.currentCategory.name = undefined;
+                    this.currentCategory.defaultQuantity = 1;
+                    this.currentCategory.action = undefined;
+                    this.currentCategory.target = undefined;
+                    this.currentCategory.image = undefined;
+                }
+
+                this.editor.currentCategory = undefined
+                $(this.$refs.subgroupPicker).selectpicker('val', -1)
+                $(this.$refs.iconPicker).selectpicker('val', -1)
+                $(this.$refs.templatePicker).selectpicker('val', -1)
+                this.editor.notes = []
+                $(element).modal('show')
+            },
+            moveMarker: function(event) {
+                let item = event.target;
+                item.latitude = event.target.getLatLng().lat
+                item.longitude = event.target.getLatLng().lng
+                this.editor.currentMarker = item
+                this.editor.currentMarkerNode = item.options.custom.node;
+                this.editor.originalLatLng = [item.options.custom.node.latitude, item.options.custom.node.longitude];
+                $('#confirm-move-modal').modal('show')
+            },
+            cancelMoveMarker: function() {
+                this.editor.currentMarker.setLatLng(this.editor.originalLatLng);
+            },
+            editMarker: function() {
+                let item = this.editor.currentMarker;
+                this.editor.notes = item.notes
+                this.editor.currentCategory = item.type + '|' + item.subgroup
+                this.editor.clickedPoint = L.latLng(item.latitude, item.longitude)
+                this.currentCategory.icon = item.icon;
+                $(this.$refs.subgroupPicker).selectpicker(
+                    'val',
+                    item.type + '|' + item.subgroup
+                )
+                $(this.$refs.iconPicker).selectpicker(
+                    'val',
+                    this.currentCategory.icon
+                )
+                this.editor.nodeId = item.id;
+                this.currentCategory.name = item.name;
+                this.currentCategory.defaultQuantity = item.quantity;
+                this.currentCategory.action = item.target;
+                this.currentCategory.target = item.target;
+                this.currentCategory.image = item.image;
+                this.currentCategory.pickupType = item.pickupType;
+
+                $('#editModal').modal('show')
+            },
+            confirmMove: function() {
+                var data = new FormData()
+                data.append('node-id', this.editor.currentMarkerNode.id)
+                data.append('latitude', this.editor.currentMarker.latitude)
+                data.append('longitude', this.editor.currentMarker.longitude)
+                this.$request(true, 'nodes/move', data).then(() => {
+                        this.$toast.success({
+                            message: 'Item moved!'
+                        });
+                        $('#confirm-move-modal').modal('hide')
+                    }
+                )
+            },
+            selectSubgroup: function(event) {
+                if (event.target.value == '') return
+                this.editor.currentCategory = event.target.value
+                $(this.$refs.iconPicker).selectpicker(
+                    'val',
+                    this.currentCategory.icon
+                )
+            },
+            selectIcon: function(event) {
+                if (event.target.value == '') return
+                this.currentCategory.icon = event.target.value
+            },
+            applyTemplate: function(event) {
+                if (event.target.value == '') return
+                var split = event.target.value.split('|')
+                var currentTemplate = this.editor.templates[split[0]].find(
+                    element => element.id == split[1]
+                )
+                $(this.$refs.subgroupPicker).selectpicker(
+                    'val',
+                    currentTemplate.type + '|' + currentTemplate.subgroup
+                )
+                this.$refs.subgroupPicker.dispatchEvent(new Event('change'))
+                $(this.$refs.iconPicker).selectpicker('val', currentTemplate.icon)
+                //Dunno if this is needed
+                this.$refs.iconPicker.dispatchEvent(new Event('change'))
+
+                this.currentCategory.name = currentTemplate.name
+                this.currentCategory.action = currentTemplate.target
+                this.currentCategory.target = currentTemplate.target
+                this.currentCategory.defaultQuantity = 1
+                this.currentCategory.image = currentTemplate.image
+
+                if (currentTemplate.description)
+                    this.editor.notes.push({
+                        type: 'description',
+                        text: currentTemplate.description
+                    })
+                if (currentTemplate.requirement)
+                    this.editor.notes.push({
+                        type: 'requirement',
+                        text: currentTemplate.requirement
+                    })
+                if (currentTemplate.warning)
+                    this.editor.notes.push({
+                        type: 'warning',
+                        text: currentTemplate.warning
+                    })
+                if (currentTemplate.information)
+                    this.editor.notes.push({
+                        type: 'info',
+                        text: currentTemplate.information
+                    })
+            },
+            saveMarker: function() {
+                var url = 'nodes'
+                var data = new FormData()
                 if (this.editor.nodeId) {
-                    this.editor.currentMarker.deleted = true;
+                    data.append('id', this.editor.nodeId)
+                    url = 'nodes/edit/' + this.editor.nodeId
+                } else {
+                    data.append('id', -1)
                 }
-
-                if (resp.data.data.approved) {
-                    resp.data.data.latLng = L.latLng(
-                        resp.data.data.latitude,
-                        resp.data.data.longitude
-                    );
-                    let node = resp.data.data;
-
-                    let marker = this.buildMarker(node).bindPopup(this.buildPopup);
-                    if (node.tooltip !== '') {
-                        marker.bindTooltip(node.tooltip);
+                data.append('mission-id', this.mission.id)
+                data.append('icon', this.currentCategory.icon)
+                data.append('subgroup', this.editor.currentCategory)
+                data.append('name', this.currentCategory.name || '')
+                data.append('quantity', this.currentCategory.defaultQuantity || 1)
+                data.append('target', this.currentCategory.target || '')
+                data.append('level', this.currentLayer)
+                data.append('latitude', this.editor.clickedPoint.lat)
+                data.append('longitude', this.editor.clickedPoint.lng)
+                data.append('group', this.currentCategory.group || '')
+                data.append('searchable', +this.currentCategory.searchable)
+                data.append('image', this.currentCategory.image || '')
+                data.append('action', this.currentCategory.action || '')
+                data.append('pickup-type', this.currentCategory.pickupType || '')
+                data.append(
+                    'stairwell-direction',
+                    this.currentCategory.stairwellDirection || ''
+                );
+                data.append('note-type[]', 'warning');
+                data.append('note-text[]', '');
+                this.editor.notes.forEach((element, index) => {
+                    data.append('note-type[]', element.type)
+                    data.append('note-text[]', element.text)
+                });
+                this.$refs.saveMarkerButton.disabled = true;
+                this.$request(true, url, data).then(resp => {
+                    if (this.editor.nodeId) {
+                        this.editor.currentMarker.deleted = true;
                     }
 
-                    // TODO Update
-                    //marker.addTo(this.overlays[node.level][node.type + '|' + node.group]);
-                }
-                $('#editModal').modal('hide');
-                this.editor.currentMarker = null;
-                let toastMessage = this.editor.nodeId ? 'Item edited!' : 'Item added!';
-                this.$toast.success({
-                    message: toastMessage
-                });
-                this.$refs.saveMarkerButton.disabled = false;
-                this.updateNodeLayerState();
-            }).catch(err => {
-                console.error(err);
-                this.$toast.error({
-                    message: 'Changes failed to save!'
-                });
-                this.$refs.saveMarkerButton.disabled = false;
-            })
-        },
-        deleteMarker: function() {
-            const node = this.editor.currentMarker;
-            this.$request(false, 'nodes/delete/' + node.id).then(resp => {
-                node.deleted = true;
-                this.editor.currentMarker = null;
-                this.$toast.success({
-                    message: 'Item deleted!'
-                });
-                this.updateNodeLayerState();
-            })
-        },
-        deletePoly: function(item, type) {
-            switch (type) {
-                case 'foliage':
-                    if (this.editor.mode !== 'foliage') {
+                    if (resp.data.data.approved) {
+                        resp.data.data.latLng = L.latLng(
+                            resp.data.data.latitude,
+                            resp.data.data.longitude
+                        );
+                        let node = resp.data.data;
+
+                        let marker = this.buildMarker(node).bindPopup(this.buildPopup);
+                        if (node.tooltip !== '') {
+                            marker.bindTooltip(node.tooltip);
+                        }
+                        marker.addTo(this.overlays[node.level][node.type + '|' + node.group]);
+                    }
+                    $('#editModal').modal('hide');
+                    this.editor.currentMarker = null;
+                    let toastMessage = this.editor.nodeId ? 'Item edited!' : 'Item added!';
+                    this.$toast.success({
+                        message: toastMessage
+                    });
+                    this.$refs.saveMarkerButton.disabled = false;
+                    this.updateNodeLayerState();
+                }).catch(err => {
+                    console.error(err);
+                    this.$toast.error({
+                        message: 'Changes failed to save!'
+                    });
+                    this.$refs.saveMarkerButton.disabled = false;
+                })
+            },
+            deleteMarker: function() {
+                const node = this.editor.currentMarker;
+                this.$request(false, 'nodes/delete/' + node.id).then(resp => {
+                    node.deleted = true;
+                    this.editor.currentMarker = null;
+                    this.$toast.success({
+                        message: 'Item deleted!'
+                    });
+                    this.updateNodeLayerState();
+                })
+            },
+            deletePoly: function(item, type) {
+                switch (type) {
+                    case 'foliage':
+                        if (this.editor.mode !== 'foliage') {
+                            break
+                        }
+
+                        if (
+                            confirm('Are you sure you want to delete this foliage?')
+                        ) {
+                            this.$request(false, 'foliage/delete/' + item.id).then(
+                                resp => {
+                                    this.$toast.success({
+                                        message: 'Foliage deleted!'
+                                    });
+
+                                    var foliageObject = this.foliage.find(
+                                        foliage => foliage.id === item.id
+                                    );
+                                    this.foliage.splice(
+                                        this.foliage.indexOf(foliageObject),
+                                        1
+                                    );
+                                    this.map.removeLayer(this.editor.currentMarker);
+                                    this.editor.currentMarker = null;
+                                }
+                            )
+                        }
+
                         break
-                    }
+                    case 'ledges':
+                        if (this.editor.mode !== 'ledges') {
+                            break
+                        }
 
-                    if (
-                        confirm('Are you sure you want to delete this foliage?')
-                    ) {
-                        this.$request(false, 'foliage/delete/' + item.id).then(
-                            resp => {
-                                this.$toast.success({
-                                    message: 'Foliage deleted!'
-                                });
+                        if (
+                            confirm('Are you sure you want to delete this ledge?')
+                        ) {
+                            this.$request(false, 'ledges/delete/' + item.id).then(
+                                resp => {
+                                    this.$toast.success({
+                                        message: 'Ledge deleted!'
+                                    })
 
-                                var foliageObject = this.foliage.find(
-                                    foliage => foliage.id === item.id
-                                );
-                                this.foliage.splice(
-                                    this.foliage.indexOf(foliageObject),
-                                    1
-                                );
-                                this.map.removeLayer(this.editor.currentMarker);
-                                this.editor.currentMarker = null;
-                            }
-                        )
-                    }
-
-                    break
-                case 'ledges':
-                    if (this.editor.mode !== 'ledges') {
+                                    var ledgeObject = this.ledges.find(
+                                        ledge => ledge.id === item.id
+                                    )
+                                    this.ledges.splice(
+                                        this.ledges.indexOf(ledgeObject),
+                                        1
+                                    )
+                                    this.map.removeLayer(this.editor.currentMarker);
+                                    this.editor.currentMarker = null;
+                                }
+                            )
+                        }
                         break
-                    }
+                    case 'disguise-areas':
+                        if (this.editor.mode !== 'disguises') {
+                            break
+                        }
 
-                    if (
-                        confirm('Are you sure you want to delete this ledge?')
-                    ) {
-                        this.$request(false, 'ledges/delete/' + item.id).then(
-                            resp => {
+                        if (
+                            confirm(
+                                'Are you sure you want to delete this disguise area?'
+                            )
+                        ) {
+                            this.$request(
+                                false,
+                                'disguise-areas/delete/' + item.id
+                            ).then(resp => {
                                 this.$toast.success({
-                                    message: 'Ledge deleted!'
+                                    message: 'Disguise area deleted!'
                                 })
 
-                                var ledgeObject = this.ledges.find(
-                                    ledge => ledge.id === item.id
+                                var disguise = this.disguises.find(
+                                    disguise => disguise.id === item.disguiseId
                                 )
-                                this.ledges.splice(
-                                    this.ledges.indexOf(ledgeObject),
+                                var disguiseArea = disguise.areas.find(
+                                    area => area.id === item.id
+                                )
+                                disguise.areas.splice(
+                                    disguise.areas.indexOf(disguiseArea),
                                     1
                                 )
                                 this.map.removeLayer(this.editor.currentMarker);
                                 this.editor.currentMarker = null;
-                            }
-                        )
-                    }
-                    break
-                case 'disguise-areas':
-                    if (this.editor.mode !== 'disguises') {
-                        break
-                    }
-
-                    if (
-                        confirm(
-                            'Are you sure you want to delete this disguise area?'
-                        )
-                    ) {
-                        this.$request(
-                            false,
-                            'disguise-areas/delete/' + item.id
-                        ).then(resp => {
-                            this.$toast.success({
-                                message: 'Disguise area deleted!'
                             })
+                        }
+                        break
+                }
+            },
+            isLayerHidden: function(name) {
+                name = name.replace('*', '')
+                return (
+                    this.hiddenLayers.indexOf(name) != -1 ||
+                    this.hiddenLayers.indexOf(name.split('|')[0] + '|') != -1
+                )
+            },
+            hideAll: function() {
+                this.hiddenLayers.push('Points of Interest|', 'Weapons and Tools|', 'Navigation|');
+                this.updateNodeLayerState();
+            },
+            toggleLayerGroup: function(layer, shouldShow) {
+                if (shouldShow) {
+                    this.map.addLayer(layer);
+                } else {
+                    this.map.removeLayer(layer);
+                }
+            },
+            toggleLayer: function(name, hideAll) {
+                if (name === '|') {
+                    this.hiddenLayers = []
 
-                            var disguise = this.disguises.find(
-                                disguise => disguise.id === item.disguiseId
-                            )
-                            var disguiseArea = disguise.areas.find(
-                                area => area.id === item.id
-                            )
-                            disguise.areas.splice(
-                                disguise.areas.indexOf(disguiseArea),
-                                1
-                            )
-                            this.map.removeLayer(this.editor.currentMarker);
-                            this.editor.currentMarker = null;
+                    if (hideAll) {
+                        this.hiddenLayers = ['Points of Interest|', 'Weapons and Tools|', 'Navigation|']
+                    }
+                } else {
+                    if (name.includes('*')) {
+                        // Case 1: Toggling top level category
+                        let prefix = name.replace('*', '')
+
+                        if (this.isLayerHidden(prefix)) {
+                            this.$delete(this.hiddenLayers, this.hiddenLayers.indexOf(prefix))
+                        } else {
+                            this.hiddenLayers = this.hiddenLayers.filter(layer => !layer.includes(prefix))
+                            this.hiddenLayers.push(prefix)
+                        }
+                    }  else {
+                        // Case 2: Toggling group
+                        let topLevelCategory = name.split('|')[0]
+                        let group = name.split('|')[1]
+                        if (this.hiddenLayers.indexOf(topLevelCategory + '|') !== -1) {
+                            // Case a: Top level category is hidden
+                            this.$delete(this.hiddenLayers, this.hiddenLayers.indexOf(topLevelCategory + '|'))
+                            this.categories[topLevelCategory]
+                                .filter(category => category.type === topLevelCategory && category.group !== group)
+                                .map(category => category.group)
+                                .forEach(group => this.hiddenLayers.push(topLevelCategory + '|' + group))
+                        } else if (this.hiddenLayers.indexOf(name) !== -1) {
+                            // Case b: Group is hidden
+                            this.$delete(this.hiddenLayers, this.hiddenLayers.indexOf(name))
+                        } else {
+                            // Case c: Groups is not hidden, nor is top level category
+                            this.hiddenLayers.push(name)
+                        }
+                    }
+                }
+                this.updateNodeLayerState();
+            },
+            toggleDraw: function(type) {
+                if (type === 'ALL') {
+                    this.map.pm.disableDraw('Line');
+                    this.map.pm.disableDraw('Polygon');
+                    this.editor.polyActive = false;
+                    return;
+                }
+
+                if (this.map.pm.Draw[type]._enabled) {
+                    this.map.pm.disableDraw(type);
+                    this.editor.polyActive = false;
+                } else {
+                    this.map.pm.enableDraw(type, {
+                        snappable: false
+                    });
+                    this.editor.polyActive = true;
+                }
+
+                let toastMessage = this.editor.polyActive ? 'Drawing tools enabled' : 'Drawing tools disabled';
+                this.$toast.info({
+                    message: toastMessage
+                })
+            },
+            initDraw: function(e) {
+                e.workingLayer.on('pm:vertexadded', e => {
+                    this.editor.vertices.push([e.latlng.lat, e.latlng.lng])
+                })
+            },
+            pmLayer: function(e) {
+                this.editor.workingLayers.push(e.layer)
+            },
+            endDraw: function(e) {
+                if (this.editor.vertices.length === 0) {
+                    return;
+                }
+
+                var data = new FormData()
+                this.editor.vertices.forEach((element, index) => {
+                    data.append('vertices[' + index + '][]', element[0])
+                    data.append('vertices[' + index + '][]', element[1])
+                })
+                data.append('missionId', this.mission.id)
+                data.append('level', this.currentLayer)
+                if (e.shape === 'Line') {
+                    this.$request(true, 'ledges', data).then(resp => {
+                        this.editor.vertices = []
+                        let ledge = resp.data.data;
+                        this.ledges.push(ledge)
+                        this.buildLedge(ledge).addTo(this.overlays[ledge.level]['Navigation|Ledge']);
+                        this.editor.workingLayers.forEach(el => {
+                            this.map.removeLayer(el)
                         })
-                    }
-                    break
-            }
-        },
-        isLayerHidden: function(name) {
-            name = name.replace('*', '')
-            return (
-                this.hiddenLayers.indexOf(name) != -1 ||
-                this.hiddenLayers.indexOf(name.split('|')[0] + '|') != -1
-            )
-        },
-        hideAll: function() {
-            this.hiddenLayers.push('Points of Interest|', 'Weapons and Tools|', 'Navigation|');
-            this.updateNodeLayerState();
-        },
-        toggleLayerGroup: function(layer, shouldShow) {
-            if (shouldShow) {
-                this.map.addLayer(layer);
-            } else {
-                this.map.removeLayer(layer);
-            }
-        },
-        toggleLayer: function(name, hideAll) {
-            if (name === '|') {
-                this.hiddenLayers = []
-
-                if (hideAll) {
-                    this.hiddenLayers = ['Points of Interest|', 'Weapons and Tools|', 'Navigation|']
-                }
-            } else {
-                if (name.includes('*')) {
-                    // Case 1: Toggling top level category
-                    let prefix = name.replace('*', '')
-
-                    if (this.isLayerHidden(prefix)) {
-                        this.$delete(this.hiddenLayers, this.hiddenLayers.indexOf(prefix))
-                    } else {
-                        this.hiddenLayers = this.hiddenLayers.filter(layer => !layer.includes(prefix))
-                        this.hiddenLayers.push(prefix)
-                    }
-                }  else {
-                    // Case 2: Toggling group
-                    let topLevelCategory = name.split('|')[0]
-                    let group = name.split('|')[1]
-                    if (this.hiddenLayers.indexOf(topLevelCategory + '|') !== -1) {
-                        // Case a: Top level category is hidden
-                        this.$delete(this.hiddenLayers, this.hiddenLayers.indexOf(topLevelCategory + '|'))
-                        this.categories[topLevelCategory]
-                            .filter(category => category.type === topLevelCategory && category.group !== group)
-                            .map(category => category.group)
-                            .forEach(group => this.hiddenLayers.push(topLevelCategory + '|' + group))
-                    } else if (this.hiddenLayers.indexOf(name) !== -1) {
-                        // Case b: Group is hidden
-                        this.$delete(this.hiddenLayers, this.hiddenLayers.indexOf(name))
-                    } else {
-                        // Case c: Groups is not hidden, nor is top level category
-                        this.hiddenLayers.push(name)
-                    }
-                }
-            }
-            this.updateNodeLayerState();
-        },
-        toggleDraw: function(type) {
-            if (type === 'ALL') {
-                this.map.pm.disableDraw('Line');
-                this.map.pm.disableDraw('Polygon');
-                this.editor.polyActive = false;
-                return;
-            }
-
-            if (this.map.pm.Draw[type]._enabled) {
-                this.map.pm.disableDraw(type);
-                this.editor.polyActive = false;
-            } else {
-                this.map.pm.enableDraw(type, {
-                    snappable: false
-                });
-                this.editor.polyActive = true;
-            }
-
-            let toastMessage = this.editor.polyActive ? 'Drawing tools enabled' : 'Drawing tools disabled';
-            this.$toast.info({
-                message: toastMessage
-            })
-        },
-        initDraw: function(e) {
-            e.workingLayer.on('pm:vertexadded', e => {
-                this.editor.vertices.push([e.latlng.lat, e.latlng.lng])
-            })
-        },
-        pmLayer: function(e) {
-            this.editor.workingLayers.push(e.layer)
-        },
-        endDraw: function(e) {
-            if (this.editor.vertices.length === 0) {
-                return;
-            }
-
-            var data = new FormData()
-            this.editor.vertices.forEach((element, index) => {
-                data.append('vertices[' + index + '][]', element[0])
-                data.append('vertices[' + index + '][]', element[1])
-            })
-            data.append('missionId', this.mission.id)
-            data.append('level', this.currentLayer)
-            if (e.shape === 'Line') {
-                this.$request(true, 'ledges', data).then(resp => {
-                    this.editor.vertices = []
-                    let ledge = resp.data.data;
-                    this.ledges.push(ledge)
-
-                    // TODO Update
-                    //this.buildLedge(ledge).addTo(this.overlays[ledge.level]['Navigation|Ledge']);
-                    this.editor.workingLayers.forEach(el => {
-                        this.map.removeLayer(el)
+                        this.editor.workingLayers = []
                     })
-                    this.editor.workingLayers = []
-                })
-            } else if (this.editor.mode === 'foliage') {
-                this.$request(true, 'foliage', data).then(resp => {
-                    this.editor.vertices = []
-                    let foliage = resp.data.data;
-                    this.foliage.push(foliage);
-                    // TODO Update
-                    //this.buildFoliage(foliage).addTo(this.overlays[foliage.level]['Navigation|Foliage']);
-                    this.editor.workingLayers.forEach(el => {
-                        this.map.removeLayer(el)
+                } else if (this.editor.mode === 'foliage') {
+                    this.$request(true, 'foliage', data).then(resp => {
+                        this.editor.vertices = []
+                        let foliage = resp.data.data;
+                        this.foliage.push(foliage)
+                        this.buildFoliage(foliage).addTo(this.overlays[foliage.level]['Navigation|Foliage']);
+                        this.editor.workingLayers.forEach(el => {
+                            this.map.removeLayer(el)
+                        })
+                        this.editor.workingLayers = []
                     })
-                    this.editor.workingLayers = []
-                })
-            } else if (this.editor.mode === 'disguises') {
-                const disguiseId = this.editor.currentDisguise;
-                data.append('disguiseId', disguiseId)
-                data.append('type', this.editor.disguiseType)
-                this.$request(true, 'disguise-areas', data).then(resp => {
-                    this.editor.vertices = []
-                    let disguiseArea = resp.data.data;
-                    this.disguises
-                        .find(el => el.id == disguiseId)
-                        .areas.push(disguiseArea)
-                    // TODO Update
-                    //this.buildDisguiseArea(disguiseArea).addTo(this.overlays[disguiseArea.level]['Disguises|' + disguiseArea.disguiseId]);
-                    this.editor.workingLayers.forEach(el => {
-                        this.map.removeLayer(el)
+                } else if (this.editor.mode === 'disguises') {
+                    const disguiseId = this.editor.currentDisguise;
+                    data.append('disguiseId', disguiseId)
+                    data.append('type', this.editor.disguiseType)
+                    this.$request(true, 'disguise-areas', data).then(resp => {
+                        this.editor.vertices = []
+                        let disguiseArea = resp.data.data;
+                        this.disguises
+                            .find(el => el.id == disguiseId)
+                            .areas.push(disguiseArea)
+                        this.buildDisguiseArea(disguiseArea).addTo(this.overlays[disguiseArea.level]['Disguises|' + disguiseArea.disguiseId]);
+                        this.editor.workingLayers.forEach(el => {
+                            this.map.removeLayer(el)
+                        })
+                        this.editor.workingLayers = []
                     })
-                    this.editor.workingLayers = []
-                })
-            }
-        },
-        parseCoords: function(coords) {
-            var latlngs = []
-            coords.forEach(element => {
-                var latlng = element.split(',')
-                latlngs.push([latlng[0], latlng[1]])
-            })
-            return latlngs
-        },
-        changeDisguise: function(disguise) {
-            this.editor.currentDisguise = disguise.id || disguise
-            $(this.$refs.disguisePicker).selectpicker(
-                'val',
-                disguise.id || disguise
-            )
-            $('#header-disguises')
-                .find('.name')
-                .click()
-            this.updateNodeLayerState();
-        },
-        partialChangeDisguise: function(disguise) {
-            // Uses the ID and doesn't propagate the change back.
-            this.editor.currentDisguise = disguise;
-            this.updateNodeLayerState();
-        },
-        calculateNumber(floor) {
-            // TODO Replace with nodes lambda
-            return 0;
-            /*var count = 0;
-            for (var level in this.overlays) {
-                if (parseInt(level) !== floor) {
-                    continue;
                 }
+            },
+            parseCoords: function(coords) {
+                var latlngs = []
+                coords.forEach(element => {
+                    var latlng = element.split(',')
+                    latlngs.push([latlng[0], latlng[1]])
+                })
+                return latlngs
+            },
+            changeDisguise: function(disguise) {
+                this.editor.currentDisguise = disguise.id || disguise
+                $(this.$refs.disguisePicker).selectpicker(
+                    'val',
+                    disguise.id || disguise
+                )
+                $('#header-disguises')
+                    .find('.name')
+                    .click()
+                this.updateNodeLayerState();
+            },
+            partialChangeDisguise: function(disguise) {
+                // Uses the ID and doesn't propagate the change back.
+                this.editor.currentDisguise = disguise;
+                this.updateNodeLayerState();
+            },
+            calculateNumber(floor) {
+                var count = 0;
+                for (var level in this.overlays) {
+                    if (parseInt(level) !== floor) {
+                        continue;
+                    }
 
-                let layerGroups = this.overlays[level];
-                for (let layerGroup in layerGroups) {
-                    if (!this.isLayerHidden(layerGroup) &&
-                        !layerGroup.startsWith('Disguises|') &&
-                        !layerGroup.startsWith('Navigation|Ledge') &&
-                        !layerGroup.startsWith('Navigation|Foliage')) {
-                        count += layerGroups[layerGroup].getLayers().length;
+                    let layerGroups = this.overlays[level];
+                    for (let layerGroup in layerGroups) {
+                        if (!this.isLayerHidden(layerGroup) &&
+                            !layerGroup.startsWith('Disguises|') &&
+                            !layerGroup.startsWith('Navigation|Ledge') &&
+                            !layerGroup.startsWith('Navigation|Foliage')) {
+                            count += layerGroups[layerGroup].getLayers().length;
+                        }
                     }
                 }
-            }
-            return count + this.floorCountOverride[floor];*/
-        },
-        searchItem(event) {
-            if (event.target.value === '') {
-                return;
-            }
+                return count + this.floorCountOverride[floor];
+            },
+            searchItem(event) {
+                if (event.target.value === '') {
+                    return;
+                }
 
-            $('.search-box[data-search="items"]')
-                .find('.bootstrap-select')
-                .addClass('item-selected')
-                .end();
-            this.doSearchItem(event.target.value);
-        },
-        doSearchItem(itemString) {
-            const item = itemString.split(';');
-            if (item.length === 1) {
-                this.searchedItem = itemString;
-            } else {
+                $('.search-box[data-search="items"]')
+                    .find('.bootstrap-select')
+                    .addClass('item-selected')
+                    .end();
+                this.doSearchItem(event.target.value);
+            },
+            doSearchItem(itemString) {
+                const item = itemString.split(';');
                 this.searchedItem = {
                     layer: item[0],
                     name: item[1]
                 };
-            }
+                this.updateNodeLayerState();
+                this.$router.push({
+                    query: Object.assign({}, this.$route.query,
+                        {
+                            item: itemString
+                        }
+                    )
+                });
+            },
+            loadWithSearchedItem(itemString) {
+                $(this.$refs.itemSearch).selectpicker('val', decodeURIComponent(itemString));
+            },
+            updateVariant(variant) {
+                this.selectedVariant = variant;
+                this.updateNodeLayerState();
+            },
+            updateNodeLayerState() {
+                let itemName = null;
+                let layer = null;
+                let disguiseId = null;
 
-            this.updateNodeLayerState();
-            this.$router.push({
-                query: Object.assign({}, this.$route.query,
-                    {
-                        item: itemString
-                    }
-                )
-            });
-        },
-        loadWithSearchedItem(itemString) {
-            $(this.$refs.itemSearch).selectpicker('val', decodeURIComponent(itemString));
-        },
-        updateVariant(variant) {
-            this.selectedVariant = variant;
-            this.updateNodeLayerState();
-        },
-        updateNodeLayerState() {
-            let itemName = null;
-            let disguiseId = null;
+                if (this.searchedItem !== null) {
+                    itemName = this.searchedItem.name;
+                    layer = this.searchedItem.layer;
+                }
+                if (this.editor.currentDisguise !== 'NONE') {
+                    disguiseId = parseInt(this.editor.currentDisguise);
+                }
 
-            if (this.searchedItem !== null) {
-                itemName = typeof this.searchedItem === 'string' ? this.searchedItem : this.searchedItem.name;
-            }
-            if (this.editor.currentDisguise !== 'NONE') {
-                disguiseId = parseInt(this.editor.currentDisguise);
-            }
+                this.floorsWithSearchResults = [];
+                this.floorCountOverride = [];
+                for (const floorString in this.overlays) {
+                    const floor = parseInt(floorString);
+                    this.floorCountOverride[floor] = 0;
+                    const floorLayers = this.overlays[floor];
+                    for (const key in floorLayers) {
+                        const currentFloor = floor === parseInt(this.currentLayer);
+                        const forceOff = (layer !== key || itemName === null);
 
-            this.floorsWithSearchResults = [];
-            this.floorCountOverride = [];
-            // TODO Replace with nodes lambda
-            for (let floor = this.mission.lowestFloorNumber; floor <= this.mission.highestFloorNumber; floor++) {
-                this.floorCountOverride[floor] = 0;
+                        // Find the button that toggles this layer and see if it's active or not.
+                        if (key !== 'Navigation|Ledge' &&
+                            key !== 'Navigation|Foliage' &&
+                            !key.startsWith('Disguises|')) {
+                            let deletedNodes = [];
+                            for (const node in floorLayers[key].getLayers()) {
+                                const nodeProperties = floorLayers[key].getLayers()[node];
 
-                // 1. Update nodes
-
-                // 2. Update disguise regions
-
-                // 3. Update foliage / ledges
-            }
-
-            /*for (const floorString in this.overlays) {
-                const floor = parseInt(floorString);
-                this.floorCountOverride[floor] = 0;
-                const floorLayers = this.overlays[floor];
-                for (const key in floorLayers) {
-                    const currentFloor = floor === parseInt(this.currentLayer);
-                    const forceOff = (layer !== key || itemName === null);
-
-                    // Find the button that toggles this layer and see if it's active or not.
-                    if (key !== 'Navigation|Ledge' &&
-                        key !== 'Navigation|Foliage' &&
-                        !key.startsWith('Disguises|')) {
-                        let deletedNodes = [];
-                        for (const node in floorLayers[key].getLayers()) {
-                            const nodeProperties = floorLayers[key].getLayers()[node];
-
-                            if (nodeProperties.options.custom.node.name === 'Fire Extinguisher-TEMP2') {
-                                console.info(nodeProperties.options.custom.node);
-                            }
-
-                            if (nodeProperties.options.custom.node.deleted === true) {
-                                this.map.removeLayer(nodeProperties);
-                                deletedNodes.push(nodeProperties);
-                                continue;
-                            }
-
-                            if (this.editor.mode === '') {
-                                nodeProperties.dragging.disable();
-                            } else {
-                                if (!nodeProperties.dragging) {
-                                    console.log(node);
-                                    console.log(nodeProperties);
+                                if (nodeProperties.options.custom.node.name === 'Fire Extinguisher-TEMP2') {
+                                    console.info(nodeProperties.options.custom.node);
                                 }
 
-                                nodeProperties.dragging.enable();
-                            }
+                                if (nodeProperties.options.custom.node.deleted === true) {
+                                    this.map.removeLayer(nodeProperties);
+                                    deletedNodes.push(nodeProperties);
+                                    continue;
+                                }
 
-
-                            if (currentFloor && !this.isLayerHidden(key) && nodeProperties.options.custom.node.difficulties.includes(this.selectedDifficulty.difficulty.toLowerCase())) {
-                                $(nodeProperties._icon).css('display', 'block');
-                            } else {
-                                $(nodeProperties._icon).css('display', 'none');
-                            }
-
-                            if (nodeProperties.options.custom.node.name === itemName && !forceOff) {
-                                if (this.isLayerHidden(key)) {
-                                    if (currentFloor) {
-                                        $(nodeProperties._icon).css('display', 'block');
+                                if (this.editor.mode === '') {
+                                    nodeProperties.dragging.disable();
+                                } else {
+                                    if (!nodeProperties.dragging) {
+                                        console.log(node);
+                                        console.log(nodeProperties);
                                     }
-                                    this.floorCountOverride[floor]++;
+
+                                    nodeProperties.dragging.enable();
                                 }
-                                $(nodeProperties._icon).addClass('search-result');
-                                if (this.floorsWithSearchResults.indexOf(floor) === -1) {
-                                    this.floorsWithSearchResults.push(floor);
+
+
+                                if (currentFloor && !this.isLayerHidden(key) && nodeProperties.options.custom.node.variants.includes(this.selectedVariant.variant)) {
+                                    $(nodeProperties._icon).css('display', 'block');
+                                } else {
+                                    $(nodeProperties._icon).css('display', 'none');
                                 }
-                            } else {
-                                $(nodeProperties._icon).removeClass('search-result');
+
+                                if (nodeProperties.options.custom.node.name === itemName && !forceOff) {
+                                    if (this.isLayerHidden(key)) {
+                                        if (currentFloor) {
+                                            $(nodeProperties._icon).css('display', 'block');
+                                        }
+                                        this.floorCountOverride[floor]++;
+                                    }
+                                    $(nodeProperties._icon).addClass('search-result');
+                                    if (this.floorsWithSearchResults.indexOf(floor) === -1) {
+                                        this.floorsWithSearchResults.push(floor);
+                                    }
+                                } else {
+                                    $(nodeProperties._icon).removeClass('search-result');
+                                }
+                            }
+                            if (deletedNodes.length) {
+                                for (let deletedNode of deletedNodes) {
+                                    const index = floorLayers[key].getLayers().indexOf(deletedNode);
+                                    if (index > -1) {
+                                        floorLayers[key].getLayers().splice(index, 1);
+                                    }
+                                }
                             }
                         }
-                        if (deletedNodes.length) {
-                            for (let deletedNode of deletedNodes) {
-                                const index = floorLayers[key].getLayers().indexOf(deletedNode);
-                                if (index > -1) {
-                                    floorLayers[key].getLayers().splice(index, 1);
-                                }
-                            }
+
+                        if (key.startsWith('Disguises|')) {
+                            this.disguises.forEach(disguise => {
+                                this.toggleLayerGroup(floorLayers['Disguises|' + disguise.id],
+                                    disguise.id === disguiseId && floor === parseInt(this.currentLayer));
+                            });
                         }
-                    }
 
-                    if (key.startsWith('Disguises|')) {
-                        this.disguises.forEach(disguise => {
-                            this.toggleLayerGroup(floorLayers['Disguises|' + disguise.id],
-                                disguise.id === disguiseId && floor === parseInt(this.currentLayer));
-                        });
-                    }
-
-                    if (key === 'Navigation|Ledge' || key === 'Navigation|Foliage') {
-                        this.toggleLayerGroup(floorLayers[key], (currentFloor && !this.isLayerHidden(key)));
+                        if (key === 'Navigation|Ledge' || key === 'Navigation|Foliage') {
+                            this.toggleLayerGroup(floorLayers[key], (currentFloor && !this.isLayerHidden(key)));
+                        }
                     }
                 }
-            }*/
-        },
-        hasSearchResults(floor) {
-            return this.floorsWithSearchResults.indexOf(floor) !== -1;
-        },
-        isSearchResult(item) {
-            if (this.searchedItem == null) return false
-            return (
-                this.searchedItem.items.filter(el => el.id == item.id).length >
-                0
-            )
-        },
-        clearSearch() {
-            this.searchedItem = null;
-            $('.search-box[data-search="items"]')
-                .find('.bootstrap-select')
-                .removeClass('item-selected')
-                .end();
-            $(this.$refs.itemSearch).selectpicker('val', '');
-            this.updateNodeLayerState();
-        },
-        showCopyDisguiseModal() {
-            $('#copy-disguises-modal').modal('show')
-        },
-        copyDisguiseAreas() {
-            let formData = new FormData()
-            formData.append('original-disguise', this.copyDisguiseArea.source)
-            formData.append(
-                'target-disguise',
-                this.copyDisguiseArea.destination
-            )
-            this.$request(true, 'disguise-areas/copy', formData).then(resp => {
-                $('#copy-disguise-modal').modal('hide')
-                this.$toast.success({
-                    title: 'Changes Saved',
-                    message:
-                        'Disguise areas copied. Refresh the page to see the changes'
+            },
+            hasSearchResults(floor) {
+                return this.floorsWithSearchResults.indexOf(floor) !== -1;
+            },
+            isSearchResult(item) {
+                if (this.searchedItem == null) return false
+                return (
+                    this.searchedItem.items.filter(el => el.id == item.id).length >
+                    0
+                )
+            },
+            clearSearch() {
+                this.searchedItem = null;
+                $('.search-box[data-search="items"]')
+                    .find('.bootstrap-select')
+                    .removeClass('item-selected')
+                    .end();
+                $(this.$refs.itemSearch).selectpicker('val', '');
+                this.updateNodeLayerState();
+            },
+            showCopyDisguiseModal() {
+                $('#copy-disguises-modal').modal('show')
+            },
+            copyDisguiseAreas() {
+                let formData = new FormData()
+                formData.append('original-disguise', this.copyDisguiseArea.source)
+                formData.append(
+                    'target-disguise',
+                    this.copyDisguiseArea.destination
+                )
+                this.$request(true, 'disguise-areas/copy', formData).then(resp => {
+                    $('#copy-disguise-modal').modal('hide')
+                    this.$toast.success({
+                        title: 'Changes Saved',
+                        message:
+                            'Disguise areas copied. Refresh the page to see the changes'
+                    })
                 })
-            })
-        },
-        move(direction) {
-            // [-20,-25], [-191.625,249.625]
-            // [N, W], [S, E]
-            for (var i in this.mapLayers) {
-                var bounds = this.mapLayers[i].getBounds();
-                var west = bounds.getWest();
-                var north = bounds.getNorth();
-                var south = bounds.getSouth();
-                var east = bounds.getEast();
+            },
+            move(direction) {
+                // [-20,-25], [-191.625,249.625]
+                // [N, W], [S, E]
+                for (var i in this.mapLayers) {
+                    var bounds = this.mapLayers[i].getBounds();
+                    var west = bounds.getWest();
+                    var north = bounds.getNorth();
+                    var south = bounds.getSouth();
+                    var east = bounds.getEast();
 
-                switch (direction) {
-                    case 'down':
-                        south -= parseFloat(this.debugStep);
-                        north -= parseFloat(this.debugStep);
+                    switch (direction) {
+                        case 'down':
+                            south -= parseFloat(this.debugStep);
+                            north -= parseFloat(this.debugStep);
+                            break;
+                        case 'up':
+                            south += parseFloat(this.debugStep);
+                            north += parseFloat(this.debugStep);
+                            break;
+                        case 'left':
+                            west -= parseFloat(this.debugStep);
+                            east -= parseFloat(this.debugStep);
+                            break;
+                        case 'right':
+                            west += parseFloat(this.debugStep);
+                            east += parseFloat(this.debugStep);
+                            break;
+                        case 'extend':
+                            north += parseFloat(this.debugStep);
+                            south -= parseFloat(this.debugStep);
+                            east += parseFloat(this.debugStep);
+                            west -= parseFloat(this.debugStep);
+                            break;
+                        case 'contract':
+                            north -= parseFloat(this.debugStep);
+                            south += parseFloat(this.debugStep);
+                            east -= parseFloat(this.debugStep);
+                            west += parseFloat(this.debugStep);
+                            break;
+                        case 'n+':
+                            north += parseFloat(this.debugStep);
+                            break;
+                        case 'n-':
+                            north -= parseFloat(this.debugStep);
+                            break;
+                        case 'w+':
+                            west += parseFloat(this.debugStep);
+                            break;
+                        case 'w-':
+                            west -= parseFloat(this.debugStep);
+                            break;
+                    }
+                    this.mapLayers[i].setBounds([[north, west], [south, east]]);
+                    this.debugLayerSize = [[north, west], [south, east]];
+                }
+            },
+            modifyNote(action, index) {
+                switch (action) {
+                    case 'DELETE':
+                        ArrayHelpers.deleteElementByIndex(this.editor.notes, index);
                         break;
-                    case 'up':
-                        south += parseFloat(this.debugStep);
-                        north += parseFloat(this.debugStep);
+                    case 'DOWN':
+                        ArrayHelpers.moveElement(this.editor.notes, index, index + 1);
                         break;
-                    case 'left':
-                        west -= parseFloat(this.debugStep);
-                        east -= parseFloat(this.debugStep);
-                        break;
-                    case 'right':
-                        west += parseFloat(this.debugStep);
-                        east += parseFloat(this.debugStep);
-                        break;
-                    case 'extend':
-                        north += parseFloat(this.debugStep);
-                        south -= parseFloat(this.debugStep);
-                        east += parseFloat(this.debugStep);
-                        west -= parseFloat(this.debugStep);
-                        break;
-                    case 'contract':
-                        north -= parseFloat(this.debugStep);
-                        south += parseFloat(this.debugStep);
-                        east -= parseFloat(this.debugStep);
-                        west += parseFloat(this.debugStep);
-                        break;
-                    case 'n+':
-                        north += parseFloat(this.debugStep);
-                        break;
-                    case 'n-':
-                        north -= parseFloat(this.debugStep);
-                        break;
-                    case 'w+':
-                        west += parseFloat(this.debugStep);
-                        break;
-                    case 'w-':
-                        west -= parseFloat(this.debugStep);
+                    case 'UP':
+                        ArrayHelpers.moveElement(this.editor.notes, index, index - 1);
                         break;
                 }
-                this.mapLayers[i].setBounds([[north, west], [south, east]]);
-                this.debugLayerSize = [[north, west], [south, east]];
             }
         },
-        modifyNote(action, index) {
-            switch (action) {
-                case 'DELETE':
-                    ArrayHelpers.deleteElementByIndex(this.editor.notes, index);
-                    break;
-                case 'DOWN':
-                    ArrayHelpers.moveElement(this.editor.notes, index, index + 1);
-                    break;
-                case 'UP':
-                    ArrayHelpers.moveElement(this.editor.notes, index, index - 1);
-                    break;
-            }
-        }
-    },
-    beforeCreate: function() {
-        this.$request(false, `v1/games/${this.$route.params.slug}`)
-            .then(resp => this.game = resp.data[0]);
+        beforeCreate: function() {
+            this.$request(false, `v1/games/${this.$route.params.slug}`)
+                .then(resp => this.game = resp.data[0]);
 
-        this.$request(false, `v1/games/${this.$route.params.slug}/locations/${this.$route.params.location}/missions/${this.$route.params.mission}`)
-            .then(resp => {
+            this.$request(
+                false,
+                'v1/games/' +
+                this.$route.params.slug +
+                '/locations/' +
+                this.$route.params.location +
+                '/missions/' +
+                this.$route.params.mission
+            ).then(resp => {
                 this.mission = resp.data[0];
 
-                const difficulty = this.mission.variants.find(x => x.toLowerCase() === this.$route.params.difficulty);
-                const description = `View locations for items, disguises, and more for ${this.mission.name} (${difficulty})`;
+                const difficulty = this.mission.difficulties.find(x => x.toLowerCase() === this.$route.params.difficulty);
+                const description = `View locations for items, disguises, and more for ${this.mission.name} (${difficulty} difficulty)`;
                 MetaHandler.setOpengraphTag('description', description);
                 MetaHandler.setMetaTag('description', description);
-                MetaHandler.setOpengraphTag('image', this.mission.tileUrl);
+                MetaHandler.setOpengraphTag('image', this.mission.tileUrl)
             });
-    },
-    created: function() {
-        const $body = $('body');
-        $body.on('click', '[data-action="edit-btn"]', this.editMarker);
-        $body.on('click', '[data-action="delete-btn"]', this.deleteMarker);
+        },
+        created: function() {
+            const $body = $('body');
+            $body.on('click', '[data-action="edit-btn"]', this.editMarker);
+            $body.on('click', '[data-action="delete-btn"]', this.deleteMarker);
 
-        if (this.game === null || this.game.slug !== this.$route.params.slug){
-            this.$store.dispatch('loadGame', this.$route.params.slug);
-        }
-        this.$request(false, `v2/games/${this.$route.params.slug}/locations/${this.$route.params.location}/missions/${this.$route.params.mission}/map`).then(resp => {
-            this.game = resp.data.game;
-            this.mission = resp.data.mission;
+            if (this.game === null || this.game.slug !== this.$route.params.slug)
+                this.$store.dispatch('loadGame', this.$route.params.slug)
+            this.$request(
+                false,
+                `v2/games/${this.$route.params.slug}/locations/${this.$route.params.location}/missions/${this.$route.params.mission}/map`
+            ).then(resp => {
+                this.game = resp.data.game;
+                this.mission = resp.data.mission;
 
-            this.buildLevelNames();
+                this.buildLevelNames();
 
-            this.$route.meta.title = resp.data.mission.name;
-            this.currentLayer = resp.data.mission.startingFloorNumber;
-            resp.data.nodes.forEach(item => item.latLng = L.latLng(item.latitude, item.longitude));
-
-            this.disguises = resp.data.disguises;
-            this.ledges = resp.data.ledges;
-            this.foliage = resp.data.foliage;
-            this.nodes = resp.data.nodes;
-            this.variants = resp.data.variants;
-            if (this.variants.some(x => x.variant === 'Professional')) {
-                this.selectedVariant = this.variants.find(x => x.variant === 'Professional');
-            } else {
-                this.selectedVariant = this.variants.find(x => x.variant === 'Standard');
-            }
-            this.searchableNodes = resp.data.searchableNodes;
-            resp.data.categories.forEach(category => {
-                if (!this.categories[category.type]) {
-                    this.categories[category.type] = [];
+                this.$route.meta.title = resp.data.mission.name
+                this.currentLayer = resp.data.mission.startingFloorNumber
+                for (var group in resp.data.nodes) {
+                    for (var subgroup in resp.data.nodes[group].items) {
+                        resp.data.nodes[group].items[subgroup].items.forEach(
+                            item => {
+                                item.latLng = L.latLng(
+                                    item.latitude,
+                                    item.longitude
+                                )
+                            }
+                        )
+                    }
                 }
-                this.categories[category.type].push(category);
-            });
+                this.disguises = resp.data.disguises;
+                this.ledges = resp.data.ledges;
+                this.foliage = resp.data.foliage;
+                this.nodes = resp.data.nodes;
+                this.variants = resp.data.variants;
+                if (this.variants.some(x => x.variant === 'Professional')) {
+                    this.selectedVariant = this.variants.find(x => x.variant === 'Professional');
+                } else {
+                    this.selectedVariant = this.variants.find(x => x.variant === 'Standard');
+                }
+                this.searchableNodes = resp.data.searchableNodes;
+                resp.data.categories.forEach(category => {
+                    if (!this.categories[category.type]) {
+                        this.categories[category.type] = [];
+                    }
+                    this.categories[category.type].push(category);
+                });
 
-            // Initialize g_overlays for each floor
-            // TODO idk what to do with this right now
-            /*for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                this.overlays[i] = {};
-            }
-
-            resp.data.categories.forEach(category => {
+                // Initialize g_overlays for each floor
                 for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                    this.overlays[i][category.type + '|' + category.group] = L.layerGroup();
+                    this.overlays[i] = {};
                 }
-            });
 
-            // Layers for disguises
-            resp.data.disguises.forEach(disguise => {
-                for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                    this.overlays[i]['Disguises|' + disguise.id] = L.layerGroup();
+                resp.data.categories.forEach(category => {
+                    for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
+                        this.overlays[i][category.type + '|' + category.group] = L.layerGroup();
+                        this.layerGroups.push(this.overlays[i][category.type + '|' + category.group]);
+                    }
+                });
+
+                // Layers for disguises
+                resp.data.disguises.forEach(disguise => {
+                    for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
+                        this.overlays[i]['Disguises|' + disguise.id] = L.layerGroup();
+                        this.layerGroups.push(this.overlays[i]['Disguises|' + disguise.id]);
+                    }
+                });
+
+                for (let typeName in resp.data.nodes) {
+                    let nodeType = resp.data.nodes[typeName];
+
+                    for (let groupName in nodeType.items) {
+                        let group = nodeType.items[groupName];
+                        group.items.forEach(node => {
+                            let marker = this.buildMarker(node).bindPopup(this.buildPopup);
+                            if (node.tooltip !== '') {
+                                const tooltip = node.tooltip.replace(/&/g, "&amp;")
+                                    .replace(/</g, "&lt;")
+                                    .replace(/>/g, "&gt;")
+                                    .replace(/"/g, "&quot;")
+                                    .replace(/'/g, "&#039;");
+                                marker.bindTooltip(tooltip);
+                            }
+
+                            marker.addTo(this.overlays[node.level][nodeType.name + '|' + group.name]);
+                        })
+                    }
                 }
-            });*/
 
-            for (let typeName in resp.data.nodes) {
-                let nodeType = resp.data.nodes[typeName];
+                resp.data.ledges.forEach(ledge => {
+                    this.buildLedge(ledge).addTo(this.overlays[ledge.level]['Navigation|Ledge']);
+                });
 
-                for (let groupName in nodeType.items) {
-                    let group = nodeType.items[groupName];
-                    group.items.forEach(node => {
-                        let marker = this.buildMarker(node).bindPopup(this.buildPopup);
-                        if (node.tooltip !== '') {
-                            const tooltip = node.tooltip.replace(/&/g, "&amp;")
-                                .replace(/</g, "&lt;")
-                                .replace(/>/g, "&gt;")
-                                .replace(/"/g, "&quot;")
-                                .replace(/'/g, "&#039;");
-                            marker.bindTooltip(tooltip);
-                        }
+                resp.data.foliage.forEach(foliage => {
+                    this.buildFoliage(foliage).addTo(this.overlays[foliage.level]['Navigation|Foliage']);
+                });
 
-                        //marker.addTo(this.overlays[node.level][nodeType.name + '|' + group.name]);
-                    })
-                }
-            }
-
-            resp.data.ledges.forEach(ledge => {
-                //this.buildLedge(ledge).addTo(this.overlays[ledge.level]['Navigation|Ledge']);
-            });
-
-            resp.data.foliage.forEach(foliage => {
-                //this.buildFoliage(foliage).addTo(this.overlays[foliage.level]['Navigation|Foliage']);
-            });
-
-            // Disabling for iOS for now
-            //if (!isIOS) {
+                // Disabling for iOS for now
+                //if (!isIOS) {
                 resp.data.disguises.forEach(disguise => {
                     disguise.areas.forEach(area => {
-                        //this.buildDisguiseArea(area).addTo(this.overlays[area.level]['Disguises|' + disguise.id]);
+                        this.buildDisguiseArea(area).addTo(this.overlays[area.level]['Disguises|' + disguise.id]);
                     });
                 });
-            //}
+                //}
 
-            this.$nextTick(() => {
-                // Build tile layers for each floor
-                if (!this.mission.svg) {
-                    for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                        this.mapLayers[i] = L.tileLayer(this.tileUrl + i + '/{z}/{x}/{y}.png', {
+                this.$nextTick(() => {
+                    // Build tile layers for each floor
+                    if (!this.mission.svg) {
+                        for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
+                            let mapTileLayer = L.tileLayer(this.tileUrl + i + '/{z}/{x}/{y}.png', {
+                                noWrap: true,
+                                minZoom: this.mission.minZoom,
+                                maxZoom: this.mission.maxZoom
+                            });
+                            this.layerGroups.push(mapTileLayer);
+                            this.mapLayers[i] = mapTileLayer;
+                        }
+                    } else {
+                        for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
+                            let boundingBoxTopLeft = this.mission.boundingBoxTopLeft.split(',');
+                            let boundingBoxBottomRight = this.mission.boundingBoxBottomRight.split(',');
+                            let svgImageLayer = L.imageOverlay(`${this.getSvgMapUrl()}${i}.svg`, [boundingBoxTopLeft, boundingBoxBottomRight]);
+                            this.layerGroups.push(svgImageLayer);
+                            this.mapLayers[i] = svgImageLayer;
+                        }
+                    }
+                    if (this.mission.satelliteView) {
+                        let mapTileLayer = L.tileLayer(this.tileUrl + '-99/{z}/{x}/{y}.png', {
                             noWrap: true,
                             minZoom: this.mission.minZoom,
                             maxZoom: this.mission.maxZoom
                         });
+                        this.layerGroups.push(mapTileLayer);
+                        this.mapLayers[-99] = mapTileLayer;
                     }
-                } else {
-                    for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                        let boundingBoxTopLeft = this.mission.boundingBoxTopLeft.split(',');
-                        let boundingBoxBottomRight = this.mission.boundingBoxBottomRight.split(',');
-                        this.mapLayers[i] = L.imageOverlay(`${this.getSvgMapUrl()}${i}.svg`, [boundingBoxTopLeft, boundingBoxBottomRight]);
-                    }
-                }
-                if (this.mission.satelliteView) {
-                    this.mapLayers[-99] = L.tileLayer(this.tileUrl + '-99/{z}/{x}/{y}.png', {
-                        noWrap: true,
+
+                    let renderer = this.mission.svg ? L.svg() : L.canvas()
+                    this.map = L.map('map', {
+                        maxZoom: this.mission.maxZoom,
                         minZoom: this.mission.minZoom,
-                        maxZoom: this.mission.maxZoom
+                        crs: L.CRS.Simple,
+                        layers: this.layerGroups,
+                        renderer: renderer
+                    }).setView([this.mission.mapCenterLatitude, this.mission.mapCenterLongitude], this.mission.minZoom);
+                    let topLeftCoordinate = this.mission.topLeftCoordinate.split(',');
+                    let bottomRightCoordinate = this.mission.bottomRightCoordinate.split(',');
+                    this.map.setMaxBounds([topLeftCoordinate, bottomRightCoordinate]);
+
+                    const zoom = L.control.zoom({position: 'topright'});
+                    zoom.addTo(this.map);
+                    $('#map-control-buttons').html(zoom.getContainer());
+
+                    for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
+                        this.map.removeLayer(this.mapLayers[i]);
+                    }
+                    if (this.mission.satelliteView) {
+                        this.map.removeLayer(this.mapLayers[-99]);
+                    }
+
+                    this.map.addLayer(this.mapLayers[this.mission.startingFloorNumber]);
+
+                    // "Show" all items; CSS will handle showing / hiding
+                    for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
+                        for (let j in this.overlays[i]) {
+                            this.toggleLayerGroup(this.overlays[i][j], true);
+                        }
+                    }
+                    this.updateNodeLayerState();
+
+                    this.mapLoaded = true;
+                    //Is not needed directly at start
+                    this.$request(false, 'v1/editor/templates').then(resp => {
+                        this.editor.templates = resp.data;
+                        this.$nextTick(() => {
+                            $('.selectpicker').selectpicker()
+                        })
                     });
-                }
+                    this.$request(false, 'v1/editor/icons').then(resp => {
+                        this.editor.icons = resp.data;
+                        this.$nextTick(() => {
+                            $(this.$refs.iconPicker).selectpicker('destroy');
+                            $(this.$refs.iconPicker).selectpicker()
+                        })
+                    });
 
-                let renderer = this.mission.svg ? L.svg() : L.canvas()
-                this.map = L.map('map', {
-                    maxZoom: this.mission.maxZoom,
-                    minZoom: this.mission.minZoom,
-                    crs: L.CRS.Simple,
-                    layers: Object.values(this.mapLayers),
-                    renderer: renderer
-                }).setView([this.mission.mapCenterLatitude, this.mission.mapCenterLongitude], this.mission.minZoom);
-                let topLeftCoordinate = this.mission.topLeftCoordinate.split(',');
-                let bottomRightCoordinate = this.mission.bottomRightCoordinate.split(',');
-                this.map.setMaxBounds([topLeftCoordinate, bottomRightCoordinate]);
+                    this.map.on('click', this.addMarker);
 
-                const zoom = L.control.zoom({position: 'topright'});
-                zoom.addTo(this.map);
-                $('#map-control-buttons').html(zoom.getContainer());
+                    this.map.on('pm:drawstart', this.initDraw);
 
-                for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                    this.map.removeLayer(this.mapLayers[i]);
-                }
-                if (this.mission.satelliteView) {
-                    this.map.removeLayer(this.mapLayers[-99]);
-                }
+                    this.map.on('pm:create', this.pmLayer);
 
-                this.map.addLayer(this.mapLayers[this.mission.startingFloorNumber]);
+                    this.map.on('pm:drawend', this.endDraw);
 
-                // "Show" all items; CSS will handle showing / hiding
-                for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                    /*for (let j in this.overlays[i]) {
-                        this.toggleLayerGroup(this.overlays[i][j], true);
-                    }*/
-                }
-                this.updateNodeLayerState();
+                    this.map.on('zoomend', () => {
+                        let zoomLevel = this.map.getZoom();
 
-                this.mapLoaded = true;
-                //Is not needed directly at start
-                this.$request(false, 'v1/editor/templates').then(resp => {
-                    this.editor.templates = resp.data;
-                    this.$nextTick(() => {
-                        $('.selectpicker').selectpicker()
-                    })
-                });
-                this.$request(false, 'v1/editor/icons').then(resp => {
-                    this.editor.icons = resp.data;
-                    this.$nextTick(() => {
-                        $(this.$refs.iconPicker).selectpicker('destroy');
-                        $(this.$refs.iconPicker).selectpicker()
-                    })
-                });
+                        var fonts = {
+                            3: '.8em',
+                            4: '1em',
+                            5: '1.2em'
+                        };
 
-                this.map.on('click', this.addMarker);
+                        $('.area-icon').css('font-size', fonts[zoomLevel]);
+                    });
 
-                this.map.on('pm:drawstart', this.initDraw);
-
-                this.map.on('pm:create', this.pmLayer);
-
-                this.map.on('pm:drawend', this.endDraw);
-
-                this.map.on('zoomend', () => {
-                    let zoomLevel = this.map.getZoom();
-
-                    var fonts = {
-                        3: '.8em',
-                        4: '1em',
-                        5: '1.2em'
-                    };
-
-                    $('.area-icon').css('font-size', fonts[zoomLevel]);
-                });
-
-                if (this.$route.query && this.$route.query['item']) {
-                    this.loadWithSearchedItem(this.$route.query['item']);
-                }
+                    if (this.$route.query && this.$route.query['item']) {
+                        this.loadWithSearchedItem(this.$route.query['item']);
+                    }
+                })
             })
-        })
+        }
     }
-}
 </script>
 
 <style lang="scss">
-html {
-    height: 100%;
-    overflow-y: scroll;
-}
+    html {
+        height: 100%;
+        overflow-y: scroll;
+    }
 
-.marker-icon,
-.marker-icon:focus {
-    background: rgba(0, 0, 0, 0.25);
-}
+    .marker-icon,
+    .marker-icon:focus {
+        background: rgba(0, 0, 0, 0.25);
+    }
 
-.header {
-    max-width: 368px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    .header {
+        max-width: 368px;
+        margin-top: 20px;
+        margin-bottom: 20px;
 
-    a {
-        opacity: 0.85;
+        a {
+            opacity: 0.85;
 
-        &:hover {
-            opacity: 1;
+            &:hover {
+                opacity: 1;
+            }
         }
     }
-}
 
-#map {
-    z-index: 0;
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
+    #map {
+        z-index: 0;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
 
-    &.hm-editor-items {
-        cursor: crosshair !important;
-    }
+        &.hm-editor-items {
+            cursor: crosshair !important;
+        }
 
-    .leaflet-control-container {
-        display: none;
-    }
+        .leaflet-control-container {
+            display: none;
+        }
 
-    .leaflet-popup-close-button {
-        font-size: 2rem;
-        width: 25px;
-    }
+        .leaflet-popup-close-button {
+            font-size: 2rem;
+            width: 25px;
+        }
 
-    .leaflet-popup-content-wrapper {
-        padding: 0;
-        border-radius: 5px;
+        .leaflet-popup-content-wrapper {
+            padding: 0;
+            border-radius: 5px;
 
-        .leaflet-popup-content {
-            width: 300px !important;
-            margin: 0 !important;
-            padding-bottom: 10px !important;
+            .leaflet-popup-content {
+                width: 300px !important;
+                margin: 0 !important;
+                padding-bottom: 10px !important;
 
-            .image-and-name {
-                background-position-x: center;
-                background-position-y: center;
-                background-size: cover;
-                height: 200px;
-                border-top-left-radius: 5px;
-                border-top-right-radius: 5px;
-                display: flex;
-                flex-direction: column;
-                text-shadow: 2px 2px #000;
+                .image-and-name {
+                    background-position-x: center;
+                    background-position-y: center;
+                    background-size: cover;
+                    height: 200px;
+                    border-top-left-radius: 5px;
+                    border-top-right-radius: 5px;
+                    display: flex;
+                    flex-direction: column;
+                    text-shadow: 2px 2px #000;
 
-                .flex-push {
-                    flex-grow: 1;
-                }
-
-                div[data-name='name'] {
-                    color: #fff;
-                    text-transform: uppercase;
-                    padding: 5px 10px;
-                    font-size: 1.3em;
-                    font-weight: bolder;
-                    background: rgba(0,0,0,.4);
-                }
-
-                div[data-name='group'] {
-                    color: #fff;
-                    text-transform: uppercase;
-                    font-weight: bolder;
-                    padding: 0 10px 5px;
-                    background: rgba(0,0,0,.4);
-                }
-
-                &.game-absolution {
-                    background-color: #000;
-                    background-size: contain;
-                    background-position: center;
-                    background-repeat: no-repeat;
-                }
-            }
-
-            .no-image {
-                div[data-name='name'] {
-                    color: #000;
-                    text-transform: uppercase;
-                    padding: 10px 10px 0;
-                    font-size: 1.3em;
-                    font-weight: bolder;
-                }
-
-                div[data-name='group'] {
-                    color: #aaa;
-                    text-transform: uppercase;
-                    font-weight: bolder;
-                    padding: 0 10px;
-                }
-            }
-
-            [data-name='target'] {
-                padding: 0 10px;
-                color: #666;
-            }
-
-            [data-name='notes'] {
-                margin-top: 10px;
-                margin-bottom: 10px;
-
-                > div {
-                    padding: 10px;
-                    white-space: pre-line;
-
-                    &:not(:last-child) {
-                        margin-bottom: 10px;
-                    }
-                }
-
-                .requirement {
-                    .in-game-description {
-                        display: none;
+                    .flex-push {
+                        flex-grow: 1;
                     }
 
-                    color: #721c24;
-                    background: #f8d7da;
-                    border-left: solid 3px #d00000;
-                }
-
-                .warning {
-                    .in-game-description {
-                        display: none;
+                    div[data-name='name'] {
+                        color: #fff;
+                        text-transform: uppercase;
+                        padding: 5px 10px;
+                        font-size: 1.3em;
+                        font-weight: bolder;
+                        background: rgba(0,0,0,.4);
                     }
 
-                    color: #856404;
-                    background: #fff3cd;
-                    border-left: solid 3px #ffa500;
-                }
-
-                .info {
-                    .in-game-description {
-                        display: none;
-                    }
-
-                    color: #0c5460;
-                    background: #b7d4ff;
-                    border-left: solid 3px #0000e0;
-                }
-
-                .description {
-                    .in-game-description {
+                    div[data-name='group'] {
+                        color: #fff;
                         text-transform: uppercase;
                         font-weight: bolder;
-                        color: #404040;
+                        padding: 0 10px 5px;
+                        background: rgba(0,0,0,.4);
                     }
 
-                    color: #666;
-                    background: #e4e4e4;
-                    border-left: solid 3px #666666;
+                    &.game-absolution {
+                        background-color: #000;
+                        background-size: contain;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                    }
                 }
-            }
 
-            [data-action='delete-btn'] {
-                margin-left: 10px;
+                .no-image {
+                    div[data-name='name'] {
+                        color: #000;
+                        text-transform: uppercase;
+                        padding: 10px 10px 0;
+                        font-size: 1.3em;
+                        font-weight: bolder;
+                    }
+
+                    div[data-name='group'] {
+                        color: #aaa;
+                        text-transform: uppercase;
+                        font-weight: bolder;
+                        padding: 0 10px;
+                    }
+                }
+
+                [data-name='target'] {
+                    padding: 0 10px;
+                    color: #666;
+                }
+
+                [data-name='notes'] {
+                    margin-top: 10px;
+                    margin-bottom: 10px;
+
+                    > div {
+                        padding: 10px;
+                        white-space: pre-line;
+
+                        &:not(:last-child) {
+                            margin-bottom: 10px;
+                        }
+                    }
+
+                    .requirement {
+                        .in-game-description {
+                            display: none;
+                        }
+
+                        color: #721c24;
+                        background: #f8d7da;
+                        border-left: solid 3px #d00000;
+                    }
+
+                    .warning {
+                        .in-game-description {
+                            display: none;
+                        }
+
+                        color: #856404;
+                        background: #fff3cd;
+                        border-left: solid 3px #ffa500;
+                    }
+
+                    .info {
+                        .in-game-description {
+                            display: none;
+                        }
+
+                        color: #0c5460;
+                        background: #b7d4ff;
+                        border-left: solid 3px #0000e0;
+                    }
+
+                    .description {
+                        .in-game-description {
+                            text-transform: uppercase;
+                            font-weight: bolder;
+                            color: #404040;
+                        }
+
+                        color: #666;
+                        background: #e4e4e4;
+                        border-left: solid 3px #666666;
+                    }
+                }
+
+                [data-action='delete-btn'] {
+                    margin-left: 10px;
+                }
             }
         }
     }
-}
 
-.leaflet-container {
-    background: #464646;
-}
+    .leaflet-container {
+        background: #464646;
+    }
 
-@media (min-width: 768px) {
-    .navbar-fixed-right {
-        display: block;
-        float: right;
-        width: 400px;
-        min-height: 100vh;
-        background: #000;
+    @media (min-width: 768px) {
+        .navbar-fixed-right {
+            display: block;
+            float: right;
+            width: 400px;
+            min-height: 100vh;
+            background: #000;
+        }
+
+        .navbar-toggler {
+            display: none;
+        }
+
+        .navbar-collapse {
+            display: block !important;
+        }
+
+        .accordion > .floor-toggle {
+            display: none;
+        }
+
+        .content > .floor-toggle {
+            display: block;
+            position: fixed;
+            top: 110px;
+            left: 50px;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .navbar-fixed-right {
+            background: #000;
+        }
+
+        .navbar-toggler {
+            display: block;
+        }
+
+        .accordion > .floor-toggle {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .content > .floor-toggle {
+            display: none;
+        }
     }
 
     .navbar-toggler {
-        display: none;
+        background: #2a2d31;
     }
 
-    .navbar-collapse {
-        display: block !important;
-    }
-
-    .accordion > .floor-toggle {
-        display: none;
-    }
-
-    .content > .floor-toggle {
-        display: block;
-        position: fixed;
-        top: 110px;
-        left: 50px;
-    }
-}
-
-@media (max-width: 767px) {
-    .navbar-fixed-right {
-        background: #000;
-    }
-
-    .navbar-toggler {
-        display: block;
-    }
-
-    .accordion > .floor-toggle {
-        display: block;
-        margin-bottom: 10px;
-    }
-
-    .content > .floor-toggle {
-        display: none;
-    }
-}
-
-.navbar-toggler {
-    background: #2a2d31;
-}
-
-.leaflet-control-zoom {
-    float: none;
-    display: inline-block;
-    box-sizing: content-box;
-}
-
-.leaflet-bar {
-    box-shadow: none;
-    border: none !important;
-}
-
-.leaflet-control-zoom-in {
-    border: 2px solid #fff !important;
-    margin-bottom: 10px;
-    box-sizing: content-box;
-}
-
-.leaflet-control-zoom-out {
-    border: 2px solid #fff !important;
-    box-sizing: content-box;
-    margin-left: 5px;
-}
-
-.leaflet-control-zoom-in,
-.leaflet-control-zoom-out {
-    float: left !important;
-    border-radius: 3px !important;
-    padding: 5px !important;
-    background: rgba(22, 24, 29, 0.75) !important;
-    color: #fff !important;
-    box-shadow: none !important;
-
-    &:not(.leaflet-disabled):hover {
-        background: white !important;
-        color: #000 !important;
-    }
-
-    &.leaflet-disabled {
-        color: rgba(141, 163, 180, 0.75) !important;
-        border: solid 2px rgba(141, 163, 180, 0.75) !important;
-    }
-}
-
-.leaflet-marker-icon {
-    &.search-result {
-        z-index: 9999 !important;
-        background: rgba(255, 0, 60, 0.75);
-        padding: 15px !important;
-        margin: -33px 0 0 -33px !important;
-        border-radius: 50%;
-        border: 2px solid #ff003c;
-        opacity: 0.85 !important;
+    .leaflet-control-zoom {
+        float: none;
+        display: inline-block;
         box-sizing: content-box;
     }
 
-    &.area-icon {
-        color: #fff;
-        text-shadow: #000 1px 1px 1px;
-        font-size: 0.8em;
-        width: inherit !important;
-        height: inherit !important;
-        white-space: nowrap;
-        text-align: center;
-    }
-}
-
-.accordion {
-    .hide-or-select-all {
-        width: 368px;
+    .leaflet-bar {
+        box-shadow: none;
+        border: none !important;
     }
 
-    .card {
-        margin-top: 5px;
-        margin-bottom: 5px;
+    .leaflet-control-zoom-in {
+        border: 2px solid #fff !important;
+        margin-bottom: 10px;
+        box-sizing: content-box;
+    }
+
+    .leaflet-control-zoom-out {
+        border: 2px solid #fff !important;
+        box-sizing: content-box;
+        margin-left: 5px;
+    }
+
+    .leaflet-control-zoom-in,
+    .leaflet-control-zoom-out {
+        float: left !important;
         border-radius: 3px !important;
-        background: #000;
-        border: none;
-        width: 368px;
+        padding: 5px !important;
+        background: rgba(22, 24, 29, 0.75) !important;
+        color: #fff !important;
+        box-shadow: none !important;
 
-        > .card-header {
+        &:not(.leaflet-disabled):hover {
+            background: white !important;
+            color: #000 !important;
+        }
+
+        &.leaflet-disabled {
+            color: rgba(141, 163, 180, 0.75) !important;
+            border: solid 2px rgba(141, 163, 180, 0.75) !important;
+        }
+    }
+
+    .leaflet-marker-icon {
+        &.search-result {
+            z-index: 9999 !important;
+            background: rgba(255, 0, 60, 0.75);
+            padding: 15px !important;
+            margin: -33px 0 0 -33px !important;
+            border-radius: 50%;
+            border: 2px solid #ff003c;
+            opacity: 0.85 !important;
+            box-sizing: content-box;
+        }
+
+        &.area-icon {
+            color: #fff;
+            text-shadow: #000 1px 1px 1px;
+            font-size: 0.8em;
+            width: inherit !important;
+            height: inherit !important;
+            white-space: nowrap;
+            text-align: center;
+        }
+    }
+
+    .accordion {
+        .hide-or-select-all {
+            width: 368px;
+        }
+
+        .card {
+            margin-top: 5px;
+            margin-bottom: 5px;
+            border-radius: 3px !important;
             background: #000;
-            border-radius: 0;
             border: none;
-            padding: 0;
-            margin-bottom: 10px;
+            width: 368px;
 
-            .visibility-toggle {
-                width: 40px;
-                text-align: center;
+            > .card-header {
+                background: #000;
+                border-radius: 0;
+                border: none;
+                padding: 0;
+                margin-bottom: 10px;
 
-                .fa-eye-slash {
-                    display: none;
-                }
+                .visibility-toggle {
+                    width: 40px;
+                    text-align: center;
 
-                .fa-eye {
-                    display: inline;
-                }
-
-                &.map-hidden {
                     .fa-eye-slash {
-                        display: inline;
+                        display: none;
                     }
 
                     .fa-eye {
-                        display: none;
+                        display: inline;
+                    }
+
+                    &.map-hidden {
+                        .fa-eye-slash {
+                            display: inline;
+                        }
+
+                        .fa-eye {
+                            display: none;
+                        }
                     }
                 }
-            }
 
-            .name {
-                margin-right: 14px;
-                width: 313px;
-            }
+                .name {
+                    margin-right: 14px;
+                    width: 313px;
+                }
 
-            .name,
-            .visibility-toggle {
-                &.control-button {
-                    width: 368px;
-                    padding-left: 12px;
-                    padding-top: 6px;
-                    padding-bottom: 6px;
-                    transition: color 0.15s ease-in-out,
+                .name,
+                .visibility-toggle {
+                    &.control-button {
+                        width: 368px;
+                        padding-left: 12px;
+                        padding-top: 6px;
+                        padding-bottom: 6px;
+                        transition: color 0.15s ease-in-out,
                         background-color 0.15s ease-in-out,
                         border-color 0.15s ease-in-out,
                         box-shadow 0.15s ease-in-out;
 
-                    &:hover {
-                        background: rgba(22, 24, 29, 0.75);
+                        &:hover {
+                            background: rgba(22, 24, 29, 0.75);
+                        }
                     }
-                }
 
-                display: inline-block;
-                padding: 10px;
-                background: rgba(22, 24, 29, 0.75);
-                color: #fff;
-                cursor: pointer;
-                height: 40px;
-                border-radius: 3px;
+                    display: inline-block;
+                    padding: 10px;
+                    background: rgba(22, 24, 29, 0.75);
+                    color: #fff;
+                    cursor: pointer;
+                    height: 40px;
+                    border-radius: 3px;
 
-                .fa-caret-down {
-                    display: none;
-                }
-
-                .fa-caret-up {
-                    display: inline;
-                }
-
-                &.collapsed {
-                    .fa-caret-up {
+                    .fa-caret-down {
                         display: none;
                     }
 
-                    .fa-caret-down {
+                    .fa-caret-up {
                         display: inline;
                     }
-                }
 
-                &:hover {
-                    color: #fff;
-                    text-decoration: none;
-                    background: #33363a;
-                }
-            }
+                    &.collapsed {
+                        .fa-caret-up {
+                            display: none;
+                        }
 
-            &#header-disguises {
-                margin-bottom: 0;
-            }
-        }
+                        .fa-caret-down {
+                            display: inline;
+                        }
+                    }
 
-        .card-body {
-            background: #000;
-            border-radius: 0;
-            border: none;
-            padding: 0;
-            margin-bottom: 10px;
-
-            .visibility-toggle {
-                width: 40px;
-                text-align: center;
-            }
-
-            .full-width {
-                .name {
-                    width: 313px;
-                }
-
-                margin-bottom: 5px;
-            }
-
-            .half-width {
-                width: 180px;
-                display: inline-block;
-                margin-bottom: 5px;
-            }
-
-            .name {
-                margin-right: 10px;
-                vertical-align: top;
-                opacity: 0.85;
-
-                span {
-                    vertical-align: middle;
-                }
-
-                &.map-hidden {
-                    opacity: 0.65;
-
-                    span {
-                        text-decoration: line-through;
+                    &:hover {
+                        color: #fff;
+                        text-decoration: none;
+                        background: #33363a;
                     }
                 }
+
+                &#header-disguises {
+                    margin-bottom: 0;
+                }
             }
 
-            .visibility-toggle {
-                background: #2a2d31;
-                padding: 10px;
-            }
+            .card-body {
+                background: #000;
+                border-radius: 0;
+                border: none;
+                padding: 0;
+                margin-bottom: 10px;
 
-            .name,
-            .visibility-toggle {
-                display: inline-block;
-                color: #fff;
-                cursor: pointer;
-                min-height: 40px;
-                border-radius: 3px;
-                padding-left: 32px;
-                text-indent: -32px;
-                word-break: break-all;
-
-                &.hidden {
-                    text-decoration: line-through;
+                .visibility-toggle {
+                    width: 40px;
+                    text-align: center;
                 }
 
-                .fa-caret-down {
-                    display: none;
+                .full-width {
+                    .name {
+                        width: 313px;
+                    }
+
+                    margin-bottom: 5px;
                 }
 
-                .fa-caret-up {
-                    display: inline;
-                    vertical-align: text-top;
+                .half-width {
+                    width: 180px;
+                    display: inline-block;
+                    margin-bottom: 5px;
                 }
 
-                &.collapsed {
-                    .fa-caret-up {
-                        display: none;
+                .name {
+                    margin-right: 10px;
+                    vertical-align: top;
+                    opacity: 0.85;
+
+                    span {
+                        vertical-align: middle;
+                    }
+
+                    &.map-hidden {
+                        opacity: 0.65;
+
+                        span {
+                            text-decoration: line-through;
+                        }
+                    }
+                }
+
+                .visibility-toggle {
+                    background: #2a2d31;
+                    padding: 10px;
+                }
+
+                .name,
+                .visibility-toggle {
+                    display: inline-block;
+                    color: #fff;
+                    cursor: pointer;
+                    min-height: 40px;
+                    border-radius: 3px;
+                    padding-left: 32px;
+                    text-indent: -32px;
+                    word-break: break-all;
+
+                    &.hidden {
+                        text-decoration: line-through;
                     }
 
                     .fa-caret-down {
+                        display: none;
+                    }
+
+                    .fa-caret-up {
                         display: inline;
                         vertical-align: text-top;
                     }
-                }
 
-                &:hover {
-                    color: #fff;
-                    text-decoration: none;
-                    opacity: 1;
-                }
-            }
+                    &.collapsed {
+                        .fa-caret-up {
+                            display: none;
+                        }
 
-            .collapsible-items {
-                margin-top: 5px;
-
-                ul {
-                    list-style-type: none;
-                    padding: 0 15px 10px 15px;
-                    background: #2a2d31;
-                    border-radius: 3px;
-                }
-
-                li {
-                    padding-top: 15px;
-                    color: #fff;
+                        .fa-caret-down {
+                            display: inline;
+                            vertical-align: text-top;
+                        }
+                    }
 
                     &:hover {
+                        color: #fff;
+                        text-decoration: none;
                         opacity: 1;
+                    }
+                }
+
+                .collapsible-items {
+                    margin-top: 5px;
+
+                    ul {
+                        list-style-type: none;
+                        padding: 0 15px 10px 15px;
+                        background: #2a2d31;
+                        border-radius: 3px;
+                    }
+
+                    li {
+                        padding-top: 15px;
+                        color: #fff;
+
+                        &:hover {
+                            opacity: 1;
+                        }
                     }
                 }
             }
         }
     }
-}
 
-.map-control {
-    width: 368px;
-    display: flex;
-
-    &.debug {
-        flex-direction: column;
-    }
-
-    .control-buttons {
+    .map-control {
+        width: 368px;
         display: flex;
-        justify-content: flex-end;
-        flex-grow: 1;
-        margin-bottom: 10px;
-    }
 
-    .control-button {
-        height: 40px;
-        border-radius: 3px;
-        background: rgba(22, 24, 29, 0.75);
-        color: #fff;
-        box-shadow: none;
-        border: solid 2px #fff;
-        margin-left: 5px;
-        transition: none;
-
-        &:hover {
-            color: #000;
-            background: #fff;
+        &.debug {
+            flex-direction: column;
         }
 
-        .flag {
-            margin: -20px -24px -24px -24px !important;
-            transform: scale(.50) !important;
-            -ms-transform: scale(.50) !important;
-            -webkit-transform: scale(.50) !important;
-            -moz-transform: scale(.50) !important;
+        .control-buttons {
+            display: flex;
+            justify-content: flex-end;
+            flex-grow: 1;
+            margin-bottom: 10px;
+        }
+
+        .control-button {
+            height: 40px;
+            border-radius: 3px;
+            background: rgba(22, 24, 29, 0.75);
+            color: #fff;
+            box-shadow: none;
+            border: solid 2px #fff;
+            margin-left: 5px;
+            transition: none;
+
+            &:hover {
+                color: #000;
+                background: #fff;
+            }
+
+            .flag {
+                margin: -20px -24px -24px -24px !important;
+                transform: scale(.50) !important;
+                -ms-transform: scale(.50) !important;
+                -webkit-transform: scale(.50) !important;
+                -moz-transform: scale(.50) !important;
+            }
         }
     }
-}
 
-.edit-menu,
-.items-menu,
-.ledges-menu,
-.foliage-menu,
-.disguise-trespassing-menu {
-    h2 {
-        color: #fff;
-        text-transform: uppercase;
+    .edit-menu,
+    .items-menu,
+    .ledges-menu,
+    .foliage-menu,
+    .disguise-trespassing-menu {
+        h2 {
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        h3 {
+            color: #fff;
+        }
+
+        p {
+            color: #fff;
+        }
+
+        .editor-button {
+            border-radius: 3px;
+            background: rgba(22, 24, 29, 0.75);
+            color: #fff;
+            box-shadow: none;
+            border: solid 2px #2a2d31;
+            opacity: 0.85;
+            margin-bottom: 10px;
+            width: 100%;
+            padding: 20px;
+            text-align: left;
+
+            h3 {
+                font-size: 1.25rem;
+            }
+
+            &:hover,
+            &.selected {
+                cursor: pointer;
+                opacity: 1;
+                border-color: #fff;
+            }
+        }
     }
 
-    h3 {
-        color: #fff;
-    }
-
-    p {
-        color: #fff;
-    }
-
-    .editor-button {
+    .difficulty-selector {
         border-radius: 3px;
         background: rgba(22, 24, 29, 0.75);
         color: #fff;
         box-shadow: none;
         border: solid 2px #2a2d31;
         opacity: 0.85;
-        margin-bottom: 10px;
-        width: 100%;
-        padding: 20px;
-        text-align: left;
+        margin-bottom: 25px;
 
-        h3 {
-            font-size: 1.25rem;
+        .row {
+            margin-left: 0;
+            margin-right: 0;
         }
 
-        &:hover,
-        &.selected {
+        .difficulty {
+            margin-left: 0;
+            margin-right: 0;
+            text-align: center;
+            padding-top: 6px;
+            padding-bottom: 6px;
             cursor: pointer;
+
+            &:first-child.active {
+                border-top-left-radius: 3px;
+                border-bottom-left-radius: 3px;
+            }
+
+            &:last-child.active {
+                border-top-right-radius: 3px;
+                border-bottom-right-radius: 3px;
+            }
+
+            &.active {
+                background: #fff;
+                color: #000;
+            }
+
+            i {
+                font-size: 20px;
+                padding-right: 5px;
+            }
+
+            &:not(:last-child) {
+                border-right: solid 2px #2a2d31;
+            }
+        }
+    }
+
+    #hide-all,
+    #show-all,
+    .search-box .control-button {
+        border-radius: 3px;
+        background: rgba(22, 24, 29, 0.75);
+        color: #fff;
+        box-shadow: none;
+        border: solid 2px #2a2d31;
+        opacity: 0.85;
+        width: 160px;
+        margin-bottom: 10px;
+
+        &:hover {
             opacity: 1;
             border-color: #fff;
         }
     }
-}
 
-.difficulty-selector {
-    border-radius: 3px;
-    background: rgba(22, 24, 29, 0.75);
-    color: #fff;
-    box-shadow: none;
-    border: solid 2px #2a2d31;
-    opacity: 0.85;
-    margin-bottom: 25px;
+    .search-box {
+        .bootstrap-select {
+            width: 368px !important;
 
-    .row {
-        margin-left: 0;
-        margin-right: 0;
-    }
+            &.item-selected {
+                width: 313px !important;
+            }
 
-    .difficulty {
-        margin-left: 0;
-        margin-right: 0;
-        text-align: center;
-        padding-top: 6px;
-        padding-bottom: 6px;
-        cursor: pointer;
-
-        &:first-child.active {
-            border-top-left-radius: 3px;
-            border-bottom-left-radius: 3px;
-        }
-
-        &:last-child.active {
-            border-top-right-radius: 3px;
-            border-bottom-right-radius: 3px;
-        }
-
-        &.active {
-            background: #fff;
-            color: #000;
-        }
-
-        i {
-            font-size: 20px;
-            padding-right: 5px;
-        }
-
-        &:not(:last-child) {
-            border-right: solid 2px #2a2d31;
-        }
-    }
-}
-
-#hide-all,
-#show-all,
-.search-box .control-button {
-    border-radius: 3px;
-    background: rgba(22, 24, 29, 0.75);
-    color: #fff;
-    box-shadow: none;
-    border: solid 2px #2a2d31;
-    opacity: 0.85;
-    width: 160px;
-    margin-bottom: 10px;
-
-    &:hover {
-        opacity: 1;
-        border-color: #fff;
-    }
-}
-
-.search-box {
-    .bootstrap-select {
-        width: 368px !important;
-
-        &.item-selected {
-            width: 313px !important;
-        }
-
-        > .dropdown-toggle {
-            &.bs-placeholder {
-                color: #fff;
-
-                &:hover,
-                &:active,
-                &:focus {
+            > .dropdown-toggle {
+                &.bs-placeholder {
                     color: #fff;
+
+                    &:hover,
+                    &:active,
+                    &:focus {
+                        color: #fff;
+                    }
                 }
+            }
+
+            .dropdown-header {
+                background: #eee;
+                text-transform: uppercase;
             }
         }
 
-        .dropdown-header {
-            background: #eee;
-            text-transform: uppercase;
+        #clear-search.control-button,
+        #clear-disguise-search.control-button {
+            display: inline-block;
+            margin-left: 10px;
+            width: 40px;
+            height: 40px;
         }
     }
 
-    #clear-search.control-button,
-    #clear-disguise-search.control-button {
-        display: inline-block;
-        margin-left: 10px;
-        width: 40px;
-        height: 40px;
+    .search-box .control-button {
+        width: 100%;
     }
-}
 
-.search-box .control-button {
-    width: 100%;
-}
+    #body-disguises {
+        margin-top: -10px;
 
-#body-disguises {
-    margin-top: -10px;
+        .disguises {
+            .full-width {
+                padding-top: 10px;
+                padding-right: 20px;
+                text-align: right;
 
-    .disguises {
-        .full-width {
-            padding-top: 10px;
-            padding-right: 20px;
-            text-align: right;
+                &:hover {
+                    background: #16181d;
+                    cursor: pointer;
+                }
+
+                &.selected {
+                    background: rgb(41, 44, 52);
+                }
+
+                img.disguise-image {
+                    display: inline-block;
+                    width: 150px;
+                    height: 112px;
+                }
+
+                div.disguise-image {
+                    height: 112px;
+
+                    i {
+                        margin-top: 24px;
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+
+    #show-all {
+        float: right;
+    }
+
+    .tooltip-inner {
+        background: white;
+        color: black;
+    }
+
+    .editor-enabled {
+        color: #fff;
+        text-transform: uppercase;
+        border: solid 2px #ff003c;
+        text-align: center;
+        margin-bottom: 5px;
+        background-color: #ff003c;
+
+        h3 {
+            margin: .5rem 0;
+        }
+    }
+
+    .floor-toggle {
+        z-index: 1;
+        border-radius: 3px;
+        border: 2px solid #fff;
+        background: rgba(22, 24, 29, 0.75);
+
+        .floor-info {
+            margin: 0;
+            border-bottom: 2px solid #fff;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+
+            .floor-header {
+                cursor: default;
+                text-align: center;
+                background: #ddd;
+                color: #000;
+            }
+
+            .floor-details {
+                display: flex;
+
+                .floor {
+                    display: inline-block;
+                    padding: 10px 20px;
+                    text-align: center;
+                    flex-grow: 1;
+                }
+
+                .item-count {
+                    display: inline-block;
+                    background: #ddd;
+                    color: #000;
+                    padding: 10px 15px;
+                    text-align: center;
+                    width: 50px;
+
+                    &.has-search-results {
+                        background: #ff003c;
+                        color: #fff;
+                    }
+                }
+            }
 
             &:hover {
-                background: #16181d;
-                cursor: pointer;
+                background: #33363a;
+            }
+
+            &:last-child {
+                border-bottom: none;
             }
 
             &.selected {
-                background: rgb(41, 44, 52);
-            }
-
-            img.disguise-image {
-                display: inline-block;
-                width: 150px;
-                height: 112px;
-            }
-
-            div.disguise-image {
-                height: 112px;
-
-                i {
-                    margin-top: 24px;
-                    color: #fff;
-                }
-            }
-        }
-    }
-}
-
-#show-all {
-    float: right;
-}
-
-.tooltip-inner {
-    background: white;
-    color: black;
-}
-
-.editor-enabled {
-    color: #fff;
-    text-transform: uppercase;
-    border: solid 2px #ff003c;
-    text-align: center;
-    margin-bottom: 5px;
-    background-color: #ff003c;
-
-    h3 {
-        margin: .5rem 0;
-    }
-}
-
-.floor-toggle {
-    z-index: 1;
-    border-radius: 3px;
-    border: 2px solid #fff;
-    background: rgba(22, 24, 29, 0.75);
-
-    .floor-info {
-        margin: 0;
-        border-bottom: 2px solid #fff;
-        color: #fff;
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-
-        .floor-header {
-            cursor: default;
-            text-align: center;
-            background: #ddd;
-            color: #000;
-        }
-
-        .floor-details {
-            display: flex;
-
-            .floor {
-                display: inline-block;
-                padding: 10px 20px;
-                text-align: center;
-                flex-grow: 1;
-            }
-
-            .item-count {
-                display: inline-block;
-                background: #ddd;
+                background: #fff;
                 color: #000;
-                padding: 10px 15px;
-                text-align: center;
-                width: 50px;
-
-                &.has-search-results {
-                    background: #ff003c;
-                    color: #fff;
-                }
+                margin-top: -1px;
             }
         }
-
-        &:hover {
-            background: #33363a;
-        }
-
-        &:last-child {
-            border-bottom: none;
-        }
-
-        &.selected {
-            background: #fff;
-            color: #000;
-            margin-top: -1px;
-        }
     }
-}
 
-.overlay {
-    position: fixed;
-    text-align: center;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-items: center;
-
-    .background {
+    .overlay {
         position: fixed;
+        text-align: center;
         top: 0;
-        right: 0;
-        bottom: 0;
         left: 0;
-        overflow: hidden;
-        z-index: -100;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-items: center;
 
-        .video {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: auto;
-            height: auto;
-            min-width: 100%;
-            min-height: 100%;
-            transform: translate(-50%, -50%);
+        .background {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: -100;
+
+            .video {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: auto;
+                height: auto;
+                min-width: 100%;
+                min-height: 100%;
+                transform: translate(-50%, -50%);
+
+                @media (max-width: 767px) {
+                    & {
+                        display: none;
+                    }
+                }
+            }
 
             @media (max-width: 767px) {
                 & {
-                    display: none;
-                }
-            }
-        }
-
-        @media (max-width: 767px) {
-            & {
-                background: url('/img/jpg/loading.jpg') center center / cover
+                    background: url('/img/jpg/loading.jpg') center center / cover
                     no-repeat;
+                }
+            }
+        }
+
+        .overlay-container {
+            margin: 0 auto;
+            box-shadow: 5px 5px 40px #000;
+
+            .footer {
+                background: $card-footer-background;
+                color: $card-footer-text;
+                text-align: left;
+                padding: 10px;
+
+                .footer-image {
+                    display: inline-block;
+                    vertical-align: top;
+                    margin-right: 5px;
+                }
+
+                .footer-text {
+                    display: inline-block;
+                    text-transform: uppercase;
+
+                    h1 {
+                        font-size: 1.5rem;
+                        margin-bottom: 0;
+                    }
+
+                    h2 {
+                        font-size: 1rem;
+                        margin-bottom: 0;
+                        color: $card-footer-text;
+                        font-weight: 400;
+                    }
+                }
             }
         }
     }
 
-    .overlay-container {
-        margin: 0 auto;
-        box-shadow: 5px 5px 40px #000;
+    [data-disguise-id] {
+        .disguise-container {
+            border: solid 2px #000;
+            border-radius: 3px;
 
-        .footer {
-            background: $card-footer-background;
-            color: $card-footer-text;
-            text-align: left;
-            padding: 10px;
-
-            .footer-image {
-                display: inline-block;
-                vertical-align: top;
-                margin-right: 5px;
+            &:hover {
+                border: solid 2px #fff;
             }
 
-            .footer-text {
-                display: inline-block;
-                text-transform: uppercase;
-
-                h1 {
-                    font-size: 1.5rem;
-                    margin-bottom: 0;
-                }
-
-                h2 {
-                    font-size: 1rem;
-                    margin-bottom: 0;
-                    color: $card-footer-text;
-                    font-weight: 400;
-                }
+            .disguise-info {
+                font-weight: bolder;
+                color: #000;
+                background: #fff;
+                text-align: center;
             }
         }
     }
-}
 
-[data-disguise-id] {
-    .disguise-container {
-        border: solid 2px #000;
+    #editModal .dropdown-toggle img {
+        background: rgba(0, 0, 0, .15);
         border-radius: 3px;
-
-        &:hover {
-            border: solid 2px #fff;
-        }
-
-        .disguise-info {
-            font-weight: bolder;
-            color: #000;
-            background: #fff;
-            text-align: center;
-        }
     }
-}
 
-#editModal .dropdown-toggle img {
-    background: rgba(0, 0, 0, .15);
-    border-radius: 3px;
-}
+    #suggest-notes {
+        .note {
+            padding: 15px;
 
-#suggest-notes {
-    .note {
-        padding: 15px;
+            &.requirement {
+                color: #721c24;
+                background: #f8d7da;
+                border-left: solid 3px #d00000;
+            }
 
-        &.requirement {
-            color: #721c24;
-            background: #f8d7da;
-            border-left: solid 3px #d00000;
-        }
+            &.warning {
+                color: #856404;
+                background: #fff3cd;
+                border-left: solid 3px #ffa500;
+            }
 
-        &.warning {
-            color: #856404;
-            background: #fff3cd;
-            border-left: solid 3px #ffa500;
-        }
+            &.info {
+                color: #0c5460;
+                background: #b7d4ff;
+                border-left: solid 3px #0000e0;
+            }
 
-        &.info {
-            color: #0c5460;
-            background: #b7d4ff;
-            border-left: solid 3px #0000e0;
-        }
+            &.description {
+                color: #666;
+                background: #e4e4e4;
+                border-left: solid 3px #666666;
+            }
 
-        &.description {
-            color: #666;
-            background: #e4e4e4;
-            border-left: solid 3px #666666;
-        }
+            .move-arrow {
+                color: green;
+            }
 
-        .move-arrow {
-            color: green;
-        }
+            button {
+                margin-right: 10px;
 
-        button {
-            margin-right: 10px;
-
-            &:last-child {
-                margin-right: 0;
+                &:last-child {
+                    margin-right: 0;
+                }
             }
         }
     }
-}
 </style>

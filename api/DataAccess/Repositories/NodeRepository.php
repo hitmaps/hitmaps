@@ -21,8 +21,8 @@ class NodeRepository extends EntityRepository {
 
         $qb->addSelect('variants')
             ->addSelect('notes')
-            ->join('node.variants', 'variants')
-            ->join('node.notes', 'notes')
+            ->innerJoin('node.variants', 'variants')
+            ->leftJoin('node.notes', 'notes')
             ->where($qb->expr()->andX(
                 $qb->expr()->eq('node.approved', 'true'),
                 $qb->expr()->eq('node.missionId', ':missionId')

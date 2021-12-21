@@ -24,5 +24,5 @@ class NodeWithNotesViewModel {
     public $tooltip;
     public $quantity;
     public $searchable;
-    public $missionVariants = [];
+    public $variants = [];
 }
