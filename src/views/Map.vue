@@ -1080,6 +1080,15 @@
                                 </button>
                             </div>
                         </div>
+                        <h3>[!] Variants</h3>
+                        <div class="form-group" v-for="variant in variants">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" :id="`editor-variant-${variant.id}`" :value="variant">
+                                <label class="form-check-label" :for="`editor-variant-${variant.id}`">
+                                    {{ $t(`difficulties.${variant.variant}`) }}
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <template v-slot:modal-footer>
@@ -1523,6 +1532,7 @@
                     this.currentCategory.action = undefined;
                     this.currentCategory.target = undefined;
                     this.currentCategory.image = undefined;
+                    this.currentCategory.variants = [];
                 }
 
                 this.editor.currentCategory = undefined
@@ -1565,6 +1575,7 @@
                 this.currentCategory.target = item.target;
                 this.currentCategory.image = item.image;
                 this.currentCategory.pickupType = item.pickupType;
+                this.currentCategory.variants = item.variants;
 
                 $('#editModal').modal('show')
             },
