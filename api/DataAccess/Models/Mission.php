@@ -5,6 +5,7 @@ namespace DataAccess\Models;
 
 
 use BusinessLogic\MissionType;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -105,9 +106,11 @@ class Mission {
      */
     public $missionType;
 
-    // Not used by Doctrine
-    /* @var $variants string[] */
-    public $variants = [];
+    /**
+     * @ORM\OneToMany(targetEntity="MissionVariant", mappedBy="mission", fetch="EAGER")
+     * @var $variants Collection
+     */
+    public $variants;
 
     /**
      * @ORM\Column(type="string", name="background_url")
@@ -168,6 +171,10 @@ class Mission {
         if ($this->missionType === MissionType::ELUSIVE_TARGET) {
             $this->icon = 'elusive';
         }
+    }
+
+    public function __construct() {
+        $this->variants = new ArrayCollection();
     }
 
     /**
@@ -383,7 +390,7 @@ class Mission {
     }
 
     /**
-     * @return mixed
+     * @return DateTime|null
      */
     public function getBeginEffectiveDate() {
         return $this->beginEffectiveDate;
@@ -397,7 +404,7 @@ class Mission {
     }
 
     /**
-     * @return mixed
+     * @return DateTime|null
      */
     public function getEndEffectiveDate() {
         return $this->endEffectiveDate;
@@ -422,6 +429,20 @@ class Mission {
      */
     public function setMissionType(string $missionType): void {
         $this->missionType = $missionType;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getVariants(): Collection {
+        return $this->variants;
+    }
+
+    /**
+     * @param Collection $variants
+     */
+    public function setVariants(Collection $variants): void {
+        $this->variants = $variants;
     }
 
     /**

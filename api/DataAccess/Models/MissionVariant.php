@@ -16,9 +16,10 @@ class MissionVariant {
     public $id;
 
     /**
-     * @ORM\Column(type="integer", name="mission_id")
+     * @ORM\ManyToOne(targetEntity="Mission", inversedBy="variants")
+     * @ORM\JoinColumn(name="mission_id", referencedColumnName="id")
      */
-    public $missionId;
+    public $mission;
 
     /**
      * @ORM\Column(type="string", name="difficulty")
@@ -47,15 +48,15 @@ class MissionVariant {
     /**
      * @return mixed
      */
-    public function getMissionId() {
-        return $this->missionId;
+    public function getMission() {
+        return $this->mission;
     }
 
     /**
-     * @param mixed $missionId
+     * @param mixed $mission
      */
-    public function setMissionId($missionId): void {
-        $this->missionId = $missionId;
+    public function setMission($mission): void {
+        $this->mission = $mission;
     }
 
     /**
