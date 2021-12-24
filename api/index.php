@@ -9,6 +9,7 @@ use Controllers\NodeController;
 use Controllers\ViewModels\DisguiseAreaViewModel;
 use Controllers\ViewModels\DisguiseViewModel;
 use Controllers\ViewModels\LedgeViewModel;
+use Controllers\ViewModels\MissionViewModel;
 use DataAccess\Models\Disguise;
 use DataAccess\Models\DisguiseArea;
 use DataAccess\Models\Game;
@@ -99,21 +100,7 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
         $missions = $applicationContext->get(EntityManager::class)->getRepository(Mission::class)->findBy(['locationId' => $location->getId(), 'slug' => $request->mission], ['order' => 'ASC']);
     }
 
-    /* @var $mission Mission */
-    foreach ($missions as $mission) {
-        $missionVariants = $applicationContext->get(EntityManager::class)->getRepository(MissionVariant::class)->findBy(['missionId' => $mission->getId()]);
-
-        /* @var $missionVariant MissionVariant */
-        foreach ($missionVariants as $missionVariant) {
-            if ($missionVariant->isVisible()) {
-                $mission->difficulties[] = $missionVariant->getVariant();
-            }
-        }
-
-        $mission->floorNames = $applicationContext->get(EntityManager::class)->getRepository(MapFloorToName::class)->findBy(['missionId' => $mission->getId()], ['floorNumber' => 'ASC']);
-    }
-
-    return $response->json($missions);
+    return $response->json(array_map(fn(Mission $x) => new MissionViewModel($x), $missions));
 });
 
 $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map-metadata', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
@@ -288,6 +275,51 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
     }));
 });
 
+$klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:mission]/nodes', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    /* @var $game Game */
+    $entityManager = $applicationContext->get(EntityManager::class);
+    $game = $entityManager->getRepository(Game::class)->findOneBy(['slug' => $request->game]);
+
+    /* @var $location Location */
+    $location = $entityManager->getRepository(Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
+
+    /* @var $mission Mission */
+    $mission = $entityManager->getRepository(Mission::class)->findOneBy(['locationId' => $location->getId(), 'slug' => $request->mission]);
+
+    if ($mission === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find mission with game '{$request->game}', location '{$request->location}', and mission slug '{$request->mission}'"
+        ]);
+    }
+
+    if ($location === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find location with game '{$request->game}' and location slug '{$request->location}'"
+        ]);
+    }
+
+    if ($game === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find game with slug '{$request->game}'"
+        ]);
+    }
+
+    $nodes = $applicationContext->get(NodeController::class)->getNodesForMissionV2($mission->getId());
+    $forSniperAssassin = $mission->getMissionType() === MissionType::SNIPER_ASSASSIN;
+    $nodeCategories = $applicationContext->get(EntityManager::class)->getRepository(NodeCategory::class)->findBy(
+        ['forMission' => !$forSniperAssassin, 'forSniperAssassin' => $forSniperAssassin],
+        ['order' => 'ASC', 'group' => 'ASC']);
+
+    return $response->json([
+        'nodes' => $nodes,
+        'categories' => $nodeCategories
+    ]);
+});
+
+// TODO Delete me once split up
 $klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:mission]/map', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $cacheClient = $applicationContext->get(CacheClient::class);
 
@@ -404,9 +436,6 @@ $klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:m
             'variants' => $applicationContext->get(EntityManager::class)
                 ->getRepository(MissionVariant::class)
                 ->findBy(['missionId' => $mission->getId()]),
-            'nodes' => $nodes,
-            'searchableNodes' => $applicationContext->get(NodeController::class)->getNodesForMissionV2($mission->getId(), null, true, true),
-            'categories' => $nodeCategories,
             'ledges' => $formattedLedges,
             'foliage' => $formattedFoliage,
             'disguises' => $formattedDisguises];
