@@ -56,7 +56,7 @@ export default new Router({
             component: Location,
         },
         {
-            path: '/games/:slug/:location/:mission/:difficulty?',
+            path: '/games/:game/:location/:mission/:difficulty?',
             name: 'map-view',
             // route level code-splitting
             // this generates a separate chunk (about.[hash].js) for this route
