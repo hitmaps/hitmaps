@@ -14,8 +14,8 @@
             </div>
             <div class="visibility-toggle group-toggle"
                  @click="onTopLevelClick"
-                 :class="{ 'map-hidden': areAllNodesHiddenForTopLevelCategory }">
-                <i class="far fa-eye" v-if="!areAllNodesHiddenForTopLevelCategory"></i>
+                 :class="{ 'map-hidden': areAllNodesHiddenForTopLevelCategory() }">
+                <i class="far fa-eye" v-if="!areAllNodesHiddenForTopLevelCategory()"></i>
                 <i class="far fa-eye-slash" v-else></i>
             </div>
         </div>
@@ -72,29 +72,26 @@ export default {
             uid: this._uid
         }
     },
-    computed: {
-        areAllNodesHiddenForTopLevelCategory() {
-            return !this.nodes.filter(node => node.visible).length;
-        }
-    },
     methods: {
+        areAllNodesHiddenForTopLevelCategory() {
+            return !this.nodes.some(node => node.visible && !node.searchResult);
+        },
         onTopLevelClick() {
-            if (this.areAllNodesHiddenForTopLevelCategory) {
+            if (this.areAllNodesHiddenForTopLevelCategory()) {
                 this.$emit('show-top-level-category', this.topLevelCategoryName);
             } else {
                 this.$emit('hide-top-level-category', this.topLevelCategoryName);
             }
         },
         onCategoryLevelClick(category) {
-            if (this.getItemsForCategory(category).some(node => node.visible)) {
+            if (this.getItemsForCategory(category).some(node => node.visible && !node.searchResult)) {
                 this.$emit('hide-category', category);
             } else {
                 this.$emit('show-category', category);
             }
         },
         isCategoryHidden(category) {
-            // TODO
-            return false;
+            return !this.nodes.some(node => node.group === category.group && node.visible && !node.searchResult);
         },
         buildCollapsibleId(category) {
             const categoryName = category.group.replace(/ /g, '_');

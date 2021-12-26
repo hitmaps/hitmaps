@@ -54,14 +54,18 @@
                 </router-link>
             </div>
         </div>
-        <item-search :searchable-nodes="getSearchableNodes()" />
+        <item-search :searchable-nodes="getSearchableNodes()" @search-item="onSearchItem" />
         <disguise-dropdown :disguises="disguises" />
         <hide-select-all @hide-all="$emit('hide-all')" @show-all="$emit('show-all')" />
         <top-level-category-card v-for="topLevelCategory in topLevelCategories"
                                  :key="topLevelCategory"
                                  :top-level-category-name="topLevelCategory"
                                  :categories="categories.filter(x => x.type === topLevelCategory)"
-                                 :nodes="nodes.filter(x => x.type === topLevelCategory)"/>
+                                 :nodes="nodes.filter(x => x.type === topLevelCategory)"
+                                 @hide-category="onHideCategory"
+                                 @show-category="onShowCategory"
+                                 @hide-top-level-category="onHideTopLevelCategory"
+                                 @show-top-level-category="onShowTopLevelCategory" />
     </nav>
 </template>
 
@@ -117,8 +121,6 @@ export default {
                 const firstCategory = this.categories.find(category => category.type === first.type && category.group === first.group);
                 const secondCategory = this.categories.find(category => category.type === second.type && category.group === second.group);
 
-                console.log(`${firstCategory.group}|${firstCategory.order}`);
-                console.log(`${secondCategory.group}|${secondCategory.order}`);
                 if (firstCategory.order !== secondCategory.order) {
                     return firstCategory.order < secondCategory.order ? -1 : 1;
                 }
@@ -139,7 +141,24 @@ export default {
             });
 
             return uniqueNodesBrokenDownByGroup;
+        },
+        //region Event listeners
+        onSearchItem(searchedItem) {
+            this.$emit('search-item', searchedItem);
+        },
+        onHideCategory(category) {
+            this.$emit('hide-category', category);
+        },
+        onShowCategory(category) {
+            this.$emit('show-category', category);
+        },
+        onHideTopLevelCategory(type) {
+            this.$emit('hide-top-level-category', type);
+        },
+        onShowTopLevelCategory(type) {
+            this.$emit('show-top-level-category', type);
         }
+        //endregion
     }
 }
 </script>

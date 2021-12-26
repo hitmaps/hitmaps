@@ -3,20 +3,26 @@
         <splash-screen v-if="metadataLoaded && !mapDataLoaded" :mission="mission"/>
         <div>
             <floor-toggle v-if="metadataLoaded && mapDataLoaded"
+                          ref="floorToggle"
                           :mission="mission"
                           :current-floor="currentFloor"
                           :nodes="nodes"
-                          :searched-nodes="[]"
                           @change-floor="onChangeFloor" />
             <div id="map"></div>
             <sidebar v-if="metadataLoaded && mapDataLoaded"
+                     ref="sidebar"
                      :logged-in="loggedIn"
                      :top-level-categories="topLevelCategories"
                      :categories="categories"
                      :nodes="nodes"
                      :disguises="disguises"
-                     @hide-all="hideAll"
-                     @show-all="showAll" />
+                     @hide-all="onHideAll"
+                     @show-all="onShowAll"
+                     @search-item="onSearchItem"
+                     @hide-category="onHideCategory"
+                     @show-category="onShowCategory"
+                     @hide-top-level-category="onHideTopLevelCategory"
+                     @show-top-level-category="onShowTopLevelCategory" />
             <node-popup ref="popupTemplate" style="display: none" :node="nodeForPopup" :logged-in="loggedIn" :game="game"/>
         </div>
     </div>
@@ -27,6 +33,7 @@
     import FloorToggle from "../components/Map/FloorToggle";
     import NodePopup from "../components/Map/NodePopup";
     import Sidebar from "../components/Map/Sidebar/Sidebar";
+    import Utils from "../util/Utils";
 
     export default {
         name: 'Map',
@@ -50,7 +57,7 @@
                 currentFloor: 0,
                 map: null,
                 mapLayers: {},
-                nodeForPopup: null
+                nodeForPopup: null,
                 //endregion
             }
         },
@@ -87,6 +94,7 @@
                         this.nodes.forEach(node => {
                             node.latLng = L.latLng(node.latitude, node.longitude);
                             node.visible = true;
+                            node.searchResult = false;
                             node.marker = new L.marker([node.latitude, node.longitude], {
                                 icon: this.buildIcon(node),
                                 custom: {
@@ -96,6 +104,14 @@
                             }).on('click', (e) => {
                                 this.renderPopup(node, e.target);
                             });
+
+                            if (node.tooltip !== '') {
+                                node.marker.bindTooltip(node.tooltip.replace(/&/g, "&amp;")
+                                    .replace(/</g, "&lt;")
+                                    .replace(/>/g, "&gt;")
+                                    .replace(/"/g, "&quot;")
+                                    .replace(/'/g, "&#039;"));
+                            }
                         });
                         this.categories = resp.data.categories;
                         this.mapLayers = this.buildMapLayers();
@@ -214,11 +230,26 @@
                 this.nodes.forEach(node => node.marker._icon.style.display = 'none');
 
                 // 3. [OVERRIDE] Mark nodes as "visible" if they are part of a search result
-                // TODO search result
-                //this.nodes.filter(node => true).forEach(node => node.visible = true);
+                this.nodes.filter(node => node.searchResult).forEach(node => node.visible = true);
 
                 // 4. Add all visible nodes to map if they're on the current level
-                this.nodes.filter(node => node.level === this.currentFloor && node.visible).forEach(node => node.marker._icon.style.display = 'block');
+                this.nodes.filter(node => node.level === this.currentFloor && node.visible).forEach(node => {
+                    node.marker._icon.style.display = 'block';
+
+                    if (node.searchResult) {
+                        node.marker._icon.classList.add('search-result')
+                    } else {
+                        node.marker._icon.classList.remove('search-result');
+                    }
+                });
+
+                // Make sure the counters and highlights for the level select are updated
+                if (this.$refs.floorToggle) {
+                    this.$refs.floorToggle.$forceUpdate();
+                }
+                if (this.$refs.sidebar) {
+                    this.$refs.sidebar.$forceUpdate();
+                }
             },
             buildIcon(node) {
                 return node.icon === 'area' ?
@@ -242,26 +273,51 @@
             },
             //endregion
             range(min, max) {
-                var array = [],
-                    j = 0;
-                for (var i = min; i <= max; i++) {
-                  array[j] = i;
-                  j++;
-                }
-                return array;
+                return Utils.range(min, max);
             },
-            // Event-driven methods
+            //region Event listeners
             onChangeFloor(newFloor) {
                 this.currentFloor = newFloor;
             },
-            hideAll() {
+            onHideAll() {
                 this.nodes.forEach(node => node.visible = false);
                 this.updateActiveMapState();
             },
-            showAll() {
+            onShowAll() {
                 this.nodes.forEach(node => node.visible = true);
                 this.updateActiveMapState();
+            },
+            onSearchItem(itemKey) {
+                this.nodes.forEach(node => node.searchResult = false);
+
+                if (itemKey !== null) {
+                    const splitKey = itemKey.split('|');
+                    this.nodes.filter(node => node.group === splitKey[0] && node.name === splitKey[1]).forEach(node => node.searchResult = true);
+                }
+
+                this.updateNodeMarkers();
+            },
+            onHideCategory(category) {
+                this.nodes.filter(node => node.type === category.type && node.group === category.group).forEach(node => node.visible = false);
+
+                this.updateNodeMarkers();
+            },
+            onShowCategory(category) {
+                this.nodes.filter(node => node.type === category.type && node.group === category.group).forEach(node => node.visible = true);
+
+                this.updateNodeMarkers();
+            },
+            onHideTopLevelCategory(type) {
+                this.nodes.filter(node => node.type === type).forEach(node => node.visible = false);
+
+                this.updateNodeMarkers();
+            },
+            onShowTopLevelCategory(type) {
+                this.nodes.filter(node => node.type === type).forEach(node => node.visible = true);
+
+                this.updateNodeMarkers();
             }
+            //endregion
         },
         watch: {
             currentFloor() {

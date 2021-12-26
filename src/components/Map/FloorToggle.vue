@@ -11,7 +11,7 @@
                 <div @click="$emit('change-floor', i)" class="floor">
                     <span v-if="floorNames[i] && floorNames[i].value">{{ floorNames[i].value }}</span>
                 </div>
-                <div :class="{ 'has-search-results': false /*hasSearchResults(i)*/ }" class="item-count">
+                <div :class="{ 'has-search-results': hasSearchResults(i) }" class="item-count">
                     {{ calculateNumber(i) }}
                 </div>
             </div>
@@ -37,7 +37,7 @@ export default {
         mission: Object,
         currentFloor: Number,
         nodes: Array,
-        searchedNodes: Array
+        searchCriteria: String
     },
     data() {
         return {
@@ -104,6 +104,9 @@ export default {
         },
         calculateNumber(floor) {
             return this.nodes.filter(node => node.level === floor && node.visible).length;
+        },
+        hasSearchResults(floor) {
+            return this.nodes.some(node => node.level === floor && node.searchResult);
         }
     }
 }
