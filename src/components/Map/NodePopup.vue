@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="node">
         <div class="image-and-name" :class="`game-${this.game.slug}`" :style="backgroundCss" v-if="node.image">
             <p class="flex-push">&nbsp;</p>
             <div class="name">{{ node.name }}</div>
@@ -28,6 +28,7 @@
             </button>
         </div>
     </div>
+    <div v-else>&nbsp;</div>
 </template>
 
 <script>

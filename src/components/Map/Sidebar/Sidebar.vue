@@ -54,6 +54,8 @@
                 </router-link>
             </div>
         </div>
+        <item-search :searchable-nodes="getSearchableNodes()" />
+        <disguise-dropdown :disguises="disguises" />
         <hide-select-all @hide-all="$emit('hide-all')" @show-all="$emit('show-all')" />
         <top-level-category-card v-for="topLevelCategory in topLevelCategories"
                                  :key="topLevelCategory"
@@ -68,15 +70,18 @@ import LanguageHelpers from "../../LanguageHelpers";
 import ControlButton from "./ControlButton";
 import HideSelectAll from "./HideSelectAll";
 import TopLevelCategoryCard from "./TopLevelCategoryCard";
+import ItemSearch from "./ItemSearch";
+import DisguiseDropdown from "./DisguiseDropdown";
 
 export default {
     name: "Sidebar",
-    components: {TopLevelCategoryCard, HideSelectAll, ControlButton},
+    components: {DisguiseDropdown, ItemSearch, TopLevelCategoryCard, HideSelectAll, ControlButton},
     props: {
         loggedIn: Boolean,
         categories: Array,
         nodes: Array,
-        topLevelCategories: Array
+        topLevelCategories: Array,
+        disguises: Array
     },
     data() {
         return {
@@ -97,6 +102,43 @@ export default {
     methods: {
         showDebug() {
             return process.env.VUE_APP_SHOW_DEBUG === 'true';
+        },
+        getSearchableNodes() {
+            const nodesToSort = [...this.nodes];
+            nodesToSort.sort((first, second) => {
+                if (first.type !== second.type) {
+                    // Different types, sort by the types
+                    return this.topLevelCategories.indexOf(first.type) < this.topLevelCategories.indexOf(second.type) ?
+                        -1 :
+                        1;
+                }
+
+                // Same type, check categories
+                const firstCategory = this.categories.find(category => category.type === first.type && category.group === first.group);
+                const secondCategory = this.categories.find(category => category.type === second.type && category.group === second.group);
+
+                console.log(`${firstCategory.group}|${firstCategory.order}`);
+                console.log(`${secondCategory.group}|${secondCategory.order}`);
+                if (firstCategory.order !== secondCategory.order) {
+                    return firstCategory.order < secondCategory.order ? -1 : 1;
+                }
+
+                return first.name < second.name ? -1 : 1;
+            });
+
+            const uniqueNodes = nodesToSort.filter(x => x.searchable) // Only searchable items
+                .map(x => `${x.group}|${x.name}`) // Only get the group and name
+                .filter((value, index, self) => self.indexOf(value) === index); // Only fetch unique records
+            const uniqueNodesBrokenDownByGroup = {};
+            uniqueNodes.forEach(node => {
+                const nodeInfo = node.split('|');
+                if (!(nodeInfo[0] in uniqueNodesBrokenDownByGroup)) {
+                    uniqueNodesBrokenDownByGroup[nodeInfo[0]] = [];
+                }
+                uniqueNodesBrokenDownByGroup[nodeInfo[0]].push(nodeInfo[1]);
+            });
+
+            return uniqueNodesBrokenDownByGroup;
         }
     }
 }
@@ -168,6 +210,10 @@ export default {
             justify-content: flex-end;
             flex-grow: 1;
             margin-bottom: 10px;
+
+            .control-button:not(:last-child) {
+                margin-right: 5px;
+            }
         }
 
         #map-control-buttons {

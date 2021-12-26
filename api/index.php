@@ -314,6 +314,74 @@ $klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:m
     ]);
 });
 
+$klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:mission]/disguises', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+    /* @var $game Game */
+    $entityManager = $applicationContext->get(EntityManager::class);
+    $game = $entityManager->getRepository(Game::class)->findOneBy(['slug' => $request->game]);
+
+    /* @var $location Location */
+    $location = $entityManager->getRepository(Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
+
+    /* @var $mission Mission */
+    $mission = $entityManager->getRepository(Mission::class)->findOneBy(['locationId' => $location->getId(), 'slug' => $request->mission]);
+
+    if ($mission === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find mission with game '{$request->game}', location '{$request->location}', and mission slug '{$request->mission}'"
+        ]);
+    }
+
+    if ($location === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find location with game '{$request->game}' and location slug '{$request->location}'"
+        ]);
+    }
+
+    if ($game === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find game with slug '{$request->game}'"
+        ]);
+    }
+
+    /* @var $disguiseRepository \DataAccess\Repositories\DisguiseRepository */
+    $disguiseRepository = $applicationContext->get(EntityManager::class)
+        ->getRepository(Disguise::class);
+
+    /* @var $disguises Disguise[] */
+    $disguisesWithAreas = $disguiseRepository->findByMission($mission->getId());
+    $formattedDisguises = [];
+
+    /* @var $formattedDisguise DisguiseViewModel */
+    foreach ($disguisesWithAreas as $disguiseOrArea) {
+        if ($disguiseOrArea === null) {
+            continue;
+        }
+
+        // We're not returning disguise areas unless the user asks for them
+        if ($disguiseOrArea instanceof DisguiseArea) {
+            continue;
+        }
+
+        /* @var $disguise Disguise */
+        $disguise = $disguiseOrArea;
+        $formattedDisguise = new DisguiseViewModel();
+        $formattedDisguise->id = $disguise->getId();
+        $formattedDisguise->name = $disguise->getName();
+        $formattedDisguise->image = $disguise->getImage();
+        $formattedDisguise->order = $disguise->getOrder();
+        $formattedDisguise->suit = $disguise->getSuit();
+        unset($formattedDisguise->areas);
+        $formattedDisguises[] = $formattedDisguise;
+    }
+
+    return $response->json([
+        'disguises' => $formattedDisguises
+    ]);
+});
+
 // TODO Delete me once split up
 $klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:mission]/map', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
     $cacheClient = $applicationContext->get(CacheClient::class);

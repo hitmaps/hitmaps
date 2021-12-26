@@ -14,10 +14,11 @@
                      :top-level-categories="topLevelCategories"
                      :categories="categories"
                      :nodes="nodes"
+                     :disguises="disguises"
                      @hide-all="hideAll"
                      @show-all="showAll" />
+            <node-popup ref="popupTemplate" style="display: none" :node="nodeForPopup" :logged-in="loggedIn" :game="game"/>
         </div>
-
     </div>
 </template>
 
@@ -26,6 +27,7 @@
     import FloorToggle from "../components/Map/FloorToggle";
     import NodePopup from "../components/Map/NodePopup";
     import Sidebar from "../components/Map/Sidebar/Sidebar";
+
     export default {
         name: 'Map',
         components: {
@@ -43,9 +45,12 @@
                 nodes: [],
                 categories: [],
                 topLevelCategories: [],
+                disguises: [],
                 //region Map-specific
                 currentFloor: 0,
-                map: null
+                map: null,
+                mapLayers: {},
+                nodeForPopup: null
                 //endregion
             }
         },
@@ -82,8 +87,18 @@
                         this.nodes.forEach(node => {
                             node.latLng = L.latLng(node.latitude, node.longitude);
                             node.visible = true;
+                            node.marker = new L.marker([node.latitude, node.longitude], {
+                                icon: this.buildIcon(node),
+                                custom: {
+                                    id: node.id
+                                },
+                                riseOnHover: true
+                            }).on('click', (e) => {
+                                this.renderPopup(node, e.target);
+                            });
                         });
                         this.categories = resp.data.categories;
+                        this.mapLayers = this.buildMapLayers();
 
                         this.$nextTick(() => {
                             this.map = L.map('map', {
@@ -92,13 +107,24 @@
                                 crs: L.CRS.Simple,
                                 renderer: this.mission.svg ? L.svg() : L.canvas(),
                                 maxBounds: this.mapBounds,
-                                layers: this.buildMapLayers()
+                                layers: Object.values(this.mapLayers)
                             }).setView([this.mission.mapCenterLatitude, this.mission.mapCenterLongitude], this.mission.minZoom);
+                            this.nodes.forEach(node => node.marker.addTo(this.map));
                         });
                     });
 
-                Promise.all([nodesPromise]).then(_ => {
-                    this.mapDataLoaded = true;
+                const disguisesPromise = this.$http.get(
+                    `${this.$domain}/api/v2/games/${this.$route.params.game}`+
+                                              `/locations/${this.$route.params.location}`+
+                                              `/missions/${this.$route.params.mission}/disguises`)
+                    .then(resp => this.disguises = resp.data.disguises);
+                //@formatter:on
+
+                Promise.all([nodesPromise, disguisesPromise]).then(_ => {
+                    this.$nextTick(() => {
+                        this.updateActiveMapState();
+                        this.mapDataLoaded = true;
+                    });
                 });
             });
         },
@@ -142,35 +168,79 @@
             }
         },
         methods: {
+            //region Map-building
             buildMapLayers() {
-                const allLayers = [];
+                const allLayers = {};
                 // 1. Sniper Assassin (only one level - 0)
                 if (!this.mission.svg) {
-                    allLayers.push(L.tileLayer(this.imageTileUrl.replace('{floorNumber}', '0'), {
+                    allLayers[0] = L.tileLayer(this.imageTileUrl.replace('{floorNumber}', '0'), {
                         noWrap: true,
                         minZoom: this.mission.minZoom,
                         maxZoom: this.mission.maxZoom
-                    }));
+                    });
                 }
 
                 // 2. SVG Layers for everything else
                 if (this.mission.svg) {
                     for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                        allLayers.push(L.imageOverlay(`${this.svgMapUrl}${i}.svg`, this.layerBounds));
+                        allLayers[i] = L.imageOverlay(`${this.svgMapUrl}${i}.svg`, this.layerBounds);
                     }
                 }
 
                 // 3. Satellite layer (if present)
                 if (this.mission.satelliteView) {
-                    allLayers.push(L.tileLayer(this.imageTileUrl.replace('{floorNumber}', '-99'), {
+                    allLayers[-99] = L.tileLayer(this.imageTileUrl.replace('{floorNumber}', '-99'), {
                         noWrap: true,
                         minZoom: this.mission.minZoom,
                         maxZoom: this.mission.maxZoom
-                    }));
+                    });
                 }
 
                 return allLayers;
             },
+            updateActiveMapState() {
+                this.updateActiveMapLayer();
+                this.updateNodeMarkers();
+            },
+            updateActiveMapLayer() {
+                // 1. Deactivate all map layers
+                this.range(this.mission.lowestFloorNumber, this.mission.highestFloorNumber).forEach(x => this.map.removeLayer(this.mapLayers[x]));
+
+                // 2. Activate the current one
+                this.map.addLayer(this.mapLayers[this.currentFloor]);
+            },
+            updateNodeMarkers() {
+                // 1. Remove all nodes from the map
+                this.nodes.forEach(node => node.marker._icon.style.display = 'none');
+
+                // 3. [OVERRIDE] Mark nodes as "visible" if they are part of a search result
+                // TODO search result
+                //this.nodes.filter(node => true).forEach(node => node.visible = true);
+
+                // 4. Add all visible nodes to map if they're on the current level
+                this.nodes.filter(node => node.level === this.currentFloor && node.visible).forEach(node => node.marker._icon.style.display = 'block');
+            },
+            buildIcon(node) {
+                return node.icon === 'area' ?
+                    new L.DivIcon({
+                        className: 'area-icon',
+                        html: node.name.replace(/(?:\r\n|\r|\n)/g, '<br>')
+                    }) :
+                    L.icon({
+                        iconUrl: `/img/map-icons/${node.icon}.png`,
+                        iconSize: [32, 32],
+                        iconAnchor: [16, 16],
+                        popupAnchor: [0, 0]
+                    });
+            },
+            renderPopup(node, marker) {
+                this.nodeForPopup = node;
+
+                this.$nextTick(() => {
+                    marker.bindPopup(this.$refs.popupTemplate.$el.innerHTML).openPopup();
+                })
+            },
+            //endregion
             range(min, max) {
                 var array = [],
                     j = 0;
@@ -185,12 +255,21 @@
                 this.currentFloor = newFloor;
             },
             hideAll() {
-                console.log('Hiding nodes');
                 this.nodes.forEach(node => node.visible = false);
+                this.updateActiveMapState();
             },
             showAll() {
-                console.log('Showing nodes');
                 this.nodes.forEach(node => node.visible = true);
+                this.updateActiveMapState();
+            }
+        },
+        watch: {
+            currentFloor() {
+                if (!this.map) {
+                    return;
+                }
+
+                this.updateActiveMapState();
             }
         }
     };
