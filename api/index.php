@@ -61,16 +61,6 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]?', function 
             $missions = $applicationContext->get(EntityManager::class)->getRepository(Mission::class)->findActiveMissionsByLocation($location->getId());
             /* @var $mission Mission */
             foreach ($missions as $mission) {
-                $mission->floorNames = $applicationContext->get(EntityManager::class)->getRepository(MapFloorToName::class)->findBy(['missionId' => $mission->getId()], ['floorNumber' => 'ASC']);
-
-                $missionVariants = $applicationContext->get(EntityManager::class)->getRepository(MissionVariant::class)->findBy(['missionId' => $mission->getId()]);
-
-                /* @var $missionVariant MissionVariant */
-                foreach ($missionVariants as $missionVariant) {
-                    if ($missionVariant->isVisible()) {
-                        $mission->variants[] = $missionVariant->getVariant();
-                    }
-                }
                 $mission->setIcon();
             }
             $location->missions = $missions;
@@ -314,6 +304,11 @@ $klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:m
         ['order' => 'ASC', 'group' => 'ASC']);
 
     return $response->json([
+        'topLevelCategories' => [
+            'Points of Interest',
+            'Weapons and Tools',
+            'Navigation'
+        ],
         'nodes' => $nodes,
         'categories' => $nodeCategories
     ]);

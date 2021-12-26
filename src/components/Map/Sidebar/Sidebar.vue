@@ -1,0 +1,200 @@
+<template>
+    <nav class="navbar navbar-fixed-right navbar-dark">
+        <button class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                :aria-label="$t('map.toggle-navigation')">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="header">
+                <router-link :to="{ name: 'home' }">
+                    <img src="/img/png/logos/hitmaps.png" class="img-fluid" alt="HITMAPS Logo"/>
+                </router-link>
+            </div>
+        </div>
+        <!-- TODO Editor Header -->
+        <div class="map-control">
+            <div id="map-control-buttons">
+                <control-button>+</control-button>
+                <control-button>-</control-button>
+            </div>
+            <div class="control-buttons">
+                <control-button data-toggle="modal" data-target="#locale-modal" v-tooltip:bottom="$t('language-modal.change-language')">
+                    <country-flag :country="countryFlag"/>
+                </control-button>
+                <template v-if="loggedIn">
+                    <control-button v-if="showDebug()"
+                            id="debug-button"
+                            @click="debugMode = !debugMode"
+                            v-tooltip:top="$t('map.debug-mode')"
+                            :style="debugMode ? 'background: white; color: black' : ''">
+                        <i class="fas fa-bug"></i>
+                    </control-button>
+                    <control-button
+                        id="edit-button"
+                        @click="/*toggleEditor*/"
+                        v-tooltip:top="$t('map.edit-map')">
+                        <i class="fas fa-pencil-alt"></i>
+                    </control-button>
+                    <control-button
+                        v-tooltip:top="$t('authentication.log-out')"
+                        @click="/*logout*/">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </control-button>
+                </template>
+                <router-link v-else :to="{ name: 'login' }">
+                    <control-button
+                        v-tooltip:bottom="$t('map.login-to-edit')">
+                        <i class="fas fa-sign-in-alt"></i>
+                    </control-button>
+                </router-link>
+            </div>
+        </div>
+        <hide-select-all @hide-all="$emit('hide-all')" @show-all="$emit('show-all')" />
+        <top-level-category-card v-for="topLevelCategory in topLevelCategories"
+                                 :key="topLevelCategory"
+                                 :top-level-category-name="topLevelCategory"
+                                 :categories="categories.filter(x => x.type === topLevelCategory)"
+                                 :nodes="nodes.filter(x => x.type === topLevelCategory)"/>
+    </nav>
+</template>
+
+<script>
+import LanguageHelpers from "../../LanguageHelpers";
+import ControlButton from "./ControlButton";
+import HideSelectAll from "./HideSelectAll";
+import TopLevelCategoryCard from "./TopLevelCategoryCard";
+
+export default {
+    name: "Sidebar",
+    components: {TopLevelCategoryCard, HideSelectAll, ControlButton},
+    props: {
+        loggedIn: Boolean,
+        categories: Array,
+        nodes: Array,
+        topLevelCategories: Array
+    },
+    data() {
+        return {
+            editorEnabled: false,
+            debugMode: false
+        }
+    },
+    watch: {
+        zoomControl: function() {
+            console.log(this.zoomControl);
+        }
+    },
+    computed: {
+        countryFlag() {
+            return LanguageHelpers.getCountryFlagForLocale(this.$i18n);
+        }
+    },
+    methods: {
+        showDebug() {
+            return process.env.VUE_APP_SHOW_DEBUG === 'true';
+        }
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+    @media (min-width: 768px) {
+        .navbar-fixed-right {
+            display: block;
+            float: right;
+            width: 400px;
+            min-height: 100vh;
+            background: #000;
+        }
+
+        .navbar-toggler {
+            display: none;
+        }
+
+        .navbar-collapse {
+            display: block !important;
+        }
+
+        .accordion > .floor-toggle {
+            display: none;
+        }
+
+        .content > .floor-toggle {
+            display: block;
+            position: fixed;
+            top: 110px;
+            left: 50px;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .navbar-fixed-right {
+            background: #000;
+        }
+
+        .navbar-toggler {
+            display: block;
+        }
+
+        .accordion > .floor-toggle {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .content > .floor-toggle {
+            display: none;
+        }
+    }
+
+    .navbar-toggler {
+        background: #2a2d31;
+    }
+
+    .map-control {
+        width: 368px;
+        display: flex;
+
+        &.debug {
+            flex-direction: column;
+        }
+
+        .control-buttons {
+            display: flex;
+            justify-content: flex-end;
+            flex-grow: 1;
+            margin-bottom: 10px;
+        }
+
+        #map-control-buttons {
+            .control-button {
+                line-height: 26px;
+                width: 40px;
+                margin-left: 0;
+                margin-right: 5px;
+                margin-bottom: 10px;
+                font: bold 18px 'Lucida Console', Monaco, monospace;
+                text-indent: 1px;
+                text-align: center;
+            }
+        }
+    }
+
+    .header {
+        max-width: 368px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+
+        a {
+            opacity: 0.85;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
+</style>

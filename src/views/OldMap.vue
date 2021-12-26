@@ -72,11 +72,7 @@
                         class="collapse navbar-collapse"
                         id="navbarSupportedContent"
                 >
-                    <div class="header">
-                        <router-link :to="{ name: 'home' }">
-                            <img src="/img/png/logos/hitmaps.png" class="img-fluid" alt="HITMAPS Logo" />
-                        </router-link>
-                    </div>
+                    <!-- TODO Need to migrate -->
                     <div class="editor-enabled" v-if="editor.enabled">
                         <h3 v-if="editor.mode === ''">
                             <i class="fas fa-fw fa-pencil-alt"></i>
@@ -98,50 +94,6 @@
                             <i class="fas fa-fw fa-user-tie"></i>
                             {{ $t('map.manage-disguise-areas') }}
                         </h3>
-                    </div>
-                    <div class="map-control">
-                        <div id="map-control-buttons">
-                            <!-- Leaflet zoom controls -->
-                        </div>
-                        <div class="control-buttons">
-                            <button data-toggle="modal" class="btn control-button" data-target="#locale-modal" v-tooltip:bottom="$t('language-modal.change-language')">
-                                <country-flag :country="getCountryFlag()" />
-                            </button>
-                            <button v-if="isLoggedIn && showDebug()"
-                                    id="debug-button"
-                                    @click="debugMode = !debugMode"
-                                    class="btn control-button"
-                                    v-tooltip:top="$t('map.debug-mode')"
-                                    :style="debugMode ? 'background: white; color: black' : ''">
-                                <i class="fas fa-bug"></i>
-                            </button>
-                            <button
-                                    v-if="isLoggedIn"
-                                    id="edit-button"
-                                    @click="toggleEditor"
-                                    class="btn control-button"
-                                    v-tooltip:top="$t('map.edit-map')"
-                            >
-                                <i class="fas fa-pencil-alt"></i>
-                            </button>
-                            <button
-                                    v-if="isLoggedIn"
-                                    class="btn control-button"
-                                    v-tooltip:top="$t('authentication.log-out')"
-                                    @click="logout"
-                            >
-                                <i class="fas fa-sign-out-alt"></i>
-                            </button>
-                            <router-link :to="{ name: 'login' }">
-                                <button
-                                        v-if="!isLoggedIn"
-                                        class="btn control-button"
-                                        v-tooltip:bottom="$t('map.login-to-edit')"
-                                >
-                                    <i class="fas fa-sign-in-alt"></i>
-                                </button>
-                            </router-link>
-                        </div>
                     </div>
                     <div class="map-control debug" v-if="debugMode">
                         <div class="control-buttons">
@@ -175,6 +127,7 @@
                             id="accordion"
                             v-show="!editor.enabled"
                     >
+                        <!-- TODO Mobile -->
                         <div
                                 class="floor-toggle"
                                 v-if="mission.missionType != 'Sniper Assassin'"
@@ -208,18 +161,6 @@
                             >
                                 <div @click="changeLevel(-99)" class="floor">
                                     {{ $t('map.satellite' )}}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="difficulty-selector">
-                            <div class="row">
-                                <div class="col-lg-6 col-xs-12 difficulty"
-                                     :class="difficulty === selectedVariant ? 'active' : ''"
-                                     @click="updateVariant(difficulty)"
-                                     v-for="difficulty in variants"
-                                     :key="difficulty.id">
-                                    <game-icon :icon="`difficulty-${$options.filters.lowercase(difficulty.variant)}`" font-style="solid" />
-                                    <span>{{ $t(`difficulties.${difficulty.variant}`) }}</span>
                                 </div>
                             </div>
                         </div>
@@ -340,24 +281,6 @@
                                     style="display: none"
                             >
                                 <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                        <div class="hide-or-select-all">
-                            <button
-                                    id="hide-all"
-                                    @click="toggleLayer('|', true)"
-                                    class="btn control-button"
-                            >
-                                <i class="far fa-fw fa-eye-slash"></i>
-                                {{ $t('map.hide-all') }}
-                            </button>
-                            <button
-                                    id="show-all"
-                                    @click="toggleLayer('|', false)"
-                                    class="btn control-button"
-                            >
-                                <i class="far fa-fw fa-eye"></i>
-                                {{ $t('map.show-all') }}
                             </button>
                         </div>
                         <div v-if="mission.missionType == 'Sniper Assassin'">

@@ -148,27 +148,8 @@ class NodeController {
         /* @var $nodes array */
         $nodes = $this->nodeRepository->findByMissionV2($missionid);
 
-        $groups = [
-            'Points of Interest' => new TopLevelCategoryViewModel('Points of Interest'),
-            'Weapons and Tools' => new TopLevelCategoryViewModel('Weapons and Tools'),
-            'Navigation' => new TopLevelCategoryViewModel('Navigation'),
-        ];
-
         $forSniperAssassin = $mission->getMissionType() === MissionType::SNIPER_ASSASSIN;
-        $nodeCategories = $this->nodeCategoryRepository->findBy(['forMission' => !$forSniperAssassin, 'forSniperAssassin' => $forSniperAssassin ], ['order' => 'ASC', 'id' => 'ASC']);
-        foreach ($nodeCategories as $nodeCategory) {
-            /* @var $nodeCategory NodeCategory */
-            $categoryViewModel = new CategoryViewModel();
-            $categoryViewModel->name = $nodeCategory->getGroup();
-            $categoryViewModel->icon = $nodeCategory->getIcon();
-            $categoryViewModel->collapsible = $nodeCategory->getCollapsible();
-            $categoryViewModel->order = $nodeCategory->getOrder();
-
-            /* @var $topLevelCategory TopLevelCategoryViewModel */
-            $topLevelCategory = $groups[$nodeCategory->getType()];
-
-            $topLevelCategory->items[$nodeCategory->getGroup()] = $categoryViewModel;
-        }
+        $nodeViewModels = [];
 
         $addedNodes = [];
         foreach ($nodes as $node) {
@@ -232,8 +213,7 @@ class NodeController {
                     $nodeViewModel->variants[] = $missionVariant['variant'];
                 }
 
-                $categoryViewModel = $groups[$type]->items[$group];
-                $categoryViewModel->items[] = $nodeViewModel;
+                $nodeViewModels[] = $nodeViewModel;
 
                 if ($distinctOnly && $node['name'] !== null && $node['name'] !== '') {
                     $addedNodes[] = $type . $group . $node['name'];
@@ -241,7 +221,7 @@ class NodeController {
             }
         }
 
-        return $groups;
+        return $nodeViewModels;
     }
 
     public function createNode(int $missionId, string $difficulty, array $postData, User $user): Node {

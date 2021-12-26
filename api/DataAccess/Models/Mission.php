@@ -147,9 +147,11 @@ class Mission {
      */
     public $boundingBoxBottomRight;
 
-    // Not used by Doctrine
-    /* @var $floorNames array */
-    public $floorNames = [];
+    /**
+     * @ORM\OneToMany(targetEntity="MapFloorToName", mappedBy="mission", fetch="EAGER")
+     * @var $floorNames Collection
+     */
+    public $floorNames;
 
     // Not used by Doctrine
     public $icon = '';
@@ -175,6 +177,7 @@ class Mission {
 
     public function __construct() {
         $this->variants = new ArrayCollection();
+        $this->floorNames = new ArrayCollection();
     }
 
     /**
@@ -541,5 +544,19 @@ class Mission {
      */
     public function setBoundingBoxBottomRight($boundingBoxBottomRight): void {
         $this->boundingBoxBottomRight = $boundingBoxBottomRight;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getFloorNames(): ArrayCollection|Collection {
+        return $this->floorNames;
+    }
+
+    /**
+     * @param Collection $floorNames
+     */
+    public function setFloorNames(ArrayCollection|Collection $floorNames): void {
+        $this->floorNames = $floorNames;
     }
 }

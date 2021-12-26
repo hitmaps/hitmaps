@@ -17,9 +17,10 @@ class MapFloorToName {
     public $id;
 
     /**
-     * @ORM\Column(type="integer", name="mission_id")
+     * @ORM\ManyToOne(targetEntity="Mission", inversedBy="floorNames")
+     * @ORM\JoinColumn(name="mission_id", referencedColumnName="id")
      */
-    public $missionId;
+    public $mission;
 
     /**
      * @ORM\Column(type="integer", name="floor_number")
@@ -50,17 +51,17 @@ class MapFloorToName {
     }
 
     /**
-     * @return mixed
+     * @return Mission
      */
-    public function getMissionId(): int {
-        return $this->missionId;
+    public function getMission(): Mission {
+        return $this->mission;
     }
 
     /**
-     * @param mixed $missionId
+     * @param Mission $missionId
      */
-    public function setMissionId(int $missionId): void {
-        $this->missionId = $missionId;
+    public function setMission(Mission $mission): void {
+        $this->mission = $mission;
     }
 
     /**

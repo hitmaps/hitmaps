@@ -13,6 +13,14 @@ import VueMeta from 'vue-meta'
 import VueCookies from 'vue-cookies'
 
 axios.defaults.withCredentials = true
+axios.interceptors.request.use((config) => {
+    if (localStorage.getItem('token') !== null) {
+        config.headers = {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+    }
+    return config;
+});
 
 Vue.config.productionTip = false
 //For Copyright
@@ -33,6 +41,7 @@ Vue.use(VueMeta);
 Vue.use(VueCookies);
 
 //Better method to deciding what type of request
+// DEPRECATED
 Vue.prototype.$request = (post, endpoint, data) => {
     var header = {}
     if (localStorage.getItem('token') !== null) {
