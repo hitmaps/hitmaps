@@ -20,6 +20,14 @@ export default {
         border: solid 2px #fff;
         transition: none;
 
+        &.disabled {
+            &:hover {
+                cursor: not-allowed;
+                background: inherit;
+                color: #fff;
+            }
+        }
+
         &:hover {
             color: #000;
             background: #fff;

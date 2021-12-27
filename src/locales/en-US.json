@@ -311,7 +311,9 @@
         "text": "Text",
         "add-another-note": "Add Another Note",
         "in-game-description": "In-Game Description:",
-        "suit-disguise": "Suit ({suitName})"
+        "suit-disguise": "Suit ({suitName})",
+        "npc": "NPC",
+        "edit-slash-delete": "Edit / Delete"
     },
     "profile": {
         "profile": "Profile",

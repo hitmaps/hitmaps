@@ -19,8 +19,8 @@
         <!-- TODO Editor Header -->
         <div class="map-control">
             <div id="map-control-buttons">
-                <control-button>+</control-button>
-                <control-button>-</control-button>
+                <control-button @click="$emit('zoom-in')" :class="currentZoomLevel === maxZoomLevel ? 'disabled' : ''">+</control-button>
+                <control-button @click="$emit('zoom-out')" :class="currentZoomLevel === minZoomLevel ? 'disabled' : ''">-</control-button>
             </div>
             <div class="control-buttons">
                 <control-button data-toggle="modal" data-target="#locale-modal" v-tooltip:bottom="$t('language-modal.change-language')">
@@ -85,7 +85,10 @@ export default {
         categories: Array,
         nodes: Array,
         topLevelCategories: Array,
-        disguises: Array
+        disguises: Array,
+        maxZoomLevel: Number,
+        minZoomLevel: Number,
+        currentZoomLevel: Number
     },
     data() {
         return {

@@ -16,14 +16,19 @@
                      :categories="categories"
                      :nodes="nodes"
                      :disguises="disguises"
+                     :max-zoom-level="mission.maxZoom"
+                     :min-zoom-level="mission.minZoom"
+                     :current-zoom-level="map.getZoom()"
                      @hide-all="onHideAll"
                      @show-all="onShowAll"
                      @search-item="onSearchItem"
                      @hide-category="onHideCategory"
                      @show-category="onShowCategory"
                      @hide-top-level-category="onHideTopLevelCategory"
-                     @show-top-level-category="onShowTopLevelCategory" />
-            <node-popup ref="popupTemplate" style="display: none" :node="nodeForPopup" :logged-in="loggedIn" :game="game"/>
+                     @show-top-level-category="onShowTopLevelCategory"
+                     @zoom-in="onZoomIn"
+                     @zoom-out="onZoomOut" />
+            <node-popup :node="nodeForModal" :logged-in="loggedIn" :game="game"/>
         </div>
     </div>
 </template>
@@ -57,7 +62,7 @@
                 currentFloor: 0,
                 map: null,
                 mapLayers: {},
-                nodeForPopup: null,
+                nodeForModal: null,
                 //endregion
             }
         },
@@ -101,8 +106,8 @@
                                     id: node.id
                                 },
                                 riseOnHover: true
-                            }).on('click', (e) => {
-                                this.renderPopup(node, e.target);
+                            }).on('click', _ => {
+                                this.renderItemDetailsModal(node);
                             });
 
                             if (node.tooltip !== '') {
@@ -264,12 +269,10 @@
                         popupAnchor: [0, 0]
                     });
             },
-            renderPopup(node, marker) {
-                this.nodeForPopup = node;
+            renderItemDetailsModal(node) {
+                this.nodeForModal = node;
 
-                this.$nextTick(() => {
-                    marker.bindPopup(this.$refs.popupTemplate.$el.innerHTML).openPopup();
-                })
+                this.$nextTick(() => $('#popover-modal').modal('show'));
             },
             //endregion
             range(min, max) {
@@ -316,6 +319,12 @@
                 this.nodes.filter(node => node.type === type).forEach(node => node.visible = true);
 
                 this.updateNodeMarkers();
+            },
+            onZoomIn() {
+                this.map.setZoom(this.map.getZoom() + 1);
+            },
+            onZoomOut() {
+                this.map.setZoom(this.map.getZoom() - 1);
             }
             //endregion
         },

@@ -1,135 +1,231 @@
 <template>
-    <div v-if="node">
-        <div class="image-and-name" :class="`game-${this.game.slug}`" :style="backgroundCss" v-if="node.image">
-            <p class="flex-push">&nbsp;</p>
-            <div class="name">{{ node.name }}</div>
-            <div class="group">{{ node.group }}</div>
-        </div>
-        <div class="no-image" v-else>
-            <div class="name">{{ node.name }}</div>
-            <div class="group">{{ node.group }}</div>
-        </div>
-        <div class="target" v-if="node.target !== null && node.target !== '' && node.targetIcon !== ''">
-            <i class="far" :class="node.targetIcon"></i>
-            <span>{{ node.target }}</span>
-        </div>
-        <div class="notes">
-            <div v-for="note in node.notes" :class="note.type">
-                <div class="in-game-description">{{ $t('map.in-game-description') }}</div>
-                <div>{{ note.text }}</div>
+    <modal id="popover-modal" tabindex="-1" flush>
+        <div v-if="node" class="popover-content">
+            <div class="image">
+                <img :src="node.image" class="img-fluid">
+            </div>
+            <div class="details">
+                <div class="icon-and-details">
+                    <div class="icon" v-if="fontIconForNodeSubgroup !== 'corrupt'">
+                        <game-icon :icon="fontIconForNodeSubgroup" font-style="solid"/>
+                    </div>
+                    <div class="inner-details">
+                        <p class="group">{{ node.group }}</p>
+                        <p class="name">{{ node.name }}</p>
+                    </div>
+                </div>
+                <div class="description" v-if="descriptionNote">
+                    {{ descriptionNote.text }}
+                </div>
+                <div class="notes">
+                    <div v-for="note in node.notes.filter(note => note.type !== 'description')" class="note" :class="note.type">
+                        <div class="type">{{ getLocalizedNoteType(note) }}</div>
+                        <div>{{ note.text }}</div>
+                    </div>
+                </div>
+                <div class="target" v-if="node.target !== null && node.target !== ''">
+                    <game-icon v-if="fontIconForActionTarget" :icon="fontIconForActionTarget" font-style="normal" />
+                    <div class="header-and-target">
+                        <div>{{ actionTextForActionTarget }}</div>
+                        <div class="action-or-npc-name">{{ node.target }}</div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div v-if="loggedIn">
-            <button class="btn btn-danger btn-sm" @click="$emit('delete-node', node.id)">
-                <i class="fas fa-times"></i>
-            </button>
-            <button class="btn btn-warning btn-sm" @click="$emit('edit-node', node.id)">
-                <i class="fas fa-pencil-alt"></i>
-            </button>
-        </div>
-    </div>
-    <div v-else>&nbsp;</div>
+        <template v-slot:modal-footer>
+            <template v-if="loggedIn">
+                <game-button @click="$emit('edit-node', node.id)">
+                    <game-icon icon="edit" font-style="normal"/>
+                    {{ $t('map.edit-slash-delete') }}
+                </game-button>
+            </template>
+            <game-button data-dismiss="modal">
+                <game-icon icon="failed" font-style="normal"/>
+                {{ $t('form.close') }}
+            </game-button>
+        </template>
+    </modal>
 </template>
 
 <script>
+import Modal from "../Modal";
+import GameIcon from "../GameIcon";
+import GameButton from "../GameButton";
 export default {
     name: "NodePopup",
+    components: {GameButton, GameIcon, Modal},
     props: {
         game: Object,
         node: Object,
         loggedIn: Boolean
     },
     computed: {
+        descriptionNote() {
+            return this.node.notes.find(node => node.type === 'description');
+        },
         backgroundCss() {
             if (!this.node.image) {
                 return '';
             }
 
-            let backgroundCss = `background-image: url(${this.node.image})`;
-
+            let backgroundCss;
             if (this.game.slug === 'absolution') {
-                backgroundCss += ', radial-gradient(#69696a, #171718)';
+                backgroundCss = `background-image: url('${this.node.image}'), radial-gradient(#69696a, #171718)`;
+            } else {
+                backgroundCss = `background: url('${this.node.image}') center center / cover no-repeat`;
             }
 
             return backgroundCss;
+        },
+        actionTextForActionTarget() {
+            if (this.node.icon === 'poison') {
+                return this.$t('map.npc');
+            }
+
+            if (['interaction', 'sabotage', 'distraction'].includes(this.node.subgroup)) {
+                return this.$t('map.action');
+            }
+
+            return null;
+        },
+        fontIconForActionTarget() {
+            if (this.node.icon === 'poison') {
+                return 'npc';
+            }
+
+            if (['interaction', 'sabotage', 'distraction'].includes(this.node.subgroup)) {
+                return 'settings';
+            }
+
+            return null;
+        },
+        fontIconForNodeSubgroup() {
+            switch (this.node.subgroup) {
+                case 'sabotage':
+                case 'explosive':
+                    return 'explosive';
+                case 'distraction':
+                    return 'distraction';
+                case 'poison':
+                case 'poison-weapon':
+                    return 'poison';
+                case 'misc-item':
+                    return this.getMiscItemIcon(this.node);
+                case 'intel':
+                    return 'intel';
+                case 'disguise':
+                    return 'disguise';
+                case 'locked-door':
+                    return 'locked';
+                case 'interaction':
+                    return 'tool';
+                case 'alarm':
+                    return 'online';
+                case 'location':
+                    return 'story';
+                case 'lethal-melee':
+                case 'non-lethal-melee':
+                    return 'melee';
+                case 'firearm':
+                    return 'concealed-weapon';
+                case 'starting-location':
+                    return 'starting';
+                case 'exit-location':
+                    return 'exit';
+                case 'agency-pickup':
+                    return 'stash-point-empty';
+                default:
+                    return 'corrupt';
+            }
+        }
+    },
+    methods: {
+        getLocalizedNoteType(note) {
+            return note.type === 'info' ? this.$t('map.information') : this.$t(`map.${note.type}`);
+        },
+        getMiscItemIcon(node) {
+            if (node.icon.includes('key')) {
+                return 'key';
+            }
+
+            return 'challenge-category-item';
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-    .image-and-name {
-        background-position-x: center;
-        background-position-y: center;
-        background-size: cover;
-        height: 200px;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
-        display: flex;
-        flex-direction: column;
-        text-shadow: 2px 2px #000;
+.popover-content {
+    display: flex;
 
-        .flex-push {
-            flex-grow: 1;
-        }
-
-        .name {
-            color: #fff;
-            text-transform: uppercase;
-            padding: 5px 10px;
-            font-size: 1.3em;
-            font-weight: bolder;
-            background: rgba(0,0,0,.4);
-        }
-
-        .group {
-            color: #fff;
-            text-transform: uppercase;
-            font-weight: bolder;
-            padding: 0 10px 5px;
-            background: rgba(0,0,0,.4);
-        }
-
-        &.game-absolution {
-            background-color: #000;
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
+    .image {
+        width: 45%;
     }
 
-    .no-image {
-        .name {
-            color: #000;
-            text-transform: uppercase;
-            padding: 10px 10px 0;
-            font-size: 1.3em;
-            font-weight: bolder;
+    .details {
+        width: 55%;
+        margin: 10px;
+
+        .icon-and-details {
+            display: flex;
+
+            .inner-details {
+                margin-left: 10px;
+
+                p {
+                    margin-bottom: 0;
+                    text-transform: uppercase;
+
+                    &.name {
+                        font-weight: bolder;
+                    }
+                }
+            }
         }
 
-        .group {
-            color: #aaa;
-            text-transform: uppercase;
-            font-weight: bolder;
-            padding: 0 10px;
+        .description {
+            border-top: dotted 1px #fff;
+            border-bottom: dotted 1px #fff;
+            margin-top: 10px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .target {
+            margin-top: 10px;
+            i {
+                display: inline-block;
+            }
+
+            > div {
+                display: inline-block;
+                margin-left: 10px;
+                text-transform: uppercase;
+
+                .action-or-npc-name {
+                    font-weight: bolder;
+                }
+            }
         }
     }
-
-    .target {
-        padding: 0 10px;
-        color: #666;
-    }
-
+}
     .notes {
-        margin-top: 10px;
-        margin-bottom: 10px;
-
         > div {
+            margin-top: 5px;
             padding: 10px;
             white-space: pre-line;
 
-            &:not(:last-child) {
-                margin-bottom: 10px;
+            &:first-child {
+                margin-top: 10px;
+            }
+        }
+
+        .note {
+            background: rgb(58,63,73);
+
+            .type {
+                font-weight: bolder;
+                text-transform: uppercase;
             }
         }
 
@@ -138,8 +234,6 @@ export default {
                 display: none;
             }
 
-            color: #721c24;
-            background: #f8d7da;
             border-left: solid 3px #d00000;
         }
 
@@ -148,8 +242,6 @@ export default {
                 display: none;
             }
 
-            color: #856404;
-            background: #fff3cd;
             border-left: solid 3px #ffa500;
         }
 
@@ -158,8 +250,6 @@ export default {
                 display: none;
             }
 
-            color: #0c5460;
-            background: #b7d4ff;
             border-left: solid 3px #0000e0;
         }
 
@@ -174,9 +264,5 @@ export default {
             background: #e4e4e4;
             border-left: solid 3px #666666;
         }
-    }
-
-    [data-action='delete-btn'] {
-        margin-left: 10px;
     }
 </style>
