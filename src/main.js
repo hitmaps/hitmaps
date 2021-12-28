@@ -30,6 +30,8 @@ Vue.prototype.$domain = window.location.hostname.includes('localhost') ?
     'http://localhost:8000' :
     `${document.location.protocol}//${window.location.hostname}`;
 Vue.prototype.$hostname = window.location.hostname;
+const port = document.location.port ? `:${document.location.port}` : '';
+Vue.prototype.$vueDomain = `${document.location.protocol}//${window.location.hostname}${port}`;
 
 var VueMoment = require('vue-moment');
 var moment = require('moment-timezone');

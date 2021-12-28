@@ -42,16 +42,15 @@
                     </control-button>
                     <control-button
                         v-tooltip:top="$t('authentication.log-out')"
-                        @click="/*logout*/">
+                        @click="logout">
                         <i class="fas fa-sign-out-alt"></i>
                     </control-button>
                 </template>
-                <router-link v-else :to="{ name: 'login' }">
-                    <control-button
-                        v-tooltip:bottom="$t('map.login-to-edit')">
+                <a v-else @click="beginDiscordLogin">
+                    <control-button>
                         <i class="fas fa-sign-in-alt"></i>
                     </control-button>
-                </router-link>
+                </a>
             </div>
         </div>
         <item-search :searchable-nodes="getSearchableNodes()" @search-item="onSearchItem" />
@@ -144,6 +143,14 @@ export default {
             });
 
             return uniqueNodesBrokenDownByGroup;
+        },
+        beginDiscordLogin() {
+            this.$cookies.set('redirect-location', `${window.location.pathname}${window.location.search}`, '600s');
+            window.location.href = `https://discordapp.com/api/oauth2/authorize?client_id=681919936469401687&redirect_uri=${encodeURIComponent(this.$vueDomain)}/auth&response_type=token&scope=connections%20identify%20guilds%20email`;
+        },
+        logout: function() {
+            localStorage.removeItem('token');
+            location.reload();
         },
         //region Event listeners
         onSearchItem(searchedItem) {
