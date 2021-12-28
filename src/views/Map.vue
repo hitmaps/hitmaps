@@ -277,8 +277,10 @@
                 this.map.addLayer(this.mapLayers[this.currentFloor]);
             },
             updateNodeMarkers() {
-                // 1. Remove all nodes from the map
+                // 1. Remove all items from the map
                 this.nodes.forEach(node => node.marker._icon.style.display = 'none');
+                this.ledges.forEach(ledge => ledge.polyline.removeFrom(this.map));
+                this.foliage.forEach(foliage => foliage.polygon.removeFrom(this.map));
 
                 // 3. [OVERRIDE] Mark nodes as "visible" if they are part of a search result
                 this.nodes.filter(node => node.searchResult).forEach(node => node.visible = true);
@@ -295,20 +297,10 @@
                 });
 
                 // 5. Handle showing/hiding ledges/foliage
-                this.ledges.forEach(ledge => {
-                    if (ledge.visible && ledge.level === this.currentFloor) {
-                        ledge.polyline.addTo(this.map);
-                    } else {
-                        ledge.polyline.removeFrom(this.map);
-                    }
-                });
-                this.foliage.forEach(foliage => {
-                    if (foliage.visible && foliage.level === this.currentFloor) {
-                        foliage.polygon.addTo(this.map);
-                    } else {
-                        foliage.polygon.removeFrom(this.map);
-                    }
-                })
+                this.ledges.filter(ledge => ledge.level === this.currentFloor && ledge.visible)
+                    .forEach(ledge => ledge.polyline.addTo(this.map));
+                this.foliage.filter(foliage => foliage.level === this.currentFloor && foliage.visible)
+                    .forEach(foliage => foliage.polygon.addTo(this.map));
 
                 // Make sure the counters and highlights for the level select are updated
                 if (this.$refs.floorToggle) {
