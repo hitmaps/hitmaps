@@ -20,14 +20,17 @@ use DataAccess\Models\MissionVariant;
 use DataAccess\Models\NodeCategory;
 use DataAccess\Models\NodeDifficulty;
 use DataAccess\Models\RouletteMatchup;
+use DI\Container;
 use Doctrine\ORM\EntityManager;
+use Klein\Request;
+use Klein\Response;
 use Predis\Client;
 
 require __DIR__ . '/autoload.php';
 
 $klein = new \Klein\Klein();
 
-$klein->respond(function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond(function(Request $request, Response $response) use ($applicationContext) {
     if(isset($_SERVER['HTTP_ORIGIN'])) $response->header('Access-Control-Allow-Origin', $_SERVER['HTTP_ORIGIN']);
     $response->header('Access-Control-Allow-Headers', 'content-type,Authorization');
     $response->header('Access-Control-Allow-Credentials', 'true');
@@ -35,7 +38,7 @@ $klein->respond(function(\Klein\Request $request, \Klein\Response $response) use
 });
 
 // Public API calls
-$klein->respond('GET', '/api/v1/games/[:game]?', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/v1/games/[:game]?', function(Request $request, Response $response) use ($applicationContext) {
     if ($request->game === null) {
         $games = $applicationContext->get(EntityManager::class)->getRepository(Game::class)->findAll();
     } else {
@@ -45,7 +48,7 @@ $klein->respond('GET', '/api/v1/games/[:game]?', function(\Klein\Request $reques
     return $response->json($games);
 });
 
-$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]?', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]?', function (Request $request, Response $response) use ($applicationContext) {
     $game = $applicationContext->get(EntityManager::class)->getRepository(Game::class)->findOneBy(['slug' => $request->game]);
 
     if ($game === null) {
@@ -73,7 +76,7 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]?', function 
     return $response->json($locations);
 });
 
-$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]?', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]?', function(Request $request, Response $response) use ($applicationContext) {
     /* @var $location Location */
     $location = $applicationContext->get(EntityManager::class)->getRepository(Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
 
@@ -93,7 +96,7 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
     return $response->json(array_map(fn(Mission $x) => new MissionViewModel($x), $missions));
 });
 
-$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map-metadata', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map-metadata', function(Request $request, Response $response) use ($applicationContext) {
     /* @var $location Location */
     $location = $applicationContext->get(EntityManager::class)->getRepository(Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
 
@@ -123,7 +126,7 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
     return $response->json($metadata);
 });
 
-function buildTileUrlForMission(Mission $mission, string $game, \DI\Container $applicationContext): string {
+function buildTileUrlForMission(Mission $mission, string $game, Container $applicationContext): string {
     $constants = new \Config\Constants();
 
     if ($mission->getMissionType() === MissionType::ELUSIVE_TARGET) {
@@ -143,7 +146,7 @@ function buildTileUrlForMission(Mission $mission, string $game, \DI\Container $a
 }
 
 //region Map Data
-$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map', function(Request $request, Response $response) use ($applicationContext) {
     $cacheClient = $applicationContext->get(CacheClient::class);
 
     /* @var $game Game */
@@ -265,35 +268,12 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
     }));
 });
 
-$klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:mission]/nodes', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    /* @var $game Game */
-    $entityManager = $applicationContext->get(EntityManager::class);
-    $game = $entityManager->getRepository(Game::class)->findOneBy(['slug' => $request->game]);
-
-    /* @var $location Location */
-    $location = $entityManager->getRepository(Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
-
-    /* @var $mission Mission */
-    $mission = $entityManager->getRepository(Mission::class)->findOneBy(['locationId' => $location->getId(), 'slug' => $request->mission]);
-
+$klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:mission]/nodes', function(Request $request, Response $response) use ($applicationContext) {
+    $mission = getMissionFromRequest($applicationContext, $request);
     if ($mission === null) {
         $response->code(400);
         return $response->json([
             'message' => "Could not find mission with game '{$request->game}', location '{$request->location}', and mission slug '{$request->mission}'"
-        ]);
-    }
-
-    if ($location === null) {
-        $response->code(400);
-        return $response->json([
-            'message' => "Could not find location with game '{$request->game}' and location slug '{$request->location}'"
-        ]);
-    }
-
-    if ($game === null) {
-        $response->code(400);
-        return $response->json([
-            'message' => "Could not find game with slug '{$request->game}'"
         ]);
     }
 
@@ -314,7 +294,7 @@ $klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:m
     ]);
 });
 
-$klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:mission]/disguises', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+function getMissionFromRequest(Container $applicationContext, Request $request): ?Mission {
     /* @var $game Game */
     $entityManager = $applicationContext->get(EntityManager::class);
     $game = $entityManager->getRepository(Game::class)->findOneBy(['slug' => $request->game]);
@@ -322,27 +302,18 @@ $klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:m
     /* @var $location Location */
     $location = $entityManager->getRepository(Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
 
-    /* @var $mission Mission */
-    $mission = $entityManager->getRepository(Mission::class)->findOneBy(['locationId' => $location->getId(), 'slug' => $request->mission]);
+    return $location === null ?
+        null :
+        $entityManager->getRepository(Mission::class)->findOneBy(['locationId' => $location->getId(), 'slug' => $request->mission]);
+}
+
+$klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:mission]/disguises', function(Request $request, Response $response) use ($applicationContext) {
+    $mission = getMissionFromRequest($applicationContext, $request);
 
     if ($mission === null) {
         $response->code(400);
         return $response->json([
             'message' => "Could not find mission with game '{$request->game}', location '{$request->location}', and mission slug '{$request->mission}'"
-        ]);
-    }
-
-    if ($location === null) {
-        $response->code(400);
-        return $response->json([
-            'message' => "Could not find location with game '{$request->game}' and location slug '{$request->location}'"
-        ]);
-    }
-
-    if ($game === null) {
-        $response->code(400);
-        return $response->json([
-            'message' => "Could not find game with slug '{$request->game}'"
         ]);
     }
 
@@ -382,8 +353,34 @@ $klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:m
     ]);
 });
 
+$klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:mission]/ledges', function(Request $request, Response $response) use ($applicationContext) {
+    $mission = getMissionFromRequest($applicationContext, $request);
+    if ($mission === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find mission with game '{$request->game}', location '{$request->location}', and mission slug '{$request->mission}'"
+        ]);
+    }
+
+    /* @var $ledges \DataAccess\Models\Ledge[] */
+    $ledges = $applicationContext->get(LedgeController::class)->getLedgesForMission($mission->getId());
+    $formattedLedges = [];
+    foreach ($ledges as $ledge) {
+        $viewModel = new LedgeViewModel();
+        $viewModel->id = $ledge->getId();
+        $viewModel->missionId = $ledge->getMissionId();
+        $viewModel->level = $ledge->getLevel();
+        $viewModel->vertices = explode('|', $ledge->getVertices());
+        $formattedLedges[] = $viewModel;
+    }
+
+    return $response->json([
+        'ledges' => $formattedLedges
+    ]);
+});
+
 // TODO Delete me once split up
-$klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:mission]/map', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:mission]/map', function(Request $request, Response $response) use ($applicationContext) {
     $cacheClient = $applicationContext->get(CacheClient::class);
 
     /* @var $game Game */
@@ -423,23 +420,6 @@ $klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:m
     $cacheKey = KeyBuilder::buildKey(['map', $mission->getId()]);
 
     return $response->json($cacheClient->retrieve($cacheKey, function() use ($applicationContext, $request, $response, $location, $mission, $game) {
-        $nodes = $applicationContext->get(NodeController::class)->getNodesForMissionV2($mission->getId());
-        $forSniperAssassin = $mission->getMissionType() === MissionType::SNIPER_ASSASSIN;
-        $nodeCategories = $applicationContext->get(EntityManager::class)->getRepository(NodeCategory::class)->findBy(
-            ['forMission' => !$forSniperAssassin, 'forSniperAssassin' => $forSniperAssassin],
-            ['order' => 'ASC', 'group' => 'ASC']);
-
-        /* @var $ledges \DataAccess\Models\Ledge[] */
-        $ledges = $applicationContext->get(LedgeController::class)->getLedgesForMission($mission->getId());
-        $formattedLedges = [];
-        foreach ($ledges as $ledge) {
-            $viewModel = new LedgeViewModel();
-            $viewModel->id = $ledge->getId();
-            $viewModel->missionId = $ledge->getMissionId();
-            $viewModel->level = $ledge->getLevel();
-            $viewModel->vertices = explode('|', $ledge->getVertices());
-            $formattedLedges[] = $viewModel;
-        }
 
         /* @var $foliage \DataAccess\Models\Foliage[] */
         $foliage = $applicationContext->get(FoliageController::class)->getFoliageForMission($mission->getId());
@@ -457,56 +437,17 @@ $klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:m
         $disguiseRepository = $applicationContext->get(EntityManager::class)
             ->getRepository(Disguise::class);
 
-        /* @var $disguises Disguise[] */
-        $disguisesWithAreas = $disguiseRepository->findByMission($mission->getId());
-        $formattedDisguises = [];
-
-        /* @var $formattedDisguise DisguiseViewModel */
-        $formattedDisguise = null;
-        foreach ($disguisesWithAreas as $disguiseOrArea) {
-            if ($disguiseOrArea === null) {
-                continue;
-            }
-
-            if ($disguiseOrArea instanceof DisguiseArea) {
-                /* @var $area DisguiseArea */
-                $area = $disguiseOrArea;
-                $areaViewModel = new DisguiseAreaViewModel();
-                $areaViewModel->id = $area->getId();
-                $areaViewModel->missionId = $area->getMissionId();
-                $areaViewModel->disguiseId = $area->getDisguiseId();
-                $areaViewModel->level = $area->getLevel();
-                $areaViewModel->type = $area->getType();
-                $areaViewModel->vertices = explode('|', $area->getVertices());
-                $formattedDisguise->areas[] = $areaViewModel;
-                continue;
-            }
-
-            /* @var $disguise Disguise */
-            $disguise = $disguiseOrArea;
-            $formattedDisguise = new DisguiseViewModel();
-            $formattedDisguise->id = $disguise->getId();
-            $formattedDisguise->name = $disguise->getName();
-            $formattedDisguise->image = $disguise->getImage();
-            $formattedDisguise->order = $disguise->getOrder();
-            $formattedDisguise->suit = $disguise->getSuit();
-            $formattedDisguises[] = $formattedDisguise;
-        }
-
         return [
-            'game' => $game,
-            'mission' => $mission,
             'variants' => $applicationContext->get(EntityManager::class)
                 ->getRepository(MissionVariant::class)
                 ->findBy(['missionId' => $mission->getId()]),
             'ledges' => $formattedLedges,
-            'foliage' => $formattedFoliage,
-            'disguises' => $formattedDisguises];
+            'foliage' => $formattedFoliage];
     }));
 });
 //endregion
 
-$klein->respond('GET', '/api/v1/editor/templates', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/v1/editor/templates', function(Request $request, Response $response) use ($applicationContext) {
     $templates = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Item::class)->findBy([], ['name' => 'ASC']);
     $sortedTemplates = [];
 
@@ -522,7 +463,7 @@ $klein->respond('GET', '/api/v1/editor/templates', function(\Klein\Request $requ
     return $response->json($sortedTemplates);
 });
 
-$klein->respond('GET', '/api/v1/editor/icons', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/v1/editor/icons', function(Request $request, Response $response) use ($applicationContext) {
     $icons = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Icon::class)->findBy([], ['order' => 'ASC', 'icon' => 'ASC']);
     $sortedIcons = [];
 
@@ -538,7 +479,7 @@ $klein->respond('GET', '/api/v1/editor/icons', function(\Klein\Request $request,
     return $response->json($sortedIcons);
 });
 
-$klein->respond('GET', '/api/v1/elusive-targets', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/v1/elusive-targets', function(Request $request, Response $response) use ($applicationContext) {
     $constants = new \Config\Constants();
     $settings = new \Config\Settings();
     /* @var $missionRepository \DataAccess\Repositories\MissionRepository */
@@ -566,7 +507,7 @@ $klein->respond('GET', '/api/v1/elusive-targets', function(\Klein\Request $reque
 });
 
 // Web APIs
-$klein->respond('GET', '/api/web/home', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/web/home', function(Request $request, Response $response) use ($applicationContext) {
     $constants = new \Config\Constants();
     $games = $applicationContext->get(EntityManager::class)->getRepository(Game::class)->findAll();
 
@@ -601,7 +542,7 @@ $klein->respond('GET', '/api/web/home', function(\Klein\Request $request, \Klein
     ]);
 });
 
-$klein->respond('POST', '/api/web/user/login', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext, $klein) {
+$klein->respond('POST', '/api/web/user/login', function(Request $request, Response $response) use ($applicationContext, $klein) {
     $controller = $applicationContext->get(\Controllers\AuthenticationController::class);
 
     try {
@@ -625,7 +566,7 @@ $klein->respond('POST', '/api/web/user/login', function(\Klein\Request $request,
     }
 });
 
-$klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('POST', '/api/nodes', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
@@ -646,7 +587,7 @@ $klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\
     return json_encode($responseModel);
 });
 
-function transformNode(\DataAccess\Models\Node $node, \DI\Container $applicationContext): \Controllers\ViewModels\NodeWithNotesViewModel {
+function transformNode(\DataAccess\Models\Node $node, Container $applicationContext): \Controllers\ViewModels\NodeWithNotesViewModel {
     $nodeViewModel = new \Controllers\ViewModels\NodeWithNotesViewModel();
     $nodeViewModel->id = $node->getId();
     $nodeViewModel->missionId = $node->getMissionId();
@@ -695,7 +636,7 @@ function transformNode(\DataAccess\Models\Node $node, \DI\Container $application
     return $nodeViewModel;
 }
 
-$klein->respond('POST', '/api/ledges', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('POST', '/api/ledges', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
@@ -722,14 +663,14 @@ $klein->respond('POST', '/api/ledges', function (\Klein\Request $request, \Klein
     return json_encode($responseModel);
 });
 
-function clearAllMapCaches(int $missionId, \DI\Container $applicationContext) {
+function clearAllMapCaches(int $missionId, Container $applicationContext) {
     $cacheClient = $applicationContext->get(CacheClient::class);
     $cacheClient->delete([KeyBuilder::buildKey(['map', $missionId, 'standard']),
         KeyBuilder::buildKey(['map', $missionId, 'professional']),
         KeyBuilder::buildKey(['map', $missionId, 'master'])]);
 }
 
-$klein->respond('GET', '/api/ledges/delete/[:ledgeId]', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/ledges/delete/[:ledgeId]', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to delete ledges!']);
@@ -750,7 +691,7 @@ $klein->respond('GET', '/api/ledges/delete/[:ledgeId]', function (\Klein\Request
     return $response->json($responseModel);
 });
 
-$klein->respond('POST', '/api/foliage', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('POST', '/api/foliage', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
@@ -777,7 +718,7 @@ $klein->respond('POST', '/api/foliage', function (\Klein\Request $request, \Klei
     return json_encode($responseModel);
 });
 
-$klein->respond('GET', '/api/foliage/delete/[:foliageId]', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/foliage/delete/[:foliageId]', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to delete foliage!']);
@@ -798,7 +739,7 @@ $klein->respond('GET', '/api/foliage/delete/[:foliageId]', function (\Klein\Requ
     return $response->json($responseModel);
 });
 
-$klein->respond('POST', '/api/disguise-areas', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('POST', '/api/disguise-areas', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
@@ -831,7 +772,7 @@ $klein->respond('POST', '/api/disguise-areas', function (\Klein\Request $request
     return json_encode($responseModel);
 });
 
-$klein->respond('POST', '/api/disguise-areas/copy', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('POST', '/api/disguise-areas/copy', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
@@ -876,7 +817,7 @@ $klein->respond('POST', '/api/disguise-areas/copy', function (\Klein\Request $re
     return json_encode($responseModel);
 });
 
-$klein->respond('GET', '/api/disguise-areas/delete/[:areaId]', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/disguise-areas/delete/[:areaId]', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to delete disguise areas!']);
@@ -897,7 +838,7 @@ $klein->respond('GET', '/api/disguise-areas/delete/[:areaId]', function (\Klein\
     return $response->json($responseModel);
 });
 
-$klein->respond('POST', '/api/nodes/move', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('POST', '/api/nodes/move', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
@@ -916,7 +857,7 @@ $klein->respond('POST', '/api/nodes/move', function (\Klein\Request $request, \K
     return json_encode($responseModel);
 });
 
-$klein->respond('POST', '/api/nodes/edit/[:nodeId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('POST', '/api/nodes/edit/[:nodeId]', function(Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to modify nodes!']);
@@ -943,7 +884,7 @@ $klein->respond('POST', '/api/nodes/edit/[:nodeId]', function(\Klein\Request $re
     return json_encode($responseModel);
 });
 
-$klein->respond('GET', '/api/nodes/delete/[:nodeId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/nodes/delete/[:nodeId]', function(Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to modify nodes!']);
@@ -1056,7 +997,7 @@ $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
         'disguises' => $formattedDisguises]);
 });
 
-$klein->respond('POST', '/api/notifications', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('POST', '/api/notifications', function(Request $request, Response $response) use ($applicationContext) {
     $client = $applicationContext->get(\BusinessLogic\FirebaseClient::class);
 
     try {
@@ -1095,7 +1036,7 @@ $klein->respond('GET', '/api/push-elusive-target-status', function() use ($appli
     return http_response_code(204);
 });
 
-$klein->respond('GET', '/api/ioi/status', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/ioi/status', function(Request $request, Response $response) use ($applicationContext) {
     $config = new \Config\Settings();
     if ($config->accessKey !== $_GET['access-key']) {
         return $response->code(404);
@@ -1104,7 +1045,7 @@ $klein->respond('GET', '/api/ioi/status', function(\Klein\Request $request, \Kle
     $applicationContext->get(\BusinessLogic\IOIServices\ElusiveTargetUpdater::class)->retrieveLatestElusiveTargetFromIOI();
 });
 
-$klein->respond('GET', '/api/sitemap.txt', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/sitemap.txt', function(Request $request, Response $response) use ($applicationContext) {
     $constants = new \Config\Constants();
     $pages = [];
     // Static Pages
@@ -1173,7 +1114,7 @@ $klein->respond('GET', '/api/admin/migrate', function() {
     return '<pre>' . $output . '</pre>';
 });
 
-$klein->respond('DELETE', '/api/admin/cache', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('DELETE', '/api/admin/cache', function(Request $request, Response $response) use ($applicationContext) {
     $config = new Config\Settings();
     if ($config->accessKey !== $_GET['access-key']) {
         return http_response_code(404);
@@ -1226,13 +1167,13 @@ $klein->onError(function (\Klein\Klein $klein, $msg, $type, Throwable $err) {
 });
 
 //--> Roulette
-$klein->respond('GET', '/api/roulette/spins', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/roulette/spins', function(Request $request, Response $response) use ($applicationContext) {
     $spinId = $_GET['spinId'];
 
     return $applicationContext->get(Client::class)->get("hitmaps-roulette:{$spinId}");
 });
 
-$klein->respond('POST', '/api/roulette/spins', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('POST', '/api/roulette/spins', function(Request $request, Response $response) use ($applicationContext) {
     $requestBody = json_decode($request->body(), true);
 
     if ($requestBody === null) {
@@ -1247,7 +1188,7 @@ $klein->respond('POST', '/api/roulette/spins', function(\Klein\Request $request,
     ]);
 });
 
-$klein->respond('GET', '/api/roulette/matchups/[:matchupId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/roulette/matchups/[:matchupId]', function(Request $request, Response $response) use ($applicationContext) {
     $matchupId = $request->matchupId;
 
     $playerName = isset($_GET['name']) ? $_GET['name'] : '';
@@ -1260,7 +1201,7 @@ $klein->respond('GET', '/api/roulette/matchups/[:matchupId]', function(\Klein\Re
     return $response->code(404);
 });
 
-function getMatchupInformation($matchupId, \DI\Container $applicationContext, $playerName = '') {
+function getMatchupInformation($matchupId, Container $applicationContext, $playerName = '') {
     /* @var $matchup RouletteMatchup */
     $entityManager = $applicationContext->get(EntityManager::class);
     $matchup = $entityManager
@@ -1318,7 +1259,7 @@ function calculatePretimeRemaining(RouletteMatchup $matchup) {
     return ($difference->h * 60 * 60) + ($difference->i * 60) + $difference->s;
 }
 
-$klein->respond('POST', '/api/roulette/matchups', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('POST', '/api/roulette/matchups', function(Request $request, Response $response) use ($applicationContext) {
     $requestBody = json_decode($request->body(), true);
 
     if ($requestBody === null) {
@@ -1360,7 +1301,7 @@ $klein->respond('POST', '/api/roulette/matchups', function(\Klein\Request $reque
     return $response->json(['matchupId' => $matchupId]);
 });
 
-$klein->respond('PATCH', '/api/roulette/matchups/[:matchupId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('PATCH', '/api/roulette/matchups/[:matchupId]', function(Request $request, Response $response) use ($applicationContext) {
     $requestBody = json_decode($request->body(), true);
 
     if ($requestBody === null) {
@@ -1496,7 +1437,7 @@ $klein->respond('PATCH', '/api/roulette/matchups/[:matchupId]', function(\Klein\
 
 $klein->dispatch();
 
-function userIsLoggedIn(\Klein\Request $request, \DI\Container $applicationContext, ?string &$outToken): bool {
+function userIsLoggedIn(Request $request, Container $applicationContext, ?string &$outToken): bool {
     $outToken = null;
 
     /* @var $authorizationHeader string */
@@ -1518,7 +1459,7 @@ function userIsLoggedIn(\Klein\Request $request, \DI\Container $applicationConte
     }
 }
 
-function getUserContextForToken(string $token, \DI\Container $applicationContext): \DataAccess\Models\User {
+function getUserContextForToken(string $token, Container $applicationContext): ?\DataAccess\Models\User {
     $tokenGenerator = $applicationContext->get(\BusinessLogic\Authentication\TokenGenerator::class);
 
     try {
@@ -1526,11 +1467,4 @@ function getUserContextForToken(string $token, \DI\Container $applicationContext
     } catch (\BusinessLogic\Session\SessionException $e) {
         return null;
     }
-}
-
-
-function bounceToLogin(\Klein\Klein $klein, \Klein\Response $response, string $redirectLocation = '') {
-    $klein->service()->flash("An account is required to view this page.", 'danger');
-    $redirectLocation = $redirectLocation === '' ? '' : '?redirectLocation=' . $redirectLocation;
-    return $response->redirect('/user/login' . $redirectLocation);
 }
