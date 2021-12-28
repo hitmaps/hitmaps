@@ -16,7 +16,7 @@
                      :categories="categories"
                      :nodes="nodes"
                      :ledges="ledges"
-                     :foliage="[]"
+                     :foliage="foliage"
                      :disguises="disguises"
                      :max-zoom-level="mission.maxZoom"
                      :min-zoom-level="mission.minZoom"
@@ -61,6 +61,7 @@
                 topLevelCategories: [],
                 disguises: [],
                 ledges: [],
+                foliage: [],
                 //region Map-specific
                 currentFloor: 0,
                 map: null,
@@ -163,9 +164,30 @@
 
                         this.$nextTick(_ => this.ledges.forEach(ledge => ledge.polyline.addTo(this.map)));
                     });
+                const foliagePromise = this.$http.get(
+                    `${this.$domain}/api/v2/games/${this.$route.params.game}`+
+                                              `/locations/${this.$route.params.location}`+
+                                              `/missions/${this.$route.params.mission}/foliage`)
+                    .then(resp => {
+                        this.foliage = resp.data.foliage;
+                        this.foliage.forEach(foliage => {
+                            foliage.visible = true;
+                            const formattedVertices = foliage.vertices.map(vertexPair => [vertexPair.split(',')[0], vertexPair.split(',')[1]]);
+                            foliage.polygon = L.polygon(formattedVertices, {
+                                color: '#248f24',
+                                weight: 4,
+                                opacity: .75,
+                                custom: {
+                                    id: foliage.id
+                                }
+                            }).bindTooltip(this.$t('map.groups.Navigation|Foliage'), {sticky: true}).on('click', () => alert('hi!'));
+                        });
+
+                        this.$nextTick(_ => this.foliage.forEach(foliage => foliage.polygon.addTo(this.map)));
+                    });
                 //@formatter:on
 
-                Promise.all([nodesPromise, disguisesPromise, ledgesPromise]).then(_ => {
+                Promise.all([nodesPromise, disguisesPromise, ledgesPromise, foliagePromise]).then(_ => {
                     this.$nextTick(() => {
                         this.updateActiveMapState();
                         this.mapDataLoaded = true;
@@ -272,7 +294,7 @@
                     }
                 });
 
-                // 5. Handle showing/hiding ledges
+                // 5. Handle showing/hiding ledges/foliage
                 this.ledges.forEach(ledge => {
                     if (ledge.visible && ledge.level === this.currentFloor) {
                         ledge.polyline.addTo(this.map);
@@ -280,6 +302,13 @@
                         ledge.polyline.removeFrom(this.map);
                     }
                 });
+                this.foliage.forEach(foliage => {
+                    if (foliage.visible && foliage.level === this.currentFloor) {
+                        foliage.polygon.addTo(this.map);
+                    } else {
+                        foliage.polygon.removeFrom(this.map);
+                    }
+                })
 
                 // Make sure the counters and highlights for the level select are updated
                 if (this.$refs.floorToggle) {
@@ -318,11 +347,13 @@
             onHideAll() {
                 this.nodes.forEach(node => node.visible = false);
                 this.ledges.forEach(ledge => ledge.visible = false);
+                this.foliage.forEach(foliage => foliage.visible = false);
                 this.updateActiveMapState();
             },
             onShowAll() {
                 this.nodes.forEach(node => node.visible = true);
                 this.ledges.forEach(ledge => ledge.visible = true);
+                this.foliage.forEach(foliage => foliage.visible = true);
                 this.updateActiveMapState();
             },
             onSearchItem(itemKey) {
@@ -338,6 +369,8 @@
             onHideCategory(category) {
                 if (category.subgroup === 'ledge') {
                     this.ledges.forEach(ledge => ledge.visible = false);
+                } else if (category.subgroup === 'foliage') {
+                    this.foliage.forEach(foliage => foliage.visible = false);
                 } else {
                     this.nodes.filter(node => node.type === category.type && node.group === category.group).forEach(node => node.visible = false);
                 }
@@ -347,6 +380,8 @@
             onShowCategory(category) {
                 if (category.subgroup === 'ledge') {
                     this.ledges.forEach(ledge => ledge.visible = true);
+                } else if (category.subgroup === 'foliage') {
+                    this.foliage.forEach(foliage => foliage.visible = true);
                 } else {
                     this.nodes.filter(node => node.type === category.type && node.group === category.group).forEach(node => node.visible = true);
                 }
@@ -358,6 +393,7 @@
 
                 if (type === 'Navigation') {
                     this.ledges.forEach(ledge => ledge.visible = false);
+                    this.foliage.forEach(foliage => foliage.visible = false);
                 }
 
                 this.updateNodeMarkers();
@@ -367,6 +403,7 @@
 
                 if (type === 'Navigation') {
                     this.ledges.forEach(ledge => ledge.visible = true);
+                    this.foliage.forEach(foliage => foliage.visible = true);
                 }
 
                 this.updateNodeMarkers();

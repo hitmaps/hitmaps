@@ -379,6 +379,32 @@ $klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:m
     ]);
 });
 
+$klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:mission]/foliage', function(Request $request, Response $response) use ($applicationContext) {
+    $mission = getMissionFromRequest($applicationContext, $request);
+    if ($mission === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find mission with game '{$request->game}', location '{$request->location}', and mission slug '{$request->mission}'"
+        ]);
+    }
+
+    /* @var $foliage \DataAccess\Models\Foliage[] */
+    $foliage = $applicationContext->get(FoliageController::class)->getFoliageForMission($mission->getId());
+    $formattedFoliage = [];
+    foreach ($foliage as $innerFoliage) {
+        $viewModel = new LedgeViewModel();
+        $viewModel->id = $innerFoliage->getId();
+        $viewModel->missionId = $innerFoliage->getMissionId();
+        $viewModel->level = $innerFoliage->getLevel();
+        $viewModel->vertices = explode('|', $innerFoliage->getVertices());
+        $formattedFoliage[] = $viewModel;
+    }
+
+    return $response->json([
+        'foliage' => $formattedFoliage
+    ]);
+});
+
 // TODO Delete me once split up
 $klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:mission]/map', function(Request $request, Response $response) use ($applicationContext) {
     $cacheClient = $applicationContext->get(CacheClient::class);
@@ -421,28 +447,12 @@ $klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:m
 
     return $response->json($cacheClient->retrieve($cacheKey, function() use ($applicationContext, $request, $response, $location, $mission, $game) {
 
-        /* @var $foliage \DataAccess\Models\Foliage[] */
-        $foliage = $applicationContext->get(FoliageController::class)->getFoliageForMission($mission->getId());
-        $formattedFoliage = [];
-        foreach ($foliage as $innerFoliage) {
-            $viewModel = new LedgeViewModel();
-            $viewModel->id = $innerFoliage->getId();
-            $viewModel->missionId = $innerFoliage->getMissionId();
-            $viewModel->level = $innerFoliage->getLevel();
-            $viewModel->vertices = explode('|', $innerFoliage->getVertices());
-            $formattedFoliage[] = $viewModel;
-        }
 
-        /* @var $disguiseRepository \DataAccess\Repositories\DisguiseRepository */
-        $disguiseRepository = $applicationContext->get(EntityManager::class)
-            ->getRepository(Disguise::class);
 
         return [
             'variants' => $applicationContext->get(EntityManager::class)
                 ->getRepository(MissionVariant::class)
-                ->findBy(['missionId' => $mission->getId()]),
-            'ledges' => $formattedLedges,
-            'foliage' => $formattedFoliage];
+                ->findBy(['missionId' => $mission->getId()])];
     }));
 });
 //endregion

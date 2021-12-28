@@ -76,12 +76,12 @@ export default {
     },
     methods: {
         areAllNodesHiddenForTopLevelCategory() {
-            let polylinesVisible = false;
+            let polysVisible = false;
             if (this.topLevelCategoryName === 'Navigation') {
-                polylinesVisible = this.ledges.some(ledge => ledge.visible) || this.foliage.some(foliage => foliage.visible);
+                polysVisible = this.ledges.some(ledge => ledge.visible) || this.foliage.some(foliage => foliage.visible);
             }
 
-            return !polylinesVisible && !this.nodes.some(node => node.visible && !node.searchResult);
+            return !polysVisible && !this.nodes.some(node => node.visible && !node.searchResult);
         },
         onTopLevelClick() {
             if (this.areAllNodesHiddenForTopLevelCategory()) {
@@ -101,6 +101,9 @@ export default {
             if (category.subgroup === 'ledge') {
                 return !this.ledges.some(ledge => ledge.visible);
             }
+            if (category.subgroup === 'foliage') {
+                return !this.foliage.some(foliage => foliage.visible);
+            }
 
             return !this.nodes.some(node => node.group === category.group && node.visible && !node.searchResult);
         },
@@ -111,6 +114,9 @@ export default {
         getItemsForCategory(category) {
             if (category.subgroup === 'ledge') {
                 return this.ledges;
+            }
+            if (category.subgroup === 'foliage') {
+                return this.foliage;
             }
 
             return this.nodes.filter(node => node.subgroup === category.subgroup);
