@@ -10,20 +10,20 @@
                         <game-icon :icon="fontIconForNodeSubgroup" font-style="solid"/>
                     </div>
                     <div class="inner-details">
-                        <p class="group">{{ node.group }}</p>
-                        <p class="name">{{ node.name }}</p>
+                        <p class="group" v-if="node.subgroup !== 'frisk'">{{ node.subgroup === 'agency-pickup' ? node.target : node.group }}</p>
+                        <p class="name">{{ node.subgroup === 'frisk' ? node.group : node.name }}</p>
                     </div>
                 </div>
                 <div class="description" v-if="descriptionNote">
                     {{ descriptionNote.text }}
                 </div>
-                <div class="notes">
+                <div class="notes" v-if="node.notes.filter(note => note.type !== 'description').length">
                     <div v-for="note in node.notes.filter(note => note.type !== 'description')" class="note" :class="note.type">
                         <div class="type">{{ getLocalizedNoteType(note) }}</div>
                         <div>{{ note.text }}</div>
                     </div>
                 </div>
-                <div class="target" v-if="node.target !== null && node.target !== ''">
+                <div class="target" v-if="node.target !== null && node.target !== '' && node.subgroup !== 'agency-pickup'">
                     <game-icon v-if="fontIconForActionTarget" :icon="fontIconForActionTarget" font-style="normal" />
                     <div class="header-and-target">
                         <div>{{ actionTextForActionTarget }}</div>
@@ -121,6 +121,8 @@ export default {
                     return 'tool';
                 case 'alarm':
                     return 'online';
+                case 'frisk':
+                    return 'security';
                 case 'location':
                     return 'story';
                 case 'lethal-melee':
@@ -163,8 +165,11 @@ export default {
     }
 
     .details {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
         width: 55%;
-        margin: 10px;
+        padding: 25px 20px;
 
         .icon-and-details {
             display: flex;
@@ -176,8 +181,16 @@ export default {
                     margin-bottom: 0;
                     text-transform: uppercase;
 
+                    &.group {
+                        font-weight: 100;
+                        font-size: 16px;
+                        line-height: 16px;
+                    }
+
                     &.name {
-                        font-weight: bolder;
+                        font-weight: 600;
+                        line-height: 32px;
+                        font-size: 32px;
                     }
                 }
             }
@@ -185,10 +198,8 @@ export default {
 
         .description {
             border-top: dotted 1px #fff;
-            border-bottom: dotted 1px #fff;
-            margin-top: 10px;
+            margin-top: 15px;
             padding-top: 10px;
-            padding-bottom: 10px;
         }
 
         .target {
@@ -210,6 +221,9 @@ export default {
     }
 }
     .notes {
+        border-top: dotted 1px #fff;
+        margin-top: 10px;
+
         > div {
             margin-top: 5px;
             padding: 10px;
