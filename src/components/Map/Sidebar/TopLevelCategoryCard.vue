@@ -65,7 +65,9 @@ export default {
     props: {
         topLevelCategoryName: String,
         categories: Array,
-        nodes: Array
+        nodes: Array,
+        ledges: Array,
+        foliage: Array
     },
     data() {
         return {
@@ -74,7 +76,12 @@ export default {
     },
     methods: {
         areAllNodesHiddenForTopLevelCategory() {
-            return !this.nodes.some(node => node.visible && !node.searchResult);
+            let polylinesVisible = false;
+            if (this.topLevelCategoryName === 'Navigation') {
+                polylinesVisible = this.ledges.some(ledge => ledge.visible) || this.foliage.some(foliage => foliage.visible);
+            }
+
+            return !polylinesVisible && !this.nodes.some(node => node.visible && !node.searchResult);
         },
         onTopLevelClick() {
             if (this.areAllNodesHiddenForTopLevelCategory()) {
@@ -91,6 +98,10 @@ export default {
             }
         },
         isCategoryHidden(category) {
+            if (category.subgroup === 'ledge') {
+                return !this.ledges.some(ledge => ledge.visible);
+            }
+
             return !this.nodes.some(node => node.group === category.group && node.visible && !node.searchResult);
         },
         buildCollapsibleId(category) {
@@ -98,6 +109,10 @@ export default {
             return `collapsible-${this.uid}-${categoryName}`
         },
         getItemsForCategory(category) {
+            if (category.subgroup === 'ledge') {
+                return this.ledges;
+            }
+
             return this.nodes.filter(node => node.subgroup === category.subgroup);
         },
         noDuplicates: function(val) {

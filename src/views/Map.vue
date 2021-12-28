@@ -15,6 +15,8 @@
                      :top-level-categories="topLevelCategories"
                      :categories="categories"
                      :nodes="nodes"
+                     :ledges="ledges"
+                     :foliage="[]"
                      :disguises="disguises"
                      :max-zoom-level="mission.maxZoom"
                      :min-zoom-level="mission.minZoom"
@@ -58,6 +60,7 @@
                 categories: [],
                 topLevelCategories: [],
                 disguises: [],
+                ledges: [],
                 //region Map-specific
                 currentFloor: 0,
                 map: null,
@@ -87,7 +90,6 @@
             // Once **both** are done, go fetch map information
             Promise.all([gamePromise, missionPromise]).then(_ => {
                 this.metadataLoaded = true;
-                // TODO Fetch map
                 //@formatter:off
                 const nodesPromise = this.$http.get(
                     `${this.$domain}/api/v2/games/${this.$route.params.game}`+
@@ -139,9 +141,31 @@
                                               `/locations/${this.$route.params.location}`+
                                               `/missions/${this.$route.params.mission}/disguises`)
                     .then(resp => this.disguises = resp.data.disguises);
+
+                const ledgesPromise = this.$http.get(
+                    `${this.$domain}/api/v2/games/${this.$route.params.game}`+
+                                              `/locations/${this.$route.params.location}`+
+                                              `/missions/${this.$route.params.mission}/ledges`)
+                    .then(resp => {
+                        this.ledges = resp.data.ledges;
+                        this.ledges.forEach(ledge => {
+                            ledge.visible = true;
+                            const formattedVertices = ledge.vertices.map(vertexPair => [vertexPair.split(',')[0], vertexPair.split(',')[1]]);
+                            ledge.polyline = L.polyline(formattedVertices, {
+                                color: '#fff',
+                                weight: 4,
+                                opacity: .75,
+                                custom: {
+                                    id: ledge.id
+                                }
+                            }).bindTooltip(this.$t('map.groups.Navigation|Ledge'), {sticky: true}).on('click', () => alert('hi!'));
+                        });
+
+                        this.$nextTick(_ => this.ledges.forEach(ledge => ledge.polyline.addTo(this.map)));
+                    });
                 //@formatter:on
 
-                Promise.all([nodesPromise, disguisesPromise]).then(_ => {
+                Promise.all([nodesPromise, disguisesPromise, ledgesPromise]).then(_ => {
                     this.$nextTick(() => {
                         this.updateActiveMapState();
                         this.mapDataLoaded = true;
@@ -248,6 +272,15 @@
                     }
                 });
 
+                // 5. Handle showing/hiding ledges
+                this.ledges.forEach(ledge => {
+                    if (ledge.visible && ledge.level === this.currentFloor) {
+                        ledge.polyline.addTo(this.map);
+                    } else {
+                        ledge.polyline.removeFrom(this.map);
+                    }
+                });
+
                 // Make sure the counters and highlights for the level select are updated
                 if (this.$refs.floorToggle) {
                     this.$refs.floorToggle.$forceUpdate();
@@ -284,10 +317,12 @@
             },
             onHideAll() {
                 this.nodes.forEach(node => node.visible = false);
+                this.ledges.forEach(ledge => ledge.visible = false);
                 this.updateActiveMapState();
             },
             onShowAll() {
                 this.nodes.forEach(node => node.visible = true);
+                this.ledges.forEach(ledge => ledge.visible = true);
                 this.updateActiveMapState();
             },
             onSearchItem(itemKey) {
@@ -301,22 +336,38 @@
                 this.updateNodeMarkers();
             },
             onHideCategory(category) {
-                this.nodes.filter(node => node.type === category.type && node.group === category.group).forEach(node => node.visible = false);
+                if (category.subgroup === 'ledge') {
+                    this.ledges.forEach(ledge => ledge.visible = false);
+                } else {
+                    this.nodes.filter(node => node.type === category.type && node.group === category.group).forEach(node => node.visible = false);
+                }
 
                 this.updateNodeMarkers();
             },
             onShowCategory(category) {
-                this.nodes.filter(node => node.type === category.type && node.group === category.group).forEach(node => node.visible = true);
+                if (category.subgroup === 'ledge') {
+                    this.ledges.forEach(ledge => ledge.visible = true);
+                } else {
+                    this.nodes.filter(node => node.type === category.type && node.group === category.group).forEach(node => node.visible = true);
+                }
 
                 this.updateNodeMarkers();
             },
             onHideTopLevelCategory(type) {
                 this.nodes.filter(node => node.type === type).forEach(node => node.visible = false);
 
+                if (type === 'Navigation') {
+                    this.ledges.forEach(ledge => ledge.visible = false);
+                }
+
                 this.updateNodeMarkers();
             },
             onShowTopLevelCategory(type) {
                 this.nodes.filter(node => node.type === type).forEach(node => node.visible = true);
+
+                if (type === 'Navigation') {
+                    this.ledges.forEach(ledge => ledge.visible = true);
+                }
 
                 this.updateNodeMarkers();
             },

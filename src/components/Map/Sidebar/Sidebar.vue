@@ -61,6 +61,8 @@
                                  :top-level-category-name="topLevelCategory"
                                  :categories="categories.filter(x => x.type === topLevelCategory)"
                                  :nodes="nodes.filter(x => x.type === topLevelCategory)"
+                                 :ledges="ledges"
+                                 :foliage="foliage"
                                  @hide-category="onHideCategory"
                                  @show-category="onShowCategory"
                                  @hide-top-level-category="onHideTopLevelCategory"
@@ -83,6 +85,8 @@ export default {
         loggedIn: Boolean,
         categories: Array,
         nodes: Array,
+        ledges: Array,
+        foliage: Array,
         topLevelCategories: Array,
         disguises: Array,
         maxZoomLevel: Number,
