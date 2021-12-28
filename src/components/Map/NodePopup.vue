@@ -10,8 +10,8 @@
                         <game-icon :icon="fontIconForNodeSubgroup" font-style="solid"/>
                     </div>
                     <div class="inner-details">
-                        <p class="group" v-if="node.subgroup !== 'frisk'">{{ node.subgroup === 'agency-pickup' ? node.target : node.group }}</p>
-                        <p class="name">{{ node.subgroup === 'frisk' ? node.group : node.name }}</p>
+                        <p class="group" v-if="node.name !== ''">{{ node.subgroup === 'agency-pickup' ? node.target : node.group }}</p>
+                        <p class="name">{{ node.name === '' ? node.group : node.name }}</p>
                     </div>
                 </div>
                 <div class="description" v-if="descriptionNote">
@@ -206,6 +206,7 @@ export default {
             margin-top: 10px;
             i {
                 display: inline-block;
+                font-size: 24px;
             }
 
             > div {
@@ -213,8 +214,14 @@ export default {
                 margin-left: 10px;
                 text-transform: uppercase;
 
+                font-weight: 100;
+                font-size: 16px;
+                line-height: 16px;
+
                 .action-or-npc-name {
-                    font-weight: bolder;
+                    font-weight: 600;
+                    line-height: 22px;
+                    font-size: 22px;
                 }
             }
         }
