@@ -33,7 +33,7 @@
             </div>
         </div>
         <template v-slot:modal-footer>
-            <template v-if="loggedIn">
+            <template v-if="loggedIn && editorState === 'ITEMS'">
                 <game-button @click="$emit('edit-node', node.id)">
                     <game-icon icon="edit" font-style="normal"/>
                     {{ $t('map.edit-slash-delete') }}
@@ -57,7 +57,8 @@ export default {
     props: {
         game: Object,
         node: Object,
-        loggedIn: Boolean
+        loggedIn: Boolean,
+        editorState: String
     },
     computed: {
         descriptionNote() {

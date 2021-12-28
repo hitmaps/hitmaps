@@ -15,58 +15,68 @@
                     <img src="/img/png/logos/hitmaps.png" class="img-fluid" alt="HITMAPS Logo"/>
                 </router-link>
             </div>
-        </div>
-        <!-- TODO Editor Header -->
-        <div class="map-control">
-            <div id="map-control-buttons">
-                <control-button @click="$emit('zoom-in')" :class="currentZoomLevel === maxZoomLevel ? 'disabled' : ''">+</control-button>
-                <control-button @click="$emit('zoom-out')" :class="currentZoomLevel === minZoomLevel ? 'disabled' : ''">-</control-button>
+            <editor-header v-if="editorState !== 'OFF' && editorState !== 'MENU'" :editor-state="editorState"/>
+            <div class="map-control">
+                <div id="map-control-buttons">
+                    <control-button @click="$emit('zoom-in')" :class="currentZoomLevel === maxZoomLevel ? 'disabled' : ''">+</control-button>
+                    <control-button @click="$emit('zoom-out')" :class="currentZoomLevel === minZoomLevel ? 'disabled' : ''">-</control-button>
+                </div>
+                <div class="control-buttons">
+                    <control-button data-toggle="modal" data-target="#locale-modal" v-tooltip:bottom="$t('language-modal.change-language')">
+                        <country-flag :country="countryFlag"/>
+                    </control-button>
+                    <template v-if="loggedIn">
+                        <control-button v-if="showDebug()"
+                                        id="debug-button"
+                                        @click="debugMode = !debugMode"
+                                        v-tooltip:top="$t('map.debug-mode')"
+                                        :style="debugMode ? 'background: white; color: black' : ''">
+                            <i class="fas fa-bug"></i>
+                        </control-button>
+                        <control-button
+                            id="edit-button"
+                            @click="$emit('master-edit-toggle')"
+                            v-tooltip:top="$t('map.edit-map')">
+                            <i class="fas fa-pencil-alt"></i>
+                        </control-button>
+                        <control-button
+                            v-tooltip:top="$t('authentication.log-out')"
+                            @click="logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </control-button>
+                    </template>
+                    <a v-else @click="beginDiscordLogin">
+                        <control-button>
+                            <i class="fas fa-sign-in-alt"></i>
+                        </control-button>
+                    </a>
+                </div>
             </div>
-            <div class="control-buttons">
-                <control-button data-toggle="modal" data-target="#locale-modal" v-tooltip:bottom="$t('language-modal.change-language')">
-                    <country-flag :country="countryFlag"/>
-                </control-button>
-                <template v-if="loggedIn">
-                    <control-button v-if="showDebug()"
-                            id="debug-button"
-                            @click="debugMode = !debugMode"
-                            v-tooltip:top="$t('map.debug-mode')"
-                            :style="debugMode ? 'background: white; color: black' : ''">
-                        <i class="fas fa-bug"></i>
-                    </control-button>
-                    <control-button
-                        id="edit-button"
-                        @click="/*toggleEditor*/"
-                        v-tooltip:top="$t('map.edit-map')">
-                        <i class="fas fa-pencil-alt"></i>
-                    </control-button>
-                    <control-button
-                        v-tooltip:top="$t('authentication.log-out')"
-                        @click="logout">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </control-button>
-                </template>
-                <a v-else @click="beginDiscordLogin">
-                    <control-button>
-                        <i class="fas fa-sign-in-alt"></i>
-                    </control-button>
-                </a>
+            <div v-show="editorState === 'OFF'">
+                <item-search :searchable-nodes="getSearchableNodes()" @search-item="onSearchItem" />
+                <disguise-dropdown :disguises="disguises" />
+                <hide-select-all @hide-all="$emit('hide-all')" @show-all="$emit('show-all')" />
+                <top-level-category-card v-for="topLevelCategory in topLevelCategories"
+                                         :key="topLevelCategory"
+                                         :top-level-category-name="topLevelCategory"
+                                         :categories="categories.filter(x => x.type === topLevelCategory)"
+                                         :nodes="nodes.filter(x => x.type === topLevelCategory)"
+                                         :ledges="ledges"
+                                         :foliage="foliage"
+                                         @hide-category="onHideCategory"
+                                         @show-category="onShowCategory"
+                                         @hide-top-level-category="onHideTopLevelCategory"
+                                         @show-top-level-category="onShowTopLevelCategory" />
             </div>
+            <edit-landing v-if="editorState === 'MENU'"
+                          @launch-editor="onLaunchEditor" />
+            <edit-items v-if="editorState === 'ITEMS'"
+                        @launch-editor="onLaunchEditor" />
+            <edit-ledges v-if="editorState === 'LEDGES'"
+                         @launch-editor="onLaunchEditor" />
+            <edit-foliage v-if="editorState === 'FOLIAGE'"
+                          @launch-editor="onLaunchEditor" />
         </div>
-        <item-search :searchable-nodes="getSearchableNodes()" @search-item="onSearchItem" />
-        <disguise-dropdown :disguises="disguises" />
-        <hide-select-all @hide-all="$emit('hide-all')" @show-all="$emit('show-all')" />
-        <top-level-category-card v-for="topLevelCategory in topLevelCategories"
-                                 :key="topLevelCategory"
-                                 :top-level-category-name="topLevelCategory"
-                                 :categories="categories.filter(x => x.type === topLevelCategory)"
-                                 :nodes="nodes.filter(x => x.type === topLevelCategory)"
-                                 :ledges="ledges"
-                                 :foliage="foliage"
-                                 @hide-category="onHideCategory"
-                                 @show-category="onShowCategory"
-                                 @hide-top-level-category="onHideTopLevelCategory"
-                                 @show-top-level-category="onShowTopLevelCategory" />
     </nav>
 </template>
 
@@ -77,10 +87,20 @@ import HideSelectAll from "./HideSelectAll";
 import TopLevelCategoryCard from "./TopLevelCategoryCard";
 import ItemSearch from "./ItemSearch";
 import DisguiseDropdown from "./DisguiseDropdown";
+import EditLanding from "./Editing/EditLanding";
+import EditorHeader from "./Editing/EditorHeader";
+import EditItems from "./Editing/EditItems";
+import EditFoliage from "./Editing/EditFoliage";
+import EditLedges from "./Editing/EditLedges";
 
 export default {
     name: "Sidebar",
-    components: {DisguiseDropdown, ItemSearch, TopLevelCategoryCard, HideSelectAll, ControlButton},
+    components: {
+        EditLedges,
+        EditFoliage,
+        EditItems,
+        EditorHeader,
+        EditLanding, DisguiseDropdown, ItemSearch, TopLevelCategoryCard, HideSelectAll, ControlButton},
     props: {
         loggedIn: Boolean,
         categories: Array,
@@ -91,11 +111,11 @@ export default {
         disguises: Array,
         maxZoomLevel: Number,
         minZoomLevel: Number,
-        currentZoomLevel: Number
+        currentZoomLevel: Number,
+        editorState: String
     },
     data() {
         return {
-            editorEnabled: false,
             debugMode: false
         }
     },
@@ -171,6 +191,9 @@ export default {
         },
         onShowTopLevelCategory(type) {
             this.$emit('show-top-level-category', type);
+        },
+        onLaunchEditor(editor) {
+            this.$emit('launch-editor', editor);
         }
         //endregion
     }

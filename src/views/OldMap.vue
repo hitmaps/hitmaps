@@ -72,7 +72,6 @@
                         class="collapse navbar-collapse"
                         id="navbarSupportedContent"
                 >
-                    <!-- TODO Need to migrate -->
                     <div class="editor-enabled" v-if="editor.enabled">
                         <h3 v-if="editor.mode === ''">
                             <i class="fas fa-fw fa-pencil-alt"></i>

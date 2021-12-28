@@ -21,6 +21,7 @@
                      :max-zoom-level="mission.maxZoom"
                      :min-zoom-level="mission.minZoom"
                      :current-zoom-level="map.getZoom()"
+                     :editor-state="editorState"
                      @hide-all="onHideAll"
                      @show-all="onShowAll"
                      @search-item="onSearchItem"
@@ -29,8 +30,10 @@
                      @hide-top-level-category="onHideTopLevelCategory"
                      @show-top-level-category="onShowTopLevelCategory"
                      @zoom-in="onZoomIn"
-                     @zoom-out="onZoomOut" />
-            <node-popup :node="nodeForModal" :logged-in="loggedIn" :game="game"/>
+                     @zoom-out="onZoomOut"
+                     @master-edit-toggle="onMasterEditToggle"
+                     @launch-editor="onLaunchEditor" />
+            <node-popup :node="nodeForModal" :logged-in="loggedIn" :game="game" :editor-state="editorState" />
         </div>
     </div>
 </template>
@@ -67,6 +70,9 @@
                 map: null,
                 mapLayers: {},
                 nodeForModal: null,
+                //endregion
+                //region Editor-specific
+                editorState: 'OFF'
                 //endregion
             }
         },
@@ -405,6 +411,16 @@
             },
             onZoomOut() {
                 this.map.setZoom(this.map.getZoom() - 1);
+            },
+            onMasterEditToggle() {
+                if (this.editorState === 'OFF') {
+                    this.editorState = 'MENU';
+                } else {
+                    this.editorState = 'OFF';
+                }
+            },
+            onLaunchEditor(editorState) {
+                this.editorState = editorState;
             }
             //endregion
         },
