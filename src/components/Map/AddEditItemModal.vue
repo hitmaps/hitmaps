@@ -450,6 +450,13 @@ export default {
             }
         },
         saveMarker() {
+            if (this.node) {
+                this.updateMarker();
+            } else {
+                this.createMarker();
+            }
+        },
+        createMarker() {
             this.$http.post(`${this.$domain}/api/nodes`, {
                 missionId: this.mission.id,
                 icon: this.createEditNodeModel.icon,
@@ -467,6 +474,32 @@ export default {
                 console.log(resp);
                 this.$toast.success({
                     message: 'Item saved!'
+                });
+            }).catch(err => {
+                console.log(err);
+                this.$toast.error({
+                    message: 'Changes failed to save!'
+                });
+            });
+        },
+        updateMarker() {
+            this.$http.put(`${this.$domain}/api/nodes/${this.node.id}`, {
+                missionId: this.mission.id,
+                icon: this.createEditNodeModel.icon,
+                category: this.createEditNodeModel.category,
+                name: this.createEditNodeModel.name,
+                quantity: this.createEditNodeModel.quantity,
+                targetAction: this.createEditNodeModel.targetAction,
+                level: this.currentLevel,
+                latitude: this.node.latitude,
+                longitude: this.node.longitude,
+                image: this.createEditNodeModel.image,
+                notes: this.createEditNodeModel.notes,
+                variantIds: this.createEditNodeModel.variantIds
+            }).then(resp => {
+                console.log(resp);
+                this.$toast.success({
+                    message: 'Item updated!'
                 });
             }).catch(err => {
                 console.log(err);

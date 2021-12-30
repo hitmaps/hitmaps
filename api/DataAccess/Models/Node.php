@@ -109,7 +109,7 @@ class Node {
     private $variants;
 
     /**
-     * @ORM\OneToMany(targetEntity="NodeNote", mappedBy="node", fetch="EAGER", cascade="persist")
+     * @ORM\OneToMany(targetEntity="NodeNote", mappedBy="node", fetch="EAGER", cascade="persist", orphanRemoval=true)
      * @var $notes Collection
      */
     private $notes;

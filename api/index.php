@@ -602,6 +602,25 @@ $klein->respond('POST', '/api/nodes', function (Request $request, Response $resp
     return json_encode($responseModel);
 });
 
+$klein->respond('PUT', '/api/nodes/[:nodeId]', function(Request $request, Response $response) use ($applicationContext) {
+    $newToken = null;
+    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
+        print json_encode(['message' => 'You must be logged in to make make edits to maps!']);
+        return $response->code(401);
+    }
+
+
+    $user = getUserContextForToken($newToken, $applicationContext);
+    /* @var $node Node */
+    $body = json_decode($request->body(), true);
+    $node = $applicationContext->get(NodeController::class)->editNode($request->nodeId, $body, $user);
+
+    $responseModel = new ApiResponseModel();
+    $responseModel->token = $newToken;
+    $responseModel->data = transformNode($node);
+    return $response->json($responseModel);
+});
+
 function transformNode(Node $node): NodeWithNotesViewModel {
     $nodeViewModel = new NodeWithNotesViewModel();
 
@@ -861,33 +880,6 @@ $klein->respond('POST', '/api/nodes/move', function (Request $request, Response 
     $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
     $responseModel->data = ['message' => 'OK'];
-    return json_encode($responseModel);
-});
-
-$klein->respond('POST', '/api/nodes/edit/[:nodeId]', function(Request $request, Response $response) use ($applicationContext) {
-    $newToken = null;
-    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
-        print json_encode(['message' => 'You must be logged in to modify nodes!']);
-        return $response->code(401);
-    }
-
-    /* @var $user \DataAccess\Models\User */
-    $user = getUserContextForToken($newToken, $applicationContext);
-    $roles = $user->getRolesAsInts();
-    if (!\BusinessLogic\UserRole::hasAccess($roles, [\BusinessLogic\UserRole::TRUSTED_EDITOR])) {
-        print json_encode(['message' => 'You do not have permission to delete nodes!']);
-        return $response->code(403);
-    }
-
-    /* @var $node Node */
-    $node = $applicationContext->get(NodeController::class)->editNode(intval($request->nodeId), intval($_POST['mission-id']), $_POST['difficulty'], $_POST, $user);
-    clearAllMapCaches($node->getMissionId(), $applicationContext);
-
-    $response->code(200);
-
-    $responseModel = new ApiResponseModel();
-    $responseModel->token = $newToken;
-    $responseModel->data = transformNode($node);
     return json_encode($responseModel);
 });
 
