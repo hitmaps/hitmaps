@@ -6,10 +6,13 @@ use BusinessLogic\MissionType;
 use Controllers\FoliageController;
 use Controllers\LedgeController;
 use Controllers\NodeController;
+use Controllers\ViewModels\ApiResponseModel;
 use Controllers\ViewModels\DisguiseAreaViewModel;
 use Controllers\ViewModels\DisguiseViewModel;
 use Controllers\ViewModels\LedgeViewModel;
 use Controllers\ViewModels\MissionViewModel;
+use Controllers\ViewModels\NodeNoteViewModel;
+use Controllers\ViewModels\NodeWithNotesViewModel;
 use DataAccess\Models\Disguise;
 use DataAccess\Models\DisguiseArea;
 use DataAccess\Models\Game;
@@ -17,8 +20,10 @@ use DataAccess\Models\Location;
 use DataAccess\Models\MapFloorToName;
 use DataAccess\Models\Mission;
 use DataAccess\Models\MissionVariant;
+use DataAccess\Models\Node;
 use DataAccess\Models\NodeCategory;
 use DataAccess\Models\NodeDifficulty;
+use DataAccess\Models\NodeNote;
 use DataAccess\Models\RouletteMatchup;
 use DI\Container;
 use Doctrine\ORM\EntityManager;
@@ -558,7 +563,7 @@ $klein->respond('POST', '/api/web/user/login', function(Request $request, Respon
     try {
         $token = $controller->loginUser($_POST['tokenType'], $_POST['accessToken']);
 
-        $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+        $responseModel = new ApiResponseModel();
         $responseModel->token = $token;
         return $response->json($responseModel);
     } catch (\BusinessLogic\Authentication\Discord\DiscordAuthenticationException | \BusinessLogic\Authentication\Discord\UserNotInServerException $e) {
@@ -569,7 +574,7 @@ $klein->respond('POST', '/api/web/user/login', function(Request $request, Respon
             $viewModel->messages[] = new \Controllers\ViewModels\AlertMessage('danger', $e->getMessage(), 'error-not-in-server');
         }
 
-        $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+        $responseModel = new ApiResponseModel();
         $responseModel->token = null;
         $responseModel->data = $viewModel;
         return $response->json($responseModel);
@@ -585,21 +590,31 @@ $klein->respond('POST', '/api/nodes', function (Request $request, Response $resp
 
 
     $user = getUserContextForToken($newToken, $applicationContext);
-    /* @var $node \DataAccess\Models\Node */
+    /* @var $node Node */
     $body = json_decode($request->body(), true);
     $node = $applicationContext->get(NodeController::class)->createNode($body, $user);
-    clearAllMapCaches($node->getMissionId(), $applicationContext);
 
     $response->code(201);
 
-    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
-    $responseModel->data = transformNode($node, $applicationContext);
+    $responseModel->data = transformNode($node);
     return json_encode($responseModel);
 });
 
-function transformNode(\DataAccess\Models\Node $node, Container $applicationContext): \Controllers\ViewModels\NodeWithNotesViewModel {
-    $nodeViewModel = new \Controllers\ViewModels\NodeWithNotesViewModel();
+function transformNode(Node $node): NodeWithNotesViewModel {
+    $nodeViewModel = new NodeWithNotesViewModel();
+
+    /* @var $note NodeNote */
+    foreach ($node->getNotes()->toArray() as $note) {
+        $innerViewModel = new NodeNoteViewModel();
+        $innerViewModel->id = $note->getId();
+        $innerViewModel->type = $note->getType();
+        $innerViewModel->text = $note->getText();
+
+        $nodeViewModel->notes[] = $innerViewModel;
+    }
+
     $nodeViewModel->id = $node->getId();
     $nodeViewModel->missionId = $node->getMissionId();
     $nodeViewModel->type = $node->getType();
@@ -607,41 +622,22 @@ function transformNode(\DataAccess\Models\Node $node, Container $applicationCont
     $nodeViewModel->subgroup = $node->getSubgroup();
     $nodeViewModel->name = $node->getName();
     $nodeViewModel->target = $node->getTarget();
+    $nodeViewModel->searchable = $node->isSearchable();
+    unset($nodeViewModel->targetIcon);
+    unset($nodeViewModel->difficulty);
+    unset($nodeViewModel->approved);
+
     $nodeViewModel->level = $node->getLevel();
     $nodeViewModel->latitude = $node->getLatitude();
     $nodeViewModel->longitude = $node->getLongitude();
-    $nodeViewModel->difficulty = $node->getDifficulty();
     $nodeViewModel->group = $node->getGroup();
-    $nodeViewModel->approved = $node->getApproved();
     $nodeViewModel->image = $node->getImage();
-    $nodeViewModel->searchable = $node->isSearchable();
-    $nodeViewModel->tooltip = $node->getTooltip();
+    unset($nodeViewModel->tooltip);
     $nodeViewModel->quantity = $node->getQuantity();
-    switch ($nodeViewModel->icon) {
-        case 'poison':
-            $nodeViewModel->targetIcon = 'fa-user';
-            break;
-        case 'interaction':
-        case 'sabotage':
-        case 'distraction':
-            $nodeViewModel->targetIcon = 'fa-cog';
-            break;
-        default:
-            $nodeViewModel->targetIcon = '';
-            break;
-    }
-    $nodeViewModel->notes = [];
-    $notes = $applicationContext->get(EntityManager::class)
-        ->getRepository(\DataAccess\Models\NodeNote::class)
-        ->findBy(['nodeId' => $node->getId()]);
-    foreach ($notes as $note) {
-        /* @var $note \DataAccess\Models\NodeNote */
-        $innerViewModel = new \Controllers\ViewModels\NodeNoteViewModel();
-        $innerViewModel->id = $note->getId();
-        $innerViewModel->type = $note->getType();
-        $innerViewModel->text = $note->getText();
 
-        $nodeViewModel->notes[] = $innerViewModel;
+    /* @var $missionVariant MissionVariant */
+    foreach ($node->getVariants()->toArray() as $missionVariant) {
+        $nodeViewModel->variants[] = $missionVariant->getId();
     }
 
     return $nodeViewModel;
@@ -665,7 +661,7 @@ $klein->respond('POST', '/api/ledges', function (Request $request, Response $res
     $viewModel->vertices = $explodedVertices;
 
     $response->code(201);
-    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
     $responseModel->data = $viewModel;
 
@@ -696,7 +692,7 @@ $klein->respond('GET', '/api/ledges/delete/[:ledgeId]', function (Request $reque
 
     clearAllMapCaches($ledge->getMissionId(), $applicationContext);
 
-    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
     $responseModel->data = ['message' => 'Ledge deleted!'];
     return $response->json($responseModel);
@@ -723,7 +719,7 @@ $klein->respond('POST', '/api/foliage', function (Request $request, Response $re
 
     $response->code(201);
 
-    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
     $responseModel->data = $viewModel;
     return json_encode($responseModel);
@@ -744,7 +740,7 @@ $klein->respond('GET', '/api/foliage/delete/[:foliageId]', function (Request $re
 
     clearAllMapCaches($foliage->getMissionId(), $applicationContext);
 
-    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
     $responseModel->data = ['message' => 'Foliage deleted!'];
     return $response->json($responseModel);
@@ -777,7 +773,7 @@ $klein->respond('POST', '/api/disguise-areas', function (Request $request, Respo
 
     $response->code(201);
 
-    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
     $responseModel->data = $viewModel;
     return json_encode($responseModel);
@@ -823,7 +819,7 @@ $klein->respond('POST', '/api/disguise-areas/copy', function (Request $request, 
 
     clearAllMapCaches($missionId, $applicationContext);
 
-    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
     return json_encode($responseModel);
 });
@@ -843,7 +839,7 @@ $klein->respond('GET', '/api/disguise-areas/delete/[:areaId]', function (Request
 
     clearAllMapCaches($disguiseArea->getMissionId(), $applicationContext);
 
-    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
     $responseModel->data = ['message' => 'Disguise area deleted!'];
     return $response->json($responseModel);
@@ -857,12 +853,12 @@ $klein->respond('POST', '/api/nodes/move', function (Request $request, Response 
     }
 
     $applicationContext->get(NodeController::class)->moveNode(intval($_POST['node-id']), $_POST['latitude'], $_POST['longitude']);
-    /* @var $node \DataAccess\Models\Node */
-    $node = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Node::class)->find($_POST['node-id']);
+    /* @var $node Node */
+    $node = $applicationContext->get(EntityManager::class)->getRepository(Node::class)->find($_POST['node-id']);
     clearAllMapCaches($node->getMissionId(), $applicationContext);
 
 
-    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
     $responseModel->data = ['message' => 'OK'];
     return json_encode($responseModel);
@@ -883,15 +879,15 @@ $klein->respond('POST', '/api/nodes/edit/[:nodeId]', function(Request $request, 
         return $response->code(403);
     }
 
-    /* @var $node \DataAccess\Models\Node */
+    /* @var $node Node */
     $node = $applicationContext->get(NodeController::class)->editNode(intval($request->nodeId), intval($_POST['mission-id']), $_POST['difficulty'], $_POST, $user);
     clearAllMapCaches($node->getMissionId(), $applicationContext);
 
     $response->code(200);
 
-    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
-    $responseModel->data = transformNode($node, $applicationContext);
+    $responseModel->data = transformNode($node);
     return json_encode($responseModel);
 });
 
@@ -910,8 +906,8 @@ $klein->respond('GET', '/api/nodes/delete/[:nodeId]', function(Request $request,
         return $response->json(['message' => 'You do not have permission to delete nodes!']);
     }
 
-    /* @var $node \DataAccess\Models\Node */
-    $node = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Node::class)->findOneBy(['id' => $request->nodeId]);
+    /* @var $node Node */
+    $node = $applicationContext->get(EntityManager::class)->getRepository(Node::class)->findOneBy(['id' => $request->nodeId]);
     if ($node === null) {
         $response->code(404);
         return $response->json(['message' => 'Could not find the node to delete!']);
@@ -924,7 +920,7 @@ $klein->respond('GET', '/api/nodes/delete/[:nodeId]', function(Request $request,
     $applicationContext->get(EntityManager::class)->flush();
     clearAllMapCaches($node->getMissionId(), $applicationContext);
 
-    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
     $responseModel->data = ['message' => 'Node deleted!'];
 

@@ -33,14 +33,14 @@
                      @zoom-out="onZoomOut"
                      @master-edit-toggle="onMasterEditToggle"
                      @launch-editor="onLaunchEditor" />
-            <node-popup :node="nodeForModal" :logged-in="loggedIn" :game="game" :editor-state="editorState" />
+            <node-popup :node="nodeForModal" :logged-in="loggedIn" :game="game" :editor-state="editorState" @edit-node="prepareEditor" />
             <add-edit-item-modal ref="addEditItemModal"
                                  v-if="mission"
                                  :top-level-categories="topLevelCategories"
                                  :categories="categories"
                                  :clicked-point="clickedPoint"
                                  :current-level="currentFloor"
-                                 :node="nodeForModal"
+                                 :node="nodeForEditing"
                                  :mission="mission" />
         </div>
     </div>
@@ -80,6 +80,7 @@
                 map: null,
                 mapLayers: {},
                 nodeForModal: null,
+                nodeForEditing: null,
                 clickedPoint: null,
                 //endregion
                 //region Editor-specific
@@ -404,9 +405,22 @@
                 this.$nextTick(() => $('#popover-modal').modal('show'));
             },
             addMarker(event) {
+                this.nodeForEditing = null;
                 this.clickedPoint = event.latlng;
+
+                this.$nextTick(_ => {
+                    this.$refs.addEditItemModal.initializeAddEditModal();
+                    $('#edit-item-modal').modal('show');
+                });
+            },
+            prepareEditor(nodeId) {
+                this.nodeForEditing = this.nodes.find(node => node.id === nodeId);
                 this.$refs.addEditItemModal.initializeAddEditModal();
-                $('#edit-item-modal').modal('show');
+
+                this.$nextTick(_ => {
+                    this.$refs.addEditItemModal.initializeAddEditModal();
+                    $('#edit-item-modal').modal('show');
+                });
             },
             //endregion
             range(min, max) {
@@ -509,7 +523,6 @@
         }
     };
 </script>
-
 
 <style lang="scss" scoped>
     #map {

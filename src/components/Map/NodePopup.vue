@@ -34,10 +34,20 @@
         </div>
         <template v-slot:modal-footer>
             <template v-if="loggedIn && editorState === 'ITEMS'">
-                <game-button @click="$emit('edit-node', node.id)">
-                    <game-icon icon="edit" font-style="normal"/>
-                    {{ $t('map.edit-slash-delete') }}
-                </game-button>
+                <div class="edit-delete-buttons">
+                    <div class="edit">
+                        <game-button data-dismiss="modal" @click="$emit('edit-node', node.id)">
+                            <game-icon icon="edit" font-style="normal"/>
+                            {{ $t('map.edit') }}
+                        </game-button>
+                    </div>
+                    <div class="delete">
+                        <game-button @click="$emit('delete-node', node.id)">
+                            <game-icon icon="trash" font-style="normal"/>
+                            {{ $t('map.delete') }}
+                        </game-button>
+                    </div>
+                </div>
             </template>
             <game-button data-dismiss="modal">
                 <game-icon icon="failed" font-style="normal"/>
@@ -232,63 +242,83 @@ export default {
         }
     }
 }
-    .notes {
-        border-top: dotted 1px #fff;
-        margin-top: 10px;
 
-        > div {
-            margin-top: 5px;
-            padding: 10px;
-            white-space: pre-line;
+.edit-delete-buttons {
+    display: flex;
+    margin-right: 0;
 
-            &:first-child {
-                margin-top: 10px;
-            }
-        }
+    .edit {
+        margin-right: 5px;
+        flex-grow: 1;
+    }
 
-        .note {
-            background: rgb(58,63,73);
+    .delete {
+        margin-left: 5px;
+        flex-grow: 1;
 
-            .type {
-                font-weight: bolder;
-                text-transform: uppercase;
-            }
-        }
-
-        .requirement {
-            .in-game-description {
-                display: none;
-            }
-
-            border-left: solid 3px #d00000;
-        }
-
-        .warning {
-            .in-game-description {
-                display: none;
-            }
-
-            border-left: solid 3px #ffa500;
-        }
-
-        .info {
-            .in-game-description {
-                display: none;
-            }
-
-            border-left: solid 3px #0000e0;
-        }
-
-        .description {
-            .in-game-description {
-                text-transform: uppercase;
-                font-weight: bolder;
-                color: #404040;
-            }
-
-            color: #666;
-            background: #e4e4e4;
-            border-left: solid 3px #666666;
+        > button {
+            background: #dc3545;
         }
     }
+}
+
+.notes {
+    border-top: dotted 1px #fff;
+    margin-top: 10px;
+
+    > div {
+        margin-top: 5px;
+        padding: 10px;
+        white-space: pre-line;
+
+        &:first-child {
+            margin-top: 10px;
+        }
+    }
+
+    .note {
+        background: rgb(58,63,73);
+
+        .type {
+            font-weight: bolder;
+            text-transform: uppercase;
+        }
+    }
+
+    .requirement {
+        .in-game-description {
+            display: none;
+        }
+
+        border-left: solid 3px #d00000;
+    }
+
+    .warning {
+        .in-game-description {
+            display: none;
+        }
+
+        border-left: solid 3px #ffa500;
+    }
+
+    .info {
+        .in-game-description {
+            display: none;
+        }
+
+        border-left: solid 3px #0000e0;
+    }
+
+    .description {
+        .in-game-description {
+            text-transform: uppercase;
+            font-weight: bolder;
+            color: #404040;
+        }
+
+        color: #666;
+        background: #e4e4e4;
+        border-left: solid 3px #666666;
+    }
+}
 </style>

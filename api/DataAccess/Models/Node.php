@@ -4,6 +4,7 @@
 namespace DataAccess\Models;
 
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -98,7 +99,7 @@ class Node {
     public $quantity;
 
     /**
-     * @ORM\ManyToMany(targetEntity="MissionVariant")
+     * @ORM\ManyToMany(targetEntity="MissionVariant", cascade="persist")
      * @ORM\JoinTable(name="node_to_mission_variants",
      *                joinColumns={@ORM\JoinColumn(name="node_id", referencedColumnName="id")},
      *                inverseJoinColumns={@ORM\JoinColumn(name="variant_id", referencedColumnName="id", unique=true)}
@@ -108,13 +109,15 @@ class Node {
     private $variants;
 
     /**
-     * @ORM\OneToMany(targetEntity="NodeNote", mappedBy="node", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="NodeNote", mappedBy="node", fetch="EAGER", cascade="persist")
      * @var $notes Collection
      */
     private $notes;
 
     public function __construct() {
         $this->dateCreated = new \DateTime("now");
+        $this->variants = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     /**
@@ -359,11 +362,10 @@ class Node {
         return $this->variants;
     }
 
-    /**
-     * @param mixed $variants
-     */
-    public function setVariants($variants): void {
-        $this->variants = $variants;
+    public function addVariant(MissionVariant $variant): Node {
+        $this->variants[] = $variant;
+
+        return $this;
     }
 
     /**
@@ -373,10 +375,10 @@ class Node {
         return $this->notes;
     }
 
-    /**
-     * @param Collection $notes
-     */
-    public function setNotes(Collection $notes): void {
-        $this->notes = $notes;
+    public function addNote(NodeNote $note): Node {
+        $this->notes[] = $note;
+        $note->setNode($this);
+
+        return $this;
     }
 }

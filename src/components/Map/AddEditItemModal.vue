@@ -352,6 +352,26 @@ export default {
             $(this.$refs.templatePicker).selectpicker('val', -1);
             this.currentCategory = null;
             this.createEditNodeModel = clone(this.defaultCreateEditNodeModel);
+
+            // Init editing
+            if (this.node !== null) {
+                this.createEditNodeModel.category = this.categories.find(category => category.type === this.node.type && category.subgroup === this.node.subgroup);
+                $(this.$refs.subgroupPicker).selectpicker('val', `${this.createEditNodeModel.category.type}|${this.createEditNodeModel.category.subgroup}`);
+                this.$refs.subgroupPicker.dispatchEvent(new Event('change'));
+                this.createEditNodeModel.icon = this.node.icon;
+                $(this.$refs.iconPicker).selectpicker('val', this.createEditNodeModel.icon);
+                this.createEditNodeModel.name = this.node.name;
+                this.createEditNodeModel.quantity = this.node.quantity;
+                this.createEditNodeModel.targetAction = this.node.target;
+                this.createEditNodeModel.image = this.node.image;
+                this.createEditNodeModel.notes = this.node.notes.map(note => {
+                    return {
+                        type: note.type,
+                        text: note.text
+                    }
+                });
+                this.createEditNodeModel.variantIds = this.node.variants;
+            }
         },
         selectCategory(event) {
             if (event.target.value === '') {
@@ -460,5 +480,53 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.modal {
+    overflow-y: auto;
+}
 
+.note {
+    padding: 15px;
+    background: rgb(58,63,73);
+
+    .type {
+        font-weight: bolder;
+        text-transform: uppercase;
+    }
+}
+
+.requirement {
+    .in-game-description {
+        display: none;
+    }
+
+    border-left: solid 3px #d00000;
+}
+
+.warning {
+    .in-game-description {
+        display: none;
+    }
+
+    border-left: solid 3px #ffa500;
+}
+
+.info {
+    .in-game-description {
+        display: none;
+    }
+
+    border-left: solid 3px #0000e0;
+}
+
+.move-arrow {
+    color: green;
+}
+
+button {
+    margin-right: 10px;
+
+    &:last-child {
+        margin-right: 0;
+    }
+}
 </style>

@@ -16,6 +16,7 @@ use DataAccess\Models\NodeCategory;
 use DataAccess\Models\NodeDifficulty;
 use DataAccess\Models\NodeNote;
 use DataAccess\Models\User;
+use DataAccess\Repositories\MissionVariantRepository;
 use DataAccess\Repositories\NodeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Logging\DebugStack;
@@ -235,16 +236,18 @@ class NodeController {
 
         $node->setQuantity($requestBody['quantity'] ?? 1);
 
-        $allMissionVariants = $this->entityManager->getRepository(MissionVariant::class)->findBy(['missionId' => $missionId]);
+        /* @var $mission Mission */
+        $mission = $this->entityManager->getRepository(Mission::class)->findOneBy(['id' => $missionId]);
+
         $node->getVariants()->clear();
         foreach ($requestBody['variantIds'] as $selectedVariantId) {
-            $selectedVariant = current(array_filter($allMissionVariants, fn(MissionVariant $variant) => $variant->getId() === $selectedVariantId));
+            $selectedVariant = current(array_filter($mission->getVariants()->toArray(), fn(MissionVariant $variant) => $variant->getId() === $selectedVariantId));
             if ($selectedVariant === false) {
                 // Somehow got a bad variant. Just skip it.
                 continue;
             }
 
-            $node->getVariants()->add($selectedVariant);
+            $node->addVariant($selectedVariant);
         }
 
         $node->getNotes()->clear();
@@ -256,7 +259,7 @@ class NodeController {
             $nodeNote = new NodeNote();
             $nodeNote->setType($note['type']);
             $nodeNote->setText($note['text']);
-            $node->getNotes()->add($nodeNote);
+            $node->addNote($nodeNote);
         }
 
         $node->setApproved(true);
@@ -266,9 +269,7 @@ class NodeController {
 
     private function persistNodeData(Node $node): void {
         $this->entityManager->persist($node);
-        foreach ($node->getNotes()->toArray() as $note) {
-            $this->entityManager->persist($note);
-        }
+        $this->entityManager->flush();
 
         $this->entityManager->flush();
     }
