@@ -157,7 +157,7 @@ export default {
                     width: 50px;
 
                     &.has-search-results {
-                        background: #ff003c;
+                        background: $card-footer-background-hover;
                         color: #fff;
                     }
                 }
