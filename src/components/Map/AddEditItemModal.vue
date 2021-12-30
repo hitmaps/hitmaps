@@ -471,12 +471,10 @@ export default {
                 notes: this.createEditNodeModel.notes,
                 variantIds: this.createEditNodeModel.variantIds
             }).then(resp => {
-                console.log(resp);
                 this.$toast.success({
                     message: 'Item saved!'
                 });
             }).catch(err => {
-                console.log(err);
                 this.$toast.error({
                     message: 'Changes failed to save!'
                 });

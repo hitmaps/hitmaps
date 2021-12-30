@@ -662,6 +662,29 @@ function transformNode(Node $node): NodeWithNotesViewModel {
     return $nodeViewModel;
 }
 
+$klein->respond('DELETE', '/api/nodes/[:nodeId]', function(Request $request, Response $response) use ($applicationContext) {
+    $newToken = null;
+    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
+        print json_encode(['message' => 'You must be logged in to modify nodes!']);
+        return $response->code(401);
+    }
+
+    /* @var $node Node */
+    $node = $applicationContext->get(EntityManager::class)->getRepository(Node::class)->findOneBy(['id' => $request->nodeId]);
+    if ($node === null) {
+        $response->code(404);
+        return $response->json(['message' => 'Could not find the node to delete!']);
+    }
+    $applicationContext->get(EntityManager::class)->remove($node);
+    $applicationContext->get(EntityManager::class)->flush();
+
+    $responseModel = new ApiResponseModel();
+    $responseModel->token = $newToken;
+    $responseModel->data = ['message' => 'Node deleted!'];
+
+    return $response->json($responseModel);
+});
+
 $klein->respond('POST', '/api/ledges', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
@@ -881,42 +904,6 @@ $klein->respond('POST', '/api/nodes/move', function (Request $request, Response 
     $responseModel->token = $newToken;
     $responseModel->data = ['message' => 'OK'];
     return json_encode($responseModel);
-});
-
-$klein->respond('GET', '/api/nodes/delete/[:nodeId]', function(Request $request, Response $response) use ($applicationContext) {
-    $newToken = null;
-    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
-        print json_encode(['message' => 'You must be logged in to modify nodes!']);
-        return $response->code(401);
-    }
-
-    /* @var $user \DataAccess\Models\User */
-    $user = getUserContextForToken($newToken, $applicationContext);
-    $roles = $user->getRolesAsInts();
-    if (!\BusinessLogic\UserRole::hasAccess($roles, [\BusinessLogic\UserRole::TRUSTED_EDITOR])) {
-        $response->code(403);
-        return $response->json(['message' => 'You do not have permission to delete nodes!']);
-    }
-
-    /* @var $node Node */
-    $node = $applicationContext->get(EntityManager::class)->getRepository(Node::class)->findOneBy(['id' => $request->nodeId]);
-    if ($node === null) {
-        $response->code(404);
-        return $response->json(['message' => 'Could not find the node to delete!']);
-    }
-    $notes = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\NodeNote::class)->findBy(['nodeId' => $request->nodeId]);
-    foreach ($notes as $note) {
-        $applicationContext->get(EntityManager::class)->remove($note);
-    }
-    $applicationContext->get(EntityManager::class)->remove($node);
-    $applicationContext->get(EntityManager::class)->flush();
-    clearAllMapCaches($node->getMissionId(), $applicationContext);
-
-    $responseModel = new ApiResponseModel();
-    $responseModel->token = $newToken;
-    $responseModel->data = ['message' => 'Node deleted!'];
-
-    return $response->json($responseModel);
 });
 
 /**

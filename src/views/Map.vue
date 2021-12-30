@@ -33,7 +33,12 @@
                      @zoom-out="onZoomOut"
                      @master-edit-toggle="onMasterEditToggle"
                      @launch-editor="onLaunchEditor" />
-            <node-popup :node="nodeForModal" :logged-in="loggedIn" :game="game" :editor-state="editorState" @edit-node="prepareEditor" />
+            <node-popup :node="nodeForModal"
+                        :logged-in="loggedIn"
+                        :game="game"
+                        :editor-state="editorState"
+                        @delete-node="deleteNode"
+                        @edit-node="prepareEditor" />
             <add-edit-item-modal ref="addEditItemModal"
                                  v-if="mission"
                                  :top-level-categories="topLevelCategories"
@@ -420,6 +425,18 @@
                 this.$nextTick(_ => {
                     this.$refs.addEditItemModal.initializeAddEditModal();
                     $('#edit-item-modal').modal('show');
+                });
+            },
+            deleteNode(nodeId) {
+                this.$http.delete(`${this.$domain}/api/nodes/${nodeId}`)
+                    .then(_ => {
+                        this.$toast.success({
+                            message: 'Item deleted!'
+                        });
+                    }).catch(err => {
+                    this.$toast.error({
+                        message: 'Failed to delete item!'
+                    });
                 });
             },
             //endregion
