@@ -450,6 +450,11 @@ export default {
             }
         },
         saveMarker() {
+            if (!this.createEditNodeModel.variantIds.length) {
+                alert('You must select at least one mission variant');
+                return;
+            }
+
             if (this.node) {
                 this.updateMarker();
             } else {
@@ -471,6 +476,7 @@ export default {
                 notes: this.createEditNodeModel.notes,
                 variantIds: this.createEditNodeModel.variantIds
             }).then(resp => {
+                this.$emit('item-created', resp.data.data);
                 this.$toast.success({
                     message: 'Item saved!'
                 });
@@ -495,7 +501,7 @@ export default {
                 notes: this.createEditNodeModel.notes,
                 variantIds: this.createEditNodeModel.variantIds
             }).then(resp => {
-                console.log(resp);
+                this.$emit('item-updated', resp.data.data);
                 this.$toast.success({
                     message: 'Item updated!'
                 });
