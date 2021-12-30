@@ -12,6 +12,7 @@
     "axios": "^0.19.0",
     "core-js": "^3.6.1",
     "cxlt-vue2-toastr": "^1.1.1",
+    "just-clone": "^5.0.1",
     "leaflet": "^1.7.1",
     "leaflet.pm": "^2.2.0",
     "mobile-device-detect": "^0.4.3",

@@ -77,11 +77,6 @@ class Item {
     public $image;
 
     /**
-     * @ORM\Column(type="string")
-     */
-    public $tooltip;
-
-    /**
      * @return mixed
      */
     public function getId() {
@@ -261,19 +256,5 @@ class Item {
      */
     public function setImage($image): void {
         $this->image = $image;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTooltip() {
-        return $this->tooltip;
-    }
-
-    /**
-     * @param mixed $tooltip
-     */
-    public function setTooltip($tooltip): void {
-        $this->tooltip = $tooltip;
     }
 }

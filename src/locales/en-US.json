@@ -317,7 +317,9 @@
         "in-game-description": "In-Game Description:",
         "suit-disguise": "Suit ({suitName})",
         "npc": "NPC",
-        "edit-slash-delete": "Edit / Delete"
+        "edit-slash-delete": "Edit / Delete",
+        "blend-in-as": "Blend in as {disguiseName}",
+        "mission-variants": "Mission Variants"
     },
     "profile": {
         "profile": "Profile",

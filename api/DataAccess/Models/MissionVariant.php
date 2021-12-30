@@ -32,6 +32,11 @@ class MissionVariant {
     public $visible;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    public $icon;
+
+    /**
      * @return mixed
      */
     public function getId() {
@@ -85,5 +90,19 @@ class MissionVariant {
      */
     public function setVisible($visible): void {
         $this->visible = $visible;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getIcon(): ?string {
+        return $this->icon;
+    }
+
+    /**
+     * @param string|null $icon
+     */
+    public function setIcon(?string $icon): void {
+        $this->icon = $icon;
     }
 }

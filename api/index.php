@@ -579,14 +579,15 @@ $klein->respond('POST', '/api/web/user/login', function(Request $request, Respon
 $klein->respond('POST', '/api/nodes', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
-        print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
+        print json_encode(['message' => 'You must be logged in to make make edits to maps!']);
         return $response->code(401);
     }
 
 
     $user = getUserContextForToken($newToken, $applicationContext);
     /* @var $node \DataAccess\Models\Node */
-    $node = $applicationContext->get(NodeController::class)->createNode(intval($_POST['mission-id']), $_POST['difficulty'], $_POST, $user);
+    $body = json_decode($request->body(), true);
+    $node = $applicationContext->get(NodeController::class)->createNode($body, $user);
     clearAllMapCaches($node->getMissionId(), $applicationContext);
 
     $response->code(201);

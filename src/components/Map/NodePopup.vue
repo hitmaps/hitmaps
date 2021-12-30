@@ -10,7 +10,7 @@
                         <game-icon :icon="fontIconForNodeSubgroup" font-style="solid"/>
                     </div>
                     <div class="inner-details">
-                        <p class="group" v-if="node.name !== ''">{{ node.subgroup === 'agency-pickup' ? node.target : node.group }}</p>
+                        <p class="group" v-if="node.name !== ''">{{ node.subgroup === 'agency-pickup' ? agencyPickupName : node.group }}</p>
                         <p class="name">{{ node.name === '' ? node.group : node.name }}</p>
                     </div>
                 </div>
@@ -61,6 +61,10 @@ export default {
         editorState: String
     },
     computed: {
+        agencyPickupName() {
+            // TODO Localize
+            return this.node.icon === 'agency-pickup' ? 'Agency Pickup' : 'Hidden Stash';
+        },
         descriptionNote() {
             return this.node.notes.find(node => node.type === 'description');
         },

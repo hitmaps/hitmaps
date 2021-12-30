@@ -8,7 +8,7 @@
                           :current-floor="currentFloor"
                           :nodes="nodes"
                           @change-floor="onChangeFloor" />
-            <div id="map"></div>
+            <div :class="`hm-editor-${editorState.toLowerCase()}`" id="map"></div>
             <sidebar v-if="metadataLoaded && mapDataLoaded"
                      ref="sidebar"
                      :logged-in="loggedIn"
@@ -34,6 +34,14 @@
                      @master-edit-toggle="onMasterEditToggle"
                      @launch-editor="onLaunchEditor" />
             <node-popup :node="nodeForModal" :logged-in="loggedIn" :game="game" :editor-state="editorState" />
+            <add-edit-item-modal ref="addEditItemModal"
+                                 v-if="mission"
+                                 :top-level-categories="topLevelCategories"
+                                 :categories="categories"
+                                 :clicked-point="clickedPoint"
+                                 :current-level="currentFloor"
+                                 :node="nodeForModal"
+                                 :mission="mission" />
         </div>
     </div>
 </template>
@@ -44,10 +52,12 @@
     import NodePopup from "../components/Map/NodePopup";
     import Sidebar from "../components/Map/Sidebar/Sidebar";
     import Utils from "../util/Utils";
+    import AddEditItemModal from "../components/Map/AddEditItemModal";
 
     export default {
         name: 'Map',
         components: {
+            AddEditItemModal,
             Sidebar,
             NodePopup,
             FloorToggle,
@@ -70,6 +80,7 @@
                 map: null,
                 mapLayers: {},
                 nodeForModal: null,
+                clickedPoint: null,
                 //endregion
                 //region Editor-specific
                 editorState: 'OFF'
@@ -119,13 +130,7 @@
                                 this.renderItemDetailsModal(node);
                             });
 
-                            if (node.tooltip !== '') {
-                                node.marker.bindTooltip(node.tooltip.replace(/&/g, "&amp;")
-                                    .replace(/</g, "&lt;")
-                                    .replace(/>/g, "&gt;")
-                                    .replace(/"/g, "&quot;")
-                                    .replace(/'/g, "&#039;"));
-                            }
+                            this.bindTooltip(node);
                         });
                         this.categories = resp.data.categories;
                         this.mapLayers = this.buildMapLayers();
@@ -197,6 +202,28 @@
                     this.$nextTick(() => {
                         this.updateActiveMapState();
                         this.mapDataLoaded = true;
+
+                        // Bind map listeners
+                        this.map.on('click', this.addMarker);
+                        /*
+                        this.map.on('pm:drawstart', this.initDraw);
+                        this.map.on('pm:create', this.pmLayer);
+                        this.map.on('pm:drawend', this.endDraw);
+                        this.map.on('zoomend', () => {
+                            let zoomLevel = this.map.getZoom();
+
+                            var fonts = {
+                                3: '.8em',
+                                4: '1em',
+                                5: '1.2em'
+                            };
+
+                            $('.area-icon').css('font-size', fonts[zoomLevel]);
+                        });
+                        if (this.$route.query && this.$route.query['item']) {
+                            this.loadWithSearchedItem(this.$route.query['item']);
+                        }
+                         */
                     });
                 });
             });
@@ -329,10 +356,57 @@
                         popupAnchor: [0, 0]
                     });
             },
+            bindTooltip(node) {
+                let tooltip = node.name !== '' ? node.name : '';
+
+
+                switch (node.subgroup) {
+                    case 'up-stair':
+                        tooltip = this.$t('map.groups.Navigation|Stairwell');
+                        break;
+                    case 'blend-in':
+                        tooltip = node.name === 'Any Disguise' ?
+                            this.$t('map.groups.Points of Interest|Blend In') :
+                            this.$t('map.blend-in-as', { disguiseName: node.name });
+                        break;
+                    case 'locked-door':
+                    case 'conceal-item':
+                    case 'hiding-spot':
+                    case 'destroy-evidence':
+                    case 'weapon-crate':
+                    case 'camera':
+                    case 'frisk':
+                        tooltip = node.group;
+                        break;
+                    case 'area':
+                        // Don't show tooltips for areas
+                        tooltip = '';
+                        break;
+                }
+
+                if (tooltip === '') {
+                    return;
+                }
+
+                if (node.quantity > 1) {
+                    tooltip += ` (x${node.quantity})`;
+                }
+
+                node.marker.bindTooltip(tooltip.replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;"));
+            },
             renderItemDetailsModal(node) {
                 this.nodeForModal = node;
 
                 this.$nextTick(() => $('#popover-modal').modal('show'));
+            },
+            addMarker(event) {
+                this.clickedPoint = event.latlng;
+                this.$refs.addEditItemModal.initializeAddEditModal();
+                $('#edit-item-modal').modal('show');
             },
             //endregion
             range(min, max) {
