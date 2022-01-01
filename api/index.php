@@ -692,7 +692,8 @@ $klein->respond('POST', '/api/ledges', function (Request $request, Response $res
         return $response->code(401);
     }
 
-    $ledge = $applicationContext->get(LedgeController::class)->createLedge($_POST['missionId'], $_POST['level'], $_POST['vertices']);
+    $body = json_decode($request->body(), true);
+    $ledge = $applicationContext->get(LedgeController::class)->createLedge($body['missionId'], $body['level'], $body['vertices']);
 
     $explodedVertices = explode('|', $ledge->getVertices());
 
@@ -747,7 +748,8 @@ $klein->respond('POST', '/api/foliage', function (Request $request, Response $re
         return $response->code(401);
     }
 
-    $ledge = $applicationContext->get(FoliageController::class)->createFoliage($_POST['missionId'], $_POST['level'], $_POST['vertices']);
+    $body = json_decode($request->body(), true);
+    $ledge = $applicationContext->get(FoliageController::class)->createFoliage($body['missionId'], $body['level'], $body['vertices']);
 
     $explodedVertices = explode('|', $ledge->getVertices());
 
