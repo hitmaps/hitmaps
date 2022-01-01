@@ -4,7 +4,7 @@
             <i class="fas fa-trash"></i>
             {{ $t('map.click-ledge-to-delete') }}
         </p>
-        <div class="editor-button">
+        <div class="editor-button" :class="drawingActive ? 'selected' : ''" @click="$emit('enable-ledge-creation')">
             <h3>
                 <i class="fas fa-plus-circle"></i>
                 {{ $t('map.add-ledge') }}
@@ -22,7 +22,10 @@
 
 <script>
 export default {
-    name: "EditLedges"
+    name: "EditLedges",
+    props: {
+        drawingActive: Boolean
+    }
 }
 </script>
 

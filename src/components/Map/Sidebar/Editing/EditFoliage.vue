@@ -4,7 +4,7 @@
             <i class="fas fa-trash"></i>
             [!] Click on an existing foliage to delete it.
         </p>
-        <div class="editor-button">
+        <div class="editor-button" :class="drawingActive ? 'selected' : ''" @click="$emit('enable-foliage-creation')">
             <h3>
                 <i class="fas fa-plus-circle"></i>
                 {{ $t('map.add-foliage') }}
@@ -24,7 +24,10 @@
 
 <script>
 export default {
-    name: "EditFoliage"
+    name: "EditFoliage",
+    props: {
+        drawingActive: Boolean
+    }
 }
 </script>
 

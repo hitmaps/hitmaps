@@ -26,17 +26,9 @@ class LedgeController {
         return $ledge;
     }
 
-    private function buildVertices(array $vertices) {
-        $allVertices = [];
-        /*
-         * Each vertex is a 2-element array: [lat, lng]
-         * I know this isn't the *right* way to store this in the database, but it's just faster for now.
-         */
-        foreach ($vertices as $vertex) {
-            $allVertices[] = "{$vertex[0]},{$vertex[1]}";
-        }
-
-        return implode('|', $allVertices);
+    private function buildVertices(array $vertices): string {
+        // I know this isn't the *right* way to store this in the database, but it's just faster for now.
+        return implode('|', $vertices);
     }
 
     public function getLedgesForMission(int $missionId): array {

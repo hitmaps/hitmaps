@@ -73,8 +73,12 @@
             <edit-items v-if="editorState === 'ITEMS'"
                         @launch-editor="onLaunchEditor" />
             <edit-ledges v-if="editorState === 'LEDGES'"
+                         :drawing-active="drawingActive"
+                         @enable-ledge-creation="onEnableLedgeCreation"
                          @launch-editor="onLaunchEditor" />
             <edit-foliage v-if="editorState === 'FOLIAGE'"
+                          :drawing-active="drawingActive"
+                          @enable-foliage-creation="onEnableFoliageCreation"
                           @launch-editor="onLaunchEditor" />
         </div>
     </nav>
@@ -112,7 +116,8 @@ export default {
         maxZoomLevel: Number,
         minZoomLevel: Number,
         currentZoomLevel: Number,
-        editorState: String
+        editorState: String,
+        drawingActive: Boolean
     },
     data() {
         return {
@@ -194,6 +199,12 @@ export default {
         },
         onLaunchEditor(editor) {
             this.$emit('launch-editor', editor);
+        },
+        onEnableLedgeCreation() {
+            this.$emit('enable-ledge-creation');
+        },
+        onEnableFoliageCreation() {
+            this.$emit('enable-foliage-creation');
         }
         //endregion
     }

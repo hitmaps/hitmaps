@@ -22,6 +22,7 @@
                      :min-zoom-level="mission.minZoom"
                      :current-zoom-level="map.getZoom()"
                      :editor-state="editorState"
+                     :drawing-active="polyActive"
                      @hide-all="onHideAll"
                      @show-all="onShowAll"
                      @search-item="onSearchItem"
@@ -32,7 +33,9 @@
                      @zoom-in="onZoomIn"
                      @zoom-out="onZoomOut"
                      @master-edit-toggle="onMasterEditToggle"
-                     @launch-editor="onLaunchEditor" />
+                     @launch-editor="onLaunchEditor"
+                     @enable-ledge-creation="onEnableLedgeCreation"
+                     @enable-foliage-creation="onEnableFoliageCreation" />
             <node-popup :node="nodeForModal"
                         :logged-in="loggedIn"
                         :game="game"
@@ -46,7 +49,9 @@
                                  :clicked-point="clickedPoint"
                                  :current-level="currentFloor"
                                  :node="nodeForEditing"
-                                 :mission="mission" />
+                                 :mission="mission"
+                                 @item-created="onItemCreated"
+                                 @item-updated="onItemUpdated" />
         </div>
     </div>
 </template>
@@ -58,6 +63,7 @@
     import Sidebar from "../components/Map/Sidebar/Sidebar";
     import Utils from "../util/Utils";
     import AddEditItemModal from "../components/Map/AddEditItemModal";
+    import ArrayHelpers from "../components/ArrayHelpers";
 
     export default {
         name: 'Map',
@@ -87,9 +93,12 @@
                 nodeForModal: null,
                 nodeForEditing: null,
                 clickedPoint: null,
+                vertices: [],
+                workingLayer: null,
                 //endregion
                 //region Editor-specific
-                editorState: 'OFF'
+                editorState: 'OFF',
+                polyActive: false
                 //endregion
             }
         },
@@ -123,20 +132,7 @@
                         this.topLevelCategories = resp.data.topLevelCategories;
                         this.nodes = resp.data.nodes;
                         this.nodes.forEach(node => {
-                            node.latLng = L.latLng(node.latitude, node.longitude);
-                            node.visible = true;
-                            node.searchResult = false;
-                            node.marker = new L.marker([node.latitude, node.longitude], {
-                                icon: this.buildIcon(node),
-                                custom: {
-                                    id: node.id
-                                },
-                                riseOnHover: true
-                            }).on('click', _ => {
-                                this.renderItemDetailsModal(node);
-                            });
-
-                            this.bindTooltip(node);
+                            this.buildNodeForMap(node);
                         });
                         this.categories = resp.data.categories;
                         this.mapLayers = this.buildMapLayers();
@@ -166,18 +162,7 @@
                                               `/missions/${this.$route.params.mission}/ledges`)
                     .then(resp => {
                         this.ledges = resp.data.ledges;
-                        this.ledges.forEach(ledge => {
-                            ledge.visible = true;
-                            const formattedVertices = ledge.vertices.map(vertexPair => [vertexPair.split(',')[0], vertexPair.split(',')[1]]);
-                            ledge.polyline = L.polyline(formattedVertices, {
-                                color: '#fff',
-                                weight: 4,
-                                opacity: .75,
-                                custom: {
-                                    id: ledge.id
-                                }
-                            }).bindTooltip(this.$t('map.groups.Navigation|Ledge'), {sticky: true}).on('click', () => alert('hi!'));
-                        });
+                        this.ledges.forEach(ledge => this.buildLedgeForMap(ledge));
 
                         this.$nextTick(_ => this.ledges.forEach(ledge => ledge.polyline.addTo(this.map)));
                     });
@@ -187,18 +172,7 @@
                                               `/missions/${this.$route.params.mission}/foliage`)
                     .then(resp => {
                         this.foliage = resp.data.foliage;
-                        this.foliage.forEach(foliage => {
-                            foliage.visible = true;
-                            const formattedVertices = foliage.vertices.map(vertexPair => [vertexPair.split(',')[0], vertexPair.split(',')[1]]);
-                            foliage.polygon = L.polygon(formattedVertices, {
-                                color: '#248f24',
-                                weight: 4,
-                                opacity: .75,
-                                custom: {
-                                    id: foliage.id
-                                }
-                            }).bindTooltip(this.$t('map.groups.Navigation|Foliage'), {sticky: true}).on('click', () => alert('hi!'));
-                        });
+                        this.foliage.forEach(foliage => this.buildFoliageForMap(foliage));
 
                         this.$nextTick(_ => this.foliage.forEach(foliage => foliage.polygon.addTo(this.map)));
                     });
@@ -211,10 +185,11 @@
 
                         // Bind map listeners
                         this.map.on('click', this.addMarker);
-                        /*
                         this.map.on('pm:drawstart', this.initDraw);
                         this.map.on('pm:create', this.pmLayer);
                         this.map.on('pm:drawend', this.endDraw);
+                        /*
+
                         this.map.on('zoomend', () => {
                             let zoomLevel = this.map.getZoom();
 
@@ -275,6 +250,50 @@
         },
         methods: {
             //region Map-building
+            buildNodeForMap(node) {
+                node.latLng = L.latLng(node.latitude, node.longitude);
+                node.visible = true;
+                node.searchResult = false;
+                node.marker = new L.marker([node.latitude, node.longitude], {
+                    icon: this.buildIcon(node),
+                    custom: {
+                        id: node.id
+                    },
+                    riseOnHover: true
+                }).on('click', _ => {
+                    this.renderItemDetailsModal(node);
+                });
+
+                this.bindTooltip(node);
+            },
+            buildLedgeForMap(ledge) {
+                ledge.visible = true;
+                const formattedVertices = ledge.vertices.map(vertexPair => [vertexPair.split(',')[0], vertexPair.split(',')[1]]);
+                ledge.polyline = L.polyline(formattedVertices, {
+                    color: '#fff',
+                    weight: 4,
+                    opacity: .75,
+                    custom: {
+                        id: ledge.id
+                    }
+                }).bindTooltip(this.$t('map.groups.Navigation|Ledge'), {sticky: true}).on('click', () => alert('hi!'));
+
+                return ledge;
+            },
+            buildFoliageForMap(foliage) {
+                foliage.visible = true;
+                const formattedVertices = foliage.vertices.map(vertexPair => [vertexPair.split(',')[0], vertexPair.split(',')[1]]);
+                foliage.polygon = L.polygon(formattedVertices, {
+                    color: '#248f24',
+                    weight: 4,
+                    opacity: .75,
+                    custom: {
+                        id: foliage.id
+                    }
+                }).bindTooltip(this.$t('map.groups.Navigation|Foliage'), {sticky: true}).on('click', () => alert('hi!'));
+
+                return foliage;
+            },
             buildMapLayers() {
                 const allLayers = {};
                 // 1. Sniper Assassin (only one level - 0)
@@ -410,6 +429,10 @@
                 this.$nextTick(() => $('#popover-modal').modal('show'));
             },
             addMarker(event) {
+                if (this.editorState !== 'ITEMS') {
+                    return;
+                }
+
                 this.nodeForEditing = null;
                 this.clickedPoint = event.latlng;
 
@@ -428,16 +451,24 @@
                 });
             },
             deleteNode(nodeId) {
-                this.$http.delete(`${this.$domain}/api/nodes/${nodeId}`)
-                    .then(_ => {
-                        this.$toast.success({
-                            message: 'Item deleted!'
-                        });
-                    }).catch(err => {
-                    this.$toast.error({
-                        message: 'Failed to delete item!'
-                    });
-                });
+                this.nodes.find(x => x.id === nodeId).marker.removeFrom(this.map);
+                $('#popover-modal').modal('hide');
+            },
+            onItemCreated(node) {
+                this.nodes.push(node);
+                this.buildNodeForMap(node);
+                node.marker.addTo(this.map);
+                this.updateNodeMarkers();
+                $('#edit-item-modal').modal('hide');
+            },
+            onItemUpdated(node) {
+                this.nodeForEditing.marker.removeFrom(this.map);
+                ArrayHelpers.deleteElement(this.nodes, this.nodeForEditing);
+                this.nodes.push(node);
+                this.buildNodeForMap(node);
+                node.marker.addTo(this.map);
+                this.updateNodeMarkers();
+                $('#edit-item-modal').modal('hide');
             },
             //endregion
             range(min, max) {
@@ -522,10 +553,116 @@
                     this.editorState = 'MENU';
                 } else {
                     this.editorState = 'OFF';
+                    this.toggleDraw('OFF');
                 }
             },
             onLaunchEditor(editorState) {
                 this.editorState = editorState;
+
+                if (this.editorState === 'MENU') {
+                    this.toggleDraw('OFF');
+                }
+            },
+            toggleDraw(state) {
+                if (state === 'OFF') {
+                    this.map.pm.disableDraw('Line');
+                    this.map.pm.disableDraw('Polygon');
+                    return;
+                }
+
+                if (this.map.pm.Draw[state]._enabled) {
+                    this.map.pm.disableDraw(state);
+                    this.polyActive = false;
+                } else {
+                    this.map.pm.enableDraw(state, {
+                        snappable: false
+                    });
+                    this.polyActive = true;
+                }
+
+                let toastMessage = this.polyActive ? 'Drawing tools enabled' : 'Drawing tools disabled';
+                this.$toast.info({
+                    message: toastMessage
+                })
+            },
+            onEnableLedgeCreation() {
+                this.toggleDraw('Line');
+            },
+            onEnableFoliageCreation() {
+                this.toggleDraw('Polygon');
+            },
+            initDraw: function(e) {
+                e.workingLayer.on('pm:vertexadded', e => {
+                    this.vertices.push([e.latlng.lat, e.latlng.lng])
+                })
+            },
+            pmLayer: function(e) {
+                this.workingLayer = e.layer;
+            },
+            endDraw: function(e) {
+                if (this.vertices.length === 0) {
+                    return;
+                }
+
+                const data = {
+                    vertices: [],
+                    missionId: this.mission.id,
+                    level: this.currentFloor
+                };
+                this.vertices.forEach(element => {
+                    data.vertices.push(`${element[0]},${element[1]}`);
+                })
+                if (e.shape === 'Line') {
+                    this.$http.post(`${this.$domain}/api/ledges`, data)
+                        .then(resp => {
+                            this.vertices = [];
+                            this.ledges.push(this.buildLedgeForMap(resp.data.data));
+                            this.$toast.success({
+                                message: 'Ledge saved!'
+                            });
+                            this.map.removeLayer(this.workingLayer);
+                            this.workingLayer = null;
+                            this.polyActive = false;
+                            this.updateNodeMarkers();
+                        }).catch(_ => {
+                            this.$toast.error({
+                                message: 'Error occurred when saving ledge!'
+                            });
+                        });
+                } else if (this.editorState === 'FOLIAGE') {
+                    this.$http.post(`${this.$domain}/api/foliage`, data)
+                        .then(resp => {
+                            this.vertices = [];
+                            this.foliage.push(this.buildFoliageForMap(resp.data.data));
+                            this.$toast.success({
+                                message: 'Foliage saved!'
+                            });
+                            this.map.removeLayer(this.workingLayer);
+                            this.workingLayer = null;
+                            this.polyActive = false;
+                            this.updateNodeMarkers();
+                        }).catch(_ => {
+                            this.$toast.error({
+                                message: 'Error occurred when saving foliage!'
+                            });
+                        });
+                } else if (this.editorState === 'DISGUISE-REGIONS') {
+                    /*const disguiseId = this.editor.currentDisguise;
+                    data.append('disguiseId', disguiseId)
+                    data.append('type', this.editor.disguiseType)
+                    this.$request(true, 'disguise-areas', data).then(resp => {
+                        this.editor.vertices = []
+                        let disguiseArea = resp.data.data;
+                        this.disguises
+                            .find(el => el.id == disguiseId)
+                            .areas.push(disguiseArea)
+                        this.buildDisguiseArea(disguiseArea).addTo(this.overlays[disguiseArea.level]['Disguises|' + disguiseArea.disguiseId]);
+                        this.editor.workingLayers.forEach(el => {
+                            this.map.removeLayer(el)
+                        })
+                        this.editor.workingLayers = []
+                    })*/
+                }
             }
             //endregion
         },

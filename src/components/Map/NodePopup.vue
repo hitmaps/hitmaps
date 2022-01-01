@@ -42,7 +42,7 @@
                         </game-button>
                     </div>
                     <div class="delete">
-                        <game-button @click="$emit('delete-node', node.id)">
+                        <game-button @click="deleteNode" :disabled="blockDeleteButton">
                             <game-icon icon="trash" font-style="normal"/>
                             {{ $t('map.delete') }}
                         </game-button>
@@ -69,6 +69,11 @@ export default {
         node: Object,
         loggedIn: Boolean,
         editorState: String
+    },
+    data() {
+        return {
+            blockDeleteButton: false
+        }
     },
     computed: {
         agencyPickupName() {
@@ -166,6 +171,23 @@ export default {
             }
 
             return 'challenge-category-item';
+        },
+        deleteNode() {
+            this.blockDeleteButton = true;
+            this.$http.delete(`${this.$domain}/api/nodes/${this.node.id}`)
+                .then(_ => {
+                    this.blockDeleteButton = false;
+                    $('#edit-item-modal').modal('hide');
+                    this.$toast.success({
+                        message: 'Item deleted!'
+                    });
+                    this.$emit('delete-node', this.node.id);
+                }).catch(_ => {
+                    this.blockDeleteButton = false;
+                    this.$toast.error({
+                        message: 'Failed to delete item!'
+                    });
+                });
         }
     }
 }

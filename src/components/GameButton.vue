@@ -4,7 +4,6 @@
         class="btn btn-block game-button"
         v-bind="$attrs"
         @click="$emit('click')"
-        :disabled="disabled"
     >
         <slot></slot>
     </button>
@@ -12,12 +11,7 @@
 
 <script>
 export default {
-    name: 'GameButton',
-    data() {
-        return {
-            disabled: false
-        }
-    }
+    name: 'GameButton'
 }
 </script>
 
