@@ -21,6 +21,13 @@ axios.interceptors.request.use((config) => {
     }
     return config;
 });
+axios.interceptors.response.use((response) => {
+    if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+    }
+
+    return response;
+});
 
 Vue.config.productionTip = false
 //For Copyright
