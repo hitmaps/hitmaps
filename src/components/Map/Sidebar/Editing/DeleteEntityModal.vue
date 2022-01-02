@@ -3,7 +3,7 @@
            :modal-title="modalTitle"
            v-if="entity && entityType">
         <i18n path="map.confirm-item-deletion-message" tag="p">
-            <span slot="item">{{ entityType }}</span>
+            <span slot="item">{{ displayEntityType }}</span>
         </i18n>
         <template v-slot:modal-footer>
             <game-button type="button" data-dismiss="modal">
@@ -38,9 +38,16 @@ export default {
     },
     computed: {
         modalTitle() {
-            const titleCaseEntityType = this.entityType[0].toUpperCase() + this.entityType.substr(1).toLowerCase();
+            let titleCaseEntityType = this.entityType[0].toUpperCase() + this.entityType.substr(1).toLowerCase();
+            if (this.entityType === 'disguise-area') {
+                // TODO localize
+                titleCaseEntityType = 'Disguise Area';
+            }
 
             return this.$t('map.confirm-item-deletion-title', { item: titleCaseEntityType });
+        },
+        displayEntityType() {
+            return this.entityType.replace('-', ' ');
         }
     },
     methods: {

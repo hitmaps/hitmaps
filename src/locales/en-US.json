@@ -271,10 +271,10 @@
         "select-disguise-for-editing": "Select a disguise from the dropdown below to edit its layout.",
         "add-trespassing-region": "Add Trespassing Region",
         "toggle-trespassing-builder": "Click here to enable / disable trespassing region builder",
-        "add-hostile-region": "Add Trespassing Region",
-        "toggle-hostile-builder": "Click here to enable / disable trespassing region builder",
+        "add-hostile-region": "Add Hostile Region",
+        "toggle-hostile-builder": "Click here to enable / disable hostile region builder",
         "copy-regions": "Copy Regions",
-        "click-to-copy-regions": "Click here to copy disguise regions from one disguise to another",
+        "click-to-copy-regions": "Copy disguise regions from one disguise to another",
         "close-disguise-menu": "Close Disguise Area Menu",
         "copy-disguises-warning": "When copying, any existing target disguise regions will be deleted before copying.",
         "source-disguise": "Source Disguise",
@@ -323,7 +323,10 @@
         "edit": "Edit",
         "delete": "Delete",
         "confirm-item-deletion-title": "Confirm {item} Deletion",
-        "confirm-item-deletion-message": "Are you sure you want to delete this {item}?"
+        "confirm-item-deletion-message": "Are you sure you want to delete this {item}?",
+        "trespassing": "Trespassing",
+        "hostile-area": "Hostile Area",
+        "copy-disguise-areas": "Copy Disguise Areas"
     },
     "profile": {
         "profile": "Profile",

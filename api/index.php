@@ -3,6 +3,7 @@
 use BusinessLogic\Caching\CacheClient;
 use BusinessLogic\Caching\KeyBuilder;
 use BusinessLogic\MissionType;
+use Controllers\DisguiseAreasController;
 use Controllers\FoliageController;
 use Controllers\LedgeController;
 use Controllers\NodeController;
@@ -355,6 +356,33 @@ $klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:m
 
     return $response->json([
         'disguises' => $formattedDisguises
+    ]);
+});
+
+$klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:mission]/disguise-areas/[:id]', function(Request $request, Response $response) use ($applicationContext) {
+    $mission = getMissionFromRequest($applicationContext, $request);
+
+    if ($mission === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find mission with game '{$request->game}', location '{$request->location}', and mission slug '{$request->mission}'"
+        ]);
+    }
+
+    /* @var $disguiseRepository \DataAccess\Repositories\DisguiseRepository */
+    $disguiseRepository = $applicationContext->get(EntityManager::class)->getRepository(Disguise::class);
+
+    /* @var $disguise Disguise|null */
+    $disguise = $disguiseRepository->findOneBy(['id' => $request->id, 'missionId' => $mission->getId()]);
+
+    if ($disguise === null) {
+        return $response->code(404);
+    }
+
+    $disguiseAreas = $applicationContext->get(EntityManager::class)->getRepository(DisguiseArea::class)->findBy(['disguiseId' => $disguise->getId()]);
+
+    return $response->code(200)->json([
+        'disguiseAreas' => array_map(fn(DisguiseArea $da) => new DisguiseAreaViewModel($da), $disguiseAreas)
     ]);
 });
 
@@ -793,23 +821,14 @@ $klein->respond('POST', '/api/disguise-areas', function (Request $request, Respo
         return $response->code(401);
     }
 
-    $disguiseArea = $applicationContext->get(\Controllers\DisguiseAreasController::class)->createDisguiseArea(intval($_POST['missionId']),
-        intval($_POST['disguiseId']),
-        intval($_POST['level']),
-        $_POST['type'],
-        $_POST['vertices']);
+    $body = json_decode($request->body(), true);
+    $disguiseArea = $applicationContext->get(DisguiseAreasController::class)->createDisguiseArea(intval($body['missionId']),
+        intval($body['disguiseId']),
+        intval($body['level']),
+        $body['type'],
+        $body['vertices']);
 
-    $explodedVertices = explode('|', $disguiseArea->getVertices());
-
-    $viewModel = new DisguiseAreaViewModel();
-    $viewModel->id = $disguiseArea->getId();
-    $viewModel->missionId = $disguiseArea->getMissionId();
-    $viewModel->level = $disguiseArea->getLevel();
-    $viewModel->disguiseId = $disguiseArea->getDisguiseId();
-    $viewModel->type = $disguiseArea->getType();
-    $viewModel->vertices = $explodedVertices;
-
-    clearAllMapCaches($disguiseArea->getMissionId(), $applicationContext);
+    $viewModel = new DisguiseAreaViewModel($disguiseArea);
 
     $response->code(201);
 
@@ -826,13 +845,14 @@ $klein->respond('POST', '/api/disguise-areas/copy', function (Request $request, 
         return $response->code(401);
     }
 
-    if (!isset($_POST['original-disguise']) || !isset($_POST['target-disguise'])) {
+    $body = json_decode($request->body(), true);
+    if (!isset($body['originalDisguise']) || !isset($body['targetDisguise'])) {
         $response->code(400);
         return $response->body(json_encode(['message' => 'You must select a source and target disguise!']));
     }
 
-    $originalDisguiseId = intval($_POST['original-disguise']);
-    $targetDisguiseId = intval($_POST['target-disguise']);
+    $originalDisguiseId = intval($body['originalDisguise']);
+    $targetDisguiseId = intval($body['targetDisguise']);
 
     if ($originalDisguiseId === $targetDisguiseId) {
         $response->code(400);
@@ -841,9 +861,8 @@ $klein->respond('POST', '/api/disguise-areas/copy', function (Request $request, 
 
     /* @var $disguiseAreas DisguiseArea[] */
     $entityManager = $applicationContext->get(EntityManager::class);
-    $entityManager->getConnection()->exec('DELETE FROM `disguise_areas` WHERE `disguise_id` = ' . intval($targetDisguiseId));
+    $entityManager->getConnection()->executeStatement("DELETE FROM `disguise_areas` WHERE `disguise_id` = {$targetDisguiseId}");
     $disguiseAreas = $entityManager->getRepository(DisguiseArea::class)->findBy(['disguiseId' => $originalDisguiseId]);
-    $missionId = -1;
     foreach ($disguiseAreas as $disguiseArea) {
         $newDisguiseArea = new DisguiseArea();
         $newDisguiseArea->setMissionId($disguiseArea->getMissionId());
@@ -852,19 +871,18 @@ $klein->respond('POST', '/api/disguise-areas/copy', function (Request $request, 
         $newDisguiseArea->setLevel($disguiseArea->getLevel());
         $newDisguiseArea->setVertices($disguiseArea->getVertices());
         $entityManager->persist($newDisguiseArea);
-
-        $missionId = $disguiseArea->getMissionId();
     }
     $entityManager->flush();
 
-    clearAllMapCaches($missionId, $applicationContext);
+    $disguiseAreas = $applicationContext->get(EntityManager::class)->getRepository(DisguiseArea::class)->findBy(['disguiseId' => $targetDisguiseId]);
 
     $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
-    return json_encode($responseModel);
+    $responseModel->data = array_map(fn(DisguiseArea $da) => new DisguiseAreaViewModel($da), $disguiseAreas);
+    return $response->json($responseModel);
 });
 
-$klein->respond('GET', '/api/disguise-areas/delete/[:areaId]', function (Request $request, Response $response) use ($applicationContext) {
+$klein->respond('DELETE', '/api/disguise-areas/[:areaId]', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to delete disguise areas!']);
@@ -876,8 +894,6 @@ $klein->respond('GET', '/api/disguise-areas/delete/[:areaId]', function (Request
     $entityManager = $applicationContext->get(EntityManager::class);
     $entityManager->remove($disguiseArea);
     $entityManager->flush();
-
-    clearAllMapCaches($disguiseArea->getMissionId(), $applicationContext);
 
     $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;

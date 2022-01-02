@@ -54,7 +54,11 @@
             </div>
             <div v-show="editorState === 'OFF'">
                 <item-search :searchable-nodes="getSearchableNodes()" @search-item="onSearchItem" />
-                <disguise-dropdown :disguises="disguises" />
+                <disguise-dropdown :game="game"
+                                   :mission="mission"
+                                   :disguises="disguises"
+                                   :current-disguise="currentDisguise"
+                                   @disguise-selected="onDisguiseSelected" />
                 <hide-select-all @hide-all="$emit('hide-all')" @show-all="$emit('show-all')" />
                 <top-level-category-card v-for="topLevelCategory in topLevelCategories"
                                          :key="topLevelCategory"
@@ -69,6 +73,7 @@
                                          @show-top-level-category="onShowTopLevelCategory" />
             </div>
             <edit-landing v-if="editorState === 'MENU'"
+                          :nodes-only="mission.missionType === 'Sniper Assassin'"
                           @launch-editor="onLaunchEditor" />
             <edit-items v-if="editorState === 'ITEMS'"
                         @launch-editor="onLaunchEditor" />
@@ -80,6 +85,14 @@
                           :drawing-active="drawingActive"
                           @enable-foliage-creation="onEnableFoliageCreation"
                           @launch-editor="onLaunchEditor" />
+            <edit-disguise-regions v-if="editorState === 'DISGUISE-REGIONS'"
+                                   :drawing-active="drawingActive"
+                                   :current-disguise="currentDisguise"
+                                   :disguises="disguises"
+                                   @disguise-selected="onDisguiseSelected"
+                                   @enable-region-creation="onEnableRegionCreation"
+                                   @launch-editor="onLaunchEditor"
+                                   @replace-disguise-areas="onReplaceDisguiseAreas" />
         </div>
     </nav>
 </template>
@@ -96,16 +109,20 @@ import EditorHeader from "./Editing/EditorHeader";
 import EditItems from "./Editing/EditItems";
 import EditFoliage from "./Editing/EditFoliage";
 import EditLedges from "./Editing/EditLedges";
+import EditDisguiseRegions from "./Editing/EditDisguiseRegions";
 
 export default {
     name: "Sidebar",
     components: {
+        EditDisguiseRegions,
         EditLedges,
         EditFoliage,
         EditItems,
         EditorHeader,
         EditLanding, DisguiseDropdown, ItemSearch, TopLevelCategoryCard, HideSelectAll, ControlButton},
     props: {
+        game: Object,
+        mission: Object,
         loggedIn: Boolean,
         categories: Array,
         nodes: Array,
@@ -117,7 +134,8 @@ export default {
         minZoomLevel: Number,
         currentZoomLevel: Number,
         editorState: String,
-        drawingActive: Boolean
+        drawingActive: Boolean,
+        currentDisguise: Object
     },
     data() {
         return {
@@ -205,6 +223,15 @@ export default {
         },
         onEnableFoliageCreation() {
             this.$emit('enable-foliage-creation');
+        },
+        onDisguiseSelected(disguise) {
+            this.$emit('disguise-selected', disguise);
+        },
+        onEnableRegionCreation(regionType) {
+            this.$emit('enable-region-creation', regionType);
+        },
+        onReplaceDisguiseAreas(disguiseAreas) {
+            this.$emit('replace-disguise-areas', disguiseAreas);
         }
         //endregion
     }

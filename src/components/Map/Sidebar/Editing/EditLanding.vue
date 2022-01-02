@@ -19,13 +19,14 @@
                 {{ $t('map.add-remove-foliage') }}
             </h3>
         </div>
-        <!-- TODO Disguise regions -->
-        <!--<div v-if="!nodesOnly" class="editor-button" @click="$emit('launch-editor', 'DISGUISE-REGIONS')">
+        <div v-if="!nodesOnly"
+             class="editor-button"
+             @click="$emit('launch-editor', 'DISGUISE-REGIONS')">
             <h3>
                 <i class="fas fa-fw fa-user-tie"></i>
                 {{ $t('map.manage-disguise-areas') }}
             </h3>
-        </div>-->
+        </div>
         <i18n path="map.click-icon-to-close" tag="p">
             <span slot="pencilIcon">
                 <i class="fas fa-pencil-alt"></i>
