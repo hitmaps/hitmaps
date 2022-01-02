@@ -2,7 +2,7 @@
     <div class="foliage-menu">
         <p data-foliage="delete-help">
             <i class="fas fa-trash"></i>
-            [!] Click on an existing foliage to delete it.
+            {{ $t('map.click-foliage-to-delete') }}
         </p>
         <div class="editor-button" :class="drawingActive ? 'selected' : ''" @click="$emit('enable-foliage-creation')">
             <h3>
