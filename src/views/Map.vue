@@ -40,6 +40,7 @@
                         :logged-in="loggedIn"
                         :game="game"
                         :editor-state="editorState"
+                        ref="nodePopup"
                         @delete-node="deleteNode"
                         @edit-node="prepareEditor" />
             <add-edit-item-modal ref="addEditItemModal"
@@ -52,6 +53,7 @@
                                  :mission="mission"
                                  @item-created="onItemCreated"
                                  @item-updated="onItemUpdated" />
+            <delete-entity-modal :entity="deletionItem" :entity-type="deletionItemType" @item-deleted="onPolyDeleted" />
         </div>
     </div>
 </template>
@@ -64,10 +66,12 @@
     import Utils from "../util/Utils";
     import AddEditItemModal from "../components/Map/AddEditItemModal";
     import ArrayHelpers from "../components/ArrayHelpers";
+    import DeleteEntityModal from "../components/Map/Sidebar/Editing/DeleteEntityModal";
 
     export default {
         name: 'Map',
         components: {
+            DeleteEntityModal,
             AddEditItemModal,
             Sidebar,
             NodePopup,
@@ -98,7 +102,9 @@
                 //endregion
                 //region Editor-specific
                 editorState: 'OFF',
-                polyActive: false
+                polyActive: false,
+                deletionItem: null,
+                deletionItemType: null
                 //endregion
             }
         },
@@ -276,9 +282,28 @@
                     custom: {
                         id: ledge.id
                     }
-                }).bindTooltip(this.$t('map.groups.Navigation|Ledge'), {sticky: true}).on('click', () => alert('hi!'));
+                }).bindTooltip(this.$t('map.groups.Navigation|Ledge'), {sticky: true})
+                    .on('click', () => this.displayConfirmPolyDeletionModal(ledge, 'ledge'));
 
                 return ledge;
+            },
+            displayConfirmPolyDeletionModal(ledgeFoliage, type) {
+                // Can't delete either if their respective editor isn't enabled
+                if (!((this.editorState === 'LEDGES' && type === 'ledge') ||
+                    (this.editorState === 'FOLIAGE' && type === 'foliage'))) {
+                    return;
+                }
+
+                if (this.editorState === 'LEDGES') {
+                    this.deletionItemType = 'ledge';
+                } else if (this.editorState === 'FOLIAGE') {
+                    this.deletionItemType = 'foliage';
+                } else {
+                    return;
+                }
+
+                this.deletionItem = ledgeFoliage;
+                this.$nextTick(() => $('#delete-entity').modal('show'));
             },
             buildFoliageForMap(foliage) {
                 foliage.visible = true;
@@ -290,7 +315,7 @@
                     custom: {
                         id: foliage.id
                     }
-                }).bindTooltip(this.$t('map.groups.Navigation|Foliage'), {sticky: true}).on('click', () => alert('hi!'));
+                }).bindTooltip(this.$t('map.groups.Navigation|Foliage'), {sticky: true}).on('click', () => this.displayConfirmPolyDeletionModal(foliage, 'foliage'));
 
                 return foliage;
             },
@@ -425,6 +450,7 @@
             },
             renderItemDetailsModal(node) {
                 this.nodeForModal = node;
+                this.$refs.nodePopup.resetDeletionState();
 
                 this.$nextTick(() => $('#popover-modal').modal('show'));
             },
@@ -663,6 +689,20 @@
                         this.editor.workingLayers = []
                     })*/
                 }
+            },
+            onPolyDeleted() {
+                if (this.deletionItemType === 'ledge') {
+                    this.deletionItem.polyline.removeFrom(this.map);
+                    ArrayHelpers.deleteElement(this.ledges, this.deletionItem);
+                } else if (this.deletionItemType === 'foliage') {
+                    this.deletionItem.polygon.removeFrom(this.map);
+                    ArrayHelpers.deleteElement(this.foliage, this.deletionItem);
+                }
+
+                this.deletionItemType = null;
+                this.deletionItem = null;
+                this.updateNodeMarkers();
+                $('#delete-entity').modal('hide');
             }
             //endregion
         },

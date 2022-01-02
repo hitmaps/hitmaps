@@ -720,7 +720,7 @@ function clearAllMapCaches(int $missionId, Container $applicationContext) {
         KeyBuilder::buildKey(['map', $missionId, 'master'])]);
 }
 
-$klein->respond('GET', '/api/ledges/delete/[:ledgeId]', function (Request $request, Response $response) use ($applicationContext) {
+$klein->respond('DELETE', '/api/ledges/[:ledgeId]', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to delete ledges!']);
@@ -732,8 +732,6 @@ $klein->respond('GET', '/api/ledges/delete/[:ledgeId]', function (Request $reque
     $entityManager = $applicationContext->get(EntityManager::class);
     $entityManager->remove($ledge);
     $entityManager->flush();
-
-    clearAllMapCaches($ledge->getMissionId(), $applicationContext);
 
     $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
@@ -769,7 +767,7 @@ $klein->respond('POST', '/api/foliage', function (Request $request, Response $re
     return json_encode($responseModel);
 });
 
-$klein->respond('GET', '/api/foliage/delete/[:foliageId]', function (Request $request, Response $response) use ($applicationContext) {
+$klein->respond('DELETE', '/api/foliage/[:foliageId]', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to delete foliage!']);
@@ -781,8 +779,6 @@ $klein->respond('GET', '/api/foliage/delete/[:foliageId]', function (Request $re
     $entityManager = $applicationContext->get(EntityManager::class);
     $entityManager->remove($foliage);
     $entityManager->flush();
-
-    clearAllMapCaches($foliage->getMissionId(), $applicationContext);
 
     $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;

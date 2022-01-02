@@ -42,9 +42,13 @@
                         </game-button>
                     </div>
                     <div class="delete">
-                        <game-button @click="deleteNode" :disabled="blockDeleteButton">
+                        <game-button @click="showConfirmDeletion" v-if="!showingConfirmDeletion">
                             <game-icon icon="trash" font-style="normal"/>
                             {{ $t('map.delete') }}
+                        </game-button>
+                        <game-button @click="deleteNode" v-if="showingConfirmDeletion" :disabled="blockDeleteButton">
+                            <game-icon icon="arrow-right" font-style="normal"/>
+                            {{ $t('map.confirm-item-deletion-title', { item: 'Node' }) }}
                         </game-button>
                     </div>
                 </div>
@@ -72,6 +76,7 @@ export default {
     },
     data() {
         return {
+            showingConfirmDeletion: false,
             blockDeleteButton: false
         }
     },
@@ -162,6 +167,9 @@ export default {
         }
     },
     methods: {
+        resetDeletionState() {
+            this.showingConfirmDeletion = false;
+        },
         getLocalizedNoteType(note) {
             return note.type === 'info' ? this.$t('map.information') : this.$t(`map.${note.type}`);
         },
@@ -172,11 +180,15 @@ export default {
 
             return 'challenge-category-item';
         },
+        showConfirmDeletion() {
+            this.showingConfirmDeletion = true;
+        },
         deleteNode() {
             this.blockDeleteButton = true;
             this.$http.delete(`${this.$domain}/api/nodes/${this.node.id}`)
                 .then(_ => {
                     this.blockDeleteButton = false;
+                    this.showingConfirmDeletion = false;
                     $('#edit-item-modal').modal('hide');
                     this.$toast.success({
                         message: 'Item deleted!'
@@ -184,6 +196,7 @@ export default {
                     this.$emit('delete-node', this.node.id);
                 }).catch(_ => {
                     this.blockDeleteButton = false;
+                    this.showingConfirmDeletion = false;
                     this.$toast.error({
                         message: 'Failed to delete item!'
                     });
