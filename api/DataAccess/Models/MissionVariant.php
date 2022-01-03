@@ -37,6 +37,11 @@ class MissionVariant {
     public $icon;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    public string $slug;
+
+    /**
      * @return mixed
      */
     public function getId() {
@@ -104,5 +109,19 @@ class MissionVariant {
      */
     public function setIcon(?string $icon): void {
         $this->icon = $icon;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug(): string {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug(string $slug): void {
+        $this->slug = $slug;
     }
 }

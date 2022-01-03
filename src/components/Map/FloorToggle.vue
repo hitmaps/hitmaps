@@ -36,7 +36,8 @@ export default {
     props: {
         mission: Object,
         currentFloor: Number,
-        nodes: Array
+        nodes: Array,
+        currentVariant: Object
     },
     data() {
         return {
@@ -102,7 +103,7 @@ export default {
             return level;
         },
         calculateNumber(floor) {
-            return this.nodes.filter(node => node.level === floor && node.visible).length;
+            return this.nodes.filter(node => node.level === floor && node.visible && node.variants.includes(this.currentVariant.id)).length;
         },
         hasSearchResults(floor) {
             return this.nodes.some(node => node.level === floor && node.searchResult);

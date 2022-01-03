@@ -7,6 +7,7 @@
                           :mission="mission"
                           :current-floor="currentFloor"
                           :nodes="nodes"
+                          :current-variant="currentVariant"
                           @change-floor="onChangeFloor"
             />
             <div :class="`hm-editor-${editorState.toLowerCase()}`" id="map"></div>
@@ -27,6 +28,7 @@
                      :editor-state="editorState"
                      :drawing-active="polyActive"
                      :current-disguise="currentDisguise"
+                     :current-variant="currentVariant"
                      @hide-all="onHideAll"
                      @show-all="onShowAll"
                      @search-item="onSearchItem"
@@ -42,7 +44,8 @@
                      @enable-foliage-creation="onEnableFoliageCreation"
                      @enable-region-creation="onEnableDisguiseRegionCreation"
                      @disguise-selected="onDisguiseSelected"
-                     @replace-disguise-areas="onReplaceDisguiseAreas" />
+                     @replace-disguise-areas="onReplaceDisguiseAreas"
+                     @variant-selected="onVariantSelected" />
             <node-popup :node="nodeForModal"
                         :logged-in="loggedIn"
                         :game="game"
@@ -115,6 +118,7 @@
                 vertices: [],
                 workingLayer: null,
                 currentDisguise: null,
+                currentVariant: null,
                 //endregion
                 //region Editor-specific
                 editorState: 'OFF',
@@ -140,6 +144,22 @@
                 .then(resp => {
                     this.mission = resp.data[0];
                     this.currentFloor = this.mission.startingFloorNumber;
+
+                    console.log(this.$route.params);
+                    this.currentVariant = undefined;
+
+                    if (this.$route.params.difficulty) {
+                        // Legacy URLs have the difficulty pre-defined
+                        this.currentVariant = this.mission.variants.find(variant => variant.slug === this.$route.params.difficulty);
+                    } else if (this.$route.query.variant) {
+                        // Or could be in the query string
+                        this.currentVariant = this.mission.variants.find(variant => variant.slug === this.$route.query.variant);
+                    }
+
+                    // If we didn't grab one from the URL, set it to the default
+                    if (this.currentVariant === undefined) {
+                        this.currentVariant = this.mission.variants[0];
+                    }
                 });
             //@formatter:on
 
@@ -418,8 +438,8 @@
                 // 3. [OVERRIDE] Mark nodes as "visible" if they are part of a search result
                 this.nodes.filter(node => node.searchResult).forEach(node => node.visible = true);
 
-                // 4. Add all visible nodes to map if they're on the current level
-                this.nodes.filter(node => node.level === this.currentFloor && node.visible).forEach(node => {
+                // 4. Add all visible nodes to map if they're on the current level and for the current variant
+                this.nodes.filter(node => node.level === this.currentFloor && node.visible && node.variants.includes(this.currentVariant.id)).forEach(node => {
                     node.marker._icon.style.display = 'block';
 
                     if (node.searchResult) {
@@ -823,6 +843,10 @@
                 this.disguiseAreas[disguiseId] = disguiseAreas;
                 this.disguiseAreas[disguiseId].forEach(area => this.buildDisguiseAreaForMap(area));
                 this.updateActiveDisguiseLayer();
+            },
+            onVariantSelected(variant) {
+                this.currentVariant = variant;
+                this.updateActiveMapState();
             }
             //endregion
         },

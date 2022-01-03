@@ -4,7 +4,7 @@
             <div class="image" v-if="node.image">
                 <img :src="node.image" class="img-fluid">
             </div>
-            <div class="details">
+            <div class="details" :class="node.image ? '' : 'no-image'">
                 <div class="icon-and-details">
                     <div class="icon" v-if="fontIconForNodeSubgroup !== 'corrupt'">
                         <game-icon :icon="fontIconForNodeSubgroup" font-style="solid"/>
@@ -225,16 +225,37 @@ export default {
 .popover-content {
     display: flex;
 
+    @media(max-width: 991px) {
+        flex-direction: column;
+    }
+
     .image {
-        width: 45%;
+        @media(min-width: 992px) {
+            width: 45%;
+        }
+        @media(max-width: 991px) {
+            width: 100%;
+        }
     }
 
     .details {
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
-        width: 55%;
+
+        @media(min-width: 992px) {
+            width: 55%;
+
+            &.no-image {
+                width: 100%;
+            }
+        }
+        @media(max-width: 991px) {
+            width: 100%;
+        }
+
         padding: 25px 20px;
+
 
         .icon-and-details {
             display: flex;
@@ -269,9 +290,12 @@ export default {
 
         .target {
             margin-top: 10px;
+            display: flex;
+
             i {
                 display: inline-block;
                 font-size: 24px;
+                align-self: flex-start;
             }
 
             > div {

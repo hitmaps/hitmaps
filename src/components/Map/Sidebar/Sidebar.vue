@@ -6,16 +6,17 @@
                     <img src="/img/png/logos/hitmaps.png" class="img-fluid d-block d-md-none" alt="HITMAPS Logo"/>
                 </router-link>
             </div>
-            <!--        <button class="navbar-toggler"
-                            type="button"
-                            data-toggle="collapse"
-                            data-target="#navbarSupportedContent"
-                            aria-controls="navbarSupportedContent"
-                            aria-expanded="false"
-                            :aria-label="$t('map.toggle-navigation')">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>-->
             <div class="header-buttons">
+                <button v-if="getAllVariantsForUser().length > 1"
+                        class="navbar-toggler"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#variants-toggle"
+                        aria-controls="variants-toggle"
+                        aria-expanded="true"
+                        aria-label="Toggle variant selection box">
+                    <game-icon :icon="currentVariant.icon" font-style="solid"/>
+                </button>
                 <button class="navbar-toggler"
                         type="button"
                         data-toggle="collapse"
@@ -97,6 +98,12 @@
                 </div>
             </div>
             <div v-show="editorState === 'OFF'">
+                <div class="collapse navbar-collapse" id="variants-toggle">
+                    <mission-variant-selector :mission="mission"
+                                              :current-variant="currentVariant"
+                                              :logged-in="loggedIn"
+                                              @variant-selected="onVariantSelected" />
+                </div>
                 <div class="navbar-collapse collapse show" id="search-item-toggle">
                     <item-search :searchable-nodes="getSearchableNodes()" @search-item="onSearchItem" />
                 </div>
@@ -161,10 +168,14 @@ import EditFoliage from "./Editing/EditFoliage";
 import EditLedges from "./Editing/EditLedges";
 import EditDisguiseRegions from "./Editing/EditDisguiseRegions";
 import FloorToggle from "../FloorToggle";
+import MissionVariantSelector from "./MissionVariantSelector";
+import GameIcon from "../../GameIcon";
 
 export default {
     name: "Sidebar",
     components: {
+        GameIcon,
+        MissionVariantSelector,
         FloorToggle,
         EditDisguiseRegions,
         EditLedges,
@@ -187,7 +198,8 @@ export default {
         currentZoomLevel: Number,
         editorState: String,
         drawingActive: Boolean,
-        currentDisguise: Object
+        currentDisguise: Object,
+        currentVariant: Object
     },
     data() {
         return {
@@ -205,6 +217,13 @@ export default {
         }
     },
     methods: {
+        getAllVariantsForUser() {
+            if (this.loggedIn) {
+                return this.mission.variants;
+            }
+
+            return this.mission.variants.filter(x => x.visible);
+        },
         showDebug() {
             return process.env.VUE_APP_SHOW_DEBUG === 'true';
         },
@@ -287,6 +306,9 @@ export default {
         },
         onChangeFloor(floorNumber) {
             this.$emit('change-floor', floorNumber);
+        },
+        onVariantSelected(variant) {
+            this.$emit('variant-selected', variant);
         }
         //endregion
     }
@@ -355,6 +377,10 @@ export default {
 
         .navbar-toggler {
             display: block;
+
+            i {
+                font-size: 16px;
+            }
 
             &[data-toggle="collapse"] {
                 padding: 10px;

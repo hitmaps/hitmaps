@@ -105,7 +105,7 @@
                                 :to="{
                                     name: 'map-view',
                                     params: {
-                                        slug: location.game,
+                                        game: location.game,
                                         location: location.slug,
                                         mission: mission.slug
                                     }
