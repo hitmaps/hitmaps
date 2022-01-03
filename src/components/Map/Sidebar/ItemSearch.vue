@@ -35,10 +35,28 @@ export default {
     },
     mounted() {
         $(`#${this.id}`).selectpicker();
+
+        if (this.$route.query.item) {
+            this.searchedItem = this.$route.query.item;
+            $(this.$refs.itemSearch).selectpicker('val', this.searchedItem);
+        }
     },
     methods: {
         onSearch(event) {
             this.searchedItem = event.target.value;
+
+            this.updateQueryStringParameter();
+        },
+        updateQueryStringParameter() {
+            let newQueryParameter = Object.assign({}, this.$route.query, {
+                item: this.searchedItem
+            });
+            if (!this.searchedItem) {
+                delete newQueryParameter.item;
+            }
+            this.$router.replace({
+                query: newQueryParameter
+            });
         },
         clearSearch() {
             $(this.$refs.itemSearch).selectpicker('val', '');
@@ -55,6 +73,8 @@ export default {
 
 <style lang="scss" scoped>
 .search-box::v-deep {
+    display: flex;
+
     .control-button {
         border-radius: 3px;
         background: rgba(22, 24, 29, 0.75);
@@ -62,11 +82,6 @@ export default {
         box-shadow: none;
         border: solid 2px #2a2d31;
         opacity: 0.85;
-        width: 100%;
-
-        @media(min-width: 768px) {
-            width: 368px;
-        }
 
         margin-bottom: 10px;
 
@@ -78,16 +93,11 @@ export default {
 
     &.item-selected {
         .bootstrap-select {
-            width: 86% !important;
         }
     }
 
     .bootstrap-select {
-        width: 100% !important;
-
-        @media(min-width: 768px) {
-            width: 368px !important;
-        }
+        flex-grow: 1;
 
         > .dropdown-toggle {
             &.bs-placeholder {
@@ -105,12 +115,18 @@ export default {
             background: #eee;
             text-transform: uppercase;
         }
+
+        .dropdown-menu {
+            @media(min-width: 768px) {
+                min-width: 368px !important;
+                max-width: 368px !important;
+            }
+        }
     }
 
     #clear-search.control-button,
     #clear-disguise-search.control-button {
         display: inline-block;
-        width: 11%;
         margin-left: 11px;
         height: 40px;
     }
