@@ -231,12 +231,10 @@
                         this.map.on('pm:drawstart', this.initDraw);
                         this.map.on('pm:create', this.pmLayer);
                         this.map.on('pm:drawend', this.endDraw);
-                        /*
-
                         this.map.on('zoomend', () => {
                             let zoomLevel = this.map.getZoom();
 
-                            var fonts = {
+                            const fonts = {
                                 3: '.8em',
                                 4: '1em',
                                 5: '1.2em'
@@ -244,10 +242,6 @@
 
                             $('.area-icon').css('font-size', fonts[zoomLevel]);
                         });
-                        if (this.$route.query && this.$route.query['item']) {
-                            this.loadWithSearchedItem(this.$route.query['item']);
-                        }
-                         */
                     });
                 });
             });
