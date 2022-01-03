@@ -1,7 +1,7 @@
 <template>
     <modal id="popover-modal" tabindex="-1" flush>
         <div v-if="node" class="popover-content">
-            <div class="image">
+            <div class="image" v-if="node.image">
                 <img :src="node.image" class="img-fluid">
             </div>
             <div class="details">
@@ -107,7 +107,7 @@ export default {
                 return this.$t('map.npc');
             }
 
-            if (['interaction', 'sabotage', 'distraction'].includes(this.node.subgroup)) {
+            if (['interaction', 'sabotage', 'distraction', 'alarm'].includes(this.node.subgroup)) {
                 return this.$t('map.action');
             }
 
@@ -118,7 +118,7 @@ export default {
                 return 'npc';
             }
 
-            if (['interaction', 'sabotage', 'distraction'].includes(this.node.subgroup)) {
+            if (['interaction', 'sabotage', 'distraction', 'alarm'].includes(this.node.subgroup)) {
                 return 'settings';
             }
 
@@ -137,9 +137,15 @@ export default {
                 case 'misc-item':
                     return this.getMiscItemIcon(this.node);
                 case 'intel':
+                case 'camera-intel':
                     return 'intel';
                 case 'disguise':
                     return 'disguise';
+                case 'blend-in':
+                    return 'emote';
+                case 'conceal-item':
+                case 'weapon-crate':
+                    return 'loadout';
                 case 'locked-door':
                     return 'locked';
                 case 'interaction':
@@ -147,7 +153,7 @@ export default {
                 case 'alarm':
                     return 'online';
                 case 'frisk':
-                    return 'security';
+                    return 'frisk';
                 case 'location':
                     return 'story';
                 case 'lethal-melee':
@@ -155,12 +161,21 @@ export default {
                     return 'melee';
                 case 'firearm':
                     return 'concealed-weapon';
+                case 'ammo':
+                    return 'difficulty-3';
                 case 'starting-location':
                     return 'starting';
                 case 'exit-location':
                     return 'exit';
                 case 'agency-pickup':
                     return 'stash-point-empty';
+                case 'area':
+                    return 'info';
+                case 'passage':
+                    return 'arrow-right';
+                case 'up-pipe':
+                case 'up-stair':
+                    return 'elevation';
                 default:
                     return 'corrupt';
             }
