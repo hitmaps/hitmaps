@@ -901,23 +901,21 @@ $klein->respond('DELETE', '/api/disguise-areas/[:areaId]', function (Request $re
     return $response->json($responseModel);
 });
 
-$klein->respond('POST', '/api/nodes/move', function (Request $request, Response $response) use ($applicationContext) {
+$klein->respond('PATCH', '/api/nodes/[:nodeId]', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
         return $response->code(401);
     }
 
-    $applicationContext->get(NodeController::class)->moveNode(intval($_POST['node-id']), $_POST['latitude'], $_POST['longitude']);
-    /* @var $node Node */
-    $node = $applicationContext->get(EntityManager::class)->getRepository(Node::class)->find($_POST['node-id']);
-    clearAllMapCaches($node->getMissionId(), $applicationContext);
+    $body = json_decode($request->body(), true);
+    $applicationContext->get(NodeController::class)->moveNode(intval($request->nodeId), $body['latitude'], $body['longitude']);
 
 
     $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
     $responseModel->data = ['message' => 'OK'];
-    return json_encode($responseModel);
+    return $response->json($responseModel);
 });
 
 /**

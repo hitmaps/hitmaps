@@ -60,6 +60,7 @@
                                  @item-created="onItemCreated"
                                  @item-updated="onItemUpdated" />
             <delete-entity-modal :entity="deletionItem" :entity-type="deletionItemType" @item-deleted="onPolyDeleted" />
+            <move-node-modal :node="nodeForMoving" />
         </div>
     </div>
 </template>
@@ -73,10 +74,12 @@
     import AddEditItemModal from "../components/Map/AddEditItemModal";
     import ArrayHelpers from "../components/ArrayHelpers";
     import DeleteEntityModal from "../components/Map/Sidebar/Editing/DeleteEntityModal";
+    import MoveNodeModal from "../components/Map/Sidebar/Editing/MoveNodeModal";
 
     export default {
         name: 'Map',
         components: {
+            MoveNodeModal,
             DeleteEntityModal,
             AddEditItemModal,
             Sidebar,
@@ -103,6 +106,7 @@
                 mapLayers: {},
                 nodeForModal: null,
                 nodeForEditing: null,
+                nodeForMoving: null,
                 clickedPoint: null,
                 vertices: [],
                 workingLayer: null,
@@ -277,6 +281,9 @@
                     riseOnHover: true
                 }).on('click', _ => {
                     this.renderItemDetailsModal(node);
+                }).on('dragend', _ => {
+                    this.nodeForMoving = node;
+                    $('#confirm-move-modal').modal('show');
                 });
 
                 this.bindTooltip(node);
@@ -522,7 +529,9 @@
             onItemCreated(node) {
                 this.nodes.push(node);
                 this.buildNodeForMap(node);
+                // We're in the editor, so enable dragging right away
                 node.marker.addTo(this.map);
+                node.marker.dragging.enable();
                 this.updateNodeMarkers();
                 $('#edit-item-modal').modal('hide');
             },
@@ -619,6 +628,7 @@
                 } else {
                     this.editorState = 'OFF';
                     this.toggleDraw('OFF');
+                    this.nodes.forEach(node => node.marker.dragging.disable());
                 }
             },
             onLaunchEditor(editorState) {
@@ -626,6 +636,13 @@
 
                 if (this.editorState === 'MENU') {
                     this.toggleDraw('OFF');
+                }
+
+                // Update node "draggability"
+                if (this.editorState === 'ITEMS') {
+                    this.nodes.forEach(node => node.marker.dragging.enable());
+                } else {
+                    this.nodes.forEach(node => node.marker.dragging.disable());
                 }
             },
             toggleDraw(state) {
