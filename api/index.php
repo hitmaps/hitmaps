@@ -71,6 +71,9 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]?', function 
             /* @var $mission Mission */
             foreach ($missions as $mission) {
                 $mission->setIcon();
+                $mission->difficulties = array_map(fn(MissionVariant $mv) => $mv->getVariant(), $mission->getVariants()->toArray());
+                unset($mission->variants);
+                unset($mission->floorNames);
             }
             $location->missions = $missions;
         }
