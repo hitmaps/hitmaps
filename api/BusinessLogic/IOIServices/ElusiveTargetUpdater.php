@@ -174,10 +174,9 @@ class ElusiveTargetUpdater {
                 $elusiveTarget->setGameId($hitman3Game->getId());
             }
 
-            // TODO Uncomment when ETs are reactivated
-            /*$reactivated = $elusiveTarget->getReactivated();
+            $reactivated = $elusiveTarget->getReactivated();
             if (!$reactivated &&
-                new \DateTime($elusiveTargetJson->nextWindow->start) > new \DateTime('2099-01-01 00:00:00', new \DateTimeZone('UTC'))) {
+                new \DateTime($elusiveTargetJson->nextWindow->start) > new \DateTime('2021-11-30 00:00:00', new \DateTimeZone('UTC'))) {
 
                 $reactivated = true;
                 $elusiveTarget->setComingNotificationSent(false);
@@ -187,9 +186,9 @@ class ElusiveTargetUpdater {
                 $elusiveTarget->setThreeDaysLeftNotificationSent(false);
                 $elusiveTarget->setOneDayLeftNotificationSent(false);
                 $elusiveTarget->setEndNotificationSent(false);
-            }*/
+            }
             $elusiveTarget->setBriefing($elusiveTargetJson->description);
-            $elusiveTarget->setReactivated(false);
+            $elusiveTarget->setReactivated($reactivated);
             $elusiveTarget->setBeginningTime(new \DateTime($elusiveTargetJson->nextWindow->start));
             $elusiveTarget->setEndingTime(new \DateTime($elusiveTargetJson->nextWindow->end));
             $this->entityManager->persist($elusiveTarget);

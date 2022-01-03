@@ -542,7 +542,7 @@
                     </router-link>
                 </div>
             </div>
-            <div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
+            <!--<div class="row dashboard" v-if="(new Date(promos[0].promoStartDate) < new Date())">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
@@ -641,7 +641,7 @@
                         </div>
                     </template>
                 </div>
-            </div>
+            </div>-->
         </template>
         <modal modal-title="Roulette Rivals World Championship"
                id="roulette-rivals-modal"
@@ -888,20 +888,7 @@ export default {
             currentPromoIndex: 0,
             currentPromo: 0,
             tournamentMatches: [],
-            promos: [
-                {
-                    tileUrl: 'https://media.hitmaps.com/img/hitmaps-tournaments/rrwc-2021-tile.png',
-                    promoStartDate: '2021-10-17T22:00:00+00:00',
-                    promoEndDate: '2021-12-12T23:59:59+00:00',
-                    topCaption: "Community Tournament",
-                    bottomCaption: 'RRWC',
-                    beforeText: 'Registration Closes',
-                    duringText: undefined,
-                    tournament: true,
-                    h3: false,
-                    url: 'https://discord.gg/FVxTKdU'
-                }
-            ],
+            promos: [],
             games: [],
             elusiveTargets: [],
             activeElusiveIndex: 0,
@@ -1220,8 +1207,6 @@ export default {
                 that.elusiveTarget =
                     that.elusiveTargets[that.activeElusiveIndex]
             }, 10000);*/
-            this.currentPromo = this.promos[0];
-            this.currentPromoIndex = 1;
             setInterval(() => {
                 this.currentPromo = this.currentPromoIndex === this.promos.length ?
                     0 :
