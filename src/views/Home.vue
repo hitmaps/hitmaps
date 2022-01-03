@@ -856,7 +856,7 @@ import Patron from "../components/Patron";
 Vue.use(CxltToaster)
 export default {
     name: 'home',
-    title: 'Home',
+    pageTitle: 'Home',
     components: {
         Patron,
         TournamentPlatformIcon,

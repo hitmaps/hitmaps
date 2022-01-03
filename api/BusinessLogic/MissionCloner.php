@@ -5,7 +5,7 @@ namespace BusinessLogic;
 
 use DataAccess\Models\Disguise;
 use DataAccess\Models\Mission;
-use DataAccess\Models\MissionDifficulty;
+use DataAccess\Models\MissionVariant;
 use Doctrine\ORM\EntityManager;
 
 class MissionCloner {
@@ -125,11 +125,11 @@ class MissionCloner {
             WHERE `mission_id` = {$newMission->getId()}
             AND `difficulty` = '{$originalDifficulty}'");
 
-        $missionDifficulty = new MissionDifficulty();
-        $missionDifficulty->setMissionId($newMission->getId());
-        $missionDifficulty->setDifficulty('Standard');
-        $missionDifficulty->setVisible(true);
-        $this->entityManager->persist($missionDifficulty);
+        $missionVariant = new MissionVariant();
+        $missionVariant->setMissionId($newMission->getId());
+        $missionVariant->setDifficulty('Standard');
+        $missionVariant->setVisible(true);
+        $this->entityManager->persist($missionVariant);
         $this->entityManager->flush();
 
         return $newMission->getId();

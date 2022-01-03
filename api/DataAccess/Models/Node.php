@@ -4,6 +4,8 @@
 namespace DataAccess\Models;
 
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -62,11 +64,6 @@ class Node {
     public $longitude;
 
     /**
-     * @ORM\Column(type="string")
-     */
-    public $difficulty;
-
-    /**
      * @ORM\Column(type="string", name="`group`")
      */
     public $group;
@@ -97,17 +94,30 @@ class Node {
     public $image;
 
     /**
-     * @ORM\Column(type="string")
-     */
-    public $tooltip;
-
-    /**
      * @ORM\Column(type="integer")
      */
     public $quantity;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="MissionVariant", cascade="persist")
+     * @ORM\JoinTable(name="node_to_mission_variants",
+     *                joinColumns={@ORM\JoinColumn(name="node_id", referencedColumnName="id")},
+     *                inverseJoinColumns={@ORM\JoinColumn(name="variant_id", referencedColumnName="id", unique=true)}
+     *               )
+     * @var $variants Collection
+     */
+    private $variants;
+
+    /**
+     * @ORM\OneToMany(targetEntity="NodeNote", mappedBy="node", fetch="EAGER", cascade="persist", orphanRemoval=true)
+     * @var $notes Collection
+     */
+    private $notes;
+
     public function __construct() {
         $this->dateCreated = new \DateTime("now");
+        $this->variants = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     /**
@@ -250,20 +260,6 @@ class Node {
         $this->longitude = $longitude;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDifficulty(): string {
-        return $this->difficulty;
-    }
-
-    /**
-     * @param mixed $difficulty
-     */
-    public function setDifficulty(string $difficulty): void {
-        $this->difficulty = $difficulty;
-    }
-
     public function setGroup(string $group): void {
         $this->group = $group;
     }
@@ -348,20 +344,6 @@ class Node {
     /**
      * @return mixed
      */
-    public function getTooltip() {
-        return $this->tooltip;
-    }
-
-    /**
-     * @param mixed $tooltip
-     */
-    public function setTooltip($tooltip): void {
-        $this->tooltip = $tooltip;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getQuantity(): int {
         return $this->quantity;
     }
@@ -371,5 +353,32 @@ class Node {
      */
     public function setQuantity(int $quantity): void {
         $this->quantity = $quantity;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getVariants(): Collection {
+        return $this->variants;
+    }
+
+    public function addVariant(MissionVariant $variant): Node {
+        $this->variants[] = $variant;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getNotes(): Collection {
+        return $this->notes;
+    }
+
+    public function addNote(NodeNote $note): Node {
+        $this->notes[] = $note;
+        $note->setNode($this);
+
+        return $this;
     }
 }

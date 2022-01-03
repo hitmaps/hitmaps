@@ -70,7 +70,7 @@ import GameIcon from "../components/GameIcon";
 export default {
     name: 'about',
     components: {GameIcon, GameButton},
-    title: 'About',
+    pageTitle: 'About',
 }
 </script>
 

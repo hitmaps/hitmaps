@@ -1,15 +1,42 @@
 <?php
 
 use BusinessLogic\Caching\CacheClient;
+use BusinessLogic\Caching\KeyBuilder;
+use BusinessLogic\MissionType;
+use Controllers\DisguiseAreasController;
+use Controllers\FoliageController;
+use Controllers\LedgeController;
+use Controllers\NodeController;
+use Controllers\ViewModels\ApiResponseModel;
+use Controllers\ViewModels\DisguiseAreaViewModel;
+use Controllers\ViewModels\DisguiseViewModel;
+use Controllers\ViewModels\LedgeViewModel;
+use Controllers\ViewModels\MissionViewModel;
+use Controllers\ViewModels\NodeNoteViewModel;
+use Controllers\ViewModels\NodeWithNotesViewModel;
+use DataAccess\Models\Disguise;
+use DataAccess\Models\DisguiseArea;
+use DataAccess\Models\Game;
+use DataAccess\Models\Location;
+use DataAccess\Models\MapFloorToName;
+use DataAccess\Models\Mission;
+use DataAccess\Models\MissionVariant;
+use DataAccess\Models\Node;
+use DataAccess\Models\NodeCategory;
+use DataAccess\Models\NodeDifficulty;
+use DataAccess\Models\NodeNote;
 use DataAccess\Models\RouletteMatchup;
+use DI\Container;
 use Doctrine\ORM\EntityManager;
+use Klein\Request;
+use Klein\Response;
 use Predis\Client;
 
 require __DIR__ . '/autoload.php';
 
 $klein = new \Klein\Klein();
 
-$klein->respond(function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond(function(Request $request, Response $response) use ($applicationContext) {
     if(isset($_SERVER['HTTP_ORIGIN'])) $response->header('Access-Control-Allow-Origin', $_SERVER['HTTP_ORIGIN']);
     $response->header('Access-Control-Allow-Headers', 'content-type,Authorization');
     $response->header('Access-Control-Allow-Credentials', 'true');
@@ -17,18 +44,18 @@ $klein->respond(function(\Klein\Request $request, \Klein\Response $response) use
 });
 
 // Public API calls
-$klein->respond('GET', '/api/v1/games/[:game]?', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/v1/games/[:game]?', function(Request $request, Response $response) use ($applicationContext) {
     if ($request->game === null) {
-        $games = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Game::class)->findAll();
+        $games = $applicationContext->get(EntityManager::class)->getRepository(Game::class)->findAll();
     } else {
-        $games = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Game::class)->findBy(['slug' => $request->game]);
+        $games = $applicationContext->get(EntityManager::class)->getRepository(Game::class)->findBy(['slug' => $request->game]);
     }
 
     return $response->json($games);
 });
 
-$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]?', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    $game = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Game::class)->findOneBy(['slug' => $request->game]);
+$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]?', function (Request $request, Response $response) use ($applicationContext) {
+    $game = $applicationContext->get(EntityManager::class)->getRepository(Game::class)->findOneBy(['slug' => $request->game]);
 
     if ($game === null) {
         $response->code(400);
@@ -38,36 +65,29 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]?', function 
     }
 
     if ($request->location === null) {
-        $locations = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findBy(['game' => $request->game], ['order' => 'ASC']);
+        $locations = $applicationContext->get(EntityManager::class)->getRepository(Location::class)->findBy(['game' => $request->game], ['order' => 'ASC']);
         foreach ($locations as $location) {
-            $missions = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Mission::class)->findActiveMissionsByLocation($location->getId());
-            /* @var $mission \DataAccess\Models\Mission */
+            $missions = $applicationContext->get(EntityManager::class)->getRepository(Mission::class)->findActiveMissionsByLocation($location->getId());
+            /* @var $mission Mission */
             foreach ($missions as $mission) {
-                $mission->floorNames = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\MapFloorToName::class)->findBy(['missionId' => $mission->getId()], ['floorNumber' => 'ASC']);
-
-                $missionDifficulties = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\MissionDifficulty::class)->findBy(['missionId' => $mission->getId()]);
-
-                /* @var $missionDifficulty \DataAccess\Models\MissionDifficulty */
-                foreach ($missionDifficulties as $missionDifficulty) {
-                    if ($missionDifficulty->isVisible()) {
-                        $mission->difficulties[] = $missionDifficulty->getDifficulty();
-                    }
-                }
                 $mission->setIcon();
+                $mission->difficulties = array_map(fn(MissionVariant $mv) => $mv->getVariant(), $mission->getVariants()->toArray());
+                unset($mission->variants);
+                unset($mission->floorNames);
             }
             $location->missions = $missions;
         }
 
     } else {
-        $locations = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findBy(['game' => $request->game, 'slug' => $request->location]);
+        $locations = $applicationContext->get(EntityManager::class)->getRepository(Location::class)->findBy(['game' => $request->game, 'slug' => $request->location]);
     }
 
     return $response->json($locations);
 });
 
-$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]?', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    /* @var $location \DataAccess\Models\Location */
-    $location = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
+$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]?', function(Request $request, Response $response) use ($applicationContext) {
+    /* @var $location Location */
+    $location = $applicationContext->get(EntityManager::class)->getRepository(Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
 
     if ($location === null) {
         $response->code(400);
@@ -77,31 +97,17 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
     }
 
     if ($request->mission === null) {
-        $missions = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Mission::class)->findBy(['locationId' => $location->getId()], ['order' => 'ASC']);
+        $missions = $applicationContext->get(EntityManager::class)->getRepository(Mission::class)->findBy(['locationId' => $location->getId()], ['order' => 'ASC']);
     } else {
-        $missions = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Mission::class)->findBy(['locationId' => $location->getId(), 'slug' => $request->mission], ['order' => 'ASC']);
+        $missions = $applicationContext->get(EntityManager::class)->getRepository(Mission::class)->findBy(['locationId' => $location->getId(), 'slug' => $request->mission], ['order' => 'ASC']);
     }
 
-    /* @var $mission \DataAccess\Models\Mission */
-    foreach ($missions as $mission) {
-        $missionDifficulties = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\MissionDifficulty::class)->findBy(['missionId' => $mission->getId()]);
-
-        /* @var $missionDifficulty \DataAccess\Models\MissionDifficulty */
-        foreach ($missionDifficulties as $missionDifficulty) {
-            if ($missionDifficulty->isVisible()) {
-                $mission->difficulties[] = $missionDifficulty->getDifficulty();
-            }
-        }
-
-        $mission->floorNames = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\MapFloorToName::class)->findBy(['missionId' => $mission->getId()], ['floorNumber' => 'ASC']);
-    }
-
-    return $response->json($missions);
+    return $response->json(array_map(fn(Mission $x) => new MissionViewModel($x), $missions));
 });
 
-$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map-metadata', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    /* @var $location \DataAccess\Models\Location */
-    $location = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
+$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map-metadata', function(Request $request, Response $response) use ($applicationContext) {
+    /* @var $location Location */
+    $location = $applicationContext->get(EntityManager::class)->getRepository(Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
 
     if ($location === null) {
         $response->code(400);
@@ -110,8 +116,8 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
         ]);
     }
 
-    /* @var $mission \DataAccess\Models\Mission */
-    $mission = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Mission::class)->findOneBy(['locationId' => $location->getId(), 'slug' => $request->mission]);
+    /* @var $mission Mission */
+    $mission = $applicationContext->get(EntityManager::class)->getRepository(Mission::class)->findOneBy(['locationId' => $location->getId(), 'slug' => $request->mission]);
 
     if ($mission === null) {
         $response->code(400);
@@ -129,10 +135,10 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
     return $response->json($metadata);
 });
 
-function buildTileUrlForMission(\DataAccess\Models\Mission $mission, string $game, \DI\Container $applicationContext): string {
+function buildTileUrlForMission(Mission $mission, string $game, Container $applicationContext): string {
     $constants = new \Config\Constants();
 
-    if ($mission->getMissionType() === \BusinessLogic\MissionType::ELUSIVE_TARGET) {
+    if ($mission->getMissionType() === MissionType::ELUSIVE_TARGET) {
         /* @var $elusiveTarget \DataAccess\Models\ElusiveTarget */
         $elusiveTarget = $applicationContext->get(EntityManager::class)
             ->getRepository(\DataAccess\Models\ElusiveTarget::class)
@@ -148,19 +154,19 @@ function buildTileUrlForMission(\DataAccess\Models\Mission $mission, string $gam
     }
 }
 
-$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+//region Map Data
+$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map', function(Request $request, Response $response) use ($applicationContext) {
     $cacheClient = $applicationContext->get(CacheClient::class);
 
-    /* @var $game \DataAccess\Models\Game */
+    /* @var $game Game */
     $entityManager = $applicationContext->get(EntityManager::class);
-    $game = $entityManager->getRepository(\DataAccess\Models\Game::class)->findOneBy(['slug' => $request->game]);
+    $game = $entityManager->getRepository(Game::class)->findOneBy(['slug' => $request->game]);
 
-    /* @var $location \DataAccess\Models\Location */
-    $location = $entityManager->getRepository(\DataAccess\Models\Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
+    /* @var $location Location */
+    $location = $entityManager->getRepository(Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
 
-    /* @var $mission \DataAccess\Models\Mission */
-    $mission = $entityManager->getRepository(\DataAccess\Models\Mission::class)->findOneBy(['locationId' => $location->getId(), 'slug' => $request->mission]);
-    $mission->floorNames = $entityManager->getRepository(\DataAccess\Models\MapFloorToName::class)->findBy(['missionId' => $mission->getId()], ['floorNumber' => 'ASC']);
+    /* @var $mission Mission */
+    $mission = $entityManager->getRepository(Mission::class)->findOneBy(['locationId' => $location->getId(), 'slug' => $request->mission]);
 
     if ($mission === null) {
         $response->code(400);
@@ -183,20 +189,20 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
         ]);
     }
 
-    $cacheKey = \BusinessLogic\Caching\KeyBuilder::buildKey(['map', $mission->getId(), $request->difficulty]);
+    $cacheKey = KeyBuilder::buildKey(['map', $mission->getId(), $request->difficulty]);
 
     return $response->json($cacheClient->retrieve($cacheKey, function() use ($applicationContext, $request, $response, $location, $mission, $game) {
-
-
-        $nodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($mission->getId(), $request->difficulty);
-        $forSniperAssassin = $mission->getMissionType() === \BusinessLogic\MissionType::SNIPER_ASSASSIN;
-        $nodeCategories = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\NodeCategory::class)->findBy(['forMission' => !$forSniperAssassin, 'forSniperAssassin' => $forSniperAssassin], ['order' => 'ASC', 'group' => 'ASC']);
+        $nodes = $applicationContext->get(NodeController::class)->getNodesForMissionV1($mission->getId(), $request->difficulty);
+        $forSniperAssassin = $mission->getMissionType() === MissionType::SNIPER_ASSASSIN;
+        $nodeCategories = $applicationContext->get(EntityManager::class)->getRepository(NodeCategory::class)->findBy(
+            ['forMission' => !$forSniperAssassin, 'forSniperAssassin' => $forSniperAssassin],
+            ['order' => 'ASC', 'group' => 'ASC']);
 
         /* @var $ledges \DataAccess\Models\Ledge[] */
-        $ledges = $applicationContext->get(\Controllers\LedgeController::class)->getLedgesForMission($mission->getId());
+        $ledges = $applicationContext->get(LedgeController::class)->getLedgesForMission($mission->getId());
         $formattedLedges = [];
         foreach ($ledges as $ledge) {
-            $viewModel = new \Controllers\ViewModels\LedgeViewModel();
+            $viewModel = new LedgeViewModel();
             $viewModel->id = $ledge->getId();
             $viewModel->missionId = $ledge->getMissionId();
             $viewModel->level = $ledge->getLevel();
@@ -205,10 +211,10 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
         }
 
         /* @var $foliage \DataAccess\Models\Foliage[] */
-        $foliage = $applicationContext->get(\Controllers\FoliageController::class)->getFoliageForMission($mission->getId());
+        $foliage = $applicationContext->get(FoliageController::class)->getFoliageForMission($mission->getId());
         $formattedFoliage = [];
         foreach ($foliage as $innerFoliage) {
-            $viewModel = new \Controllers\ViewModels\LedgeViewModel();
+            $viewModel = new LedgeViewModel();
             $viewModel->id = $innerFoliage->getId();
             $viewModel->missionId = $innerFoliage->getMissionId();
             $viewModel->level = $innerFoliage->getLevel();
@@ -218,23 +224,23 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
 
         /* @var $disguiseRepository \DataAccess\Repositories\DisguiseRepository */
         $disguiseRepository = $applicationContext->get(EntityManager::class)
-            ->getRepository(\DataAccess\Models\Disguise::class);
+            ->getRepository(Disguise::class);
 
-        /* @var $disguises \DataAccess\Models\Disguise[] */
+        /* @var $disguises Disguise[] */
         $disguisesWithAreas = $disguiseRepository->findByMission($mission->getId());
         $formattedDisguises = [];
 
-        /* @var $formattedDisguise \Controllers\ViewModels\DisguiseViewModel */
+        /* @var $formattedDisguise DisguiseViewModel */
         $formattedDisguise = null;
         foreach ($disguisesWithAreas as $disguiseOrArea) {
             if ($disguiseOrArea === null) {
                 continue;
             }
 
-            if ($disguiseOrArea instanceof \DataAccess\Models\DisguiseArea) {
-                /* @var $area \DataAccess\Models\DisguiseArea */
+            if ($disguiseOrArea instanceof DisguiseArea) {
+                /* @var $area DisguiseArea */
                 $area = $disguiseOrArea;
-                $areaViewModel = new \Controllers\ViewModels\DisguiseAreaViewModel();
+                $areaViewModel = new DisguiseAreaViewModel();
                 $areaViewModel->id = $area->getId();
                 $areaViewModel->missionId = $area->getMissionId();
                 $areaViewModel->disguiseId = $area->getDisguiseId();
@@ -245,9 +251,9 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
                 continue;
             }
 
-            /* @var $disguise \DataAccess\Models\Disguise */
+            /* @var $disguise Disguise */
             $disguise = $disguiseOrArea;
-            $formattedDisguise = new \Controllers\ViewModels\DisguiseViewModel();
+            $formattedDisguise = new DisguiseViewModel();
             $formattedDisguise->id = $disguise->getId();
             $formattedDisguise->name = $disguise->getName();
             $formattedDisguise->image = $disguise->getImage();
@@ -260,7 +266,7 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
             'game' => $game,
             'mission' => $mission,
             'nodes' => $nodes,
-            'searchableNodes' => $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($mission->getId(), $request->difficulty, true, true),
+            'searchableNodes' => $applicationContext->get(NodeController::class)->getNodesForMissionV1($mission->getId(), $request->difficulty, true, true),
             'categories' => $nodeCategories,
             'ledges' => $formattedLedges,
             'foliage' => $formattedFoliage,
@@ -268,7 +274,172 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
     }));
 });
 
-$klein->respond('GET', '/api/v1/editor/templates', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:mission]/nodes', function(Request $request, Response $response) use ($applicationContext) {
+    $mission = getMissionFromRequest($applicationContext, $request);
+    if ($mission === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find mission with game '{$request->game}', location '{$request->location}', and mission slug '{$request->mission}'"
+        ]);
+    }
+
+    $nodes = $applicationContext->get(NodeController::class)->getNodesForMissionV2($mission->getId());
+    $forSniperAssassin = $mission->getMissionType() === MissionType::SNIPER_ASSASSIN;
+    $nodeCategories = $applicationContext->get(EntityManager::class)->getRepository(NodeCategory::class)->findBy(
+        ['forMission' => !$forSniperAssassin, 'forSniperAssassin' => $forSniperAssassin],
+        ['order' => 'ASC', 'group' => 'ASC']);
+
+    return $response->json([
+        'topLevelCategories' => [
+            'Points of Interest',
+            'Weapons and Tools',
+            'Navigation'
+        ],
+        'nodes' => $nodes,
+        'categories' => $nodeCategories
+    ]);
+});
+
+function getMissionFromRequest(Container $applicationContext, Request $request): ?Mission {
+    /* @var $game Game */
+    $entityManager = $applicationContext->get(EntityManager::class);
+    $game = $entityManager->getRepository(Game::class)->findOneBy(['slug' => $request->game]);
+
+    /* @var $location Location */
+    $location = $entityManager->getRepository(Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
+
+    return $location === null ?
+        null :
+        $entityManager->getRepository(Mission::class)->findOneBy(['locationId' => $location->getId(), 'slug' => $request->mission]);
+}
+
+$klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:mission]/disguises', function(Request $request, Response $response) use ($applicationContext) {
+    $mission = getMissionFromRequest($applicationContext, $request);
+
+    if ($mission === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find mission with game '{$request->game}', location '{$request->location}', and mission slug '{$request->mission}'"
+        ]);
+    }
+
+    /* @var $disguiseRepository \DataAccess\Repositories\DisguiseRepository */
+    $disguiseRepository = $applicationContext->get(EntityManager::class)
+        ->getRepository(Disguise::class);
+
+    /* @var $disguises Disguise[] */
+    $disguisesWithAreas = $disguiseRepository->findByMission($mission->getId());
+    $formattedDisguises = [];
+
+    /* @var $formattedDisguise DisguiseViewModel */
+    foreach ($disguisesWithAreas as $disguiseOrArea) {
+        if ($disguiseOrArea === null) {
+            continue;
+        }
+
+        // We're not returning disguise areas unless the user asks for them
+        if ($disguiseOrArea instanceof DisguiseArea) {
+            continue;
+        }
+
+        /* @var $disguise Disguise */
+        $disguise = $disguiseOrArea;
+        $formattedDisguise = new DisguiseViewModel();
+        $formattedDisguise->id = $disguise->getId();
+        $formattedDisguise->name = $disguise->getName();
+        $formattedDisguise->image = $disguise->getImage();
+        $formattedDisguise->order = $disguise->getOrder();
+        $formattedDisguise->suit = $disguise->getSuit();
+        unset($formattedDisguise->areas);
+        $formattedDisguises[] = $formattedDisguise;
+    }
+
+    return $response->json([
+        'disguises' => $formattedDisguises
+    ]);
+});
+
+$klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:mission]/disguise-areas/[:id]', function(Request $request, Response $response) use ($applicationContext) {
+    $mission = getMissionFromRequest($applicationContext, $request);
+
+    if ($mission === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find mission with game '{$request->game}', location '{$request->location}', and mission slug '{$request->mission}'"
+        ]);
+    }
+
+    /* @var $disguiseRepository \DataAccess\Repositories\DisguiseRepository */
+    $disguiseRepository = $applicationContext->get(EntityManager::class)->getRepository(Disguise::class);
+
+    /* @var $disguise Disguise|null */
+    $disguise = $disguiseRepository->findOneBy(['id' => $request->id, 'missionId' => $mission->getId()]);
+
+    if ($disguise === null) {
+        return $response->code(404);
+    }
+
+    $disguiseAreas = $applicationContext->get(EntityManager::class)->getRepository(DisguiseArea::class)->findBy(['disguiseId' => $disguise->getId()]);
+
+    return $response->code(200)->json([
+        'disguiseAreas' => array_map(fn(DisguiseArea $da) => new DisguiseAreaViewModel($da), $disguiseAreas)
+    ]);
+});
+
+$klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:mission]/ledges', function(Request $request, Response $response) use ($applicationContext) {
+    $mission = getMissionFromRequest($applicationContext, $request);
+    if ($mission === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find mission with game '{$request->game}', location '{$request->location}', and mission slug '{$request->mission}'"
+        ]);
+    }
+
+    /* @var $ledges \DataAccess\Models\Ledge[] */
+    $ledges = $applicationContext->get(LedgeController::class)->getLedgesForMission($mission->getId());
+    $formattedLedges = [];
+    foreach ($ledges as $ledge) {
+        $viewModel = new LedgeViewModel();
+        $viewModel->id = $ledge->getId();
+        $viewModel->missionId = $ledge->getMissionId();
+        $viewModel->level = $ledge->getLevel();
+        $viewModel->vertices = explode('|', $ledge->getVertices());
+        $formattedLedges[] = $viewModel;
+    }
+
+    return $response->json([
+        'ledges' => $formattedLedges
+    ]);
+});
+
+$klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:mission]/foliage', function(Request $request, Response $response) use ($applicationContext) {
+    $mission = getMissionFromRequest($applicationContext, $request);
+    if ($mission === null) {
+        $response->code(400);
+        return $response->json([
+            'message' => "Could not find mission with game '{$request->game}', location '{$request->location}', and mission slug '{$request->mission}'"
+        ]);
+    }
+
+    /* @var $foliage \DataAccess\Models\Foliage[] */
+    $foliage = $applicationContext->get(FoliageController::class)->getFoliageForMission($mission->getId());
+    $formattedFoliage = [];
+    foreach ($foliage as $innerFoliage) {
+        $viewModel = new LedgeViewModel();
+        $viewModel->id = $innerFoliage->getId();
+        $viewModel->missionId = $innerFoliage->getMissionId();
+        $viewModel->level = $innerFoliage->getLevel();
+        $viewModel->vertices = explode('|', $innerFoliage->getVertices());
+        $formattedFoliage[] = $viewModel;
+    }
+
+    return $response->json([
+        'foliage' => $formattedFoliage
+    ]);
+});
+//endregion
+
+$klein->respond('GET', '/api/v1/editor/templates', function(Request $request, Response $response) use ($applicationContext) {
     $templates = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Item::class)->findBy([], ['name' => 'ASC']);
     $sortedTemplates = [];
 
@@ -284,7 +455,7 @@ $klein->respond('GET', '/api/v1/editor/templates', function(\Klein\Request $requ
     return $response->json($sortedTemplates);
 });
 
-$klein->respond('GET', '/api/v1/editor/icons', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/v1/editor/icons', function(Request $request, Response $response) use ($applicationContext) {
     $icons = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Icon::class)->findBy([], ['order' => 'ASC', 'icon' => 'ASC']);
     $sortedIcons = [];
 
@@ -300,11 +471,11 @@ $klein->respond('GET', '/api/v1/editor/icons', function(\Klein\Request $request,
     return $response->json($sortedIcons);
 });
 
-$klein->respond('GET', '/api/v1/elusive-targets', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/v1/elusive-targets', function(Request $request, Response $response) use ($applicationContext) {
     $constants = new \Config\Constants();
     $settings = new \Config\Settings();
     /* @var $missionRepository \DataAccess\Repositories\MissionRepository */
-    $missionRepository = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Mission::class);
+    $missionRepository = $applicationContext->get(EntityManager::class)->getRepository(Mission::class);
     $elusiveTargets = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\ElusiveTarget::class)->findBy([], ['beginningTime' => 'DESC']);
 
     $viewModels = [];
@@ -328,13 +499,13 @@ $klein->respond('GET', '/api/v1/elusive-targets', function(\Klein\Request $reque
 });
 
 // Web APIs
-$klein->respond('GET', '/api/web/home', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/web/home', function(Request $request, Response $response) use ($applicationContext) {
     $constants = new \Config\Constants();
-    $games = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Game::class)->findAll();
+    $games = $applicationContext->get(EntityManager::class)->getRepository(Game::class)->findAll();
 
     /* @var $missionRepository \DataAccess\Repositories\MissionRepository */
     /* @var $elusiveTargetRepository \DataAccess\Repositories\ElusiveTargetRepository */
-    $missionRepository = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Mission::class);
+    $missionRepository = $applicationContext->get(EntityManager::class)->getRepository(Mission::class);
     $elusiveTargetRepository = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\ElusiveTarget::class);
     $elusiveTargets = $elusiveTargetRepository->getActiveElusiveTargets();
 
@@ -363,13 +534,13 @@ $klein->respond('GET', '/api/web/home', function(\Klein\Request $request, \Klein
     ]);
 });
 
-$klein->respond('POST', '/api/web/user/login', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext, $klein) {
+$klein->respond('POST', '/api/web/user/login', function(Request $request, Response $response) use ($applicationContext, $klein) {
     $controller = $applicationContext->get(\Controllers\AuthenticationController::class);
 
     try {
         $token = $controller->loginUser($_POST['tokenType'], $_POST['accessToken']);
 
-        $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+        $responseModel = new ApiResponseModel();
         $responseModel->token = $token;
         return $response->json($responseModel);
     } catch (\BusinessLogic\Authentication\Discord\DiscordAuthenticationException | \BusinessLogic\Authentication\Discord\UserNotInServerException $e) {
@@ -380,73 +551,59 @@ $klein->respond('POST', '/api/web/user/login', function(\Klein\Request $request,
             $viewModel->messages[] = new \Controllers\ViewModels\AlertMessage('danger', $e->getMessage(), 'error-not-in-server');
         }
 
-        $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+        $responseModel = new ApiResponseModel();
         $responseModel->token = null;
         $responseModel->data = $viewModel;
         return $response->json($responseModel);
     }
 });
 
-$klein->respond('POST', '/api/nodes', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('POST', '/api/nodes', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
-        print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
+        print json_encode(['message' => 'You must be logged in to make make edits to maps!']);
         return $response->code(401);
     }
 
 
     $user = getUserContextForToken($newToken, $applicationContext);
-    /* @var $node \DataAccess\Models\Node */
-    $node = $applicationContext->get(\Controllers\NodeController::class)->createNode(intval($_POST['mission-id']), $_POST['difficulty'], $_POST, $user);
-    clearAllMapCaches($node->getMissionId(), $applicationContext);
+    /* @var $node Node */
+    $body = json_decode($request->body(), true);
+    $node = $applicationContext->get(NodeController::class)->createNode($body, $user);
 
     $response->code(201);
 
-    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
-    $responseModel->data = transformNode($node, $applicationContext);
+    $responseModel->data = transformNode($node);
     return json_encode($responseModel);
 });
 
-function transformNode(\DataAccess\Models\Node $node, \DI\Container $applicationContext): \Controllers\ViewModels\NodeWithNotesViewModel {
-    $nodeViewModel = new \Controllers\ViewModels\NodeWithNotesViewModel();
-    $nodeViewModel->id = $node->getId();
-    $nodeViewModel->missionId = $node->getMissionId();
-    $nodeViewModel->type = $node->getType();
-    $nodeViewModel->icon = $node->getIcon();
-    $nodeViewModel->subgroup = $node->getSubgroup();
-    $nodeViewModel->name = $node->getName();
-    $nodeViewModel->target = $node->getTarget();
-    $nodeViewModel->level = $node->getLevel();
-    $nodeViewModel->latitude = $node->getLatitude();
-    $nodeViewModel->longitude = $node->getLongitude();
-    $nodeViewModel->difficulty = $node->getDifficulty();
-    $nodeViewModel->group = $node->getGroup();
-    $nodeViewModel->approved = $node->getApproved();
-    $nodeViewModel->image = $node->getImage();
-    $nodeViewModel->searchable = $node->isSearchable();
-    $nodeViewModel->tooltip = $node->getTooltip();
-    $nodeViewModel->quantity = $node->getQuantity();
-    switch ($nodeViewModel->icon) {
-        case 'poison':
-            $nodeViewModel->targetIcon = 'fa-user';
-            break;
-        case 'interaction':
-        case 'sabotage':
-        case 'distraction':
-            $nodeViewModel->targetIcon = 'fa-cog';
-            break;
-        default:
-            $nodeViewModel->targetIcon = '';
-            break;
+$klein->respond('PUT', '/api/nodes/[:nodeId]', function(Request $request, Response $response) use ($applicationContext) {
+    $newToken = null;
+    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
+        print json_encode(['message' => 'You must be logged in to make make edits to maps!']);
+        return $response->code(401);
     }
-    $nodeViewModel->notes = [];
-    $notes = $applicationContext->get(EntityManager::class)
-        ->getRepository(\DataAccess\Models\NodeNote::class)
-        ->findBy(['nodeId' => $node->getId()]);
-    foreach ($notes as $note) {
-        /* @var $note \DataAccess\Models\NodeNote */
-        $innerViewModel = new \Controllers\ViewModels\NodeNoteViewModel();
+
+
+    $user = getUserContextForToken($newToken, $applicationContext);
+    /* @var $node Node */
+    $body = json_decode($request->body(), true);
+    $node = $applicationContext->get(NodeController::class)->editNode($request->nodeId, $body, $user);
+
+    $responseModel = new ApiResponseModel();
+    $responseModel->token = $newToken;
+    $responseModel->data = transformNode($node);
+    return $response->json($responseModel);
+});
+
+function transformNode(Node $node): NodeWithNotesViewModel {
+    $nodeViewModel = new NodeWithNotesViewModel();
+
+    /* @var $note NodeNote */
+    foreach ($node->getNotes()->toArray() as $note) {
+        $innerViewModel = new NodeNoteViewModel();
         $innerViewModel->id = $note->getId();
         $innerViewModel->type = $note->getType();
         $innerViewModel->text = $note->getText();
@@ -454,28 +611,77 @@ function transformNode(\DataAccess\Models\Node $node, \DI\Container $application
         $nodeViewModel->notes[] = $innerViewModel;
     }
 
+    $nodeViewModel->id = $node->getId();
+    $nodeViewModel->missionId = $node->getMissionId();
+    $nodeViewModel->type = $node->getType();
+    $nodeViewModel->icon = $node->getIcon();
+    $nodeViewModel->subgroup = $node->getSubgroup();
+    $nodeViewModel->name = $node->getName();
+    $nodeViewModel->target = $node->getTarget();
+    $nodeViewModel->searchable = $node->isSearchable();
+    unset($nodeViewModel->targetIcon);
+    unset($nodeViewModel->difficulty);
+    unset($nodeViewModel->approved);
+
+    $nodeViewModel->level = $node->getLevel();
+    $nodeViewModel->latitude = $node->getLatitude();
+    $nodeViewModel->longitude = $node->getLongitude();
+    $nodeViewModel->group = $node->getGroup();
+    $nodeViewModel->image = $node->getImage();
+    unset($nodeViewModel->tooltip);
+    $nodeViewModel->quantity = $node->getQuantity();
+
+    /* @var $missionVariant MissionVariant */
+    foreach ($node->getVariants()->toArray() as $missionVariant) {
+        $nodeViewModel->variants[] = $missionVariant->getId();
+    }
+
     return $nodeViewModel;
 }
 
-$klein->respond('POST', '/api/ledges', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('DELETE', '/api/nodes/[:nodeId]', function(Request $request, Response $response) use ($applicationContext) {
+    $newToken = null;
+    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
+        print json_encode(['message' => 'You must be logged in to modify nodes!']);
+        return $response->code(401);
+    }
+
+    /* @var $node Node */
+    $node = $applicationContext->get(EntityManager::class)->getRepository(Node::class)->findOneBy(['id' => $request->nodeId]);
+    if ($node === null) {
+        $response->code(404);
+        return $response->json(['message' => 'Could not find the node to delete!']);
+    }
+    $applicationContext->get(EntityManager::class)->remove($node);
+    $applicationContext->get(EntityManager::class)->flush();
+
+    $responseModel = new ApiResponseModel();
+    $responseModel->token = $newToken;
+    $responseModel->data = ['message' => 'Node deleted!'];
+
+    return $response->json($responseModel);
+});
+
+$klein->respond('POST', '/api/ledges', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
         return $response->code(401);
     }
 
-    $ledge = $applicationContext->get(\Controllers\LedgeController::class)->createLedge($_POST['missionId'], $_POST['level'], $_POST['vertices']);
+    $body = json_decode($request->body(), true);
+    $ledge = $applicationContext->get(LedgeController::class)->createLedge($body['missionId'], $body['level'], $body['vertices']);
 
     $explodedVertices = explode('|', $ledge->getVertices());
 
-    $viewModel = new \Controllers\ViewModels\LedgeViewModel();
+    $viewModel = new LedgeViewModel();
     $viewModel->id = $ledge->getId();
     $viewModel->missionId = $ledge->getMissionId();
     $viewModel->level = $ledge->getLevel();
     $viewModel->vertices = $explodedVertices;
 
     $response->code(201);
-    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
     $responseModel->data = $viewModel;
 
@@ -484,14 +690,14 @@ $klein->respond('POST', '/api/ledges', function (\Klein\Request $request, \Klein
     return json_encode($responseModel);
 });
 
-function clearAllMapCaches(int $missionId, \DI\Container $applicationContext) {
+function clearAllMapCaches(int $missionId, Container $applicationContext) {
     $cacheClient = $applicationContext->get(CacheClient::class);
-    $cacheClient->delete([\BusinessLogic\Caching\KeyBuilder::buildKey(['map', $missionId, 'standard']),
-        \BusinessLogic\Caching\KeyBuilder::buildKey(['map', $missionId, 'professional']),
-        \BusinessLogic\Caching\KeyBuilder::buildKey(['map', $missionId, 'master'])]);
+    $cacheClient->delete([KeyBuilder::buildKey(['map', $missionId, 'standard']),
+        KeyBuilder::buildKey(['map', $missionId, 'professional']),
+        KeyBuilder::buildKey(['map', $missionId, 'master'])]);
 }
 
-$klein->respond('GET', '/api/ledges/delete/[:ledgeId]', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('DELETE', '/api/ledges/[:ledgeId]', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to delete ledges!']);
@@ -504,26 +710,25 @@ $klein->respond('GET', '/api/ledges/delete/[:ledgeId]', function (\Klein\Request
     $entityManager->remove($ledge);
     $entityManager->flush();
 
-    clearAllMapCaches($ledge->getMissionId(), $applicationContext);
-
-    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
     $responseModel->data = ['message' => 'Ledge deleted!'];
     return $response->json($responseModel);
 });
 
-$klein->respond('POST', '/api/foliage', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('POST', '/api/foliage', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
         return $response->code(401);
     }
 
-    $ledge = $applicationContext->get(\Controllers\FoliageController::class)->createFoliage($_POST['missionId'], $_POST['level'], $_POST['vertices']);
+    $body = json_decode($request->body(), true);
+    $ledge = $applicationContext->get(FoliageController::class)->createFoliage($body['missionId'], $body['level'], $body['vertices']);
 
     $explodedVertices = explode('|', $ledge->getVertices());
 
-    $viewModel = new \Controllers\ViewModels\LedgeViewModel();
+    $viewModel = new LedgeViewModel();
     $viewModel->id = $ledge->getId();
     $viewModel->missionId = $ledge->getMissionId();
     $viewModel->level = $ledge->getLevel();
@@ -533,13 +738,13 @@ $klein->respond('POST', '/api/foliage', function (\Klein\Request $request, \Klei
 
     $response->code(201);
 
-    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
     $responseModel->data = $viewModel;
     return json_encode($responseModel);
 });
 
-$klein->respond('GET', '/api/foliage/delete/[:foliageId]', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('DELETE', '/api/foliage/[:foliageId]', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to delete foliage!']);
@@ -552,192 +757,113 @@ $klein->respond('GET', '/api/foliage/delete/[:foliageId]', function (\Klein\Requ
     $entityManager->remove($foliage);
     $entityManager->flush();
 
-    clearAllMapCaches($foliage->getMissionId(), $applicationContext);
-
-    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
     $responseModel->data = ['message' => 'Foliage deleted!'];
     return $response->json($responseModel);
 });
 
-$klein->respond('POST', '/api/disguise-areas', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('POST', '/api/disguise-areas', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
         return $response->code(401);
     }
 
-    $disguiseArea = $applicationContext->get(\Controllers\DisguiseAreasController::class)->createDisguiseArea(intval($_POST['missionId']),
-        intval($_POST['disguiseId']),
-        intval($_POST['level']),
-        $_POST['type'],
-        $_POST['vertices']);
+    $body = json_decode($request->body(), true);
+    $disguiseArea = $applicationContext->get(DisguiseAreasController::class)->createDisguiseArea(intval($body['missionId']),
+        intval($body['disguiseId']),
+        intval($body['level']),
+        $body['type'],
+        $body['vertices']);
 
-    $explodedVertices = explode('|', $disguiseArea->getVertices());
-
-    $viewModel = new \Controllers\ViewModels\DisguiseAreaViewModel();
-    $viewModel->id = $disguiseArea->getId();
-    $viewModel->missionId = $disguiseArea->getMissionId();
-    $viewModel->level = $disguiseArea->getLevel();
-    $viewModel->disguiseId = $disguiseArea->getDisguiseId();
-    $viewModel->type = $disguiseArea->getType();
-    $viewModel->vertices = $explodedVertices;
-
-    clearAllMapCaches($disguiseArea->getMissionId(), $applicationContext);
+    $viewModel = new DisguiseAreaViewModel($disguiseArea);
 
     $response->code(201);
 
-    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
     $responseModel->data = $viewModel;
     return json_encode($responseModel);
 });
 
-$klein->respond('POST', '/api/disguise-areas/copy', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('POST', '/api/disguise-areas/copy', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
         return $response->code(401);
     }
 
-    if (!isset($_POST['original-disguise']) || !isset($_POST['target-disguise'])) {
+    $body = json_decode($request->body(), true);
+    if (!isset($body['originalDisguise']) || !isset($body['targetDisguise'])) {
         $response->code(400);
         return $response->body(json_encode(['message' => 'You must select a source and target disguise!']));
     }
 
-    $originalDisguiseId = intval($_POST['original-disguise']);
-    $targetDisguiseId = intval($_POST['target-disguise']);
+    $originalDisguiseId = intval($body['originalDisguise']);
+    $targetDisguiseId = intval($body['targetDisguise']);
 
     if ($originalDisguiseId === $targetDisguiseId) {
         $response->code(400);
         return $response->body(json_encode(['message' => 'Original and Target Disguises cannot be the same!']));
     }
 
-    /* @var $disguiseAreas \DataAccess\Models\DisguiseArea[] */
+    /* @var $disguiseAreas DisguiseArea[] */
     $entityManager = $applicationContext->get(EntityManager::class);
-    $entityManager->getConnection()->exec('DELETE FROM `disguise_areas` WHERE `disguise_id` = ' . intval($targetDisguiseId));
-    $disguiseAreas = $entityManager->getRepository(\DataAccess\Models\DisguiseArea::class)->findBy(['disguiseId' => $originalDisguiseId]);
-    $missionId = -1;
+    $entityManager->getConnection()->executeStatement("DELETE FROM `disguise_areas` WHERE `disguise_id` = {$targetDisguiseId}");
+    $disguiseAreas = $entityManager->getRepository(DisguiseArea::class)->findBy(['disguiseId' => $originalDisguiseId]);
     foreach ($disguiseAreas as $disguiseArea) {
-        $newDisguiseArea = new \DataAccess\Models\DisguiseArea();
+        $newDisguiseArea = new DisguiseArea();
         $newDisguiseArea->setMissionId($disguiseArea->getMissionId());
         $newDisguiseArea->setType($disguiseArea->getType());
         $newDisguiseArea->setDisguiseId($targetDisguiseId);
         $newDisguiseArea->setLevel($disguiseArea->getLevel());
         $newDisguiseArea->setVertices($disguiseArea->getVertices());
         $entityManager->persist($newDisguiseArea);
-
-        $missionId = $disguiseArea->getMissionId();
     }
     $entityManager->flush();
 
-    clearAllMapCaches($missionId, $applicationContext);
+    $disguiseAreas = $applicationContext->get(EntityManager::class)->getRepository(DisguiseArea::class)->findBy(['disguiseId' => $targetDisguiseId]);
 
-    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
-    return json_encode($responseModel);
+    $responseModel->data = array_map(fn(DisguiseArea $da) => new DisguiseAreaViewModel($da), $disguiseAreas);
+    return $response->json($responseModel);
 });
 
-$klein->respond('GET', '/api/disguise-areas/delete/[:areaId]', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('DELETE', '/api/disguise-areas/[:areaId]', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to delete disguise areas!']);
         return $response->code(401);
     }
 
-    /* @var $disguiseArea \DataAccess\Models\DisguiseArea */
-    $disguiseArea = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\DisguiseArea::class)->findOneBy(['id' => $request->areaId]);
+    /* @var $disguiseArea DisguiseArea */
+    $disguiseArea = $applicationContext->get(EntityManager::class)->getRepository(DisguiseArea::class)->findOneBy(['id' => $request->areaId]);
     $entityManager = $applicationContext->get(EntityManager::class);
     $entityManager->remove($disguiseArea);
     $entityManager->flush();
 
-    clearAllMapCaches($disguiseArea->getMissionId(), $applicationContext);
-
-    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
     $responseModel->data = ['message' => 'Disguise area deleted!'];
     return $response->json($responseModel);
 });
 
-$klein->respond('POST', '/api/nodes/move', function (\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('PATCH', '/api/nodes/[:nodeId]', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         print json_encode(['message' => 'You must be logged in to make make/suggest edits to maps!']);
         return $response->code(401);
     }
 
-    $applicationContext->get(\Controllers\NodeController::class)->moveNode(intval($_POST['node-id']), $_POST['latitude'], $_POST['longitude']);
-    /* @var $node \DataAccess\Models\Node */
-    $node = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Node::class)->find($_POST['node-id']);
-    clearAllMapCaches($node->getMissionId(), $applicationContext);
+    $body = json_decode($request->body(), true);
+    $applicationContext->get(NodeController::class)->moveNode(intval($request->nodeId), $body['latitude'], $body['longitude']);
 
 
-    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
+    $responseModel = new ApiResponseModel();
     $responseModel->token = $newToken;
     $responseModel->data = ['message' => 'OK'];
-    return json_encode($responseModel);
-});
-
-$klein->respond('POST', '/api/nodes/edit/[:nodeId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    $newToken = null;
-    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
-        print json_encode(['message' => 'You must be logged in to modify nodes!']);
-        return $response->code(401);
-    }
-
-    /* @var $user \DataAccess\Models\User */
-    $user = getUserContextForToken($newToken, $applicationContext);
-    $roles = $user->getRolesAsInts();
-    if (!\BusinessLogic\UserRole::hasAccess($roles, [\BusinessLogic\UserRole::TRUSTED_EDITOR])) {
-        print json_encode(['message' => 'You do not have permission to delete nodes!']);
-        return $response->code(403);
-    }
-
-    /* @var $node \DataAccess\Models\Node */
-    $node = $applicationContext->get(\Controllers\NodeController::class)->editNode(intval($request->nodeId), intval($_POST['mission-id']), $_POST['difficulty'], $_POST, $user);
-    clearAllMapCaches($node->getMissionId(), $applicationContext);
-
-    $response->code(200);
-
-    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
-    $responseModel->token = $newToken;
-    $responseModel->data = transformNode($node, $applicationContext);
-    return json_encode($responseModel);
-});
-
-$klein->respond('GET', '/api/nodes/delete/[:nodeId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
-    $newToken = null;
-    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
-        print json_encode(['message' => 'You must be logged in to modify nodes!']);
-        return $response->code(401);
-    }
-
-    /* @var $user \DataAccess\Models\User */
-    $user = getUserContextForToken($newToken, $applicationContext);
-    $roles = $user->getRolesAsInts();
-    if (!\BusinessLogic\UserRole::hasAccess($roles, [\BusinessLogic\UserRole::TRUSTED_EDITOR])) {
-        $response->code(403);
-        return $response->json(['message' => 'You do not have permission to delete nodes!']);
-    }
-
-    /* @var $node \DataAccess\Models\Node */
-    $node = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\Node::class)->findOneBy(['id' => $request->nodeId]);
-    if ($node === null) {
-        $response->code(404);
-        return $response->json(['message' => 'Could not find the node to delete!']);
-    }
-    $notes = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\NodeNote::class)->findBy(['nodeId' => $request->nodeId]);
-    foreach ($notes as $note) {
-        $applicationContext->get(EntityManager::class)->remove($note);
-    }
-    $applicationContext->get(EntityManager::class)->remove($node);
-    $applicationContext->get(EntityManager::class)->flush();
-    clearAllMapCaches($node->getMissionId(), $applicationContext);
-
-    $responseModel = new \Controllers\ViewModels\ApiResponseModel();
-    $responseModel->token = $newToken;
-    $responseModel->data = ['message' => 'Node deleted!'];
-
     return $response->json($responseModel);
 });
 
@@ -745,14 +871,14 @@ $klein->respond('GET', '/api/nodes/delete/[:nodeId]', function(\Klein\Request $r
  * @deprecated Should use /api/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map instead
  */
 $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
-    $nodes = $applicationContext->get(\Controllers\NodeController::class)->getNodesForMission($_GET['missionId'], $_GET['difficulty']);
-    $nodeCategories = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\NodeCategory::class)->findAll();
+    $nodes = $applicationContext->get(NodeController::class)->getNodesForMissionV1($_GET['missionId'], $_GET['difficulty']);
+    $nodeCategories = $applicationContext->get(EntityManager::class)->getRepository(NodeCategory::class)->findAll();
 
     /* @var $ledges \DataAccess\Models\Ledge[] */
-    $ledges = $applicationContext->get(\Controllers\LedgeController::class)->getLedgesForMission($_GET['missionId']);
+    $ledges = $applicationContext->get(LedgeController::class)->getLedgesForMission($_GET['missionId']);
     $formattedLedges = [];
     foreach ($ledges as $ledge) {
-        $viewModel = new \Controllers\ViewModels\LedgeViewModel();
+        $viewModel = new LedgeViewModel();
         $viewModel->id = $ledge->getId();
         $viewModel->missionId = $ledge->getMissionId();
         $viewModel->level = $ledge->getLevel();
@@ -761,10 +887,10 @@ $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
     }
 
     /* @var $foliage \DataAccess\Models\Foliage[] */
-    $foliage = $applicationContext->get(\Controllers\FoliageController::class)->getFoliageForMission($_GET['missionId']);
+    $foliage = $applicationContext->get(FoliageController::class)->getFoliageForMission($_GET['missionId']);
     $formattedFoliage = [];
     foreach ($foliage as $innerFoliage) {
-        $viewModel = new \Controllers\ViewModels\LedgeViewModel();
+        $viewModel = new LedgeViewModel();
         $viewModel->id = $innerFoliage->getId();
         $viewModel->missionId = $innerFoliage->getMissionId();
         $viewModel->level = $innerFoliage->getLevel();
@@ -774,23 +900,23 @@ $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
 
     /* @var $disguiseRepository \DataAccess\Repositories\DisguiseRepository */
     $disguiseRepository = $applicationContext->get(EntityManager::class)
-        ->getRepository(\DataAccess\Models\Disguise::class);
+        ->getRepository(Disguise::class);
 
-    /* @var $disguises \DataAccess\Models\Disguise[] */
+    /* @var $disguises Disguise[] */
     $disguisesWithAreas = $disguiseRepository->findByMission($_GET['missionId']);
     $formattedDisguises = [];
 
-    /* @var $formattedDisguise \Controllers\ViewModels\DisguiseViewModel */
+    /* @var $formattedDisguise DisguiseViewModel */
     $formattedDisguise = null;
     foreach ($disguisesWithAreas as $disguiseOrArea) {
         if ($disguiseOrArea === null) {
             continue;
         }
 
-        if ($disguiseOrArea instanceof \DataAccess\Models\DisguiseArea) {
-            /* @var $area \DataAccess\Models\DisguiseArea */
+        if ($disguiseOrArea instanceof DisguiseArea) {
+            /* @var $area DisguiseArea */
             $area = $disguiseOrArea;
-            $areaViewModel = new \Controllers\ViewModels\DisguiseAreaViewModel();
+            $areaViewModel = new DisguiseAreaViewModel();
             $areaViewModel->id = $area->getId();
             $areaViewModel->missionId = $area->getMissionId();
             $areaViewModel->disguiseId = $area->getDisguiseId();
@@ -801,9 +927,9 @@ $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
             continue;
         }
 
-        /* @var $disguise \DataAccess\Models\Disguise */
+        /* @var $disguise Disguise */
         $disguise = $disguiseOrArea;
-        $formattedDisguise = new \Controllers\ViewModels\DisguiseViewModel();
+        $formattedDisguise = new DisguiseViewModel();
         $formattedDisguise->id = $disguise->getId();
         $formattedDisguise->name = $disguise->getName();
         $formattedDisguise->image = $disguise->getImage();
@@ -818,7 +944,7 @@ $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
         'disguises' => $formattedDisguises]);
 });
 
-$klein->respond('POST', '/api/notifications', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('POST', '/api/notifications', function(Request $request, Response $response) use ($applicationContext) {
     $client = $applicationContext->get(\BusinessLogic\FirebaseClient::class);
 
     try {
@@ -857,7 +983,7 @@ $klein->respond('GET', '/api/push-elusive-target-status', function() use ($appli
     return http_response_code(204);
 });
 
-$klein->respond('GET', '/api/ioi/status', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/ioi/status', function(Request $request, Response $response) use ($applicationContext) {
     $config = new \Config\Settings();
     if ($config->accessKey !== $_GET['access-key']) {
         return $response->code(404);
@@ -866,7 +992,7 @@ $klein->respond('GET', '/api/ioi/status', function(\Klein\Request $request, \Kle
     $applicationContext->get(\BusinessLogic\IOIServices\ElusiveTargetUpdater::class)->retrieveLatestElusiveTargetFromIOI();
 });
 
-$klein->respond('GET', '/api/sitemap.txt', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/sitemap.txt', function(Request $request, Response $response) use ($applicationContext) {
     $constants = new \Config\Constants();
     $pages = [];
     // Static Pages
@@ -877,24 +1003,24 @@ $klein->respond('GET', '/api/sitemap.txt', function(\Klein\Request $request, \Kl
     /* @var $locationRepository \DataAccess\Repositories\LocationRepository */
     /* @var $missionRepository \DataAccess\Repositories\MissionRepository */
     $entityManager = $applicationContext->get(EntityManager::class);
-    $locationRepository = $entityManager->getRepository(\DataAccess\Models\Location::class);
-    $missionRepository = $entityManager->getRepository(\DataAccess\Models\Mission::class);
-    /* @var $games \DataAccess\Models\Game[] */
-    $games = $entityManager->getRepository(\DataAccess\Models\Game::class)->findAll();
+    $locationRepository = $entityManager->getRepository(Location::class);
+    $missionRepository = $entityManager->getRepository(Mission::class);
+    /* @var $games Game[] */
+    $games = $entityManager->getRepository(Game::class)->findAll();
     foreach ($games as $game) {
         $pages[] = "{$constants->siteDomain}/games/{$game->getSlug()}";
 
         // Get locations
-        /* @var $locations \DataAccess\Models\Location[] */
+        /* @var $locations Location[] */
         $locations = $locationRepository->findByGame($game->getSlug());
         foreach ($locations as $location) {
             $pages[] = "{$constants->siteDomain}/games/{$game->getSlug()}#{$location->getSlug()}";
 
-            /* @var $missions \DataAccess\Models\Mission[] */
+            /* @var $missions Mission[] */
             $missions = $missionRepository->findActiveMissionsByLocation($location->getId());
             foreach ($missions as $mission) {
-                /* @var $difficulties \DataAccess\Models\MissionDifficulty[] */
-                $difficulties = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\MissionDifficulty::class)
+                /* @var $difficulties MissionVariant[] */
+                $difficulties = $applicationContext->get(EntityManager::class)->getRepository(MissionVariant::class)
                     ->findBy(['missionId' => $mission->getId()]);
 
                 foreach ($difficulties as $difficulty) {
@@ -935,7 +1061,7 @@ $klein->respond('GET', '/api/admin/migrate', function() {
     return '<pre>' . $output . '</pre>';
 });
 
-$klein->respond('DELETE', '/api/admin/cache', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('DELETE', '/api/admin/cache', function(Request $request, Response $response) use ($applicationContext) {
     $config = new Config\Settings();
     if ($config->accessKey !== $_GET['access-key']) {
         return http_response_code(404);
@@ -988,13 +1114,13 @@ $klein->onError(function (\Klein\Klein $klein, $msg, $type, Throwable $err) {
 });
 
 //--> Roulette
-$klein->respond('GET', '/api/roulette/spins', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/roulette/spins', function(Request $request, Response $response) use ($applicationContext) {
     $spinId = $_GET['spinId'];
 
     return $applicationContext->get(Client::class)->get("hitmaps-roulette:{$spinId}");
 });
 
-$klein->respond('POST', '/api/roulette/spins', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('POST', '/api/roulette/spins', function(Request $request, Response $response) use ($applicationContext) {
     $requestBody = json_decode($request->body(), true);
 
     if ($requestBody === null) {
@@ -1009,7 +1135,7 @@ $klein->respond('POST', '/api/roulette/spins', function(\Klein\Request $request,
     ]);
 });
 
-$klein->respond('GET', '/api/roulette/matchups/[:matchupId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('GET', '/api/roulette/matchups/[:matchupId]', function(Request $request, Response $response) use ($applicationContext) {
     $matchupId = $request->matchupId;
 
     $playerName = isset($_GET['name']) ? $_GET['name'] : '';
@@ -1022,7 +1148,7 @@ $klein->respond('GET', '/api/roulette/matchups/[:matchupId]', function(\Klein\Re
     return $response->code(404);
 });
 
-function getMatchupInformation($matchupId, \DI\Container $applicationContext, $playerName = '') {
+function getMatchupInformation($matchupId, Container $applicationContext, $playerName = '') {
     /* @var $matchup RouletteMatchup */
     $entityManager = $applicationContext->get(EntityManager::class);
     $matchup = $entityManager
@@ -1080,7 +1206,7 @@ function calculatePretimeRemaining(RouletteMatchup $matchup) {
     return ($difference->h * 60 * 60) + ($difference->i * 60) + $difference->s;
 }
 
-$klein->respond('POST', '/api/roulette/matchups', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('POST', '/api/roulette/matchups', function(Request $request, Response $response) use ($applicationContext) {
     $requestBody = json_decode($request->body(), true);
 
     if ($requestBody === null) {
@@ -1122,7 +1248,7 @@ $klein->respond('POST', '/api/roulette/matchups', function(\Klein\Request $reque
     return $response->json(['matchupId' => $matchupId]);
 });
 
-$klein->respond('PATCH', '/api/roulette/matchups/[:matchupId]', function(\Klein\Request $request, \Klein\Response $response) use ($applicationContext) {
+$klein->respond('PATCH', '/api/roulette/matchups/[:matchupId]', function(Request $request, Response $response) use ($applicationContext) {
     $requestBody = json_decode($request->body(), true);
 
     if ($requestBody === null) {
@@ -1258,7 +1384,7 @@ $klein->respond('PATCH', '/api/roulette/matchups/[:matchupId]', function(\Klein\
 
 $klein->dispatch();
 
-function userIsLoggedIn(\Klein\Request $request, \DI\Container $applicationContext, ?string &$outToken): bool {
+function userIsLoggedIn(Request $request, Container $applicationContext, ?string &$outToken): bool {
     $outToken = null;
 
     /* @var $authorizationHeader string */
@@ -1280,7 +1406,7 @@ function userIsLoggedIn(\Klein\Request $request, \DI\Container $applicationConte
     }
 }
 
-function getUserContextForToken(string $token, \DI\Container $applicationContext): \DataAccess\Models\User {
+function getUserContextForToken(string $token, Container $applicationContext): ?\DataAccess\Models\User {
     $tokenGenerator = $applicationContext->get(\BusinessLogic\Authentication\TokenGenerator::class);
 
     try {
@@ -1288,11 +1414,4 @@ function getUserContextForToken(string $token, \DI\Container $applicationContext
     } catch (\BusinessLogic\Session\SessionException $e) {
         return null;
     }
-}
-
-
-function bounceToLogin(\Klein\Klein $klein, \Klein\Response $response, string $redirectLocation = '') {
-    $klein->service()->flash("An account is required to view this page.", 'danger');
-    $redirectLocation = $redirectLocation === '' ? '' : '?redirectLocation=' . $redirectLocation;
-    return $response->redirect('/user/login' . $redirectLocation);
 }

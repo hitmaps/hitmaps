@@ -94,7 +94,7 @@ import Patron from "../components/Patron";
 export default {
     name: 'support-the-site',
     components: {Patron, GameIcon, GameButton},
-    title: 'Support the Site',
+    pageTitle: 'Support the Site',
 }
 </script>
 

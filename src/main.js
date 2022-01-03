@@ -13,6 +13,21 @@ import VueMeta from 'vue-meta'
 import VueCookies from 'vue-cookies'
 
 axios.defaults.withCredentials = true
+axios.interceptors.request.use((config) => {
+    if (localStorage.getItem('token') !== null) {
+        config.headers = {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+    }
+    return config;
+});
+axios.interceptors.response.use((response) => {
+    if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+    }
+
+    return response;
+});
 
 Vue.config.productionTip = false
 //For Copyright
@@ -22,6 +37,8 @@ Vue.prototype.$domain = window.location.hostname.includes('localhost') ?
     'http://localhost:8000' :
     `${document.location.protocol}//${window.location.hostname}`;
 Vue.prototype.$hostname = window.location.hostname;
+const port = document.location.port ? `:${document.location.port}` : '';
+Vue.prototype.$vueDomain = `${document.location.protocol}//${window.location.hostname}${port}`;
 
 var VueMoment = require('vue-moment');
 var moment = require('moment-timezone');
@@ -33,9 +50,10 @@ Vue.use(VueMeta);
 Vue.use(VueCookies);
 
 //Better method to deciding what type of request
+// DEPRECATED
 Vue.prototype.$request = (post, endpoint, data) => {
     var header = {}
-    if (localStorage.getItem('token') != null) {
+    if (localStorage.getItem('token') !== null) {
         header = {
             Authorization: 'Bearer ' + localStorage.getItem('token'),
         }
@@ -153,6 +171,12 @@ Vue.directive('tooltip', {
         $(el).tooltip('dispose');
     },
 });
+
+Vue.filter('lowercase', function (value) {
+    if (!value) return ''
+    value = value.toString()
+    return value.charAt(0).toLowerCase() + value.slice(1)
+})
 
 const langMixin = {
     methods: {

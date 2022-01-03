@@ -18,10 +18,11 @@ class NodeWithNotesViewModel {
     public $difficulty;
     public $group;
     public $subgroup;
-    public $notes;
+    public $notes = [];
     public $approved;
     public $image;
     public $tooltip;
     public $quantity;
     public $searchable;
+    public $variants = [];
 }

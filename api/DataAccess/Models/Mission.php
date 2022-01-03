@@ -5,6 +5,7 @@ namespace DataAccess\Models;
 
 
 use BusinessLogic\MissionType;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -105,9 +106,11 @@ class Mission {
      */
     public $missionType;
 
-    // Not used by Doctrine
-    /* @var $difficulties string[] */
-    public $difficulties = [];
+    /**
+     * @ORM\OneToMany(targetEntity="MissionVariant", mappedBy="mission", fetch="EAGER")
+     * @var $variants Collection
+     */
+    public $variants;
 
     /**
      * @ORM\Column(type="string", name="background_url")
@@ -144,9 +147,11 @@ class Mission {
      */
     public $boundingBoxBottomRight;
 
-    // Not used by Doctrine
-    /* @var $floorNames array */
-    public $floorNames = [];
+    /**
+     * @ORM\OneToMany(targetEntity="MapFloorToName", mappedBy="mission", fetch="EAGER")
+     * @var $floorNames Collection
+     */
+    public $floorNames;
 
     // Not used by Doctrine
     public $icon = '';
@@ -168,6 +173,11 @@ class Mission {
         if ($this->missionType === MissionType::ELUSIVE_TARGET) {
             $this->icon = 'elusive';
         }
+    }
+
+    public function __construct() {
+        $this->variants = new ArrayCollection();
+        $this->floorNames = new ArrayCollection();
     }
 
     /**
@@ -383,7 +393,7 @@ class Mission {
     }
 
     /**
-     * @return mixed
+     * @return DateTime|null
      */
     public function getBeginEffectiveDate() {
         return $this->beginEffectiveDate;
@@ -397,7 +407,7 @@ class Mission {
     }
 
     /**
-     * @return mixed
+     * @return DateTime|null
      */
     public function getEndEffectiveDate() {
         return $this->endEffectiveDate;
@@ -422,6 +432,20 @@ class Mission {
      */
     public function setMissionType(string $missionType): void {
         $this->missionType = $missionType;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getVariants(): Collection {
+        return $this->variants;
+    }
+
+    /**
+     * @param Collection $variants
+     */
+    public function setVariants(Collection $variants): void {
+        $this->variants = $variants;
     }
 
     /**
@@ -520,5 +544,19 @@ class Mission {
      */
     public function setBoundingBoxBottomRight($boundingBoxBottomRight): void {
         $this->boundingBoxBottomRight = $boundingBoxBottomRight;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getFloorNames(): ArrayCollection|Collection {
+        return $this->floorNames;
+    }
+
+    /**
+     * @param Collection $floorNames
+     */
+    public function setFloorNames(ArrayCollection|Collection $floorNames): void {
+        $this->floorNames = $floorNames;
     }
 }

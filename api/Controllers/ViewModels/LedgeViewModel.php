@@ -5,8 +5,8 @@ namespace Controllers\ViewModels;
 
 
 class LedgeViewModel {
-    public $id;
-    public $missionId;
-    public $level;
-    public $vertices;
+    public int $id;
+    public int $missionId;
+    public int $level;
+    public array $vertices;
 }

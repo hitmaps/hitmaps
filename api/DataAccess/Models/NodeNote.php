@@ -17,9 +17,10 @@ class NodeNote {
     public $id;
 
     /**
-     * @ORM\Column(type="integer", name="node_id")
+     * @ORM\ManyToOne(targetEntity="Node", inversedBy="notes")
+     * @ORM\JoinColumn(name="node_id", referencedColumnName="id")
      */
-    public $nodeId;
+    public $node;
 
     /**
      * @ORM\Column(type="string")
@@ -48,15 +49,15 @@ class NodeNote {
     /**
      * @return mixed
      */
-    public function getNodeId(): int {
-        return $this->nodeId;
+    public function getNode() {
+        return $this->node;
     }
 
     /**
-     * @param mixed $nodeId
+     * @param mixed $node
      */
-    public function setNodeId(int $nodeId): void {
-        $this->nodeId = $nodeId;
+    public function setNode($node): void {
+        $this->node = $node;
     }
 
     /**

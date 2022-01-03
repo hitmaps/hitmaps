@@ -30,7 +30,7 @@ import GameIcon from "../components/GameIcon";
 
 export default {
     name: '500',
-    title: 'Internal Server Error',
+    pageTitle: 'Internal Server Error',
     components: {GameIcon, GameButton}
 }
 </script>

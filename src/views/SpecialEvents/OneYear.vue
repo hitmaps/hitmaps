@@ -218,7 +218,7 @@
     export default {
         name: 'one-year',
         components: {GameIcon},
-        title: 'HITMAN™️ 2 Maps\' One Year Anniversary'
+        pageTitle: 'HITMAN™️ 2 Maps\' One Year Anniversary'
     }
 </script>
 

@@ -9,24 +9,20 @@
     >
         <div class="modal-dialog modal-xl" role="document" :class="fullscreen ? 'fullscreen' : ''">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5
-                        class="modal-title"
+                <div class="modal-header" v-if="modalTitle">
+                    <h5 class="modal-title"
                         :id="id"
                         v-if="modalTitle"
-                        v-html="modalTitle"
-                    ></h5>
-                    <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                        v-if="dismissable"
-                    >
+                        v-html="modalTitle"></h5>
+                    <button type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                            v-if="dismissable">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body d-flex flex-column">
+                <div class="modal-body d-flex flex-column" :style="flush ? 'padding: 0' : ''">
                     <slot></slot>
                 </div>
                 <div class="modal-footer">
@@ -44,7 +40,8 @@ export default {
         id: String,
         dismissable: Boolean,
         fullscreen: Boolean,
-        modalTitle: String
+        modalTitle: String,
+        flush: Boolean
     }
 }
 </script>
@@ -95,7 +92,7 @@ export default {
                 padding-top: 10px;
                 display: block;
 
-                > :not(:first-child) {
+                > :last-child {
                     margin: 0;
                 }
 

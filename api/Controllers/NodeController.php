@@ -10,13 +10,18 @@ use Controllers\ViewModels\NodeWithNotesViewModel;
 use Controllers\ViewModels\Sidebar\CategoryViewModel;
 use Controllers\ViewModels\Sidebar\TopLevelCategoryViewModel;
 use DataAccess\Models\Mission;
+use DataAccess\Models\MissionVariant;
 use DataAccess\Models\Node;
 use DataAccess\Models\NodeCategory;
+use DataAccess\Models\NodeDifficulty;
 use DataAccess\Models\NodeNote;
 use DataAccess\Models\User;
+use DataAccess\Repositories\MissionVariantRepository;
 use DataAccess\Repositories\NodeRepository;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Logging\DebugStack;
 use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\ObjectRepository;
 
 class NodeController {
     /* @var $entityManager EntityManager */
@@ -25,24 +30,21 @@ class NodeController {
     /* @var $nodeRepository NodeRepository */
     private $nodeRepository;
 
-    /* @var $nodeNoteRepository ObjectRepository */
-    private $nodeNoteRepository;
-
     /* @var $nodeCategoryRepository ObjectRepository */
     private $nodeCategoryRepository;
 
     public function __construct(EntityManager $entityManager) {
         $this->entityManager = $entityManager;
         $this->nodeRepository = $entityManager->getRepository(Node::class);
-        $this->nodeNoteRepository = $entityManager->getRepository(NodeNote::class);
         $this->nodeCategoryRepository = $entityManager->getRepository(NodeCategory::class);
     }
 
-    public function getNodesForMission(int $missionid, string $difficulty, bool $distinctOnly = false, bool $searchableOnly = false): array {
+    public function getNodesForMissionV1(int $missionid, string $difficulty, bool $distinctOnly = false, bool $searchableOnly = false): array {
         /* @var $mission Mission */
         $mission = $this->entityManager->getRepository(Mission::class)->findOneBy(['id' => $missionid]);
-        
-        $nodesWithNotes = $this->nodeRepository->findByMissionAndDifficulty($missionid, $difficulty);
+
+        /* @var $nodesWithNotes Node[] */
+        $nodesWithNotes = $this->nodeRepository->findByMission($missionid);
 
         $groups = [
             'Points of Interest' => new TopLevelCategoryViewModel('Points of Interest'),
@@ -67,32 +69,24 @@ class NodeController {
         }
 
         $addedNodes = [];
-        /* @var $nodeViewModel NodeWithNotesViewModel */
-        $nodeViewModel = null;
-        foreach ($nodesWithNotes as $entity) {
-            if ($entity === null) {
+        foreach ($nodesWithNotes as $node) {
+            $difficulties = array_map(fn(MissionVariant $nd) => $nd->getVariant(), $node->getVariants()->toArray());
+            if (!in_array($difficulty, $difficulties)) {
                 continue;
             }
 
-            if ($entity instanceof NodeNote) {
-                /* @var $note NodeNote */
-                $note = $entity;
-                if ($nodeViewModel === null) {
-                    continue;
-                }
+            $nodeViewModel = new NodeWithNotesViewModel();
 
+            /* @var $note NodeNote */
+            foreach ($node->getNotes()->toArray() as $note) {
                 $innerViewModel = new NodeNoteViewModel();
                 $innerViewModel->id = $note->getId();
                 $innerViewModel->type = $note->getType();
                 $innerViewModel->text = $note->getText();
 
                 $nodeViewModel->notes[] = $innerViewModel;
-                continue;
             }
 
-            /* @var $node Node */
-            $node = $entity;
-            $nodeViewModel = null;
             /* @var $notes NodeNote[] */
             if ($searchableOnly && !$node->isSearchable()) {
                 continue;
@@ -105,7 +99,6 @@ class NodeController {
                 $node->getName() === null ||
                 $node->getName() === '' ||
                 !in_array($type . $group . $node->getName(), $addedNodes)) {
-                $nodeViewModel = new NodeWithNotesViewModel();
                 $nodeViewModel->id = $node->getId();
                 $nodeViewModel->missionId = $node->getMissionId();
                 $nodeViewModel->type = $node->getType();
@@ -131,16 +124,13 @@ class NodeController {
                 $nodeViewModel->level = $node->getLevel();
                 $nodeViewModel->latitude = $node->getLatitude();
                 $nodeViewModel->longitude = $node->getLongitude();
-                $nodeViewModel->difficulty = $node->getDifficulty();
+                $nodeViewModel->difficulty = $difficulty;
                 $nodeViewModel->group = $node->getGroup();
                 $nodeViewModel->image = $node->getImage();
-                $nodeViewModel->tooltip = $node->getTooltip();
+                $nodeViewModel->tooltip = $node->getName() ?? '';
                 $nodeViewModel->quantity = $node->getQuantity();
-                $nodeViewModel->notes = [];
 
-                /* @var $categoryViewModel CategoryViewModel */
                 $categoryViewModel = $groups[$type]->items[$group];
-
                 $categoryViewModel->items[] = $nodeViewModel;
 
                 if ($distinctOnly && $node->getName() !== null && $node->getName() !== '') {
@@ -152,7 +142,56 @@ class NodeController {
         return $groups;
     }
 
-    public function createNode(int $missionId, string $difficulty, array $postData, User $user): Node {
+    public function getNodesForMissionV2(int $missionid): array {
+        /* @var $nodes array */
+        $nodes = $this->nodeRepository->findByMissionV2($missionid);
+
+        $nodeViewModels = [];
+
+        foreach ($nodes as $node) {
+            $nodeViewModel = new NodeWithNotesViewModel();
+
+            /* @var $note NodeNote */
+            foreach ($node['notes'] as $note) {
+                $innerViewModel = new NodeNoteViewModel();
+                $innerViewModel->id = $note['id'];
+                $innerViewModel->type = $note['type'];
+                $innerViewModel->text = $note['text'];
+
+                $nodeViewModel->notes[] = $innerViewModel;
+            }
+
+            $nodeViewModel->id = $node['id'];
+            $nodeViewModel->missionId = $node['missionId'];
+            $nodeViewModel->type = $node['type'];
+            $nodeViewModel->icon = $node['icon'];
+            $nodeViewModel->subgroup = $node['subgroup'];
+            $nodeViewModel->name = $node['name'];
+            $nodeViewModel->target = $node['target'];
+            $nodeViewModel->searchable = $node['searchable'];
+            unset($nodeViewModel->targetIcon);
+            unset($nodeViewModel->difficulty);
+            unset($nodeViewModel->approved);
+
+            $nodeViewModel->level = $node['level'];
+            $nodeViewModel->latitude = $node['latitude'];
+            $nodeViewModel->longitude = $node['longitude'];
+            $nodeViewModel->group = $node['group'];
+            $nodeViewModel->image = $node['image'];
+            unset($nodeViewModel->tooltip);
+            $nodeViewModel->quantity = $node['quantity'];
+
+            foreach ($node['variants'] as $missionVariant) {
+                $nodeViewModel->variants[] = $missionVariant['id'];
+            }
+
+            $nodeViewModels[] = $nodeViewModel;
+        }
+
+        return $nodeViewModels;
+    }
+
+    public function createNode(array $requestBody, User $user): Node {
         /*
          * - Sabotage uses "action" instead of "target"
          * - Distraction uses "action" instead of "target"
@@ -165,171 +204,81 @@ class NodeController {
          *     - down-stair
          */
 
-        $node = $this->transformPostData($postData, $difficulty, $user, $missionId);
+        $node = $this->transformPostData($requestBody, $user);
 
-        $this->entityManager->persist($node);
-        $this->entityManager->flush();
-
-        $nodeId = $node->getId();
-
-        $i = 0;
-        foreach ($postData['note-type'] as $noteType) {
-            $noteText = $postData['note-text'][$i++];
-
-            if (trim($noteText) === '') {
-                continue;
-            }
-
-            $nodeNote = new NodeNote();
-            $nodeNote->setNodeId($nodeId);
-            $nodeNote->setType($noteType);
-            $nodeNote->setText($noteText);
-
-            $this->entityManager->persist($nodeNote);
-            $this->entityManager->flush();
-        }
+        $this->persistNodeData($node);
 
         return $node;
     }
 
-    private function transformPostData(array $postData, string $difficulty, User $user, int $missionId): Node {
-        /*
-         * - Sabotage uses "action" instead of "target"
-         * - Distraction uses "action" instead of "target"
-         * - Agency Pickup uses "pickup-type" instead of "target"
-         *     - "large" -> Large Pickup
-         *     - "small" -> Stash
-         * - Stairwell uses "stairwell-direction" as its icon
-         *     - up-stair
-         *     - up-down-stair
-         *     - down-stair
-         */
+    private function transformPostData(array $requestBody, User $user, ?Node $existingNode = null): Node {
+        $node = $existingNode ?? new Node();
+        $node->setGroup(trim($requestBody['category']['group']));
+        $node->setSubgroup($requestBody['category']['subgroup']);
+        $node->setIcon($requestBody['icon']);
+        $node->setLatitude($requestBody['latitude']);
+        $node->setLevel($requestBody['level']);
+        $node->setLongitude($requestBody['longitude']);
 
-        list($type, $subgroup) = explode('|', $postData['subgroup']);
-        $node = new Node();
-        $node->setDifficulty($difficulty);
-        $node->setGroup(trim($postData['group']));
-        $node->setSubgroup($subgroup);
-        $node->setIcon(isset($postData['icon']) && $postData['icon'] !== null && trim($postData['icon']) !== '' ?
-            $postData['icon'] :
-            $subgroup);
-        $node->setLatitude($postData['latitude']);
-        $node->setLevel($postData['level']);
-        $node->setLongitude($postData['longitude']);
+        $missionId = intval($requestBody['missionId']);
         $node->setMissionId($missionId);
-        $node->setName($postData['name'] !== null ? trim($postData['name']) : '');
-        $node->setTooltip($postData['name'] !== null ? trim($postData['name']) : '');
-        if (isset($postData['quantity']) && intval($postData['quantity']) > 1) {
-            $quantity = intval($postData['quantity']);
-            $node->setTooltip($node->getTooltip() . " (x{$quantity})");
-        }
+        $node->setName($requestBody['name'] !== null ? trim($requestBody['name']) : '');
 
-        $node->setType($type);
+        $node->setType($requestBody['category']['type']);
         $node->setCreatedBy($user->getId());
-        $node->setTarget('');
-        $node->setSearchable($postData['searchable']);
-        $node->setImage(isset($postData['image']) && $postData['image'] !== '' ? $postData['image'] : null);
-        if (strpos($node->getImage(), 'https://media.hitmaps.com') !== 0) {
+        $node->setTarget($requestBody['targetAction']);
+        $node->setSearchable($requestBody['category']['searchable']);
+        $node->setImage(isset($requestBody['image']) && $requestBody['image'] !== '' ? $requestBody['image'] : null);
+        if (!str_starts_with($node->getImage(), 'https://media.hitmaps.com')) {
             // Can't link to anywhere other than https://media.hitmaps.com
             $node->setImage(null);
         }
 
-        $node->setQuantity(isset($postData['quantity']) ? $postData['quantity'] : 1);
+        $node->setQuantity($requestBody['quantity'] ?? 1);
 
-        switch ($subgroup) {
-            case 'sabotage':
-            case 'distraction':
-            case 'interaction':
-            case 'alarm':
-                $node->setTarget($postData['action']);
-                break;
-            case 'agency-pickup':
-                if ($postData['pickup-type'] === 'large') {
-                    $node->setTarget('Agency Pickup');
-                    $node->setIcon('agency-pickup');
-                    if ($node->getName() !== '') {
-                        $node->setTooltip('Agency Pickup: ' . $node->getName());
-                    } else {
-                        $node->setTooltip('Agency Pickup');
-                    }
-                } else {
-                    $node->setTarget('Hidden Stash');
-                    $node->setIcon('agency-pickup-stash');
-                    if ($node->getName() !== '') {
-                        $node->setTooltip('Hidden Stash: ' . $node->getName());
-                    } else {
-                        $node->setTooltip('Hidden Stash');
-                    }
-                }
-                break;
-            case 'up-stair':
-                $node->setIcon($postData['stairwell-direction']);
-                $node->setTooltip('Stairwell');
-                break;
-            case 'up-pipe':
-                if ($postData['stairwell-direction'] === 'up-stair') {
-                    $node->setIcon('up-pipe');
-                } elseif ($postData['stairwell-direction'] === 'down-stair') {
-                    $node->setIcon('down-pipe');
-                } else {
-                    $node->setIcon('up-down-pipe');
-                }
-                break;
-            case 'blend-in':
-                if ($node->getName() === 'Any Disguise') {
-                    $node->setTooltip('Blend In');
-                } else {
-                    $node->setTooltip('Blend In as ' . $node->getName());
-                }
-                break;
-            case 'locked-door':
-            case 'conceal-item':
-            case 'hiding-spot':
-            case 'destroy-evidence':
-            case 'weapon-crate':
-            case 'camera':
-            case 'frisk':
-                $node->setTooltip($node->getGroup());
-                break;
-            case 'area':
-                $node->setTooltip('');
-                $node->setDifficulty('ALL');
-                break;
-            default:
-                $node->setTarget($postData['target']);
+        /* @var $mission Mission */
+        $mission = $this->entityManager->getRepository(Mission::class)->findOneBy(['id' => $missionId]);
+
+        $node->getVariants()->clear();
+        foreach ($requestBody['variantIds'] as $selectedVariantId) {
+            $selectedVariant = current(array_filter($mission->getVariants()->toArray(), fn(MissionVariant $variant) => $variant->getId() === $selectedVariantId));
+            if ($selectedVariant === false) {
+                // Somehow got a bad variant. Just skip it.
+                continue;
+            }
+
+            $node->addVariant($selectedVariant);
         }
-        $node->setApproved(UserRole::hasAccess($user->getRolesAsInts(), [UserRole::TRUSTED_EDITOR]));
 
-        return $node;
-    }
-
-    public function editNode(int $nodeId, int $missionId, string $difficulty, array $postData, User $user): Node {
-
-        $node = $this->transformPostData($postData, $difficulty, $user, $missionId);
-        $node->setId($nodeId);
-
-        $node = $this->entityManager->merge($node);
-        $this->entityManager->persist($node);
-        $this->entityManager->flush();
-
-        $this->entityManager->getConnection()->executeUpdate("DELETE FROM `node_notes` WHERE `node_id` = " . $nodeId);
-
-        $i = 0;
-        foreach ($postData['note-type'] as $noteType) {
-            $noteText = $postData['note-text'][$i++];
-
-            if (trim($noteText) === '') {
+        $node->getNotes()->clear();
+        foreach ($requestBody['notes'] as $note) {
+            if (trim($note['text']) === '') {
                 continue;
             }
 
             $nodeNote = new NodeNote();
-            $nodeNote->setNodeId($nodeId);
-            $nodeNote->setType($noteType);
-            $nodeNote->setText($noteText);
-
-            $this->entityManager->persist($nodeNote);
-            $this->entityManager->flush();
+            $nodeNote->setType($note['type']);
+            $nodeNote->setText($note['text']);
+            $node->addNote($nodeNote);
         }
+
+        $node->setApproved(true);
+
+        return $node;
+    }
+
+    private function persistNodeData(Node $node): void {
+        $this->entityManager->persist($node);
+        $this->entityManager->flush();
+
+        $this->entityManager->flush();
+    }
+
+    public function editNode(int $nodeId, array $requestBody, User $user): Node {
+        $existingNode = $this->entityManager->getRepository(Node::class)->findOneBy(['id' => $nodeId]);
+
+        $node = $this->transformPostData($requestBody, $user, $existingNode);
+        $this->persistNodeData($node);
 
         return $node;
     }
@@ -346,7 +295,5 @@ class NodeController {
         $node->setLongitude($longitude);
         $this->entityManager->persist($node);
         $this->entityManager->flush();
-
-        return;
     }
 }

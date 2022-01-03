@@ -264,7 +264,7 @@ import GameIcon from "../components/GameIcon";
 export default {
     name: 'privacy-policy',
     components: {GameIcon, GameButton, Alert},
-    title: 'Privacy Policy',
+    pageTitle: 'Privacy Policy',
 }
 </script>
 

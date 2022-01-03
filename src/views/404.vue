@@ -37,7 +37,7 @@ import GameIcon from "../components/GameIcon";
 
 export default {
     name: '404',
-    title: 'Page Not Found',
+    pageTitle: 'Page Not Found',
     components: {GameIcon, GameButton}
 }
 </script>
