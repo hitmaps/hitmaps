@@ -158,7 +158,7 @@
 
                     // If we didn't grab one from the URL, set it to the default
                     if (this.currentVariant === undefined) {
-                        this.currentVariant = this.mission.variants[0];
+                        this.currentVariant = this.mission.variants.find(variant => variant.default);
                     }
                 });
             //@formatter:on

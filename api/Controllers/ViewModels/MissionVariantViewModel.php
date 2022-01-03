@@ -13,6 +13,7 @@ class MissionVariantViewModel {
     public bool $visible;
     public string $icon;
     public string $slug;
+    public bool $default;
 
     public function __construct(MissionVariant $variant) {
         $this->id = $variant->getId();
@@ -21,5 +22,6 @@ class MissionVariantViewModel {
         $this->visible = $variant->isVisible();
         $this->icon = $variant->getIcon();
         $this->slug = $variant->getSlug();
+        $this->default = $variant->isDefault();
     }
 }

@@ -42,6 +42,11 @@ class MissionVariant {
     public string $slug;
 
     /**
+     * @ORM\Column(type="boolean", name="`default`")
+     */
+    public bool $default;
+
+    /**
      * @return mixed
      */
     public function getId() {
@@ -123,5 +128,19 @@ class MissionVariant {
      */
     public function setSlug(string $slug): void {
         $this->slug = $slug;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDefault(): bool {
+        return $this->default;
+    }
+
+    /**
+     * @param bool $default
+     */
+    public function setDefault(bool $default): void {
+        $this->default = $default;
     }
 }

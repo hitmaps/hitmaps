@@ -14,7 +14,7 @@ class DisguiseAreaViewModel {
     public ?array $vertices;
     public ?string $type;
 
-    public function __construct(?DisguiseArea $disguiseArea) {
+    public function __construct(DisguiseArea $disguiseArea = null) {
         if ($disguiseArea === null) {
             return;
         }

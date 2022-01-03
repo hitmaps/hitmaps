@@ -167,9 +167,6 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
 
     /* @var $mission Mission */
     $mission = $entityManager->getRepository(Mission::class)->findOneBy(['locationId' => $location->getId(), 'slug' => $request->mission]);
-    $mission->floorNames = $entityManager->getRepository(MapFloorToName::class)->findBy(
-        ['missionId' => $mission->getId()],
-        ['floorNumber' => 'ASC']);
 
     if ($mission === null) {
         $response->code(400);

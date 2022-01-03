@@ -70,7 +70,7 @@ class NodeController {
 
         $addedNodes = [];
         foreach ($nodesWithNotes as $node) {
-            $difficulties = array_map(fn(MissionVariant $nd) => $nd->getDifficulty(), $node->getVariants()->toArray());
+            $difficulties = array_map(fn(MissionVariant $nd) => $nd->getVariant(), $node->getVariants()->toArray());
             if (!in_array($difficulty, $difficulties)) {
                 continue;
             }
