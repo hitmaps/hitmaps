@@ -437,57 +437,6 @@ $klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:m
         'foliage' => $formattedFoliage
     ]);
 });
-
-// TODO Delete me once split up
-$klein->respond('GET', '/api/v2/games/[:game]/locations/[:location]/missions/[:mission]/map', function(Request $request, Response $response) use ($applicationContext) {
-    $cacheClient = $applicationContext->get(CacheClient::class);
-
-    /* @var $game Game */
-    $entityManager = $applicationContext->get(EntityManager::class);
-    $game = $entityManager->getRepository(Game::class)->findOneBy(['slug' => $request->game]);
-
-    /* @var $location Location */
-    $location = $entityManager->getRepository(Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
-
-    /* @var $mission Mission */
-    $mission = $entityManager->getRepository(Mission::class)->findOneBy(['locationId' => $location->getId(), 'slug' => $request->mission]);
-    $mission->floorNames = $entityManager->getRepository(MapFloorToName::class)->findBy(
-        ['missionId' => $mission->getId()],
-        ['floorNumber' => 'ASC']);
-
-    if ($mission === null) {
-        $response->code(400);
-        return $response->json([
-            'message' => "Could not find mission with game '{$request->game}', location '{$request->location}', and mission slug '{$request->mission}'"
-        ]);
-    }
-
-    if ($location === null) {
-        $response->code(400);
-        return $response->json([
-            'message' => "Could not find location with game '{$request->game}' and location slug '{$request->location}'"
-        ]);
-    }
-
-    if ($game === null) {
-        $response->code(400);
-        return $response->json([
-            'message' => "Could not find game with slug '{$request->game}'"
-        ]);
-    }
-
-    $cacheKey = KeyBuilder::buildKey(['map', $mission->getId()]);
-
-    return $response->json($cacheClient->retrieve($cacheKey, function() use ($applicationContext, $request, $response, $location, $mission, $game) {
-
-
-
-        return [
-            'variants' => $applicationContext->get(EntityManager::class)
-                ->getRepository(MissionVariant::class)
-                ->findBy(['missionId' => $mission->getId()])];
-    }));
-});
 //endregion
 
 $klein->respond('GET', '/api/v1/editor/templates', function(Request $request, Response $response) use ($applicationContext) {
