@@ -29,20 +29,22 @@
                          'full-width': category.collapsible,
                          'half-width': !category.collapsible
                      }">
-                    <div class="name"
-                         @click="onCategoryLevelClick(category)"
-                         :class="{ 'map-hidden': isCategoryHidden(category) }">
-                        <img :src="`/img/map-icons/${category.icon}.png`"
-                             :alt="`${category.group} Icon`"
-                             class="img-fluid">
-                        <span>{{ lang(`map.groups.${topLevelCategoryName}|${category.group}`, category.group) }}</span>
-                    </div>
-                    <div v-if="category.collapsible"
-                         class="visibility-toggle collapsed"
-                         data-toggle="collapse"
-                         :data-target="`#${buildCollapsibleId(category)}`">
-                        <i class="fas fa-caret-up"></i>
-                        <i class="fas fa-caret-down"></i>
+                    <div class="name-and-toggle">
+                        <div class="name"
+                             @click="onCategoryLevelClick(category)"
+                             :class="{ 'map-hidden': isCategoryHidden(category) }">
+                            <img :src="`/img/map-icons/${category.icon}.png`"
+                                 :alt="`${category.group} Icon`"
+                                 class="img-fluid">
+                            <span>{{ lang(`map.groups.${topLevelCategoryName}|${category.group}`, category.group) }}</span>
+                        </div>
+                        <div v-if="category.collapsible"
+                             class="visibility-toggle collapsed"
+                             data-toggle="collapse"
+                             :data-target="`#${buildCollapsibleId(category)}`">
+                            <i class="fas fa-caret-up"></i>
+                            <i class="fas fa-caret-down"></i>
+                        </div>
                     </div>
                     <div v-if="category.collapsible"
                          class="collapsible-items collapse"
@@ -139,16 +141,16 @@ export default {
     margin-top: 5px;
     margin-bottom: 5px;
     border-radius: 3px !important;
-    background: #000;
+    background: transparent;
     border: none;
-    width: 368px;
 
     > .card-header {
-        background: #000;
+        background: transparent;
         border-radius: 0;
         border: none;
         padding: 0;
         margin-bottom: 10px;
+        display: flex;
 
         .visibility-toggle {
             width: 40px;
@@ -175,13 +177,12 @@ export default {
 
         .name {
             margin-right: 14px;
-            width: 313px;
+            flex-grow: 1;
         }
 
         .name,
         .visibility-toggle {
             &.control-button {
-                width: 368px;
                 padding-left: 12px;
                 padding-top: 6px;
                 padding-bottom: 6px;
@@ -234,7 +235,7 @@ export default {
     }
 
     .card-body {
-        background: #000;
+        background: transparent;
         border-radius: 0;
         border: none;
         padding: 0;
@@ -246,15 +247,19 @@ export default {
         }
 
         .full-width {
+            .name-and-toggle {
+                display: flex;
+            }
+
             .name {
-                width: 313px;
+                flex-grow: 1;
             }
 
             margin-bottom: 5px;
         }
 
         .half-width {
-            width: 180px;
+            width: 50%;
             display: inline-block;
             margin-bottom: 5px;
         }
@@ -280,18 +285,53 @@ export default {
         .visibility-toggle {
             background: #2a2d31;
             padding: 10px;
+            display: block;
+            border-radius: 3px;
+            color: #fff;
+            cursor: pointer;
+
+            .fa-caret-down {
+                display: none;
+            }
+
+            .fa-caret-up {
+                display: inline;
+                vertical-align: text-top;
+            }
+
+            &.collapsed {
+                .fa-caret-up {
+                    display: none;
+                }
+
+                .fa-caret-down {
+                    display: inline;
+                    vertical-align: text-top;
+                }
+            }
+
+            &:hover {
+                color: #fff;
+                text-decoration: none;
+                opacity: 1;
+            }
         }
 
-        .name,
-        .visibility-toggle {
-            display: inline-block;
+        .name {
+            display: flex;
             color: #fff;
             cursor: pointer;
             min-height: 40px;
             border-radius: 3px;
-            padding-left: 32px;
-            text-indent: -32px;
             word-break: break-all;
+
+            img {
+                align-self: center;
+            }
+
+            span {
+                align-self: center;
+            }
 
             &.hidden {
                 text-decoration: line-through;

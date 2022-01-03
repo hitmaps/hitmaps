@@ -1,22 +1,66 @@
 <template>
     <nav class="navbar navbar-fixed-right navbar-dark">
-        <button class="navbar-toggler"
-                type="button"
-                data-toggle="collapse"
-                data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false"
-                :aria-label="$t('map.toggle-navigation')">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <div class="header">
+        <div class="mobile-header">
+            <div class="logo">
+                <router-link :to="{ name: 'home' }">
+                    <img src="/img/png/logos/hitmaps.png" class="img-fluid d-block d-md-none" alt="HITMAPS Logo"/>
+                </router-link>
+            </div>
+            <!--        <button class="navbar-toggler"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#navbarSupportedContent"
+                            aria-controls="navbarSupportedContent"
+                            aria-expanded="false"
+                            :aria-label="$t('map.toggle-navigation')">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>-->
+            <div class="header-buttons">
+                <button class="navbar-toggler"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#search-item-toggle"
+                        aria-controls="search-item-toggle"
+                        aria-expanded="true"
+                        aria-label="Toggle search box">
+                    <i class="fas fa-fw fa-search"></i>
+                </button>
+                <button class="navbar-toggler"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#disguises-toggle"
+                        aria-controls="disguises-toggle"
+                        aria-expanded="false"
+                        aria-label="Toggle disguises box">
+                    <i class="far fa-fw fa-user-tie"></i>
+                </button>
+                <button class="navbar-toggler"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#floors-and-layers-toggle"
+                        aria-controls="floors-and-layers-toggle"
+                        aria-expanded="false"
+                        aria-label="Toggle floors and layers box">
+                    <i class="far fa-fw fa-layer-group"></i>
+                </button>
+                <button class="navbar-toggler"
+                        type="button"
+                        :aria-label="$t('language-modal.change-language')"
+                        data-toggle="modal"
+                        data-target="#locale-modal"
+                        v-tooltip:bottom="$t('language-modal.change-language')">
+                    <country-flag :country="countryFlag"/>
+                </button>
+            </div>
+        </div>
+        <div class="navbar-collapse">
+            <div class="header d-none d-md-block">
                 <router-link :to="{ name: 'home' }">
                     <img src="/img/png/logos/hitmaps.png" class="img-fluid" alt="HITMAPS Logo"/>
                 </router-link>
             </div>
             <editor-header v-if="editorState !== 'OFF' && editorState !== 'MENU'" :editor-state="editorState"/>
-            <div class="map-control">
+            <div class="map-control d-none d-md-flex">
                 <div id="map-control-buttons">
                     <control-button @click="$emit('zoom-in')" :class="currentZoomLevel === maxZoomLevel ? 'disabled' : ''">+</control-button>
                     <control-button @click="$emit('zoom-out')" :class="currentZoomLevel === minZoomLevel ? 'disabled' : ''">-</control-button>
@@ -53,24 +97,30 @@
                 </div>
             </div>
             <div v-show="editorState === 'OFF'">
-                <item-search :searchable-nodes="getSearchableNodes()" @search-item="onSearchItem" />
-                <disguise-dropdown :game="game"
-                                   :mission="mission"
-                                   :disguises="disguises"
-                                   :current-disguise="currentDisguise"
-                                   @disguise-selected="onDisguiseSelected" />
-                <hide-select-all @hide-all="$emit('hide-all')" @show-all="$emit('show-all')" />
-                <top-level-category-card v-for="topLevelCategory in topLevelCategories"
-                                         :key="topLevelCategory"
-                                         :top-level-category-name="topLevelCategory"
-                                         :categories="categories.filter(x => x.type === topLevelCategory)"
-                                         :nodes="nodes.filter(x => x.type === topLevelCategory)"
-                                         :ledges="ledges"
-                                         :foliage="foliage"
-                                         @hide-category="onHideCategory"
-                                         @show-category="onShowCategory"
-                                         @hide-top-level-category="onHideTopLevelCategory"
-                                         @show-top-level-category="onShowTopLevelCategory" />
+                <div class="navbar-collapse collapse show" id="search-item-toggle">
+                    <item-search :searchable-nodes="getSearchableNodes()" @search-item="onSearchItem" />
+                </div>
+                <div class="collapse navbar-collapse" id="disguises-toggle">
+                    <disguise-dropdown :game="game"
+                                       :mission="mission"
+                                       :disguises="disguises"
+                                       :current-disguise="currentDisguise"
+                                       @disguise-selected="onDisguiseSelected" />
+                </div>
+                <div class="collapse navbar-collapse" id="floors-and-layers-toggle">
+                    <hide-select-all @hide-all="$emit('hide-all')" @show-all="$emit('show-all')" />
+                    <top-level-category-card v-for="topLevelCategory in topLevelCategories"
+                                             :key="topLevelCategory"
+                                             :top-level-category-name="topLevelCategory"
+                                             :categories="categories.filter(x => x.type === topLevelCategory)"
+                                             :nodes="nodes.filter(x => x.type === topLevelCategory)"
+                                             :ledges="ledges"
+                                             :foliage="foliage"
+                                             @hide-category="onHideCategory"
+                                             @show-category="onShowCategory"
+                                             @hide-top-level-category="onHideTopLevelCategory"
+                                             @show-top-level-category="onShowTopLevelCategory" />
+                </div>
             </div>
             <edit-landing v-if="editorState === 'MENU'"
                           :nodes-only="mission.missionType === 'Sniper Assassin'"
@@ -110,10 +160,12 @@ import EditItems from "./Editing/EditItems";
 import EditFoliage from "./Editing/EditFoliage";
 import EditLedges from "./Editing/EditLedges";
 import EditDisguiseRegions from "./Editing/EditDisguiseRegions";
+import FloorToggle from "../FloorToggle";
 
 export default {
     name: "Sidebar",
     components: {
+        FloorToggle,
         EditDisguiseRegions,
         EditLedges,
         EditFoliage,
@@ -232,6 +284,9 @@ export default {
         },
         onReplaceDisguiseAreas(disguiseAreas) {
             this.$emit('replace-disguise-areas', disguiseAreas);
+        },
+        onChangeFloor(floorNumber) {
+            this.$emit('change-floor', floorNumber);
         }
         //endregion
     }
@@ -240,12 +295,16 @@ export default {
 
 <style lang="scss" scoped>
     @media (min-width: 768px) {
+        .mobile-header {
+            display: none;
+        }
+
         .navbar-fixed-right {
             display: block;
             float: right;
             width: 400px;
             min-height: 100vh;
-            background: #000;
+            background: rgba(0, 0, 0, .90);
         }
 
         .navbar-toggler {
@@ -269,12 +328,41 @@ export default {
     }
 
     @media (max-width: 767px) {
+        .mobile-header {
+            display: flex;
+            margin-bottom: 5px;
+
+            .logo {
+                img {
+                    height: 44px;
+                }
+            }
+
+            .header-buttons {
+                display: flex;
+                flex-grow: 1;
+                justify-content: flex-end;
+            }
+        }
+
+        .navbar {
+            display: block;
+        }
+
         .navbar-fixed-right {
-            background: #000;
+            background: rgba(0, 0, 0, .90);
         }
 
         .navbar-toggler {
             display: block;
+
+            &[data-toggle="collapse"] {
+                padding: 10px;
+            }
+
+            & + & {
+                margin-left: 10px;
+            }
         }
 
         .accordion > .floor-toggle {
@@ -287,8 +375,25 @@ export default {
         }
     }
 
+    .navbar {
+        z-index: 2;
+    }
+
     .navbar-toggler {
-        background: #2a2d31;
+        background: rgba(22, 24, 29, .75);
+        border: 2px solid #2a2d31;
+        color: #fff;
+        border-radius: 3px;
+        transition: color .15s ease-in-out,
+                    background-color .15s ease-in-out,
+                    border-color .15s ease-in-out,
+                    box-shadow .15s ease-in-out;
+        opacity: 0.85;
+
+        &:hover {
+            opacity: 1;
+            border-color: #fff;
+        }
     }
 
     .map-control {

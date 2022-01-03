@@ -5,7 +5,7 @@
                 class="selectpicker"
                 ref="itemSearch"
                 data-live-search="true"
-                data-title="<i class='fas fa-fw fa-search'></i> Search"
+                :data-title="`<i class='fas fa-fw fa-search'></i> ${$t('map.search')}`"
                 data-style="control-button">
                 <optgroup v-for="(items, key) in searchableNodes" :key="key" :label="key">
                     <option v-for="item in items" :key="`${key}|${item}`" :value="`${key}|${item}`">{{ item }}</option>
@@ -63,6 +63,11 @@ export default {
         border: solid 2px #2a2d31;
         opacity: 0.85;
         width: 100%;
+
+        @media(min-width: 768px) {
+            width: 368px;
+        }
+
         margin-bottom: 10px;
 
         &:hover {
@@ -73,12 +78,16 @@ export default {
 
     &.item-selected {
         .bootstrap-select {
-            width: 318px !important;
+            width: 86% !important;
         }
     }
 
     .bootstrap-select {
-        width: 368px !important;
+        width: 100% !important;
+
+        @media(min-width: 768px) {
+            width: 368px !important;
+        }
 
         > .dropdown-toggle {
             &.bs-placeholder {
@@ -101,8 +110,8 @@ export default {
     #clear-search.control-button,
     #clear-disguise-search.control-button {
         display: inline-block;
-        margin-left: 10px;
-        width: 40px;
+        width: 11%;
+        margin-left: 11px;
         height: 40px;
     }
 }

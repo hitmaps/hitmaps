@@ -32,7 +32,7 @@
                              v-for="disguise in disguises"
                              :key="disguise.id"
                              class="col-12">
-                            <div class="disguise" :style="`background: #fff url('${disguise.image}') center -150px / cover no-repeat`">
+                            <div class="disguise" :style="`background: url('${disguise.image}') center 70% / cover no-repeat`">
                                 <i18n path="map.suit-disguise" tag="p" class="disguise-info" v-if="disguise.suit">
                                     <span slot="suitName">{{ disguise.name }}</span>
                                 </i18n>
@@ -90,12 +90,12 @@ export default {
         margin-top: 5px;
         margin-bottom: 5px;
         border-radius: 3px !important;
-        background: #000;
+        background: transparent;
         border: none;
-        width: 368px;
+        width: 100%;
 
         > .card-header {
-            background: #000;
+            background: transparent;
             border-radius: 0;
             border: none;
             padding: 0;
@@ -132,7 +132,7 @@ export default {
             .name,
             .visibility-toggle {
                 &.control-button {
-                    width: 368px;
+                    width: 100%;
                     padding-left: 12px;
                     padding-top: 6px;
                     padding-bottom: 6px;
@@ -196,7 +196,7 @@ export default {
                 color: #fff;
                 font-weight: bolder;
                 border-radius: 3px;
-                border: solid 2px #000;
+                border: solid 2px transparent;
 
                 p {
                     margin-bottom: 0;

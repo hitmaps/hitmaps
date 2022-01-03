@@ -7,7 +7,8 @@
                           :mission="mission"
                           :current-floor="currentFloor"
                           :nodes="nodes"
-                          @change-floor="onChangeFloor" />
+                          @change-floor="onChangeFloor"
+            />
             <div :class="`hm-editor-${editorState.toLowerCase()}`" id="map"></div>
             <sidebar v-if="metadataLoaded && mapDataLoaded"
                      ref="sidebar"

@@ -36,8 +36,7 @@ export default {
     props: {
         mission: Object,
         currentFloor: Number,
-        nodes: Array,
-        searchCriteria: String
+        nodes: Array
     },
     data() {
         return {
@@ -114,14 +113,33 @@ export default {
 
 <style lang="scss" scoped>
     .floor-toggle {
-        display: block;
-        position: fixed;
-        top: 110px;
-        left: 50px;
-        z-index: 1;
         border-radius: 3px;
         border: 2px solid #fff;
         background: rgba(22, 24, 29, 0.75);
+
+        @media(min-width: 768px) {
+            display: block;
+            position: fixed;
+            top: 110px;
+            left: 50px;
+            z-index: 1;
+        }
+
+        @media(max-width: 767px) {
+            display: block;
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            z-index: 1;
+        }
+
+        &.desktop {
+            display: block;
+            position: fixed;
+            top: 110px;
+            left: 50px;
+            z-index: 1;
+        }
 
         .floor-info {
             margin: 0;
