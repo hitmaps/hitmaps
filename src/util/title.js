@@ -1,27 +1,27 @@
 import MetaHandler from "../components/MetaHandler";
 
 function getTitle(vm) {
-    const { title } = vm.$options
-    if (title) {
-        return typeof title === 'function' ? title.call(vm) : title
+    const { pageTitle } = vm.$options
+    if (pageTitle) {
+        return typeof pageTitle === 'function' ? pageTitle.call(vm) : pageTitle
     }
 }
 
 export default {
     computed: {
-        title() {
+        pageTitle() {
             return getTitle(this)
         },
     },
     watch: {
-        title: function(val) {
+        pageTitle: function(val) {
             document.title = `${val} | HITMAPS™`;
             MetaHandler.setOpengraphTag('title', document.title);
         },
     },
     mounted() {
-        if (this.title) {
-            document.title = `${this.title} | HITMAPS™`;
+        if (this.pageTitle) {
+            document.title = `${this.pageTitle} | HITMAPS™`;
             MetaHandler.setOpengraphTag('title', document.title);
         }
     },

@@ -196,6 +196,6 @@ import GameIcon from "../components/GameIcon";
 export default {
     name: 'terms-of-use',
     components: {GameIcon, GameButton},
-    title: 'Terms of Use',
+    pageTitle: 'Terms of Use',
 }
 </script>

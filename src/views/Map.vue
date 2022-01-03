@@ -88,6 +88,9 @@
             FloorToggle,
             SplashScreen
         },
+        pageTitle() {
+            return this.mission ? this.lang(`missions.${this.mission.slug}`, this.mission.name) : 'Loading'
+        },
         data() {
             return {
                 metadataLoaded: false,
