@@ -270,7 +270,11 @@
                 return `https://media.hitmaps.com/img/${this.game.slug}/maps/${this.mission.mapFolderName}/`;
             },
             imageTileUrl() {
-                return `${this.$domain}/api/maps/${this.$route.params.mission}/tiles/{floorNumber}/{z}/{x}/{y}.png`;
+                if (!this.mission) {
+                    return '';
+                }
+
+                return `${this.$domain}/api/maps/${this.mission.mapFolderName}/tiles/{floorNumber}/{z}/{x}/{y}.png`;
             },
             loggedIn() {
                 if (localStorage.getItem('token') != null) {
