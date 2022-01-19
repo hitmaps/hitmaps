@@ -1,16 +1,22 @@
 <?php
 
+use BusinessLogic\Authentication\Discord\DiscordAuthenticationException;
+use BusinessLogic\Authentication\Discord\UserNotInServerException;
 use BusinessLogic\Caching\CacheClient;
 use BusinessLogic\Caching\KeyBuilder;
 use BusinessLogic\MissionType;
+use Config\Constants;
+use Config\Settings;
 use Controllers\DisguiseAreasController;
 use Controllers\FoliageController;
 use Controllers\LedgeController;
 use Controllers\NodeController;
+use Controllers\ViewModels\AlertMessage;
 use Controllers\ViewModels\ApiResponseModel;
 use Controllers\ViewModels\DisguiseAreaViewModel;
 use Controllers\ViewModels\DisguiseViewModel;
 use Controllers\ViewModels\LedgeViewModel;
+use Controllers\ViewModels\LoginViewModel;
 use Controllers\ViewModels\MissionViewModel;
 use Controllers\ViewModels\NodeNoteViewModel;
 use Controllers\ViewModels\NodeWithNotesViewModel;
@@ -104,55 +110,6 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
 
     return $response->json(array_map(fn(Mission $x) => new MissionViewModel($x), $missions));
 });
-
-$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map-metadata', function(Request $request, Response $response) use ($applicationContext) {
-    /* @var $location Location */
-    $location = $applicationContext->get(EntityManager::class)->getRepository(Location::class)->findOneBy(['game' => $request->game, 'slug' => $request->location]);
-
-    if ($location === null) {
-        $response->code(400);
-        return $response->json([
-            'message' => "Could not find location with game '{$request->game}' and location slug '{$request->location}'"
-        ]);
-    }
-
-    /* @var $mission Mission */
-    $mission = $applicationContext->get(EntityManager::class)->getRepository(Mission::class)->findOneBy(['locationId' => $location->getId(), 'slug' => $request->mission]);
-
-    if ($mission === null) {
-        $response->code(400);
-        return $response->json([
-            'message' => "Could not find mission with game '{$request->game}', location '{$request->location}', and mission slug '{$request->mission}'"
-        ]);
-    }
-
-    $metadata = new \Controllers\ViewModels\MapMetadataViewModel();
-    $metadata->name = $mission->getName();
-    $metadata->type = $mission->getMissionType();
-    $metadata->background = $mission->getBackgroundUrl();
-    $metadata->tileLocation = buildTileUrlForMission($mission, $location->getGame(), $applicationContext);
-
-    return $response->json($metadata);
-});
-
-function buildTileUrlForMission(Mission $mission, string $game, Container $applicationContext): string {
-    $constants = new \Config\Constants();
-
-    if ($mission->getMissionType() === MissionType::ELUSIVE_TARGET) {
-        /* @var $elusiveTarget \DataAccess\Models\ElusiveTarget */
-        $elusiveTarget = $applicationContext->get(EntityManager::class)
-            ->getRepository(\DataAccess\Models\ElusiveTarget::class)
-            ->findOneBy(['missionId' => $mission->getId()]);
-
-        if ($elusiveTarget === null) {
-            throw new Exception("Could not find ET for an Elusive Target mission!");
-        }
-
-        return "{$constants->siteDomain}/img/jpg{$elusiveTarget->getImageUrl()}.jpg";
-    } else {
-        return "{$constants->siteDomain}/img/png/mission-thumbnails/{$game}/{$mission->getSlug()}.png";
-    }
-}
 
 //region Map Data
 $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map', function(Request $request, Response $response) use ($applicationContext) {
@@ -471,65 +428,15 @@ $klein->respond('GET', '/api/v1/editor/icons', function(Request $request, Respon
     return $response->json($sortedIcons);
 });
 
-$klein->respond('GET', '/api/v1/elusive-targets', function(Request $request, Response $response) use ($applicationContext) {
-    $constants = new \Config\Constants();
-    $settings = new \Config\Settings();
-    /* @var $missionRepository \DataAccess\Repositories\MissionRepository */
-    $missionRepository = $applicationContext->get(EntityManager::class)->getRepository(Mission::class);
-    $elusiveTargets = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\ElusiveTarget::class)->findBy([], ['beginningTime' => 'DESC']);
-
-    $viewModels = [];
-    foreach ($elusiveTargets as $elusiveTarget) {
-        /* @var $elusiveTarget \DataAccess\Models\ElusiveTarget */
-        $viewModel = new \Controllers\ViewModels\ElusiveTargetViewModel();
-        $viewModel->id = $elusiveTarget->getId();
-        $viewModel->beginningTime = $elusiveTarget->getBeginningTime()->format(DateTime::ATOM);
-        $viewModel->name = $elusiveTarget->getName();
-        $viewModel->briefing = $elusiveTarget->getBriefing();
-        $viewModel->endingTime = $elusiveTarget->getEndingTime()->format(DateTime::ATOM);
-        $viewModel->tileUrl = $elusiveTarget->getImageUrl();
-        $viewModel->videoBriefingUrl = $elusiveTarget->getVideoBriefingUrl();
-        $viewModel->missionUrl = "{$missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId(), 'standard')}";
-        $viewModel->reactivated = $elusiveTarget->getReactivated();
-
-        $viewModels[] = $viewModel;
-    }
-
-    return $response->json($viewModels);
-});
-
 // Web APIs
 $klein->respond('GET', '/api/web/home', function(Request $request, Response $response) use ($applicationContext) {
-    $constants = new \Config\Constants();
     $games = $applicationContext->get(EntityManager::class)->getRepository(Game::class)->findAll();
 
     /* @var $missionRepository \DataAccess\Repositories\MissionRepository */
-    /* @var $elusiveTargetRepository \DataAccess\Repositories\ElusiveTargetRepository */
-    $missionRepository = $applicationContext->get(EntityManager::class)->getRepository(Mission::class);
-    $elusiveTargetRepository = $applicationContext->get(EntityManager::class)->getRepository(\DataAccess\Models\ElusiveTarget::class);
-    $elusiveTargets = $elusiveTargetRepository->getActiveElusiveTargets();
-
-    $elusiveTargetViewModels = [];
-    foreach ($elusiveTargets as $elusiveTarget) {
-        /* @var $elusiveTarget \DataAccess\Models\ElusiveTarget */
-        $viewModel = new \Controllers\ViewModels\ElusiveTargetViewModel();
-        $viewModel->id = $elusiveTarget->getId();
-        $viewModel->beginningTime = $elusiveTarget->getBeginningTime()->format(DateTime::ATOM);
-        $viewModel->name = $elusiveTarget->getName();
-        $viewModel->briefing = $elusiveTarget->getBriefing();
-        $viewModel->endingTime = $elusiveTarget->getEndingTime()->format(DateTime::ATOM);
-        $viewModel->tileUrl = $elusiveTarget->getImageUrl();
-        $viewModel->videoBriefingUrl = $elusiveTarget->getVideoBriefingUrl();
-        $viewModel->missionUrl = "{$missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId(), 'standard')}";
-        $viewModel->reactivated = $elusiveTarget->getReactivated();
-
-        $elusiveTargetViewModels[] = $viewModel;
-    }
-    $settings = new \Config\Settings();
+    $settings = new Settings();
 
     return $response->json([
         'games' => $games,
-        'elusiveTargets' => $elusiveTargetViewModels,
         'environment' => $settings->loggingEnvironment
     ]);
 });
@@ -543,12 +450,12 @@ $klein->respond('POST', '/api/web/user/login', function(Request $request, Respon
         $responseModel = new ApiResponseModel();
         $responseModel->token = $token;
         return $response->json($responseModel);
-    } catch (\BusinessLogic\Authentication\Discord\DiscordAuthenticationException | \BusinessLogic\Authentication\Discord\UserNotInServerException $e) {
-        $viewModel = new \Controllers\ViewModels\LoginViewModel();
-        if ($e instanceof \BusinessLogic\Authentication\Discord\DiscordAuthenticationException) {
-            $viewModel->messages[] = new \Controllers\ViewModels\AlertMessage('danger', $e->getMessage(), 'error-discord-auth');
+    } catch (DiscordAuthenticationException | UserNotInServerException $e) {
+        $viewModel = new LoginViewModel();
+        if ($e instanceof DiscordAuthenticationException) {
+            $viewModel->messages[] = new AlertMessage('danger', $e->getMessage(), 'error-discord-auth');
         } else {
-            $viewModel->messages[] = new \Controllers\ViewModels\AlertMessage('danger', $e->getMessage(), 'error-not-in-server');
+            $viewModel->messages[] = new AlertMessage('danger', $e->getMessage(), 'error-not-in-server');
         }
 
         $responseModel = new ApiResponseModel();
@@ -944,56 +851,8 @@ $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
         'disguises' => $formattedDisguises]);
 });
 
-$klein->respond('POST', '/api/notifications', function(Request $request, Response $response) use ($applicationContext) {
-    $client = $applicationContext->get(\BusinessLogic\FirebaseClient::class);
-
-    try {
-        if ($_POST['state'] === 'SUBSCRIBING') {
-            $client->subscribeToTopic($_POST['topic'], $_POST['token']);
-        } elseif ($_POST['state'] === 'UNSUBSCRIBING') {
-            $client->unsubscribeFromTopic($_POST['topic'], $_POST['token']);
-        } else {
-            print json_encode(['message' => 'Invalid state provided.']);
-            return $response->code(400);
-        }
-    } catch (\Kreait\Firebase\Exception\Messaging\InvalidArgument $exception) {
-        print json_encode(['message' => $exception->getMessage()]);
-        return $response->code(400);
-    } catch (\Kreait\Firebase\Exception\MessagingException $exception) {
-        print json_encode(['message' => $exception->getMessage()]);
-        return $response->code(500);
-    }
-
-    return $response->code(204);
-});
-
-$klein->respond('GET', '/api/twitch/current-streams', function() use ($applicationContext) {
-    return $applicationContext->get(\Controllers\TwitchController::class)->getCurrentStreams();
-});
-
-// Backend processes
-$klein->respond('GET', '/api/push-elusive-target-status', function() use ($applicationContext) {
-    $config = new Config\Settings();
-    if ($config->accessKey !== $_GET['access-key']) {
-        return http_response_code(404);
-    }
-
-    $applicationContext->get(\BusinessLogic\ElusiveTargetNotificationSender::class)->sendElusiveTargetNotification();
-
-    return http_response_code(204);
-});
-
-$klein->respond('GET', '/api/ioi/status', function(Request $request, Response $response) use ($applicationContext) {
-    $config = new \Config\Settings();
-    if ($config->accessKey !== $_GET['access-key']) {
-        return $response->code(404);
-    }
-
-    $applicationContext->get(\BusinessLogic\IOIServices\ElusiveTargetUpdater::class)->retrieveLatestElusiveTargetFromIOI();
-});
-
 $klein->respond('GET', '/api/sitemap.txt', function(Request $request, Response $response) use ($applicationContext) {
-    $constants = new \Config\Constants();
+    $constants = new Constants();
     $pages = [];
     // Static Pages
     $pages[] = $constants->siteDomain;
@@ -1019,18 +878,7 @@ $klein->respond('GET', '/api/sitemap.txt', function(Request $request, Response $
             /* @var $missions Mission[] */
             $missions = $missionRepository->findActiveMissionsByLocation($location->getId());
             foreach ($missions as $mission) {
-                /* @var $difficulties MissionVariant[] */
-                $difficulties = $applicationContext->get(EntityManager::class)->getRepository(MissionVariant::class)
-                    ->findBy(['missionId' => $mission->getId()]);
-
-                foreach ($difficulties as $difficulty) {
-                    if (!$difficulty->isVisible()) {
-                        continue;
-                    }
-
-                    $formattedDifficulty = strtolower($difficulty->getDifficulty());
-                    $pages[] = "{$constants->siteDomain}/games/{$game->getSlug()}/{$location->getSlug()}/{$mission->getSlug()}/{$formattedDifficulty}";
-                }
+                $pages[] = "{$constants->siteDomain}/games/{$game->getSlug()}/{$location->getSlug()}/{$mission->getSlug()}";
             }
         }
     }

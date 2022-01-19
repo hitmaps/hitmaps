@@ -129,7 +129,7 @@
                                         </div>
                                         <div class="text">
                                             <h2>{{ lang('mission-types.' + mission.missionType.toLowerCase(), mission.missionType) }}</h2>
-                                            <h1>{{ mission.missionType !== 'Elusive Target' ? lang('missions.' + mission.slug, mission.name) : mission.name }}</h1>
+                                            <h1>{{ lang('missions.' + mission.slug, mission.name) }}</h1>
                                         </div>
                                     </div>
                                 </div>
