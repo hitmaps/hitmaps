@@ -449,7 +449,7 @@ $klein->respond('GET', '/api/web/home', function(Request $request, Response $res
         $viewModel->endingTime = $elusiveTarget->getEndingTime()->format(DateTime::ATOM);
         $viewModel->tileUrl = $elusiveTarget->getImageUrl();
         $viewModel->videoBriefingUrl = $elusiveTarget->getVideoBriefingUrl();
-        $viewModel->missionUrl = "{$missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId(), 'standard')}";
+        $viewModel->missionUrl = "{$missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId(), 'professional')}";
         $viewModel->reactivated = $elusiveTarget->getReactivated();
 
         $elusiveTargetViewModels[] = $viewModel;
