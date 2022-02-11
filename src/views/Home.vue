@@ -464,7 +464,7 @@
                     </div>
                     <template v-if="tournamentMatches.length">
                         <div class="row dashboard" style="margin: 0; margin-bottom: 40px;">
-                            <div class="col-lg" :style="{
+                            <div class="elusive-target col-lg" :style="{
                                 backgroundImage:
                                     'url(https://media.hitmaps.com/img/hitmaps-tournaments/rr7-hitmaps-tile.png)',
                                 backgroundSize: 'cover',
@@ -503,8 +503,8 @@
                                             {{ tournamentMatches[0].mapSelections.filter(x => x.selectionType === 'PICK').map(x => x.mapInfo.location).join(' / ') }}
                                         </h2>
                                         <h1>
-                                            <country-flag :country="tournamentMatches[0].participants[0].country" /> {{ tournamentMatches[0].participants[0].name }} vs
-                                            {{ tournamentMatches[0].participants[1].name }} <country-flag :country="tournamentMatches[0].participants[1].country" />
+                                            {{ tournamentMatches[0].participants[0].name }} vs
+                                            {{ tournamentMatches[0].participants[1].name }}
                                         </h1>
                                     </div>
                                 </div>
@@ -535,8 +535,8 @@
                              style="border-top: 1px solid #dee2e6; padding: .75rem;">
                             <div class="col-lg-3 col-12">
                                 <span>
-                                    <country-flag :country="matchup.participants[0].country" /> {{ matchup.participants[0].name }} vs
-                                    {{ matchup.participants[1].name }} <country-flag :country="matchup.participants[1].country" />
+                                   {{ matchup.participants[0].name }} vs
+                                    {{ matchup.participants[1].name }}
                                 </span>
                             </div>
                             <div class="col-lg-3 col-12">
