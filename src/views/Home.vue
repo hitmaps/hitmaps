@@ -490,7 +490,7 @@
                                         <game-icon font-style="normal" icon="timed" />
                                         <div class="timer not-playable">
                                             <div class="target-arrives">Next Match Begins in</div>
-                                            <countdown :date="tournamentMatches[0].matchTime"/>
+                                            <countdown class="elusive-countdown" :date="tournamentMatches[0].matchTime"/>
                                         </div>
                                     </div>
                                 </template>
