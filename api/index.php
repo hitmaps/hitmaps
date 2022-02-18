@@ -43,7 +43,11 @@ require __DIR__ . '/autoload.php';
 $klein = new \Klein\Klein();
 
 $klein->respond(function(Request $request, Response $response) use ($applicationContext) {
-    if(isset($_SERVER['HTTP_ORIGIN'])) $response->header('Access-Control-Allow-Origin', $_SERVER['HTTP_ORIGIN']);
+    if(isset($_SERVER['HTTP_ORIGIN'])) {
+        $response->header('Access-Control-Allow-Origin', $_SERVER['HTTP_ORIGIN']);
+    } elseif (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] === 'https://hitmaps.readme.io/') {
+        $response->header('Access-Control-Allow-Origin', $_SERVER['HTTP_REFERER']);
+    }
     $response->header('Access-Control-Allow-Headers', 'content-type,Authorization');
     $response->header('Access-Control-Allow-Credentials', 'true');
     $response->header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
