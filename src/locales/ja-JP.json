@@ -50,7 +50,7 @@
         "submit-icon": "Submit icon",
         "cancel-icon": "Cancel icon",
         "close": "閉じる",
-        "loading": "読み込んでいます...",
+        "loading": "Loading...",
         "select": "選択",
         "copy": "コピー",
         "cancel": "キャンセル",
@@ -192,7 +192,7 @@
         "miami": "Miami"
     },
     "map": {
-        "level-number": "難易度 {levelNumber}",
+        "level-number": "Level {levelNumber}",
         "satellite": "Satellite",
         "toggle-navigation": "Toggle navigation",
         "editor-enabled": "Editor Enabled",
