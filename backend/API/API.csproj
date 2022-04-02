@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <RootNamespace>RouletteBackend</RootNamespace>
+        <UserSecretsId>3d5eaceb-3830-4b02-b55c-6d746577367e</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
