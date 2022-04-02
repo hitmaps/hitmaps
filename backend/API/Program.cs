@@ -1,6 +1,8 @@
+using DataAccess.Data;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,8 @@ builder.Services.AddApiVersioning(options =>
     options.AssumeDefaultVersionWhenUnspecified = true;
     options.ApiVersionReader = new HeaderApiVersionReader("x-api-version");
 });
+builder.Services.AddDbContext<RouletteDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Roulette")));
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -30,8 +34,8 @@ if (app.Environment.IsDevelopment())
 if (app.Environment.IsProduction())
 {
     using var scope = app.Services.CreateScope();
-    //var db = scope.ServiceProvider.GetRequiredService<DbContext>();
-    //db.Database.Migrate();
+    var db = scope.ServiceProvider.GetRequiredService<RouletteDbContext>();
+    db.Database.Migrate();
     app.UseExceptionHandler("/error");
 }
 
