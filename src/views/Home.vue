@@ -454,11 +454,11 @@
                     </router-link>
                 </div>
             </div>
-<!--            <div class="row dashboard">
+            <div class="row dashboard">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
-                            <h1>Roulette Rivals 7 (Presented by Frote's Speedrun Community)</h1>
+                            <h1>Roulette Rivals 8 (Presented by Frote's Speedrun Community)</h1>
                             <h2>Upcoming Matches</h2>
                         </div>
                     </div>
@@ -466,7 +466,7 @@
                         <div class="row dashboard" style="margin: 0; margin-bottom: 40px;">
                             <div class="elusive-target col-lg" :style="{
                                 backgroundImage:
-                                    'url(https://media.hitmaps.com/img/hitmaps-tournaments/rr7-hitmaps-tile.png)',
+                                    'url(https://media.hitmaps.com/img/hitmaps-tournaments/rr8.png?width=1920&height=1080)',
                                 backgroundSize: 'cover',
                                 backgroundPosition: 'center',
                                 backgroundRepeat: 'no-repeat',
@@ -553,9 +553,9 @@
                         </div>
                     </template>
                 </div>
-            </div>-->
+            </div>
         </template>
-        <modal modal-title="Roulette Rivals 7"
+        <modal modal-title="Roulette Rivals 8"
                id="roulette-rivals-modal"
                tabindex="-1"
                dismissable>
@@ -574,8 +574,8 @@
                 <div class="col-md-6 col-sm-12">
                     <alert type="info">
                         <ul>
-                            <li><b>Matches</b>: February 11 - March 5</li>
-                            <li><b>Grand Finals</b>: March 6</li>
+                            <li><b>Matches</b>: May 6 - 28</li>
+                            <li><b>Grand Finals</b>: May 29</li>
                         </ul>
                     </alert>
                     <p>
@@ -1080,7 +1080,7 @@ export default {
             console.error(err);
             this.$router.push({ name: '500' });
         });
-        this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/rr7').then(resp => {
+        this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/rr8').then(resp => {
             this.tournamentMatches = resp.data;
         }).catch(_ => this.tournamentMatches = []);
     }
