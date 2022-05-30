@@ -454,7 +454,7 @@
                     </router-link>
                 </div>
             </div>
-            <div class="row dashboard">
+<!--            <div class="row dashboard">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
@@ -553,7 +553,7 @@
                         </div>
                     </template>
                 </div>
-            </div>
+            </div>-->
         </template>
         <modal modal-title="Roulette Rivals 8"
                id="roulette-rivals-modal"
@@ -1080,9 +1080,9 @@ export default {
             console.error(err);
             this.$router.push({ name: '500' });
         });
-        this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/rr8').then(resp => {
+        /*this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/rr8').then(resp => {
             this.tournamentMatches = resp.data;
-        }).catch(_ => this.tournamentMatches = []);
+        }).catch(_ => this.tournamentMatches = []);*/
     }
 }
 
