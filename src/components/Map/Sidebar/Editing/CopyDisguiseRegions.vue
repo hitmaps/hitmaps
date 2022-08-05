@@ -2,7 +2,8 @@
     <modal :modal-title="$t('map.copy-disguise-areas')"
            id="copy-disguises-modal"
            tabindex="-1"
-           role="dialog">
+           role="dialog"
+           fullscreen>
         <div class="alert alert-warning">
             {{ $t('map.copy-disguises-warning') }}
         </div>
