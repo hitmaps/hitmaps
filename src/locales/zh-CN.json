@@ -200,6 +200,7 @@
         "add-remove-ledges": "增加/移除侧边",
         "add-remove-foliage": "增加/移除草丛",
         "manage-disguise-areas": "管理伪装区域",
+        "manage-disguise-area": "Manage Disguise Area",
         "debug-mode": "Toggle Debug Mode",
         "edit-map": "编辑地图",
         "login-to-edit": "登录/注册以进行编辑",
@@ -329,7 +330,8 @@
         "hostile-area": "Hostile Area",
         "copy-disguise-areas": "Copy Disguise Areas",
         "levels-slash-items": "Levels / Items",
-        "other-variants": "Other Mission Variants"
+        "other-variants": "Other Mission Variants",
+        "convert-to-x": "Convert to {type}"
     },
     "profile": {
         "profile": "账户",
