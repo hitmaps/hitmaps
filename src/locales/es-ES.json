@@ -200,6 +200,7 @@
         "add-remove-ledges": "Agregar / Quitar Repisas",
         "add-remove-foliage": "Agregar / Quitar Follaje",
         "manage-disguise-areas": "Administrar Areas de Disfrazar",
+        "manage-disguise-area": "Manage Disguise Area",
         "debug-mode": "Elegir Modo de Depuración",
         "edit-map": "Editar Mapa",
         "login-to-edit": "Iniciar sesión / Registrarse para editar",
@@ -329,7 +330,8 @@
         "hostile-area": "Hostile Area",
         "copy-disguise-areas": "Copy Disguise Areas",
         "levels-slash-items": "Levels / Items",
-        "other-variants": "Other Mission Variants"
+        "other-variants": "Other Mission Variants",
+        "convert-to-x": "Convert to {type}"
     },
     "profile": {
         "profile": "Perfil",
