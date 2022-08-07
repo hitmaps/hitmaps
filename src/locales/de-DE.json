@@ -200,6 +200,7 @@
         "add-remove-ledges": "Kanten hinzufügen / löschen",
         "add-remove-foliage": "Vegetation hinzufügen / löschen",
         "manage-disguise-areas": "Verkleidungsgebiete bearbeiten",
+        "manage-disguise-area": "Manage Disguise Area",
         "debug-mode": "Debugmodus umschalten",
         "edit-map": "Karte bearbeiten",
         "login-to-edit": "Zum Bearbeiten anmelden oder registrieren",
@@ -329,7 +330,8 @@
         "hostile-area": "Hostile Area",
         "copy-disguise-areas": "Copy Disguise Areas",
         "levels-slash-items": "Levels / Items",
-        "other-variants": "Other Mission Variants"
+        "other-variants": "Other Mission Variants",
+        "convert-to-x": "Convert to {type}"
     },
     "profile": {
         "profile": "Profil",
