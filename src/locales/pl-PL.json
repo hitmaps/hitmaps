@@ -200,6 +200,7 @@
         "add-remove-ledges": "Dodaj/Usuń gzymsy",
         "add-remove-foliage": "Add / Remove Foliage",
         "manage-disguise-areas": "Zarządzaj Obszarami Ukrycia",
+        "manage-disguise-area": "Manage Disguise Area",
         "debug-mode": "Przełącz tryb debugowania",
         "edit-map": "Edytuj Mapę",
         "login-to-edit": "Logowanie / Rejestracja, żeby edytować",
@@ -329,7 +330,8 @@
         "hostile-area": "Hostile Area",
         "copy-disguise-areas": "Copy Disguise Areas",
         "levels-slash-items": "Levels / Items",
-        "other-variants": "Other Mission Variants"
+        "other-variants": "Other Mission Variants",
+        "convert-to-x": "Convert to {type}"
     },
     "profile": {
         "profile": "Profil",
