@@ -200,6 +200,7 @@
         "add-remove-ledges": "Добавить / удалить уступы",
         "add-remove-foliage": "Добавить / удалить листву",
         "manage-disguise-areas": "Управление зонами маскировок",
+        "manage-disguise-area": "Manage Disguise Area",
         "debug-mode": "Toggle Debug Mode",
         "edit-map": "Редактор карты",
         "login-to-edit": "Войдите / зарегистрируйтесь чтобы редактировать",
@@ -329,7 +330,8 @@
         "hostile-area": "Hostile Area",
         "copy-disguise-areas": "Copy Disguise Areas",
         "levels-slash-items": "Levels / Items",
-        "other-variants": "Other Mission Variants"
+        "other-variants": "Other Mission Variants",
+        "convert-to-x": "Convert to {type}"
     },
     "profile": {
         "profile": "Профиль",
