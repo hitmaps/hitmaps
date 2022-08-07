@@ -48,6 +48,8 @@ export default {
 
 <style lang="scss">
 .game-modal {
+    background: rgba(0, 0, 0, 0.5);
+
     .modal-dialog {
         &.fullscreen {
             width: 95%;

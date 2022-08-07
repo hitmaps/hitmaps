@@ -258,4 +258,8 @@ footer {
     font-weight: normal;
     font-style: normal;
 }
+
+.modal-backdrop {
+    display: none;
+}
 </style>
