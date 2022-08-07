@@ -64,6 +64,7 @@
                                  @item-created="onItemCreated"
                                  @item-updated="onItemUpdated" />
             <delete-entity-modal :entity="deletionItem" :entity-type="deletionItemType" @item-deleted="onPolyDeleted" />
+            <manage-disguise-area-modal :entity="deletionItem" @item-deleted="onPolyDeleted" @item-converted="onDisguiseAreaConverted" />
             <move-node-modal :node="nodeForMoving" />
         </div>
     </div>
@@ -79,10 +80,12 @@
     import ArrayHelpers from "../components/ArrayHelpers";
     import DeleteEntityModal from "../components/Map/Sidebar/Editing/DeleteEntityModal";
     import MoveNodeModal from "../components/Map/Sidebar/Editing/MoveNodeModal";
+    import ManageDisguiseAreaModal from "../components/Map/Sidebar/Editing/ManageDisguiseAreaModal";
 
     export default {
         name: 'Map',
         components: {
+            ManageDisguiseAreaModal,
             MoveNodeModal,
             DeleteEntityModal,
             AddEditItemModal,
@@ -344,7 +347,12 @@
                 }
 
                 this.deletionItem = ledgeFoliage;
-                this.$nextTick(() => $('#delete-entity').modal('show'));
+
+                if (this.editorState === 'DISGUISE-REGIONS') {
+                    this.$nextTick(() => $('#manage-disguise-area-modal').modal('show'));
+                } else {
+                    this.$nextTick(() => $('#delete-entity').modal('show'));
+                }
             },
             buildFoliageForMap(foliage) {
                 foliage.visible = true;
@@ -803,6 +811,17 @@
                 this.deletionItem = null;
                 this.updateNodeMarkers();
                 $('#delete-entity').modal('hide');
+                $('#manage-disguise-area-modal').modal('hide');
+            },
+            onDisguiseAreaConverted() {
+                this.deletionItem.polygon.removeFrom(this.map);
+                this.deletionItem.type = this.deletionItem.type === 'trespassing' ? 'hostile' : 'trespassing';
+                this.disguiseAreas[this.currentDisguise.id].push(this.buildDisguiseAreaForMap(this.deletionItem));
+                this.deletionItemType = null;
+                this.deletionItem = null;
+                this.updateNodeMarkers();
+                this.updateActiveDisguiseLayer();
+                $('#manage-disguise-area-modal').modal('hide');
             },
             onDisguiseSelected(disguise) {
                 // Disable disguise editor tools if they're enabled. You can't change a disguise mid-polygon.

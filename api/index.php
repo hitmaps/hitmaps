@@ -782,6 +782,31 @@ $klein->respond('DELETE', '/api/disguise-areas/[:areaId]', function (Request $re
     return $response->json($responseModel);
 });
 
+$klein->respond('PATCH', '/api/disguise-areas/[:areaId]/convert', function (Request $request, Response $response) use ($applicationContext) {
+    $newToken = null;
+    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
+        print json_encode(['message' => 'You must be logged in to convert disguise areas!']);
+        return $response->code(401);
+    }
+
+    /* @var $disguiseArea DisguiseArea */
+    $disguiseArea = $applicationContext->get(EntityManager::class)->getRepository(DisguiseArea::class)->findOneBy(['id' => $request->areaId]);
+    $entityManager = $applicationContext->get(EntityManager::class);
+    $disguiseArea->setType($disguiseArea->getType() === 'trespassing' ? 'hostile' : 'trespassing');
+    $entityManager->persist($disguiseArea);
+    $entityManager->flush();
+
+    $viewModel = new DisguiseAreaViewModel($disguiseArea);
+
+    $response->code(200);
+
+    $responseModel = new ApiResponseModel();
+    $responseModel->token = $newToken;
+    $responseModel->data = $viewModel;
+
+    return json_encode($responseModel);
+});
+
 $klein->respond('PATCH', '/api/nodes/[:nodeId]', function (Request $request, Response $response) use ($applicationContext) {
     $newToken = null;
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
