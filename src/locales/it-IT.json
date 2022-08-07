@@ -200,6 +200,7 @@
         "add-remove-ledges": "Aggiungi / rimuovi sporgenze",
         "add-remove-foliage": "Aggiungi / rimuovi vegetazione",
         "manage-disguise-areas": "Gestione aree dei travestimenti",
+        "manage-disguise-area": "Manage Disguise Area",
         "debug-mode": "Toggle Debug Mode",
         "edit-map": "Modifica mappa",
         "login-to-edit": "Accedi / registrati per modificare",
@@ -329,7 +330,8 @@
         "hostile-area": "Hostile Area",
         "copy-disguise-areas": "Copy Disguise Areas",
         "levels-slash-items": "Levels / Items",
-        "other-variants": "Other Mission Variants"
+        "other-variants": "Other Mission Variants",
+        "convert-to-x": "Convert to {type}"
     },
     "profile": {
         "profile": "Profilo",
