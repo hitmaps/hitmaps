@@ -511,9 +511,6 @@
                             </div>
                         </div>
                     </template>
-                    <div>
-                        <alert type="info">Map picks are currently <code>[REDACTED]</code> on this screen due to technical issues.  This will be resolved soon&trade;.</alert>
-                    </div>
                     <div class="row d-none d-lg-flex d-xl-flex" style="border-bottom: 2px solid #dee2e6; border-top: 1px solid #dee2e6; padding: .75rem;">
                         <div class="col-lg-3">
                             <b><i class="fas fa-fw fa-swords"></i> Competitors</b>
@@ -543,7 +540,9 @@
                                 </span>
                             </div>
                             <div class="col-lg-3 col-12">
-                                {{ matchup.maps.filter(x => x.selectionType === 'Pick').map(x => '[REDACTED]').join(', ') }}
+                                <div v-for="map in matchup.maps.filter(x => x.selectionType === 'Pick')">
+                                    {{ map.missionLocation }} - {{ map.missionName }}
+                                </div>
                             </div>
                             <div class="col-lg-3 col-12">
                                 <i class="far fa-fw fa-calendar-alt d-lg-none"></i>{{ matchup.matchScheduledAt | moment('ddd, D MMM') }} | <i class="far fa-fw fa-clock d-lg-none"></i> {{ matchup.matchScheduledAt | moment('h:mm A') }}
