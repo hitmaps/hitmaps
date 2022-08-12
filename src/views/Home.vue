@@ -454,11 +454,11 @@
                     </router-link>
                 </div>
             </div>
-<!--            <div class="row dashboard">
+            <div class="row dashboard">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
-                            <h1>Roulette Rivals 8 (Presented by Frote's Speedrun Community)</h1>
+                            <h1>Roulette Rivals 9 (Presented by Frote's Speedrun Community)</h1>
                             <h2>Upcoming Matches</h2>
                         </div>
                     </div>
@@ -466,7 +466,7 @@
                         <div class="row dashboard" style="margin: 0; margin-bottom: 40px;">
                             <div class="elusive-target col-lg" :style="{
                                 backgroundImage:
-                                    'url(https://media.hitmaps.com/img/hitmaps-tournaments/rr8.png?width=1920&height=1080)',
+                                    'url(https://media.hitmaps.com/img/hitmaps-tournaments/rr9-tile.png)',
                                 backgroundSize: 'cover',
                                 backgroundPosition: 'center',
                                 backgroundRepeat: 'no-repeat',
@@ -474,9 +474,9 @@
                                 paddingRight: 0
                             }">
                                 <div style="flex-grow: 1">&nbsp;</div>
-                                <template v-if="new Date(tournamentMatches[0].matchTime) - new Date() < (10*60*1000)">
+                                <template v-if="new Date(tournamentMatches[0].matchScheduledAt) - new Date() < (10*60*1000)">
                                     <iframe
-                                            :src="`https://player.twitch.tv/?autoplay=false&channel=${getTwitchNameFromUrl(tournamentMatches[0].shoutcastStream)}&parent=${$hostname}`"
+                                            :src="`https://player.twitch.tv/?autoplay=false&channel=${getTwitchNameFromUrl(tournamentMatches[0].cast.mainCasterUrl)}&parent=${$hostname}`"
                                             height="100%"
                                             width="100%"
                                             frameborder="0"
@@ -486,11 +486,11 @@
                                     </iframe>
                                 </template>
                                 <template v-else>
-                                    <div v-if="tournamentMatches[0].shoutcastStream" class="countdown">
+                                    <div v-if="tournamentMatches[0].cast && tournamentMatches[0].cast.mainCasterUrl" class="countdown">
                                         <game-icon font-style="normal" icon="timed" />
                                         <div class="timer not-playable">
                                             <div class="target-arrives">Next Match Begins in</div>
-                                            <countdown class="elusive-countdown" :date="tournamentMatches[0].matchTime"/>
+                                            <countdown class="elusive-countdown" :date="tournamentMatches[0].matchScheduledAt"/>
                                         </div>
                                     </div>
                                 </template>
@@ -500,17 +500,20 @@
                                     </div>
                                     <div class="text">
                                         <h2>
-                                            {{ tournamentMatches[0].mapSelections.filter(x => x.selectionType === 'PICK').map(x => x.mapInfo.location).join(' / ') }}
+                                            {{ tournamentMatches[0].maps.filter(x => x.selectionType === 'Pick').map(x => '[REDACTED]').join(' / ') }}
                                         </h2>
                                         <h1>
-                                            {{ tournamentMatches[0].participants[0].name }} vs
-                                            {{ tournamentMatches[0].participants[1].name }}
+                                            {{ tournamentMatches[0].competitors[0].challongeName }} vs
+                                            {{ tournamentMatches[0].competitors[1].challongeName }}
                                         </h1>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </template>
+                    <div>
+                        <alert type="info">Map picks are currently <code>[REDACTED]</code> on this screen due to technical issues.  This will be resolved soon&trade;.</alert>
+                    </div>
                     <div class="row d-none d-lg-flex d-xl-flex" style="border-bottom: 2px solid #dee2e6; border-top: 1px solid #dee2e6; padding: .75rem;">
                         <div class="col-lg-3">
                             <b><i class="fas fa-fw fa-swords"></i> Competitors</b>
@@ -531,29 +534,36 @@
                         </div>
                     </div>
                     <template v-for="matchup in this.tournamentMatches">
-                        <div class="row" :key="`${matchup.participants[0].name}|${matchup.participants[1].name}|${matchup.platform}`"
+                        <div class="row" :key="matchup.id"
                              style="border-top: 1px solid #dee2e6; padding: .75rem;">
                             <div class="col-lg-3 col-12">
                                 <span>
-                                   {{ matchup.participants[0].name }} vs
-                                    {{ matchup.participants[1].name }}
+                                   {{ matchup.competitors[0].challongeName }} vs
+                                    {{ matchup.competitors[1].challongeName }}
                                 </span>
                             </div>
                             <div class="col-lg-3 col-12">
-                                {{ matchup.mapSelections.filter(x => x.selectionType === 'PICK').map(x => x.mapInfo.location).join(', ') }}
+                                {{ matchup.maps.filter(x => x.selectionType === 'Pick').map(x => '[REDACTED]').join(', ') }}
                             </div>
                             <div class="col-lg-3 col-12">
-                                <i class="far fa-fw fa-calendar-alt d-lg-none"></i>{{ matchup.matchTime | moment('ddd, D MMM') }} | <i class="far fa-fw fa-clock d-lg-none"></i> {{ matchup.matchTime | moment('h:mm A') }}
+                                <i class="far fa-fw fa-calendar-alt d-lg-none"></i>{{ matchup.matchScheduledAt | moment('ddd, D MMM') }} | <i class="far fa-fw fa-clock d-lg-none"></i> {{ matchup.matchScheduledAt | moment('h:mm A') }}
                                 <span class="d-lg-none">{{ new Date() | moment('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone, 'z') }}</span>
                             </div>
                             <div class="col-lg-3 col-12">
-                                <i class="fab fa-fw fa-twitch d-lg-none" v-if="matchup.shoutcasters"></i>
-                                <a :href="matchup.shoutcastStream" target="_blank">{{ matchup.shoutcasters }}</a>
+                                <template v-if="matchup.cast">
+                                    <i class="fab fa-fw fa-twitch d-lg-none"></i>
+                                    <a :href="matchup.cast.mainCasterUrl" target="_blank">
+                                        {{ matchup.cast.mainCaster.name }}
+                                        <template v-if="matchup.cast.cocasters.length" v-for="cocaster in matchup.cast.cocasters">
+                                            / {{ cocaster.name }}
+                                        </template>
+                                    </a>
+                                </template>
                             </div>
                         </div>
                     </template>
                 </div>
-            </div>-->
+            </div>
         </template>
         <modal modal-title="Roulette Rivals 8"
                id="roulette-rivals-modal"
@@ -1076,9 +1086,9 @@ export default {
             console.error(err);
             this.$router.push({ name: '500' });
         });
-        /*this.$http.get('https://tournaments.hitmaps.com/api/upcoming-matchups/rr8').then(resp => {
-            this.tournamentMatches = resp.data;
-        }).catch(_ => this.tournamentMatches = []);*/
+        this.$http.get('https://tournamentsapi.hitmaps.com/api/events/rr9/upcoming-matches').then(resp => {
+            this.tournamentMatches = resp.data.data;
+        }).catch(_ => this.tournamentMatches = []);
     }
 }
 

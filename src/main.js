@@ -12,7 +12,6 @@ import Rollbar from 'vue-rollbar'
 import VueMeta from 'vue-meta'
 import VueCookies from 'vue-cookies'
 
-axios.defaults.withCredentials = true
 axios.interceptors.request.use((config) => {
     if (localStorage.getItem('token') !== null) {
         config.headers = {
