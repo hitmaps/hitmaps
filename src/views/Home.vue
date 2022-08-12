@@ -500,7 +500,7 @@
                                     </div>
                                     <div class="text">
                                         <h2>
-                                            {{ tournamentMatches[0].maps.filter(x => x.selectionType === 'Pick').map(x => '[REDACTED]').join(' / ') }}
+                                            {{ tournamentMatches[0].maps.filter(x => x.selectionType === 'Pick').map(x => `${x.missionName} - ${x.missionLocation}`).join(' / ') }}
                                         </h2>
                                         <h1>
                                             {{ tournamentMatches[0].competitors[0].challongeName }} vs
