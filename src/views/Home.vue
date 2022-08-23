@@ -474,7 +474,7 @@
                                 paddingRight: 0
                             }">
                                 <div style="flex-grow: 1">&nbsp;</div>
-                                <template v-if="new Date(tournamentMatches[0].matchScheduledAt) - new Date() < (10*60*1000)">
+                                <template v-if="tournamentMatches[0].cast && new Date(tournamentMatches[0].matchScheduledAt) - new Date() < (10*60*1000)">
                                     <iframe
                                             :src="`https://player.twitch.tv/?autoplay=false&channel=${getTwitchNameFromUrl(tournamentMatches[0].cast.mainCasterUrl)}&parent=${$hostname}`"
                                             height="100%"
