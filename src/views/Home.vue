@@ -462,7 +462,20 @@
                             <h2>Upcoming Matches</h2>
                         </div>
                     </div>
-                    <template v-if="tournamentMatches.length">
+                    <template v-if="fetchedTournamentMatches === false">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <game-button @click="fetchUpcomingMatches">
+                                    <game-icon icon="arrow-right" font-style="normal"></game-icon>
+                                    Fetch Upcoming Matches
+                                </game-button>
+                            </div>
+                        </div>
+                    </template>
+                    <template v-else-if="fetchedTournamentMatches === 'FETCHING'">
+                        <loader/>
+                    </template>
+                    <template v-else-if="tournamentMatches.length">
                         <div class="row dashboard" style="margin: 0; margin-bottom: 40px;">
                             <div class="elusive-target col-lg" :style="{
                                 backgroundImage:
@@ -511,7 +524,7 @@
                             </div>
                         </div>
                     </template>
-                    <div class="row d-none d-lg-flex d-xl-flex" style="border-bottom: 2px solid #dee2e6; border-top: 1px solid #dee2e6; padding: .75rem;">
+                    <div v-if="fetchedTournamentMatches === 'FETCHED'" class="row d-none d-lg-flex d-xl-flex" style="border-bottom: 2px solid #dee2e6; border-top: 1px solid #dee2e6; padding: .75rem;">
                         <div class="col-lg-3">
                             <b><i class="fas fa-fw fa-swords"></i> Competitors</b>
                         </div>
@@ -525,12 +538,12 @@
                             <b><i class="fab fa-fw fa-twitch"></i> Shoutcaster(s)</b>
                         </div>
                     </div>
-                    <div class="row" v-if="!this.tournamentMatches.length" style="border-top: 1px solid #dee2e6; padding: .75rem;">
+                    <div class="row" v-if="fetchedTournamentMatches === 'FETCHED' && !this.tournamentMatches.length" style="border-top: 1px solid #dee2e6; padding: .75rem;">
                         <div class="col">
                             <i>No upcoming matches</i>
                         </div>
                     </div>
-                    <template v-for="matchup in this.tournamentMatches">
+                    <template v-if="fetchedTournamentMatches === 'FETCHED'" v-for="matchup in this.tournamentMatches">
                         <div class="row" :key="matchup.id"
                              style="border-top: 1px solid #dee2e6; padding: .75rem;">
                             <div class="col-lg-3 col-12">
@@ -800,7 +813,8 @@ export default {
     },
     data() {
         return {
-            tournamentMatches: [],
+            fetchedTournamentMatches: false,
+            tournamentMatches: undefined,
             promos: [],
             games: [],
             token: null,
@@ -1071,6 +1085,13 @@ export default {
                     //endregion
                 })
             }
+        },
+        fetchUpcomingMatches() {
+            this.fetchedTournamentMatches = 'FETCHING';
+            this.$http.get('https://tournamentsapi.hitmaps.com/api/events/rr9/upcoming-matches').then(resp => {
+                this.tournamentMatches = resp.data.data;
+                this.fetchedTournamentMatches = 'FETCHED';
+            }).catch(_ => this.tournamentMatches = []);
         }
     },
     created: function() {
@@ -1085,9 +1106,6 @@ export default {
             console.error(err);
             this.$router.push({ name: '500' });
         });
-        this.$http.get('https://tournamentsapi.hitmaps.com/api/events/rr9/upcoming-matches').then(resp => {
-            this.tournamentMatches = resp.data.data;
-        }).catch(_ => this.tournamentMatches = []);
     }
 }
 

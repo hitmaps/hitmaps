@@ -31,6 +31,7 @@
                     <div class="col-sm-3">
                         <patron name="Some Random Person" tier="Assassin"/>
                     </div>
+                    <div class="col-sm-1"></div>
                 </div>
                 <div class="row" style="margin-top: 20px">
                     <div class="col-sm-3">
