@@ -454,7 +454,7 @@
                     </router-link>
                 </div>
             </div>
-            <div class="row dashboard">
+<!--            <div class="row dashboard">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
@@ -562,7 +562,7 @@
                         </div>
                     </template>
                 </div>
-            </div>
+            </div>-->
         </template>
         <modal modal-title="Roulette Rivals 8"
                id="roulette-rivals-modal"
