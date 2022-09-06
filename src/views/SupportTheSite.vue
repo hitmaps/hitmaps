@@ -61,7 +61,9 @@
             <ul>
                 <li>David Thompson - 50.00 USD</li>
                 <li>Finikyu - 25.00 USD</li>
+                <li>Frote7 - 21.23 USD</li>
                 <li>TimothyMark - 10.47 USD</li>
+                <li>GKPunk - 10.00 USD</li>
                 <li>Jonathan Rokosz - 10.00 USD</li>
                 <li>Spencer Sabet - 6.00 USD</li>
                 <li>Brian McKenzie - 5.55 USD</li>
