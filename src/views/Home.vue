@@ -755,11 +755,6 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-3">
-                    <patron image="https://media.hitmaps.com/patrons/barbegue.png" link="https://twitch.tv/barbegue" name="Barbegue" tier="Master Assassin"/>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col" style="text-align: right">
                     <a href="https://www.patreon.com/mrmike227" class="btn patreon-button">
                         <i class="fab fa-patreon"></i>
