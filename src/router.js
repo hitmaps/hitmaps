@@ -8,6 +8,7 @@ import About from "./views/About";
 import OneYear from "./views/SpecialEvents/OneYear";
 import SupportTheSite from "./views/SupportTheSite";
 import Brand from "./views/Brand";
+import MissionAdmin from "./views/MissionAdmin.vue";
 
 Vue.use(Router)
 
@@ -54,6 +55,12 @@ export default new Router({
             path: '/games/:slug',
             name: 'level-select',
             component: Location,
+        },
+        {
+            path: '/admin/:game/:location/:mission',
+            name: 'mission-admin',
+            component: MissionAdmin,
+            props: true
         },
         {
             path: '/games/:game/:location/:mission/:difficulty?',

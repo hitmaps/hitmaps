@@ -113,6 +113,46 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
     return $response->json(array_map(fn(Mission $x) => new MissionViewModel($x), $missions));
 });
 
+$klein->respond('POST', '/api/v1/mission-variants', function(Request $request, Response $response) use ($applicationContext) {
+    $newToken = null;
+    if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
+        return $response->code(401)->json(['message' => 'You must be logged in to make make edits to maps!']);
+    }
+
+    $token = str_replace('Bearer ', '', $request->headers()->get('Authorization'));
+    $userContext = getUserContextForToken($token, $applicationContext);
+    if (!in_array(1, $userContext->getRolesAsInts())) {
+        return $response->code(403)->json(['message' => 'You do not have permission to perform this action.']);
+    }
+
+    $body = json_decode($request->body(), true);
+    $entityManager = $applicationContext->get(EntityManager::class);
+    $mission = $entityManager->getRepository(Mission::class)->findOneBy(['id' => intval($body['missionId'])]);
+    if ($mission === null) {
+        return $response->code(404)->json(['message' => 'Mission not found.']);
+    }
+
+    $missionVariant = new MissionVariant();
+    $missionVariant->setVariant($body['name']);
+    $missionVariant->setMission($mission);
+    $missionVariant->setIcon($body['icon']);
+    $missionVariant->setSlug($body['slug']);
+    $missionVariant->setDefault(false);
+    $missionVariant->setVisible($body['visible']);
+    $entityManager->persist($missionVariant);
+    $entityManager->flush();
+
+    $entityManager->getConnection()->executeQuery("INSERT INTO `node_to_mission_variants` (`node_id`, `variant_id`)
+        SELECT `node_id`, {$missionVariant->getId()}
+        FROM `node_to_mission_variants`
+        WHERE `variant_id` = ".intval($body['sourceVariant']));
+
+    $resp = new ApiResponseModel();
+    $resp->token = $newToken;
+    $resp->body = [];
+    return $response->code(200)->json($resp);
+});
+
 //region Map Data
 $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map', function(Request $request, Response $response) use ($applicationContext) {
     $cacheClient = $applicationContext->get(CacheClient::class);
