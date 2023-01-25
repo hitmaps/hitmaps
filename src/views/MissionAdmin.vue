@@ -42,10 +42,12 @@
                                     <input type="checkbox" v-model="variant.visible">
                                 </td>
                                 <td class="text-center">
-                                    <input type="radio" name="default" :value="true" v-model="variant.default">
+                                    <input type="radio" name="default" :value="true"
+                                           @change="setDefaultVariant(variant)"
+                                           v-model="variant.default">
                                 </td>
                                 <td>
-                                    <game-button>
+                                    <game-button @click="saveVariant(variant)">
                                         <game-icon icon="check" font-style="solid"/>
                                         Save
                                     </game-button>
@@ -154,8 +156,9 @@ export default {
     },
     methods: {
         createVariant() {
-            if (!this.addVariantForm.name || !this.addVariantForm.icon || this.addVariantForm.sourceVariant === 0) {
+            if (!this.addVariantForm.name || !this.addVariantForm.icon || !this.addVariantForm.slug || this.addVariantForm.sourceVariant === 0) {
                 alert('At least one required field is missing.');
+                return;
             }
 
             this.$http.post(`${this.$domain}/api/v1/mission-variants`, {
@@ -166,6 +169,25 @@ export default {
                 visible: this.addVariantForm.visible,
                 sourceVariant: this.addVariantForm.sourceVariant
             }).then(_ => this.$router.go())
+                .catch(err => this.$toast.error(err.stack));
+        },
+        saveVariant(variant) {
+            if (!variant.name || !variant.icon || !variant.slug) {
+                alert('At least one required field is missing.');
+                return;
+            }
+
+            this.$http.put(`${this.$domain}/api/v1/mission-variants/${variant.id}`, {
+                name: variant.name,
+                slug: variant.slug,
+                icon: variant.icon,
+                visible: variant.visible
+            }).then(_ => this.$router.go())
+                .catch(err => this.$toast.error(err.stack));
+        },
+        setDefaultVariant(variant) {
+            this.$http.patch(`${this.$domain}/api/v1/mission-variants/${variant.id}/default`, {})
+                .then(_ => this.$router.go())
                 .catch(err => this.$toast.error(err.stack));
         }
     }

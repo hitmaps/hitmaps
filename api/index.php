@@ -113,16 +113,22 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
     return $response->json(array_map(fn(Mission $x) => new MissionViewModel($x), $missions));
 });
 
-$klein->respond('POST', '/api/v1/mission-variants', function(Request $request, Response $response) use ($applicationContext) {
-    $newToken = null;
+function userIsAdmin(Request $request, Container $applicationContext, ?string &$newToken): bool {
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
-        return $response->code(401)->json(['message' => 'You must be logged in to make make edits to maps!']);
+        return false;
     }
 
     $token = str_replace('Bearer ', '', $request->headers()->get('Authorization'));
     $userContext = getUserContextForToken($token, $applicationContext);
-    if (!in_array(1, $userContext->getRolesAsInts())) {
-        return $response->code(403)->json(['message' => 'You do not have permission to perform this action.']);
+
+    return in_array(1, $userContext->getRolesAsInts());
+}
+
+//region Mission Variants
+$klein->respond('POST', '/api/v1/mission-variants', function(Request $request, Response $response) use ($applicationContext) {
+    $newToken = null;
+    if (!userIsAdmin($request, $applicationContext, $newToken)) {
+        return $response->code(401)->json(['message' => 'You must be logged in to make make edits to maps!']);
     }
 
     $body = json_decode($request->body(), true);
@@ -152,6 +158,59 @@ $klein->respond('POST', '/api/v1/mission-variants', function(Request $request, R
     $resp->body = [];
     return $response->code(200)->json($resp);
 });
+
+$klein->respond('PUT', '/api/v1/mission-variants/[:id]', function(Request $request, Response $response) use ($applicationContext) {
+    error_log(json_encode($request->headers()->get('Authorization')));
+    $newToken = null;
+    if (!userIsAdmin($request, $applicationContext, $newToken)) {
+        return $response->code(401)->json(['message' => 'You must be logged in to make make edits to maps!']);
+    }
+
+    $body = json_decode($request->body(), true);
+    $entityManager = $applicationContext->get(EntityManager::class);
+    /* @var $missionVariant MissionVariant */
+    $missionVariant = $entityManager->getRepository(MissionVariant::class)->findOneBy(['id' => intval($request->id)]);
+    if ($missionVariant === null) {
+        return $response->code(404)->json(['message' => 'Mission variant not found.']);
+    }
+
+    $missionVariant->setVariant($body['name']);
+    $missionVariant->setSlug($body['slug']);
+    $missionVariant->setIcon($body['icon']);
+    $missionVariant->setVisible($body['visible']);
+    $entityManager->persist($missionVariant);
+    $entityManager->flush();
+
+    return $response->code(204);
+});
+
+$klein->respond('PATCH', '/api/v1/mission-variants/[:id]/default', function(Request $request, Response $response) use ($applicationContext) {
+    $newToken = null;
+    if (!userIsAdmin($request, $applicationContext, $newToken)) {
+        return $response->code(401)->json(['message' => 'You must be logged in to make make edits to maps!']);
+    }
+
+    $body = json_decode($request->body(), true);
+    $entityManager = $applicationContext->get(EntityManager::class);
+    /* @var $missionVariant MissionVariant */
+    $missionVariant = $entityManager->getRepository(MissionVariant::class)->findOneBy(['id' => intval($request->id)]);
+    if ($missionVariant === null) {
+        return $response->code(404)->json(['message' => 'Mission variant not found.']);
+    }
+
+    /* @var $oldDefault MissionVariant */
+    $oldDefault = $entityManager->getRepository(MissionVariant::class)->findOneBy(['default' => true]);
+
+    $oldDefault->setDefault(false);
+    $missionVariant->setDefault(true);
+
+    $entityManager->persist($oldDefault);
+    $entityManager->persist($missionVariant);
+    $entityManager->flush();
+
+    return $response->code(204);
+});
+//endregion
 
 //region Map Data
 $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/[:difficulty]/map', function(Request $request, Response $response) use ($applicationContext) {
