@@ -167,45 +167,19 @@ $klein->respond('PUT', '/api/v1/mission-variants/[:id]', function(Request $reque
 
     $body = json_decode($request->body(), true);
     $entityManager = $applicationContext->get(EntityManager::class);
-    /* @var $missionVariant MissionVariant */
-    $missionVariant = $entityManager->getRepository(MissionVariant::class)->findOneBy(['id' => intval($request->id)]);
-    if ($missionVariant === null) {
-        return $response->code(404)->json(['message' => 'Mission variant not found.']);
-    }
-
-    $missionVariant->setVariant($body['name']);
-    $missionVariant->setSlug($body['slug']);
-    $missionVariant->setIcon($body['icon']);
-    $missionVariant->setVisible($body['visible']);
-    $entityManager->persist($missionVariant);
-    $entityManager->flush();
-
-    return $response->code(204);
-});
-
-$klein->respond('PATCH', '/api/v1/mission-variants/[:id]/default', function(Request $request, Response $response) use ($applicationContext) {
-    $newToken = null;
-    if (!userIsAdmin($request, $applicationContext, $newToken)) {
-        return $response->code(401)->json(['message' => 'You must be logged in to make make edits to maps!']);
-    }
-
-    $body = json_decode($request->body(), true);
-    $entityManager = $applicationContext->get(EntityManager::class);
-    /* @var $missionVariant MissionVariant */
-    $missionVariant = $entityManager->getRepository(MissionVariant::class)->findOneBy(['id' => intval($request->id)]);
-    if ($missionVariant === null) {
-        return $response->code(404)->json(['message' => 'Mission variant not found.']);
-    }
-
-    /* @var $oldDefault MissionVariant */
-    $oldDefault = $entityManager->getRepository(MissionVariant::class)->findOneBy(['default' => true]);
-
-    $oldDefault->setDefault(false);
-    $missionVariant->setDefault(true);
-
-    $entityManager->persist($oldDefault);
-    $entityManager->persist($missionVariant);
-    $entityManager->flush();
+    $sql = "UPDATE `mission_to_difficulties`
+        SET `difficulty` = ?,
+            `visible` = ?,
+            `icon` = ?,
+            `slug` = ?
+        WHERE `id` = ?";
+    $stmt = $entityManager->getConnection()->prepare($sql);
+    $stmt->bindParam(1, $body['name']);
+    $stmt->bindParam(2, $body['visible']);
+    $stmt->bindParam(3, $body['icon']);
+    $stmt->bindParam(4, $body['slug']);
+    $stmt->bindValue(5, intval($request->id));
+    $stmt->execute();
 
     return $response->code(204);
 });

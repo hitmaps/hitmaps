@@ -42,9 +42,7 @@
                                     <input type="checkbox" v-model="variant.visible">
                                 </td>
                                 <td class="text-center">
-                                    <input type="radio" name="default" :value="true"
-                                           @change="setDefaultVariant(variant)"
-                                           v-model="variant.default">
+                                    {{ variant.default ? 'Yes' : 'No' }}
                                 </td>
                                 <td>
                                     <game-button @click="saveVariant(variant)">
@@ -183,11 +181,6 @@ export default {
                 icon: variant.icon,
                 visible: variant.visible
             }).then(_ => this.$router.go())
-                .catch(err => this.$toast.error(err.stack));
-        },
-        setDefaultVariant(variant) {
-            this.$http.patch(`${this.$domain}/api/v1/mission-variants/${variant.id}/default`, {})
-                .then(_ => this.$router.go())
                 .catch(err => this.$toast.error(err.stack));
         }
     }
