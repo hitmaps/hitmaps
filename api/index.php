@@ -160,7 +160,6 @@ $klein->respond('POST', '/api/v1/mission-variants', function(Request $request, R
 });
 
 $klein->respond('PUT', '/api/v1/mission-variants/[:id]', function(Request $request, Response $response) use ($applicationContext) {
-    error_log(json_encode($request->headers()->get('Authorization')));
     $newToken = null;
     if (!userIsAdmin($request, $applicationContext, $newToken)) {
         return $response->code(401)->json(['message' => 'You must be logged in to make make edits to maps!']);

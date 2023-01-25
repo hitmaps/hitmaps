@@ -21,7 +21,7 @@ $settings = new \Config\Settings();
 $applicationContext = $builder->build();
 
 // region Doctrine
-$databaseConfig = \Doctrine\ORM\Tools\Setup::createConfiguration($settings->loggingEnvironment === 'production');
+$databaseConfig = \Doctrine\ORM\Tools\Setup::createConfiguration(true);
 $driver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver(new \Doctrine\Common\Annotations\AnnotationReader(), [__DIR__ . '/DataAccess/Models']);
 \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
 $databaseConfig->setMetadataDriverImpl($driver);
