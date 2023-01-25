@@ -36,7 +36,7 @@ class TokenGenerator {
         return $currentTime->modify('2 hours');
     }
 
-    public function validate(string $token): User {
+    public function validate(?string $token): ?User {
         $config = new JwtConfig();
 
         if ($token === null) {
@@ -47,7 +47,6 @@ class TokenGenerator {
             $decodedToken = JWT::decode($token, $config->key, ['HS256']);
 
             // PhpStorm doesn't realize that the object being returned is correct
-            /** @noinspection PhpIncompatibleReturnTypeInspection */
             return $this->entityManager->getRepository(User::class)->findOneBy(['id' => $decodedToken->data]);
         } catch (\Exception $e) {
             var_dump($e->getMessage());
@@ -55,7 +54,7 @@ class TokenGenerator {
         }
     }
 
-    public function validateAndRenewToken(string $token): string {
+    public function validateAndRenewToken(?string $token): ?string {
         if ($token === null) {
             return null;
         }
