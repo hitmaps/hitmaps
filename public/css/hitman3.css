@@ -1,0 +1,276 @@
+@font-face {
+  font-family: 'hitman3';
+  src: url('../fonts/hitman3-normal/hitman3.eot?2452140');
+  src: url('../fonts/hitman3-normal/hitman3.eot?2452140#iefix') format('embedded-opentype'),
+       url('../fonts/hitman3-normal/hitman3.woff2?2452140') format('woff2'),
+       url('../fonts/hitman3-normal/hitman3.woff?2452140') format('woff'),
+       url('../fonts/hitman3-normal/hitman3.ttf?2452140') format('truetype'),
+       url('../fonts/hitman3-normal/hitman3.svg?2452140#hitman3') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'hitman3';
+    src: url('../font/hitman3.svg?2452140#hitman3') format('svg');
+  }
+}
+*/
+[class^="hm-"]:before, [class*=" hm-"]:before {
+  font-family: "hitman3";
+  font-style: normal;
+  font-weight: normal;
+  speak: never;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  text-align: center;
+  /* opacity: .8; */
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+.hm-audio:before { content: '\e800'; } /* '' */
+.hm-background:before { content: '\e801'; } /* '' */
+.hm-bullet-dancer:before { content: '\e802'; } /* '' */
+.hm-suitcase:before { content: '\e803'; } /* '' */
+.hm-challenge-category-discovery:before { content: '\e804'; } /* '' */
+.hm-disguise:before { content: '\e805'; } /* '' */
+.hm-challenge-category-item:before { content: '\e806'; } /* '' */
+.hm-target:before { content: '\e807'; } /* '' */
+.hm-concealed-weapon:before { content: '\e808'; } /* '' */
+.hm-challenge:before { content: '\e809'; } /* '' */
+.hm-assault-rifle:before { content: '\e80a'; } /* '' */
+.hm-check:before { content: '\e80b'; } /* '' */
+.hm-benchmarks:before { content: '\e80c'; } /* '' */
+.hm-close-range:before { content: '\e80d'; } /* '' */
+.hm-civilians:before { content: '\e80e'; } /* '' */
+.hm-challenge-category-assassination:before { content: '\e80f'; } /* '' */
+.hm-completion-list:before { content: '\e810'; } /* '' */
+.hm-completion:before { content: '\e811'; } /* '' */
+.hm-complication-optional:before { content: '\e812'; } /* '' */
+.hm-contract:before { content: '\e813'; } /* '' */
+.hm-damage:before { content: '\e814'; } /* '' */
+.hm-complication:before { content: '\e815'; } /* '' */
+.hm-credits:before { content: '\e816'; } /* '' */
+.hm-difficulty-master:before { content: '\e817'; } /* '' */
+.hm-crowd-control:before { content: '\e818'; } /* '' */
+.hm-difficulty-casual:before { content: '\e819'; } /* '' */
+.hm-difficulty-level:before { content: '\e81a'; } /* '' */
+.hm-difficulty-professional:before { content: '\e81b'; } /* '' */
+.hm-cutscene:before { content: '\e81c'; } /* '' */
+.hm-featured:before { content: '\e81d'; } /* '' */
+.hm-difficulty-2:before { content: '\e81e'; } /* '' */
+.hm-controller:before { content: '\e81f'; } /* '' */
+.hm-difficulty-3:before { content: '\e820'; } /* '' */
+.hm-corrupt:before { content: '\e821'; } /* '' */
+.hm-difficulty-1:before { content: '\e822'; } /* '' */
+.hm-emote:before { content: '\e823'; } /* '' */
+.hm-distraction:before { content: '\e824'; } /* '' */
+.hm-security-camera:before { content: '\e825'; } /* '' */
+.hm-download:before { content: '\e826'; } /* '' */
+.hm-edit:before { content: '\e827'; } /* '' */
+.hm-body-disposal:before { content: '\e828'; } /* '' */
+.hm-camera-recorder:before { content: '\e829'; } /* '' */
+.hm-elevation:before { content: '\e82a'; } /* '' */
+.hm-not-spotted:before { content: '\e82b'; } /* '' */
+.hm-heart:before { content: '\e82c'; } /* '' */
+.hm-no-security-camera:before { content: '\e82d'; } /* '' */
+.hm-elusive:before { content: '\e82e'; } /* '' */
+.hm-escalation:before { content: '\e82f'; } /* '' */
+.hm-peace:before { content: '\e830'; } /* '' */
+.hm-timed-1:before { content: '\e832'; } /* '' */
+.hm-square-suitcase:before { content: '\e833'; } /* '' */
+.hm-item-capacity-4:before { content: '\e834'; } /* '' */
+.hm-freelancer:before { content: '\e835'; } /* '' */
+.hm-item-capacity-3:before { content: '\e836'; } /* '' */
+.hm-item-capacity-1:before { content: '\e837'; } /* '' */
+.hm-item-capacity:before { content: '\e838'; } /* '' */
+.hm-item-capacity-2:before { content: '\e839'; } /* '' */
+.hm-item-capacity-6:before { content: '\e83a'; } /* '' */
+.hm-item-capacity-5:before { content: '\e83b'; } /* '' */
+.hm-item-capacity-8:before { content: '\e83c'; } /* '' */
+.hm-item-removed:before { content: '\e83d'; } /* '' */
+.hm-locked-no-key:before { content: '\e83e'; } /* '' */
+.hm-axe:before { content: '\e83f'; } /* '' */
+.hm-item-capacity-7:before { content: '\e840'; } /* '' */
+.hm-fire:before { content: '\e842'; } /* '' */
+.hm-fiber-wire:before { content: '\e843'; } /* '' */
+.hm-electric:before { content: '\e844'; } /* '' */
+.hm-item-capacity-9:before { content: '\e845'; } /* '' */
+.hm-headshot:before { content: '\e846'; } /* '' */
+.hm-explosive:before { content: '\e848'; } /* '' */
+.hm-jerry-can:before { content: '\e849'; } /* '' */
+.hm-knife:before { content: '\e84a'; } /* '' */
+.hm-silenced-pistol:before { content: '\e84b'; } /* '' */
+.hm-sniperrifle:before { content: '\e84c'; } /* '' */
+.hm-poison:before { content: '\e84d'; } /* '' */
+.hm-fall:before { content: '\e84e'; } /* '' */
+.hm-drown:before { content: '\e84f'; } /* '' */
+.hm-smg:before { content: '\e850'; } /* '' */
+.hm-shotgun:before { content: '\e851'; } /* '' */
+.hm-water-puddle:before { content: '\e852'; } /* '' */
+.hm-wall-piercing-ammo:before { content: '\e853'; } /* '' */
+.hm-locked:before { content: '\e854'; } /* '' */
+.hm-melee-solid:before { content: '\e855'; } /* '' */
+.hm-burned-disguise:before { content: '\e856'; } /* '' */
+.hm-rare-melee:before { content: '\e857'; } /* '' */
+.hm-shuriken:before { content: '\e858'; } /* '' */
+.hm-objective:before { content: '\e859'; } /* '' */
+.hm-merces-stack:before { content: '\e85a'; } /* '' */
+.hm-speedrun:before { content: '\e85b'; } /* '' */
+.hm-merces:before { content: '\e85c'; } /* '' */
+.hm-no-bodies-found:before { content: '\e85d'; } /* '' */
+.hm-showdown:before { content: '\e85e'; } /* '' */
+.hm-cosmetic:before { content: '\e85f'; } /* '' */
+.hm-silent-assassin:before { content: '\e860'; } /* '' */
+.hm-unlocked:before { content: '\e861'; } /* '' */
+.hm-search:before { content: '\e862'; } /* '' */
+.hm-safe:before { content: '\e863'; } /* '' */
+.hm-dual-pistol:before { content: '\e865'; } /* '' */
+.hm-tag:before { content: '\e866'; } /* '' */
+.hm-exit:before { content: '\e867'; } /* '' */
+.hm-extended-mag:before { content: '\e868'; } /* '' */
+.hm-extended-mag-1:before { content: '\e869'; } /* '' */
+.hm-extended-mag-2:before { content: '\e86a'; } /* '' */
+.hm-extended-mag-3:before { content: '\e86b'; } /* '' */
+.hm-extended-mag-4:before { content: '\e86c'; } /* '' */
+.hm-eye-tracking:before { content: '\e86d'; } /* '' */
+.hm-failed:before { content: '\e86e'; } /* '' */
+.hm-fast-reload:before { content: '\e86f'; } /* '' */
+.hm-fast-reload-2:before { content: '\e870'; } /* '' */
+.hm-fast-reload-3:before { content: '\e871'; } /* '' */
+.hm-fast-reload-4:before { content: '\e872'; } /* '' */
+.hm-fixed:before { content: '\e875'; } /* '' */
+.hm-mission:before { content: '\e876'; } /* '' */
+.hm-frisk:before { content: '\e877'; } /* '' */
+.hm-full-auto:before { content: '\e878'; } /* '' */
+.hm-game:before { content: '\e879'; } /* '' */
+.hm-game-hud:before { content: '\e87a'; } /* '' */
+.hm-gear:before { content: '\e87b'; } /* '' */
+.hm-online:before { content: '\e87c'; } /* '' */
+.hm-graphics:before { content: '\e87d'; } /* '' */
+.hm-hail-storm:before { content: '\e87e'; } /* '' */
+.hm-hidden:before { content: '\e87f'; } /* '' */
+.hm-high-pressure:before { content: '\e880'; } /* '' */
+.hm-ica:before { content: '\e881'; } /* '' */
+.hm-info:before { content: '\e882'; } /* '' */
+.hm-intel:before { content: '\e883'; } /* '' */
+.hm-inventory:before { content: '\e884'; } /* '' */
+.hm-ioi-account:before { content: '\e885'; } /* '' */
+.hm-key:before { content: '\e886'; } /* '' */
+.hm-knock-down:before { content: '\e887'; } /* '' */
+.hm-language:before { content: '\e888'; } /* '' */
+.hm-leaderboard:before { content: '\e889'; } /* '' */
+.hm-leaderboard-friends:before { content: '\e88a'; } /* '' */
+.hm-livetile-news:before { content: '\e88b'; } /* '' */
+.hm-load:before { content: '\e88c'; } /* '' */
+.hm-loadout:before { content: '\e88d'; } /* '' */
+.hm-location:before { content: '\e88e'; } /* '' */
+.hm-long-range:before { content: '\e88f'; } /* '' */
+.hm-lookup:before { content: '\e890'; } /* '' */
+.hm-map:before { content: '\e891'; } /* '' */
+.hm-marksman:before { content: '\e892'; } /* '' */
+.hm-marksman-2:before { content: '\e893'; } /* '' */
+.hm-marksman-3:before { content: '\e894'; } /* '' */
+.hm-marksman-4:before { content: '\e895'; } /* '' */
+.hm-melee:before { content: '\e896'; } /* '' */
+.hm-calendar-right:before { content: '\e897'; } /* '' */
+.hm-mouse-keyboard:before { content: '\e898'; } /* '' */
+.hm-checklist:before { content: '\e899'; } /* '' */
+.hm-clock:before { content: '\e89a'; } /* '' */
+.hm-next-level:before { content: '\e89b'; } /* '' */
+.hm-nodus:before { content: '\e89c'; } /* '' */
+.hm-npc:before { content: '\e89d'; } /* '' */
+.hm-nvidia:before { content: '\e89e'; } /* '' */
+.hm-one-man-army:before { content: '\e8a0'; } /* '' */
+.hm-opportunity-completed:before { content: '\e8a1'; } /* '' */
+.hm-opportunity-disabled:before { content: '\e8a2'; } /* '' */
+.hm-opportunity-discovered:before { content: '\e8a3'; } /* '' */
+.hm-opportunity-failed:before { content: '\e8a4'; } /* '' */
+.hm-opportunity-search:before { content: '\e8a5'; } /* '' */
+.hm-opportunity-tracked:before { content: '\e8a6'; } /* '' */
+.hm-opportunity-undiscovered:before { content: '\e8a7'; } /* '' */
+.hm-outbreak:before { content: '\e8a8'; } /* '' */
+.hm-piercing:before { content: '\e8a9'; } /* '' */
+.hm-play:before { content: '\e8aa'; } /* '' */
+.hm-point-shooting:before { content: '\e8ab'; } /* '' */
+.hm-profile:before { content: '\e8ac'; } /* '' */
+.hm-publish:before { content: '\e8ad'; } /* '' */
+.hm-rate-of-fire:before { content: '\e8ae'; } /* '' */
+.hm-rate-of-fire-2:before { content: '\e8af'; } /* '' */
+.hm-rate-of-fire-3:before { content: '\e8b0'; } /* '' */
+.hm-rate-of-fire-4:before { content: '\e8b1'; } /* '' */
+.hm-replay:before { content: '\e8b2'; } /* '' */
+.hm-reset:before { content: '\e8b3'; } /* '' */
+.hm-reset-back:before { content: '\e8b4'; } /* '' */
+.hm-save:before { content: '\e8b5'; } /* '' */
+.hm-save-auto:before { content: '\e8b6'; } /* '' */
+.hm-save-disabled:before { content: '\e8b7'; } /* '' */
+.hm-security:before { content: '\e8b8'; } /* '' */
+.hm-settings:before { content: '\e8b9'; } /* '' */
+.hm-shop:before { content: '\e8ba'; } /* '' */
+.hm-stable:before { content: '\e8be'; } /* '' */
+.hm-stable-2:before { content: '\e8bf'; } /* '' */
+.hm-stable-3:before { content: '\e8c0'; } /* '' */
+.hm-stable-4:before { content: '\e8c1'; } /* '' */
+.hm-starting:before { content: '\e8c2'; } /* '' */
+.hm-stash-point-empty:before { content: '\e8c3'; } /* '' */
+.hm-stash-point-full:before { content: '\e8c4'; } /* '' */
+.hm-stats:before { content: '\e8c5'; } /* '' */
+.hm-steady-aim:before { content: '\e8c6'; } /* '' */
+.hm-steady-aim-2:before { content: '\e8c7'; } /* '' */
+.hm-steady-aim-3:before { content: '\e8c8'; } /* '' */
+.hm-steady-aim-4:before { content: '\e8c9'; } /* '' */
+.hm-story:before { content: '\e8ca'; } /* '' */
+.hm-suppressor:before { content: '\e8cb'; } /* '' */
+.hm-subsonic:before { content: '\e8cc'; } /* '' */
+.hm-shockwave-ammo:before { content: '\e8cd'; } /* '' */
+.hm-timed:before { content: '\e8ce'; } /* '' */
+.hm-toggle-left:before { content: '\e8d0'; } /* '' */
+.hm-toggle-right:before { content: '\e8d1'; } /* '' */
+.hm-tool:before { content: '\e8d2'; } /* '' */
+.hm-trash:before { content: '\e8d3'; } /* '' */
+.hm-tutorial:before { content: '\e8d4'; } /* '' */
+.hm-remote:before { content: '\e8d5'; } /* '' */
+.hm-variable:before { content: '\e8d7'; } /* '' */
+.hm-versatile-scope:before { content: '\e8d8'; } /* '' */
+.hm-versatile-scope-1:before { content: '\e8d9'; } /* '' */
+.hm-versatile-scope-2:before { content: '\e8da'; } /* '' */
+.hm-versatile-scope-3:before { content: '\e8db'; } /* '' */
+.hm-versatile-scope-4:before { content: '\e8dc'; } /* '' */
+.hm-versatile-scope-extended:before { content: '\e8dd'; } /* '' */
+.hm-versus:before { content: '\e8de'; } /* '' */
+.hm-vr:before { content: '\e8df'; } /* '' */
+.hm-warning:before { content: '\e8e0'; } /* '' */
+.hm-witness:before { content: '\e8e1'; } /* '' */
+.hm-added-to-list:before { content: '\e8e2'; } /* '' */
+.hm-add-to-list:before { content: '\e8e3'; } /* '' */
+.hm-ammo:before { content: '\e8e4'; } /* '' */
+.hm-arcade:before { content: '\e8e5'; } /* '' */
+.hm-arrow-down:before { content: '\e8e6'; } /* '' */
+.hm-arrow-left:before { content: '\e8e7'; } /* '' */
+.hm-arrow-right:before { content: '\e8e8'; } /* '' */
+.hm-arrow-up:before { content: '\e8e9'; } /* '' */
