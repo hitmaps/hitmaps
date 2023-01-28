@@ -709,33 +709,29 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-6 col-xs-12">
-                    <p>{{ $t('partnership.paragraph-1') }}</p>
-                    <p>{{ $t('partnership.paragraph-2') }}</p>
-                    <p>{{ $t('partnership.paragraph-3') }}</p>
-                    <a href="https://discord.gg/FVxTKdU" target="_blank" class="btn square-button blurple">
-                        <i class="fab fa-discord"></i>
-                        {{ $t('partnership.join-the-discord') }}
-                    </a>
-                </div>
-                <div class="col-sm-6 col-xs-12">
-                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                        <ol class="carousel-indicators">
-                            <li v-for="(image, index) in froteImages" data-target="#carouselExampleIndicators"
-                                :data-slide-to="index" :class="index === 0 ? 'active' : ''"></li>
-                        </ol>
-                        <div class="carousel-inner">
-                            <div v-for="(image, index) in froteImages" class="carousel-item" :class="index === 0 ? 'active' : ''">
-                                <img :src="image.url" class="d-block w-100" :alt="image.caption">
-                            </div>
-                        </div>
-                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
+                <div class="col-sm-6 partner">
+                    <div class="image">
+                        <img src="https://media.hitmaps.com/img/hitmaps-custom/f7sc-logo.png" style="width: 128px; height: 128px;" alt="F7SC Logo">
+                    </div>
+                    <div class="text">
+                        <h3>{{ $t('partnership.f7sc.header') }}</h3>
+                        <p>{{ $t('partnership.f7sc.paragraph')}}</p>
+                        <a href="https://discord.gg/FVxTKdU" target="_blank" class="btn square-button blurple">
+                            <i class="fab fa-discord"></i>
+                            {{ $t('partnership.f7sc.call-to-action') }}
                         </a>
-                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
+                    </div>
+                </div>
+                <div class="col-sm-6 partner">
+                    <div class="image">
+                        <img src="https://media.hitmaps.com/img/hitmaps-custom/rrstats-logo.png" style="width: 128px; height: 128px;" alt="RRStats Logo">
+                    </div>
+                    <div class="text">
+                        <h3>{{ $t('partnership.rr-stats.header') }}</h3>
+                        <p>{{ $t('partnership.rr-stats.paragraph')}}</p>
+                        <a href="https://rrstats.currymaker.net" target="_blank" class="btn btn-dark square-button">
+                            <i class="fas fa-arrow-right"></i>
+                            {{ $t('partnership.rr-stats.call-to-action') }}
                         </a>
                     </div>
                 </div>
@@ -858,49 +854,7 @@ export default {
                 }
             },
             elusiveTarget: null,
-            environment: null,
-            froteImages: [
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/rr6.png',
-                    caption: 'Roulette Rivals 6'
-                },
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc8.png',
-                    caption: 'Speedrun Competition 8'
-                },
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/rr5.png',
-                    caption: 'Roulette Rivals 5'
-                },
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc7.jpg',
-                    caption: 'Speedrun Competition 7 - Artwork by BigDave'
-                },
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/fuzk3.png',
-                    caption: "Fuzk's Photo Contest 3"
-                },
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/rr4.png',
-                    caption: 'Roulette Rivals 4'
-                },
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/rrwc.png',
-                    caption: 'Roulette Rivals World Championship'
-                },
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/sc6.png',
-                    caption: 'Speedrun Competition 6'
-                },
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/fuzk2.png',
-                    caption: "Fuzk's Photo Contest 2"
-                },
-                {
-                    url: 'https://media.hitmaps.com/img/hitmaps-tournaments/promo/gm4.png',
-                    caption: 'Ghost Mode Tournament 4'
-                }
-            ]
+            environment: null
         }
     },
     methods: {
@@ -1589,5 +1543,13 @@ header {
 
 .flag {
     vertical-align: text-top;
+}
+
+.partner {
+    display: flex;
+
+    .image {
+        margin-right: 10px;
+    }
 }
 </style>
