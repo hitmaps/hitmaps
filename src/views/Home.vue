@@ -454,11 +454,11 @@
                     </router-link>
                 </div>
             </div>
-<!--            <div class="row dashboard">
+            <div class="row dashboard">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
-                            <h1>Roulette Rivals World Championship - 2022 (Presented by Frote's Speedrun Community)</h1>
+                            <h1>Roulette Rivals 10 (Presented by Frote's Speedrun Community)</h1>
                             <h2>Upcoming Matches</h2>
                         </div>
                     </div>
@@ -479,7 +479,7 @@
                         <div class="row dashboard" style="margin: 0; margin-bottom: 40px;">
                             <div class="elusive-target col-lg" :style="{
                                 backgroundImage:
-                                    'url(https://media.hitmaps.com/img/hitmaps-tournaments/rrwc-2022-overlay-background.png)',
+                                    'url(https://media.hitmaps.com/img/hitmaps-tournaments/rr10-red-bg.png)',
                                 backgroundSize: 'cover',
                                 backgroundPosition: 'center',
                                 backgroundRepeat: 'no-repeat',
@@ -579,7 +579,7 @@
                         </div>
                     </template>
                 </div>
-            </div>-->
+            </div>
         </template>
         <modal modal-title="Roulette Rivals 8"
                id="roulette-rivals-modal"
@@ -1041,7 +1041,7 @@ export default {
         },
         fetchUpcomingMatches() {
             this.fetchedTournamentMatches = 'FETCHING';
-            this.$http.get('https://tournamentsapi.hitmaps.com/api/events/rrwc-2022/upcoming-matches').then(resp => {
+            this.$http.get('https://tournamentsapi.hitmaps.com/api/events/rr10/upcoming-matches').then(resp => {
                 this.tournamentMatches = resp.data.data;
                 this.fetchedTournamentMatches = 'FETCHED';
             }).catch(_ => this.tournamentMatches = []);
