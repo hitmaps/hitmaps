@@ -516,10 +516,8 @@
                                             {{ tournamentMatches[0].maps.filter(x => x.selectionType === 'Pick').map(x => `${x.missionName} - ${x.missionLocation}`).join(' / ') }}
                                         </h2>
                                         <h1>
-                                            <country-flag :country="tournamentMatches[0].competitors[0].countryCode"/>
                                             {{ tournamentMatches[0].competitors[0].challongeName }} vs
                                             {{ tournamentMatches[0].competitors[1].challongeName }}
-                                            <country-flag :country="tournamentMatches[0].competitors[1].countryCode"/>
                                         </h1>
                                     </div>
                                 </div>
@@ -550,10 +548,8 @@
                              style="border-top: 1px solid #dee2e6; padding: .75rem;">
                             <div class="col-lg-3 col-12">
                                 <span>
-                                    <country-flag :country="matchup.competitors[0].countryCode"/>
                                    {{ matchup.competitors[0].challongeName }} vs
                                     {{ matchup.competitors[1].challongeName }}
-                                    <country-flag :country="matchup.competitors[1].countryCode"/>
                                 </span>
                             </div>
                             <div class="col-lg-3 col-12">
