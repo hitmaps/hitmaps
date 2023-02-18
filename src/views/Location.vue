@@ -123,13 +123,19 @@
                                             style="padding: 0"
                                         ></div>
                                     </div>
-                                    <div class="card-footer">
-                                        <div class="image">
-                                            <game-icon :icon="mission.icon" font-style="normal" />
+                                    <div>
+                                        <div class="card-footer">
+                                            <div class="image">
+                                                <game-icon :icon="mission.icon" font-style="normal" />
+                                            </div>
+                                            <div class="text">
+                                                <h2>{{ lang('mission-types.' + mission.missionType.toLowerCase(), mission.missionType) }}</h2>
+                                                <h1>{{ lang('missions.' + mission.slug, mission.name) }}</h1>
+                                            </div>
                                         </div>
-                                        <div class="text">
-                                            <h2>{{ lang('mission-types.' + mission.missionType.toLowerCase(), mission.missionType) }}</h2>
-                                            <h1>{{ lang('missions.' + mission.slug, mission.name) }}</h1>
+                                        <div class="freelancer-note" v-if="mission.supportsFreelancer">
+                                            <game-icon icon="freelancer" font-style="solid" />
+                                            {{ $t('map.includes-freelancer') }}
                                         </div>
                                     </div>
                                 </div>
@@ -187,6 +193,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+a:hover {
+    text-decoration: none;
+}
+
 .content {
     > a {
         text-decoration: none;
@@ -358,6 +368,22 @@ export default {
                         margin-bottom: 0;
                         text-transform: uppercase;
                     }
+                }
+            }
+
+            .freelancer-note {
+                background: $content-background;
+                color: $content-text;
+                padding: 5px 15px;
+                display: flex;
+                align-items: center;
+
+                &:hover {
+                    text-decoration: none !important;
+                }
+
+                i {
+                    margin-right: 5px;
                 }
             }
 

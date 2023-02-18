@@ -338,7 +338,8 @@
         "levels-slash-items": "Levels / Items",
         "other-variants": "Other Mission Variants",
         "convert-to-x": "Convert to {type}",
-        "freelancer-note": "Due to the random nature of some item spawns, your game may only contain some Freelancer-specific items mapped."
+        "freelancer-note": "Due to the random nature of some item spawns, your game may only contain some Freelancer-specific items mapped.",
+        "includes-freelancer": "Includes Freelancer"
     },
     "profile": {
         "profile": "Profile",

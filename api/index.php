@@ -80,7 +80,15 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]?', function 
             foreach ($missions as $mission) {
                 $mission->setIcon();
                 $mission->difficulties = array_map(fn(MissionVariant $mv) => $mv->getVariant(), $mission->getVariants()->toArray());
-                unset($mission->variants);
+                $mission->supportsFreelancer = false;
+
+                foreach ($mission->getVariants()->toArray() as $variant) {
+                    /* @var $variant MissionVariant */
+                    if ($variant->isVisible() && str_contains($variant->getSlug(), 'freelancer')) {
+                        $mission->supportsFreelancer = true;
+                        break;
+                    }
+                }
                 unset($mission->floorNames);
             }
             $location->missions = $missions;
