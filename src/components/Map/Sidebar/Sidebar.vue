@@ -228,7 +228,7 @@ export default {
             return process.env.VUE_APP_SHOW_DEBUG === 'true';
         },
         getSearchableNodes() {
-            const nodesToSort = [...this.nodes];
+            const nodesToSort = [...this.nodes].filter(x => x.variants.includes(this.currentVariant.id));
             nodesToSort.sort((first, second) => {
                 if (first.type !== second.type) {
                     // Different types, sort by the types

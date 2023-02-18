@@ -66,6 +66,9 @@ export default {
     watch: {
         searchedItem() {
             this.$emit('search-item', this.searchedItem);
+        },
+        searchableNodes() {
+            this.$nextTick(() => $(this.$refs.itemSearch).selectpicker('refresh'));
         }
     }
 }
