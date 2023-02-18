@@ -98,6 +98,9 @@
                 </div>
             </div>
             <div v-show="editorState === 'OFF'">
+                <alert type="info" v-if="currentVariant.icon === 'freelancer'">
+                    {{ $t('map.freelancer-note') }}
+                </alert>
                 <div class="collapse navbar-collapse" id="variants-toggle">
                     <mission-variant-selector :mission="mission"
                                               :current-variant="currentVariant"
@@ -170,10 +173,12 @@ import EditDisguiseRegions from "./Editing/EditDisguiseRegions";
 import FloorToggle from "../FloorToggle";
 import MissionVariantSelector from "./MissionVariantSelector";
 import GameIcon from "../../GameIcon";
+import Alert from "../../Alert.vue";
 
 export default {
     name: "Sidebar",
     components: {
+        Alert,
         GameIcon,
         MissionVariantSelector,
         FloorToggle,

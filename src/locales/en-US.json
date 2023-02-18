@@ -337,7 +337,8 @@
         "copy-disguise-areas": "Copy Disguise Areas",
         "levels-slash-items": "Levels / Items",
         "other-variants": "Other Mission Variants",
-        "convert-to-x": "Convert to {type}"
+        "convert-to-x": "Convert to {type}",
+        "freelancer-note": "Due to the random nature of some item spawns, your game may only contain some Freelancer-specific items mapped."
     },
     "profile": {
         "profile": "Profile",
