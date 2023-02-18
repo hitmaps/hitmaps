@@ -68,7 +68,13 @@ export default {
             this.$emit('search-item', this.searchedItem);
         },
         searchableNodes() {
-            this.$nextTick(() => $(this.$refs.itemSearch).selectpicker('refresh'));
+            this.$nextTick(() => {
+                $(this.$refs.itemSearch).selectpicker('refresh');
+                const newSearchValue = $(this.$refs.itemSearch).selectpicker('val');
+                if (this.searchedItem !== null && this.searchedItem !== newSearchValue) {
+                    this.clearSearch();
+                }
+            });
         }
     }
 }
