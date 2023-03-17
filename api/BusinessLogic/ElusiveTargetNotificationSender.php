@@ -81,7 +81,7 @@ class ElusiveTargetNotificationSender {
             // If the ET isn't playable, don't proceed past here
             $realUtcTime = new \DateTime('now', new \DateTimeZone('UTC'));
             if ($realUtcTime < $elusiveTarget->getBeginningTime()) {
-                return;
+                continue;
             }
 
             if ($availableDays > 7 && !$elusiveTarget->getPlayableNotificationSent()) {
