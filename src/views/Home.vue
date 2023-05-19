@@ -458,7 +458,7 @@
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
-                            <h1>Roulette Rivals 10 (Presented by Frote's Speedrun Community)</h1>
+                            <h1>Roulette Rivals 11 (Presented by Frote's Speedrun Community)</h1>
                             <h2>Upcoming Matches</h2>
                         </div>
                     </div>
@@ -479,7 +479,7 @@
                         <div class="row dashboard" style="margin: 0; margin-bottom: 40px;">
                             <div class="elusive-target col-lg" :style="{
                                 backgroundImage:
-                                    'url(https://media.hitmaps.com/img/hitmaps-tournaments/rr10-red-bg.png)',
+                                    'url(https://media.hitmaps.com/img/hitmaps-tournaments/rr11-tile.png)',
                                 backgroundSize: 'cover',
                                 backgroundPosition: 'center',
                                 backgroundRepeat: 'no-repeat',
@@ -1037,7 +1037,7 @@ export default {
         },
         fetchUpcomingMatches() {
             this.fetchedTournamentMatches = 'FETCHING';
-            this.$http.get('https://tournamentsapi.hitmaps.com/api/events/rr10/upcoming-matches').then(resp => {
+            this.$http.get('https://tournamentsapi.hitmaps.com/api/events/rr11/upcoming-matches').then(resp => {
                 this.tournamentMatches = resp.data.data;
                 this.fetchedTournamentMatches = 'FETCHED';
             }).catch(_ => this.tournamentMatches = []);
