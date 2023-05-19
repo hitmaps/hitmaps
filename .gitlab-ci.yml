@@ -43,7 +43,7 @@ Prod Deploy API:
       - backend/
 
 Prod Deploy Frontend:
-  image: node:10
+  image: node:16
   stage: Prod Deploy
   only:
     - master
