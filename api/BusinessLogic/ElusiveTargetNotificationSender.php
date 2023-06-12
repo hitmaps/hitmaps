@@ -238,10 +238,14 @@ class ElusiveTargetNotificationSender {
         }
 
         $media = $twitter->upload('media/upload', ['media' => $imagePath ?? $uniqid]);
-        $twitter->post('statuses/update', [
-            'status' => $body,
-            'media_ids' => $media->media_id_string
+        $twitter->setApiVersion('2');
+        $twitter->post('tweets', [
+            'text' => $body,
+            'media' => [
+                'media_ids' => [$media->media_id_string]
+            ]
         ]);
+        $twitter->setApiVersion('1.1');
 
         if ($imagePath === null) {
             @unlink($uniqid);
