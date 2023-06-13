@@ -244,7 +244,7 @@ class ElusiveTargetNotificationSender {
             'media' => [
                 'media_ids' => [$media->media_id_string]
             ]
-        ]);
+        ], true);
         $twitter->setApiVersion('1.1');
 
         if ($imagePath === null) {
