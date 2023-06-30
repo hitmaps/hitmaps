@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import Utils from '../../util/Utils';
+import Utils from '../../util/Utils.js';
 
 export default {
     name: "FloorToggle",

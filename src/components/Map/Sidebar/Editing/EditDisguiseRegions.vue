@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import CopyDisguiseRegions from "./CopyDisguiseRegions";
+import CopyDisguiseRegions from "./CopyDisguiseRegions.vue";
 export default {
     name: "EditDisguiseRegions",
     components: {CopyDisguiseRegions},

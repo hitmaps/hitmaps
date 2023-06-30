@@ -158,21 +158,21 @@
 </template>
 
 <script>
-import LanguageHelpers from "../../LanguageHelpers";
-import ControlButton from "./ControlButton";
-import HideSelectAll from "./HideSelectAll";
-import TopLevelCategoryCard from "./TopLevelCategoryCard";
-import ItemSearch from "./ItemSearch";
-import DisguiseDropdown from "./DisguiseDropdown";
-import EditLanding from "./Editing/EditLanding";
-import EditorHeader from "./Editing/EditorHeader";
-import EditItems from "./Editing/EditItems";
-import EditFoliage from "./Editing/EditFoliage";
-import EditLedges from "./Editing/EditLedges";
-import EditDisguiseRegions from "./Editing/EditDisguiseRegions";
-import FloorToggle from "../FloorToggle";
-import MissionVariantSelector from "./MissionVariantSelector";
-import GameIcon from "../../GameIcon";
+import LanguageHelpers from "../../LanguageHelpers.js";
+import ControlButton from "./ControlButton.vue";
+import HideSelectAll from "./HideSelectAll.vue";
+import TopLevelCategoryCard from "./TopLevelCategoryCard.vue";
+import ItemSearch from "./ItemSearch.vue";
+import DisguiseDropdown from "./DisguiseDropdown.vue";
+import EditLanding from "./Editing/EditLanding.vue";
+import EditorHeader from "./Editing/EditorHeader.vue";
+import EditItems from "./Editing/EditItems.vue";
+import EditFoliage from "./Editing/EditFoliage.vue";
+import EditLedges from "./Editing/EditLedges.vue";
+import EditDisguiseRegions from "./Editing/EditDisguiseRegions.vue";
+import FloorToggle from "../FloorToggle.vue";
+import MissionVariantSelector from "./MissionVariantSelector.vue";
+import GameIcon from "../../GameIcon.vue";
 import Alert from "../../Alert.vue";
 
 export default {

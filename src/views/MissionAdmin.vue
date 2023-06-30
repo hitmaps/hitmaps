@@ -125,8 +125,8 @@
 </style>
 
 <script>
-import GameButton from "../components/GameButton";
-import GameIcon from "../components/GameIcon";
+import GameButton from "../components/GameButton.vue";
+import GameIcon from "../components/GameIcon.vue";
 export default {
     name: 'mission-admin',
     components: {GameIcon, GameButton},

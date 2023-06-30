@@ -62,9 +62,9 @@
 </template>
 
 <script>
-import Modal from "../Modal";
-import GameIcon from "../GameIcon";
-import GameButton from "../GameButton";
+import Modal from "../Modal.vue";
+import GameIcon from "../GameIcon.vue";
+import GameButton from "../GameButton.vue";
 export default {
     name: "NodePopup",
     components: {GameButton, GameIcon, Modal},

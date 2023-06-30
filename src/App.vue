@@ -109,8 +109,8 @@
     </div>
 </template>
 <script>
-import LocaleModal from "./components/LocaleModal";
-import LanguageHelpers from "./components/LanguageHelpers";
+import LocaleModal from "./components/LocaleModal.vue";
+import LanguageHelpers from "./components/LanguageHelpers.js";
 export default {
     components: {LocaleModal},
     methods: {

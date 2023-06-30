@@ -214,7 +214,7 @@
 </template>
 
 <script>
-    import GameIcon from "../../components/GameIcon";
+    import GameIcon from "../../components/GameIcon.vue";
     export default {
         name: 'one-year',
         components: {GameIcon},

@@ -270,11 +270,11 @@
 </template>
 
 <script>
-import Modal from "../Modal";
-import GameButton from "../GameButton";
-import GameIcon from "../GameIcon";
+import Modal from "../Modal.vue";
+import GameButton from "../GameButton.vue";
+import GameIcon from "../GameIcon.vue";
 import clone from 'just-clone';
-import ArrayHelpers from "../ArrayHelpers";
+import ArrayHelpers from "../ArrayHelpers.js";
 export default {
     name: "AddEditItemModal",
     components: {GameIcon, GameButton, Modal},

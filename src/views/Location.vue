@@ -150,9 +150,9 @@
 
 <script>
 import Loader from '../components/Loader.vue'
-import Alert from "../components/Alert";
-import MetaHandler from "../components/MetaHandler";
-import GameIcon from "../components/GameIcon";
+import Alert from "../components/Alert.vue";
+import MetaHandler from "../components/MetaHandler.vue";
+import GameIcon from "../components/GameIcon.vue";
 
 export default {
     name: 'level-select',

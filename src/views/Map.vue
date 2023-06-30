@@ -71,16 +71,16 @@
 </template>
 
 <script>
-    import SplashScreen from '../components/Map/SplashScreen';
-    import FloorToggle from "../components/Map/FloorToggle";
-    import NodePopup from "../components/Map/NodePopup";
-    import Sidebar from "../components/Map/Sidebar/Sidebar";
-    import Utils from "../util/Utils";
-    import AddEditItemModal from "../components/Map/AddEditItemModal";
-    import ArrayHelpers from "../components/ArrayHelpers";
-    import DeleteEntityModal from "../components/Map/Sidebar/Editing/DeleteEntityModal";
-    import MoveNodeModal from "../components/Map/Sidebar/Editing/MoveNodeModal";
-    import ManageDisguiseAreaModal from "../components/Map/Sidebar/Editing/ManageDisguiseAreaModal";
+    import SplashScreen from '../components/Map/SplashScreen.vue';
+    import FloorToggle from "../components/Map/FloorToggle.vue";
+    import NodePopup from "../components/Map/NodePopup.vue";
+    import Sidebar from "../components/Map/Sidebar/Sidebar.vue";
+    import Utils from "../util/Utils.js";
+    import AddEditItemModal from "../components/Map/AddEditItemModal.vue";
+    import ArrayHelpers from "../components/ArrayHelpers.js";
+    import DeleteEntityModal from "../components/Map/Sidebar/Editing/DeleteEntityModal.vue";
+    import MoveNodeModal from "../components/Map/Sidebar/Editing/MoveNodeModal.vue";
+    import ManageDisguiseAreaModal from "../components/Map/Sidebar/Editing/ManageDisguiseAreaModal.vue";
 
     export default {
         name: 'Map',

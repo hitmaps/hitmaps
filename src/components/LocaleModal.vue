@@ -18,9 +18,9 @@
 </template>
 
 <script>
-    import Modal from "./Modal";
-    import LanguageHelpers from "./LanguageHelpers";
-    import Alert from "./Alert";
+    import Modal from "./Modal.vue";
+    import LanguageHelpers from "./LanguageHelpers.vue";
+    import Alert from "./Alert.vue";
     export default {
         name: "LocaleModal",
         components: {Alert, Modal},

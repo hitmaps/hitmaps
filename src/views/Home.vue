@@ -764,13 +764,13 @@ import Loader from '../components/Loader.vue'
 import CxltToaster from 'cxlt-vue2-toastr'
 import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
 import Vue from 'vue'
-import Modal from "../components/Modal";
-import Alert from "../components/Alert";
-import MetaHandler from "../components/MetaHandler";
-import GameIcon from "../components/GameIcon";
-import GameButton from "../components/GameButton";
-import TournamentPlatformIcon from "../components/TournamentPlatformIcon";
-import Patron from "../components/Patron";
+import Modal from "../components/Modal.vue";
+import Alert from "../components/Alert.vue";
+import MetaHandler from "../components/MetaHandler.js";
+import GameIcon from "../components/GameIcon.vue";
+import GameButton from "../components/GameButton.vue";
+import TournamentPlatformIcon from "../components/TournamentPlatformIcon.vue";
+import Patron from "../components/Patron.vue";
 
 Vue.use(CxltToaster)
 export default {

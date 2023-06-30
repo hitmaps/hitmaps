@@ -21,9 +21,9 @@
 </template>
 
 <script>
-import Modal from "../../../Modal";
-import GameButton from "../../../GameButton";
-import GameIcon from "../../../GameIcon";
+import Modal from "../../../Modal.vue";
+import GameButton from "../../../GameButton.vue";
+import GameIcon from "../../../GameIcon.vue";
 export default {
     name: "MoveNodeModal",
     components: {GameIcon, GameButton, Modal},

@@ -87,9 +87,9 @@
 </template>
 
 <script>
-import GameButton from "../components/GameButton";
-import GameIcon from "../components/GameIcon";
-import Patron from "../components/Patron";
+import GameButton from "../components/GameButton.vue";
+import GameIcon from "../components/GameIcon.vue";
+import Patron from "../components/Patron.vue";
 export default {
     name: 'support-the-site',
     components: {Patron, GameIcon, GameButton},
