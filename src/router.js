@@ -19,11 +19,6 @@ const router = createRouter({
             component: () => import('./views/PrivacyPolicy.vue'),
         },
         {
-            path: '/one-year',
-            name: 'one-year',
-            component: () => import('./views/SpecialEvents/OneYear.vue'),
-        },
-        {
             path: '/about',
             name: 'about',
             component: () => import('./views/About.vue'),
