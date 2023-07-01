@@ -1002,7 +1002,7 @@ export default {
             data.append('topic', topic)
             if (sendRequest) {
                 this.$http.post(`${this.$domain}/api/notifications`, data).then(resp => {
-                    this.$toastr.success('Notification preferences updated!');
+                    this.$toastr.s('Notification preferences updated!');
                     window.localStorage.setItem(
                         token + '|' + topic,
                         subscribing ? '1' : '0'
