@@ -80,8 +80,8 @@
                                 </select>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="add-variant-public">
-                                <label class="form-check-label" for="add-variant-public" v-model="addVariantForm.visible">
+                                <input class="form-check-input" type="checkbox" id="add-variant-public" v-model="addVariantForm.visible">
+                                <label class="form-check-label" for="add-variant-public">
                                     Public
                                 </label>
                             </div>
@@ -125,8 +125,8 @@
 </style>
 
 <script>
-import GameButton from "../components/GameButton";
-import GameIcon from "../components/GameIcon";
+import GameButton from "../components/GameButton.vue";
+import GameIcon from "../components/GameIcon.vue";
 export default {
     name: 'mission-admin',
     components: {GameIcon, GameButton},
@@ -167,7 +167,7 @@ export default {
                 visible: this.addVariantForm.visible,
                 sourceVariant: this.addVariantForm.sourceVariant
             }).then(_ => this.$router.go())
-                .catch(err => this.$toast.error(err.stack));
+                .catch(err => this.$toastr.e(err.stack));
         },
         saveVariant(variant) {
             if (!variant.name || !variant.icon || !variant.slug) {
@@ -181,7 +181,7 @@ export default {
                 icon: variant.icon,
                 visible: variant.visible
             }).then(_ => this.$router.go())
-                .catch(err => this.$toast.error(err.stack));
+                .catch(err => this.$toastr.e(err.stack));
         }
     }
 }

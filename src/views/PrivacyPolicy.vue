@@ -258,9 +258,9 @@
 </template>
 
 <script>
-import Alert from "../components/Alert";
-import GameButton from "../components/GameButton";
-import GameIcon from "../components/GameIcon";
+import Alert from "../components/Alert.vue";
+import GameButton from "../components/GameButton.vue";
+import GameIcon from "../components/GameIcon.vue";
 export default {
     name: 'privacy-policy',
     components: {GameIcon, GameButton, Alert},

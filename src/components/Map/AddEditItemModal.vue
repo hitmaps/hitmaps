@@ -250,7 +250,7 @@
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" :id="`${uid}-variant-${variant.id}`" :value="variant.id" v-model="createEditNodeModel.variantIds">
                         <label class="form-check-label" :for="`${uid}-variant-${variant.id}`">
-                            {{ lang(`difficulties.${variant.name}`, variant.name) }}
+                            {{ $t(`difficulties.${variant.name}`, variant.name) }}
                         </label>
                     </div>
                 </div>
@@ -270,11 +270,12 @@
 </template>
 
 <script>
-import Modal from "../Modal";
-import GameButton from "../GameButton";
-import GameIcon from "../GameIcon";
+import Modal from "../Modal.vue";
+import GameButton from "../GameButton.vue";
+import GameIcon from "../GameIcon.vue";
 import clone from 'just-clone';
-import ArrayHelpers from "../ArrayHelpers";
+import ArrayHelpers from "../ArrayHelpers.js";
+import {v4 as uuidv4} from "uuid";
 export default {
     name: "AddEditItemModal",
     components: {GameIcon, GameButton, Modal},
@@ -286,6 +287,12 @@ export default {
         clickedPoint: Object,
         // Only used as a starting point. We won't ever modify this directly
         node: Object
+    },
+    setup() {
+        const uuid = uuidv4();
+        return {
+            uuid
+        };
     },
     data() {
         return {
@@ -312,7 +319,7 @@ export default {
             icons: {},
             templates: {},
             currentCategory: null,
-            uid: this._uid
+            uid: this.uuid
         }
     },
     mounted() {
@@ -477,13 +484,9 @@ export default {
                 variantIds: this.createEditNodeModel.variantIds
             }).then(resp => {
                 this.$emit('item-created', resp.data.data);
-                this.$toast.success({
-                    message: 'Item saved!'
-                });
+                this.$toastr.s('Item saved!');
             }).catch(err => {
-                this.$toast.error({
-                    message: 'Changes failed to save!'
-                });
+                this.$toastr.e('Changes failed to save!');
             });
         },
         updateMarker() {
@@ -502,14 +505,10 @@ export default {
                 variantIds: this.createEditNodeModel.variantIds
             }).then(resp => {
                 this.$emit('item-updated', resp.data.data);
-                this.$toast.success({
-                    message: 'Item updated!'
-                });
+                this.$toastr.s('Item updated!');
             }).catch(err => {
                 console.log(err);
-                this.$toast.error({
-                    message: 'Changes failed to save!'
-                });
+                this.$toastr.e('Changes failed to save!');
             });
         }
     }

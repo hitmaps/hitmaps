@@ -56,9 +56,9 @@
 </template>
 
 <script>
-import Modal from "../../../Modal";
-import GameButton from "../../../GameButton";
-import GameIcon from "../../../GameIcon";
+import Modal from "../../../Modal.vue";
+import GameButton from "../../../GameButton.vue";
+import GameIcon from "../../../GameIcon.vue";
 export default {
     name: "CopyDisguiseRegions",
     components: {GameIcon, GameButton, Modal},
@@ -83,14 +83,10 @@ export default {
             };
             this.$http.post(`${this.$domain}/api/disguise-areas/copy`, data).then(resp => {
                 this.$emit('replace-disguise-areas', resp.data.data);
-                this.$toast.success({
-                    message: 'Disguise areas copied!'
-                });
+                this.$toastr.s('Disguise areas copied!');
             }).catch(err => {
                 console.error(err);
-                this.$toast.error({
-                    message: 'Failed to copy disguise areas!'
-                });
+                this.$toastr.e('Failed to copy disguise areas!');
             });
         }
     }

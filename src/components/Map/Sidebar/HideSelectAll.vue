@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import ControlButton from "./ControlButton";
+import ControlButton from "./ControlButton.vue";
 export default {
     name: "HideSelectAll",
     components: {ControlButton}

@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import GameIcon from "../../GameIcon";
+import GameIcon from "../../GameIcon.vue";
 export default {
     name: "MissionVariantSelector",
     components: {GameIcon},

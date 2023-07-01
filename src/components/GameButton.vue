@@ -2,9 +2,7 @@
     <button
         type="button"
         class="btn btn-block game-button"
-        v-bind="$attrs"
-        @click="$emit('click')"
-    >
+        v-bind="$attrs">
         <slot></slot>
     </button>
 </template>
@@ -30,7 +28,7 @@ export default {
         font-size: 1.3rem;
         transition: none;
 
-        i.game-icon {
+        &:deep(i.game-icon) {
             font-size: 20px;
         }
 
@@ -62,7 +60,7 @@ export default {
             background: $game-button-background-hover;
             color: $game-button-text;
 
-            i.game-icon {
+            &:deep(i.game-icon) {
                 background: $game-button-text;
                 color: $game-button-background-hover;
             }

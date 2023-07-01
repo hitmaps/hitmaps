@@ -6,7 +6,7 @@
                  :data-target="`#body-${uid}`"
                  aria-expanded="false"
                  :aria-controls="`body-${uid}`">
-                {{ lang(`map.types.${topLevelCategoryName}`, topLevelCategoryName) }}
+                {{ $t(`map.types.${topLevelCategoryName}`, topLevelCategoryName) }}
                 <span class="float-right">
                     <i class="fas fa-caret-down"></i>
                     <i class="fas fa-caret-up"></i>
@@ -36,7 +36,7 @@
                             <img :src="`/img/map-icons/${category.icon}.png`"
                                  :alt="`${category.group} Icon`"
                                  class="img-fluid">
-                            <span>{{ lang(`map.groups.${topLevelCategoryName}|${category.group}`, category.group) }}</span>
+                            <span>{{ $t(`map.groups.${topLevelCategoryName}|${category.group}`, category.group) }}</span>
                         </div>
                         <div v-if="category.collapsible"
                              class="visibility-toggle collapsed"
@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import {v4 as uuidv4} from "uuid";
 export default {
     name: "TopLevelCategoryCard",
     props: {
@@ -71,9 +72,15 @@ export default {
         ledges: Array,
         foliage: Array
     },
+    setup() {
+        const uuid = uuidv4();
+        return {
+            uuid
+        };
+    },
     data() {
         return {
-            uid: this._uid
+            uid: this.uuid
         }
     },
     methods: {

@@ -62,9 +62,9 @@
 </template>
 
 <script>
-import Modal from "../Modal";
-import GameIcon from "../GameIcon";
-import GameButton from "../GameButton";
+import Modal from "../Modal.vue";
+import GameIcon from "../GameIcon.vue";
+import GameButton from "../GameButton.vue";
 export default {
     name: "NodePopup",
     components: {GameButton, GameIcon, Modal},
@@ -205,16 +205,12 @@ export default {
                     this.blockDeleteButton = false;
                     this.showingConfirmDeletion = false;
                     $('#edit-item-modal').modal('hide');
-                    this.$toast.success({
-                        message: 'Item deleted!'
-                    });
+                    this.$toastr.s('Item deleted!');
                     this.$emit('delete-node', this.node.id);
                 }).catch(_ => {
                     this.blockDeleteButton = false;
                     this.showingConfirmDeletion = false;
-                    this.$toast.error({
-                        message: 'Failed to delete item!'
-                    });
+                    this.$toastr.e('Failed to delete item!');
                 });
         }
     }

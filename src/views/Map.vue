@@ -71,16 +71,16 @@
 </template>
 
 <script>
-    import SplashScreen from '../components/Map/SplashScreen';
-    import FloorToggle from "../components/Map/FloorToggle";
-    import NodePopup from "../components/Map/NodePopup";
-    import Sidebar from "../components/Map/Sidebar/Sidebar";
-    import Utils from "../util/Utils";
-    import AddEditItemModal from "../components/Map/AddEditItemModal";
-    import ArrayHelpers from "../components/ArrayHelpers";
-    import DeleteEntityModal from "../components/Map/Sidebar/Editing/DeleteEntityModal";
-    import MoveNodeModal from "../components/Map/Sidebar/Editing/MoveNodeModal";
-    import ManageDisguiseAreaModal from "../components/Map/Sidebar/Editing/ManageDisguiseAreaModal";
+    import SplashScreen from '../components/Map/SplashScreen.vue';
+    import FloorToggle from "../components/Map/FloorToggle.vue";
+    import NodePopup from "../components/Map/NodePopup.vue";
+    import Sidebar from "../components/Map/Sidebar/Sidebar.vue";
+    import Utils from "../util/Utils.js";
+    import AddEditItemModal from "../components/Map/AddEditItemModal.vue";
+    import ArrayHelpers from "../components/ArrayHelpers.js";
+    import DeleteEntityModal from "../components/Map/Sidebar/Editing/DeleteEntityModal.vue";
+    import MoveNodeModal from "../components/Map/Sidebar/Editing/MoveNodeModal.vue";
+    import ManageDisguiseAreaModal from "../components/Map/Sidebar/Editing/ManageDisguiseAreaModal.vue";
 
     export default {
         name: 'Map',
@@ -95,7 +95,7 @@
             SplashScreen
         },
         pageTitle() {
-            return this.mission ? this.lang(`missions.${this.mission.slug}`, this.mission.name) : 'Loading'
+            return this.mission ? this.$t(`missions.${this.mission.slug}`, this.mission.name) : 'Loading'
         },
         data() {
             return {
@@ -263,7 +263,7 @@
                 ];
             },
             showDebug() {
-                return process.env.VUE_APP_SHOW_DEBUG === 'true';
+                return import.meta.env.VITE_SHOW_DEBUG === 'true';
             },
             svgMapUrl() {
                 if (this.game === undefined || this.mission === undefined) {
@@ -693,9 +693,7 @@
                 }
 
                 let toastMessage = this.polyActive ? 'Drawing tools enabled' : 'Drawing tools disabled';
-                this.$toast.info({
-                    message: toastMessage
-                })
+                this.$toastr.i(toastMessage);
             },
             onEnableLedgeCreation() {
                 this.toggleDraw('Line');
@@ -743,34 +741,26 @@
                         .then(resp => {
                             this.vertices = [];
                             this.ledges.push(this.buildLedgeForMap(resp.data.data));
-                            this.$toast.success({
-                                message: 'Ledge saved!'
-                            });
+                            this.$toastr.s('Ledge saved!');
                             this.map.removeLayer(this.workingLayer);
                             this.workingLayer = null;
                             this.polyActive = false;
                             this.updateNodeMarkers();
                         }).catch(_ => {
-                            this.$toast.error({
-                                message: 'Error occurred when saving ledge!'
-                            });
+                            this.$toastr.e('Error occurred when saving ledge!');
                         });
                 } else if (this.editorState === 'FOLIAGE') {
                     this.$http.post(`${this.$domain}/api/foliage`, data)
                         .then(resp => {
                             this.vertices = [];
                             this.foliage.push(this.buildFoliageForMap(resp.data.data));
-                            this.$toast.success({
-                                message: 'Foliage saved!'
-                            });
+                            this.$toastr.s('Foliage saved!');
                             this.map.removeLayer(this.workingLayer);
                             this.workingLayer = null;
                             this.polyActive = false;
                             this.updateNodeMarkers();
                         }).catch(_ => {
-                            this.$toast.error({
-                                message: 'Error occurred when saving foliage!'
-                            });
+                            this.$toastr.e('Error occurred when saving foliage!');
                         });
                 } else if (this.editorState === 'DISGUISE-REGIONS') {
                     data.disguiseId = this.currentDisguise.id;
@@ -779,9 +769,7 @@
                     this.$http.post(`${this.$domain}/api/disguise-areas`, data).then(resp => {
                         this.vertices = [];
                         this.disguiseAreas[this.currentDisguise.id].push(this.buildDisguiseAreaForMap(resp.data.data));
-                        this.$toast.success({
-                            message: 'Disguise area saved!'
-                        });
+                        this.$toastr.s('Disguise area saved!');
                         this.map.removeLayer(this.workingLayer);
                         this.workingLayer = null;
                         this.polyActive = false;
@@ -789,9 +777,7 @@
                         this.updateActiveDisguiseLayer();
                     }).catch(err => {
                         console.error(err);
-                        this.$toast.error({
-                            message: 'Error occurred when saving disguise area!'
-                        });
+                        this.$toastr.e('Error occurred when saving disguise area!');
                     });
                 }
             },
@@ -844,9 +830,7 @@
                         this.currentDisguise = disguise;
                     }).catch(err => {
                         console.error(err);
-                        this.$toast.error({
-                            message: 'Failed to retrieve disguise regions!'
-                        });
+                        this.$toastr.e('Failed to retrieve disguise regions!');
                     });
             },
             onReplaceDisguiseAreas(disguiseAreas) {
@@ -899,58 +883,56 @@
             cursor: crosshair !important;
         }
 
-        &::v-deep {
-            .leaflet-control-container {
-                display: none;
+        &:deep(.leaflet-control-container) {
+            display: none;
+        }
+
+
+        &:deep(.leaflet-popup-close-button) {
+            font-size: 2rem;
+            width: 25px;
+        }
+
+        &:deep(.leaflet-popup-content-wrapper) {
+            padding: 0;
+            border-radius: 5px;
+
+            .leaflet-popup-content {
+                width: 300px !important;
+                margin: 0 !important;
+                padding-bottom: 10px !important;
+            }
+        }
+
+        &:deep(.leaflet-marker-icon) {
+            &.search-result {
+                z-index: 9999 !important;
+                background: rgba(255, 0, 60, 0.75);
+                padding: 15px !important;
+                margin: -33px 0 0 -33px !important;
+                border-radius: 50%;
+                border: 2px solid #ff003c;
+                opacity: 0.85 !important;
+                box-sizing: content-box;
             }
 
-
-            .leaflet-popup-close-button {
-                font-size: 2rem;
-                width: 25px;
+            &.area-icon {
+                color: #fff;
+                text-shadow: #000 1px 1px 1px;
+                font-size: 0.8em;
+                width: inherit !important;
+                height: inherit !important;
+                text-align: center;
             }
+        }
 
-            .leaflet-popup-content-wrapper {
-                padding: 0;
-                border-radius: 5px;
+        /* May be unused thanks to :visible */
+        &:deep(.node-visible) {
+            display: block;
+        }
 
-                .leaflet-popup-content {
-                    width: 300px !important;
-                    margin: 0 !important;
-                    padding-bottom: 10px !important;
-                }
-            }
-
-            .leaflet-marker-icon {
-                &.search-result {
-                    z-index: 9999 !important;
-                    background: rgba(255, 0, 60, 0.75);
-                    padding: 15px !important;
-                    margin: -33px 0 0 -33px !important;
-                    border-radius: 50%;
-                    border: 2px solid #ff003c;
-                    opacity: 0.85 !important;
-                    box-sizing: content-box;
-                }
-
-                &.area-icon {
-                    color: #fff;
-                    text-shadow: #000 1px 1px 1px;
-                    font-size: 0.8em;
-                    width: inherit !important;
-                    height: inherit !important;
-                    text-align: center;
-                }
-            }
-
-            /* May be unused thanks to :visible */
-            .node-visible {
-                display: block;
-            }
-
-            .node-hidden {
-                display: none;
-            }
+        &:deep(.node-hidden) {
+            display: none;
         }
     }
 </style>

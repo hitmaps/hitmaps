@@ -30,7 +30,7 @@
                 <div class="col logo-type">
                     <h4>Full Logo</h4>
                     <div class="faux-transparency">
-                        <img v-webp src="/img/png/logos/hitmaps.png" class="img-fluid">
+                        <img src="/img/png/logos/hitmaps.png" class="img-fluid">
                     </div>
                     <div class="download-links">
                         <a href="/img/png/logos/hitmaps.png" target="_blank">.PNG</a>
@@ -43,7 +43,7 @@
                 <div class="col logo-type">
                     <h4>HITMAPS&trade; "H"</h4>
                     <div class="faux-transparency">
-                        <img v-webp src="/img/png/logos/hitmaps-h.png" class="img-fluid">
+                        <img src="/img/png/logos/hitmaps-h.png" class="img-fluid">
                     </div>
                     <div class="download-links">
                         <a href="/img/png/logos/hitmaps-h.png" target="_blank">.PNG</a>
@@ -67,8 +67,8 @@
 </template>
 
 <script>
-import GameButton from "../components/GameButton";
-import GameIcon from "../components/GameIcon";
+import GameButton from "../components/GameButton.vue";
+import GameIcon from "../components/GameIcon.vue";
 export default {
     name: 'about',
     components: {GameIcon, GameButton},

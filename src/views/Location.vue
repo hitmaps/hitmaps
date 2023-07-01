@@ -4,26 +4,6 @@
         style="background: url('https://media.hitmaps.com/img/hitman3/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
     >
         <div class="site-container" v-if="game != null">
-            <script type="application/ld+json">
-                {
-                    "@context": "https://schema.org",
-                    "@type": "BreadcrumbList",
-                    "itemListElement": [
-                        {
-                            "@type": "ListItem",
-                            "position": 1,
-                            "name": "Home",
-                            "item": "{{ $domain }}"
-                        },
-                        {
-                            "@type": "ListItem",
-                            "position": 2,
-                            "name": "{{ game.fullName }}",
-                            "item": "{{ $domain }}/{{ game.slug }}"
-                        }
-                    ]
-                }
-            </script>
             <div class="text-center logo">
                 <img
                     :src="game.logoUrl"
@@ -63,7 +43,7 @@
                             :data-target="'#' + location.slug"
                         >
                             <game-icon icon="location" font-style="normal" />
-                            {{ lang('locations.destinations.' + location.slug, location.destination) }}
+                            {{ $t('locations.destinations.' + location.slug, location.destination) }}
                         </a>
                     </li>
                 </ul>
@@ -83,10 +63,10 @@
                     <h2>
                         <game-icon icon="location" font-style="solid" />
                         <p>
-                            <span class="name">{{ lang('locations.destinations.' + location.slug, location.destination) }}</span>
+                            <span class="name">{{ $t('locations.destinations.' + location.slug, location.destination) }}</span>
                             <br />
                             <span class="country">
-                                {{ lang('locations.countries.' + location.slug, location.destinationCountry) }}
+                                {{ $t('locations.countries.' + location.slug, location.destinationCountry) }}
                             </span>
                         </p>
                     </h2>
@@ -129,8 +109,8 @@
                                                 <game-icon :icon="mission.icon" font-style="normal" />
                                             </div>
                                             <div class="text">
-                                                <h2>{{ lang('mission-types.' + mission.missionType.toLowerCase(), mission.missionType) }}</h2>
-                                                <h1>{{ lang('missions.' + mission.slug, mission.name) }}</h1>
+                                                <h2>{{ $t('mission-types.' + mission.missionType.toLowerCase(), mission.missionType) }}</h2>
+                                                <h1>{{ $t('missions.' + mission.slug, mission.name) }}</h1>
                                             </div>
                                         </div>
                                         <div class="freelancer-note" v-if="mission.supportsFreelancer">
@@ -150,9 +130,9 @@
 
 <script>
 import Loader from '../components/Loader.vue'
-import Alert from "../components/Alert";
-import MetaHandler from "../components/MetaHandler";
-import GameIcon from "../components/GameIcon";
+import Alert from "../components/Alert.vue";
+import MetaHandler from "../components/MetaHandler.js";
+import GameIcon from "../components/GameIcon.vue";
 
 export default {
     name: 'level-select',
@@ -161,7 +141,7 @@ export default {
         Alert,
         Loader
     },
-    title() {
+    pageTitle() {
         return this.game !== null
             ? this.game.fullName
             : 'Loading'

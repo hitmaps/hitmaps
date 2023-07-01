@@ -2,9 +2,9 @@
     <modal id="delete-entity"
            :modal-title="modalTitle"
            v-if="entity && entityType">
-        <i18n path="map.confirm-item-deletion-message" tag="p">
-            <span slot="item">{{ displayEntityType }}</span>
-        </i18n>
+        <i18n-t keypath="map.confirm-item-deletion-message" tag="p">
+            <template v-slot:item>{{ displayEntityType }}</template>
+        </i18n-t>
         <template v-slot:modal-footer>
             <game-button type="button" data-dismiss="modal">
                 <game-icon icon="failed" font-style="normal" />
@@ -21,9 +21,9 @@
 </template>
 
 <script>
-import Modal from "../../../Modal";
-import GameButton from "../../../GameButton";
-import GameIcon from "../../../GameIcon";
+import Modal from "../../../Modal.vue";
+import GameButton from "../../../GameButton.vue";
+import GameIcon from "../../../GameIcon.vue";
 export default {
     name: "DeleteEntityModal",
     components: {GameIcon, GameButton, Modal},
@@ -58,15 +58,11 @@ export default {
             this.$http.delete(`${this.$domain}/api/${entityTypeForUrl}/${this.entity.id}`)
                 .then(_ => {
                     this.deleteButtonBlocked = false;
-                    this.$toast.success({
-                        message: `Successfully deleted ${this.entityType}!`
-                    });
+                    this.$toastr.s(`Successfully deleted ${this.entityType}!`);
                     this.$emit('item-deleted');
                 }).catch(_ => {
                     this.deleteButtonBlocked = false;
-                    this.$toast.error({
-                        message: `Failed to delete ${this.entityType}!`
-                    });
+                    this.$toastr.e(`Failed to delete ${this.entityType}!`);
                 });
         }
     }

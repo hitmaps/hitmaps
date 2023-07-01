@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import CopyDisguiseRegions from "./CopyDisguiseRegions";
+import CopyDisguiseRegions from "./CopyDisguiseRegions.vue";
 export default {
     name: "EditDisguiseRegions",
     components: {CopyDisguiseRegions},
@@ -109,43 +109,40 @@ export default {
 
 <style lang="scss" scoped>
 .disguise-trespassing-menu {
+    &:deep(.control-button) {
+        border-radius: 3px;
+        background: rgba(22, 24, 29, 0.75);
+        color: #fff;
+        box-shadow: none;
+        border: solid 2px #2a2d31;
+        opacity: 0.85;
+        width: 100%;
+        margin-bottom: 10px;
 
-    &::v-deep {
-        .control-button {
-            border-radius: 3px;
-            background: rgba(22, 24, 29, 0.75);
-            color: #fff;
-            box-shadow: none;
-            border: solid 2px #2a2d31;
-            opacity: 0.85;
-            width: 100%;
-            margin-bottom: 10px;
+        &:hover {
+            opacity: 1;
+            border-color: #fff;
+        }
+    }
 
-            &:hover {
-                opacity: 1;
-                border-color: #fff;
+    &:deep(.bootstrap-select) {
+        width: 368px !important;
+
+        > .dropdown-toggle {
+            &.bs-placeholder {
+                color: #fff;
+
+                &:hover,
+                &:active,
+                &:focus {
+                    color: #fff;
+                }
             }
         }
 
-        .bootstrap-select {
-            width: 368px !important;
-
-            > .dropdown-toggle {
-                &.bs-placeholder {
-                    color: #fff;
-
-                    &:hover,
-                    &:active,
-                    &:focus {
-                        color: #fff;
-                    }
-                }
-            }
-
-            .dropdown-header {
-                background: #eee;
-                text-transform: uppercase;
-            }
+        .dropdown-header {
+            background: #eee;
+            text-transform: uppercase;
         }
     }
 

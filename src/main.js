@@ -1,16 +1,15 @@
-import Vue from 'vue'
+import {createApp, nextTick} from "vue";
 import App from './App.vue'
 import router from './router'
 import axios from 'axios'
-import store from './store/store'
-import titleMixin from './util/title'
-import opengraphMixin from './util/opengraph';
-import ImageLoader from './plugins/ImageLoader'
-import i18n from './i18n'
-import CountryFlag from 'vue-country-flag'
-import Rollbar from 'vue-rollbar'
-import VueMeta from 'vue-meta'
-import VueCookies from 'vue-cookies'
+import i18n from './i18n.js';
+import CountryFlag from 'vue-country-flag-next'
+import {VueToastr} from 'vue-toastr';
+import 'vue-toastr/dist/style.css';
+import 'animate.css';
+import titleMixin from './util/title.js';
+import opengraphMixin from './util/opengraph.js';
+
 
 axios.interceptors.request.use((config) => {
     if (localStorage.getItem('token') !== null) {
@@ -28,89 +27,22 @@ axios.interceptors.response.use((response) => {
     return response;
 });
 
-Vue.config.productionTip = false
+const app = createApp(App);
+
 //For Copyright
-Vue.prototype.$currentYear = new Date().getFullYear()
-Vue.prototype.$http = axios
-Vue.prototype.$domain = window.location.hostname.includes('localhost') ?
+app.config.globalProperties.$currentYear = new Date().getFullYear()
+app.config.globalProperties.$http = axios
+app.config.globalProperties.$domain = window.location.hostname.includes('localhost') ?
     'http://localhost:8000' :
     `${document.location.protocol}//${window.location.hostname}`;
-Vue.prototype.$hostname = window.location.hostname;
+app.config.globalProperties.$hostname = window.location.hostname;
 const port = document.location.port ? `:${document.location.port}` : '';
-Vue.prototype.$vueDomain = `${document.location.protocol}//${window.location.hostname}${port}`;
+app.config.globalProperties.$vueDomain = `${document.location.protocol}//${window.location.hostname}${port}`;
 
-var VueMoment = require('vue-moment');
-var moment = require('moment-timezone');
-Vue.use(VueMoment, {
-    moment
-});
-
-Vue.use(VueMeta);
-Vue.use(VueCookies);
-
-//Better method to deciding what type of request
-// DEPRECATED
-Vue.prototype.$request = (post, endpoint, data) => {
-    var header = {}
-    if (localStorage.getItem('token') !== null) {
-        header = {
-            Authorization: 'Bearer ' + localStorage.getItem('token'),
-        }
-    }
-    return new Promise((resolve, reject) => {
-        if (post) {
-            axios
-                .post(Vue.prototype.$domain + '/api/' + endpoint, data, {
-                    headers: header,
-                })
-                .then(resp => {
-                    if (resp.data.token != null) {
-                        localStorage.setItem('token', resp.data.token)
-                    }
-                    resolve(resp)
-                })
-        } else {
-            axios
-                .get(Vue.prototype.$domain + '/api/' + endpoint, {
-                    headers: header,
-                })
-                .then(resp => {
-                    if (resp.data.token != null) {
-                        localStorage.setItem('token', resp.data.token)
-                    }
-                    resolve(resp)
-                })
-        }
-    })
-}
-
-Vue.component('country-flag', CountryFlag);
-
-Vue.mixin(titleMixin);
-Vue.mixin(opengraphMixin);
-Vue.use(ImageLoader);
-
-// Rollbar
-/*Vue.use(Rollbar, {
-    accessToken: '3cc73267a52347edbd3386afe1aa4993',
-    captureUncaught: true,
-    captureUnhandledRejections: true,
-    enabled: true,
-    environment: 'production',
-    payload: {
-        client: {
-            javascript: {
-                code_version: '1.0',
-                source_map_enabled: true,
-                guess_uncaught_frames: true
-            }
-        }
-    }
-});
-Vue.config.errorHandler = function (err, vm, info) {
-    Vue.rollbar.error(err);
-};*/
-
+app.component('country-flag', CountryFlag);
+app.use(i18n);
+app.mixin(titleMixin);
+app.mixin(opengraphMixin);
 
 /**
  * Enable Bootstrap tooltips using Vue directive
@@ -128,10 +60,9 @@ Vue.config.errorHandler = function (err, vm, info) {
  *   <button v-tooltip:auto.html="clock" @click="clock = Date.now()">Updating</button>
  *   <button v-tooltip:auto.html.live="clock" @click="clock = Date.now()">Updating Live</button>
  */
-Vue.directive('tooltip', {
-    bind: function bsTooltipCreate(el, binding) {
+app.directive('tooltip', {
+    beforeMount: function bsTooltipCreate(el, binding) {
         let trigger = 'hover focus';
-        binding.modifiers.html = false;
 
         if (binding.modifiers.focus || binding.modifiers.hover || binding.modifiers.click) {
             const t = [];
@@ -141,16 +72,16 @@ Vue.directive('tooltip', {
             trigger = t.join(' ');
         }
 
-        Vue.nextTick(() => {
+        nextTick(() => {
             $(el).tooltip({
                 title: binding.value,
                 placement: binding.arg,
                 trigger: trigger,
-                html: binding.modifiers.html
+                html: binding.modifiers.html ?? false
             });
         });
     },
-    update: function bsTooltipUpdate(el, binding) {
+    updated: function bsTooltipUpdate(el, binding) {
         const $el = $(el);
         $el.attr('title', binding.value).tooltip();
 
@@ -166,45 +97,15 @@ Vue.directive('tooltip', {
             }
         }
     },
-    unbind(el, binding) {
+    unmounted(el, binding) {
         $(el).tooltip('dispose');
     },
 });
-
-Vue.filter('lowercase', function (value) {
-    if (!value) return ''
-    value = value.toString()
-    return value.charAt(0).toLowerCase() + value.slice(1)
-})
-
-const langMixin = {
-    methods: {
-        lang: function(key, defaultString) {
-            if (this.$t && this.$te) {
-                if (this.$te(key)) {
-                    return this.$t(key)
-                }
-
-                console.warn("[i18n] Could not find i18n entry for key: '" + key + "'. Using '" + defaultString + "' instead.");
-                return defaultString;
-            }
-            console.error('$t or $te is undefined!');
-
-            if (defaultString) {
-                console.warn("[i18n] Could not find i18n entry for key: '" + key + "'. Using '" + defaultString + "' instead.");
-                return defaultString;
-            }
-            console.warn("[i18n] Could not find i18n entry for key: '" + key + "', and defaultString is undefined.");
-            return key;
-        }
-    }
-};
-
-Vue.mixin(langMixin);
-
-new Vue({
-    store,
-    router,
-    i18n,
-    render: h => h(App)
-}).$mount('#app');
+app.use(VueToastr, {
+    defaultPosition: 'toast-top-left',
+    defaultTimeout: 3000,
+    defaultProgressBar: true,
+    defaultClassNames: ['animated', 'zoomInUp']
+});
+app.use(router);
+app.mount('#app');
