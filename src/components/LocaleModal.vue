@@ -9,17 +9,17 @@
                 <p>{{ lang.name }}</p>
             </div>
         </div>
-        <i18n path="language-modal.footer" tag="p">
-            <span slot="submitACorrection">
+        <i18n-t keypath="language-modal.footer" tag="p">
+            <template v-slot:submitACorrection>
                 <a href="https://translate.hitmaps.com" target="_blank">{{ $t('language-modal.submit-a-correction') }}</a>
-            </span>
-        </i18n>
+            </template>
+        </i18n-t>
     </modal>
 </template>
 
 <script>
     import Modal from "./Modal.vue";
-    import LanguageHelpers from "./LanguageHelpers.vue";
+    import LanguageHelpers from "./LanguageHelpers.js";
     import Alert from "./Alert.vue";
     export default {
         name: "LocaleModal",

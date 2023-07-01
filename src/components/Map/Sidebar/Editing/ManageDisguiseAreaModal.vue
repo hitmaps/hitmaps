@@ -52,15 +52,11 @@ export default {
             this.$http.delete(`${this.$domain}/api/disguise-areas/${this.entity.id}`)
                 .then(_ => {
                     this.operationInProgress = false;
-                    this.$toast.success({
-                        message: `Successfully deleted disguise area!`
-                    });
+                    this.$toastr.s(`Successfully deleted disguise area!`);
                     this.$emit('item-deleted');
                 }).catch(_ => {
                     this.operationInProgress = false;
-                    this.$toast.error({
-                        message: `Failed to delete disguise area!`
-                    });
+                    this.$toastr.e(`Failed to delete disguise area!`);
                 });
         },
         doConvert() {
@@ -69,15 +65,11 @@ export default {
             this.$http.patch(`${this.$domain}/api/disguise-areas/${this.entity.id}/convert`)
                 .then(_ => {
                     this.operationInProgress = false;
-                    this.$toast.success({
-                        message: 'Successfully converted disguise area!'
-                    });
+                    this.$toastr.s('Successfully converted disguise area!');
                     this.$emit('item-converted');
                 }).catch(_ => {
                     this.operationInProgress = false;
-                    this.$toast.error({
-                        message: 'Failed to convert disguise area!'
-                    });
+                    this.$toastr.e('Failed to convert disguise area!');
                 });
         }
     }

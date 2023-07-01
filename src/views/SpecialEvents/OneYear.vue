@@ -4,11 +4,7 @@
             <div class="row">
                 <div class="col text-center site-header">
                     <h1>{{ $t("interactive-maps-for") }}</h1>
-                    <img
-                            v-webp
-                            src="/img/png/logos/hitman2.png"
-                            class="img-fluid"
-                    />
+                    <img src="/img/png/logos/hitman2.png" class="img-fluid" />
                     <h2>One Year Later</h2>
                 </div>
             </div>
@@ -181,7 +177,7 @@
                 thank the following for their help and what they do:</p>
                 <div class="row">
                     <div class="col">
-                        <img v-webp src="/img/png/logos/ioi.png">
+                        <img src="/img/png/logos/ioi.png">
                         <p style="font-weight: bolder">IO Interactive</p>
                         <p>Well, it goes without saying this, but without IO Interactive, there wouldn't be HITMAN™️.
                         Without HITMAN™️, there wouldn't be HITMAN™️ 2 Maps.</p>

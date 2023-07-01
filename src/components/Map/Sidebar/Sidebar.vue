@@ -50,7 +50,7 @@
                         data-toggle="modal"
                         data-target="#locale-modal"
                         v-tooltip:bottom="$t('language-modal.change-language')">
-                    <country-flag :country="countryFlag"/>
+                    <country-flag :country="countryFlag" size="small"/>
                 </button>
             </div>
         </div>
@@ -68,7 +68,7 @@
                 </div>
                 <div class="control-buttons">
                     <control-button data-toggle="modal" data-target="#locale-modal" v-tooltip:bottom="$t('language-modal.change-language')">
-                        <country-flag :country="countryFlag"/>
+                        <country-flag :country="countryFlag" size="small" />
                     </control-button>
                     <template v-if="loggedIn">
                         <control-button v-if="showDebug()"
@@ -174,6 +174,8 @@ import FloorToggle from "../FloorToggle.vue";
 import MissionVariantSelector from "./MissionVariantSelector.vue";
 import GameIcon from "../../GameIcon.vue";
 import Alert from "../../Alert.vue";
+import {useCookies} from "vue3-cookies";
+
 
 export default {
     name: "Sidebar",
@@ -206,6 +208,12 @@ export default {
         currentDisguise: Object,
         currentVariant: Object
     },
+    setup() {
+        const { cookies } = useCookies();
+        return {
+            cookies
+        }
+    },
     data() {
         return {
             debugMode: false
@@ -230,7 +238,7 @@ export default {
             return this.mission.variants.filter(x => x.visible);
         },
         showDebug() {
-            return process.env.VUE_APP_SHOW_DEBUG === 'true';
+            return import.meta.env.VITE_SHOW_DEBUG === 'true';
         },
         getSearchableNodes() {
             const nodesToSort = [...this.nodes].filter(x => x.variants.includes(this.currentVariant.id));
@@ -268,7 +276,7 @@ export default {
             return uniqueNodesBrokenDownByGroup;
         },
         beginDiscordLogin() {
-            this.$cookies.set('redirect-location', `${window.location.pathname}${window.location.search}`, '600s');
+            this.cookies.set('redirect-location', `${window.location.pathname}${window.location.search}`, '600s');
             window.location.href = `https://discordapp.com/api/oauth2/authorize?client_id=681919936469401687&redirect_uri=${encodeURIComponent(this.$vueDomain)}/auth&response_type=token&scope=connections%20identify%20guilds%20email`;
         },
         logout: function() {
@@ -424,6 +432,17 @@ export default {
         &:hover {
             opacity: 1;
             border-color: #fff;
+        }
+
+        &:deep(.flag) {
+            transform: scale(.50) !important;
+            -ms-transform: scale(.50) !important;
+            -webkit-transform: scale(.50) !important;
+            -moz-transform: scale(.50) !important;
+
+            margin-bottom: -13px;
+            margin-left: -17px;
+            margin-right: -17px;
         }
     }
 

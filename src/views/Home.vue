@@ -5,7 +5,7 @@
     >
         <header class="row">
             <div class="col text-center site-header">
-                <img v-webp src="/img/png/logos/hitmaps.png" class="img-fluid">
+                <img src="/img/png/logos/hitmaps.png" class="img-fluid">
                 <h1>{{ $t('interactive-maps-for-hitman') }}</h1>
             </div>
         </header>
@@ -151,7 +151,7 @@
                             </div>
                         </div>
                         <div class="col-xl">
-                            <p v-html="elusiveTarget.briefing">[briefing]</p>
+                            <p v-html="elusiveTarget.briefing"></p>
                         </div>
                     </div>
                     <template v-slot:modal-footer>
@@ -543,8 +543,8 @@
                             <i>No upcoming matches</i>
                         </div>
                     </div>
-                    <template v-if="fetchedTournamentMatches === 'FETCHED'" v-for="matchup in this.tournamentMatches">
-                        <div class="row" :key="matchup.id"
+                    <template v-if="fetchedTournamentMatches === 'FETCHED'" v-for="matchup in this.tournamentMatches" :key="matchup.id">
+                        <div class="row"
                              style="border-top: 1px solid #dee2e6; padding: .75rem;">
                             <div class="col-lg-3 col-12">
                                 <span>
@@ -632,14 +632,14 @@
                     <h1>{{ $t('community-server.header') }}</h1>
                     <p>{{ $t('community-server.intro') }}</p>
                     <p>
-                        <i18n path="community-server.download-instructions">
-                            <span slot="serverPatcher">
+                        <i18n-t keypath="community-server.download-instructions">
+                            <template v-slot:serverPatcher>
                                 <a href="https://gitlab.com/grappigegovert/localghost/-/jobs/artifacts/master/download?job=build_patcher" target="_blank">{{ $t('community-server.server-patcher') }}</a>
-                            </span>
-                            <span slot="serverUrl">
+                            </template>
+                            <template v-slot:serverUrl>
                                 <code>gm.hitmaps.com</code>
-                            </span>
-                        </i18n>
+                            </template>
+                        </i18n-t>
                     </p>
                     <p>{{ $t('community-server.disclaimer') }}</p>
                 </div>
@@ -662,11 +662,11 @@
                     <div class="row">
                         <div class="col-lg-7 col-xs-12">
                             <p>
-                                <i18n path="roulette.introduction">
-                                    <span slot="hitmanRoulette">
+                                <i18n-t keypath="roulette.introduction">
+                                    <template v-slot:hitmanRoulette>
                                         <a href="https://thekotti.github.io/hitman.html" target="_blank">{{ $t('roulette.hitman-roulette') }}</a>
-                                    </span>
-                                </i18n>
+                                    </template>
+                                </i18n-t>
                             </p>
                             <ul>
                                 <li><b>{{ $t('roulette.list-item-tournament-mode.header') }}</b> {{ $t('roulette.list-item-tournament-mode.details') }}</li>
@@ -761,9 +761,6 @@
 <script>
 import Countdown from '../components/Countdown.vue'
 import Loader from '../components/Loader.vue'
-import CxltToaster from 'cxlt-vue2-toastr'
-import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
-import Vue from 'vue'
 import Modal from "../components/Modal.vue";
 import Alert from "../components/Alert.vue";
 import MetaHandler from "../components/MetaHandler.js";
@@ -772,7 +769,6 @@ import GameButton from "../components/GameButton.vue";
 import TournamentPlatformIcon from "../components/TournamentPlatformIcon.vue";
 import Patron from "../components/Patron.vue";
 
-Vue.use(CxltToaster)
 export default {
     name: 'home',
     pageTitle: 'Home',
@@ -1005,11 +1001,8 @@ export default {
             data.append('state', subscribing ? 'SUBSCRIBING' : 'UNSUBSCRIBING')
             data.append('topic', topic)
             if (sendRequest) {
-                this.$request(true, 'notifications', data).then(resp => {
-                    this.$toast.success({
-                        title: 'Changes Saved',
-                        message: 'Notification preferences updated!'
-                    })
+                this.$http.post('notifications', data).then(resp => {
+                    this.$toastr.success('Notification preferences updated!');
                     window.localStorage.setItem(
                         token + '|' + topic,
                         subscribing ? '1' : '0'

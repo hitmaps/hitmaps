@@ -1,5 +1,5 @@
 <template>
-    <button class="btn control-button" v-bind="$attrs" @click="$emit('click')">
+    <button class="btn control-button" v-bind="$attrs">
         <slot></slot>
     </button>
 </template>
@@ -33,8 +33,7 @@ export default {
             background: #fff;
         }
 
-        .flag {
-            margin: -20px -24px -24px -24px !important;
+        &:deep(.flag) {
             transform: scale(.50) !important;
             -ms-transform: scale(.50) !important;
             -webkit-transform: scale(.50) !important;

@@ -41,17 +41,13 @@ export default {
             };
 
             this.$http.patch(`${this.$domain}/api/nodes/${this.node.id}`, data).then(_ => {
-                this.$toast.success({
-                    message: 'Item moved!'
-                });
+                this.$toastr.s('Item moved!');
                 this.node.latitude = this.node.marker.getLatLng().lat;
                 this.node.longitude = this.node.marker.getLatLng().lng;
                 $('#confirm-move-modal').modal('hide');
             }).catch(err => {
                 console.error(err);
-                this.$toast.error({
-                    message: 'Error occurred when moving item!'
-                });
+                this.$toastr.e('Error occurred when moving item!');
                 this.node.marker.setLatLng([this.node.latitude, this.node.longitude]);
                 $('#confirm-move-modal').modal('hide');
             })

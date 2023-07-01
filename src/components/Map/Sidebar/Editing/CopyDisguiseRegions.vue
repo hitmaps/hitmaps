@@ -83,14 +83,10 @@ export default {
             };
             this.$http.post(`${this.$domain}/api/disguise-areas/copy`, data).then(resp => {
                 this.$emit('replace-disguise-areas', resp.data.data);
-                this.$toast.success({
-                    message: 'Disguise areas copied!'
-                });
+                this.$toastr.s('Disguise areas copied!');
             }).catch(err => {
                 console.error(err);
-                this.$toast.error({
-                    message: 'Failed to copy disguise areas!'
-                });
+                this.$toastr.e('Failed to copy disguise areas!');
             });
         }
     }

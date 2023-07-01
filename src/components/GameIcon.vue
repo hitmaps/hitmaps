@@ -1,6 +1,5 @@
 <template>
     <i :class="`game-icon ${getStyle()}-${getIcon()} style-${fontStyle} ${extraClasses}`"
-       @click="$emit('click')"
        v-bind="$attrs"></i>
 </template>
 

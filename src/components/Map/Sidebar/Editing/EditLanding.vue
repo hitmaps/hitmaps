@@ -27,11 +27,11 @@
                 {{ $t('map.manage-disguise-areas') }}
             </h3>
         </div>
-        <i18n path="map.click-icon-to-close" tag="p">
-            <span slot="pencilIcon">
+        <i18n-t keypath="map.click-icon-to-close" tag="p">
+            <template v-slot:pencilIcon>
                 <i class="fas fa-pencil-alt"></i>
-            </span>
-        </i18n>
+            </template>
+        </i18n-t>
     </div>
 </template>
 

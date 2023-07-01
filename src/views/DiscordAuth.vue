@@ -6,11 +6,7 @@
         <header class="row">
             <div class="col text-center site-header">
                 <router-link :to="{ name: 'home' }">
-                    <img
-                            v-webp
-                            src="/img/png/logos/hitmaps.png"
-                            class="img-fluid"
-                    />
+                    <img src="/img/png/logos/hitmaps.png" class="img-fluid" />
                 </router-link>
                 <h1>{{ $t('interactive-maps-for-hitman') }}</h1>
             </div>
@@ -38,9 +34,16 @@
 <script>
     import GameButton from "../components/GameButton.vue";
     import GameIcon from "../components/GameIcon.vue";
+    import {useCookies} from "vue3-cookies";
 
     export default {
         name: "DiscordAuth",
+        setup() {
+            const { cookies } = useCookies();
+            return {
+                cookies
+            }
+        },
         data() {
             return {
                 error: ''
@@ -81,9 +84,9 @@
                         localStorage.setItem('token', resp.data.token);
 
                         let redirectLocation = '/';
-                        if (this.$cookies.isKey('redirect-location')) {
-                            redirectLocation = this.$cookies.get('redirect-location');
-                            this.$cookies.remove('redirect-location');
+                        if (this.cookies.isKey('redirect-location')) {
+                            redirectLocation = this.cookies.get('redirect-location');
+                            this.cookies.remove('redirect-location');
                         }
 
                         window.location.href = redirectLocation;

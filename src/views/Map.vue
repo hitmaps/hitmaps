@@ -95,7 +95,7 @@
             SplashScreen
         },
         pageTitle() {
-            return this.mission ? this.lang(`missions.${this.mission.slug}`, this.mission.name) : 'Loading'
+            return this.mission ? this.$t(`missions.${this.mission.slug}`, this.mission.name) : 'Loading'
         },
         data() {
             return {
@@ -263,7 +263,7 @@
                 ];
             },
             showDebug() {
-                return process.env.VUE_APP_SHOW_DEBUG === 'true';
+                return import.meta.env.VITE_SHOW_DEBUG === 'true';
             },
             svgMapUrl() {
                 if (this.game === undefined || this.mission === undefined) {
@@ -693,9 +693,7 @@
                 }
 
                 let toastMessage = this.polyActive ? 'Drawing tools enabled' : 'Drawing tools disabled';
-                this.$toast.info({
-                    message: toastMessage
-                })
+                this.$toastr.i(toastMessage);
             },
             onEnableLedgeCreation() {
                 this.toggleDraw('Line');
@@ -743,34 +741,26 @@
                         .then(resp => {
                             this.vertices = [];
                             this.ledges.push(this.buildLedgeForMap(resp.data.data));
-                            this.$toast.success({
-                                message: 'Ledge saved!'
-                            });
+                            this.$toastr.s('Ledge saved!');
                             this.map.removeLayer(this.workingLayer);
                             this.workingLayer = null;
                             this.polyActive = false;
                             this.updateNodeMarkers();
                         }).catch(_ => {
-                            this.$toast.error({
-                                message: 'Error occurred when saving ledge!'
-                            });
+                            this.$toastr.e('Error occurred when saving ledge!');
                         });
                 } else if (this.editorState === 'FOLIAGE') {
                     this.$http.post(`${this.$domain}/api/foliage`, data)
                         .then(resp => {
                             this.vertices = [];
                             this.foliage.push(this.buildFoliageForMap(resp.data.data));
-                            this.$toast.success({
-                                message: 'Foliage saved!'
-                            });
+                            this.$toastr.s('Foliage saved!');
                             this.map.removeLayer(this.workingLayer);
                             this.workingLayer = null;
                             this.polyActive = false;
                             this.updateNodeMarkers();
                         }).catch(_ => {
-                            this.$toast.error({
-                                message: 'Error occurred when saving foliage!'
-                            });
+                            this.$toastr.e('Error occurred when saving foliage!');
                         });
                 } else if (this.editorState === 'DISGUISE-REGIONS') {
                     data.disguiseId = this.currentDisguise.id;
@@ -779,9 +769,7 @@
                     this.$http.post(`${this.$domain}/api/disguise-areas`, data).then(resp => {
                         this.vertices = [];
                         this.disguiseAreas[this.currentDisguise.id].push(this.buildDisguiseAreaForMap(resp.data.data));
-                        this.$toast.success({
-                            message: 'Disguise area saved!'
-                        });
+                        this.$toastr.s('Disguise area saved!');
                         this.map.removeLayer(this.workingLayer);
                         this.workingLayer = null;
                         this.polyActive = false;
@@ -789,9 +777,7 @@
                         this.updateActiveDisguiseLayer();
                     }).catch(err => {
                         console.error(err);
-                        this.$toast.error({
-                            message: 'Error occurred when saving disguise area!'
-                        });
+                        this.$toastr.e('Error occurred when saving disguise area!');
                     });
                 }
             },
@@ -844,9 +830,7 @@
                         this.currentDisguise = disguise;
                     }).catch(err => {
                         console.error(err);
-                        this.$toast.error({
-                            message: 'Failed to retrieve disguise regions!'
-                        });
+                        this.$toastr.e('Failed to retrieve disguise regions!');
                     });
             },
             onReplaceDisguiseAreas(disguiseAreas) {

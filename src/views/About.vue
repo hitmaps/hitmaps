@@ -27,7 +27,7 @@
             <div class="row">
                 <div class="col">
                     <div class="media">
-                        <img v-webp src="/img/png/logos/ioi.png" alt="IO Interactive Logo" class="align-self-start mr-3" height="64" width="64">
+                        <img src="/img/png/logos/ioi.png" alt="IO Interactive Logo" class="align-self-start mr-3" height="64" width="64">
                         <div class="media-body">
                             <h5 class="mt-0">
                                 <a href="https://www.ioi.dk" target="_blank">IO Interactive</a>
@@ -37,7 +37,7 @@
                         </div>
                     </div>
                     <div class="media">
-                            <img v-webp src="/img/png/logos/readmeio.png" alt="Readme.io Logo" class="align-self-start mr-3" height="64" width="64">
+                            <img src="/img/png/logos/readmeio.png" alt="Readme.io Logo" class="align-self-start mr-3" height="64" width="64">
                         <div class="media-body">
                             <h5 class="mt-0">
                                 <a href="https://www.readme.io" target="_blank">ReadMe</a>

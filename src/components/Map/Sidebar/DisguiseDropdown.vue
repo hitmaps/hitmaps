@@ -33,9 +33,9 @@
                              :key="disguise.id"
                              class="col-12">
                             <div class="disguise" :style="`background: url('${disguise.image}') center 70% / cover no-repeat`">
-                                <i18n path="map.suit-disguise" tag="p" class="disguise-info" v-if="disguise.suit">
-                                    <span slot="suitName">{{ disguise.name }}</span>
-                                </i18n>
+                                <i18n-t keypath="map.suit-disguise" tag="p" class="disguise-info" v-if="disguise.suit">
+                                    <template v-slot:suitName>{{ disguise.name }}</template>
+                                </i18n-t>
                                 <p class="disguise-info" v-else>{{ disguise.name }}</p>
                             </div>
                         </div>

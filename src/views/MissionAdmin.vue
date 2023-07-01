@@ -167,7 +167,7 @@ export default {
                 visible: this.addVariantForm.visible,
                 sourceVariant: this.addVariantForm.sourceVariant
             }).then(_ => this.$router.go())
-                .catch(err => this.$toast.error(err.stack));
+                .catch(err => this.$toastr.e(err.stack));
         },
         saveVariant(variant) {
             if (!variant.name || !variant.icon || !variant.slug) {
@@ -181,7 +181,7 @@ export default {
                 icon: variant.icon,
                 visible: variant.visible
             }).then(_ => this.$router.go())
-                .catch(err => this.$toast.error(err.stack));
+                .catch(err => this.$toastr.e(err.stack));
         }
     }
 }

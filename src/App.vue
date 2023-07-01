@@ -7,18 +7,18 @@
                     <div class="col-md-6">
                         <h4>&copy; 2018 - {{ $currentYear }} hitmaps.com</h4>
                         <p style="margin-bottom: 0">
-                            <i18n path="footer.disclaimer">
-                                <span slot="ioiLink">
+                            <i18n-t keypath="footer.disclaimer">
+                                <template v-slot:ioiLink>
                                     <a href="https://www.ioi.dk" target="_blank">{{ $t('footer.io-interactive') }}</a>
-                                </span>
-                            </i18n>
+                                </template>
+                            </i18n-t>
                         </p>
                         <p>
-                            <i18n path="footer.developed-by">
-                                <span slot="mikeKochLink">
+                            <i18n-t keypath="footer.developed-by">
+                                <template v-slot:mikeKochLink>
                                     <a href="https://mikeko.ch" target="_blank">Mike Koch</a>
-                                </span>
-                            </i18n>
+                                </template>
+                            </i18n-t>
                         </p>
                     </div>
                     <div class="col-md-6 text-right">
@@ -115,7 +115,7 @@ export default {
     components: {LocaleModal},
     methods: {
         isNotInMap() {
-            return this.$router.history.current.name !== 'map-view'
+            return this.$route.name !== 'map-view'
         },
         getCountryFlag() {
             return LanguageHelpers.getCountryFlagForLocale(this.$i18n);

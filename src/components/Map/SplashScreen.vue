@@ -8,8 +8,8 @@
                     <game-icon icon="mission" font-style="normal"/>
                 </div>
                 <div class="footer-text">
-                    <h2>{{ lang('mission-types.' + mission.missionType.toLowerCase(), mission.missionType) }}</h2>
-                    <h1>{{ lang('missions.' + mission.slug, mission.name) }}</h1>
+                    <h2>{{ $t('mission-types.' + mission.missionType.toLowerCase(), mission.missionType) }}</h2>
+                    <h1>{{ $t('missions.' + mission.slug, mission.name) }}</h1>
                 </div>
                 <div class="loader" style="display: inline-block; height: 48px; float: right">
                     <!-- TODO New Loader -->

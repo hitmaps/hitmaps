@@ -22,14 +22,21 @@
 </template>
 
 <script>
+import {v4 as uuidv4} from "uuid";
 export default {
     name: "ItemSearch",
     props: {
         searchableNodes: Object
     },
+    setup() {
+        const uuid = uuidv4();
+        return {
+            uuid
+        };
+    },
     data() {
         return {
-            id: this._uid,
+            id: this.uuid,
             searchedItem: null
         }
     },
