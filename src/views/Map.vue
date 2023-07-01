@@ -883,58 +883,56 @@
             cursor: crosshair !important;
         }
 
-        &::v-deep {
-            .leaflet-control-container {
-                display: none;
+        &:deep(.leaflet-control-container) {
+            display: none;
+        }
+
+
+        &:deep(.leaflet-popup-close-button) {
+            font-size: 2rem;
+            width: 25px;
+        }
+
+        &:deep(.leaflet-popup-content-wrapper) {
+            padding: 0;
+            border-radius: 5px;
+
+            .leaflet-popup-content {
+                width: 300px !important;
+                margin: 0 !important;
+                padding-bottom: 10px !important;
+            }
+        }
+
+        &:deep(.leaflet-marker-icon) {
+            &.search-result {
+                z-index: 9999 !important;
+                background: rgba(255, 0, 60, 0.75);
+                padding: 15px !important;
+                margin: -33px 0 0 -33px !important;
+                border-radius: 50%;
+                border: 2px solid #ff003c;
+                opacity: 0.85 !important;
+                box-sizing: content-box;
             }
 
-
-            .leaflet-popup-close-button {
-                font-size: 2rem;
-                width: 25px;
+            &.area-icon {
+                color: #fff;
+                text-shadow: #000 1px 1px 1px;
+                font-size: 0.8em;
+                width: inherit !important;
+                height: inherit !important;
+                text-align: center;
             }
+        }
 
-            .leaflet-popup-content-wrapper {
-                padding: 0;
-                border-radius: 5px;
+        /* May be unused thanks to :visible */
+        &:deep(.node-visible) {
+            display: block;
+        }
 
-                .leaflet-popup-content {
-                    width: 300px !important;
-                    margin: 0 !important;
-                    padding-bottom: 10px !important;
-                }
-            }
-
-            .leaflet-marker-icon {
-                &.search-result {
-                    z-index: 9999 !important;
-                    background: rgba(255, 0, 60, 0.75);
-                    padding: 15px !important;
-                    margin: -33px 0 0 -33px !important;
-                    border-radius: 50%;
-                    border: 2px solid #ff003c;
-                    opacity: 0.85 !important;
-                    box-sizing: content-box;
-                }
-
-                &.area-icon {
-                    color: #fff;
-                    text-shadow: #000 1px 1px 1px;
-                    font-size: 0.8em;
-                    width: inherit !important;
-                    height: inherit !important;
-                    text-align: center;
-                }
-            }
-
-            /* May be unused thanks to :visible */
-            .node-visible {
-                display: block;
-            }
-
-            .node-hidden {
-                display: none;
-            }
+        &:deep(.node-hidden) {
+            display: none;
         }
     }
 </style>

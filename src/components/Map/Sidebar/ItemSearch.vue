@@ -88,10 +88,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.search-box::v-deep {
+.search-box {
     display: flex;
 
-    .control-button {
+    &:deep(.control-button) {
         border-radius: 3px;
         background: rgba(22, 24, 29, 0.75);
         color: #fff;
@@ -107,12 +107,12 @@ export default {
         }
     }
 
-    &.item-selected {
+    &:deep(.item-selected) {
         .bootstrap-select {
         }
     }
 
-    .bootstrap-select {
+    &:deep(.bootstrap-select) {
         flex-grow: 1;
 
         > .dropdown-toggle {
@@ -140,8 +140,8 @@ export default {
         }
     }
 
-    #clear-search.control-button,
-    #clear-disguise-search.control-button {
+    &:deep(#clear-search.control-button),
+    &:deep(#clear-disguise-search.control-button) {
         display: inline-block;
         margin-left: 11px;
         height: 40px;

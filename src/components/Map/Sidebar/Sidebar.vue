@@ -3,7 +3,7 @@
         <div class="mobile-header">
             <div class="logo">
                 <router-link :to="{ name: 'home' }">
-                    <img src="/img/png/logos/hitmaps.png" class="img-fluid d-block d-md-none" alt="HITMAPS Logo"/>
+                    <img src="/img/png/logos/hitmaps-h.png" class="img-fluid d-block d-md-none" alt="HITMAPS Logo"/>
                 </router-link>
             </div>
             <div class="header-buttons">
