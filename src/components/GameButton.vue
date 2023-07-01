@@ -60,7 +60,7 @@ export default {
             background: $game-button-background-hover;
             color: $game-button-text;
 
-            i.game-icon {
+            &:deep(i.game-icon) {
                 background: $game-button-text;
                 color: $game-button-background-hover;
             }
