@@ -1,8 +1,6 @@
 <template>
     <div v-if="days < 2">
-        {{ hours | twoDigits }}:{{ minutes | twoDigits }}:{{
-            seconds | twoDigits
-        }}
+        {{ twoDigits(hours) }}:{{ twoDigits(minutes) }}:{{ twoDigits(seconds) }}
     </div>
     <div v-else>
         {{ $t('elusive-target.n-days', { days: days }) }}
@@ -36,6 +34,17 @@ export default {
             )
         },
     },
+    methods: {
+        twoDigits(value) {
+            if (value < 0) {
+                return '00';
+            }
+            if (value < 10) {
+                return '0' + value
+            }
+            return value
+        }
+    },
     data() {
         return {
             now: new Date(),
@@ -45,14 +54,6 @@ export default {
         setInterval(() => {
             this.now = new Date()
         }, 1000)
-    },
-    filters: {
-        twoDigits: function(value) {
-            if (value < 10) {
-                return '0' + value
-            }
-            return value
-        },
-    },
+    }
 }
 </script>
