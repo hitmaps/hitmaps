@@ -1,4 +1,4 @@
-import { createApp } from "vue";
+import {createApp, nextTick} from "vue";
 import App from './App.vue'
 import router from './router'
 import axios from 'axios'
@@ -61,9 +61,8 @@ app.mixin(opengraphMixin);
  *   <button v-tooltip:auto.html.live="clock" @click="clock = Date.now()">Updating Live</button>
  */
 app.directive('tooltip', {
-    bind: function bsTooltipCreate(el, binding) {
+    beforeMount: function bsTooltipCreate(el, binding) {
         let trigger = 'hover focus';
-        binding.modifiers.html = false;
 
         if (binding.modifiers.focus || binding.modifiers.hover || binding.modifiers.click) {
             const t = [];
@@ -73,16 +72,16 @@ app.directive('tooltip', {
             trigger = t.join(' ');
         }
 
-        Vue.nextTick(() => {
+        nextTick(() => {
             $(el).tooltip({
                 title: binding.value,
                 placement: binding.arg,
                 trigger: trigger,
-                html: binding.modifiers.html
+                html: binding.modifiers.html ?? false
             });
         });
     },
-    update: function bsTooltipUpdate(el, binding) {
+    updated: function bsTooltipUpdate(el, binding) {
         const $el = $(el);
         $el.attr('title', binding.value).tooltip();
 
@@ -98,7 +97,7 @@ app.directive('tooltip', {
             }
         }
     },
-    unbind(el, binding) {
+    unmounted(el, binding) {
         $(el).tooltip('dispose');
     },
 });
