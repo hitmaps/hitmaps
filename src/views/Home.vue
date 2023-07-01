@@ -1001,7 +1001,7 @@ export default {
             data.append('state', subscribing ? 'SUBSCRIBING' : 'UNSUBSCRIBING')
             data.append('topic', topic)
             if (sendRequest) {
-                this.$http.post('notifications', data).then(resp => {
+                this.$http.post('${this.$domain}/api/notifications', data).then(resp => {
                     this.$toastr.success('Notification preferences updated!');
                     window.localStorage.setItem(
                         token + '|' + topic,
