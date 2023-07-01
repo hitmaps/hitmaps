@@ -141,7 +141,7 @@ export default {
         Alert,
         Loader
     },
-    title() {
+    pageTitle() {
         return this.game !== null
             ? this.game.fullName
             : 'Loading'

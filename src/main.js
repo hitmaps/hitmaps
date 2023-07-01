@@ -7,6 +7,8 @@ import CountryFlag from 'vue-country-flag-next'
 import {VueToastr} from 'vue-toastr';
 import 'vue-toastr/dist/style.css';
 import 'animate.css';
+import titleMixin from './util/title.js';
+import opengraphMixin from './util/opengraph.js';
 
 
 axios.interceptors.request.use((config) => {
@@ -39,10 +41,8 @@ app.config.globalProperties.$vueDomain = `${document.location.protocol}//${windo
 
 app.component('country-flag', CountryFlag);
 app.use(i18n);
-
-//Vue.mixin(titleMixin);
-//Vue.mixin(opengraphMixin);
-//Vue.use(ImageLoader);
+app.mixin(titleMixin);
+app.mixin(opengraphMixin);
 
 /**
  * Enable Bootstrap tooltips using Vue directive
