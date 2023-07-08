@@ -43,7 +43,7 @@
                                 <i class="fas fa-user-tie fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
-                        <a href="https://twitter.com/hitmapsOfficial" target="_blank">
+                        <a href="https://twitter.com/hitmapsdotcom" target="_blank">
                             <span class="fa-stack fa-2x" v-tooltip:top="$t('footer.twitter')">
                                 <i class="fas fa-square fa-stack-2x"></i>
                                 <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
