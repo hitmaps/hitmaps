@@ -1,0 +1,128 @@
+html,
+body,
+#app {
+  height: 100%;
+}
+
+#app {
+  background: #ddd;
+  display: flex;
+  flex-direction: column;
+
+  .content {
+    flex: 1 0 auto;
+  }
+
+  .language-switcher {
+    cursor: pointer;
+  }
+}
+
+header.row {
+  font-family: 'Roboto', 'Arial', sans-serif;
+  color: #fff;
+  font-weight: bolder;
+  padding-top: 20px;
+  width: 100%;
+
+  h1 {
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin-top: 20px;
+  }
+}
+
+footer {
+  flex-shrink: 0;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  background: #000;
+  color: #6b6c72;
+
+  a {
+    color: #fff;
+
+    .fa-stack > .fa-stack-1x {
+      color: #000;
+    }
+
+    &:hover {
+      color: #ddd;
+
+      .fa-stack > .fa-stack-1x {
+        color: #000;
+      }
+    }
+
+    &.patreon-button {
+      color: #e7705c;
+
+      &:hover {
+        color: #cd685c;
+      }
+    }
+  }
+
+  .legal {
+    color: #fff;
+
+    .footer-link {
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+  }
+
+  h4 {
+    text-transform: uppercase;
+    color: #fff;
+    font-size: 1rem;
+  }
+}
+
+.breadcrumb {
+  background: transparent;
+
+  .breadcrumb-item {
+    padding-left: 30px;
+    padding-right: 30px;
+    font-size: 1.5rem;
+    text-shadow: 2px 2px 2px #000;
+    font-weight: normal;
+
+    a {
+      color: #fff;
+    }
+
+    &.active {
+      color: #fff;
+    }
+
+    & + .breadcrumb-item::before {
+      //noinspection CssNoGenericFontName
+      font-family: 'Font Awesome 5 Pro';
+      content: '\f054';
+      margin-right: 30px;
+      color: #fff;
+    }
+  }
+}
+
+@font-face {
+  font-family: 'nimbus_sans_lbold';
+  src: url('/fonts/NimbusSanL-Bol-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'nimbus_sans_lregular';
+  src: url('/fonts/NimbusSanL-Reg-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.modal-backdrop {
+  display: none;
+}

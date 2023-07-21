@@ -1,0 +1,22 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@types/node": "^18.16.19",
+    "nuxt": "^3.6.3",
+    "typescript": "^5.1.6",
+    "@types/bootstrap": "^5.2.6"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.7",
+    "bootstrap": "^5.3.0"
+  }
+}
