@@ -34,10 +34,6 @@
                 </div>
                 <div class="row" style="margin-top: 20px">
                     <div class="col-sm-3">
-                        <patron link="https://twitch.tv/nezukoschans" name="Nezuko Chan" tier="Assassin" />
-                    </div>
-                    <div class="col-sm-1"></div>
-                    <div class="col-sm-3">
                         <patron name="Fe2o3" tier="Assassin" />
                     </div>
                 </div>
