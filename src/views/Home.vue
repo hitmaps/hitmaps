@@ -454,11 +454,11 @@
                     </router-link>
                 </div>
             </div>
-<!--            <div class="row dashboard">
+            <div class="row dashboard">
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
-                            <h1>Roulette Rivals 11 (Presented by Frote's Speedrun Community)</h1>
+                            <h1>Roulette Rivals 12 (Presented by Frote's Speedrun Community)</h1>
                             <h2>Upcoming Matches</h2>
                         </div>
                     </div>
@@ -479,7 +479,7 @@
                         <div class="row dashboard" style="margin: 0; margin-bottom: 40px;">
                             <div class="elusive-target col-lg" :style="{
                                 backgroundImage:
-                                    'url(https://media.hitmaps.com/img/hitmaps-tournaments/rr11-tile.png)',
+                                    'url(https://media.hitmaps.com/img/hitmaps-tournaments/rr12-tile.png)',
                                 backgroundSize: 'cover',
                                 backgroundPosition: 'center',
                                 backgroundRepeat: 'no-repeat',
@@ -532,7 +532,7 @@
                             <b><i class="far fa-fw fa-map"></i> Maps</b>
                         </div>
                         <div class="col-lg-3">
-                            <b><i class="far fa-fw fa-calendar-alt"></i> Date | <i class="far fa-fw fa-clock"></i> Time ({{ new Date() | moment('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone, 'z') }})</b>
+                            <b><i class="far fa-fw fa-calendar-alt"></i> Date | <i class="far fa-fw fa-clock"></i> Time (<moment :value="new Date()" format="z"/>)</b>
                         </div>
                         <div class="col-lg-3">
                             <b><i class="fab fa-fw fa-twitch"></i> Shoutcaster(s)</b>
@@ -558,8 +558,8 @@
                                 </div>
                             </div>
                             <div class="col-lg-3 col-12">
-                                <i class="far fa-fw fa-calendar-alt d-lg-none"></i>{{ matchup.matchScheduledAt | moment('ddd, D MMM') }} | <i class="far fa-fw fa-clock d-lg-none"></i> {{ matchup.matchScheduledAt | moment('h:mm A') }}
-                                <span class="d-lg-none">{{ new Date() | moment('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone, 'z') }}</span>
+                                <i class="far fa-fw fa-calendar-alt d-lg-none"></i><moment :value="matchup.matchScheduledAt" format="ddd, D MMM"/> | <i class="far fa-fw fa-clock d-lg-none"></i> <moment :value="matchup.matchScheduledAt" format="h:mm A"/>
+                                <span class="d-lg-none"><moment :value="new Date()" format="z"/></span>
                             </div>
                             <div class="col-lg-3 col-12">
                                 <template v-if="matchup.cast">
@@ -575,7 +575,7 @@
                         </div>
                     </template>
                 </div>
-            </div>-->
+            </div>
         </template>
         <modal modal-title="Roulette Rivals 8"
                id="roulette-rivals-modal"
@@ -768,11 +768,13 @@ import GameIcon from "../components/GameIcon.vue";
 import GameButton from "../components/GameButton.vue";
 import TournamentPlatformIcon from "../components/TournamentPlatformIcon.vue";
 import Patron from "../components/Patron.vue";
+import Moment from "@/components/Moment.vue";
 
 export default {
     name: 'home',
     pageTitle: 'Home',
     components: {
+        Moment,
         Patron,
         TournamentPlatformIcon,
         GameButton,
@@ -1030,7 +1032,7 @@ export default {
         },
         fetchUpcomingMatches() {
             this.fetchedTournamentMatches = 'FETCHING';
-            this.$http.get('https://tournamentsapi.hitmaps.com/api/events/rr11/upcoming-matches').then(resp => {
+            this.$http.get('https://tournamentsapi.hitmaps.com/api/events/rr12/upcoming-matches').then(resp => {
                 this.tournamentMatches = resp.data.data;
                 this.fetchedTournamentMatches = 'FETCHED';
             }).catch(_ => this.tournamentMatches = []);
