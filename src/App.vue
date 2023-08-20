@@ -43,10 +43,12 @@
                                 <i class="fas fa-user-tie fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
-                        <a href="https://twitter.com/hitmapsdotcom" target="_blank">
+                        <a href="https://x.com/hitmapsdotcom" target="_blank">
                             <span class="fa-stack fa-2x" v-tooltip:top="$t('footer.twitter')">
                                 <i class="fas fa-square fa-stack-2x"></i>
-                                <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                                <i class="fab fa-stack-1x fa-inverse">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="currentColor" d="M8 2H1l8.26 11.014L1.45 22H4.1l6.388-7.349L16 22h7l-8.608-11.478L21.8 2h-2.65l-5.986 6.886L8 2Zm9 18L5 4h2l12 16h-2Z"/></svg>
+                                </i>
                             </span>
                         </a>
                         <a href="https://www.patreon.com/mrmike227"
