@@ -559,7 +559,7 @@
                             </div>
                             <div class="col-lg-3 col-12">
                                 <i class="far fa-fw fa-calendar-alt d-lg-none"></i><moment :value="matchup.matchScheduledAt" format="ddd, D MMM"/> | <i class="far fa-fw fa-clock d-lg-none"></i> <moment :value="matchup.matchScheduledAt" format="h:mm A"/>
-                                <span class="d-lg-none"><moment :value="new Date()" format="z"/></span>
+                                <span class="d-lg-none">&nbsp;<moment :value="matchup.matchScheduledAt" format="z"/></span>
                             </div>
                             <div class="col-lg-3 col-12">
                                 <template v-if="matchup.cast">
