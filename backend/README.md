@@ -1,8 +1,6 @@
-# Roulette - Backend
+# CSharp Boilerplate
 
-The backend for the HITMAPS Roulette website
-
-(does not contain any In-Game Roulette code)
+A boilerplate project used to quickly spin up new APIs.  While this boilerplate is licensed under the Unlicense license, HITMAPS-based open-source projects that utilize this template will be relicensed to a different OSS license.
 
 ## Creating a New Migration
 Inside of the `DataAccess` folder, execute the following:
