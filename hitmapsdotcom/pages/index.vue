@@ -6,7 +6,7 @@
         <header class="row">
             <div class="col text-center site-header">
                 <img src="/img/png/logos/hitmaps.png" class="img-fluid">
-                <h1>{{ 'interactive-maps-for-hitman' }}</h1>
+                <h1>{{ $t('interactive-maps-for-hitman') }}</h1>
             </div>
         </header>
 <template v-if="games.length > 0">
@@ -30,7 +30,7 @@
                                 <game-icon :icon="game.icon" font-style="normal" />
                             </div>
                             <div class="text">
-                                <h2>{{ ("game-type." + game.type) }}</h2>
+                                <h2>{{ $t("game-type." + game.type) }}</h2>
                                 <h1>{{ game.fullName }}</h1>
                             </div>
                         </div>
@@ -55,7 +55,7 @@
                                 <game-icon :icon="game.icon" font-style="normal" />
                             </div>
                             <div class="text">
-                                <h2>{{ ("game-type." + game.type) }}</h2>
+                                <h2>{{ $t("game-type." + game.type) }}</h2>
                                 <h1>{{ game.fullName }}</h1>
                             </div>
                         </div>
@@ -79,7 +79,7 @@
                                 <game-icon :icon="game.icon" font-style="normal" />
                             </div>
                             <div class="text">
-                                <h2>{{ "game-type." + game.type }}</h2>
+                                <h2>{{ $t("game-type." + game.type) }}</h2>
                                 <h1>{{ game.fullName }}</h1>
                             </div>
                         </div>
@@ -87,6 +87,135 @@
                 </div>
             </div>
         </template>
+        <div class="patreon community-server">
+            <div class="row intro">
+                <div class="col-xs-12">
+                    <h1>{{ $t('community-server.header') }}</h1>
+                    <p>{{ $t('community-server.intro') }}</p>
+                    <p>
+                        <i18n-t keypath="community-server.download-instructions">
+                            <template v-slot:serverPatcher>
+                                <a href="https://gitlab.com/grappigegovert/localghost/-/jobs/artifacts/master/download?job=build_patcher" target="_blank">{{ $t('community-server.server-patcher') }}</a>
+                            </template>
+                            <template v-slot:serverUrl>
+                                <code>gm.hitmaps.com</code>
+                            </template>
+                        </i18n-t>
+                    </p>
+                    <p>{{ $t('community-server.disclaimer') }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 roulette">
+                    <p>
+                        <img src="https://media.hitmaps.com/img/hitmaps-custom/roulette-logo.png" class="img-fluid">
+                    </p>
+                    <div class="row">
+                        <div class="col-lg-7 col-xs-12">
+                            <p>{{ $t('community-server.roulette.in-game-intro') }}</p>
+                            <p>{{ $t('community-server.roulette.available-for-h3-users') }}</p>
+                        </div>
+                        <div class="col-lg-5 col-xs-12">
+                            <img src="https://media.hitmaps.com/img/hitmaps-custom/sample-in-game-spin.png" class="img-fluid" alt="Screenshot of In-Game Spin">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-lg-7 col-xs-12">
+                            <p>
+                                <i18n-t keypath="roulette.introduction">
+                                    <template v-slot:hitmanRoulette>
+                                        <a href="https://thekotti.github.io/hitman.html" target="_blank">{{ $t('roulette.hitman-roulette') }}</a>
+                                    </template>
+                                </i18n-t>
+                            </p>
+                            <ul>
+                                <li><b>{{ $t('roulette.list-item-tournament-mode.header') }}</b> {{ $t('roulette.list-item-tournament-mode.details') }}</li>
+                                <li><b>{{ $t('roulette.list-item-control.header') }}</b> {{ $t('roulette.list-item-control.details') }}</li>
+                                <li><b>{{ $t('roulette.list-item-overlay.header') }}</b> {{ $t('roulette.list-item-overlay.details') }}</li>
+                            </ul>
+                            <a href="https://roulette.hitmaps.com" target="_blank" class="btn square-button white">
+                                <i class="fas fa-arrow-right"></i>
+                                {{ $t('roulette.visit-button') }}
+                            </a>
+                            <p><i>{{ $t('roulette.footer') }}</i></p>
+                        </div>
+                        <div class="col-lg-5 col-xs-12">
+                            <img src="https://media.hitmaps.com/img/hitmaps-custom/sample-website-spin.png" class="img-fluid" alt="Screenshot of Website Spin">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-6 ghost-mode">
+                    <h2>
+                        <game-icon icon="versus" font-style="solid"></game-icon>
+                        {{ $t('mission-types.ghost mode') }}
+                    </h2>
+                    <p>{{ $t('community-server.ghost-mode.intro') }}</p>
+                    <p>{{ $t('community-server.ghost-mode.available-for-h2-users') }}</p>
+                    <div class="ghost-mode-image">
+                        <img src="https://media.hitmaps.com/img/hitman3/gamemodes/briefing_ghostmode.jpg" alt="Ghost Mode Image" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="patreon">
+            <div class="row intro">
+                <div class="col-xs-12">
+                    <h1>{{ $t('partnership.header') }}</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 partner">
+                    <div class="image">
+                        <img src="https://media.hitmaps.com/img/hitmaps-custom/f7sc-logo.png" style="width: 128px; height: 128px;" alt="F7SC Logo">
+                    </div>
+                    <div class="text">
+                        <h3>{{ $t('partnership.f7sc.header') }}</h3>
+                        <p>{{ $t('partnership.f7sc.paragraph')}}</p>
+                        <a href="https://discord.gg/FVxTKdU" target="_blank" class="btn square-button blurple">
+                            <i class="fab fa-discord"></i>
+                            {{ $t('partnership.f7sc.call-to-action') }}
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-6 partner">
+                    <div class="image">
+                        <img src="https://media.hitmaps.com/img/hitmaps-custom/rrstats-logo.png" style="width: 128px; height: 128px;" alt="RRStats Logo">
+                    </div>
+                    <div class="text">
+                        <h3>{{ $t('partnership.rr-stats.header') }}</h3>
+                        <p>{{ $t('partnership.rr-stats.paragraph')}}</p>
+                        <a href="https://rrstats.currymaker.net" target="_blank" class="btn btn-dark square-button">
+                            <i class="fas fa-arrow-right"></i>
+                            {{ $t('partnership.rr-stats.call-to-action') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="patreon community-server">
+            <div class="row intro">
+                <div class="col-xs-12">
+                    <h1>
+                    <span class="fa-stack">
+                        <i class="fas fa-square fa-stack-2x"></i>
+                        <i class="fab fa-patreon fa-stack-1x fa-inverse"></i>
+                    </span>
+                        {{ $t('patreon.patreon-supporters') }}
+                    </h1>
+                    {{ $t('patreon.patreon-supporters-description') }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col" style="text-align: right">
+                    <a href="https://www.patreon.com/mrmike227" class="btn patreon-button">
+                        <i class="fab fa-patreon"></i>
+                        Become a Patron
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 

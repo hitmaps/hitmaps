@@ -1,0 +1,515 @@
+{
+    "interactive-maps-for-hitman": "Mapas Interactivos de la Serie Hitman",
+    "language-modal": {
+        "change-language": "Cambiar el Idioma",
+        "footer": "Las traducciones son mantenidas y actualizadas por la comunidad de HITMAPS™. Si una traducción es incorrecta, por favor {submitACorrection}.",
+        "submit-a-correction": "enviar una corrección"
+    },
+    "community-server": {
+        "header": "Community Server",
+        "intro": "The HITMAPS Community Game Server provides custom (and retired) game modes for all players who legitimately own HITMAN 2 or HITMAN 3. Below are the current game modes supported on the community server.",
+        "download-instructions": "To connect, simply download the {serverPatcher}, select {serverUrl} in the dropdown, and launch HITMAN 2 or HITMAN 3 to connect.",
+        "server-patcher": "server patcher",
+        "disclaimer": "Community Servers are not approved or supported by IO Interactive, so do not contact them for any issues. Instead, contact HITMAPS.",
+        "roulette": {
+            "in-game-intro": "The HITMAPS™ In-Game Roulette takes the core of the HITMAPS™ Roulette website and brings it directly in-game, allowing you to see spin conditions in-game, and be instantly notified when you fail. With 16 billion+ possible contracts, there's an almost endless number of ways to take out your targets.",
+            "available-for-h3-users": "The HITMAPS™ In-Game Roulette is available for PC players who own HITMAN 3."
+        },
+        "ghost-mode": {
+            "intro": "Ghost Mode for HITMAN 2 has returned as an unofficial game mode on the HITMAPS community server! You and a friend can connect to the community server and invite each other to a friendly Ghost Mode match using Steam's invite system.  Matchmaking is not supported on the community server.",
+            "available-for-h2-users": "Ghost Mode is available for PC players who own HITMAN 2."
+        }
+    },
+    "roulette": {
+        "introduction": "The HITMAPS™ Roulette website is still available as well. Initially based on Kotti's {hitmanRoulette}, HITMAPS™ Roulette takes Kotti's work and builds off of it to add new features, including:",
+        "hitman-roulette": "Ruleta de Hitman",
+        "list-item-tournament-mode": {
+            "header": "Modo Torneo:",
+            "details": "Crea un partido versus contra tus amigos (o rival ;) ). Elegí la duracion del partido y mandale el giro a tu oponente via link de solo lectura. Estos links automáticamente se refrescan cada vez que un nuevo giro es enviado."
+        },
+        "list-item-control": {
+            "header": "Control Afinado:",
+            "details": "¿No te gusta una condición específica para matar, pero no queres perder el resto del giro? Simplemente gira de vuelta la condición específica."
+        },
+        "list-item-overlay": {
+            "header": "Overlay para el Stream:",
+            "details": "Usando el modo torneo, podes copiar un link para añadir a tu OBS para darte un overlay profesional para tus streams o videos de YouTube."
+        },
+        "visit-button": "Visita la Ruleta de HITMAPS™",
+        "footer": "Ruleta de HITMAPS™: La ruleta oficial de Roulette Rivals"
+    },
+    "partnership": {
+        "header": "Socios Oficiales de la Comunidad de Speedrun de Frote",
+        "paragraph-1": "HITMAPS™️ esta encantado de estar asociado con la Comunidad de Speedrun de Frote. Atras en Septiembre de 2019, HITMAPS™️ promovió la Competición de Speedrun #2, acompañado de todos los futuros eventos. Estamos felices de anunciarles esta asociación, que incluye software diseñado para la Comunidad de Speedrun de Frote, junto con la infraestructura necesario para correr el software. La Comunidad de Speedrun de Frote también se ofreció para promover HITMAPS™️ en agradecimiento, HITMAPS™️ jugará un rol importante para los participantes.",
+        "paragraph-2": "La Comunidad de Speedrun de Frote hostea varios eventos durante todo el año, incluyendo Torneos de Modo Fantasma, Roulette Rivals, y la clásica Competición de Speedrun. ¡Todos los eventos grandes incluyen premios de dinero en efectivo! También hay muchas \"mini-competiciones\" que son semanales, además de concursos de creatividad después de un tiempo.",
+        "paragraph-3": "Si quieres puedes unirte a su Discord para estar notificado de futuros eventos!",
+        "join-the-discord": "Únete al Discord"
+    },
+    "form": {
+        "close-icon": "Icono de cerca",
+        "submit-icon": "Enviar icono",
+        "cancel-icon": "Icono de cancelar",
+        "close": "Cerca",
+        "loading": "Cargando...",
+        "select": "Seleccionar",
+        "copy": "Dupdo",
+        "cancel": "Cancelar",
+        "save": "Salvar",
+        "submit": "Enviar"
+    },
+    "game-type": {
+        "Campaign": "Campaña",
+        "Game Mode": "Modo de Juego",
+        "Elusive Target": "Objetivo Esquivo",
+        "Legacy Game": "Juego de Legado"
+    },
+    "elusive-target": {
+        "reactivated-target": "Objetivo Reactivado",
+        "target-arrives": "Target llega",
+        "briefing-icon": "Icono Informativo",
+        "mission-briefing": "Informe de la Misión",
+        "coming-soon": "Próximamente",
+        "notifications": {
+            "notification-icon": "Icono de Notificación",
+            "enroll-icon": "Icono de Inscripción",
+            "enroll": "Inscribirse",
+            "manage-notifications": "Gestionar Notificaciones de Objetivo Elusivo",
+            "manage-notifications-modal-title": "Administrar Notificaciones",
+            "checking-if-enabled": "Comprobando si las notificaciones están habilitadas en este dispositivo...",
+            "unsupported-browser": "Lamentablemente, las notificaciones no son apoyado en este dispositivo. Por favor intenta inscribirse con un dispositivo soportado.",
+            "device-not-enrolled": "Su dispositivo no está configurado actualmente arriba para recibir notificaciones. Haga clic \"Inscribirse\" a continuación para empezar a configurar su dispositivo.",
+            "notifications-blocked": "Tu dispositivo actualmente esta bloqueando las notificaciones de hitmaps.com. Por favor desbloquea este sitio de tu dispositivo, refresca la página, e intenta de nuevo.",
+            "send-me-a-notification-when": "Envíame una notificación cuando...",
+            "announced": "Se anuncia un próximo Objetivo Esquivo",
+            "playable": "El Objetivo Esquivo llega y se vuelve jugable",
+            "7-days": "The Objetivo Esquivo está disponible por 7 días más",
+            "5-days": "The Objetivo Esquivo está disponible por 5 días más",
+            "3-days": "The Objetivo Esquivo está disponible por 3 días más",
+            "1-day": "The Objetivo Esquivo está disponible por 1 días más",
+            "ended": "El Objetivo Esquivo ha dejado",
+            "new-et": "Nuevo Objetivo Escurridizo",
+            "reactivated-et": "Objetivo Escurridizo Reactivado"
+        },
+        "n-days": "{days} Días"
+    },
+    "elusive-target-icon": "Objetivo Esquivo Icono",
+    "home-icon": "Icono de Inicio",
+    "home": "Inicio",
+    "location-icon": "Icono de Ubicación",
+    "mission-image": "Imagen de la Misión",
+    "mission-icon": "Ícono de Misión",
+    "patreon": {
+        "patreon-supporters": "Colaboradores de Patreon",
+        "patreon-supporters-description": "Patreon ayuda a costear los costos de HITMAPS'️. Nos gustaría agradecer a la gente de abajo, que apoyaron con el nivel \"Asesino Maestro\" o más alto."
+    },
+    "difficulties": {
+        "Casual": "Casual",
+        "Professional": "Profesional",
+        "Master": "Master",
+        "Standard": "Estándar"
+    },
+    "mission-types": {
+        "elusive target": "Objetivo Esquivo",
+        "mission": "Misión",
+        "special assignment": "Asignacion Especial",
+        "bonus episode": "Misión Plus",
+        "patient zero": "Paciente Cero",
+        "sniper assassin": "Asesino Francotirador",
+        "ghost mode": "Modo Fantasma"
+    },
+    "locations": {
+        "destinations": {
+            "ica-facility": "Facilidad ICA",
+            "paris": "Paris",
+            "sapienza": "Sapienza",
+            "marrakesh": "Marrakesh",
+            "bangkok": "Bangkok",
+            "colorado": "Colorado",
+            "hokkaido": "Hokkaido",
+            "hawkes-bay": "Bahía de Hawke",
+            "miami": "Miami",
+            "santa-fortuna": "Santa Fortuna",
+            "mumbai": "Mumbai",
+            "whittleton-creek": "Whittleton Creek",
+            "isle-of-sgail": "Isla de Sgàil",
+            "new-york": "Nueva York",
+            "himmelstein": "Himmelstein",
+            "hantu-port": "Puerto Hantu",
+            "siberia": "Siberia",
+            "haven-island": "Isla del asilo"
+        },
+        "countries": {
+            "ica-facility": "Clasificado",
+            "paris": "Francia",
+            "sapienza": "Italia",
+            "marrakesh": "Marruecos",
+            "bangkok": "Tailandia",
+            "colorado": "USA",
+            "hokkaido": "Japón",
+            "hawkes-bay": "Nueva Zelanda",
+            "miami": "USA",
+            "santa-fortuna": "Colombia",
+            "mumbai": "Indio",
+            "whittleton-creek": "USA",
+            "isle-of-sgail": "Atlántico Norte",
+            "new-york": "USA",
+            "himmelstein": "Austria",
+            "hantu-port": "Singapur",
+            "siberia": "Rusia",
+            "haven-island": "Maldivas"
+        }
+    },
+    "missions": {
+        "freeform-training": "Entrenamiento Forma Libre",
+        "the-final-test": "La Prueba Final",
+        "the-showstopper": "El Showstopper",
+        "world-of-tomorrow": "Mundo del Mañana",
+        "the-icon": "El Icono",
+        "landslide": "Deslizamiento de tierra",
+        "the-author": "El Autor",
+        "a-gilded-cage": "Una Jaula Dorada",
+        "a-house-built-on-sand": "Una Casa Construida Sobre Arena",
+        "club-27": "Club 27",
+        "the-source": "El Origen",
+        "freedom-fighters": "Luchadores por la Libertad",
+        "the-vector": "El Vector",
+        "situs-inversus": "Situs Inversus",
+        "patient-zero": "Paciente Cero",
+        "nightcall": "Llamada nocturna",
+        "the-mills-reverie": "La Ensoñación Mills",
+        "finish-line": "La Linea Final",
+        "three-headed-serpent": "Serpiente de Tres Cabezas",
+        "embrace-of-the-serpent": "Abrazo de la Serpiente",
+        "chasing-a-ghost": "Persiguiendo un Fantasma",
+        "illusions-of-grandeur": "Ilusiones de Grandeza",
+        "another-life": "Otra Vida",
+        "ark-society": "La Sociedad del Arca",
+        "golden-handshake": "Apretón de Manos Dorado",
+        "the-last-yardbird": "The Last Yardbird",
+        "the-pen-and-the-sword": "La Bolígrafo y la Espada",
+        "crime-and-punishment": "Crimen y Castigo",
+        "the-last-resort": "El ultimo recurso",
+        "miami": "Miami"
+    },
+    "map": {
+        "level-number": "Nivel {levelNumber}",
+        "satellite": "Satélite",
+        "toggle-navigation": "Cambiar el modo de navegación",
+        "editor-enabled": "Editor Habilitado",
+        "add-remove-items": "Agregar / Quitar Artículos",
+        "add-remove-ledges": "Agregar / Quitar Repisas",
+        "add-remove-foliage": "Agregar / Quitar Follaje",
+        "manage-disguise-areas": "Administrar Areas de Disfrazar",
+        "debug-mode": "Elegir Modo de Depuración",
+        "edit-map": "Editar Mapa",
+        "login-to-edit": "Iniciar sesión / Registrarse para editar",
+        "clear-search": "Borrar Búsqueda",
+        "disguises": "Disfrazo",
+        "none": "Ninguno",
+        "hide-all": "Ocultar Todo",
+        "show-all": "Mostrar Todo",
+        "types": {
+            "Points of Interest": "Punto de Interés",
+            "Weapons and Tools": "Armas y Herramientas",
+            "Navigation": "Navegación"
+        },
+        "groups": {
+            "Points of Interest|Sabotage": "Sabotaje",
+            "Points of Interest|Distraction": "Distracción",
+            "Points of Interest|Poison": "Veneno",
+            "Points of Interest|Misc Item": "Artículo Misceláneo",
+            "Points of Interest|Intel": "Intel",
+            "Points of Interest|Disguise": "Disfrazo",
+            "Points of Interest|Blend In": "Fundido Entrante",
+            "Points of Interest|Conceal Item": "Ocultar Artículos",
+            "Points of Interest|Weapon Crate": "Caja de armas",
+            "Points of Interest|Locked Door": "Puerta Bloqueado",
+            "Points of Interest|Destroy Evidence": "Destruir Evidencia",
+            "Points of Interest|Hiding Spot": "Escondite",
+            "Points of Interest|Interaction": "Interacción",
+            "Points of Interest|Alarm": "Alarma",
+            "Points of Interest|Security Check": "Comprobación Seguridad",
+            "Points of Interest|Camera": "Cámara",
+            "Points of Interest|Location": "Ubicación",
+            "Weapons and Tools|Distraction": "Distracción",
+            "Weapons and Tools|Poison": "Veneno",
+            "Weapons and Tools|Lethal Melee": "Cuerpo a cuerpo Letal",
+            "Weapons and Tools|Non-Lethal Melee": "Cuerpo a cuerpo no Letal",
+            "Weapons and Tools|Explosive": "Explosivo",
+            "Weapons and Tools|Firearm": "Arma de Fuego",
+            "Weapons and Tools|Ammo": "Munición",
+            "Navigation|Starting Location": "Lugar de Inicio",
+            "Navigation|Exit Location": "Ubicación de Salida",
+            "Navigation|Agency Pickup": "Recogida de Agencia",
+            "Navigation|Stairwell": "Hueco de escalera",
+            "Navigation|Passage": "Paso",
+            "Navigation|Ways Up/Down": "Maneras Arriba / Abajo",
+            "Navigation|Ledge": "Repisa",
+            "Navigation|Foliage": "Follaje",
+            "Navigation|Area": "Area"
+        },
+        "editor-menu": "Menú del Editor",
+        "what-would-you-like-to-do": "¿Qué le gustaría hacer?",
+        "click-icon-to-close": "Haga clic en el icono {pencilIcon} para cerrar el menú del editor.",
+        "click-to-add": "Haga clic en cualquier parte del mapa para agregar un nuevo elemento.",
+        "drag-to-move": "Arrastre y suelte un elemento existente para moverlo.",
+        "click-item-to-delete": "Haga clic en un elemento existente y luego el botón \"Eliminar\" para eliminarlo.",
+        "close-item-menu": "Cerrar Menú Elementos",
+        "click-ledge-to-delete": "Haga clic en una repisa existente para eliminarla.",
+        "add-ledge": "Agregar Repisa",
+        "toggle-ledge-builder": "Haga clic aquí para habilitar / deshabilitar generador de regiones de repisa",
+        "close-ledge-menu": "Cerrar Menú Repisa",
+        "add-foliage": "Agregar Follaje",
+        "toggle-foliage-builder": "Haga clic aquí para habilitar / deshabilitar generador de regiones de follaje",
+        "close-foliage-menu": "Cerrar Menú Follaje",
+        "delete-existing-region": "Haga clic en una región existente para eliminarla.",
+        "select-disguise-for-editing": "Seleccione un disfrazar del menú desplegable a continuación para editar su diseño.",
+        "add-trespassing-region": "Agregar Región de Allanamiento",
+        "toggle-trespassing-builder": "Haga clic aquí para habilitar / deshabilitar generador de regiones de allanamiento",
+        "add-hostile-region": "Agregar Región de Allanamiento",
+        "toggle-hostile-builder": "Haga clic aquí para habilitar / deshabilitar generador de regiones de allanamiento",
+        "copy-regions": "Copiar Regiones",
+        "click-to-copy-regions": "Haga clic aquí para copiar regiones de disfrazar de un disfraz a otro",
+        "close-disguise-menu": "Cerrar Menú del Area de Disfrazar",
+        "copy-disguises-warning": "Al copiar, cualquier región de disfrazar objetivo existente se eliminará antes de copiar.",
+        "source-disguise": "Fuente Objetivo",
+        "target-disguise": "Disfrazar Objetivo",
+        "confirm-move": "Confirmar movimiento",
+        "confirm-reposition": "¿Estás seguro de que quieres reposicionar este objeto?",
+        "add-edit-item": "Agregar / Editar Elemento",
+        "apply-template": "Aplicar plantilla",
+        "template": "Plantilla",
+        "please-indicate-when-adding": "Por favor indique lo siguiente debajo la sección de notas al agregar elementos:",
+        "required-items": "Cualquier artículo requerido, como necesitando un una llave para aflojar las válvulas (use tipo \"Requisito\")",
+        "suspicious-items": "Ya sea un o acción es sospechosa o no cuando se usa cierto disfrazur (use el tipo \"Advertencia\")",
+        "information-items": "Si sensación que algo requiere más información, use el tipo \"Información\"",
+        "in-game-description-items": "Puedes agregar la descripción del juego para los elementos usando el tipo \"Descripción\" si no se proporciona un campo de nombre.",
+        "blank-notes": "Cualquier nota con las notas con texto en blanco no se agregarán al nodo",
+        "category": "Categoría",
+        "icon": "Icono",
+        "name": "Nombre",
+        "image-url": "URL de la imágen",
+        "image-url-note": "Las imágenes deben estar vinculadas a https://media.hitmaps.com",
+        "quantity": "Cantidad",
+        "name-note": "Ingresa el nombre tal como aparece en el juego.",
+        "action": "Acción",
+        "action-note": "Ingrese la acción eso se realiza (como \"aflojar la válvula\", \"encender la radio\", \"activar la alarma de incendio\", etc.)",
+        "target": "Objetivo",
+        "target-note": "¿Quién se envenenado?",
+        "type": "Tipo",
+        "pickup-large": "Recogida (Grande)",
+        "stash-small": "Alijo (Pequeño)",
+        "direction": "Dirección",
+        "direction-up": "Sólo arriba",
+        "direction-up-down": "Arriba y Abajo",
+        "direction-down": "Sólo abajo",
+        "notes": "Notas",
+        "requirement": "Requisito",
+        "warning": "Advertencia",
+        "information": "Información",
+        "description": "Descripción",
+        "text": "Texto",
+        "add-another-note": "Añadir Otro Nota",
+        "in-game-description": "Descripción del en-juego:",
+        "suit-disguise": "Traje ({suitName})"
+    },
+    "profile": {
+        "profile": "Perfil",
+        "manage-profile": "Administra Tu Perfil",
+        "change-name": "Cambiar Nombre",
+        "name": "Nombre",
+        "save-name": "Guardar Nombre",
+        "change-password": "Cambiar contraseña",
+        "current-password": "Contraseña actual",
+        "new-password": "Contraseña Nueva",
+        "confirm-new-password": "Confirmar nueva contraseña",
+        "update-password": "Actualizar Contraseña"
+    },
+    "authentication": {
+        "log-out": "Cerrar Sesión",
+        "login-or-create-an-account": "Identificarse o crear una cuenta",
+        "account-verified": "Cuenta verificada! Ahora puede iniciar sesión.",
+        "unable-to-verify-account": "No pudimos verificar tu cuenta. Asegúrese de hacer clic en el enlace de activación del correo electrónico más reciente que recibió, y de que el enlace no caducó.",
+        "sign-in": "Registrarse",
+        "email": "Email",
+        "password": "Contraseña",
+        "confirm-password": "Confirma Contraseña",
+        "forgot-password": "He olvidado mi contraseña",
+        "forgot-password-modal": "Olvidar tu contraseña? ¡No hay problema! Ingrese su correo electrónico a continuación y le enviaremos un correo electrónico con un enlace para restablecer su contraseña.",
+        "create-an-account": "Cree una cuenta",
+        "agree-to-terms": "Acepto los {termsOfUse} y {privacyPolicy}",
+        "terms-of-use": "Términos de Uso",
+        "privacy-policy": "Política de Privacidad",
+        "register": "Registrarse",
+        "back-to-login": "Volver a Inicio de sesión",
+        "login-with-discord": "Iniciar sesión con Discord",
+        "logging-in": "Iniciando sesión con Discord, espere por favor...",
+        "error-not-in-server": "Necesitas ser miembro del servidor de Discord de HITMAPS™. Por favor únete al servidor usando el botón al pie de página, e intenta iniciar sesión de nuevo.",
+        "error-discord-auth": "Ocurrió un error de comunicación con Discord. Por favor intenta de nuevo mas tarde."
+    },
+    "404": {
+        "page-not-found": "Página no encontrada",
+        "janus-being-attacked": "Janus siendo atacado con magdalenas",
+        "image-caption": "Parece que no pudimos encontrar la página que estás buscando. Le pedimos ayuda a Janus, pero no estaba cooperando, a pesar de ser que le ofrecieron varias magdalenas de arándanos."
+    },
+    "back-to-home": "Volver a la página de inicio",
+    "footer": {
+        "disclaimer": "HITMAN™ es una marca comercial con licencia exclusiva para {ioiLink}.",
+        "developed-by": "Sitio creado y mantenido por {mikeKochLink}.",
+        "io-interactive": "IO Interactive",
+        "join-the-discord": "Únete al Discord de HITMAPS™",
+        "hitmanforum": "hitmanforum.com Discusión",
+        "hitman-status": "Estado del servidor HITMAN™ - Hecho Con <3 por Hardware",
+        "twitter": "Sigue a HITMAPS™ en Twitter",
+        "patreon": "Apoya mi trabajo en Patreon",
+        "about": "Acerca de"
+    },
+    "absolution": {
+        "a-personal-contract": {
+            "gardens": "Jardines",
+            "greenhouse": "Invernadero",
+            "mansion-ground-floor": "Mansion|1st Floor",
+            "mansion-second-floor": "Mansion|2nd Floor",
+            "diana": "Mansión|Diana"
+        },
+        "the-king-of-chinatown": {
+            "ground": "Plaza del Barrio Chino|Suelo",
+            "second-floor": "Plaza del Barrio Chino|2do Piso"
+        },
+        "terminus": {
+            "sewers": "Hotel Terminus|Alcantarillas",
+            "basement": "Hotel Terminus|Sótano",
+            "ground": "Hotel Terminus|Suelo",
+            "7-floor": "Pisos Superiores|7mo Piso",
+            "8-floor": "Pisos Superiores|8vo Piso"
+        },
+        "run-for-your-life": {
+            "hotel-room": "Hotel Quemandose|Habitación del Hotel",
+            "hotel-roof": "Hotel Quemandose|Techo del Hotel",
+            "library-first-floor": "Biblioteca|1er Piso",
+            "library-second-floor": "Biblioteca|2do Piso",
+            "library-third-floor": "Biblioteca|3er Piso",
+            "library-fourth-floor": "Biblioteca|4to Piso",
+            "pigeon-coop": "Gallinero",
+            "shangri-la": "Shangri-La",
+            "train-first-floor": "Estación de Trenes|1er Piso",
+            "train-second-floor": "Estación de Trenes|2do Piso"
+        },
+        "hunter-and-hunted": {
+            "courtyard-tunnels": "Patio|Túneles",
+            "courtyard-ground": "Patio|Suelo",
+            "club-first-floor": "Vixen Club|Basement",
+            "club-second-floor": "Vixen Club|1st Floor",
+            "club-third-floor": "Vixen Club|2nd Floor",
+            "dressing-room-first-floor": "Vestidores|1er Piso",
+            "dressing-room-second-floor": "Vestidores|2do Piso",
+            "derelict-first-floor": "Edificio Abandonado|1er Piso",
+            "derelict-second-floor": "Edificio Abandonado|2do Piso",
+            "store-first-floor": "Tienda|1er Piso",
+            "store-second-floor": "Tienda|2do Piso",
+            "store-third-floor": "Tienda|3er Piso",
+            "chinese-new-year-first-floor": "Chinese New Year|Basement",
+            "chinese-new-year-second-floor": "Chinese New Year|1st Floor",
+            "loading-area": "Área de Carga"
+        },
+        "rosewood": {
+            "victorias-ward": "Sala de Victoria",
+            "hallways-first-floor": "Salas del Orfanato|1er Piso",
+            "hallways-second-floor": "Salas del Orfanato|2do Piso",
+            "central-heating": "Calefacción Central"
+        },
+        "welcome-to-hope": {
+            "great-balls-of-fire": "Grandes Bolas de Fuego"
+        },
+        "birdies-gift": {
+            "gun-shop-ground-floor": "Tienda de Armas|1er Piso",
+            "gun-shop-second-floor": "Tienda de Armas|2do Piso"
+        },
+        "shaving-lenny": {
+            "streets-of-hope-first-floor": "Calles de Hope|1er Piso",
+            "streets-of-hope-second-floor": "Calles de Hope|2do Piso",
+            "barbershop-first-floor": "Barbería|1er Piso",
+            "barbershop-second-floor": "Barbería|2do Piso"
+        },
+        "end-of-the-road": {
+            "the-desert": "El Desierto"
+        },
+        "dexter-industries": {
+            "dead-end": "Callejón sin Salida",
+            "old-mill-first-floor": "Molino Viejo|1er Piso",
+            "old-mill-second-floor": "Molino Viejo|2do Piso",
+            "descent-floor-1": "Descenso|1er Piso",
+            "descent-floor-2": "Descenso|2do Piso",
+            "descent-floor-3": "Descenso|3er Piso",
+            "descent-floor-4": "Descenso|4to Piso",
+            "descent-floor-5": "Descenso|5to Piso",
+            "descent-floor-6": "Descenso|6to Piso",
+            "factory-floor-1": "Recinto de la Fábrica|1er Piso",
+            "factory-floor-2": "Recinto de la Fábrica|2do Piso",
+            "factory-floor-3": "Recinto de la Fábrica|3er Piso"
+        },
+        "death-factory": {
+            "test-facility-floor-1": "Instalación de Pruebas|1er Piso",
+            "test-facility-floor-2": "Instalación de Pruebas|2do Piso",
+            "test-facility-floor-3": "Instalación de Pruebas|3er Piso",
+            "test-facility-top": "Instalación de Pruebas|Parte Superior de la Instalación de Pruebas",
+            "decontamination": "Descontaminación",
+            "rnd-b3": "I+D|B3",
+            "rnd-b1": "I+D|B1",
+            "rnd-floor-1": "I+D|1er Piso"
+        },
+        "fight-night": {
+            "arena-floor-1": "La Arena|1er Piso",
+            "arena-floor-2": "La Arena|2do Piso",
+            "arena-floor-3": "La Arena|3er Piso",
+            "backstage": "Hangar del Patriota"
+        },
+        "attack-of-the-saints": {
+            "parking-floor-1": "Estacionamiento|1er Piso",
+            "parking-floor-2": "Estacionamiento|2do Piso",
+            "reception": "Recepción",
+            "cornfield": "Maizal"
+        },
+        "skurkys-law": {
+            "courthouse-floor-1": "Juzgado|1er Piso",
+            "courthouse-floor-2": "Juzgado|2do Piso",
+            "holding-cells": "Posesión de Celdas",
+            "prison-floor-1": "Prisión|1er Piso",
+            "prison-floor-2": "Prisión|2do Piso"
+        },
+        "operation-sledgehammer": {
+            "county-jail": "Cárcel del Condado",
+            "outgunned": "Dominado",
+            "burn": "Incendio",
+            "hope-fair-floor-1": "Feria de Hope|1er Piso",
+            "hope-fair-floor-2": "Feria de Hope|2do Piso"
+        },
+        "one-of-a-kind": {
+            "floor-1": "Tailor Shop|Basement",
+            "floor-2": "Tailor Shop|1st Floor"
+        },
+        "blackwater-park": {
+            "blackwater-park": "Parque Blackwater",
+            "penthouse-floor-1": "Ático|1er Piso",
+            "penthouse-floor-2": "Ático|2do Piso"
+        },
+        "countdown": {
+            "roof-floor-1": "Techo de Blackwater|1er Piso",
+            "roof-floor-2": "Techo de Blackwater|2do Piso",
+            "roof-floor-3": "Techo de Blackwater|3er Piso"
+        },
+        "absolution": {
+            "cemetery-entrance": "Entrada al Cementerio",
+            "burnwood-family-tomb": "Tumba de la Familia Burnwood",
+            "crematorium": "Crematorio"
+        }
+    },
+    "hitman3": {
+        "untouchable": {
+            "lab": "Lab Area",
+            "pre-bar": "Militia Zone|Beginning to Bar",
+            "post-bar": "Militia Zone|After Bar to Offices",
+            "offices": "Offices"
+        }
+    }
+}
