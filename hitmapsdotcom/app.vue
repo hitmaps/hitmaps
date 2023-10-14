@@ -21,55 +21,40 @@
                           </i18n-t>
                       </p>
                   </div>
-                  <div class="col-md-6 text-right">
-                      <a href="#" :to="{ name: 'about' }">
-                            <span class="fa-stack fa-2x" :top="$t('footer.about')">
-                                <i class="fas fa-square fa-stack-2x"></i>
-                                <i class="fas fa-info-circle fa-stack-1x fa-inverse"></i>
-                            </span>
+                  <div class="col-md-6 text-end">
+                      <a href="#">
+                          <footer-icon-stack icon="fa6-solid:circle-info" :tooltip-text="$t('footer.about')" />
                       </a>
                       <a href="https://discord.gg/RssFsajjjX" target="_blank">
-                            <span class="fa-stack fa-2x" :top="$t('footer.join-the-discord')">
-                                <i class="fas fa-square fa-stack-2x"></i>
-                                <i class="fab fa-discord fa-stack-1x fa-inverse"></i>
-                            </span>
+                          <footer-icon-stack icon="fa6-brands:discord" :tooltip-text="$t('footer.join-the-discord')"/>
                       </a>
                       <a
                           href="https://hitmanstat.us"
                           target="_blank"
                           data-toggle="tooltip">
-                            <span class="fa-stack fa-2x" :top="$t('footer.hitman-status')">
-                                <i class="fas fa-square fa-stack-2x"></i>
-                                <i class="fas fa-user-tie fa-stack-1x fa-inverse"></i>
-                            </span>
+                          <footer-icon-stack icon="fa6-solid:user-tie" :tooltip-text="$t('footer.hitman-status')"/>
                       </a>
                       <a href="https://twitter.com/hitmapsdotcom" target="_blank">
-                            <span class="fa-stack fa-2x" :top="$t('footer.twitter')">
-                                <i class="fas fa-square fa-stack-2x"></i>
-                                <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
-                            </span>
+                          <footer-icon-stack icon="fa6-brands:x-twitter" :tooltip-text="$t('footer.twitter')"/>
                       </a>
                       <a href="https://www.patreon.com/mrmike227"
                          target="_blank"
                          data-toggle="tooltip"
                          class="patreon-button">
-                            <span class="fa-stack fa-2x" :top="$t('footer.patreon')">
-                                <i class="fas fa-square fa-stack-2x"></i>
-                                <i class="fab fa-patreon fa-stack-1x fa-inverse"></i>
-                            </span>
+                          <footer-icon-stack icon="fa6-brands:patreon" :tooltip-text="$t('footer.patreon')"/>
                       </a>
                   </div>
               </div>
               <div class="row legal">
                   <div class="col-sm-2">
                         <span class="language-switcher" data-toggle="modal" data-target="#locale-modal">
-                            <country-flag :country="getCountryFlag()" :top="('language-modal.change-language')" />
+                            <country-flag :country="getCountryFlag()" data-bs-toggle="tooltip" :data-bs-title="$t('language-modal.change-language')" />
                         </span>
                   </div>
                   <div class="col-sm-10 text-end">
                         <span class="footer-link">
                             <icon name="fa-solid:gavel"/>
-                            <a href="#" :to="{ name: 'terms-of-use' }">
+                            <a href="#" data-bs-toggle="tooltip" :to="{ name: 'terms-of-use' }">
                                 {{ $t('authentication.terms-of-use') }}</a>
                         </span>
                       |
@@ -103,13 +88,14 @@
 <script setup lang="ts">
 const currentYear = ref(new Date().getFullYear());
 const route = useRoute();
+const locale = useI18n();
 
 function isNotInMap() {
     return route.name !== 'map-view'
 }
 
 function getCountryFlag() {
-    return 'us';//LanguageHelpers.getCountryFlagForLocale(this.$i18n);
+    return LanguageHelpers.getCountryFlagForLocale(locale);
 }
 </script>
 <style lang="scss" scoped>

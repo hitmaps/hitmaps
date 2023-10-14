@@ -8,6 +8,7 @@ export default defineI18nConfig(() => ({
     legacy: false
 }));
 
+//@ts-ignore
 function loadLocaleMessages() {
     const messages = {}
     let modules = import.meta.glob('./locales/*.json', { eager: true });

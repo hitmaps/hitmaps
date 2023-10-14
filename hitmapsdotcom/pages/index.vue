@@ -5,11 +5,11 @@
     >
         <header class="row">
             <div class="col text-center site-header">
-                <img src="/img/png/logos/hitmaps.png" class="img-fluid">
+                <img src="/img/png/logos/hitmaps.png" class="img-fluid" alt="HITMAPS Logo">
                 <h1>{{ $t('interactive-maps-for-hitman') }}</h1>
             </div>
         </header>
-<template v-if="games.length > 0">
+<template v-if="games && games.length > 0">
             <div class="row dashboard">
                 <div
                     class="game col-lg"
@@ -37,26 +37,59 @@
                     </a>
                 </div>
                 <div
-                    class="game col-lg"
-                    v-for="game in games.filter(x => ['hitman3'].includes(x.slug))"
-                    :key="game.id"
+                    class="elusive-target col-lg"
                     v-bind:style="{
                         backgroundImage:
-                            'url(' + game.tileUrl + ')',
+                            'url(' +
+                            (elusiveTarget != null
+                                ? elusiveTarget.tileUrl
+                                : '/img/jpg/elusive-targets/coming-soon.jpg') + ')',
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         backgroundRepeat: 'no-repeat'
                     }"
                 >
-                    <a href="#">
+                    <a href="#" v-if="elusiveTarget !== null">
                         <p>&nbsp;</p>
-                        <div class="game-info">
+                        <div class="elusive-target-info">
                             <div class="image">
-                                <game-icon :icon="game.icon" font-style="normal" />
+                                <game-icon icon="elusive" font-style="normal" />
                             </div>
                             <div class="text">
-                                <h2>{{ $t("game-type." + game.type) }}</h2>
-                                <h1>{{ game.fullName }}</h1>
+                                <h2>{{ $t('game-type.Elusive Target') }}</h2>
+                                <h1>
+                                    {{
+                                        elusiveTarget != null
+                                            ? elusiveTarget.name
+                                            : $t('elusive-target.coming-soon')
+                                    }}
+                                    <span class="mkii" v-if="elusiveTarget.reactivated"
+                                          data-bs-toggle="tooltip"
+                                          data-bs-placement="left"
+                                          :data-bs-title="$t('elusive-target.reactivated-target')">2</span>
+                                </h1>
+                            </div>
+                        </div>
+                    </a>
+                    <a v-else href="#">
+                        <p>&nbsp;</p>
+                        <div class="elusive-target-info">
+                            <div class="image">
+                                <game-icon icon="elusive" font-style="normal" />
+                            </div>
+                            <div class="text">
+                                <h2>{{ $t('game-type.Elusive Target') }}</h2>
+                                <h1>{{ $t('elusive-target.coming-soon') }}</h1>
+                            </div>
+                            <!--@click="showNotificationModal"-->
+                            <div
+                                onclick="return false;"
+                                class="image float-right notification-icon"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="left"
+                                :data-bs-title="$t('elusive-target.notifications.manage-notifications')"
+                            >
+                                <game-icon icon="audio" font-style="normal" />
                             </div>
                         </div>
                     </a>
@@ -135,7 +168,7 @@
                                 <li><b>{{ $t('roulette.list-item-overlay.header') }}</b> {{ $t('roulette.list-item-overlay.details') }}</li>
                             </ul>
                             <a href="https://roulette.hitmaps.com" target="_blank" class="btn square-button white">
-                                <i class="fas fa-arrow-right"></i>
+                                <icon name="fa-solid:arrow-right"/>
                                 {{ $t('roulette.visit-button') }}
                             </a>
                             <p><i>{{ $t('roulette.footer') }}</i></p>
@@ -174,7 +207,7 @@
                         <h3>{{ $t('partnership.f7sc.header') }}</h3>
                         <p>{{ $t('partnership.f7sc.paragraph')}}</p>
                         <a href="https://discord.gg/FVxTKdU" target="_blank" class="btn square-button blurple">
-                            <i class="fab fa-discord"></i>
+                            <icon name="fa6-brands:discord"/>
                             {{ $t('partnership.f7sc.call-to-action') }}
                         </a>
                     </div>
@@ -187,7 +220,7 @@
                         <h3>{{ $t('partnership.rr-stats.header') }}</h3>
                         <p>{{ $t('partnership.rr-stats.paragraph')}}</p>
                         <a href="https://rrstats.currymaker.net" target="_blank" class="btn btn-dark square-button">
-                            <i class="fas fa-arrow-right"></i>
+                            <icon name="fa-solid:arrow-right"/>
                             {{ $t('partnership.rr-stats.call-to-action') }}
                         </a>
                     </div>
@@ -198,10 +231,6 @@
             <div class="row intro">
                 <div class="col-xs-12">
                     <h1>
-                    <span class="fa-stack">
-                        <i class="fas fa-square fa-stack-2x"></i>
-                        <i class="fab fa-patreon fa-stack-1x fa-inverse"></i>
-                    </span>
                         {{ $t('patreon.patreon-supporters') }}
                     </h1>
                     {{ $t('patreon.patreon-supporters-description') }}
@@ -210,7 +239,7 @@
             <div class="row">
                 <div class="col" style="text-align: right">
                     <a href="https://www.patreon.com/mrmike227" class="btn patreon-button">
-                        <i class="fab fa-patreon"></i>
+                        <icon name="fa6-brands:patreon"/>
                         Become a Patron
                     </a>
                 </div>
@@ -220,8 +249,12 @@
 </template>
 
 <script setup>
+const config = useRuntimeConfig();
 
-const games = (await useFetch('https://www.hitmaps.com/api/web/home')).data.value.games;
+const { data } = await useFetch(`${config.public.apiDomain}/api/web/home`);
+const games = data.value.games;
+const elusiveTarget = data.value.elusiveTargets.length ? data.value.elusiveTargets[0] : null;
+
 </script>
 
 <style lang="scss" scoped>
@@ -356,6 +389,7 @@ header {
             background: $card-footer-background;
             color: $card-footer-text;
             text-shadow: none;
+            display: flex;
 
             h2 {
                 color: $card-footer-text;
@@ -392,6 +426,7 @@ header {
             .text {
                 display: inline-block;
                 text-transform: uppercase;
+                flex-grow: 1;
 
                 h1 {
                     font-size: 1.5rem;
