@@ -458,7 +458,7 @@
                 <div class="tournament col-lg">
                     <div class="tournament-info">
                         <div class="text">
-                            <h1>Roulette Rivals 12 (Presented by Frote's Speedrun Community)</h1>
+                            <h1>Roulette Rivals World Championship - 2023 (Presented by Frote's Speedrun Community)</h1>
                             <h2>Upcoming Matches</h2>
                         </div>
                     </div>
@@ -479,7 +479,7 @@
                         <div class="row dashboard" style="margin: 0; margin-bottom: 40px;">
                             <div class="elusive-target col-lg" :style="{
                                 backgroundImage:
-                                    'url(https://media.hitmaps.com/img/hitmaps-tournaments/rr12-tile.png)',
+                                    'url(https://media.hitmaps.com/img/hitmaps-tournaments/rrwc-2023/signup-tile.png)',
                                 backgroundSize: 'cover',
                                 backgroundPosition: 'center',
                                 backgroundRepeat: 'no-repeat',
@@ -516,8 +516,10 @@
                                             {{ tournamentMatches[0].maps.filter(x => x.selectionType === 'Pick').map(x => `${x.missionName} - ${x.missionLocation}`).join(' / ') }}
                                         </h2>
                                         <h1>
+                                            &nbsp;<country-flag :country="tournamentMatches[0].competitors[0].countryCode"/>&nbsp;
                                             {{ tournamentMatches[0].competitors[0].challongeName }} vs
                                             {{ tournamentMatches[0].competitors[1].challongeName }}
+                                            <country-flag :country="tournamentMatches[0].competitors[1].countryCode"/>
                                         </h1>
                                     </div>
                                 </div>
@@ -548,8 +550,10 @@
                              style="border-top: 1px solid #dee2e6; padding: .75rem;">
                             <div class="col-lg-3 col-12">
                                 <span>
+                                    <country-flag :country="matchup.competitors[0].countryCode"/>
                                    {{ matchup.competitors[0].challongeName }} vs
                                     {{ matchup.competitors[1].challongeName }}
+                                    <country-flag :country="matchup.competitors[1].countryCode"/>
                                 </span>
                             </div>
                             <div class="col-lg-3 col-12">
@@ -1032,7 +1036,7 @@ export default {
         },
         fetchUpcomingMatches() {
             this.fetchedTournamentMatches = 'FETCHING';
-            this.$http.get('https://tournamentsapi.hitmaps.com/api/events/rr12/upcoming-matches').then(resp => {
+            this.$http.get('https://tournamentsapi.hitmaps.com/api/events/rrwc-2023/upcoming-matches').then(resp => {
                 this.tournamentMatches = resp.data.data;
                 this.fetchedTournamentMatches = 'FETCHED';
             }).catch(_ => this.tournamentMatches = []);
@@ -1530,10 +1534,6 @@ header {
     height: 32px;
     display: inline-block;
     text-align: center;
-}
-
-.flag {
-    vertical-align: text-top;
 }
 
 .partner {
