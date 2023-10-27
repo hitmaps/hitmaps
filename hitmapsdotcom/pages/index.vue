@@ -81,12 +81,12 @@
                                 <h2>{{ $t('game-type.Elusive Target') }}</h2>
                                 <h1>{{ $t('elusive-target.coming-soon') }}</h1>
                             </div>
-                            <!--@click="showNotificationModal"-->
                             <div
                                 onclick="return false;"
                                 class="image float-right notification-icon"
                                 data-bs-toggle="tooltip"
                                 data-bs-placement="left"
+                                @click="showNotificationModal"
                                 :data-bs-title="$t('elusive-target.notifications.manage-notifications')"
                             >
                                 <game-icon icon="audio" font-style="normal" />
@@ -94,6 +94,34 @@
                         </div>
                     </a>
                 </div>
+                <client-only>
+                    <modal v-if="elusiveTarget != null"
+                           id="briefing-modal"
+                           :modal-title="elusiveTarget.name">
+                        <div class="row">
+                            <div v-if="elusiveTarget.videoBriefingUrl != null" class="col-xl">
+                                <div class="embed-responsive embed-responsive-16by9">
+                                    <iframe :src="elusiveTarget.videoBriefingUrl"
+                                            class="embed-responsive-item"
+                                            frameborder="0"
+                                            allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+                                            allowfullscreen
+                                    ></iframe>
+                                </div>
+                            </div>
+                            <div class="col-xl">
+                                <p v-html="elusiveTarget.briefing"></p>
+                            </div>
+                        </div>
+                        <template v-slot:modal-footer>
+                            <game-button data-dismiss="modal">
+                                <game-icon icon="failed" font-style="normal"/>
+                                {{ $t('form.close') }}
+                            </game-button>
+                        </template>
+                    </modal>
+                    <elusive-target-notifications-modal ref="notificationModal" />
+                </client-only>
             </div>
             <div class="row dashboard">
                 <div class="game col-lg"
@@ -249,12 +277,18 @@
 </template>
 
 <script setup>
+import GameButton from "@/components/GameButton.vue";
+
 const config = useRuntimeConfig();
 
 const { data } = await useFetch(`${config.public.apiDomain}/api/web/home`);
 const games = data.value.games;
 const elusiveTarget = data.value.elusiveTargets.length ? data.value.elusiveTargets[0] : null;
 
+const notificationModal = ref(null);
+function showNotificationModal() {
+    notificationModal.value.showModal();
+}
 </script>
 
 <style lang="scss" scoped>
