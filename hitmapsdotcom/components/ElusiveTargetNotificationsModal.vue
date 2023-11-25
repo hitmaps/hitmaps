@@ -2,9 +2,18 @@
 import {defineComponent} from 'vue'
 import {useFirebaseApp} from "vuefire";
 import {getMessaging, getToken, Messaging} from "@firebase/messaging";
+import {useAuthenticatedFetch} from "~/composables/useAuthenticatedFetch";
 
 export default defineComponent({
     name: "ElusiveTargetNotificationsModal",
+    setup() {
+        const config = useRuntimeConfig();
+
+        return {
+            environment: config.public.firebaseEnvironment,
+            apiDomain: config.public.apiDomain
+        };
+    },
     data() {
         return {
             //region Firebase-specific
@@ -52,8 +61,7 @@ export default defineComponent({
                     oneDay: false,
                     ended: false
                 }
-            },
-            environment: null
+            }
         }
     },
     mounted() {
@@ -74,11 +82,48 @@ export default defineComponent({
                 }).then(currentToken => {
                     this.token = currentToken;
                     this.messagingPermitted = true;
+                    this.setInitialCheckboxState();
                 }).catch(err => {
                     console.error(err);
                     this.messagingPermitted = false;
                 });
             }
+        },
+        setInitialCheckboxState(): void {
+            //region New ETs
+            this.notifications.new.almostPlayable = window.localStorage.getItem(`${this.token}|hitmaps-${this.environment}-elusive-target-coming`) === '1';
+            this.notifications.new.becomesPlayable = window.localStorage.getItem(`${this.token}|hitmaps-${this.environment}-elusive-target-playable`) === '1';
+            this.notifications.new.sevenDays = window.localStorage.getItem(`${this.token}|hitmaps-${this.environment}-elusive-target-7`) === '1';
+            this.notifications.new.fiveDays = window.localStorage.getItem(`${this.token}|hitmaps-${this.environment}-elusive-target-5`) === '1';
+            this.notifications.new.threeDays = window.localStorage.getItem(`${this.token}|hitmaps-${this.environment}-elusive-target-3`) === '1';
+            this.notifications.new.oneDay = window.localStorage.getItem(`${this.token}|hitmaps-${this.environment}-elusive-target-1`) === '1';
+            this.notifications.new.ended = window.localStorage.getItem(`${this.token}|hitmaps-${this.environment}-elusive-target-end`) === '1';
+            //endregion
+            //region Reactivated ETs
+            this.notifications.reactivation.almostPlayable = window.localStorage.getItem(`${this.token}|hitmaps-${this.environment}-reactivation-elusive-target-coming`) === '1';
+            this.notifications.reactivation.becomesPlayable = window.localStorage.getItem(`${this.token}|hitmaps-${this.environment}-reactivation-elusive-target-playable`) === '1';
+            this.notifications.reactivation.sevenDays = window.localStorage.getItem(`${this.token}|hitmaps-${this.environment}-reactivation-elusive-target-7`) === '1';
+            this.notifications.reactivation.fiveDays = window.localStorage.getItem(`${this.token}|hitmaps-${this.environment}-reactivation-elusive-target-5`) === '1';
+            this.notifications.reactivation.threeDays = window.localStorage.getItem(`${this.token}|hitmaps-${this.environment}-reactivation-elusive-target-3`) === '1';
+            this.notifications.reactivation.oneDay = window.localStorage.getItem(`${this.token}|hitmaps-${this.environment}-reactivation-elusive-target-1`) === '1';
+            this.notifications.reactivation.ended = window.localStorage.getItem(`${this.token}|hitmaps-${this.environment}-reactivation-elusive-target-end`) === '1';
+            //endregion
+
+            // Copy current state to previous state
+            this.previousNotificationsState.new.almostPlayable = this.notifications.new.almostPlayable;
+            this.previousNotificationsState.new.becomesPlayable = this.notifications.new.becomesPlayable;
+            this.previousNotificationsState.new.sevenDays = this.notifications.new.sevenDays;
+            this.previousNotificationsState.new.fiveDays = this.notifications.new.fiveDays;
+            this.previousNotificationsState.new.threeDays = this.notifications.new.threeDays;
+            this.previousNotificationsState.new.oneDay = this.notifications.new.oneDay;
+            this.previousNotificationsState.new.ended = this.notifications.new.ended;
+            this.previousNotificationsState.reactivation.almostPlayable = this.notifications.reactivation.almostPlayable;
+            this.previousNotificationsState.reactivation.becomesPlayable = this.notifications.reactivation.becomesPlayable;
+            this.previousNotificationsState.reactivation.sevenDays = this.notifications.reactivation.sevenDays;
+            this.previousNotificationsState.reactivation.fiveDays = this.notifications.reactivation.fiveDays;
+            this.previousNotificationsState.reactivation.threeDays = this.notifications.reactivation.threeDays;
+            this.previousNotificationsState.reactivation.oneDay = this.notifications.reactivation.oneDay;
+            this.previousNotificationsState.reactivation.ended = this.notifications.reactivation.ended;
         },
         toggleNotificationState() {
             let sendRequest = false;
@@ -173,19 +218,27 @@ export default defineComponent({
             }
             //endregion
 
-            let data = new FormData()
-            let token = $('input[name="firebase-token"]').val()
-            let topic = 'hitmaps-' + this.environment + '-' + requestType
+            const topic = `hitmaps-${this.environment}-requestType`;
+            /*let data = new FormData();
+            let token = $('input[name="firebase-token"]').val();
+
             data.append('token', token)
             data.append('state', subscribing ? 'SUBSCRIBING' : 'UNSUBSCRIBING')
-            data.append('topic', topic)
+            data.append('topic', topic)*/
+            console.log(requestType);
+            console.log(subscribing);
             if (sendRequest) {
-                /*this.$http.post(`${this.$domain}/api/notifications`, data).then(resp => {
-                    this.$toastr.s('Notification preferences updated!');
-                    window.localStorage.setItem(
-                        token + '|' + topic,
-                        subscribing ? '1' : '0'
-                    )
+                //
+                useAuthenticatedFetch(`${this.apiDomain}/api/notifications`, {
+                    method: 'POST',
+                    body: {
+                        token: this.token,
+                        state: subscribing ? 'SUBSCRIBING' : 'UNSUBSCRIBING',
+                        topic: topic
+                    }
+                }).then(res => {
+                    window.localStorage.setItem(`${this.token}|${topic}`, subscribing ? '1' : '0');
+                    // Reset new vs previous
                     //region New
                     this.previousNotificationsState.new.almostPlayable = this.notifications.new.almostPlayable;
                     this.previousNotificationsState.new.becomesPlayable = this.notifications.new.becomesPlayable;
@@ -204,7 +257,9 @@ export default defineComponent({
                     this.previousNotificationsState.reactivation.oneDay = this.notifications.reactivation.oneDay;
                     this.previousNotificationsState.reactivation.ended = this.notifications.reactivation.ended;
                     //endregion
-                })*/
+                    (this.$toastr as any).s('Notification preferences updated!');
+                });
+                console.log('Would have processed request');
             }
         },
         enroll() {
