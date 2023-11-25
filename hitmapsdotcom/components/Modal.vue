@@ -118,6 +118,10 @@ export default {
                 #enroll-button {
                     margin-bottom: 10px;
                 }
+
+                button {
+                    width: 100%;
+                }
             }
         }
     }

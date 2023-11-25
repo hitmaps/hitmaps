@@ -23,7 +23,7 @@
                         backgroundRepeat: 'no-repeat'
                     }"
                 >
-                    <a href="#">
+                    <nuxt-link :to="`/games/${game.slug}`">
                         <p>&nbsp;</p>
                         <div class="game-info">
                             <div class="image">
@@ -34,7 +34,7 @@
                                 <h1>{{ game.fullName }}</h1>
                             </div>
                         </div>
-                    </a>
+                    </nuxt-link>
                 </div>
                 <div
                     class="elusive-target col-lg"
