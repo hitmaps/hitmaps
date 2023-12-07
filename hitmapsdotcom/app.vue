@@ -91,7 +91,8 @@ const route = useRoute();
 const locale = useI18n();
 
 function isNotInMap() {
-    return route.name !== 'map-view'
+    // Thanks nuxt!
+    return route.name !== 'games-game-location-mission';
 }
 
 function getCountryFlag() {

@@ -5,7 +5,14 @@ export default defineNuxtConfig({
     modules: [
         '@nuxtjs/i18n',
         'nuxt-icon',
-        'nuxt-vuefire'
+        'nuxt-vuefire',
+        'nuxt3-leaflet'
+    ],
+    components: [
+        {
+            path: '~/components',
+            pathPrefix: false
+        }
     ],
     //@ts-ignore
     i18n: {

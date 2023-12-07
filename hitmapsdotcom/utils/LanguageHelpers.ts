@@ -50,7 +50,7 @@ export default class LanguageHelpers {
         ];
     }
 
-    static getCountryFlag(language: string): string {
+    static getCountryFlag(language: string|undefined): string {
         switch (language) {
             case 'de-DE':
                 return 'de';
