@@ -219,14 +219,6 @@ export default defineComponent({
             //endregion
 
             const topic = `hitmaps-${this.environment}-requestType`;
-            /*let data = new FormData();
-            let token = $('input[name="firebase-token"]').val();
-
-            data.append('token', token)
-            data.append('state', subscribing ? 'SUBSCRIBING' : 'UNSUBSCRIBING')
-            data.append('topic', topic)*/
-            console.log(requestType);
-            console.log(subscribing);
             if (sendRequest) {
                 //
                 useAuthenticatedFetch(`${this.apiDomain}/api/notifications`, {
@@ -259,11 +251,7 @@ export default defineComponent({
                     //endregion
                     (this.$toastr as any).s('Notification preferences updated!');
                 });
-                console.log('Would have processed request');
             }
-        },
-        enroll() {
-            //requestPermission(0)
         },
         showModal() {
             (this.$refs['notification-modal'] as any).showModal();

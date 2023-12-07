@@ -1,5 +1,5 @@
 <template>
-    <modal id="popover-modal" tabindex="-1" flush>
+    <modal id="popover-modal" ref="popover-modal" tabindex="-1" flush>
         <div v-if="node" class="popover-content">
             <div class="image" v-if="node.image">
                 <img :src="node.image" class="img-fluid">
@@ -53,7 +53,7 @@
                     </div>
                 </div>
             </template>
-            <game-button data-dismiss="modal">
+            <game-button data-dismiss="modal" @click="hideModal">
                 <game-icon icon="failed" font-style="normal"/>
                 {{ $t('form.close') }}
             </game-button>
@@ -212,6 +212,12 @@ export default {
                     this.showingConfirmDeletion = false;
                     this.$toastr.e('Failed to delete item!');
                 });
+        },
+        showModal() {
+            this.$refs['popover-modal'].showModal();
+        },
+        hideModal() {
+            this.$refs['popover-modal'].hideModal();
         }
     }
 }

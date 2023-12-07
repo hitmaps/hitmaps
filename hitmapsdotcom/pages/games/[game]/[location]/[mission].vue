@@ -170,7 +170,7 @@ export default defineComponent({
                 },
                 riseOnHover: true
             }).on('click', _ => {
-                //this.renderItemDetailsModal(node);
+                this.renderItemDetailsModal(node);
             }).on('dragend', _ => {
                 this.nodeForMoving = node;
                 $('#confirm-move-modal').modal('show');
@@ -371,7 +371,9 @@ export default defineComponent({
             this.nodeForModal = node;
             this.$refs.nodePopup.resetDeletionState();
 
-            this.$nextTick(() => $('#popover-modal').modal('show'));
+            this.$nextTick(() => {
+                this.$refs.nodePopup.showModal();
+            });
         },
         addMarker(event) {
             if (this.editorState !== 'ITEMS') {
@@ -794,6 +796,13 @@ export default defineComponent({
                      @disguise-selected="onDisguiseSelected"
                      @replace-disguise-areas="onReplaceDisguiseAreas"
                      @variant-selected="onVariantSelected" />
+            <node-popup :node="nodeForModal"
+                        :logged-in="loggedIn"
+                        :game="game"
+                        :editor-state="editorState"
+                        ref="nodePopup"
+                        @delete-node="deleteNode"
+                        @edit-node="prepareEditor" />
         </div>
     </client-only>
 </template>
