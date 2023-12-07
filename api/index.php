@@ -549,9 +549,10 @@ $klein->respond('GET', '/api/web/home', function(Request $request, Response $res
 
 $klein->respond('POST', '/api/web/user/login', function(Request $request, Response $response) use ($applicationContext, $klein) {
     $controller = $applicationContext->get(\Controllers\AuthenticationController::class);
+    $body = json_decode($request->body(), true);
 
     try {
-        $token = $controller->loginUser($_POST['tokenType'], $_POST['accessToken']);
+        $token = $controller->loginUser($body['tokenType'], $body['accessToken']);
 
         $responseModel = new ApiResponseModel();
         $responseModel->token = $token;

@@ -259,7 +259,7 @@ export default {
         },
         beginDiscordLogin() {
             this.cookies.set('redirect-location', `${window.location.pathname}${window.location.search}`, '600s');
-            window.location.href = `https://discordapp.com/api/oauth2/authorize?client_id=681919936469401687&redirect_uri=${encodeURIComponent(this.$vueDomain)}/auth&response_type=token&scope=connections%20identify%20guilds%20email`;
+            window.location.href = `https://discordapp.com/api/oauth2/authorize?client_id=681919936469401687&redirect_uri=${encodeURIComponent(`${window.location.protocol}//${window.location.host}`)}/auth&response_type=token&scope=connections%20identify%20guilds%20email`;
         },
         logout: function() {
             localStorage.removeItem('token');
