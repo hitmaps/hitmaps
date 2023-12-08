@@ -3,19 +3,19 @@
         <h3>{{ $t('map.what-would-you-like-to-do') }}</h3>
         <div class="editor-button" @click="$emit('launch-editor', 'ITEMS')">
             <h3>
-                <i class="fas fa-fw fa-map-marker-alt"></i>
+                <icon name="fa6-solid:location-dot"/>
                 {{ $t('map.add-remove-items') }}
             </h3>
         </div>
         <div v-if="!nodesOnly" class="editor-button" @click="$emit('launch-editor', 'LEDGES')">
             <h3>
-                <i class="fas fa-fw fa-bezier-curve"></i>
+                <icon name="fa6-solid:bezier-curve"/>
                 {{ $t('map.add-remove-ledges') }}
             </h3>
         </div>
         <div v-if="!nodesOnly" class="editor-button" @click="$emit('launch-editor', 'FOLIAGE')">
             <h3>
-                <i class="fas fa-fw fa-leaf"></i>
+                <icon name="fa6-solid:leaf"/>
                 {{ $t('map.add-remove-foliage') }}
             </h3>
         </div>
@@ -23,13 +23,13 @@
              class="editor-button"
              @click="$emit('launch-editor', 'DISGUISE-REGIONS')">
             <h3>
-                <i class="fas fa-fw fa-user-tie"></i>
+                <icon name="fa6-regular:user"/>
                 {{ $t('map.manage-disguise-areas') }}
             </h3>
         </div>
         <i18n-t keypath="map.click-icon-to-close" tag="p">
             <template v-slot:pencilIcon>
-                <i class="fas fa-pencil-alt"></i>
+                <icon name="fa6-solid:pencil"/>
             </template>
         </i18n-t>
     </div>

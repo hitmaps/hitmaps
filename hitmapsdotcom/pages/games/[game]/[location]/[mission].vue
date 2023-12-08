@@ -385,7 +385,7 @@ export default defineComponent({
 
             this.$nextTick(_ => {
                 this.$refs.addEditItemModal.initializeAddEditModal();
-                $('#edit-item-modal').modal('show');
+                this.$refs.addEditItemModal.showModal();
             });
         },
         prepareEditor(nodeId) {
@@ -394,7 +394,7 @@ export default defineComponent({
 
             this.$nextTick(_ => {
                 this.$refs.addEditItemModal.initializeAddEditModal();
-                $('#edit-item-modal').modal('show');
+                this.$refs.addEditItemModal.showModal();
             });
         },
         deleteNode(nodeId) {
@@ -408,7 +408,7 @@ export default defineComponent({
             node.marker.addTo(this.map);
             node.marker.dragging.enable();
             this.updateNodeMarkers();
-            $('#edit-item-modal').modal('hide');
+            this.$refs.addEditItemModal.hideModal();
         },
         onItemUpdated(node) {
             this.nodeForEditing.marker.removeFrom(this.map);
@@ -417,7 +417,7 @@ export default defineComponent({
             this.buildNodeForMap(node);
             node.marker.addTo(this.map);
             this.updateNodeMarkers();
-            $('#edit-item-modal').modal('hide');
+            this.$refs.addEditItemModal.hideModal();
         },
         //endregion
         range(min, max) {
@@ -522,8 +522,8 @@ export default defineComponent({
         },
         toggleDraw(state) {
             if (state === 'OFF') {
-                this.map.pm.disableDraw('Line');
-                this.map.pm.disableDraw('Polygon');
+                //this.map.pm.disableDraw('Line');
+                //this.map.pm.disableDraw('Polygon');
                 return;
             }
 
@@ -803,6 +803,19 @@ export default defineComponent({
                         ref="nodePopup"
                         @delete-node="deleteNode"
                         @edit-node="prepareEditor" />
+            <add-edit-item-modal ref="addEditItemModal"
+                                 v-if="mission"
+                                 :top-level-categories="topLevelCategories"
+                                 :categories="categories"
+                                 :clicked-point="clickedPoint"
+                                 :current-level="currentFloor"
+                                 :node="nodeForEditing"
+                                 :mission="mission"
+                                 @item-created="onItemCreated"
+                                 @item-updated="onItemUpdated" />
+            <delete-entity-modal ref="deleteEntityModal" :entity="deletionItem" :entity-type="deletionItemType" @item-deleted="onPolyDeleted" />
+            <manage-disguise-area-modal ref="manageDisguiseAreaModal" :entity="deletionItem" @item-deleted="onPolyDeleted" @item-converted="onDisguiseAreaConverted" />
+            <move-node-modal ref="moveNodeModal" :node="nodeForMoving" />
         </div>
     </client-only>
 </template>

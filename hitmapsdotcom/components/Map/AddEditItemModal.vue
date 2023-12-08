@@ -1,5 +1,6 @@
 <template>
     <modal :modal-title="$t('map.add-edit-item')"
+           ref="innerModal"
            id="edit-item-modal"
            tabindex="-1"
            role="dialog"
@@ -23,21 +24,9 @@
                             {{ $t('map.template') }}
                         </label>
                         <div class="col-sm-10">
-                            <select @change="applyTemplate"
-                                    name="template"
-                                    ref="templatePicker"
-                                    class="form-control"
-                                    title="Select One"
-                                    :id="`${uid}-template`"
-                                    data-live-search="true">
-                                <optgroup v-for="(group, key) in templates" :key="key" :label="key">
-                                    <option v-for="item in group"
-                                            :key="item.id"
-                                            :value="key + '|' + item.id">
-                                        {{ item.name }}
-                                    </option>
-                                </optgroup>
-                            </select>
+                            <fancy-dropdown ref="templatePicker"
+                                            v-model="selectedTemplate"
+                                            :elements="buildTemplateElements()"/>
                         </div>
                     </div>
                     <hr />
@@ -77,8 +66,10 @@
                     <label :for="`${uid}-icon`" class="col-sm-2 col-form-label">
                         {{ $t('map.icon') }}
                     </label>
-                    <div class="col-sm-10">
-                        <select name="icon"
+                    <div class="col-sm-10 icon-dropdown">
+                        <fancy-dropdown v-model="selectedIcon"
+                                        :elements="buildIconElements()" />
+<!--                        <select name="icon"
                                 v-model="createEditNodeModel.icon"
                                 ref="iconPicker"
                                 class="form-control"
@@ -92,7 +83,7 @@
                                     {{ icon.altText }}
                                 </option>
                             </optgroup>
-                        </select>
+                        </select>-->
                     </div>
                 </div>
                 <div v-if="currentCategory">
@@ -257,7 +248,7 @@
             </div>
         </div>
         <template v-slot:modal-footer>
-            <game-button type="button" data-dismiss="modal">
+            <game-button type="button" data-dismiss="modal" @click="hideModal">
                 <game-icon icon="failed" font-style="normal" />
                 {{ $t('form.close') }}
             </game-button>
@@ -270,15 +261,10 @@
 </template>
 
 <script>
-import Modal from "../Modal.vue";
-import GameButton from "../GameButton.vue";
-import GameIcon from "../GameIcon.vue";
 import clone from 'just-clone';
-import ArrayHelpers from "../ArrayHelpers.js";
 import {v4 as uuidv4} from "uuid";
 export default {
     name: "AddEditItemModal",
-    components: {GameIcon, GameButton, Modal},
     props: {
         mission: Object,
         categories: Array,
@@ -290,8 +276,11 @@ export default {
     },
     setup() {
         const uuid = uuidv4();
+        const config = useRuntimeConfig();
+        const apiDomain = config.public.apiDomain;
         return {
-            uuid
+            uuid,
+            apiDomain
         };
     },
     data() {
@@ -316,24 +305,21 @@ export default {
                 notes: [],
                 variantIds: []
             },
+            selectedSubgroup: null,
             icons: {},
+            selectedIcon: null,
             templates: {},
+            selectedTemplate: null,
             currentCategory: null,
             uid: this.uuid
         }
     },
     mounted() {
-        this.$http.get(`${this.$domain}/api/v1/editor/icons`).then(resp => {
-            this.icons = resp.data;
-            this.$nextTick(_ => {
-                $(this.$refs.iconPicker).selectpicker();
-            });
+        $fetch(`${this.apiDomain}/api/v1/editor/icons`).then(resp => {
+            this.icons = resp;
         });
-        this.$http.get(`${this.$domain}/api/v1/editor/templates`).then(resp => {
-            this.templates = resp.data;
-            this.$nextTick(_ => {
-                $(this.$refs.templatePicker).selectpicker();
-            })
+        $fetch(`${this.apiDomain}/api/v1/editor/templates`).then(resp => {
+            this.templates = resp;
         });
     },
     computed: {
@@ -352,21 +338,70 @@ export default {
         }
     },
     methods: {
+        buildTemplateElements() {
+            const dropdownGroups = [];
+            for (const [key, items] of Object.entries(this.templates)) {
+                // noinspection JSUnresolvedReference
+                const dropdownGroup = {
+                    groupName: key,
+                    groupItems: []
+                };
+
+                for (const item of items) {
+                    // noinspection JSUnresolvedReference
+                    const dropdownItem = {
+                        element: item,
+                        value: item.name,
+                        display: item.name,
+                        html: false
+                    };
+                    dropdownGroup.groupItems.push(dropdownItem);
+                }
+
+                dropdownGroups.push(dropdownGroup);
+            }
+
+            return dropdownGroups;
+        },
+        buildIconElements() {
+            const dropdownGroups = [];
+            for (const [key, items] of Object.entries(this.icons)) {
+                const dropdownGroup = {
+                    groupName: key,
+                    groupItems: []
+                };
+
+                for (const item of items) {
+                    const dropdownItem = {
+                        element: item,
+                        value: item.name,
+                        display: `<img height="24" width="24" src="/img/map-icons/${item.icon}.png" alt="${item.altText} Icon"> ${item.altText}`,
+                        html: true
+                    };
+                    dropdownGroup.groupItems.push(dropdownItem);
+                }
+
+                dropdownGroups.push(dropdownGroup);
+            }
+
+            return dropdownGroups;
+        },
         initializeAddEditModal() {
-            $(this.$refs.subgroupPicker).selectpicker();
-            $(this.$refs.subgroupPicker).selectpicker('val', -1);
-            $(this.$refs.iconPicker).selectpicker('val', -1);
-            $(this.$refs.templatePicker).selectpicker('val', -1);
+            this.selectedSubgroup = null;
+            this.selectedIcon = null;
+            this.selectedTemplate = null;
             this.currentCategory = null;
             this.createEditNodeModel = clone(this.defaultCreateEditNodeModel);
 
             // Init editing
             if (this.node !== null) {
                 this.createEditNodeModel.category = this.categories.find(category => category.type === this.node.type && category.subgroup === this.node.subgroup);
-                $(this.$refs.subgroupPicker).selectpicker('val', `${this.createEditNodeModel.category.type}|${this.createEditNodeModel.category.subgroup}`);
+                // TODO Selectpicker
+                //$(this.$refs.subgroupPicker).selectpicker('val', `${this.createEditNodeModel.category.type}|${this.createEditNodeModel.category.subgroup}`);
                 this.$refs.subgroupPicker.dispatchEvent(new Event('change'));
                 this.createEditNodeModel.icon = this.node.icon;
-                $(this.$refs.iconPicker).selectpicker('val', this.createEditNodeModel.icon);
+                // TODO Selectpicker
+                //$(this.$refs.iconPicker).selectpicker('val', this.createEditNodeModel.icon);
                 this.createEditNodeModel.name = this.node.name;
                 this.createEditNodeModel.quantity = this.node.quantity;
                 this.createEditNodeModel.targetAction = this.node.target;
@@ -396,7 +431,8 @@ export default {
                     (previousCategory.requireTarget !== this.currentCategory.requireTarget))) {
                 this.createEditNodeModel.targetAction = '';
             }
-            $(this.$refs.iconPicker).selectpicker('val', this.currentCategory.icon);
+            //TODO Selectpicker
+            //$(this.$refs.iconPicker).selectpicker('val', this.currentCategory.icon);
         },
         modifyNote(action, index) {
             switch (action) {
@@ -419,9 +455,11 @@ export default {
             const splitTemplateInfo = event.target.value.split('|');
             const currentTemplate = this.templates[splitTemplateInfo[0]]
                 .find(template => template.id === parseInt(splitTemplateInfo[1], 10));
-            $(this.$refs.subgroupPicker).selectpicker('val', `${currentTemplate.type}|${currentTemplate.subgroup}`);
-            this.$refs.subgroupPicker.dispatchEvent(new Event('change'));
-            $(this.$refs.iconPicker).selectpicker('val', currentTemplate.icon);
+            //TODO Selectpicker
+            //$(this.$refs.subgroupPicker).selectpicker('val', `${currentTemplate.type}|${currentTemplate.subgroup}`);
+            //this.$refs.subgroupPicker.dispatchEvent(new Event('change'));
+            //TODO Selectpicker
+            //$(this.$refs.iconPicker).selectpicker('val', currentTemplate.icon);
 
             this.createEditNodeModel.name = currentTemplate.name;
             this.createEditNodeModel.targetAction = currentTemplate.target;
@@ -469,19 +507,22 @@ export default {
             }
         },
         createMarker() {
-            this.$http.post(`${this.$domain}/api/nodes`, {
-                missionId: this.mission.id,
-                icon: this.createEditNodeModel.icon,
-                category: this.createEditNodeModel.category,
-                name: this.createEditNodeModel.name,
-                quantity: this.createEditNodeModel.quantity,
-                targetAction: this.createEditNodeModel.targetAction,
-                level: this.currentLevel,
-                latitude: this.clickedPoint.lat,
-                longitude: this.clickedPoint.lng,
-                image: this.createEditNodeModel.image,
-                notes: this.createEditNodeModel.notes,
-                variantIds: this.createEditNodeModel.variantIds
+            $fetch(`${this.apiDomain}/api/nodes`, {
+                method: 'POST',
+                data: {
+                    missionId: this.mission.id,
+                    icon: this.createEditNodeModel.icon,
+                    category: this.createEditNodeModel.category,
+                    name: this.createEditNodeModel.name,
+                    quantity: this.createEditNodeModel.quantity,
+                    targetAction: this.createEditNodeModel.targetAction,
+                    level: this.currentLevel,
+                    latitude: this.clickedPoint.lat,
+                    longitude: this.clickedPoint.lng,
+                    image: this.createEditNodeModel.image,
+                    notes: this.createEditNodeModel.notes,
+                    variantIds: this.createEditNodeModel.variantIds
+                }
             }).then(resp => {
                 this.$emit('item-created', resp.data.data);
                 this.$toastr.s('Item saved!');
@@ -490,19 +531,22 @@ export default {
             });
         },
         updateMarker() {
-            this.$http.put(`${this.$domain}/api/nodes/${this.node.id}`, {
-                missionId: this.mission.id,
-                icon: this.createEditNodeModel.icon,
-                category: this.createEditNodeModel.category,
-                name: this.createEditNodeModel.name,
-                quantity: this.createEditNodeModel.quantity,
-                targetAction: this.createEditNodeModel.targetAction,
-                level: this.currentLevel,
-                latitude: this.node.latitude,
-                longitude: this.node.longitude,
-                image: this.createEditNodeModel.image,
-                notes: this.createEditNodeModel.notes,
-                variantIds: this.createEditNodeModel.variantIds
+            $fetch(`${this.apiDomain}/api/nodes/${this.node.id}`, {
+                method: 'PUT',
+                data: {
+                    missionId: this.mission.id,
+                    icon: this.createEditNodeModel.icon,
+                    category: this.createEditNodeModel.category,
+                    name: this.createEditNodeModel.name,
+                    quantity: this.createEditNodeModel.quantity,
+                    targetAction: this.createEditNodeModel.targetAction,
+                    level: this.currentLevel,
+                    latitude: this.node.latitude,
+                    longitude: this.node.longitude,
+                    image: this.createEditNodeModel.image,
+                    notes: this.createEditNodeModel.notes,
+                    variantIds: this.createEditNodeModel.variantIds
+                }
             }).then(resp => {
                 this.$emit('item-updated', resp.data.data);
                 this.$toastr.s('Item updated!');
@@ -510,6 +554,12 @@ export default {
                 console.log(err);
                 this.$toastr.e('Changes failed to save!');
             });
+        },
+        showModal() {
+            this.$refs.innerModal.showModal();
+        },
+        hideModal() {
+            this.$refs.innerModal.hideModal();
         }
     }
 }
@@ -563,6 +613,12 @@ button {
 
     &:last-child {
         margin-right: 0;
+    }
+}
+
+.icon-dropdown {
+    &:deep(.bootstrap-select .dropdown-menu .dropdown-options) {
+        max-height: 300px;
     }
 }
 </style>
