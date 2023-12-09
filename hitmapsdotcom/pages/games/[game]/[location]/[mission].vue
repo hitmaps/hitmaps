@@ -399,7 +399,6 @@ export default defineComponent({
         },
         deleteNode(nodeId) {
             this.nodes.find(x => x.id === nodeId).marker.removeFrom(this.map);
-            $('#popover-modal').modal('hide');
         },
         onItemCreated(node) {
             this.nodes.push(node);

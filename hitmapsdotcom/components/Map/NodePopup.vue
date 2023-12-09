@@ -74,6 +74,13 @@ export default {
         loggedIn: Boolean,
         editorState: String
     },
+    setup() {
+        const config = useRuntimeConfig();
+        const apiDomain = config.public.apiDomain;
+        return {
+            apiDomain
+        };
+    },
     data() {
         return {
             showingConfirmDeletion: false,
@@ -200,18 +207,19 @@ export default {
         },
         deleteNode() {
             this.blockDeleteButton = true;
-            this.$http.delete(`${this.$domain}/api/nodes/${this.node.id}`)
-                .then(_ => {
-                    this.blockDeleteButton = false;
-                    this.showingConfirmDeletion = false;
-                    $('#edit-item-modal').modal('hide');
-                    this.$toastr.s('Item deleted!');
-                    this.$emit('delete-node', this.node.id);
-                }).catch(_ => {
-                    this.blockDeleteButton = false;
-                    this.showingConfirmDeletion = false;
-                    this.$toastr.e('Failed to delete item!');
-                });
+            useAuthenticatedFetch(`${this.apiDomain}/api/nodes/${this.node.id}`, {
+                method: 'DELETE'
+            }).then(_ => {
+                this.blockDeleteButton = false;
+                this.showingConfirmDeletion = false;
+                this.$toastr.s('Item deleted!');
+                this.$emit('delete-node', this.node.id);
+                this.hideModal();
+            }).catch(_ => {
+                this.blockDeleteButton = false;
+                this.showingConfirmDeletion = false;
+                this.$toastr.e('Failed to delete item!');
+            });
         },
         showModal() {
             this.$refs['popover-modal'].showModal();

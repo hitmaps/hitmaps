@@ -2,7 +2,6 @@
     <div class="items-menu">
         <p>
             <icon name="fa6-solid:circle-plus"/>
-            <icon name="fa6-solid:circle-plus"/>
             {{ $t('map.click-to-add') }}
         </p>
         <p>
