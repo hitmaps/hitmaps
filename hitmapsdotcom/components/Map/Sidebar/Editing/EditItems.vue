@@ -1,20 +1,21 @@
 <template>
     <div class="items-menu">
         <p>
-            <i class="fas fa-fw fa-plus-circle"></i>
+            <icon name="fa6-solid:circle-plus"/>
+            <icon name="fa6-solid:circle-plus"/>
             {{ $t('map.click-to-add') }}
         </p>
         <p>
-            <i class="fas fa-fw fa-arrows-alt"></i>
+            <icon name="fa6-solid:arrows-up-down-left-right"/>
             {{ $t('map.drag-to-move') }}
         </p>
         <p>
-            <i class="fas fa-fw fa-trash"></i>
+            <icon name="fa6-solid:trash"/>
             {{ $t('map.click-item-to-delete') }}
         </p>
         <div class="editor-button" @click="$emit('launch-editor', 'MENU')">
             <h3>
-                <i class="fas fa-times-circle"></i>
+                <icon name="fa6-solid:circle-xmark"/>
                 {{ $t('map.close-item-menu') }}
             </h3>
         </div>

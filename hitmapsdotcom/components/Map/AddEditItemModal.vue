@@ -242,6 +242,7 @@
 <script>
 import clone from 'just-clone';
 import {v4 as uuidv4} from "uuid";
+import {useAuthenticatedFetch} from "~/composables/useAuthenticatedFetch";
 export default {
     name: "AddEditItemModal",
     props: {
@@ -522,12 +523,26 @@ export default {
             }
         },
         createMarker() {
-            $fetch(`${this.apiDomain}/api/nodes`, {
+            console.log({
+                missionId: this.mission.id,
+                icon: this.createEditNodeModel.icon,
+                category: this.createEditNodeModel.category.element,
+                name: this.createEditNodeModel.name,
+                quantity: this.createEditNodeModel.quantity,
+                targetAction: this.createEditNodeModel.targetAction,
+                level: this.currentLevel,
+                latitude: this.clickedPoint.lat,
+                longitude: this.clickedPoint.lng,
+                image: this.createEditNodeModel.image,
+                notes: this.createEditNodeModel.notes,
+                variantIds: this.createEditNodeModel.variantIds
+            });
+            useAuthenticatedFetch(`${this.apiDomain}/api/nodes`, {
                 method: 'POST',
-                data: {
+                body: {
                     missionId: this.mission.id,
                     icon: this.createEditNodeModel.icon,
-                    category: this.createEditNodeModel.category,
+                    category: this.createEditNodeModel.category.element,
                     name: this.createEditNodeModel.name,
                     quantity: this.createEditNodeModel.quantity,
                     targetAction: this.createEditNodeModel.targetAction,
@@ -539,19 +554,20 @@ export default {
                     variantIds: this.createEditNodeModel.variantIds
                 }
             }).then(resp => {
-                this.$emit('item-created', resp.data.data);
+                const response = JSON.parse(resp.data.value);
+                this.$emit('item-created', response.data);
                 this.$toastr.s('Item saved!');
             }).catch(err => {
                 this.$toastr.e('Changes failed to save!');
             });
         },
         updateMarker() {
-            $fetch(`${this.apiDomain}/api/nodes/${this.node.id}`, {
+            useAuthenticatedFetch(`${this.apiDomain}/api/nodes/${this.node.id}`, {
                 method: 'PUT',
-                data: {
+                body: {
                     missionId: this.mission.id,
                     icon: this.createEditNodeModel.icon,
-                    category: this.createEditNodeModel.category,
+                    category: this.createEditNodeModel.category.element,
                     name: this.createEditNodeModel.name,
                     quantity: this.createEditNodeModel.quantity,
                     targetAction: this.createEditNodeModel.targetAction,
@@ -563,7 +579,8 @@ export default {
                     variantIds: this.createEditNodeModel.variantIds
                 }
             }).then(resp => {
-                this.$emit('item-updated', resp.data.data);
+                const response = resp.data.value;
+                this.$emit('item-updated', response.data);
                 this.$toastr.s('Item updated!');
             }).catch(err => {
                 console.log(err);
@@ -581,6 +598,13 @@ export default {
         // Why is this needed? Don't ask.
         topLevelCategories() {
             this.buildCategoryElements();
+        },
+        selectedIcon() {
+            if (!this.selectedIcon) {
+                return;
+            }
+
+            this.createEditNodeModel.icon = this.selectedIcon.value;
         }
     }
 }

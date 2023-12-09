@@ -322,6 +322,7 @@ export default {
 .edit-delete-buttons {
     display: flex;
     margin-right: 0;
+    margin-left: 0;
 
     .edit {
         margin-right: 5px;

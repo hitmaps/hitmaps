@@ -20,8 +20,12 @@ export function useAuthenticatedFetch<T> (url: string | (() => string), _options
             }
         },
         async onResponse ({response}) {
-            if (response._data.token) {
-                localStorage.setItem('token', response._data.token);
+            try {
+                const parsedResponse = JSON.parse(response._data);
+                if (parsedResponse.token) {
+                    localStorage.setItem('token', parsedResponse.token);
+                }
+            } catch (ignored) {
             }
         }
     }

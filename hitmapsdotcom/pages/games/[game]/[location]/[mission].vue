@@ -412,7 +412,7 @@ export default defineComponent({
         },
         onItemUpdated(node) {
             this.nodeForEditing.marker.removeFrom(this.map);
-            //ArrayHelpers.deleteElement(this.nodes, this.nodeForEditing);
+            ArrayHelpers.deleteElement(this.nodes, this.nodeForEditing);
             this.nodes.push(node);
             this.buildNodeForMap(node);
             node.marker.addTo(this.map);
