@@ -25,8 +25,9 @@
                         </label>
                         <div class="col-sm-10">
                             <fancy-dropdown ref="templatePicker"
+                                            @change="applyTemplate"
                                             v-model="selectedTemplate"
-                                            :elements="buildTemplateElements()"/>
+                                            :elements="templates"/>
                         </div>
                     </div>
                     <hr />
@@ -41,20 +42,9 @@
                         {{ $t('map.category') }}
                     </label>
                     <div class="col-sm-10">
-                        <select name="subgroup"
-                                ref="subgroupPicker"
-                                class="form-control"
-                                title="Select One"
-                                :id="`${uid}-subgroup`"
-                                @change="selectCategory"
-                                data-live-search="true">
-                            <optgroup v-for="topLevelCategory in topLevelCategories" :key="topLevelCategory" :label="topLevelCategory">
-                                <option v-for="category in categories.filter(x => x.type === topLevelCategory)" :key="category.id" :value="topLevelCategory + '|' + category.subgroup"
-                                        :data-content="`<img height='24' width='24' src='/img/map-icons/${category.icon}.png' alt='${category.group} Icon'> ${category.group}`">
-                                    {{ category.group }}
-                                </option>
-                            </optgroup>
-                        </select>
+                        <fancy-dropdown @change="selectCategory"
+                                        v-model="currentCategory"
+                                        :elements="groupedCategories"/>
                         <small v-if="currentCategory"
                                class="form-text text-muted"
                                id="note-help-text">
@@ -62,32 +52,17 @@
                         </small>
                     </div>
                 </div>
-                <div v-show="pickIconAllowed" class="form-group row" id="icon-form-group">
+                <div v-if="pickIconAllowed" class="form-group row" id="icon-form-group">
                     <label :for="`${uid}-icon`" class="col-sm-2 col-form-label">
                         {{ $t('map.icon') }}
                     </label>
                     <div class="col-sm-10 icon-dropdown">
                         <fancy-dropdown v-model="selectedIcon"
-                                        :elements="buildIconElements()" />
-<!--                        <select name="icon"
-                                v-model="createEditNodeModel.icon"
-                                ref="iconPicker"
-                                class="form-control"
-                                :id="`${uid}-icon`"
-                                data-live-search="true">
-                            <optgroup v-for="(group, key) in icons" :key="key" :label="key">
-                                <option v-for="icon in group"
-                                        :key="icon.id"
-                                        :value="icon.icon"
-                                        :data-content="`<img height='24' width='24' src='/img/map-icons/${icon.icon}.png' alt='${icon.altText} Icon'> ${icon.altText}`">
-                                    {{ icon.altText }}
-                                </option>
-                            </optgroup>
-                        </select>-->
+                                        :elements="icons" />
                     </div>
                 </div>
                 <div v-if="currentCategory">
-                    <div class="form-group row" v-if="currentCategory.requireName">
+                    <div class="form-group row" v-if="currentCategory.element.requireName">
                         <label :for="`${uid}-name`" class="col-sm-2 col-form-label">
                             {{ $t('map.name') }}
                         </label>
@@ -110,14 +85,14 @@
                             <select name="quantity"
                                     :id="`${uid}-quantity`"
                                     v-model="createEditNodeModel.quantity"
-                                    class="form-control">
+                                    class="form-select">
                                 <option v-for="n in 10" :value="n">
                                     {{ n }}
                                 </option>
                             </select>
                         </div>
                     </div>
-                    <div class="form-group row" v-if="currentCategory.requireAction">
+                    <div class="form-group row" v-if="currentCategory.element.requireAction">
                         <label :for="`${uid}-action`" class="col-sm-2 col-form-label">
                             {{ $t('map.action') }}
                         </label>
@@ -132,7 +107,7 @@
                             </small>
                         </div>
                     </div>
-                    <div class="form-group row" v-if="currentCategory.requireTarget">
+                    <div class="form-group row" v-if="currentCategory.element.requireTarget">
                         <label :for="`${uid}-target`" class="col-sm-2 col-form-label">
                             {{ $t('map.target') }}
                         </label>
@@ -170,22 +145,26 @@
                     <div v-for="(note, index) in createEditNodeModel.notes" :key="note.type" class="note" :class="note.type">
                         <div class="row">
                             <div class="col-sm-3">
-                                <button class="btn btn-block btn-light move-arrow"
-                                        v-if="index !== 0"
-                                        @click="modifyNote('UP', index)">
-                                    <i class="fas fa-arrow-up"></i>
-                                    Move Up
-                                </button>
-                                <button class="btn btn-block btn-light move-arrow"
-                                        v-if="index !== createEditNodeModel.notes.length - 1"
-                                        @click="modifyNote('DOWN', index)">
-                                    <i class="fas fa-arrow-down"></i>
-                                    Move Down
-                                </button>
-                                <button class="btn btn-block btn-danger delete-button" @click="modifyNote('DELETE', index)">
-                                    <i class="fas fa-trash"></i>
-                                    Remove
-                                </button>
+                                <div class="d-grid" v-if="index !== 0">
+                                    <button class="btn btn-block btn-light move-arrow"
+                                            @click="modifyNote('UP', index)">
+                                        <icon name="fa6-solid:arrow-up"/>
+                                        Move Up
+                                    </button>
+                                </div>
+                                <div class="d-grid" v-if="index !== createEditNodeModel.notes.length - 1">
+                                    <button class="btn btn-block btn-light move-arrow"
+                                            @click="modifyNote('DOWN', index)">
+                                        <icon name="fa6-solid:arrow-down"/>
+                                        Move Down
+                                    </button>
+                                </div>
+                                <div class="d-grid">
+                                    <button class="btn btn-block btn-danger delete-button" @click="modifyNote('DELETE', index)">
+                                        <icon name="fa6-solid:trash"/>
+                                        Remove
+                                    </button>
+                                </div>
                             </div>
                             <div class="col-sm-9">
                                 <div class="form-group row">
@@ -194,7 +173,7 @@
                                     </label>
                                     <div class="col-sm-10">
                                         <select v-model="note.type"
-                                                class="form-control"
+                                                class="form-select"
                                                 name="note-type[]">
                                             <option value="requirement">
                                                 {{ $t('map.requirement') }}
@@ -231,7 +210,7 @@
                                 @click="createEditNodeModel.notes.push({})"
                                 id="add-note-button"
                                 class="btn btn-dark">
-                            <i class="fas fa-plus-circle"></i>
+                            <icon name="fa6-solid:circle-plus"/>
                             {{ $t('map.add-another-note') }}
                         </button>
                     </div>
@@ -305,21 +284,64 @@ export default {
                 notes: [],
                 variantIds: []
             },
-            selectedSubgroup: null,
-            icons: {},
+            groupedCategories: [],
+            icons: [],
             selectedIcon: null,
-            templates: {},
+            templates: [],
             selectedTemplate: null,
             currentCategory: null,
+            previousCategory: null,
             uid: this.uuid
         }
     },
     mounted() {
         $fetch(`${this.apiDomain}/api/v1/editor/icons`).then(resp => {
-            this.icons = resp;
+            const dropdownGroups = [];
+            for (const [key, items] of Object.entries(resp)) {
+                const dropdownGroup = {
+                    groupName: key,
+                    groupItems: []
+                };
+
+                for (const item of items) {
+                    const dropdownItem = {
+                        element: item,
+                        value: item.icon,
+                        display: `<img height="24" width="24" src="/img/map-icons/${item.icon}.png" alt="${item.altText} Icon"> ${item.altText}`,
+                        html: true
+                    };
+                    dropdownGroup.groupItems.push(dropdownItem);
+                }
+
+                dropdownGroups.push(dropdownGroup);
+            }
+
+            this.icons = dropdownGroups;
         });
         $fetch(`${this.apiDomain}/api/v1/editor/templates`).then(resp => {
-            this.templates = resp;
+            const dropdownGroups = [];
+            for (const [key, items] of Object.entries(resp)) {
+                // noinspection JSUnresolvedReference
+                const dropdownGroup = {
+                    groupName: key,
+                    groupItems: []
+                };
+
+                for (const item of items) {
+                    // noinspection JSUnresolvedReference
+                    const dropdownItem = {
+                        element: item,
+                        value: item.name,
+                        display: item.name,
+                        html: false
+                    };
+                    dropdownGroup.groupItems.push(dropdownItem);
+                }
+
+                dropdownGroups.push(dropdownGroup);
+            }
+
+            this.templates = dropdownGroups;
         });
     },
     computed: {
@@ -328,13 +350,13 @@ export default {
                 return true;
             }
 
-            return ['Navigation|agency-pickup',
-                'Navigation|exit-location',
-                'Navigation|ledge',
-                'Navigation|foliage',
-                'Navigation|up-stair',
-                'Navigation|starting-location',
-                'Navigation|up-pipe'].indexOf(this.currentCategory) === -1
+            return !['agency-pickup',
+                'exit-location',
+                'ledge',
+                'foliage',
+                'up-stair',
+                'starting-location',
+                'up-pipe'].includes(this.currentCategory.element.subgroup);
         }
     },
     methods: {
@@ -363,31 +385,30 @@ export default {
 
             return dropdownGroups;
         },
-        buildIconElements() {
+        buildCategoryElements() {
             const dropdownGroups = [];
-            for (const [key, items] of Object.entries(this.icons)) {
+            for (const topLevelCategory of this.topLevelCategories) {
                 const dropdownGroup = {
-                    groupName: key,
+                    groupName: topLevelCategory,
                     groupItems: []
                 };
 
-                for (const item of items) {
+                for (const category of this.categories.filter(x => x.type === topLevelCategory)) {
                     const dropdownItem = {
-                        element: item,
-                        value: item.name,
-                        display: `<img height="24" width="24" src="/img/map-icons/${item.icon}.png" alt="${item.altText} Icon"> ${item.altText}`,
+                        element: category,
+                        value: category.group,
+                        display: `<img height="24" width="24" src="/img/map-icons/${category.icon}.png" alt="${category.group} Icon"> ${category.group}`,
                         html: true
-                    };
+                    }
                     dropdownGroup.groupItems.push(dropdownItem);
                 }
 
                 dropdownGroups.push(dropdownGroup);
             }
 
-            return dropdownGroups;
+            this.groupedCategories = dropdownGroups;
         },
         initializeAddEditModal() {
-            this.selectedSubgroup = null;
             this.selectedIcon = null;
             this.selectedTemplate = null;
             this.currentCategory = null;
@@ -395,13 +416,14 @@ export default {
 
             // Init editing
             if (this.node !== null) {
-                this.createEditNodeModel.category = this.categories.find(category => category.type === this.node.type && category.subgroup === this.node.subgroup);
-                // TODO Selectpicker
-                //$(this.$refs.subgroupPicker).selectpicker('val', `${this.createEditNodeModel.category.type}|${this.createEditNodeModel.category.subgroup}`);
-                this.$refs.subgroupPicker.dispatchEvent(new Event('change'));
+                this.createEditNodeModel.category = this.groupedCategories
+                    .find(x => x.groupName === this.node.type)
+                    .groupItems
+                    .find(x => x.element.subgroup === this.node.subgroup);
+                this.currentCategory = this.createEditNodeModel.category;
+                this.selectCategory();
                 this.createEditNodeModel.icon = this.node.icon;
-                // TODO Selectpicker
-                //$(this.$refs.iconPicker).selectpicker('val', this.createEditNodeModel.icon);
+                this.selectedIcon = this.icons.flatMap(x => x.groupItems).find(x => x.value === this.createEditNodeModel.icon);
                 this.createEditNodeModel.name = this.node.name;
                 this.createEditNodeModel.quantity = this.node.quantity;
                 this.createEditNodeModel.targetAction = this.node.target;
@@ -415,24 +437,21 @@ export default {
                 this.createEditNodeModel.variantIds = this.node.variants;
             }
         },
-        selectCategory(event) {
-            if (event.target.value === '') {
+        selectCategory() {
+            if (!this.currentCategory) {
                 return;
             }
 
-            const previousCategory = this.currentCategory;
-            const categoryInfo = event.target.value.split('|');
-            this.currentCategory = this.categories.find(category => category.type === categoryInfo[0] && category.subgroup === categoryInfo[1]);
             this.createEditNodeModel.category = this.currentCategory;
-            this.createEditNodeModel.icon = this.currentCategory.icon;
+            this.createEditNodeModel.icon = this.currentCategory.element.icon;
 
-            if (previousCategory !== null &&
-                ((previousCategory.requireAction !== this.currentCategory.requireAction) ||
-                    (previousCategory.requireTarget !== this.currentCategory.requireTarget))) {
+            if (this.previousCategory !== null &&
+                ((this.previousCategory.element.requireAction !== this.currentCategory.element.requireAction) ||
+                    (this.previousCategory.element.requireTarget !== this.currentCategory.element.requireTarget))) {
                 this.createEditNodeModel.targetAction = '';
             }
-            //TODO Selectpicker
-            //$(this.$refs.iconPicker).selectpicker('val', this.currentCategory.icon);
+            this.selectedIcon = this.icons.flatMap(x => x.groupItems).find(x => x.value === this.createEditNodeModel.icon);
+            this.previousCategory = this.currentCategory;
         },
         modifyNote(action, index) {
             switch (action) {
@@ -447,26 +466,22 @@ export default {
                     break;
             }
         },
-        applyTemplate(event) {
-            if (event.target.value === '') {
+        applyTemplate() {
+            if (!this.selectedTemplate) {
                 return;
             }
 
-            const splitTemplateInfo = event.target.value.split('|');
-            const currentTemplate = this.templates[splitTemplateInfo[0]]
-                .find(template => template.id === parseInt(splitTemplateInfo[1], 10));
-            //TODO Selectpicker
-            //$(this.$refs.subgroupPicker).selectpicker('val', `${currentTemplate.type}|${currentTemplate.subgroup}`);
-            //this.$refs.subgroupPicker.dispatchEvent(new Event('change'));
-            //TODO Selectpicker
-            //$(this.$refs.iconPicker).selectpicker('val', currentTemplate.icon);
-
+            const currentTemplate = this.selectedTemplate.element;
             this.createEditNodeModel.name = currentTemplate.name;
             this.createEditNodeModel.targetAction = currentTemplate.target;
             this.createEditNodeModel.quantity = 1;
             this.createEditNodeModel.image = currentTemplate.image;
             this.createEditNodeModel.icon = currentTemplate.icon;
-            this.createEditNodeModel.category = this.categories.find(category => category.type === currentTemplate.type && category.subgroup === currentTemplate.subgroup);
+            this.selectedIcon = this.icons.flatMap(x => x.groupItems).find(x => x.value === this.createEditNodeModel.icon);
+            this.createEditNodeModel.category = this.groupedCategories
+                .find(x => x.groupName === currentTemplate.type)
+                .groupItems.find(x => x.element.subgroup === currentTemplate.subgroup);
+            this.currentCategory = this.createEditNodeModel.category;
 
             this.createEditNodeModel.notes = [];
             if (currentTemplate.description) {
@@ -561,6 +576,12 @@ export default {
         hideModal() {
             this.$refs.innerModal.hideModal();
         }
+    },
+    watch: {
+        // Why is this needed? Don't ask.
+        topLevelCategories() {
+            this.buildCategoryElements();
+        }
     }
 }
 </script>
@@ -568,6 +589,10 @@ export default {
 <style lang="scss" scoped>
 .modal {
     overflow-y: auto;
+
+    .form-group.row {
+        margin-bottom: 1rem;
+    }
 }
 
 .note {
@@ -619,6 +644,17 @@ button {
 .icon-dropdown {
     &:deep(.bootstrap-select .dropdown-menu .dropdown-options) {
         max-height: 300px;
+    }
+}
+
+.text-muted {
+    /* Bootstrap uses !important, so we have to do it here too :( */
+    color: #fff !important;
+}
+
+#suggest-notes {
+    .d-grid + .d-grid {
+        margin-top: .5rem;
     }
 }
 </style>

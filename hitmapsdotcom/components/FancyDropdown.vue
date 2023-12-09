@@ -126,4 +126,8 @@ function getSearchResults() {
         padding-left: 36px;
     }
 }
+
+.search-input {
+    padding: 4px 8px;
+}
 </style>
