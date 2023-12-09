@@ -10,7 +10,7 @@ const props = defineProps({
     },
     modelValue: Object
 });
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'change']);
 
 let searchBox = ref('');
 function dropdownClose() {
@@ -19,6 +19,7 @@ function dropdownClose() {
 //@ts-ignore
 function onSearch(item) {
     emit('update:modelValue', item);
+    emit('change', item);
 }
 function getSearchResults() {
     if (!searchBox.value) {
