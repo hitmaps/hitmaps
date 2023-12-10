@@ -2,11 +2,10 @@
     <modal :modal-title="$t('map.confirm-move')"
            id="confirm-move-modal"
            tabindex="-1"
+           ref="innerModal"
            role="dialog"
            dismissable>
-        <div class="alert alert-warning">
-            {{ $t('map.confirm-reposition') }}
-        </div>
+        {{ $t('map.confirm-reposition') }}
         <template v-slot:modal-footer>
             <game-button type="button" @click="cancelMoveMarker" data-dismiss="modal">
                 <game-icon icon="failed" font-style="normal" />
@@ -30,27 +29,42 @@ export default {
     props: {
         node: Object
     },
+    setup() {
+        const config = useRuntimeConfig();
+        const apiDomain = config.public.apiDomain;
+        return {
+            apiDomain
+        };
+    },
     methods: {
         cancelMoveMarker() {
             this.node.marker.setLatLng([this.node.latitude, this.node.longitude]);
+            this.hideModal();
         },
         confirmMove() {
-            const data = {
-                latitude: this.node.marker.getLatLng().lat,
-                longitude: this.node.marker.getLatLng().lng
-            };
-
-            this.$http.patch(`${this.$domain}/api/nodes/${this.node.id}`, data).then(_ => {
+            useAuthenticatedFetch(`${this.apiDomain}/api/nodes/${this.node.id}`, {
+                method: 'PATCH',
+                body: {
+                    latitude: this.node.marker.getLatLng().lat,
+                    longitude: this.node.marker.getLatLng().lng
+                }
+            }).then(_ => {
                 this.$toastr.s('Item moved!');
                 this.node.latitude = this.node.marker.getLatLng().lat;
                 this.node.longitude = this.node.marker.getLatLng().lng;
-                $('#confirm-move-modal').modal('hide');
+                this.hideModal();
             }).catch(err => {
                 console.error(err);
                 this.$toastr.e('Error occurred when moving item!');
                 this.node.marker.setLatLng([this.node.latitude, this.node.longitude]);
-                $('#confirm-move-modal').modal('hide');
+                this.hideModal();
             })
+        },
+        showModal() {
+            this.$refs.innerModal.showModal();
+        },
+        hideModal() {
+            this.$refs.innerModal.hideModal();
         }
     }
 }

@@ -1,6 +1,7 @@
 <template>
     <modal :modal-title="$t('map.copy-disguise-areas')"
            id="copy-disguises-modal"
+           ref="innerModal"
            tabindex="-1"
            role="dialog">
         <div class="alert alert-warning">
@@ -14,7 +15,7 @@
                     <select id="original-disguise"
                             name="original-disguise"
                             ref="originalDisguiseDropdown"
-                            class="selectpicker"
+                            class="form-select"
                             data-style="control-button"
                             v-model="sourceDisguise"
                             required>
@@ -31,7 +32,7 @@
                     <select id="target-disguise"
                             name="target-disguise"
                             ref="targetDisguiseDropdown"
-                            class="selectpicker"
+                            class="form-select"
                             data-style="control-button"
                             v-model="targetDisguise"
                             required>
@@ -43,7 +44,7 @@
             </div>
         </div>
         <template v-slot:modal-footer>
-            <game-button type="button" data-dismiss="modal">
+            <game-button type="button" data-dismiss="modal" @click="hideModal">
                 <game-icon icon="failed" font-style="normal" />
                 {{ $t('form.cancel') }}
             </game-button>
@@ -65,15 +66,18 @@ export default {
     props: {
         disguises: Array
     },
+    setup() {
+        const config = useRuntimeConfig();
+        const apiDomain = config.public.apiDomain;
+        return {
+            apiDomain
+        };
+    },
     data() {
         return {
             sourceDisguise: null,
             targetDisguise: null
         }
-    },
-    mounted() {
-        $(this.$refs.originalDisguiseDropdown).selectpicker();
-        $(this.$refs.targetDisguiseDropdown).selectpicker();
     },
     methods: {
         copyDisguiseAreas() {
@@ -81,13 +85,22 @@ export default {
                 originalDisguise: this.sourceDisguise,
                 targetDisguise: this.targetDisguise
             };
-            this.$http.post(`${this.$domain}/api/disguise-areas/copy`, data).then(resp => {
-                this.$emit('replace-disguise-areas', resp.data.data);
+            useAuthenticatedFetch(`${this.apiDomain}/api/disguise-areas/copy`, {
+                method: 'POST',
+                body: data
+            }).then(resp => {
+                this.$emit('replace-disguise-areas', resp.data.value);
                 this.$toastr.s('Disguise areas copied!');
             }).catch(err => {
                 console.error(err);
                 this.$toastr.e('Failed to copy disguise areas!');
             });
+        },
+        showModal() {
+            this.$refs.innerModal.showModal();
+        },
+        hideModal() {
+            this.$refs.innerModal.hideModal();
         }
     }
 }

@@ -1,12 +1,12 @@
 <template>
     <div class="foliage-menu">
         <p data-foliage="delete-help">
-            <i class="fas fa-trash"></i>
+            <icon name="fa6-solid:trash"/>
             {{ $t('map.click-foliage-to-delete') }}
         </p>
         <div class="editor-button" :class="drawingActive ? 'selected' : ''" @click="$emit('enable-foliage-creation')">
             <h3>
-                <i class="fas fa-plus-circle"></i>
+                <icon name="fa6-solid:circle-plus"/>
                 {{ $t('map.add-foliage') }}
             </h3>
             <p>
@@ -15,7 +15,7 @@
         </div>
         <div class="editor-button" @click="$emit('launch-editor', 'MENU')">
             <h3>
-                <i class="fas fa-times-circle"></i>
+                <icon name="fa6-solid:circle-xmark"/>
                 {{ $t('map.close-foliage-menu') }}
             </h3>
         </div>

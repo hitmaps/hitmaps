@@ -1,9 +1,10 @@
 <template>
     <modal id="manage-disguise-area-modal"
            :modal-title="modalTitle"
+           ref="innerModal"
            v-if="entity">
         <template v-slot:modal-footer>
-            <game-button type="button" data-dismiss="modal">
+            <game-button type="button" data-dismiss="modal" @click="hideModal">
                 <game-icon icon="failed" font-style="normal" />
                 {{ $t('form.cancel') }}
             </game-button>
@@ -25,6 +26,7 @@
 import Modal from "../../../Modal.vue";
 import GameButton from "../../../GameButton.vue";
 import GameIcon from "../../../GameIcon.vue";
+import {useAuthenticatedFetch} from "~/composables/useAuthenticatedFetch";
 export default {
     name: "ManageDisguiseAreaModal",
     components: {GameIcon, GameButton, Modal},
@@ -35,6 +37,13 @@ export default {
         return {
             operationInProgress: false
         }
+    },
+    setup() {
+        const config = useRuntimeConfig();
+        const apiDomain = config.public.apiDomain;
+        return {
+            apiDomain
+        };
     },
     computed: {
         modalTitle() {
@@ -49,28 +58,36 @@ export default {
         doDelete() {
             this.operationInProgress = true;
 
-            this.$http.delete(`${this.$domain}/api/disguise-areas/${this.entity.id}`)
-                .then(_ => {
-                    this.operationInProgress = false;
-                    this.$toastr.s(`Successfully deleted disguise area!`);
-                    this.$emit('item-deleted');
-                }).catch(_ => {
-                    this.operationInProgress = false;
-                    this.$toastr.e(`Failed to delete disguise area!`);
-                });
+            useAuthenticatedFetch(`${this.apiDomain}/api/disguise-areas/${this.entity.id}`, {
+                method: 'DELETE'
+            }).then(_ => {
+                this.operationInProgress = false;
+                this.$toastr.s(`Successfully deleted disguise area!`);
+                this.$emit('item-deleted');
+            }).catch(_ => {
+                this.operationInProgress = false;
+                this.$toastr.e(`Failed to delete disguise area!`);
+            });
         },
         doConvert() {
             this.operationInProgress = true;
 
-            this.$http.patch(`${this.$domain}/api/disguise-areas/${this.entity.id}/convert`)
-                .then(_ => {
-                    this.operationInProgress = false;
-                    this.$toastr.s('Successfully converted disguise area!');
-                    this.$emit('item-converted');
-                }).catch(_ => {
-                    this.operationInProgress = false;
-                    this.$toastr.e('Failed to convert disguise area!');
-                });
+            useAuthenticatedFetch(`${this.apiDomain}/api/disguise-areas/${this.entity.id}/convert`, {
+                method: 'PATCH'
+            }).then(_ => {
+                this.operationInProgress = false;
+                this.$toastr.s('Successfully converted disguise area!');
+                this.$emit('item-converted');
+            }).catch(_ => {
+                this.operationInProgress = false;
+                this.$toastr.e('Failed to convert disguise area!');
+            });
+        },
+        showModal() {
+            this.$refs.innerModal.showModal();
+        },
+        hideModal() {
+            this.$refs.innerModal.hideModal();
         }
     }
 }

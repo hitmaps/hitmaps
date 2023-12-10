@@ -1,5 +1,6 @@
 <script>
 import {defineComponent} from 'vue'
+import {useAuthenticatedFetch} from "~/composables/useAuthenticatedFetch";
 
 export default defineComponent({
     name: "[mission].vue",
@@ -15,7 +16,8 @@ export default defineComponent({
 
         return {
             gamePromise,
-            missionPromise
+            missionPromise,
+            apiDomain: config.public.apiDomain
         };
     },
     mounted() {
@@ -173,7 +175,7 @@ export default defineComponent({
                 this.renderItemDetailsModal(node);
             }).on('dragend', _ => {
                 this.nodeForMoving = node;
-                $('#confirm-move-modal').modal('show');
+                this.$refs.moveNodeModal.showModal();
             });
 
             this.bindTooltip(node);
@@ -194,7 +196,30 @@ export default defineComponent({
             return ledge;
         },
         displayConfirmPolyDeletionModal(ledgeFoliage, type) {
+            // Can't delete either if their respective editor isn't enabled
+            if (!((this.editorState === 'LEDGES' && type === 'ledge') ||
+                (this.editorState === 'FOLIAGE' && type === 'foliage') ||
+                (this.editorState === 'DISGUISE-REGIONS' && type === 'disguise-area'))) {
+                return;
+            }
 
+            if (this.editorState === 'LEDGES') {
+                this.deletionItemType = 'ledge';
+            } else if (this.editorState === 'FOLIAGE') {
+                this.deletionItemType = 'foliage';
+            } else if (this.editorState === 'DISGUISE-REGIONS') {
+                this.deletionItemType = 'disguise-area';
+            } else {
+                return;
+            }
+
+            this.deletionItem = ledgeFoliage;
+
+            if (this.editorState === 'DISGUISE-REGIONS') {
+                this.$nextTick(() => this.$refs.manageDisguiseAreaModal.showModal());
+            } else {
+                this.$nextTick(() => this.$refs.deleteEntityModal.showModal());
+            }
         },
         buildFoliageForMap(foliage) {
             foliage.visible = true;
@@ -522,8 +547,8 @@ export default defineComponent({
         },
         toggleDraw(state) {
             if (state === 'OFF') {
-                //this.map.pm.disableDraw('Line');
-                //this.map.pm.disableDraw('Polygon');
+                this.map.pm.disableDraw('Line');
+                this.map.pm.disableDraw('Polygon');
                 return;
             }
 
@@ -547,7 +572,18 @@ export default defineComponent({
             this.toggleDraw('Polygon');
         },
         onEnableDisguiseRegionCreation(regionType) {
+            if (this.disguiseRegionType !== null && this.disguiseRegionType !== regionType) {
+                // We'll need to disable and re-enable to switch type
+                this.toggleDraw('Polygon');
+            }
+            if (this.disguiseRegionType !== null && this.disguiseRegionType === regionType) {
+                // Toggling the same one disables, so just null it out.
+                this.disguiseRegionType = null;
+            } else {
+                this.disguiseRegionType = regionType;
+            }
 
+            this.toggleDraw('Polygon');
         },
         initDraw(e) {
             e.workingLayer.on('pm:vertexadded', e => {
@@ -570,39 +606,46 @@ export default defineComponent({
             this.vertices.forEach(element => {
                 data.vertices.push(`${element[0]},${element[1]}`);
             });
-            /*if (e.shape === 'Line') {
-                this.$http.post(`${this.$domain}/api/ledges`, data)
-                    .then(resp => {
-                        this.vertices = [];
-                        this.ledges.push(this.buildLedgeForMap(resp.data.data));
-                        this.$toastr.s('Ledge saved!');
-                        this.map.removeLayer(this.workingLayer);
-                        this.workingLayer = null;
-                        this.polyActive = false;
-                        this.updateNodeMarkers();
-                    }).catch(_ => {
-                  this.$toastr.e('Error occurred when saving ledge!');
+            if (e.shape === 'Line') {
+                useAuthenticatedFetch(`${this.apiDomain}/api/ledges`, {
+                    method: 'POST',
+                    body: data
+                }).then(resp => {
+                    this.vertices = [];
+                    this.ledges.push(this.buildLedgeForMap(JSON.parse(resp.data.value).data));
+                    this.$toastr.s('Ledge saved!');
+                    this.map.removeLayer(this.workingLayer);
+                    this.workingLayer = null;
+                    this.polyActive = false;
+                    this.updateNodeMarkers();
+                }).catch(_ => {
+                    this.$toastr.e('Error occurred when saving ledge!');
                 });
             } else if (this.editorState === 'FOLIAGE') {
-                this.$http.post(`${this.$domain}/api/foliage`, data)
-                    .then(resp => {
-                        this.vertices = [];
-                        this.foliage.push(this.buildFoliageForMap(resp.data.data));
-                        this.$toastr.s('Foliage saved!');
-                        this.map.removeLayer(this.workingLayer);
-                        this.workingLayer = null;
-                        this.polyActive = false;
-                        this.updateNodeMarkers();
-                    }).catch(_ => {
-                  this.$toastr.e('Error occurred when saving foliage!');
+                useAuthenticatedFetch(`${this.apiDomain}/api/foliage`, {
+                    method: 'POST',
+                    body: data
+                }).then(resp => {
+                    this.vertices = [];
+                    this.foliage.push(this.buildFoliageForMap(JSON.parse(resp.data.value).data));
+                    this.$toastr.s('Foliage saved!');
+                    this.map.removeLayer(this.workingLayer);
+                    this.workingLayer = null;
+                    this.polyActive = false;
+                    this.updateNodeMarkers();
+                }).catch(_ => {
+                    this.$toastr.e('Error occurred when saving foliage!');
                 });
             } else if (this.editorState === 'DISGUISE-REGIONS') {
                 data.disguiseId = this.currentDisguise.id;
                 data.type = this.disguiseRegionType;
 
-                this.$http.post(`${this.$domain}/api/disguise-areas`, data).then(resp => {
+                useAuthenticatedFetch(`${this.apiDomain}/api/disguise-areas`, {
+                    method: 'POST',
+                    body: data
+                }).then(resp => {
                     this.vertices = [];
-                    this.disguiseAreas[this.currentDisguise.id].push(this.buildDisguiseAreaForMap(resp.data.data));
+                    this.disguiseAreas[this.currentDisguise.id].push(this.buildDisguiseAreaForMap(JSON.parse(resp.data.value).data));
                     this.$toastr.s('Disguise area saved!');
                     this.map.removeLayer(this.workingLayer);
                     this.workingLayer = null;
@@ -613,25 +656,25 @@ export default defineComponent({
                     console.error(err);
                     this.$toastr.e('Error occurred when saving disguise area!');
                 });
-            }*/
+            }
         },
         onPolyDeleted() {
             if (this.deletionItemType === 'ledge') {
                 this.deletionItem.polyline.removeFrom(this.map);
-                //ArrayHelpers.deleteElement(this.ledges, this.deletionItem);
+                ArrayHelpers.deleteElement(this.ledges, this.deletionItem);
             } else if (this.deletionItemType === 'foliage') {
                 this.deletionItem.polygon.removeFrom(this.map);
-                //ArrayHelpers.deleteElement(this.foliage, this.deletionItem);
+                ArrayHelpers.deleteElement(this.foliage, this.deletionItem);
             } else if (this.deletionItemType === 'disguise-area') {
                 this.deletionItem.polygon.removeFrom(this.map);
-                //ArrayHelpers.deleteElement(this.disguiseAreas[this.currentDisguise.id], this.deletionItem);
+                ArrayHelpers.deleteElement(this.disguiseAreas[this.currentDisguise.id], this.deletionItem);
             }
 
             this.deletionItemType = null;
             this.deletionItem = null;
             this.updateNodeMarkers();
-            $('#delete-entity').modal('hide');
-            $('#manage-disguise-area-modal').modal('hide');
+            this.$refs.deleteEntityModal.hideModal();
+            this.$refs.manageDisguiseAreaModal.hideModal();
         },
         onDisguiseAreaConverted() {
             this.deletionItem.polygon.removeFrom(this.map);
@@ -641,7 +684,7 @@ export default defineComponent({
             this.deletionItem = null;
             this.updateNodeMarkers();
             this.updateActiveDisguiseLayer();
-            $('#manage-disguise-area-modal').modal('hide');
+            this.$refs.manageDisguiseAreaModal.hideModal();
         },
         onDisguiseSelected(disguise) {
             // Disable disguise editor tools if they're enabled. You can't change a disguise mid-polygon.
@@ -654,18 +697,18 @@ export default defineComponent({
                 return;
             }
 
-            /*this.$http.get(`${this.$domain}/api/v2/games/${this.$route.params.game}`+
+            useAuthenticatedFetch(`${this.apiDomain}/api/v2/games/${this.$route.params.game}`+
                 `/locations/${this.$route.params.location}`+
                 `/missions/${this.$route.params.mission}` +
                 `/disguise-areas/${disguise.id}`)
                 .then(resp => {
-                    this.disguiseAreas[disguise.id] = resp.data.disguiseAreas;
+                    this.disguiseAreas[disguise.id] = resp.data.value.disguiseAreas;
                     this.disguiseAreas[disguise.id].forEach(area => this.buildDisguiseAreaForMap(area));
                     this.currentDisguise = disguise;
                 }).catch(err => {
                     console.error(err);
                     this.$toastr.e('Failed to retrieve disguise regions!');
-                });*/
+                });
         },
         onReplaceDisguiseAreas(disguiseAreas) {
             if (!disguiseAreas.length) {
@@ -876,7 +919,6 @@ export default defineComponent({
         }
     }
 
-    /* May be unused thanks to :visible */
     &:deep(.node-visible) {
         display: block;
     }

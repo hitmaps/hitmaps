@@ -21,13 +21,12 @@
     "vue-country-flag-next": "2.3.2"
   },
   "dependencies": {
+    "@geoman-io/leaflet-geoman-free": "^2.15.0",
     "@popperjs/core": "^2.11.8",
     "axios": "^1.6.2",
     "bootstrap": "^5.3.0",
     "firebase": "^10.5.2",
     "jquery": "^3.7.1",
-    "leaflet": "1.7.1",
-    "leaflet.pm": "2.2.0",
     "nuxt-vuefire": "^0.4.0",
     "vuefire": "^3.1.17"
   }

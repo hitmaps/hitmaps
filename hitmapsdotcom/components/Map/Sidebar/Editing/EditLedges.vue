@@ -1,19 +1,19 @@
 <template>
     <div class="ledges-menu">
         <p data-ledge="delete-help">
-            <i class="fas fa-trash"></i>
+            <icon name="fa6-solid:trash"/>
             {{ $t('map.click-ledge-to-delete') }}
         </p>
         <div class="editor-button" :class="drawingActive ? 'selected' : ''" @click="$emit('enable-ledge-creation')">
             <h3>
-                <i class="fas fa-plus-circle"></i>
+                <icon name="fa6-solid:circle-plus"/>
                 {{ $t('map.add-ledge') }}
             </h3>
             <p>{{ $t('map.toggle-ledge-builder') }}</p>
         </div>
         <div class="editor-button" @click="$emit('launch-editor', 'MENU')">
             <h3>
-                <i class="fas fa-times-circle"></i>
+                <icon name="fa6-solid:circle-xmark"/>
                 {{ $t('map.close-ledge-menu') }}
             </h3>
         </div>

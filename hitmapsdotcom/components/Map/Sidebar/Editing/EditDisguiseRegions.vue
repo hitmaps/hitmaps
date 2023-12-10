@@ -1,14 +1,14 @@
 <template>
     <div class="disguise-trespassing-menu">
         <p class="delete-help">
-            <i class="fas fa-trash"></i>
+            <icon name="fa6-solid:trash"/>
             {{ $t('map.delete-existing-region') }}
         </p>
         <p>{{ $t('map.select-disguise-for-editing') }}</p>
         <div class="search-box">
             <select ref="disguisePicker"
                     name="disguise-menu-dropdown"
-                    class="selectpicker"
+                    class="form-select control-button"
                     @change="changeDisguise"
                     data-style="control-button">
                 <option value="NONE">None</option>
@@ -24,7 +24,7 @@
                  :class="drawingActive && drawingType === 'trespassing' ? 'selected' : ''"
                  @click="initDraw('trespassing')">
                 <h3>
-                    <i class="fas fa-plus-circle"></i>
+                    <icon name="fa6-solid:circle-plus"/>
                     {{ $t('map.add-trespassing-region') }}
                 </h3>
                 <p>{{ $t('map.toggle-trespassing-builder') }}</p>
@@ -33,7 +33,7 @@
                  :class="drawingActive && drawingType === 'hostile' ? 'selected' : ''"
                  @click="initDraw('hostile')">
                 <h3>
-                    <i class="fas fa-plus-circle"></i>
+                    <icon name="fa6-solid:circle-plus"/>
                     {{ $t('map.add-hostile-region') }}
                 </h3>
                 <p>{{ $t('map.toggle-hostile-builder') }}</p>
@@ -41,7 +41,7 @@
         </template>
         <div v-else class="editor-button" @click="initCopyDisguiseModal">
             <h3>
-                <i class="fas fa-copy"></i>
+                <icon name="fa6-solid:copy"/>
                 {{ $t('map.copy-regions') }}
             </h3>
             <p>{{ $t('map.click-to-copy-regions') }}</p>
@@ -49,7 +49,7 @@
         <div class="editor-button"
              @click="$emit('launch-editor', 'MENU')">
             <h3>
-                <i class="fas fa-times-circle"></i>
+                <icon name="fa6-solid:circle-xmark"/>
                 {{ $t('map.close-disguise-menu') }}
             </h3>
         </div>
@@ -58,10 +58,8 @@
 </template>
 
 <script>
-import CopyDisguiseRegions from "./CopyDisguiseRegions.vue";
 export default {
     name: "EditDisguiseRegions",
-    components: {CopyDisguiseRegions},
     props: {
         disguises: Array,
         drawingActive: Boolean,
@@ -73,10 +71,8 @@ export default {
         }
     },
     mounted() {
-        $(this.$refs.disguisePicker).selectpicker();
-
         if (this.currentDisguise) {
-            $(this.$refs.disguisePicker).selectpicker('val', this.currentDisguise.id);
+            this.$refs.disguisePicker.value = this.currentDisguise.id;
         }
     },
     methods: {
@@ -93,7 +89,7 @@ export default {
             this.$emit('enable-region-creation', type);
         },
         initCopyDisguiseModal() {
-            $('#copy-disguises-modal').modal('show');
+            this.$refs.copyDisguiseModal.showModal();
         },
         onReplaceDisguiseAreas(disguiseAreas) {
             this.$emit('replace-disguise-areas', disguiseAreas);
@@ -101,7 +97,7 @@ export default {
     },
     watch: {
         currentDisguise() {
-            this.$nextTick(_ => $(this.$refs.disguisePicker).selectpicker('val', this.currentDisguise === null ? 'NONE' : this.currentDisguise.id));
+            this.$nextTick(_ => this.$refs.disguisePicker.value = this.currentDisguise === null ? 'NONE' : this.currentDisguise.id);
         }
     }
 }
@@ -111,7 +107,7 @@ export default {
 .disguise-trespassing-menu {
     &:deep(.control-button) {
         border-radius: 3px;
-        background: rgba(22, 24, 29, 0.75);
+        background-color: rgba(22, 24, 29, 0.75);
         color: #fff;
         box-shadow: none;
         border: solid 2px #2a2d31;

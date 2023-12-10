@@ -1,6 +1,7 @@
 <template>
     <modal id="delete-entity"
            :modal-title="modalTitle"
+           ref="innerModal"
            v-if="entity && entityType">
         <i18n-t keypath="map.confirm-item-deletion-message" tag="p">
             <template v-slot:item>{{ displayEntityType }}</template>
@@ -36,6 +37,13 @@ export default {
             deleteButtonBlocked: false
         }
     },
+    setup() {
+        const config = useRuntimeConfig();
+        const apiDomain = config.public.apiDomain;
+        return {
+            apiDomain
+        };
+    },
     computed: {
         modalTitle() {
             let titleCaseEntityType = this.entityType[0].toUpperCase() + this.entityType.substr(1).toLowerCase();
@@ -55,15 +63,22 @@ export default {
             this.deleteButtonBlocked = true;
             const entityTypeForUrl = this.entityType === 'foliage' ? this.entityType : `${this.entityType}s`;
 
-            this.$http.delete(`${this.$domain}/api/${entityTypeForUrl}/${this.entity.id}`)
-                .then(_ => {
-                    this.deleteButtonBlocked = false;
-                    this.$toastr.s(`Successfully deleted ${this.entityType}!`);
-                    this.$emit('item-deleted');
-                }).catch(_ => {
-                    this.deleteButtonBlocked = false;
-                    this.$toastr.e(`Failed to delete ${this.entityType}!`);
-                });
+            useAuthenticatedFetch(`${this.apiDomain}/api/${entityTypeForUrl}/${this.entity.id}`, {
+                method: 'DELETE'
+            }).then(_ => {
+                this.deleteButtonBlocked = false;
+                this.$toastr.s(`Successfully deleted ${this.entityType}!`);
+                this.$emit('item-deleted');
+            }).catch(_ => {
+                this.deleteButtonBlocked = false;
+                this.$toastr.e(`Failed to delete ${this.entityType}!`);
+            });
+        },
+        showModal() {
+            this.$refs.innerModal.showModal();
+        },
+        hideModal() {
+            this.$refs.innerModal.hideModal();
         }
     }
 }
