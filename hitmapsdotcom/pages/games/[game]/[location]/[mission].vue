@@ -304,13 +304,12 @@ export default defineComponent({
                 .forEach(foliage => foliage.polygon.addTo(this.map));
 
             // Make sure the counters and highlights for the level select are updated
-            // TODO REENABLE
-            /*if (this.$refs.floorToggle) {
+            if (this.$refs.floorToggle) {
                 this.$refs.floorToggle.$forceUpdate();
             }
             if (this.$refs.sidebar) {
                 this.$refs.sidebar.$forceUpdate();
-            }*/
+            }
         },
         buildIcon(node) {
             return node.icon === 'area' ?
@@ -398,7 +397,9 @@ export default defineComponent({
             });
         },
         deleteNode(nodeId) {
-            this.nodes.find(x => x.id === nodeId).marker.removeFrom(this.map);
+            const node = this.nodes.find(x => x.id === nodeId);
+            node.marker.removeFrom(this.map);
+            ArrayHelpers.deleteElement(this.nodes, node);
         },
         onItemCreated(node) {
             this.nodes.push(node);
