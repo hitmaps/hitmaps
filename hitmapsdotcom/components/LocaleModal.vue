@@ -53,6 +53,7 @@
             },
             setLang(iso) {
                 this.$i18n.setLocale(iso);
+                this.hideModal();
             },
             showModal() {
                 this.$refs.innerModal.showModal();

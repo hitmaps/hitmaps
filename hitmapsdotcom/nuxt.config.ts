@@ -6,7 +6,8 @@ export default defineNuxtConfig({
         '@nuxtjs/i18n',
         'nuxt-icon',
         'nuxt-vuefire',
-        'nuxt3-leaflet'
+        'nuxt3-leaflet',
+        '@nuxtjs/google-fonts'
     ],
     components: [
         {
@@ -23,6 +24,12 @@ export default defineNuxtConfig({
         },
         strategy: 'no_prefix',
         vueI18n: './i18n.config.ts'
+    },
+    //@ts-ignore
+    googleFonts: {
+        families: {
+            Roboto: [500]
+        }
     },
     //@ts-ignore
     vuefire: {

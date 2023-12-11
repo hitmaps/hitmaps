@@ -1,4 +1,7 @@
 <template>
+    <Head>
+        <Title>{{ $t('home') }}</Title>
+    </Head>
     <div
         class="content"
         style="background: url('https://media.hitmaps.com/img/hitman3/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
@@ -129,7 +132,7 @@
                                 backgroundPosition: 'center',
                                 backgroundRepeat: 'no-repeat'
                             }">
-                    <a href="#">
+                    <nuxt-link :to="`/games/${game.slug}`">
                         <p>&nbsp;</p>
                         <div class="game-info">
                             <div class="image">
@@ -140,7 +143,7 @@
                                 <h1>{{ game.fullName }}</h1>
                             </div>
                         </div>
-                    </a>
+                    </nuxt-link>
                 </div>
             </div>
         </template>
@@ -276,6 +279,7 @@
 import GameButton from "@/components/GameButton.vue";
 
 const config = useRuntimeConfig();
+const { t } = useI18n();
 
 const { data } = await useFetch(`${config.public.apiDomain}/api/web/home`);
 const games = data.value.games;
@@ -285,6 +289,12 @@ const notificationModal = ref(null);
 function showNotificationModal() {
     notificationModal.value.showModal();
 }
+
+//region SEO
+useSeoMeta({
+    ogTitle: () => Utils.siteTitle(t('home'))
+})
+//endregion
 </script>
 
 <style lang="scss" scoped>

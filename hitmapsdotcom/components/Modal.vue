@@ -16,8 +16,8 @@
                         v-html="modalTitle"></h5>
                     <button type="button"
                             class="close"
-                            data-dismiss="modal"
                             aria-label="Close"
+                            @click="hideModal"
                             v-if="dismissable">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -92,6 +92,7 @@ export default {
 
                 .close {
                     color: $modal-text-color;
+                    background: $modal-background;
                 }
             }
 

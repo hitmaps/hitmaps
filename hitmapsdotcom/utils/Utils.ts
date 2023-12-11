@@ -8,4 +8,8 @@ export default class Utils {
         }
         return array;
     }
+
+    static siteTitle(titleChunk: string|undefined): string {
+        return titleChunk ? `${titleChunk} | HITMAPS™` : 'HITMAPS™';
+    }
 }

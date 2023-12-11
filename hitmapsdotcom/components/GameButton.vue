@@ -17,6 +17,7 @@ export default {
 .game-button {
     background: $game-button-background;
     margin: 0 10px 10px 0;
+    width: 100%;
 
     &.btn-block {
         border-radius: 0;

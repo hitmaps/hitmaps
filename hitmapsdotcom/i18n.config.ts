@@ -10,7 +10,7 @@ export default defineI18nConfig(() => ({
 
 //@ts-ignore
 function loadLocaleMessages() {
-    const messages = {}
+    const messages: any = {};
     let modules = import.meta.glob('./locales/*.json', { eager: true });
 
     for (const path in modules) {

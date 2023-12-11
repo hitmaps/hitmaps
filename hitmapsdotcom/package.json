@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
+    "@nuxtjs/google-fonts": "^3.1.1",
     "@nuxtjs/i18n": "^8.0.0-rc.9",
     "@types/bootstrap": "^5.2.6",
     "@types/jquery": "^3.5.24",

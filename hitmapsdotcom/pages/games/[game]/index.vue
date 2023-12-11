@@ -1,6 +1,4 @@
 <script setup>
-import Loader from "@/components/Loader.vue";
-
 const config = useRuntimeConfig();
 const route = useRoute();
 
@@ -10,9 +8,18 @@ const { pending: locationsPending, data: locations } = await useFetch(`${config.
     server: false
 });
 const game = gameData.value[0];
+
+//region SEO
+useSeoMeta({
+    ogTitle: () => Utils.siteTitle(game.fullName)
+});
+//endregion
 </script>
 
 <template>
+    <Head>
+        <Title>{{ game.fullName }}</Title>
+    </Head>
     <client-only>
         <div
             class="content"
@@ -22,86 +29,90 @@ const game = gameData.value[0];
                     <img :src="game.logoUrl" class="img-fluid" :alt="`${game.fullName} Logo`">
                     <h2>{{ game.tagline }}</h2>
                 </div>
+<!--                <div class="row loading" v-if="locationsPending && !locations">-->
                 <div class="row loading" v-if="locationsPending && !locations">
                     <div class="loader">
                         <loader />
                     </div>
                 </div>
-                <nav id="scrollspy" class="navbar locations"
-                     style="background: url('https://media.hitmaps.com/img/hitman3/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
-                     v-else>
-                    <ul class="nav">
-                        <li v-if="locations.length > 0" class="nav-item">
-                            <nuxt-link to="/" class="nav-link" data-target="#">
-                                <game-icon icon="story" font-style="normal" />
-                                {{ $t('home') }}
-                            </nuxt-link>
-                        </li>
-                        <li v-for="location in locations"
-                            :key="location.id"
-                            class="nav-item">
-                            <a class="nav-link"
-                               :href="'#' + location.slug"
-                               :data-target="'#' + location.slug">
-                                <game-icon icon="location" font-style="normal" />
-                                {{ $t('locations.destinations.' + location.slug, location.destination) }}
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-                <div v-for="location in locations" :key="location.id" class="location"
-                     v-bind:style="{
+                <template v-else>
+                    <nav id="scrollspy" class="navbar locations"
+                         style="background: url('https://media.hitmaps.com/img/hitman3/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover">
+                        <ul class="nav">
+                            <li v-if="locations.length > 0" class="nav-item">
+                                <nuxt-link to="/" class="nav-link" data-target="#">
+                                    <game-icon icon="story" font-style="normal" />
+                                    {{ $t('home') }}
+                                </nuxt-link>
+                            </li>
+                            <li v-for="location in locations"
+                                :key="location.id"
+                                class="nav-item">
+                                <a class="nav-link"
+                                   :href="'#' + location.slug"
+                                   :data-target="'#' + location.slug">
+                                    <game-icon icon="location" font-style="normal" />
+                                    {{ $t('locations.destinations.' + location.slug, location.destination) }}
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div v-scrollspy="`#scrollspy`">
+                        <div v-for="location in locations" :key="location.id" class="location"
+                             v-bind:style="{
                     background:
                         'url(' + location.backgroundUrl + ') no-repeat center center fixed',
                     backgroundSize: 'cover'
                 }">
-                    <div class="header">
-                        <a class="anchor" :id="location.slug"></a>
-                        <h2>
-                            <game-icon icon="location" font-style="solid" />
-                            <p>
-                                <span class="name">{{ $t('locations.destinations.' + location.slug, location.destination) }}</span>
-                                <br />
-                                <span class="country">
+                            <div class="header">
+                                <a class="anchor" :id="location.slug"></a>
+                                <h2>
+                                    <game-icon icon="location" font-style="solid" />
+                                    <p>
+                                        <span class="name">{{ $t('locations.destinations.' + location.slug, location.destination) }}</span>
+                                        <br />
+                                        <span class="country">
                                 {{ $t('locations.countries.' + location.slug, location.destinationCountry) }}
                             </span>
-                            </p>
-                        </h2>
-                    </div>
-                    <div class="missions">
-                        <div class="row" style="margin-left: 15px; margin-right: 15px;">
-                            <div v-for="mission in location.missions" :key="mission.id"
-                                 class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                                <a href="#">
-                                    <nuxt-link :to="`/games/${route.params.game}/${location.slug}/${mission.slug}`">
-                                        <div class="card mission" :style="`background: url('${mission.tileUrl}') center center / cover no-repeat`">
-                                            <div style="position: relative">
-                                                <img :src="mission.tileUrl" class="card-img-top" :alt="$t('mission-image')">
-                                                <div class="card-img-overlay d-flex flex-column justify-content-end"
-                                                     style="padding: 0"></div>
-                                            </div>
-                                            <div>
-                                                <div class="card-footer">
-                                                    <div class="image">
-                                                        <game-icon :icon="mission.icon" font-style="normal" />
+                                    </p>
+                                </h2>
+                            </div>
+                            <div class="missions">
+                                <div class="row" style="margin-left: 15px; margin-right: 15px;">
+                                    <div v-for="mission in location.missions" :key="mission.id"
+                                         class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                                        <a href="#">
+                                            <nuxt-link :to="`/games/${route.params.game}/${location.slug}/${mission.slug}`">
+                                                <div class="card mission" :style="`background: url('${mission.tileUrl}') center center / cover no-repeat`">
+                                                    <div style="position: relative">
+                                                        <img :src="mission.tileUrl" class="card-img-top" :alt="$t('mission-image')">
+                                                        <div class="card-img-overlay d-flex flex-column justify-content-end"
+                                                             style="padding: 0"></div>
                                                     </div>
-                                                    <div class="text">
-                                                        <h2>{{ $t('mission-types.' + mission.missionType.toLowerCase(), mission.missionType) }}</h2>
-                                                        <h1>{{ $t('missions.' + mission.slug, mission.name) }}</h1>
+                                                    <div>
+                                                        <div class="card-footer">
+                                                            <div class="image">
+                                                                <game-icon :icon="mission.icon" font-style="normal" />
+                                                            </div>
+                                                            <div class="text">
+                                                                <h2>{{ $t('mission-types.' + mission.missionType.toLowerCase(), mission.missionType) }}</h2>
+                                                                <h1>{{ $t('missions.' + mission.slug, mission.name) }}</h1>
+                                                            </div>
+                                                        </div>
+                                                        <div class="freelancer-note" v-if="mission.supportsFreelancer">
+                                                            <game-icon icon="freelancer" font-style="solid" />
+                                                            {{ $t('map.includes-freelancer') }}
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="freelancer-note" v-if="mission.supportsFreelancer">
-                                                    <game-icon icon="freelancer" font-style="solid" />
-                                                    {{ $t('map.includes-freelancer') }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </nuxt-link>
-                                </a>
+                                            </nuxt-link>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </template>
             </div>
         </div>
     </client-only>
