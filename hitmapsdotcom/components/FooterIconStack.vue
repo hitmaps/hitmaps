@@ -17,7 +17,7 @@
 </script>
 
 <template>
-    <div class="icon-stack" data-bs-toggle="tooltip" :data-bs-title="tooltipText">
+    <div class="icon-stack" data-bs-toggle="tooltip" :data-bs-title="tooltipText" v-tooltip:top="tooltipText">
         <icon class="square icon" name="fa6-solid:square"/>
         <div class="inner icon" :class="props.inverse ? 'inverse' : ''">
             <icon :name="props.icon"/>
