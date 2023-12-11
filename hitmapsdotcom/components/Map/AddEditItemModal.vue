@@ -220,7 +220,7 @@
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" :id="`${uid}-variant-${variant.id}`" :value="variant.id" v-model="createEditNodeModel.variantIds">
                         <label class="form-check-label" :for="`${uid}-variant-${variant.id}`">
-                            {{ $t(`difficulties.${variant.name}`, variant.name) }}
+                            {{ variant.name }}
                         </label>
                     </div>
                 </div>
