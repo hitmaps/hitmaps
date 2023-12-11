@@ -45,13 +45,9 @@
                     <icon name="fa6-solid:user-tie"/>
                 </button>
                 <button class="navbar-toggler"
-                        type="button"
-                        :aria-label="$t('language-modal.change-language')"
-                        data-bs-toggle="tooltip"
-                        data-toggle="modal"
-                        data-target="#locale-modal"
-                        :data-bs-title="$t('language-modal.change-language')">
-                    <country-flag :country="countryFlag" size="small"/>
+                        @click="showLocaleModal"
+                        type="button">
+                    <country-flag :country="countryFlag" size="small" v-tooltip:top="$t('language-modal.change-language')" />
                 </button>
             </div>
         </div>
@@ -68,31 +64,25 @@
                     <control-button @click="$emit('zoom-out')" :class="currentZoomLevel === minZoomLevel ? 'disabled' : ''">-</control-button>
                 </div>
                 <div class="control-buttons">
-                    <control-button data-toggle="modal"
-                                    data-target="#locale-modal"
-                                    data-bs-toggle="tooltip"
-                                    :data-bs-title="$t('language-modal.change-language')">
-                        <country-flag :country="countryFlag" size="small" />
+                    <control-button @click="showLocaleModal">
+                        <country-flag :country="countryFlag" size="small" v-tooltip:top="$t('language-modal.change-language')" />
                     </control-button>
                     <template v-if="loggedIn">
                         <control-button v-if="showDebug()"
                                         id="debug-button"
                                         @click="debugMode = !debugMode"
-                                        data-bs-toggle="tooltip"
-                                        :data-bs-title="$t('map.debug-mode')"
+                                        v-tooltip:top="$t('map.debug-mode')"
                                         :style="debugMode ? 'background: white; color: black' : ''">
                             <icon name="fa6-solid:bug"/>
                         </control-button>
                         <control-button
                             id="edit-button"
                             @click="$emit('master-edit-toggle')"
-                            data-bs-toggle="tooltip"
-                            :data-bs-title="$t('map.edit-map')">
+                            v-tooltip:top="$t('map.edit-map')">
                             <icon name="fa6-solid:pencil"/>
                         </control-button>
                         <control-button
-                            data-bs-toggle="tooltip"
-                            :data-bs-title="$t('authentication.log-out')"
+                            v-tooltip:top="$t('authentication.log-out')"
                             @click="logout">
                             <icon name="fa:sign-out"/>
                         </control-button>
@@ -161,6 +151,7 @@
                                    @launch-editor="onLaunchEditor"
                                    @replace-disguise-areas="onReplaceDisguiseAreas" />
         </div>
+        <locale-modal ref="localeModal" flag-size="hidden" />
     </nav>
 </template>
 
@@ -190,7 +181,7 @@ export default {
     },
     setup() {
         const { cookies } = useCookies();
-        const locale = useI18n();
+        const { locale } = useI18n();
         return {
             cookies,
             locale
@@ -212,6 +203,9 @@ export default {
         },
     },
     methods: {
+        showLocaleModal() {
+            this.$refs.localeModal.showModal();
+        },
         getAllVariantsForUser() {
             if (this.loggedIn) {
                 return this.mission.variants;

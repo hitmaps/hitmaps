@@ -27,8 +27,7 @@
         <button @click="clearSearch"
                 id="clear-search"
                 class="btn control-button"
-                data-bs-toggle="tooltip"
-                :data-bs-title="$t('map.clear-search')"
+                v-tooltip:top="$t('map.clear-search')"
                 v-show="searchedItem">
             <icon name="fa6-solid:xmark"/>
         </button>

@@ -1,41 +1,64 @@
 <template>
-    <modal id="locale-modal"
-        aria-labelledby="locale-modal-label"
-        :modalTitle="$t('language-modal.change-language')"
-        dismissable>
-        <div class="row">
-            <div @click="setLang(lang.iso)" data-dismiss="modal" class="col-md-3 col-sm-6 text-center language-option" v-for="(lang, i) in languages" :key="`Lang${i}`">
-                <country-flag :country="getCountryFlag(lang.iso)" size="big" />
-                <p>{{ lang.name }}</p>
+    <client-only>
+        <country-flag v-if="flagSize !== 'hidden'" :country="getCountryFlagForLocale()" v-tooltip:top="$t('language-modal.change-language')" @click="showModal" :size="flagSize" />
+        <modal id="locale-modal"
+               aria-labelledby="locale-modal-label"
+               ref="innerModal"
+               :modalTitle="$t('language-modal.change-language')"
+               dismissable>
+            <div class="row">
+                <div @click="setLang(lang.iso)" data-dismiss="modal" class="col-md-3 col-sm-6 text-center language-option" v-for="(lang, i) in languages" :key="`Lang${i}`">
+                    <country-flag :country="getCountryFlagForIsoCode(lang.iso)" size="big" />
+                    <p>{{ lang.name }}</p>
+                </div>
             </div>
-        </div>
-        <i18n-t keypath="language-modal.footer" tag="p">
-            <template v-slot:submitACorrection>
-                <a href="https://translate.hitmaps.com" target="_blank">{{ $t('language-modal.submit-a-correction') }}</a>
-            </template>
-        </i18n-t>
-    </modal>
+            <i18n-t keypath="language-modal.footer" tag="p">
+                <template v-slot:submitACorrection>
+                    <a href="https://translate.hitmaps.com" target="_blank">{{ $t('language-modal.submit-a-correction') }}</a>
+                </template>
+            </i18n-t>
+        </modal>
+    </client-only>
 </template>
 
 <script>
-    import Modal from "./Modal.vue";
-    import LanguageHelpers from "./LanguageHelpers.js";
-    import Alert from "./Alert.vue";
     export default {
         name: "LocaleModal",
-        components: {Alert, Modal},
+        setup() {
+            const { locale, locales, setLocale } = useI18n();
+
+            return {
+                locale,
+                locales,
+                setLocale
+            };
+        },
+        props: {
+            flagSize: {
+                type: String,
+                default: 'normal'
+            }
+        },
         computed: {
             languages() {
                 return LanguageHelpers.getLanguages();
             }
         },
         methods: {
-            getCountryFlag(locale) {
-                return LanguageHelpers.getCountryFlag(locale)
+            getCountryFlagForLocale() {
+                return LanguageHelpers.getCountryFlagForLocale(this.locale);
+            },
+            getCountryFlagForIsoCode(iso) {
+                return LanguageHelpers.getCountryFlag(iso)
             },
             setLang(iso) {
-                this.$i18n.locale = iso;
-                localStorage.locale = this.$i18n.locale;
+                this.$i18n.setLocale(iso);
+            },
+            showModal() {
+                this.$refs.innerModal.showModal();
+            },
+            hideModal() {
+                this.$refs.innerModal.hideModal();
             }
         }
     }

@@ -47,14 +47,14 @@
               </div>
               <div class="row legal">
                   <div class="col-sm-2">
-                        <span class="language-switcher" data-toggle="modal" data-target="#locale-modal">
-                            <country-flag :country="getCountryFlag()" data-bs-toggle="tooltip" :data-bs-title="$t('language-modal.change-language')" />
+                        <span class="language-switcher">
+                            <locale-modal />
                         </span>
                   </div>
                   <div class="col-sm-10 text-end">
                         <span class="footer-link">
                             <icon name="fa-solid:gavel"/>
-                            <a href="#" data-bs-toggle="tooltip" :to="{ name: 'terms-of-use' }">
+                            <a href="#" :to="{ name: 'terms-of-use' }">
                                 {{ $t('authentication.terms-of-use') }}</a>
                         </span>
                       |
@@ -88,15 +88,10 @@
 <script setup lang="ts">
 const currentYear = ref(new Date().getFullYear());
 const route = useRoute();
-const locale = useI18n();
 
 function isNotInMap() {
     // Thanks nuxt!
     return route.name !== 'games-game-location-mission';
-}
-
-function getCountryFlag() {
-    return LanguageHelpers.getCountryFlagForLocale(locale);
 }
 </script>
 <style lang="scss" scoped>

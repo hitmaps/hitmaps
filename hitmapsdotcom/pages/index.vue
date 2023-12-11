@@ -64,9 +64,7 @@
                                             : $t('elusive-target.coming-soon')
                                     }}
                                     <span class="mkii" v-if="elusiveTarget.reactivated"
-                                          data-bs-toggle="tooltip"
-                                          data-bs-placement="left"
-                                          :data-bs-title="$t('elusive-target.reactivated-target')">2</span>
+                                          v-tooltip:left="$t('elusive-target.reactivated-target')">2</span>
                                 </h1>
                             </div>
                         </div>
@@ -84,10 +82,8 @@
                             <div
                                 onclick="return false;"
                                 class="image float-right notification-icon"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="left"
                                 @click="showNotificationModal"
-                                :data-bs-title="$t('elusive-target.notifications.manage-notifications')"
+                                v-tooltip:left="$t('elusive-target.notifications.manage-notifications')"
                             >
                                 <game-icon icon="audio" font-style="normal" />
                             </div>

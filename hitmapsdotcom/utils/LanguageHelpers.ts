@@ -80,14 +80,7 @@ export default class LanguageHelpers {
         }
     }
 
-    static getCountryFlagForLocale(i18n: any) {
-        let locale = i18n.locale;
-        if (locale === undefined) {
-            locale = i18n.fallbackLocale;
-            i18n.locale = locale;
-            localStorage.locale = i18n.locale;
-        }
-
-        return this.getCountryFlag(locale.value);
+    static getCountryFlagForLocale(locale: string) {
+        return this.getCountryFlag(locale);
     }
 }
