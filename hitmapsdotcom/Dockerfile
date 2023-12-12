@@ -1,5 +1,5 @@
 # Nuxt build
-FROM node:18-alpine3.17 as build
+FROM node:18-alpine3.19 as build
 RUN apk update && apk upgrade
 
 WORKDIR /app
@@ -9,7 +9,7 @@ COPY . ./
 RUN npx nuxt build
 
 # Copy nuxt build to here
-FROM node:18-alpine3.17
+FROM node:18-alpine3.19
 RUN apk update && apk upgrade && apk add dumb-init && adduser -D nuxtuser
 USER nuxtuser
 WORKDIR /app
