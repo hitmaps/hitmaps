@@ -4,6 +4,7 @@ use BusinessLogic\Authentication\Discord\DiscordAuthenticationException;
 use BusinessLogic\Authentication\Discord\UserNotInServerException;
 use BusinessLogic\Caching\CacheClient;
 use BusinessLogic\Caching\KeyBuilder;
+use BusinessLogic\FirebaseClient;
 use BusinessLogic\MissionType;
 use Config\Constants;
 use Config\Settings;
@@ -36,6 +37,8 @@ use DI\Container;
 use Doctrine\ORM\EntityManager;
 use Klein\Request;
 use Klein\Response;
+use Kreait\Firebase\Exception\Messaging\InvalidArgument;
+use Kreait\Firebase\Exception\MessagingException;
 use Predis\Client;
 
 require __DIR__ . '/autoload.php';
@@ -43,9 +46,7 @@ require __DIR__ . '/autoload.php';
 $klein = new \Klein\Klein();
 
 $klein->respond(function(Request $request, Response $response) use ($applicationContext) {
-    if(isset($_SERVER['HTTP_ORIGIN'])) {
-        $response->header('Access-Control-Allow-Origin', $_SERVER['HTTP_ORIGIN']);
-    }
+    $response->header('Access-Control-Allow-Origin', '*');
     $response->header('Access-Control-Allow-Headers', 'content-type,Authorization,x-readme-api-explorer,x-api-version');
     $response->header('Access-Control-Allow-Credentials', 'true');
     $response->header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
@@ -119,6 +120,15 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
     }
 
     return $response->json(array_map(fn(Mission $x) => new MissionViewModel($x), $missions));
+});
+
+$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/ogimage', function(Request $request, Response $response) use ($applicationContext) {
+    $image = $applicationContext->get(\BusinessLogic\MissionOgImageComposer::class)->composeMissionImage($request->mission);
+
+    $response->header('Content-Type', "image/{$image->getImageFormat()}");
+    $response->body($image);
+    $image->destroy();
+    return;
 });
 
 function userIsAdmin(Request $request, Container $applicationContext, ?string &$newToken): bool {
@@ -548,9 +558,10 @@ $klein->respond('GET', '/api/web/home', function(Request $request, Response $res
 
 $klein->respond('POST', '/api/web/user/login', function(Request $request, Response $response) use ($applicationContext, $klein) {
     $controller = $applicationContext->get(\Controllers\AuthenticationController::class);
+    $body = json_decode($request->body(), true);
 
     try {
-        $token = $controller->loginUser($_POST['tokenType'], $_POST['accessToken']);
+        $token = $controller->loginUser($body['tokenType'], $body['accessToken']);
 
         $responseModel = new ApiResponseModel();
         $responseModel->token = $token;
@@ -982,21 +993,21 @@ $klein->respond('GET', '/api/nodes', function () use ($applicationContext) {
 });
 
 $klein->respond('POST', '/api/notifications', function(Request $request, Response $response) use ($applicationContext) {
-    $client = $applicationContext->get(\BusinessLogic\FirebaseClient::class);
-
+    $client = $applicationContext->get(FirebaseClient::class);
+    $body = json_decode($request->body(), true);
     try {
-        if ($_POST['state'] === 'SUBSCRIBING') {
-            $client->subscribeToTopic($_POST['topic'], $_POST['token']);
-        } elseif ($_POST['state'] === 'UNSUBSCRIBING') {
-            $client->unsubscribeFromTopic($_POST['topic'], $_POST['token']);
+        if ($body['state'] === 'SUBSCRIBING') {
+            $client->subscribeToTopic($body['topic'], $body['token']);
+        } elseif ($body['state'] === 'UNSUBSCRIBING') {
+            $client->unsubscribeFromTopic($body['topic'], $body['token']);
         } else {
             print json_encode(['message' => 'Invalid state provided.']);
             return $response->code(400);
         }
-    } catch (\Kreait\Firebase\Exception\Messaging\InvalidArgument $exception) {
+    } catch (InvalidArgument $exception) {
         print json_encode(['message' => $exception->getMessage()]);
         return $response->code(400);
-    } catch (\Kreait\Firebase\Exception\MessagingException $exception) {
+    } catch (MessagingException $exception) {
         print json_encode(['message' => $exception->getMessage()]);
         return $response->code(500);
     }

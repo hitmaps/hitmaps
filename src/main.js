@@ -60,47 +60,6 @@ app.mixin(opengraphMixin);
  *   <button v-tooltip:auto.html="clock" @click="clock = Date.now()">Updating</button>
  *   <button v-tooltip:auto.html.live="clock" @click="clock = Date.now()">Updating Live</button>
  */
-app.directive('tooltip', {
-    beforeMount: function bsTooltipCreate(el, binding) {
-        let trigger = 'hover focus';
-
-        if (binding.modifiers.focus || binding.modifiers.hover || binding.modifiers.click) {
-            const t = [];
-            if (binding.modifiers.focus) t.push('focus');
-            if (binding.modifiers.hover) t.push('hover');
-            if (binding.modifiers.click) t.push('click');
-            trigger = t.join(' ');
-        }
-
-        nextTick(() => {
-            $(el).tooltip({
-                title: binding.value,
-                placement: binding.arg,
-                trigger: trigger,
-                html: binding.modifiers.html ?? false
-            });
-        });
-    },
-    updated: function bsTooltipUpdate(el, binding) {
-        const $el = $(el);
-        $el.attr('title', binding.value).tooltip();
-
-        const data = $el.data('bs.tooltip');
-        if (binding.modifiers.live) { // update live without flickering (but it doesn't reposition)
-            if (data.$tip) {
-                if (data.options.html) data.$tip.find('.tooltip-inner').html(binding.value);
-                else data.$tip.find('.tooltip-inner').text(binding.value);
-            }
-        } else {
-            if (data.inState !== undefined && (data.inState.hover || data.inState.focus || data.inState.click)) {
-                $el.tooltip('show');
-            }
-        }
-    },
-    unmounted(el, binding) {
-        $(el).tooltip('dispose');
-    },
-});
 app.use(VueToastr, {
     defaultPosition: 'toast-top-left',
     defaultTimeout: 3000,
