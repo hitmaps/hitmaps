@@ -1,5 +1,5 @@
 ARG NODE_VERSION=18.17.1
-FROM node:${NODE_VERSION}-slim as base
+FROM node:${NODE_VERSION}-bullseye-slim as base
 ARG PORT=3000
 ENV NODE_ENV=production
 WORKDIR /src
