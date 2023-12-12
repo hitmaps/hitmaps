@@ -14,6 +14,20 @@ export default defineComponent({
             `/locations/${route.params.location}` +
             `/missions/${route.params.mission}`);
 
+        missionPromise.then(resp => {
+            const ogImage = `${config.public.apiDomain}/api/v1/games/${route.params.game}` +
+                `/locations/${route.params.location}` +
+                `/missions/${route.params.mission}/ogimage`;
+            const mission = resp.data.value[0].name;
+            useSeoMeta({
+                title: mission,
+                ogTitle: Utils.siteTitle(mission),
+                ogImage: ogImage,
+                twitterImage: ogImage,
+                description: `View item locations, disguises, and more for ${mission}`
+            });
+        });
+
         return {
             gamePromise,
             missionPromise,
