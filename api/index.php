@@ -122,6 +122,15 @@ $klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:m
     return $response->json(array_map(fn(Mission $x) => new MissionViewModel($x), $missions));
 });
 
+$klein->respond('GET', '/api/v1/games/[:game]/locations/[:location]/missions/[:mission]/ogimage', function(Request $request, Response $response) use ($applicationContext) {
+    $image = $applicationContext->get(\BusinessLogic\MissionOgImageComposer::class)->composeMissionImage($request->mission);
+
+    $response->header('Content-Type', "image/{$image->getImageFormat()}");
+    $response->body($image);
+    $image->destroy();
+    return;
+});
+
 function userIsAdmin(Request $request, Container $applicationContext, ?string &$newToken): bool {
     if (!userIsLoggedIn($request, $applicationContext, $newToken)) {
         return false;
