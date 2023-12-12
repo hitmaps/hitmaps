@@ -1,21 +1,24 @@
-ARG NODE_VERSION=18.17.1
-FROM node:${NODE_VERSION}-bullseye-slim as base
-ARG PORT=3000
-ENV NODE_ENV=production
-WORKDIR /src
+# Nuxt build
+FROM node:18-alpine3.17 as build
+RUN apk update && apk upgrade
 
-FROM base as build
-COPY ["package.json", "package-lock.json", "./"]
+WORKDIR /app
+COPY package* ./
 RUN npm install
+COPY . ./
+RUN npx nuxt build
 
-COPY . .
+# Copy nuxt build to here
+FROM node:18-alpine3.17
+RUN apk update && apk upgrade && apk add dumb-init && adduser -D nuxtuser
+USER nuxtuser
+WORKDIR /app
+COPY --chown=nuxtuser:nuxtuser --from=build /app/.output ./
+EXPOSE 3000
 
-RUN npm run build
-RUN npm prune
+# Set nuxt env
+ENV HOST=0.0.0.0
+ENV PORT=3000
+ENV NODE_ENV=production
 
-FROM base
-ENV PORT=$PORT
-
-COPY --from=build /src/.output /src/.output
-
-CMD ["node",".output/server/index.mjs"]
+CMD ["dumb-init","node","/app/server/index.mjs"]
