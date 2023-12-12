@@ -95,7 +95,7 @@ Docker Stage:
   image: docker:19.03.1
   stage: Stage Deploy
   environment:
-    name: Stage Frontend
+    name: Staging Frontend
     url: https://test.hitmaps.com
   only:
     - stage
