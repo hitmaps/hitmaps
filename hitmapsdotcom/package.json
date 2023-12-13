@@ -1,0 +1,39 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxi dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@nuxtjs/google-fonts": "^3.1.1",
+    "@nuxtjs/i18n": "^8.0.0-rc.9",
+    "@types/bootstrap": "^5.2.6",
+    "@types/jquery": "^3.5.24",
+    "@types/node": "^18.16.19",
+    "nuxt": "^3.6.3",
+    "nuxt-icon": "^0.5.0",
+    "nuxt3-leaflet": "^1.0.12",
+    "typescript": "^5.1.6",
+    "vue-country-flag-next": "2.3.2"
+  },
+  "dependencies": {
+    "@geoman-io/leaflet-geoman-free": "^2.15.0",
+    "@popperjs/core": "^2.11.8",
+    "axios": "^1.6.2",
+    "bootstrap": "^5.3.0",
+    "firebase": "^10.5.2",
+    "jquery": "^3.7.1",
+    "just-clone": "6.2.0",
+    "nuxt-vuefire": "^0.4.0",
+    "sass": "^1.69.5",
+    "uuid": "^9.0.0",
+    "vuefire": "^3.1.17",
+    "vue-toastr": "3.0.5",
+    "vue3-cookies": "^1.0.6"
+  }
+}

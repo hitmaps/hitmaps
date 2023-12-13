@@ -1,0 +1,11 @@
+/.nuxt
+/.output
+/node_modules
+
+.gitignore
+README.md
+
+# Local env files
+.env
+.env.*
+!.env.example
