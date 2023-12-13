@@ -19,6 +19,6 @@ EXPOSE 3000
 # Set nuxt env
 ENV HOST=0.0.0.0
 ENV PORT=3000
-#ENV NODE_ENV=production
+ENV NODE_ENV=production
 
 CMD ["dumb-init","node","/app/server/index.mjs"]
