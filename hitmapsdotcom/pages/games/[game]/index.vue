@@ -12,7 +12,8 @@ const game = gameData.value[0];
 //region SEO
 useSeoMeta({
     ogTitle: () => Utils.siteTitle(game.fullName),
-    description: `View interactive maps for all locations in ${game.fullName}`
+    description: `View interactive maps for all locations in ${game.fullName}`,
+    ogDescription: `View interactive maps for all locations in ${game.fullName}`
 });
 //endregion
 </script>
