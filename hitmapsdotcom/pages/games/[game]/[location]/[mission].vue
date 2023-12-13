@@ -771,7 +771,7 @@ export default defineComponent({
             }
 
             // TODO Change URL
-            return `https://www.hitmaps.com/api/maps/${this.mission.mapFolderName}/tiles/{floorNumber}/{z}/{x}/{y}.png`;
+            return `https://legacyapi.hitmaps.com/api/maps/${this.mission.mapFolderName}/tiles/{floorNumber}/{z}/{x}/{y}.png`;
         },
         loggedIn() {
             if (localStorage.getItem('token') != null) {
