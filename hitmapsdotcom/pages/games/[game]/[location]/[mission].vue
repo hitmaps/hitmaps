@@ -24,7 +24,9 @@ export default defineComponent({
                 ogTitle: Utils.siteTitle(mission),
                 ogImage: ogImage,
                 twitterImage: ogImage,
-                description: `View item locations, disguises, and more for ${mission}`
+                description: `View item locations, disguises, and more for ${mission}`,
+                ogDescription: `View item locations, disguises, and more for ${mission}`,
+                twitterDescription: `View item locations, disguises, and more for ${mission}`
             });
         });
 

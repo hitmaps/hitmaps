@@ -13,7 +13,8 @@ const game = gameData.value[0];
 useSeoMeta({
     ogTitle: () => Utils.siteTitle(game.fullName),
     description: `View interactive maps for all locations in ${game.fullName}`,
-    ogDescription: `View interactive maps for all locations in ${game.fullName}`
+    ogDescription: `View interactive maps for all locations in ${game.fullName}`,
+    twitterDescription: `View interactive maps for all locations in ${game.fullName}`
 });
 //endregion
 </script>
