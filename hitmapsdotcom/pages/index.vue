@@ -6,148 +6,82 @@
         class="content"
         style="background: url('https://media.hitmaps.com/img/hitman3/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
     >
-        <header class="row">
-            <div class="col text-center site-header">
+        <home-navbar/>
+        <header class="container-fluid">
+            <div class="text-center site-header">
                 <img src="/img/png/logos/hitmaps.png" class="img-fluid" alt="HITMAPS Logo">
                 <h1>{{ $t('interactive-maps-for-hitman') }}</h1>
             </div>
         </header>
-<template v-if="games && games.length > 0">
-            <div class="row dashboard">
-                <div
-                    class="game col-lg"
-                    v-for="game in games.filter(x => ['hitman', 'hitman2', 'hitman3'].includes(x.slug))"
-                    :key="game.id"
-                    v-bind:style="{
-                        backgroundImage:
-                            'url(' + game.tileUrl + ')',
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        backgroundRepeat: 'no-repeat'
-                    }"
-                >
-                    <nuxt-link :to="`/games/${game.slug}`">
-                        <p>&nbsp;</p>
-                        <div class="game-info">
-                            <div class="image">
-                                <game-icon :icon="game.icon" font-style="normal" />
-                            </div>
-                            <div class="text">
-                                <h2>{{ $t("game-type." + game.type) }}</h2>
-                                <h1>{{ game.fullName }}</h1>
-                            </div>
-                        </div>
-                    </nuxt-link>
+        <div class="container-fluid" v-if="!gamesPending">
+            <div class="row dashboard" id="games">
+                <div class="col-lg-4 section">
+                    <div class="heading">
+                        <hr class="bar">
+                        <h2>{{ $t('world-of-assassination') }}</h2>
+                        <hr class="bar">
+                    </div>
+                    <div class="game-cards">
+                        <game-card v-for="game in games.filter(x => ['hitman','hitman2','hitman3'].includes(x.slug))"
+                                   :game="game" />
+                        <game-card v-for="game in games.filter(x => ['sniper-assassin'].includes(x.slug))"
+                                   :game="game" />
+                    </div>
                 </div>
-                <div
-                    class="elusive-target col-lg"
-                    v-bind:style="{
-                        backgroundImage:
-                            'url(' +
-                            (elusiveTarget != null
-                                ? elusiveTarget.tileUrl
-                                : '/img/jpg/elusive-targets/coming-soon.jpg') + ')',
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        backgroundRepeat: 'no-repeat'
-                    }"
-                >
-                    <a href="#" v-if="elusiveTarget !== null">
-                        <p>&nbsp;</p>
-                        <div class="elusive-target-info">
-                            <div class="image">
-                                <game-icon icon="elusive" font-style="normal" />
-                            </div>
-                            <div class="text">
-                                <h2>{{ $t('game-type.Elusive Target') }}</h2>
-                                <h1>
-                                    {{
-                                        elusiveTarget != null
-                                            ? elusiveTarget.name
-                                            : $t('elusive-target.coming-soon')
-                                    }}
-                                    <span class="mkii" v-if="elusiveTarget.reactivated"
-                                          v-tooltip:left="$t('elusive-target.reactivated-target')">2</span>
-                                </h1>
-                            </div>
-                        </div>
-                    </a>
-                    <a v-else href="#">
-                        <p>&nbsp;</p>
-                        <div class="elusive-target-info">
-                            <div class="image">
-                                <game-icon icon="elusive" font-style="normal" />
-                            </div>
-                            <div class="text">
-                                <h2>{{ $t('game-type.Elusive Target') }}</h2>
-                                <h1>{{ $t('elusive-target.coming-soon') }}</h1>
-                            </div>
-                            <div
-                                onclick="return false;"
-                                class="image float-right notification-icon"
-                                @click="showNotificationModal"
-                                v-tooltip:left="$t('elusive-target.notifications.manage-notifications')"
-                            >
-                                <game-icon icon="audio" font-style="normal" />
-                            </div>
-                        </div>
-                    </a>
+                <div class="col-lg-4 section">
+                    <div class="heading">
+                        <hr class="bar">
+                        <h2>{{ $t('legacy-hitman') }}</h2>
+                        <hr class="bar">
+                    </div>
+                    <div class="game-cards">
+                        <single-game-card
+                            v-for="game in games.filter(x => ['absolution'].includes(x.slug))"
+                            :game="game" />
+                    </div>
                 </div>
-                <client-only>
-                    <modal v-if="elusiveTarget != null"
-                           id="briefing-modal"
-                           :modal-title="elusiveTarget.name">
-                        <div class="row">
-                            <div v-if="elusiveTarget.videoBriefingUrl != null" class="col-xl">
-                                <div class="embed-responsive embed-responsive-16by9">
-                                    <iframe :src="elusiveTarget.videoBriefingUrl"
-                                            class="embed-responsive-item"
-                                            frameborder="0"
-                                            allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
-                                            allowfullscreen
-                                    ></iframe>
-                                </div>
-                            </div>
-                            <div class="col-xl">
-                                <p v-html="elusiveTarget.briefing"></p>
-                            </div>
-                        </div>
-                        <template v-slot:modal-footer>
-                            <game-button data-dismiss="modal">
-                                <game-icon icon="failed" font-style="normal"/>
-                                {{ $t('form.close') }}
-                            </game-button>
-                        </template>
-                    </modal>
-                    <elusive-target-notifications-modal ref="notificationModal" />
-                </client-only>
-            </div>
-            <div class="row dashboard">
-                <div class="game col-lg"
-                     v-for="game in games.filter(x => ['absolution', 'sniper-assassin'].includes(x.slug))"
-                     :key="game.id"
-                     :style="{
-                                backgroundImage: 'url(' + game.tileUrl + ')',
-                                backgroundSize: 'cover',
-                                backgroundPosition: 'center',
-                                backgroundRepeat: 'no-repeat'
-                            }">
-                    <nuxt-link :to="`/games/${game.slug}`">
-                        <p>&nbsp;</p>
-                        <div class="game-info">
-                            <div class="image">
-                                <game-icon :icon="game.icon" font-style="normal" />
-                            </div>
-                            <div class="text">
-                                <h2>{{ $t("game-type." + game.type) }}</h2>
-                                <h1>{{ game.fullName }}</h1>
-                            </div>
-                        </div>
-                    </nuxt-link>
+                <div class="col-lg-4 section">
+                    <div class="heading">
+                        <hr class="bar">
+                        <h2>{{ $t('live-community-content') }}</h2>
+                        <hr class="bar">
+                    </div>
+                    <div class="game-cards">
+                        <elusive-target-card v-if="false" :elusive-target="elusiveTarget" @notification-modal="showNotificationModal" />
+                        <elusive-target-single-card v-else :elusive-target="elusiveTarget" @notification-modal="showNotificationModal" />
+                    </div>
                 </div>
             </div>
-        </template>
-        <div class="patreon community-server">
+            <client-only>
+                <modal v-if="elusiveTarget.briefing"
+                       id="briefing-modal"
+                       :modal-title="elusiveTarget.name">
+                    <div class="row">
+                        <div v-if="elusiveTarget.videoBriefingUrl != null" class="col-xl">
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe :src="elusiveTarget.videoBriefingUrl"
+                                        class="embed-responsive-item"
+                                        frameborder="0"
+                                        allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+                                        allowfullscreen
+                                ></iframe>
+                            </div>
+                        </div>
+                        <div class="col-xl">
+                            <p v-html="elusiveTarget.briefing"></p>
+                        </div>
+                    </div>
+                    <template v-slot:modal-footer>
+                        <game-button data-dismiss="modal">
+                            <game-icon icon="failed" font-style="normal"/>
+                            {{ $t('form.close') }}
+                        </game-button>
+                    </template>
+                </modal>
+                <elusive-target-notifications-modal ref="notificationModal" />
+            </client-only>
+        </div>
+        <div class="patreon community-server" id="community-server">
             <div class="row intro">
                 <div class="col-xs-12">
                     <h1>{{ $t('community-server.header') }}</h1>
@@ -219,7 +153,7 @@
                 </div>
             </div>
         </div>
-        <div class="patreon">
+        <div class="patreon" id="partners">
             <div class="row intro">
                 <div class="col-xs-12">
                     <h1>{{ $t('partnership.header') }}</h1>
@@ -254,7 +188,7 @@
                 </div>
             </div>
         </div>
-        <div class="patreon community-server">
+        <div class="patreon community-server" id="patreon">
             <div class="row intro">
                 <div class="col-xs-12">
                     <h1>
@@ -277,11 +211,13 @@
 
 <script setup>
 import GameButton from "@/components/GameButton.vue";
+import ElusiveTargetCard from "~/components/ElusiveTargetCard.vue";
+import ElusiveTargetSingleCard from "~/components/ElusiveTargetSingleCard.vue";
 
 const config = useRuntimeConfig();
 const { t } = useI18n();
 
-const { data } = await useFetch(`${config.public.apiDomain}/api/web/home`);
+const { data, pending: gamesPending } = await useFetch(`${config.public.apiDomain}/api/web/home`);
 const games = data.value.games;
 const elusiveTarget = data.value.elusiveTargets.length ? data.value.elusiveTargets[0] : null;
 
@@ -300,6 +236,10 @@ useSeoMeta({
 <style lang="scss" scoped>
 .embed-responsive-16by9::before {
     padding-top: 21.25%;
+}
+
+.container-fluid {
+    max-width: 1920px;
 }
 
 header {
@@ -337,6 +277,45 @@ header {
 
 .dashboard {
     margin: 40px;
+
+    .section {
+        padding: 0 15px;
+        display: flex;
+        flex-direction: column;
+
+        .heading {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+            color: $content-text;
+            min-height: 80px;
+
+            @media (min-width: 1130px) {
+                white-space: pre-line;
+            }
+
+            .bar {
+                flex-grow: 1;
+                opacity: .5;
+            }
+
+            h2 {
+                text-transform: uppercase;
+                margin: 0 10px;
+                text-align: center;
+            }
+        }
+
+        .game-cards {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+
+            > * + * {
+                margin-top: 10px;
+            }
+        }
+    }
 
     .tournament {
         display: flex;

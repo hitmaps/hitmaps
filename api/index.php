@@ -546,6 +546,15 @@ $klein->respond('GET', '/api/web/home', function(Request $request, Response $res
 
         $elusiveTargetViewModels[] = $viewModel;
     }
+    if (!count($elusiveTargetViewModels)) {
+        $viewModel = new \Controllers\ViewModels\ElusiveTargetViewModel();
+        $viewModel->id = -1;
+        $viewModel->name = 'Coming Soon';
+        $now = new DateTime('now');
+        $viewModel->endingTime = $now->format(DateTime::ATOM);
+        $viewModel->tileUrl = 'https://www.hitmaps.com/img/jpg/elusive-targets/coming-soon.jpg';
+        $elusiveTargetViewModels[] = $viewModel;
+    }
 
     $settings = new Settings();
 
