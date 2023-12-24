@@ -34,7 +34,7 @@ a {
 
     &:hover {
         .game-card .game-info {
-            background: $game-button-background-hover;
+            background: $game-button-background-hover !important;
 
             i {
                 background: $game-button-text;
