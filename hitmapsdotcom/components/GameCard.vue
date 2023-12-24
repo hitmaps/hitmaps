@@ -2,14 +2,18 @@
 const props = defineProps({
     game: Object
 });
+
+const cssVars = reactive({
+    '--game-tile-url': props.game.tileUrl
+});
 const { t } = useI18n();
 </script>
 
 <template>
     <nuxt-link v-bind="$attrs" :to="`/games/${game.slug}`">
-        <div class="row game-card">
-            <div class="col-xl-4" :style="`background: url(${game.tileUrl}) no-repeat center center; background-size: cover`"></div>
-            <div class="col-xl-8 game-info">
+        <div class="row game-card" :style="cssVars">
+            <div class="col-xl-4 d-none d-xl-block" :style="`background: url(${game.tileUrl}) no-repeat center center; background-size: cover`"></div>
+            <div class="col-xl-8 game-info" :style="`background: rgba(0, 0, 0, .3) url(${game.tileUrl}) no-repeat center center; background-size: cover`">
                 <div class="image">
                     <game-icon :icon="game.icon" font-style="normal" />
                 </div>
@@ -44,10 +48,19 @@ a {
         flex-grow: 1;
 
         .game-info {
-            background: $game-button-background;
+            @media (min-width: 1200px) {
+                background: $game-button-background !important;
+            }
+
+            @media (max-width: 1199px) {
+                background-blend-mode: darken;
+            }
+
             color: $game-button-text;
             display: flex;
             align-items: center;
+            min-height: 70px;
+
 
             .text {
                 text-transform: uppercase;

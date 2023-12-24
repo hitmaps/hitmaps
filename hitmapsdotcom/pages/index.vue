@@ -43,7 +43,7 @@
                 <div class="col-lg-4 section">
                     <div class="heading">
                         <hr class="bar">
-                        <h2>{{ $t('live-community-content') }}</h2>
+                        <h2>{{ $t('live-community-events') }}</h2>
                         <hr class="bar">
                     </div>
                     <div class="game-cards">

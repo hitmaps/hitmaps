@@ -8,8 +8,8 @@ const { t } = useI18n();
 <template>
     <a v-bind="$attrs" href="#">
         <div class="row game-card">
-            <div class="col-md-4" :style="`background: url(${elusiveTarget.tileUrl}) no-repeat center center; background-size: cover`"></div>
-            <div class="col-md-8 game-info">
+            <div class="col-xl-4 d-none d-xl-block" :style="`background: url(${elusiveTarget.tileUrl}) no-repeat center center; background-size: cover`"></div>
+            <div class="col-xl-8 game-info" :style="`background: rgba(0, 0, 0, .3) url(${elusiveTarget.tileUrl}) no-repeat center center; background-size: cover`">
                 <div class="image">
                     <game-icon icon="elusive" font-style="normal" />
                 </div>
@@ -54,10 +54,18 @@ a {
         flex-grow: 1;
 
         .game-info {
-            background: $game-button-background;
+            @media (min-width: 1200px) {
+                background: $game-button-background !important;
+            }
+
+            @media (max-width: 1199px) {
+                background-blend-mode: darken;
+            }
+
             color: $game-button-text;
             display: flex;
             align-items: center;
+            min-height: 70px;
 
             .text {
                 text-transform: uppercase;

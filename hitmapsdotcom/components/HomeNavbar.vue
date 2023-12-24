@@ -57,6 +57,10 @@
 </template>
 
 <style scoped lang="scss">
+.container-fluid {
+    max-width: 1920px;
+}
+
 .navbar {
     z-index: 1030;
     top: 0;

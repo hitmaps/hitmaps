@@ -89,7 +89,10 @@ const { t } = useI18n();
                     }
 
                     h3 {
-                        font-size: 1.5rem;
+                        @media (min-width: 1206px) {
+                            font-size: 1.5rem;
+                        }
+                        font-size: 1rem;
                         margin-bottom: 0;
                     }
                 }
