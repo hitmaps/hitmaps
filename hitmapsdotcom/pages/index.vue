@@ -47,8 +47,7 @@
                         <hr class="bar">
                     </div>
                     <div class="game-cards">
-                        <elusive-target-card v-if="false" :elusive-target="elusiveTarget" @notification-modal="showNotificationModal" />
-                        <elusive-target-single-card v-else :elusive-target="elusiveTarget" @notification-modal="showNotificationModal" />
+                        <elusive-target-single-card :elusive-target="elusiveTarget" @notification-modal="showNotificationModal" />
                     </div>
                 </div>
             </div>
