@@ -47,36 +47,16 @@
                         <hr class="bar">
                     </div>
                     <div class="game-cards">
-                        <elusive-target-single-card :elusive-target="elusiveTarget" @notification-modal="showNotificationModal" />
+                        <elusive-target-single-card
+                                             :elusive-targets="elusiveTargets"
+                                             @notification-modal="showNotificationModal" />
+<!--                        <elusive-target-card v-for="elusiveTarget in elusiveTargets.filter(x => x.id=== 3)"
+                                                    :elusive-target="elusiveTarget"
+                                                    @notification-modal="showNotificationModal" />-->
                     </div>
                 </div>
             </div>
             <client-only>
-                <modal v-if="elusiveTarget.briefing"
-                       id="briefing-modal"
-                       :modal-title="elusiveTarget.name">
-                    <div class="row">
-                        <div v-if="elusiveTarget.videoBriefingUrl != null" class="col-xl">
-                            <div class="embed-responsive embed-responsive-16by9">
-                                <iframe :src="elusiveTarget.videoBriefingUrl"
-                                        class="embed-responsive-item"
-                                        frameborder="0"
-                                        allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
-                                        allowfullscreen
-                                ></iframe>
-                            </div>
-                        </div>
-                        <div class="col-xl">
-                            <p v-html="elusiveTarget.briefing"></p>
-                        </div>
-                    </div>
-                    <template v-slot:modal-footer>
-                        <game-button data-dismiss="modal">
-                            <game-icon icon="failed" font-style="normal"/>
-                            {{ $t('form.close') }}
-                        </game-button>
-                    </template>
-                </modal>
                 <elusive-target-notifications-modal ref="notificationModal" />
             </client-only>
         </div>
@@ -209,16 +189,12 @@
 </template>
 
 <script setup>
-import GameButton from "@/components/GameButton.vue";
-import ElusiveTargetCard from "~/components/ElusiveTargetCard.vue";
-import ElusiveTargetSingleCard from "~/components/ElusiveTargetSingleCard.vue";
-
 const config = useRuntimeConfig();
 const { t } = useI18n();
 
 const { data, pending: gamesPending } = await useFetch(`${config.public.apiDomain}/api/web/home`);
 const games = data.value.games;
-const elusiveTarget = data.value.elusiveTargets.length ? data.value.elusiveTargets[0] : null;
+const elusiveTargets = data.value.elusiveTargets;
 
 const notificationModal = ref(null);
 function showNotificationModal() {

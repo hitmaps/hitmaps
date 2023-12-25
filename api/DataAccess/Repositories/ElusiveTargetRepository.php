@@ -13,6 +13,7 @@ class ElusiveTargetRepository extends EntityRepository {
         return $this->createQueryBuilder('e')
             ->andWhere('e.endingTime >= :now')
             ->setParameter('now', $currentUtcTime)
+            ->addOrderBy('e.beginningTime', 'ASC')
             ->getQuery()
             ->getResult();
     }
