@@ -47,12 +47,8 @@
                         <hr class="bar">
                     </div>
                     <div class="game-cards">
-                        <elusive-target-single-card
-                                             :elusive-targets="elusiveTargets"
+                        <elusive-target-card :elusive-targets="elusiveTargets"
                                              @notification-modal="showNotificationModal" />
-<!--                        <elusive-target-card v-for="elusiveTarget in elusiveTargets.filter(x => x.id=== 3)"
-                                                    :elusive-target="elusiveTarget"
-                                                    @notification-modal="showNotificationModal" />-->
                     </div>
                 </div>
             </div>
