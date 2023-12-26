@@ -42,31 +42,33 @@ Prod Deploy API:
     paths:
       - backend/
 
-Prod Deploy Frontend:
-  image: node:16
+Docker Production:
+  image: docker:19.03.1
   stage: Prod Deploy
-  only:
-    - master
-  before_script:
-    # Setup SSH deploy keys
-    - 'which ssh-agent || ( apt-get install -qq openssh-client )'
-    - eval $(ssh-agent -s)
-    - ssh-add <(echo "$SSH_PRIVATE_KEY")
-    - mkdir -p ~/.ssh
-    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-  script:
-    - apt-get update
-    - apt-get install -y lftp zip curl nodejs wget
-    - npm ci
-    - npm run build
-    - cd ci/prod/
-    - bash deploy_frontend.sh
   environment:
     name: Production Frontend
     url: https://www.hitmaps.com
-  artifacts:
-    paths:
-      - frontend/
+  only:
+    - master
+  services:
+    - docker:19.03.1-dind
+  before_script:
+    - export DOCKER_REGISTRY_USER=$CI_REGISTRY_USER # built-in GitLab Registry User
+    - export DOCKER_REGISTRY_PASSWORD=$CI_REGISTRY_PASSWORD # built-in GitLab Registry Password
+    - export DOCKER_REGISTRY_URL=$CI_REGISTRY # built-in GitLab Registry URL
+    - export COMMIT_HASH=$CI_COMMIT_SHA # Your current commit sha
+    - export IMAGE_NAME_WITH_REGISTRY_PREFIX=$CI_REGISTRY_IMAGE # Your repository prefixed with GitLab Registry URL
+    - docker login -u "$DOCKER_REGISTRY_USER" -p "$DOCKER_REGISTRY_PASSWORD" $DOCKER_REGISTRY_URL # Instructs GitLab to login to its registry
+  script:
+    - echo "Building..." # MAKE SURE NO SPACE ON EITHER SIDE OF = IN THE FOLLOWING LINE
+    - cd hitmapsdotcom/
+    - export CONTAINER_FULL_IMAGE_NAME_WITH_TAG=$IMAGE_NAME_WITH_REGISTRY_PREFIX/frontend:$COMMIT_HASH
+    - docker build -f ./Dockerfile --pull -t built-image-name .
+    - docker tag built-image-name "$CONTAINER_FULL_IMAGE_NAME_WITH_TAG"
+    - docker push "$CONTAINER_FULL_IMAGE_NAME_WITH_TAG"
+    - echo $CONTAINER_FULL_IMAGE_NAME_WITH_TAG
+    - echo "Deploying on CapRover..."
+    - docker run caprover/cli-caprover:2.2.3 caprover deploy --caproverUrl $CAPROVER_URL --appToken $CAPROVER_APP_TOKEN --caproverApp $CAPROVER_APP --imageName $CONTAINER_FULL_IMAGE_NAME_WITH_TAG
 
 Stage Deploy API:
   image: php:7.2

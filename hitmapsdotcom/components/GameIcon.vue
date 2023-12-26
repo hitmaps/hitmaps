@@ -46,6 +46,16 @@
             border: solid 2px #fff;
             border-radius: 5px;
             vertical-align: top;
+
+            &.hm-merces {
+                padding-top: 11px;
+                padding-bottom: 11px;
+
+                &:before {
+                    width: inherit;
+                    font-size: 22px;
+                }
+            }
         }
     }
 </style>

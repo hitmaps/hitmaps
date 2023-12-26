@@ -15,7 +15,7 @@
                         v-if="modalTitle"
                         v-html="modalTitle"></h5>
                     <button type="button"
-                            class="close"
+                            class="btn close"
                             aria-label="Close"
                             @click="hideModal"
                             v-if="dismissable">

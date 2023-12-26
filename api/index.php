@@ -541,9 +541,18 @@ $klein->respond('GET', '/api/web/home', function(Request $request, Response $res
         $viewModel->endingTime = $elusiveTarget->getEndingTime()->format(DateTime::ATOM);
         $viewModel->tileUrl = $elusiveTarget->getImageUrl();
         $viewModel->videoBriefingUrl = $elusiveTarget->getVideoBriefingUrl();
-        $viewModel->missionUrl = "{$missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId(), 'professional')}";
+        $viewModel->missionUrl = "{$missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId())}";
         $viewModel->reactivated = $elusiveTarget->getReactivated();
 
+        $elusiveTargetViewModels[] = $viewModel;
+    }
+    if (!count($elusiveTargetViewModels)) {
+        $viewModel = new \Controllers\ViewModels\ElusiveTargetViewModel();
+        $viewModel->id = -1;
+        $viewModel->name = 'Coming Soon';
+        $now = new DateTime('now');
+        $viewModel->endingTime = $now->format(DateTime::ATOM);
+        $viewModel->tileUrl = 'https://www.hitmaps.com/img/jpg/elusive-targets/coming-soon.jpg';
         $elusiveTargetViewModels[] = $viewModel;
     }
 

@@ -75,19 +75,8 @@
                     |
                     <span class="footer-link">
                       <icon name="fa-solid:paint-brush"/>
-                      <nuxt-link to="/brand">Brand</nuxt-link>
+                      <nuxt-link to="/brand">{{ $t('footer.brand-guidelines') }}</nuxt-link>
                   </span>
-                    |
-                    <span class="footer-link">
-                        <icon name="fa-solid:money-bill"/>
-                        <nuxt-link to="/support-the-site">
-                            {{ 'Support the Site' }}</nuxt-link>
-                    </span>
-                    |
-                    <span class="footer-link">
-                        <icon name="fa:code"/>
-                        <a href="https://hitmaps.readme.io/reference" target="_blank">API</a>
-                    </span>
                 </div>
             </div>
         </div>
@@ -103,16 +92,16 @@ useHead({
 useSeoMeta({
     appleMobileWebAppTitle: 'HITMAPS',
     applicationName: 'HITMAPS',
-    description: 'HITMAPS™ provides interactive maps for the Hitman series, including HITMAN: World of Assassination and Hitman: Absolution',
+    description: 'HITMAPS™ provides interactive maps for the Hitman series, including HITMAN World of Assassination and Hitman: Absolution',
     msapplicationTileColor: '#aabdc6',
     themeColor: '#aabdc6',
     ogType: 'website',
     ogTitle: () => Utils.siteTitle(undefined),
-    ogDescription: 'HITMAPS™ provides interactive maps for the Hitman series, including HITMAN: World of Assassination and Hitman: Absolution',
+    ogDescription: 'HITMAPS™ provides interactive maps for the Hitman series, including HITMAN World of Assassination and Hitman: Absolution',
     ogImage: 'https://media.hitmaps.com/img/hitmaps-custom/promo1.png',
     twitterImage: 'https://media.hitmaps.com/img/hitmaps-custom/promo1.png',
     twitterCard: 'summary_large_image',
-    twitterDescription: 'HITMAPS™ provides interactive maps for the Hitman series, including HITMAN: World of Assassination and Hitman: Absolution'
+    twitterDescription: 'HITMAPS™ provides interactive maps for the Hitman series, including HITMAN World of Assassination and Hitman: Absolution'
 });
 
 function isNotInMap() {

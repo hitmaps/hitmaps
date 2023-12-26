@@ -8,40 +8,27 @@
     >
         <div class="inner-content">
             <h1>Support the Site</h1>
-            <h2>Ways to Say "Thanks!"</h2>
+            <h2>Ways to Say, "Thanks!"</h2>
             <hr>
             <h3>Patreon</h3>
             <p>
-                I have recently created a Patreon page for all of my works (not just HITMAPS™️). By becoming a patron,
+                I have recently created a Patreon page for all of my works (not just HITMAPS™). By becoming a patron,
                 you will receive certain perks. Becoming a patron will result in a monthly contribution. Simply click
                 the button below to become a patron.
             </p>
             <a href="https://www.patreon.com/mrmike227" class="btn patreon-button">
-                <i class="fab fa-patreon"></i>
+                <icon name="fa6-brands:patreon"/>
                 Become a Patron
             </a>
             <h4>Current Patrons:</h4>
             <div class="col-sm-12">
                 <div class="row">
                     <div class="col-sm-3">
-                        <patron link="https://notex.app" name="Notex" tier="Assassin"/>
-                    </div>
-                    <div class="col-sm-1"></div>
-                    <div class="col-sm-3">
                         <patron name="Some Random Person" tier="Assassin"/>
                     </div>
                     <div class="col-sm-1"></div>
                     <div class="col-sm-3">
                         <patron name="ChromeX" tier="Assassin" />
-                    </div>
-                </div>
-                <div class="row" style="margin-top: 20px">
-                    <div class="col-sm-3">
-                        <patron link="https://twitch.tv/nezukoschans" name="Nezuko Chan" tier="Assassin" />
-                    </div>
-                    <div class="col-sm-1"></div>
-                    <div class="col-sm-3">
-                        <patron name="Fe2o3" tier="Assassin" />
                     </div>
                 </div>
             </div>
@@ -54,6 +41,7 @@
             <p>Previous Donors (contribution amounts are cumulative):</p>
             <ul>
                 <li>David Thompson - 50.00 USD</li>
+                <li>Alexander White - 40.00 USD</li>
                 <li>Finikyu - 25.00 USD</li>
                 <li>Frote7 - 21.23 USD</li>
                 <li>TimothyMark - 10.47 USD</li>
@@ -73,7 +61,7 @@
                 <input type="hidden" name="cmd" value="_s-xclick" />
                 <input type="hidden" name="hosted_button_id" value="SE5ALRGBQCCUW" />
                 <button type="submit" class="btn paypal-button">
-                    <i class="fab fa-paypal"></i>
+                    <icon name="fa6-brands:paypal"/>
                     Send Contribution via PayPal
                 </button>
                 <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />

@@ -20,12 +20,12 @@ class MissionOgImageComposer {
         $overlayImage = file_get_contents('https://media.hitmaps.com/img/hitmaps-custom/ogimage-overlay.png');
         $uniqidOverlay = uniqid('ogimage-overlay', true);
         file_put_contents($uniqidOverlay, $overlayImage);
-        $overlay = new \Imagick($uniqidOverlay);
+        $overlay = new \Imagick('./'.$uniqidOverlay);
 
         $imageContents = file_get_contents($mission->getBackgroundUrl());
         $uniqid = uniqid('mission-overlay', true);
         file_put_contents($uniqid, $imageContents);
-        $originalImage = new \Imagick($uniqid);
+        $originalImage = new \Imagick('./'.$uniqid);
 
         $originalImage->compositeImage($overlay, \Imagick::COMPOSITE_DEFAULT, 0, 0);
 

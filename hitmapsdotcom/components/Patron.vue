@@ -28,49 +28,49 @@
 </template>
 
 <script>
-    export default {
-        name: "Patron",
-        props: {
-            link: null,
-            image: null,
-            name: null,
-            tier: null
-        }
+export default {
+    name: "Patron",
+    props: {
+        link: null,
+        image: null,
+        name: null,
+        tier: null
     }
+}
 </script>
 
 <style lang="scss" scoped>
-    a {
-        color: white;
-    }
+a {
+    color: white;
+}
 
-    .patron-card {
-        height: 100px;
+.patron-card {
+    height: 100px;
 
-        .patron-image {
-            text-align: right;
+    .patron-image {
+        text-align: right;
 
-            img {
-                height: 100px;
-                max-height: 100px;
-            }
-        }
-
-        .name-and-tier {
-            background: rgba(255, 255, 255, .1);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-
-            .patron-name {
-                font-weight: bolder;
-                font-size: 1.4rem;
-                margin-bottom: 0;
-            }
-
-            .tier {
-                font-weight: 200;
-            }
+        img {
+            height: 100px;
+            max-height: 100px;
         }
     }
+
+    .name-and-tier {
+        background: rgba(255, 255, 255, .1);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .patron-name {
+            font-weight: bolder;
+            font-size: 1.4rem;
+            margin-bottom: 0;
+        }
+
+        .tier {
+            font-weight: 200;
+        }
+    }
+}
 </style>

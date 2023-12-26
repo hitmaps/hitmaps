@@ -1,4 +1,0 @@
-User-agent: *
-Disallow: /maps/
-
-Sitemap: https://www.hitmaps.com/api/sitemap.txt

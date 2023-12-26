@@ -139,7 +139,8 @@ class ElusiveTargetUpdater {
                     return false;
                 }
 
-                $image = file_get_contents($elusiveTargetJson->tile);
+                // TODO Old image saving logic
+                /*$image = file_get_contents($elusiveTargetJson->tile);
 
                 $saveName = str_replace(' ', '-', strtolower($elusiveTargetJson->name));
                 $fileName = "{$locationInfo['tileSaveLocation']}{$saveName}.jpg";
@@ -147,11 +148,11 @@ class ElusiveTargetUpdater {
                 file_put_contents($saveLocation, $image);
                 $settings = new Settings();
                 $mediaLibraryPath = $settings->mediaLibraryPath;
-                exec("mv {$saveLocation} {$mediaLibraryPath}/actors{$fileName}");
+                exec("mv {$saveLocation} {$mediaLibraryPath}/actors{$fileName}");*/
 
                 $elusiveTarget = new ElusiveTarget();
                 $elusiveTarget->setName($elusiveTargetJson->name);
-                $elusiveTarget->setImageUrl("https://media.hitmaps.com/img/hitman3/actors{$fileName}");
+                $elusiveTarget->setImageUrl($elusiveTargetJson->tile);
                 $elusiveTarget->setComingNotificationSent(false);
                 $elusiveTarget->setPlayableNotificationSent(false);
                 $elusiveTarget->setSevenDaysLeftNotificationSent(false);
@@ -165,7 +166,7 @@ class ElusiveTargetUpdater {
 
             $reactivated = $elusiveTarget->getReactivated();
             if (!$reactivated &&
-                new \DateTime($elusiveTargetJson->nextWindow->start) > new \DateTime('2021-11-30 00:00:00', new \DateTimeZone('UTC'))) {
+                new \DateTime($elusiveTargetJson->nextWindow->start) > $elusiveTarget->getBeginningTime()) {
 
                 $reactivated = true;
                 $elusiveTarget->setComingNotificationSent(false);

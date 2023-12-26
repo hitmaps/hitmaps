@@ -220,7 +220,7 @@ class ElusiveTargetNotificationSender {
 
         $constants = new Constants();
         $firebaseEnvironment = $message['firebaseEnvironment'];
-        $url = $constants->siteDomain . $missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId(), 'standard');
+        $url = $constants->siteDomain . $missionRepository->buildUrlForMissionAndDifficulty($elusiveTarget->getMissionId());
         return $this->firebaseClient->sendElusiveTargetMessage(sprintf($topic, $firebaseEnvironment),
             $message['title'],
             $message['body'],

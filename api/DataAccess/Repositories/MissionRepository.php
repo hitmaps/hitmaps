@@ -20,7 +20,7 @@ class MissionRepository extends EntityRepository {
             ->getResult();
     }
 
-    public function buildUrlForMissionAndDifficulty(int $missionId, string $difficulty): string {
+    public function buildUrlForMissionAndDifficulty(int $missionId): string {
         $missionInfo = $this->getEntityManager()->createQuery('SELECT m, l
             FROM DataAccess\Models\Mission m
             INNER JOIN DataAccess\Models\Location l
@@ -39,6 +39,6 @@ class MissionRepository extends EntityRepository {
         $mission = $missionInfo[0];
         $location = $missionInfo[1];
 
-        return "/games/{$location->getGame()}/{$location->getSlug()}/{$mission->getSlug()}/{$difficulty}";
+        return "/games/{$location->getGame()}/{$location->getSlug()}/{$mission->getSlug()}";
     }
 }
