@@ -34,7 +34,7 @@ class CountdownComposer {
         $imageContents = file_get_contents($elusiveTarget->getImageUrl());
         $uniqid = uniqid('et-composed', true);
         file_put_contents($uniqid, $imageContents);
-        $originalImage = new \Imagick($uniqid);
+        $originalImage = new \Imagick('./'.$uniqid);
 
         $originalImage->compositeImage($overlay, \Imagick::COMPOSITE_DEFAULT, 0, 0);
         $compositeUrl = "/img/jpg/elusive-targets/countdowns/{$elusiveTarget->getId()}-active.jpg";
