@@ -84,32 +84,30 @@ useSeoMeta({
                                 <div class="row" style="margin-left: 15px; margin-right: 15px;">
                                     <div v-for="mission in location.missions" :key="mission.id"
                                          class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                                        <a href="#">
-                                            <nuxt-link :to="`/games/${route.params.game}/${location.slug}/${mission.slug}`">
-                                                <div class="card mission" :style="`background: url('${mission.tileUrl}') center center / cover no-repeat`">
-                                                    <div style="position: relative">
-                                                        <img :src="mission.tileUrl" class="card-img-top" :alt="$t('mission-image')">
-                                                        <div class="card-img-overlay d-flex flex-column justify-content-end"
-                                                             style="padding: 0"></div>
+                                        <nuxt-link :to="`/games/${route.params.game}/${location.slug}/${mission.slug}`">
+                                            <div class="card mission" :style="`background: url('${mission.tileUrl}') center center / cover no-repeat`">
+                                                <div style="position: relative">
+                                                    <img :src="mission.tileUrl" class="card-img-top" :alt="$t('mission-image')">
+                                                    <div class="card-img-overlay d-flex flex-column justify-content-end"
+                                                         style="padding: 0"></div>
+                                                </div>
+                                                <div>
+                                                    <div class="card-footer">
+                                                        <div class="image">
+                                                            <game-icon :icon="mission.icon" font-style="normal" />
+                                                        </div>
+                                                        <div class="text">
+                                                            <h2>{{ $t('mission-types.' + mission.missionType.toLowerCase(), mission.missionType) }}</h2>
+                                                            <h1>{{ $t('missions.' + mission.slug, mission.name) }}</h1>
+                                                        </div>
                                                     </div>
-                                                    <div>
-                                                        <div class="card-footer">
-                                                            <div class="image">
-                                                                <game-icon :icon="mission.icon" font-style="normal" />
-                                                            </div>
-                                                            <div class="text">
-                                                                <h2>{{ $t('mission-types.' + mission.missionType.toLowerCase(), mission.missionType) }}</h2>
-                                                                <h1>{{ $t('missions.' + mission.slug, mission.name) }}</h1>
-                                                            </div>
-                                                        </div>
-                                                        <div class="freelancer-note" v-if="mission.supportsFreelancer">
-                                                            <game-icon icon="freelancer" font-style="solid" />
-                                                            {{ $t('map.includes-freelancer') }}
-                                                        </div>
+                                                    <div class="freelancer-note" v-if="mission.supportsFreelancer">
+                                                        <game-icon icon="freelancer" font-style="solid" />
+                                                        {{ $t('map.includes-freelancer') }}
                                                     </div>
                                                 </div>
-                                            </nuxt-link>
-                                        </a>
+                                            </div>
+                                        </nuxt-link>
                                     </div>
                                 </div>
                             </div>
