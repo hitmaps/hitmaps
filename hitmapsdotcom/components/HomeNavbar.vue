@@ -19,9 +19,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#community-server">
-                            <icon name="fa6-solid:server"/>
-                            {{ $t('community-server.header') }}
+                        <a class="nav-link" href="#game-modes">
+                            <icon name="fa6-solid:dice"/>
+                            {{ $t('custom-game-modes.header') }}
                         </a>
                     </li>
                     <li class="nav-item">

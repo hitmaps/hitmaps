@@ -56,74 +56,199 @@
                 <elusive-target-notifications-modal ref="notificationModal" />
             </client-only>
         </div>
-        <div class="patreon community-server" id="community-server">
+        <div class="patreon community-server" id="game-modes">
             <div class="row intro">
                 <div class="col-xs-12">
-                    <h1>{{ $t('community-server.header') }}</h1>
-                    <p>{{ $t('community-server.intro') }}</p>
+                    <h1>{{ $t('custom-game-modes.header') }}</h1>
+                    <p>{{ $t('custom-game-modes.intro') }}</p>
                     <p>
-                        <i18n-t keypath="community-server.download-instructions">
+                        <i18n-t keypath="custom-game-modes.download-instructions">
                             <template v-slot:serverPatcher>
-                                <a href="https://gitlab.com/grappigegovert/localghost/-/jobs/artifacts/master/download?job=build_patcher" target="_blank">{{ $t('community-server.server-patcher') }}</a>
+                                <a href="https://gitlab.com/grappigegovert/localghost/-/jobs/artifacts/master/download?job=build_patcher" target="_blank">{{ $t('custom-game-modes.server-patcher') }}</a>
                             </template>
                             <template v-slot:serverUrl>
                                 <code>gm.hitmaps.com</code>
                             </template>
                         </i18n-t>
                     </p>
-                    <p>{{ $t('community-server.disclaimer') }}</p>
+                    <p>{{ $t('custom-game-modes.disclaimer') }}</p>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-6 roulette">
-                    <p>
-                        <img src="https://media.hitmaps.com/img/hitmaps-custom/roulette-logo.png" class="img-fluid">
-                    </p>
+        </div>
+        <div class="patreon game-mode community-server" id="game-modes-roulette">
+            <div class="row roulette">
+                <div class="col-lg-4">
+                    <img src="https://media.hitmaps.com/img/hitmaps-custom/roulette-logo.png" class="img-fluid" alt="HITMAPS Roulette Logo">
                     <div class="row">
-                        <div class="col-lg-7 col-xs-12">
-                            <p>{{ $t('community-server.roulette.in-game-intro') }}</p>
-                            <p>{{ $t('community-server.roulette.available-for-h3-users') }}</p>
+                        <div class="col-xs-12 available-on">
+                            <span class="badge bg-success">
+                                <icon name="fa6-solid:check"/>
+                                {{ $t('custom-game-modes.web') }}
+                            </span>
+                                <span class="badge bg-success">
+                                <icon name="fa6-solid:check"/>
+                                HITMAN&trade;
+                            </span>
+                                <span class="badge bg-success">
+                                <icon name="fa6-solid:check"/>
+                                HITMAN&trade; 2
+                            </span>
+                                <span class="badge bg-success">
+                                <icon name="fa6-solid:check"/>
+                                HITMAN&trade; World of Assassination
+                            </span>
                         </div>
-                        <div class="col-lg-5 col-xs-12">
-                            <img src="https://media.hitmaps.com/img/hitmaps-custom/sample-in-game-spin.png" class="img-fluid" alt="Screenshot of In-Game Spin">
+                        <div class="col-xs-12">
+                            <img src="https://media.hitmaps.com/img/hitmaps-custom/sample-website-spin.png?w=500" class="img-fluid" alt="Screenshot of Website Spin">
                         </div>
                     </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-lg-7 col-xs-12">
-                            <p>
-                                <i18n-t keypath="roulette.introduction">
-                                    <template v-slot:hitmanRoulette>
-                                        <a href="https://thekotti.github.io/hitman.html" target="_blank">{{ $t('roulette.hitman-roulette') }}</a>
-                                    </template>
-                                </i18n-t>
-                            </p>
-                            <ul>
-                                <li><b>{{ $t('roulette.list-item-tournament-mode.header') }}</b> {{ $t('roulette.list-item-tournament-mode.details') }}</li>
-                                <li><b>{{ $t('roulette.list-item-control.header') }}</b> {{ $t('roulette.list-item-control.details') }}</li>
-                                <li><b>{{ $t('roulette.list-item-overlay.header') }}</b> {{ $t('roulette.list-item-overlay.details') }}</li>
-                            </ul>
-                            <a href="https://roulette.hitmaps.com" target="_blank" class="btn square-button white">
-                                <icon name="fa-solid:arrow-right"/>
-                                {{ $t('roulette.visit-button') }}
-                            </a>
-                            <p><i>{{ $t('roulette.footer') }}</i></p>
-                        </div>
-                        <div class="col-lg-5 col-xs-12">
-                            <img src="https://media.hitmaps.com/img/hitmaps-custom/sample-website-spin.png" class="img-fluid" alt="Screenshot of Website Spin">
-                        </div>
-                    </div>
-
                 </div>
-                <div class="col-lg-6 ghost-mode">
+                <div class="col-lg-8">
+                    <p>
+                        <i18n-t keypath="custom-game-modes.roulette.intro">
+                            <template v-slot:hitmanRoulette>
+                                <a href="https://thekotti.github.io/hitman.html">{{ $t('custom-game-modes.roulette.hitman-roulette') }}</a>
+                            </template>
+                        </i18n-t>
+                    </p>
+                    <ul>
+                        <li><b>{{ $t('custom-game-modes.roulette.list-item-tournament-mode.header') }}</b> {{ $t('custom-game-modes.roulette.list-item-tournament-mode.details') }}</li>
+                        <li><b>{{ $t('custom-game-modes.roulette.list-item-control.header') }}</b> {{ $t('custom-game-modes.roulette.list-item-control.details') }}</li>
+                        <li><b>{{ $t('custom-game-modes.roulette.list-item-overlay.header') }}</b> {{ $t('custom-game-modes.roulette.list-item-overlay.details') }}</li>
+                    </ul>
+                    <p>{{ $t('custom-game-modes.roulette.in-game-intro') }}</p>
+                    <p><i>{{ $t('custom-game-modes.roulette.footer') }}</i></p>
+                </div>
+            </div>
+        </div>
+        <div class="patreon game-mode community-server" id="game-modes-ghost-mode">
+            <div class="row game-mode ghost-mode">
+                <div class="col-lg-4">
                     <h2>
                         <game-icon icon="versus" font-style="solid"></game-icon>
                         {{ $t('mission-types.ghost mode') }}
                     </h2>
-                    <p>{{ $t('community-server.ghost-mode.intro') }}</p>
-                    <p>{{ $t('community-server.ghost-mode.available-for-h2-users') }}</p>
-                    <div class="ghost-mode-image">
-                        <img src="https://media.hitmaps.com/img/hitman3/gamemodes/briefing_ghostmode.jpg" alt="Ghost Mode Image" class="img-fluid">
+                    <div class="row">
+                        <div class="col-xs-12 available-on">
+                            <span class="badge bg-danger">
+                                <icon name="fa6-solid:xmark"/>
+                                {{ $t('custom-game-modes.web') }}
+                            </span>
+                            <span class="badge bg-danger">
+                                <icon name="fa6-solid:xmark"/>
+                                HITMAN&trade;
+                            </span>
+                            <span class="badge bg-success">
+                                <icon name="fa6-solid:check"/>
+                                HITMAN&trade; 2
+                            </span>
+                            <span class="badge bg-success">
+                                <icon name="fa6-solid:check"/>
+                                HITMAN&trade; World of Assassination
+                            </span>
+                        </div>
+                        <div class="col-xs-12">
+                            <img src="https://media.hitmaps.com/img/hitman3/gamemodes/briefing_ghostmode.jpg?w=500" alt="Ghost Mode Image" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <p>{{ $t('custom-game-modes.ghost-mode.intro') }}</p>
+                    <alert type="info" :alert-heading="$t('custom-game-modes.ghost-mode.mod-note-header')">
+                        <p>{{ $t('custom-game-modes.ghost-mode.mod-note-content') }}</p>
+                        <a class="btn square-button white" target="_blank" href="https://www.nexusmods.com/hitman3/mods/260">
+                            {{ $t('custom-game-modes.ghost-mode.mod-note-cta') }}
+                            <icon name="fa6-solid:arrow-up-right-from-square"/>
+                        </a>
+                    </alert>
+                    <p>{{ $t('custom-game-modes.ghost-mode.maps') }}</p>
+                    <div class="row">
+                        <div class="col">
+                            <p><b>HITMAN™ 2</b></p>
+                            <ul>
+                                <li>Miami</li>
+                                <li>Santa Fortuna</li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <p><b>HITMAN™ World of Assassination</b></p>
+                            <ul>
+                                <li>Hawke's Bay (<a href="https://www.nexusmods.com/hitman3/mods/303" target="_blank">via mod<icon name="fa6-solid:arrow-up-right-from-square"/></a>)</li>
+                                <li>Miami</li>
+                                <li>Santa Fortuna</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="patreon game-mode community-server" id="game-modes-taskmaster">
+            <div class="row taskmaster">
+                <div class="col-lg-4">
+                    <h2>
+                        <game-icon icon="completion-list" font-style="solid"></game-icon>
+                        {{ $t('custom-game-modes.taskmaster.header') }}
+                    </h2>
+                    <div class="row">
+                        <div class="col-xs-12 available-on">
+                            <span class="badge bg-danger">
+                                <icon name="fa6-solid:xmark"/>
+                                {{ $t('custom-game-modes.web') }}
+                            </span>
+                            <span class="badge bg-danger">
+                                <icon name="fa6-solid:xmark"/>
+                                HITMAN&trade;
+                            </span>
+                            <span class="badge bg-danger">
+                                <icon name="fa6-solid:xmark"/>
+                                HITMAN&trade; 2
+                            </span>
+                            <span class="badge bg-success">
+                                <icon name="fa6-solid:check"/>
+                                HITMAN&trade; World of Assassination
+                            </span>
+                        </div>
+                        <div class="col-xs-12">
+                            <img src="https://media.hitmaps.com/img/hitmaps-custom/taskmaster-screenshot.jpg?w=500" alt="Ghost Mode Image" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <p>{{ $t('custom-game-modes.taskmaster.intro') }}</p>
+                    <p>{{ $t('custom-game-modes.taskmaster.inspired-by') }}</p>
+                    <p>{{ $t('custom-game-modes.taskmaster.missions') }}</p>
+                    <div class="row">
+                        <div class="col">
+                            <ul>
+                                <li>The Showstopper (Paris)</li>
+                                <li>World of Tomorrow (Sapienza)</li>
+                                <li>A Gilded Cage (Marrakesh)</li>
+                                <li>Club 27 (Bangkok)</li>
+                                <li>Freedom Fighters (Colorado)</li>
+                                <li>Situs Inversus (Hokkaido)</li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <ul>
+                                <li>The Finish Line (Miami)</li>
+                                <li>Three-Headed Serpent (Santa Fortuna)</li>
+                                <li>Chasing A Ghost (Mumbai)</li>
+                                <li>Another Life (Whittleton Creek)</li>
+                                <li>The Ark Society (Isle of Sgail)</li>
+                                <li>Golden Handshake (New York)</li>
+                                <li>The Last Resort (Haven Island)</li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <ul>
+                                <li>On Top Of The World (Dubai)</li>
+                                <li>Death In The Family (Dartmoor)</li>
+                                <li>Apex Predator (Berlin)</li>
+                                <li>End of an Era (Chongqing)</li>
+                                <li>The Farewell (Mendoza)</li>
+                                <li>Shadows in the Water (Ambrose Island)</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -169,14 +294,19 @@
                     <h1>
                         {{ $t('patreon.patreon-supporters') }}
                     </h1>
-                    {{ $t('patreon.patreon-supporters-description') }}
+                    <p>{{ $t('patreon.patreon-supporters-description') }}</p>
+                    <p><i>{{ $t('patreon.no-current-patrons')}}</i></p>
                 </div>
             </div>
             <div class="row">
-                <div class="col" style="text-align: right">
+                <div class="col">
                     <a href="https://www.patreon.com/mrmike227" class="btn patreon-button">
                         <icon name="fa6-brands:patreon"/>
-                        Become a Patron
+                        {{ $t('patreon.become-a-patron') }}
+                    </a>
+                    <a href="https://www.patreon.com/mrmike227" class="btn square-button white">
+                        <icon name="fa6-solid:arrow-right"/>
+                        {{ $t('patreon.view-all-patrons') }}
                     </a>
                 </div>
             </div>
@@ -566,7 +696,6 @@ header {
     }
 
     .patreon-button {
-        margin-top: 30px;
         border-radius: 0;
         background: #e7705c;
         color: #fff;
@@ -585,13 +714,41 @@ header {
             background: white;
         }
 
-        .ghost-mode {
+        &.game-mode:nth-child(odd) {
+            background: rgb(25, 25, 25);
+        }
+
+        .available-on {
+            margin-top: 10px;
+            margin-bottom: 10px;
+
+            .badge {
+                background: $game-button-background;
+
+                &:not(:first-child) {
+                    margin-left: 5px;
+                }
+
+                &.bg-warning {
+                    color: #000;
+                }
+            }
+        }
+
+        .ghost-mode, .taskmaster {
+            margin-top: 20px;
+
             h2 {
                 text-transform: uppercase;
+                margin-bottom: 0;
 
                 i {
                     vertical-align: middle;
                 }
+            }
+
+            ul.two-columns {
+                columns: 2;
             }
 
             .ghost-mode-image {

@@ -11,45 +11,55 @@
         "footer": "Translations are maintained and updated by the HITMAPS™️ community. If a translation is incorrect, please {submitACorrection}.",
         "submit-a-correction": "submit a correction"
     },
-    "community-server": {
+    "custom-game-modes": {
         "header": "Custom Game Modes",
-        "intro": "The HITMAPS Community Game Server provides custom (and retired) game modes for all players who legitimately own HITMAN 2 or HITMAN 3. Below are the current game modes supported on the community server.",
-        "download-instructions": "To connect, simply download the {serverPatcher}, select {serverUrl} in the dropdown, and launch HITMAN 2 or HITMAN 3 to connect.",
+        "intro": "HITMAPS provides custom (and retired) game modes for all players, either via a website or a custom HITMAN server implementation.",
+        "download-instructions": "To use a custom game mode in-game, simply download the {serverPatcher}, select {serverUrl} in the dropdown, and launch the game.",
         "server-patcher": "server patcher",
         "disclaimer": "Community Servers are not approved or supported by IO Interactive, so do not contact them for any issues. Instead, contact HITMAPS.",
+        "web": "Web",
         "roulette": {
-            "in-game-intro": "The HITMAPS™ In-Game Roulette takes the core of the HITMAPS™ Roulette website and brings it directly in-game, allowing you to see spin conditions in-game, and be instantly notified when you fail. With 16 billion+ possible contracts, there's an almost endless number of ways to take out your targets.",
-            "available-for-h3-users": "The HITMAPS™ In-Game Roulette is available for PC players who own HITMAN 3."
+            "intro": "Initially based on Kotti's {hitmanRoulette}, the HITMAPS™ Roulette website takes Kotti's work and builds off of it to add new features, including:",
+            "hitman-roulette": "Hitman Roulette",
+            "list-item-tournament-mode": {
+                "header": "Tournament Mode:",
+                "details": "Create a head-to-head matchup against your friend (or rival). Set up match durations and send the spin to your opponent via read-only spin links. These links automatically refresh each time a new spin is sent."
+            },
+            "list-item-control": {
+                "header": "Fine-tuned Control:",
+                "details": "Don't like a specific kill condition, but don't want to lose the rest of the spin? Simply re-spin the specific condition."
+            },
+            "list-item-overlay": {
+                "header": "Stream Overlay:",
+                "details": "Using the tournament mode, you can copy a link to add as a browser source in OBS to provide a professional overlay for your streams / YouTube videos."
+            },
+            "in-game-intro": "Also available is the HITMAPS™ In-Game Roulette, which takes the core of the HITMAPS™ Roulette website and brings it directly in-game. This allows you to see spin conditions in-game, and be instantly notified when you fail. With 16 billion+ possible contracts, there's an almost endless number of ways to take out your targets.",
+            "footer": "HITMAPS™ Roulette: The official roulette of Roulette Rivals"
         },
         "ghost-mode": {
-            "intro": "Ghost Mode for HITMAN 2 has returned as an unofficial game mode on the HITMAPS community server! You and a friend can connect to the community server and invite each other to a friendly Ghost Mode match using Steam's invite system.  Matchmaking is not supported on the community server.",
-            "available-for-h2-users": "Ghost Mode is available for PC players who own HITMAN 2."
+            "intro": "Ghost Mode, a multiplayer game mode originally released as part of HITMAN™ 2, has returned to HITMAN™ 2 and HITMAN™ World of Assassination on the HITMAPS custom server! You and a friend can connect to the server and invite each other to a friendly Ghost Mode match using Steam's invite system.  Matchmaking is not supported.",
+            "mod-note-header": "World of Assassination Users",
+            "mod-note-content": "In order to enjoy Ghost Mode within HITMAN™ World of Assassination, you must install a mod to your game. Installation instructions are provided on the linked page.",
+            "mod-note-cta": "Visit NexusMods",
+            "maps": "The following maps are supported for Ghost Mode:"
+        },
+        "taskmaster": {
+            "header": "Taskmaster",
+            "intro": "Taskmaster is an in-game game mode that takes a different spin on the main missions. Instead of being tasked with eliminating targets, you are instead tasked to complete various tasks on the map, such as collecting items, applying disguises, and perhaps causing some mayhem from time to time.",
+            "inspired-by": "Taskmaster is heavily inspired by Providence Community's HITMAN Bingo, where a majority of the tasks for Taskmaster are taken from.",
+            "missions": "The following missions are supported for Taskmaster:"
         }
     },
     "roulette": {
-        "introduction": "The HITMAPS™ Roulette website is still available as well. Initially based on Kotti's {hitmanRoulette}, HITMAPS™ Roulette takes Kotti's work and builds off of it to add new features, including:",
-        "hitman-roulette": "Hitman Roulette",
-        "list-item-tournament-mode": {
-            "header": "Tournament Mode:",
-            "details": "Create a head-to-head matchup against your friend (or rival ;) ). Set up match durations and send the spin to your opponent via read-only spin links. These links automatically refresh each time a new spin is sent."
-        },
-        "list-item-control": {
-            "header": "Fine-tuned Control:",
-            "details": "Don't like a specific kill condition, but don't want to lose the rest of the spin? Simply re-spin the specific condition."
-        },
-        "list-item-overlay": {
-            "header": "Stream Overlay:",
-            "details": "Using the tournament mode, you can copy a link to add as a browser source in OBS to provide a professional overlay for your streams / YouTube videos."
-        },
-        "visit-button": "Visit HITMAPS™ Roulette",
-        "footer": "HITMAPS™ Roulette: The official roulette of Roulette Rivals"
+        "visit-button": "Visit HITMAPS™ Roulette"
+
     },
     "partnership": {
         "header": "Our Official Partners",
         "f7sc": {
             "header": "Frote's Speedrun Community",
-            "paragraph": "HITMAPS™ is pleased to be partnered with Frote's Speedrun Community. Back in September 2019, HITMAPS™ promoted Speedrun Competition #2, along with all future events. We are happy to announce this official partnership, which includes both software tailed towards Frote's Speedrun Community, along with the necessary infrastructure to run the software. Frote's Speedrun Community has also offered to promote HITMAPS™ in return as HITMAPS™ may play an important role for participants.",
-            "call-to-action": "Join the Discord"
+            "paragraph": "HITMAPS™ is pleased to be partnered with Frote's Speedrun Community (F7SC). HITMAPS™ has helped to promote events hosted by F7SC since Speedrun Competition 2, including providing server infrastructure and a custom-tailored tournament mode for Roulette Rivals tournaments.",
+            "call-to-action": "Join the F7SC Discord"
         },
         "rr-stats": {
             "header": "Roulette Rivals Player Statistics",
@@ -112,7 +122,10 @@
     "mission-icon": "Mission Icon",
     "patreon": {
         "patreon-supporters": "Patreon Supporters",
-        "patreon-supporters-description": "Patreon helps defer HITMAPS'️ operation costs.  We'd like to extend a thank you to the people below, who have pledged at the \"Master Assassin\" level or higher."
+        "patreon-supporters-description": "Patreon helps defer HITMAPS'️ operation costs.  We'd like to extend a thank you to the people below, who have pledged at the \"Master Assassin\" level or higher.",
+        "no-current-patrons": "No current patrons 🙁",
+        "become-a-patron": "Become a Patron",
+        "view-all-patrons": "View all Patrons"
     },
     "difficulties": {
         "Casual": "Casual",
