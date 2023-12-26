@@ -4,6 +4,8 @@ import {v4 as uuidv4} from "uuid";
 const props = defineProps({
     elusiveTargets: Array
 });
+defineEmits(['notificationModal']);
+
 const { t } = useI18n();
 const selectedElusiveTarget = ref(props.elusiveTargets[0]);
 const mobileElusiveTarget = computed(() => [selectedElusiveTarget]);
@@ -92,7 +94,7 @@ function forceIndex(index, resetCarousel = true) {
                             <div
                                 onclick="return false;"
                                 class="image float-right notification-icon"
-                                @click="$emit('notification-modal')"
+                                @click="$emit('notificationModal')"
                                 v-tooltip:left="$t('elusive-target.notifications.manage-notifications')"
                             >
                                 <game-icon icon="audio" font-style="normal" />
@@ -135,7 +137,7 @@ function forceIndex(index, resetCarousel = true) {
         </modal>
     </client-only>
     <div class="d-flex d-lg-none mobile-et">
-        <elusive-target-mobile-card class="d-flex d-lg-none" :elusive-targets="mobileElusiveTarget" @notification-modal="$emit('notification-modal')" />
+        <elusive-target-mobile-card class="d-flex d-lg-none" :elusive-targets="mobileElusiveTarget" @notification-modal="$emit('notificationModal')" />
         <carousel-selector v-if="elusiveTargets.length > 1"
                            :elements="elusiveTargets"
                            :selected-index="selectedElusiveTargetIndex"

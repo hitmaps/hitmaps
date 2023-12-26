@@ -260,7 +260,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-6 partner">
+                <div class="col-md-6 partner">
                     <div class="image">
                         <img src="https://media.hitmaps.com/img/hitmaps-custom/f7sc-logo.png" style="width: 128px; height: 128px;" alt="F7SC Logo">
                     </div>
@@ -273,7 +273,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-sm-6 partner">
+                <div class="col-md-6 partner">
                     <div class="image">
                         <img src="https://media.hitmaps.com/img/hitmaps-custom/rrstats-logo.png" style="width: 128px; height: 128px;" alt="RRStats Logo">
                     </div>

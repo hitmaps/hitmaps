@@ -4,6 +4,7 @@ import {v4 as uuidv4} from "uuid";
 const props = defineProps({
     elusiveTargets: Array
 });
+defineEmits(['notificationModal']);
 const elusiveTarget = ref(props.elusiveTargets[0]);
 const { t } = useI18n();
 const uuid = uuidv4();
@@ -37,7 +38,7 @@ function hideBriefingModal() {
                     <div
                         onclick="return false;"
                         class="image float-right notification-icon"
-                        @click="$emit('notification-modal')"
+                        @click="$emit('notificationModal')"
                         v-tooltip:left="$t('elusive-target.notifications.manage-notifications')">
                         <game-icon icon="audio" font-style="normal" />
                     </div>
