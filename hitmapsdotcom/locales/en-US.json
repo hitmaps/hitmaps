@@ -34,7 +34,8 @@
                 "details": "Using the tournament mode, you can copy a link to add as a browser source in OBS to provide a professional overlay for your streams / YouTube videos."
             },
             "in-game-intro": "Also available is the HITMAPS™ In-Game Roulette, which takes the core of the HITMAPS™ Roulette website and brings it directly in-game. This allows you to see spin conditions in-game, and be instantly notified when you fail. With 16 billion+ possible contracts, there's an almost endless number of ways to take out your targets.",
-            "footer": "HITMAPS™ Roulette: The official roulette of Roulette Rivals"
+            "footer": "HITMAPS™ Roulette: The official roulette of Roulette Rivals",
+            "visit-button": "Visit HITMAPS™ Roulette"
         },
         "ghost-mode": {
             "intro": "Ghost Mode, a multiplayer game mode originally released as part of HITMAN™ 2, has returned to HITMAN™ 2 and HITMAN™ World of Assassination on the HITMAPS custom server! You and a friend can connect to the server and invite each other to a friendly Ghost Mode match using Steam's invite system.  Matchmaking is not supported.",
@@ -49,10 +50,6 @@
             "inspired-by": "Taskmaster is heavily inspired by Providence Community's HITMAN Bingo, where a majority of the tasks for Taskmaster are taken from.",
             "missions": "The following missions are supported for Taskmaster:"
         }
-    },
-    "roulette": {
-        "visit-button": "Visit HITMAPS™ Roulette"
-
     },
     "partnership": {
         "header": "Our Official Partners",

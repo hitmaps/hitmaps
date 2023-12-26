@@ -118,6 +118,10 @@
                     </ul>
                     <p>{{ $t('custom-game-modes.roulette.in-game-intro') }}</p>
                     <p><i>{{ $t('custom-game-modes.roulette.footer') }}</i></p>
+                    <a class="btn square-button white" target="_blank" href="https://roulette.hitmaps.com">
+                        {{ $t('custom-game-modes.roulette.visit-button') }}
+                        <icon name="fa6-solid:arrow-up-right-from-square"/>
+                    </a>
                 </div>
             </div>
         </div>
