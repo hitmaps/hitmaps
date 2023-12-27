@@ -30,6 +30,14 @@
                     <div class="col-sm-3">
                         <patron name="ChromeX" tier="Assassin" />
                     </div>
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-3">
+                        <patron name="ChromeX" tier="Assassin" />
+                    </div>
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-3">
+                        <patron name="ThatObserver" tier="Assassin" />
+                    </div>
                 </div>
             </div>
             <h3 style="margin-top: 20px;">PayPal</h3>
