@@ -351,13 +351,10 @@ export default {
                 return true;
             }
 
-            return !['agency-pickup',
-                'exit-location',
+            return !['exit-location',
                 'ledge',
                 'foliage',
-                'up-stair',
-                'starting-location',
-                'up-pipe'].includes(this.currentCategory.element.subgroup);
+                'starting-location'].includes(this.currentCategory.element.subgroup);
         }
     },
     methods: {
