@@ -11,6 +11,8 @@ public class HitmapsDbContext : DbContext
     }
     
     public DbSet<Game> Games { get; set; }
+    public DbSet<Location> Locations { get; set; }
+    public DbSet<Mission> Missions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
