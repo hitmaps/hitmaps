@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
-namespace RouletteBackend.Controllers;
+namespace API.Controllers;
 
 public class ErrorController : ControllerBase
 {

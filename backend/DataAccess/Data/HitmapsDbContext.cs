@@ -2,9 +2,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Data;
 
-public class RouletteDbContext : DbContext
+public class HitmapsDbContext : DbContext
 {
-    public RouletteDbContext(DbContextOptions<RouletteDbContext> options) : base(options)
+    public HitmapsDbContext(DbContextOptions<HitmapsDbContext> options) : base(options)
     {
         
     }

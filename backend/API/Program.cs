@@ -14,8 +14,8 @@ builder.Services.AddApiVersioning(options =>
     options.AssumeDefaultVersionWhenUnspecified = true;
     options.ApiVersionReader = new HeaderApiVersionReader("x-api-version");
 });
-builder.Services.AddDbContext<RouletteDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Roulette")));
+builder.Services.AddDbContext<HitmapsDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Hitmaps")));
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -34,7 +34,7 @@ if (app.Environment.IsDevelopment())
 if (app.Environment.IsProduction())
 {
     using var scope = app.Services.CreateScope();
-    var db = scope.ServiceProvider.GetRequiredService<RouletteDbContext>();
+    var db = scope.ServiceProvider.GetRequiredService<HitmapsDbContext>();
     db.Database.Migrate();
     app.UseExceptionHandler("/error");
 }
