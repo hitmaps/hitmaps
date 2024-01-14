@@ -21,6 +21,7 @@
                 <div class="name-and-tier" :class="image ? 'col-9' : 'col-12'">
                     <p class="patron-name">{{ name }}</p>
                     <p class="tier">{{ tier }}</p>
+                    <p v-if="legacy"><i>Legacy Patreon Supporter</i></p>
                 </div>
             </div>
         </template>
@@ -34,7 +35,12 @@ export default {
         link: null,
         image: null,
         name: null,
-        tier: null
+        tier: null,
+        legacy: {
+            type: Boolean,
+            required: false,
+            default: false
+        }
     }
 }
 </script>
@@ -45,8 +51,6 @@ a {
 }
 
 .patron-card {
-    height: 100px;
-
     .patron-image {
         text-align: right;
 

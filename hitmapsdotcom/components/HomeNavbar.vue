@@ -31,9 +31,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#patreon">
-                            <icon name="fa6-brands:patreon"/>
-                            {{ $t('patreon.patreon-supporters') }}
+                        <a class="nav-link" href="#kofi">
+                            <icon name="cib:ko-fi"/>
+                            {{ $t('ko-fi.ko-fi-supporters') }}
                         </a>
                     </li>
                 </ul>

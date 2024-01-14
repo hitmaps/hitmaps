@@ -292,26 +292,26 @@
                 </div>
             </div>
         </div>
-        <div class="patreon community-server" id="patreon">
+        <div class="patreon community-server" id="kofi">
             <div class="row intro">
                 <div class="col-xs-12">
                     <h1>
-                        {{ $t('patreon.patreon-supporters') }}
+                        {{ $t('ko-fi.ko-fi-supporters') }}
                     </h1>
-                    <p>{{ $t('patreon.patreon-supporters-description') }}</p>
-                    <p><i>{{ $t('patreon.no-current-patrons')}}</i></p>
+                    <p>{{ $t('ko-fi.ko-fi-supporters-description') }}</p>
+                    <p><i>{{ $t('ko-fi.no-current-supporters')}}</i></p>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <a href="https://www.patreon.com/mrmike227" class="btn patreon-button">
-                        <icon name="fa6-brands:patreon"/>
-                        {{ $t('patreon.become-a-patron') }}
+                    <a href="https://ko-fi.com/mrmike227" class="btn patreon-button">
+                        <icon name="cib:ko-fi"/>
+                        {{ $t('ko-fi.become-a-supporter') }}
                     </a>
-                    <a href="https://www.patreon.com/mrmike227" class="btn square-button white">
+                    <nuxt-link to="/support-the-site" class="btn square-button white">
                         <icon name="fa6-solid:arrow-right"/>
-                        {{ $t('patreon.view-all-patrons') }}
-                    </a>
+                        {{ $t('ko-fi.view-all-supporters') }}
+                    </nuxt-link>
                 </div>
             </div>
         </div>
@@ -701,11 +701,11 @@ header {
 
     .patreon-button {
         border-radius: 0;
-        background: #e7705c;
+        background: $support-the-site;
         color: #fff;
 
         &:hover {
-            background: #cd685c;
+            background: $support-the-site-hover;
         }
     }
 

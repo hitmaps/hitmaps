@@ -117,12 +117,12 @@
     "location-icon": "Location Icon",
     "mission-image": "Mission Image",
     "mission-icon": "Mission Icon",
-    "patreon": {
-        "patreon-supporters": "Patreon Supporters",
-        "patreon-supporters-description": "Patreon helps defer HITMAPS'️ operation costs.  We'd like to extend a thank you to the people below, who have pledged at the \"Master Assassin\" level or higher.",
-        "no-current-patrons": "No current patrons 🙁",
-        "become-a-patron": "Become a Patron",
-        "view-all-patrons": "View all Patrons"
+    "ko-fi": {
+        "ko-fi-supporters": "Ko-fi Supporters",
+        "ko-fi-supporters-description": "Ko-fi helps defer HITMAPS'️ operation costs.  We'd like to extend a thank you to the people below, who have pledged at the \"Master Assassin\" level or higher.",
+        "no-current-supporters": "No current supporters at \"Master Assassin\" level or higher 🙁",
+        "become-a-supporter": "Become a Supporter",
+        "view-all-supporters": "View all Supporters"
     },
     "difficulties": {
         "Casual": "Casual",
@@ -406,8 +406,7 @@
         "hitman-status": "HITMAN™ Server Status - Made With <3 by Hardware",
         "twitter": "Follow HITMAPS™️ on X",
         "support-the-site": "Support the Site",
-        "support-via-patreon-or-paypal": "Support via Patreon or PayPal",
-        "patreon": "Support My Work on Patreon",
+        "ko-fi": "Support My Work via Ko-fi",
         "about": "About",
         "brand-guidelines": "Brand Guidelines"
     },

@@ -46,11 +46,11 @@
                     <a href="https://twitter.com/hitmapsdotcom" target="_blank">
                         <footer-icon-stack icon="fa6-brands:x-twitter" :tooltip-text="$t('footer.twitter')"/>
                     </a>
-                    <a href="https://www.patreon.com/mrmike227"
+                    <a href="https://www.ko-fi.com/mrmike227"
                        target="_blank"
                        data-toggle="tooltip"
                        class="patreon-button">
-                        <footer-icon-stack icon="fa6-brands:patreon" :tooltip-text="$t('footer.patreon')"/>
+                        <footer-icon-stack icon="cib:ko-fi" :tooltip-text="$t('footer.ko-fi')"/>
                     </a>
                 </div>
             </div>
@@ -181,10 +181,10 @@ footer {
         }
 
         &.patreon-button {
-            color: #e7705c;
+            color: $support-the-site;
 
             &:hover {
-                color: #cd685c;
+                color: $support-the-site-hover;
             }
         }
     }

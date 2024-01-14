@@ -10,37 +10,41 @@
             <h1>Support the Site</h1>
             <h2>Ways to Say, "Thanks!"</h2>
             <hr>
-            <h3>Patreon</h3>
+            <h3>Ko-fi</h3>
             <p>
-                I have recently created a Patreon page for all of my works (not just HITMAPS™). By becoming a patron,
-                you will receive certain perks. Becoming a patron will result in a monthly contribution. Simply click
-                the button below to become a patron.
+                I have recently created a Ko-fi page for all of my works (not just HITMAPS™). By becoming a supporter,
+                you will receive certain perks. Both one-time and membership (monthly) contributions are possible with Ko-fi.
             </p>
-            <a href="https://www.patreon.com/mrmike227" class="btn patreon-button">
-                <icon name="fa6-brands:patreon"/>
-                Become a Patron
+            <a href="https://ko-fi.com/mrmike227" class="btn patreon-button">
+                <icon name="cib:ko-fi"/>
+                Become a Supporter
             </a>
-            <h4>Current Patrons:</h4>
+            <h4>Current Supporters:</h4>
             <div class="col-sm-12">
                 <div class="row">
                     <div class="col-sm-3">
-                        <patron name="Some Random Person" tier="Assassin"/>
+                        <patron name="Some Random Person" tier="Assassin" legacy/>
                     </div>
                     <div class="col-sm-1"></div>
                     <div class="col-sm-3">
-                        <patron name="ChromeX" tier="Assassin" />
+                        <patron name="ChromeX" tier="Assassin" legacy />
                     </div>
                     <div class="col-sm-1"></div>
                     <div class="col-sm-3">
-                        <patron name="ThatObserver" tier="Assassin" />
+                        <patron name="ThatObserver" tier="Assassin" legacy />
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <patron name="AgentSnail47" tier="Agent" legacy />
                     </div>
                 </div>
             </div>
             <h3 style="margin-top: 20px;">PayPal</h3>
             <p>
-                I currently accept tips/contributions via PayPal. Simply click the button below to make a contribution.
-                Unless otherwise stated, these contributions are not tax-deductible in any way. You will be credited
-                below with your donation.
+                I previously accepted tips/contributions via PayPal. Since Ko-fi allows both one-time and monthly
+                contributions, I no longer accept contributions via PayPal.
             </p>
             <p>Previous Donors (contribution amounts are cumulative):</p>
             <ul>
@@ -60,17 +64,6 @@
                 <li>Gabriel Caballero - 4.70 USD</li>
                 <li>Nikjojo - 3.00 USD</li>
             </ul>
-            <!-- region PayPal Button -->
-            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-                <input type="hidden" name="cmd" value="_s-xclick" />
-                <input type="hidden" name="hosted_button_id" value="SE5ALRGBQCCUW" />
-                <button type="submit" class="btn paypal-button">
-                    <icon name="fa6-brands:paypal"/>
-                    Send Contribution via PayPal
-                </button>
-                <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
-            </form>
-            <!-- endregion -->
         </div>
         <div class="home-button">
             <nuxt-link to="/">
@@ -131,41 +124,14 @@ useSeoMeta({
             &.patreon-button {
                 margin-bottom: 20px;
                 border-radius: 0;
-                background: #e7705c;
+                background: $support-the-site;
                 color: #fff;
 
                 &:hover {
-                    background: #cd685c;
+                    background: $support-the-site-hover;
                 }
             }
         }
-
-        .paypal-button {
-            border-radius: 0;
-            background: #00457c;
-            color: #fff;
-
-            &:hover {
-                background: #003060;
-            }
-        }
     }
-}
-
-#ppBody {
-    font-size: 11pt;
-    width: 100%;
-    margin: 0 auto;
-    text-align: justify;
-}
-
-#ppHeader {
-    font-size: 21pt;
-    width: 100%;
-    margin: 0 auto;
-}
-
-.ppConsistencies {
-    display: none;
 }
 </style>
