@@ -10,8 +10,8 @@
                 <button v-if="getAllVariantsForUser().length > 1"
                         class="navbar-toggler"
                         type="button"
-                        data-toggle="collapse"
-                        data-target="#variants-toggle"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#variants-toggle"
                         aria-controls="variants-toggle"
                         aria-expanded="true"
                         aria-label="Toggle variant selection box">
@@ -19,8 +19,8 @@
                 </button>
                 <button class="navbar-toggler"
                         type="button"
-                        data-toggle="collapse"
-                        data-target="#search-item-toggle"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#search-item-toggle"
                         aria-controls="search-item-toggle"
                         aria-expanded="true"
                         aria-label="Toggle search box">
@@ -28,21 +28,21 @@
                 </button>
                 <button class="navbar-toggler"
                         type="button"
-                        data-toggle="collapse"
-                        data-target="#disguises-toggle"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#disguises-toggle"
                         aria-controls="disguises-toggle"
                         aria-expanded="false"
                         aria-label="Toggle disguises box">
-                    <icon name="fa6-solid:magnifying-glass"/>
+                    <icon name="fa6-regular:user"/>
                 </button>
                 <button class="navbar-toggler"
                         type="button"
-                        data-toggle="collapse"
-                        data-target="#floors-and-layers-toggle"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#floors-and-layers-toggle"
                         aria-controls="floors-and-layers-toggle"
                         aria-expanded="false"
                         aria-label="Toggle floors and layers box">
-                    <icon name="fa6-solid:user-tie"/>
+                    <icon name="fa6-solid:layer-group"/>
                 </button>
                 <button class="navbar-toggler"
                         @click="showLocaleModal"
