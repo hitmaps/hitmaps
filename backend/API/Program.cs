@@ -18,6 +18,7 @@ builder.Services.AddApiVersioning(options =>
 builder.Services.AddDbContext<HitmapsDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Hitmaps")));
 builder.Services.AddScoped<IGameService, GameService>();
+builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
