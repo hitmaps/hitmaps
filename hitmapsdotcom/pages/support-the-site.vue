@@ -41,6 +41,10 @@
                     </div>
                 </div>
             </div>
+            <h4>One-Time Contributors:</h4>
+            <ul>
+                <li>Billy_Rizzle - 25.00 USD</li>
+            </ul>
             <h3 style="margin-top: 20px;">PayPal</h3>
             <p>
                 I previously accepted tips/contributions via PayPal. Since Ko-fi allows both one-time and monthly
