@@ -92,6 +92,14 @@ function hideBriefingModal() {
                     </div>
                 </div>
                 <template v-slot:modal-footer>
+                    <a href="https://discord.gg/FVxTKdU"
+                       target="_blank"
+                       style="display: none"
+                       ref="discordLink"></a>
+                    <game-button @click="$refs.discordLink.click()">
+                        <game-icon icon="arrow-right" font-style="normal"/>
+                        {{ $t('partnership.f7sc.call-to-action') }}
+                    </game-button>
                     <game-button data-dismiss="modal" @click="hideBriefingModal">
                         <game-icon icon="failed" font-style="normal"/>
                         {{ $t('form.close') }}
