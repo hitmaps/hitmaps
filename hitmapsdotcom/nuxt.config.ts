@@ -60,7 +60,8 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             apiDomain: process.env.API_DOMAIN,
-            firebaseEnvironment: process.env.FIREBASE_ENVIRONMENT
+            firebaseEnvironment: process.env.FIREBASE_ENVIRONMENT,
+            tournamentsDomain: process.env.TOURNAMENTS_DOMAIN
         }
     }
 })

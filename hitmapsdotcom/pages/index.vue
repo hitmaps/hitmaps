@@ -46,9 +46,18 @@
                         <h2>{{ $t('live-community-events') }}</h2>
                         <hr class="bar">
                     </div>
-                    <div class="game-cards">
+                    <loader v-if="tournamentPending"/>
+                    <div class="game-cards" v-else>
                         <elusive-target-card :elusive-targets="elusiveTargets"
+                                             :force-small-cards="!tournamentPending && tournamentsInfo.hasEvents()"
                                              @notification-modal="showNotificationModal" />
+                        <client-only v-if="!tournamentPending && tournamentsInfo.hasEvents()">
+                            <tournament-card v-for="eventInfo in tournamentsInfo.registerableEvents"
+                                             :event-info="eventInfo" />
+                            <tournament-card v-for="eventInfo in tournamentsInfo.upcomingMatchEvents"
+                                             :event-info="eventInfo.event"
+                                             :upcoming-match-count="eventInfo.upcomingMatches.length" />
+                        </client-only>
                     </div>
                 </div>
             </div>
@@ -319,12 +328,23 @@
 </template>
 
 <script setup>
+import TournamentsInfo from "~/components/TournamentsInfo";
+import {useLazyFetch} from "#app";
+
 const config = useRuntimeConfig();
 const { t } = useI18n();
 
 const { data, pending: gamesPending } = await useFetch(`${config.public.apiDomain}/api/web/home`);
 const games = data.value.games;
 const elusiveTargets = data.value.elusiveTargets;
+
+const tournamentsInfo = ref(new TournamentsInfo());
+const { pending: tournamentPending, data: tournamentData } = await useLazyFetch(`${config.public.tournamentsDomain}/api/hitmaps-homepage-info`, {
+    server: false
+});
+watch(tournamentData, (newData) => {
+    tournamentsInfo.value = new TournamentsInfo(newData)
+});
 
 const notificationModal = ref(null);
 function showNotificationModal() {

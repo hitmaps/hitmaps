@@ -2,7 +2,12 @@
 import {v4 as uuidv4} from "uuid";
 
 const props = defineProps({
-    elusiveTargets: Array
+    elusiveTargets: Array,
+    forceSmallCards: {
+        type: Boolean,
+        default: false,
+        required: false
+    }
 });
 defineEmits(['notificationModal']);
 
@@ -51,7 +56,7 @@ function forceIndex(index, resetCarousel = true) {
 </script>
 
 <template>
-    <div class="single-game d-none d-lg-flex">
+    <div class="single-game d-none d-lg-flex" v-if="!forceSmallCards">
         <a :href="selectedElusiveTarget.missionUrl ?? '#'">
             <div class="card game" :style="`background: url('${selectedElusiveTarget.tileUrl}') center center / cover no-repeat`">
                 <div style="position: relative; flex-grow: 1">
@@ -136,8 +141,8 @@ function forceIndex(index, resetCarousel = true) {
             </template>
         </modal>
     </client-only>
-    <div class="d-flex d-lg-none mobile-et">
-        <elusive-target-mobile-card class="d-flex d-lg-none" :elusive-targets="mobileElusiveTarget" @notification-modal="$emit('notificationModal')" />
+    <div class="mobile-et" :class="forceSmallCards ? '' : 'd-flex d-lg-none'">
+        <elusive-target-mobile-card :elusive-targets="mobileElusiveTarget" @notification-modal="$emit('notificationModal')" />
         <carousel-selector v-if="elusiveTargets.length > 1"
                            :elements="elusiveTargets"
                            :selected-index="selectedElusiveTargetIndex"

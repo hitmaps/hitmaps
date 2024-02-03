@@ -111,6 +111,12 @@
         },
         "n-days": "{days} Days"
     },
+    "community-event": {
+        "title": "Community Event",
+        "signups-close-in": "Signups Close in",
+        "more-info": "More Info",
+        "upcoming-matches-colon": "Upcoming Matches:"
+    },
     "elusive-target-icon": "Elusive Target Icon",
     "home-icon": "Home Icon",
     "home": "Home",
