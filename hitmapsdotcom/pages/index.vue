@@ -65,6 +65,7 @@
                 <elusive-target-notifications-modal ref="notificationModal" />
             </client-only>
         </div>
+        <tournament-upcoming-matches :upcoming-match-info="tournamentsInfo.upcomingMatchEvents" />
         <div class="patreon community-server" id="game-modes">
             <div class="row intro">
                 <div class="col-xs-12">

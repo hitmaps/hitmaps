@@ -29,11 +29,12 @@
     "firebase": "^10.5.2",
     "jquery": "^3.7.1",
     "just-clone": "6.2.0",
+    "moment-timezone": "^0.5.45",
     "nuxt-vuefire": "^0.4.0",
     "sass": "^1.69.5",
     "uuid": "^9.0.0",
-    "vuefire": "^3.1.17",
     "vue-toastr": "3.0.5",
-    "vue3-cookies": "^1.0.6"
+    "vue3-cookies": "^1.0.6",
+    "vuefire": "^3.1.17"
   }
 }
