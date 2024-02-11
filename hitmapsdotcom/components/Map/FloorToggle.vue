@@ -104,7 +104,7 @@ export default {
             return this.nodes.filter(node => node.level === floor && node.visible && node.variants.includes(this.currentVariant.id)).length;
         },
         hasSearchResults(floor) {
-            return this.nodes.some(node => node.level === floor && node.searchResult);
+            return this.nodes.some(node => node.level === floor && node.searchResult && node.variants.includes(this.currentVariant.id));
         }
     }
 }
