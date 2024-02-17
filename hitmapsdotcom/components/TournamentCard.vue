@@ -88,7 +88,7 @@ function hideBriefingModal() {
                             Do you play it safe? Takes longer, but you wouldn't have to restart. Or do you play it risky to get
                             that awesome time, with the potential of a lot of restarts?
                         </p>
-                        <alert type="info">Matches run from <b>February 9</b> to <b>March 3</b>!</alert>
+                        <alert type="info">Matches run from <b>February 9</b> to <b>March 10</b>!</alert>
                     </div>
                 </div>
                 <template v-slot:modal-footer>
