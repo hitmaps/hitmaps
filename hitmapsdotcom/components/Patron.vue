@@ -75,6 +75,10 @@ a {
         .tier {
             font-weight: 200;
         }
+
+        p {
+            margin-bottom: 0;
+        }
     }
 }
 </style>
