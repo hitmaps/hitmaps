@@ -112,25 +112,38 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("BackgroundUrl")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
-                    b.Property<decimal>("BottomRightCoordinateLatitude")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("BottomRightCoordinateLatitude")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
-                    b.Property<decimal>("BottomRightCoordinateLongitude")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("BottomRightCoordinateLongitude")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
-                    b.Property<decimal>("BoundingBoxBottomRightLatitude")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("BoundingBoxBottomRightLatitude")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
-                    b.Property<decimal>("BoundingBoxBottomRightLongitude")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("BoundingBoxBottomRightLongitude")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
-                    b.Property<decimal>("BoundingBoxTopLeftLatitude")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("BoundingBoxTopLeftLatitude")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
-                    b.Property<decimal>("BoundingBoxTopLeftLongitude")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("BoundingBoxTopLeftLongitude")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<DateTime?>("ExpiresAt")
                         .HasColumnType("datetime2");
@@ -146,15 +159,18 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("MapCenterLatitude")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("MapCenterLongitude")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("MapFolderName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("MaxZoom")
                         .HasColumnType("int");
@@ -164,11 +180,13 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("MissionType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("Order")
                         .HasColumnType("int");
@@ -178,7 +196,8 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("Slug")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("StartingFloorNumber")
                         .HasColumnType("int");
@@ -188,13 +207,18 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("TileUrl")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
-                    b.Property<decimal>("TopLeftCoordinateLatitude")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("TopLeftCoordinateLatitude")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
-                    b.Property<decimal>("TopLeftCoordinateLongitude")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("TopLeftCoordinateLongitude")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
