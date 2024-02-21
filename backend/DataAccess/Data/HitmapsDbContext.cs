@@ -19,5 +19,6 @@ public class HitmapsDbContext : DbContext
         modelBuilder.Entity<Game>().ToTable("Game");
         modelBuilder.Entity<Location>().ToTable("Location");
         modelBuilder.Entity<Mission>().ToTable("Mission");
+        modelBuilder.Entity<MissionVariant>().ToTable("MissionVariant");
     }
 }

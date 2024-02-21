@@ -49,4 +49,6 @@ public class Mission
     public string BoundingBoxBottomRightLatitude { get; set; } = null!;
     [MaxLength(30)]
     public string BoundingBoxBottomRightLongitude { get; set; } = null!;
+
+    public List<MissionVariant> Variants { get; set; } = new();
 }

@@ -17,6 +17,7 @@ public class MissionService : IMissionService
     {
         return dbContext.Missions
             .Include(x => x.Location)
+            .Include(x => x.Variants)
             .Where(x => x.Location.Slug == location && x.Location.Game.Slug == game)
             .ToList();
     }
@@ -25,6 +26,7 @@ public class MissionService : IMissionService
     {
         return dbContext.Missions
             .Include(x => x.Location)
+            .Include(x => x.Variants)
             .FirstOrDefault(x => x.Slug == slug && x.Location.Slug == location && x.Location.Game.Slug == game);
     }
 }

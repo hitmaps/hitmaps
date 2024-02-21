@@ -227,6 +227,45 @@ namespace DataAccess.Migrations
                     b.ToTable("Mission", (string)null);
                 });
 
+            modelBuilder.Entity("DataAccess.Data.Models.EF.MissionVariant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Default")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("MissionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("Visible")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MissionId");
+
+                    b.ToTable("MissionVariant", (string)null);
+                });
+
             modelBuilder.Entity("DataAccess.Data.Models.EF.Location", b =>
                 {
                     b.HasOne("DataAccess.Data.Models.EF.Game", "Game")
@@ -247,6 +286,22 @@ namespace DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Location");
+                });
+
+            modelBuilder.Entity("DataAccess.Data.Models.EF.MissionVariant", b =>
+                {
+                    b.HasOne("DataAccess.Data.Models.EF.Mission", "Mission")
+                        .WithMany("Variants")
+                        .HasForeignKey("MissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Mission");
+                });
+
+            modelBuilder.Entity("DataAccess.Data.Models.EF.Mission", b =>
+                {
+                    b.Navigation("Variants");
                 });
 #pragma warning restore 612, 618
         }

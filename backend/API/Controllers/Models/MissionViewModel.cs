@@ -70,7 +70,7 @@ public class MissionViewModel
             BeginEffectiveDate = mission.AvailableAt?.ToApiDateTimeFormat(),
             EndEffectiveDate = mission.ExpiresAt?.ToApiDateTimeFormat(),
             MissionType = mission.MissionType,
-            Variants = new(),
+            Variants = mission.Variants.Select(MissionVariantViewModel.FromDbModel).ToList(),
             BackgroundUrl = mission.BackgroundUrl,
             TileUrl = mission.TileUrl,
             Svg = mission.Svg,
