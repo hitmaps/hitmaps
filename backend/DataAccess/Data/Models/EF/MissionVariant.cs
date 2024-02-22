@@ -14,4 +14,5 @@ public class MissionVariant
     [MaxLength(255)]
     public string Slug { get; set; } = null!;
     public bool Default { get; set; }
+    public List<Node> Nodes { get; set; } = new();
 }

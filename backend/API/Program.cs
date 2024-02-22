@@ -20,6 +20,7 @@ builder.Services.AddDbContext<HitmapsDbContext>(options =>
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddScoped<IMissionService, MissionService>();
+builder.Services.AddScoped<INodeService, NodeService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

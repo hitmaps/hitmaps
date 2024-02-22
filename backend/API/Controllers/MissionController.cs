@@ -14,7 +14,7 @@ public class MissionController : ApiControllerBase
     }
 
     [HttpGet]
-    [Route("/games/{game}/locations/{location}/missions")]
+    [Route("games/{game}/locations/{location}/missions")]
     public IActionResult GetMissions(string game, string location)
     {
         return Ok(missionService.GetMissions(game, location)
@@ -23,7 +23,7 @@ public class MissionController : ApiControllerBase
     }
 
     [HttpGet]
-    [Route("/games/{game}/locations/{location}/missions/{slug}")]
+    [Route("games/{game}/locations/{location}/missions/{slug}")]
     public IActionResult GetMission(string game, string location, string slug)
     {
         var mission = missionService.GetMission(game, location, slug);

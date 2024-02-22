@@ -14,7 +14,7 @@ public class LocationController : ApiControllerBase
     }
 
     [HttpGet]
-    [Route("/games/{game}/locations")]
+    [Route("games/{game}/locations")]
     public IActionResult GetLocations(string game)
     {
         return Ok(locationService.GetLocations(game)
@@ -23,7 +23,7 @@ public class LocationController : ApiControllerBase
     }
 
     [HttpGet]
-    [Route("/games/{game}/locations/{location}")]
+    [Route("games/{game}/locations/{location}")]
     public IActionResult GetLocation(string game, string location)
     {
         return Ok(LocationViewModel.FromDbModel(locationService.GetLocation(game, location)));

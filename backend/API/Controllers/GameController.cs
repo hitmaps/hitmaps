@@ -13,14 +13,14 @@ public class GameController : ApiControllerBase
     }
 
     [HttpGet]
-    [Route("/games")]
+    [Route("games")]
     public IActionResult GetGames()
     {
         return Ok(gameService.GetGames());
     }
 
     [HttpGet]
-    [Route("/games/{slug}")]
+    [Route("games/{slug}")]
     public IActionResult GetGame(string slug)
     {
         return Ok(gameService.GetGame(slug));
