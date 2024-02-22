@@ -14,6 +14,7 @@ public class HitmapsDbContext : DbContext
     public DbSet<Location> Locations { get; set; }
     public DbSet<Mission> Missions { get; set; }
     public DbSet<Node> Nodes { get; set; }
+    public DbSet<NodeCategory> NodeCategories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -29,5 +30,6 @@ public class HitmapsDbContext : DbContext
                 r => r.HasOne<Node>().WithMany().HasForeignKey(e => e.NodeId).OnDelete(DeleteBehavior.Restrict)
             );
         modelBuilder.Entity<NodeNote>().ToTable("NodeNote");
+        modelBuilder.Entity<NodeCategory>().ToTable("NodeCategory");
     }
 }

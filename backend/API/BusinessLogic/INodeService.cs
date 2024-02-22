@@ -4,5 +4,5 @@ namespace API.BusinessLogic;
 
 public interface INodeService
 {
-    List<Node> GetNodesForMission(string game, string location, string mission);
+    Tuple<List<Node>, List<NodeCategory>> GetNodeInfoForMission(string game, string location, string mission);
 }

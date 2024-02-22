@@ -10,5 +10,5 @@ public class MissionNodesViewModel
     };
 
     public List<NodeViewModel> Nodes { get; set; } = new();
-    public List<object> Categories { get; set; } = new();
+    public List<NodeCategoryViewModel> Categories { get; set; } = new();
 }

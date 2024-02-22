@@ -338,6 +338,73 @@ namespace DataAccess.Migrations
                     b.ToTable("Node", (string)null);
                 });
 
+            modelBuilder.Entity("DataAccess.Data.Models.EF.NodeCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Collapsible")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ForMission")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ForSniperAssassin")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Group")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("RequireAction")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("RequireDirection")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("RequireName")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("RequirePickup")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("RequireTarget")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Searchable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Subgroup")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("NodeCategory", (string)null);
+                });
+
             modelBuilder.Entity("DataAccess.Data.Models.EF.NodeNote", b =>
                 {
                     b.Property<int>("Id")
@@ -427,7 +494,7 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("DataAccess.Data.Models.EF.NodeNote", b =>
                 {
                     b.HasOne("DataAccess.Data.Models.EF.Node", "Node")
-                        .WithMany()
+                        .WithMany("Notes")
                         .HasForeignKey("NodeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -453,6 +520,11 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("DataAccess.Data.Models.EF.Mission", b =>
                 {
                     b.Navigation("Variants");
+                });
+
+            modelBuilder.Entity("DataAccess.Data.Models.EF.Node", b =>
+                {
+                    b.Navigation("Notes");
                 });
 #pragma warning restore 612, 618
         }

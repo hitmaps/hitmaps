@@ -5,6 +5,8 @@ namespace DataAccess.Data.Models.EF;
 
 public class Mission
 {
+    public const string MissionTypeSniperAssassin = "sniper-assassin";
+    
     public int Id { get; set; }
     public Location Location { get; set; } = null!;
     [MaxLength(100)]

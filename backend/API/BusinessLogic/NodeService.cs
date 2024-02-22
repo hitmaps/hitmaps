@@ -13,7 +13,7 @@ public class NodeService : INodeService
         this.dbContext = dbContext;
     }
 
-    public List<Node> GetNodesForMission(string game, string location, string mission)
+    public Tuple<List<Node>, List<NodeCategory>> GetNodeInfoForMission(string game, string location, string mission)
     {
         var missionData = dbContext.Missions.FirstOrDefault(x => x.Slug == mission && 
                                                         x.Location.Slug == location && 
@@ -24,12 +24,17 @@ public class NodeService : INodeService
         }
         
         //@formatter:off
-        return dbContext.Nodes
+        var nodes = dbContext.Nodes
             .Include(x => x.Notes)
             .Include(x => x.Mission)
             .Include(x => x.Variants)
             .Where(x => x.Mission.Id == missionData.Id)
             .ToList();
         //@formatter:on
+        var nodeCategories = dbContext.NodeCategories
+            .Where(x => x.ForSniperAssassin == (missionData.MissionType == Mission.MissionTypeSniperAssassin) &&
+                                              x.ForMission == (missionData.MissionType != Mission.MissionTypeSniperAssassin)).ToList();
+
+        return new Tuple<List<Node>, List<NodeCategory>>(nodes, nodeCategories);
     }
 }
