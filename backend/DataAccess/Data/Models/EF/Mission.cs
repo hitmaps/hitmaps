@@ -53,5 +53,4 @@ public class Mission
     public string BoundingBoxBottomRightLongitude { get; set; } = null!;
 
     public List<MissionVariant> Variants { get; set; } = new();
-    public List<Disguise> Disguises { get; set; } = new();
 }

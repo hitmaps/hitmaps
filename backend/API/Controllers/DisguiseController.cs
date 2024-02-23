@@ -19,9 +19,12 @@ public class DisguiseController : ApiControllerBase
     {
         try
         {
-            return Ok(disguiseService.GetDisguises(game, location, mission)
-                .Select(DisguiseViewModel.FromDbModel)
-                .ToList());
+            return Ok(new
+            {
+                Disguises = disguiseService.GetDisguises(game, location, mission)
+                    .Select(DisguiseViewModel.FromDbModel)
+                    .ToList()
+            });
         }
         catch (MissionNotFoundException e)
         {
@@ -36,8 +39,11 @@ public class DisguiseController : ApiControllerBase
     [Route("games/{game}/locations/{location}/missions/{mission}/disguise-areas/{disguiseId}")]
     public IActionResult GetDisguiseAreas(string game, string location, string mission, int disguiseId)
     {
-        return Ok(disguiseService.GetDisguiseAreas(disguiseId)
-            .Select(DisguiseAreaViewModel.FromDbModel)
-            .ToList());
+        return Ok(new
+        {
+            DisguiseAreas = disguiseService.GetDisguiseAreas(disguiseId)
+                .Select(DisguiseAreaViewModel.FromDbModel)
+                .ToList()
+        });
     }
 }

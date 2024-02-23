@@ -16,6 +16,8 @@ public class HitmapsDbContext : DbContext
     public DbSet<Node> Nodes { get; set; }
     public DbSet<NodeCategory> NodeCategories { get; set; }
     public DbSet<Disguise> Disguises { get; set; }
+    public DbSet<Ledge> Ledges { get; set; }
+    public DbSet<Foliage> Foliage { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -33,5 +35,11 @@ public class HitmapsDbContext : DbContext
         modelBuilder.Entity<NodeNote>().ToTable("NodeNote");
         modelBuilder.Entity<NodeCategory>().ToTable("NodeCategory");
         modelBuilder.Entity<Disguise>().ToTable("Disguise");
+        modelBuilder.Entity<DisguiseArea>().ToTable("DisguiseArea");
+        modelBuilder.Entity<DisguiseAreaVertex>().ToTable("DisguiseAreaVertex");
+        modelBuilder.Entity<Ledge>().ToTable("Ledge");
+        modelBuilder.Entity<LedgeVertex>().ToTable("LedgeVertex");
+        modelBuilder.Entity<Foliage>().ToTable("Foliage");
+        modelBuilder.Entity<FoliageVertex>().ToTable("FoliageVertex");
     }
 }

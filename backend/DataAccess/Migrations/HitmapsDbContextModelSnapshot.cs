@@ -79,7 +79,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("DisguiseId");
 
-                    b.ToTable("DisguiseArea");
+                    b.ToTable("DisguiseArea", (string)null);
                 });
 
             modelBuilder.Entity("DataAccess.Data.Models.EF.DisguiseAreaVertex", b =>
@@ -107,7 +107,56 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("DisguiseAreaId");
 
-                    b.ToTable("DisguiseAreaVertex");
+                    b.ToTable("DisguiseAreaVertex", (string)null);
+                });
+
+            modelBuilder.Entity("DataAccess.Data.Models.EF.Foliage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MissionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MissionId");
+
+                    b.ToTable("Foliage", (string)null);
+                });
+
+            modelBuilder.Entity("DataAccess.Data.Models.EF.FoliageVertex", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("FoliageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Latitude")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Longitude")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FoliageId");
+
+                    b.ToTable("FoliageVertex", (string)null);
                 });
 
             modelBuilder.Entity("DataAccess.Data.Models.EF.Game", b =>
@@ -148,6 +197,55 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Game", (string)null);
+                });
+
+            modelBuilder.Entity("DataAccess.Data.Models.EF.Ledge", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MissionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MissionId");
+
+                    b.ToTable("Ledge", (string)null);
+                });
+
+            modelBuilder.Entity("DataAccess.Data.Models.EF.LedgeVertex", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Latitude")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("LedgeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Longitude")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LedgeId");
+
+                    b.ToTable("LedgeVertex", (string)null);
                 });
 
             modelBuilder.Entity("DataAccess.Data.Models.EF.Location", b =>
@@ -538,7 +636,7 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("DataAccess.Data.Models.EF.Disguise", b =>
                 {
                     b.HasOne("DataAccess.Data.Models.EF.Mission", "Mission")
-                        .WithMany("Disguises")
+                        .WithMany()
                         .HasForeignKey("MissionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -566,6 +664,50 @@ namespace DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("DisguiseArea");
+                });
+
+            modelBuilder.Entity("DataAccess.Data.Models.EF.Foliage", b =>
+                {
+                    b.HasOne("DataAccess.Data.Models.EF.Mission", "Mission")
+                        .WithMany()
+                        .HasForeignKey("MissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Mission");
+                });
+
+            modelBuilder.Entity("DataAccess.Data.Models.EF.FoliageVertex", b =>
+                {
+                    b.HasOne("DataAccess.Data.Models.EF.Foliage", "Foliage")
+                        .WithMany("Vertices")
+                        .HasForeignKey("FoliageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Foliage");
+                });
+
+            modelBuilder.Entity("DataAccess.Data.Models.EF.Ledge", b =>
+                {
+                    b.HasOne("DataAccess.Data.Models.EF.Mission", "Mission")
+                        .WithMany()
+                        .HasForeignKey("MissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Mission");
+                });
+
+            modelBuilder.Entity("DataAccess.Data.Models.EF.LedgeVertex", b =>
+                {
+                    b.HasOne("DataAccess.Data.Models.EF.Ledge", "Ledge")
+                        .WithMany("Vertices")
+                        .HasForeignKey("LedgeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ledge");
                 });
 
             modelBuilder.Entity("DataAccess.Data.Models.EF.Location", b =>
@@ -648,10 +790,18 @@ namespace DataAccess.Migrations
                     b.Navigation("Vertices");
                 });
 
+            modelBuilder.Entity("DataAccess.Data.Models.EF.Foliage", b =>
+                {
+                    b.Navigation("Vertices");
+                });
+
+            modelBuilder.Entity("DataAccess.Data.Models.EF.Ledge", b =>
+                {
+                    b.Navigation("Vertices");
+                });
+
             modelBuilder.Entity("DataAccess.Data.Models.EF.Mission", b =>
                 {
-                    b.Navigation("Disguises");
-
                     b.Navigation("Variants");
                 });
 

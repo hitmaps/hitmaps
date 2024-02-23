@@ -22,6 +22,8 @@ builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddScoped<IMissionService, MissionService>();
 builder.Services.AddScoped<INodeService, NodeService>();
 builder.Services.AddScoped<IDisguiseService, DisguiseService>();
+builder.Services.AddScoped<ILedgeService, LedgeService>();
+builder.Services.AddScoped<IFoliageService, FoliageService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
