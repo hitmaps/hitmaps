@@ -199,6 +199,37 @@ namespace DataAccess.Migrations
                     b.ToTable("Game", (string)null);
                 });
 
+            modelBuilder.Entity("DataAccess.Data.Models.EF.Icon", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("AltText")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Group")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("IconName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Icon", (string)null);
+                });
+
             modelBuilder.Entity("DataAccess.Data.Models.EF.Ledge", b =>
                 {
                     b.Property<int>("Id")

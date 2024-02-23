@@ -18,7 +18,7 @@ public class TemplateController : ApiControllerBase
     public IActionResult GetTemplates()
     {
         var templates = templateService.GetAllTemplates();
-        return Ok(new TemplateParentViewModel
+        return Ok(new TopLevelCategoryParentViewModel<TemplateViewModel>
         {
             WeaponsAndTools = templates.Where(x => x.Type == "Weapons and Tools").Select(TemplateViewModel.FromDbModel).ToList(),
             PointsOfInterest = templates.Where(x => x.Type == "Points of Interest").Select(TemplateViewModel.FromDbModel).ToList(),

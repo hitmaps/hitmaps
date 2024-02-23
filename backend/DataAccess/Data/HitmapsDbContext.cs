@@ -19,6 +19,7 @@ public class HitmapsDbContext : DbContext
     public DbSet<Ledge> Ledges { get; set; }
     public DbSet<Foliage> Foliage { get; set; }
     public DbSet<Template> Templates { get; set; }
+    public DbSet<Icon> Icons { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -43,5 +44,6 @@ public class HitmapsDbContext : DbContext
         modelBuilder.Entity<Foliage>().ToTable("Foliage");
         modelBuilder.Entity<FoliageVertex>().ToTable("FoliageVertex");
         modelBuilder.Entity<Template>().ToTable("Template");
+        modelBuilder.Entity<Icon>().ToTable("Icon");
     }
 }
