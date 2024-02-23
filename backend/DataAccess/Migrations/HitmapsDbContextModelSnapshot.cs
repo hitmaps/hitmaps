@@ -22,6 +22,94 @@ namespace DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("DataAccess.Data.Models.EF.Disguise", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("MissionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Suit")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MissionId");
+
+                    b.ToTable("Disguise", (string)null);
+                });
+
+            modelBuilder.Entity("DataAccess.Data.Models.EF.DisguiseArea", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("DisguiseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DisguiseId");
+
+                    b.ToTable("DisguiseArea");
+                });
+
+            modelBuilder.Entity("DataAccess.Data.Models.EF.DisguiseAreaVertex", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("DisguiseAreaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Latitude")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Longitude")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DisguiseAreaId");
+
+                    b.ToTable("DisguiseAreaVertex");
+                });
+
             modelBuilder.Entity("DataAccess.Data.Models.EF.Game", b =>
                 {
                     b.Property<int>("Id")
@@ -447,6 +535,39 @@ namespace DataAccess.Migrations
                     b.ToTable("NodeToMissionVariant");
                 });
 
+            modelBuilder.Entity("DataAccess.Data.Models.EF.Disguise", b =>
+                {
+                    b.HasOne("DataAccess.Data.Models.EF.Mission", "Mission")
+                        .WithMany("Disguises")
+                        .HasForeignKey("MissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Mission");
+                });
+
+            modelBuilder.Entity("DataAccess.Data.Models.EF.DisguiseArea", b =>
+                {
+                    b.HasOne("DataAccess.Data.Models.EF.Disguise", "Disguise")
+                        .WithMany("DisguiseAreas")
+                        .HasForeignKey("DisguiseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Disguise");
+                });
+
+            modelBuilder.Entity("DataAccess.Data.Models.EF.DisguiseAreaVertex", b =>
+                {
+                    b.HasOne("DataAccess.Data.Models.EF.DisguiseArea", "DisguiseArea")
+                        .WithMany("Vertices")
+                        .HasForeignKey("DisguiseAreaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DisguiseArea");
+                });
+
             modelBuilder.Entity("DataAccess.Data.Models.EF.Location", b =>
                 {
                     b.HasOne("DataAccess.Data.Models.EF.Game", "Game")
@@ -517,8 +638,20 @@ namespace DataAccess.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("DataAccess.Data.Models.EF.Disguise", b =>
+                {
+                    b.Navigation("DisguiseAreas");
+                });
+
+            modelBuilder.Entity("DataAccess.Data.Models.EF.DisguiseArea", b =>
+                {
+                    b.Navigation("Vertices");
+                });
+
             modelBuilder.Entity("DataAccess.Data.Models.EF.Mission", b =>
                 {
+                    b.Navigation("Disguises");
+
                     b.Navigation("Variants");
                 });
 

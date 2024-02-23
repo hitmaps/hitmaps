@@ -15,6 +15,7 @@ public class HitmapsDbContext : DbContext
     public DbSet<Mission> Missions { get; set; }
     public DbSet<Node> Nodes { get; set; }
     public DbSet<NodeCategory> NodeCategories { get; set; }
+    public DbSet<Disguise> Disguises { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -31,5 +32,6 @@ public class HitmapsDbContext : DbContext
             );
         modelBuilder.Entity<NodeNote>().ToTable("NodeNote");
         modelBuilder.Entity<NodeCategory>().ToTable("NodeCategory");
+        modelBuilder.Entity<Disguise>().ToTable("Disguise");
     }
 }
