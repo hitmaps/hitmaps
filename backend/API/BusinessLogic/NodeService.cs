@@ -105,4 +105,13 @@ public class NodeService : INodeService
         dbContext.Remove(node);
         dbContext.SaveChanges();
     }
+
+    public void MoveNode(int nodeId, MoveNodeModel moveNodeModel)
+    {
+        var node = dbContext.Nodes.First(x => x.Id == nodeId);
+        node.Latitude = moveNodeModel.Latitude.ToString(CultureInfo.InvariantCulture);
+        node.Longitude = moveNodeModel.Longitude.ToString(CultureInfo.InvariantCulture);
+        dbContext.Update(node);
+        dbContext.SaveChanges();
+    }
 }

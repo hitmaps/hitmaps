@@ -84,4 +84,20 @@ public class NodeController : ApiControllerBase
             Token = authenticationService.RefreshToken(GetCurrentUserId())
         });
     }
+
+    [Authorize]
+    [HttpPatch]
+    [Route("nodes/{nodeId:int}")]
+    public IActionResult MoveNode([FromRoute] int nodeId, [FromBody] MoveNodeModel moveNodeModel)
+    {
+        nodeService.MoveNode(nodeId, moveNodeModel);
+        return Ok(new AuthenticatedViewModel<dynamic>
+        {
+            Data = new
+            {
+                Message = "OK"
+            },
+            Token = authenticationService.RefreshToken(GetCurrentUserId())
+        });
+    }
 }

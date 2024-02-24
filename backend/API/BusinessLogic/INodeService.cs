@@ -9,4 +9,5 @@ public interface INodeService
     Node CreateNode(CreateEditNodeModel createNodeModel);
     Node EditNode(int nodeId, CreateEditNodeModel editNodeModel);
     void DeleteNode(int nodeId);
+    void MoveNode(int nodeId, MoveNodeModel moveNodeModel);
 }
