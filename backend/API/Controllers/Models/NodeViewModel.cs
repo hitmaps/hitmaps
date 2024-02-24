@@ -15,7 +15,7 @@ public class NodeViewModel
     public string Longitude { get; set; } = null!;
     public string Group { get; set; } = null!;
     public string Subgroup { get; set; } = null!;
-    public List<NodeNoteViewModel> Notes = new();
+    public List<NodeNoteViewModel> Notes { get; set; } = new();
     public string? Image { get; set; }
     public int Quantity { get; set; }
     public bool Searchable { get; set; }

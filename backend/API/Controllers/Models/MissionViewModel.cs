@@ -43,6 +43,30 @@ public class MissionViewModel
     public string BoundingBoxBottomRight { get; set; } = null!;
     public string BoundingBoxBottomRightLatitude { get; set; } = null!;
     public string BoundingBoxBottomRightLongitude { get; set; } = null!;
+    public List<FloorNameViewModel> FloorNames { get; set; } = new();
+    public bool SupportsFreelancer => Variants.Any(x => x.Slug.Contains("freelancer"));
+    public string Icon
+    {
+        get
+        {
+            var retVal = MissionType.Replace(" ", "-").ToLowerInvariant();
+            switch (MissionType)
+            {
+                case "Ghost Mode":
+                    retVal = "versus";
+                    break;
+                case "Prologue":
+                case "Bonus Mission":
+                case "Patient Zero":
+                case "Special Assignment":
+                case "Mission":
+                    retVal = "mission";
+                    break;
+            }
+
+            return retVal;
+        }
+    }
 
     public static MissionViewModel FromDbModel(Mission mission)
     {
@@ -82,7 +106,8 @@ public class MissionViewModel
             BoundingBoxBottomRight =
                 $"{mission.BoundingBoxBottomRightLatitude},{mission.BoundingBoxBottomRightLongitude}",
             BoundingBoxBottomRightLatitude = mission.BoundingBoxBottomRightLatitude,
-            BoundingBoxBottomRightLongitude = mission.BoundingBoxBottomRightLongitude
+            BoundingBoxBottomRightLongitude = mission.BoundingBoxBottomRightLongitude,
+            FloorNames = mission.FloorNames.Select(FloorNameViewModel.FromDbModel).ToList()
         };
     }
 }

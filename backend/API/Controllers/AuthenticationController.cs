@@ -24,20 +24,19 @@ public class AuthenticationController : ApiControllerBase
         var discordInfo = await discordService.VerifyTokenAsync(loginModel.TokenType, loginModel.AccessToken);
         if (discordInfo == null)
         {
-            return Unauthorized(new
+            return Ok(new
             {
-                Message = "Unable to verify discord token provided"
+                Message = "error-discord-auth"
             });
         }
 
         var guildUser = await discordService.VerifyServerMembershipAndEditorRoleAsync(ulong.Parse(discordInfo));
         if (guildUser == null)
         {
-            return Problem(
-                statusCode: StatusCodes.Status403Forbidden,
-                title: "Authentication Failure",
-                detail: "You are either not a member of the server or do not have the Editor role."
-            );
+            return Ok(new
+            {
+                Message = "error-not-in-server"
+            });
         }
         
         return Ok(new AuthenticatedViewModel

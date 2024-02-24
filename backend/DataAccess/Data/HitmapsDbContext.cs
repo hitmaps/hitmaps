@@ -47,5 +47,6 @@ public class HitmapsDbContext : DbContext
         modelBuilder.Entity<Template>().ToTable("Template");
         modelBuilder.Entity<Icon>().ToTable("Icon");
         modelBuilder.Entity<ElusiveTarget>().ToTable("ElusiveTarget");
+        modelBuilder.Entity<FloorName>().ToTable("FloorName");
     }
 }

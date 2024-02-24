@@ -18,7 +18,7 @@ public class LocationController : ApiControllerBase
     public IActionResult GetLocations(string game)
     {
         return Ok(locationService.GetLocations(game)
-            .Select(LocationViewModel.FromDbModel)
+            .Select(LocationWithMissionsViewModel.FromDbModel)
             .ToList());
     }
 

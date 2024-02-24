@@ -175,6 +175,32 @@ namespace DataAccess.Migrations
                     b.ToTable("ElusiveTarget", (string)null);
                 });
 
+            modelBuilder.Entity("DataAccess.Data.Models.EF.FloorName", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("FloorNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MissionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NameKey")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MissionId");
+
+                    b.ToTable("FloorName", (string)null);
+                });
+
             modelBuilder.Entity("DataAccess.Data.Models.EF.Foliage", b =>
                 {
                     b.Property<int>("Id")
@@ -838,6 +864,17 @@ namespace DataAccess.Migrations
                     b.Navigation("Mission");
                 });
 
+            modelBuilder.Entity("DataAccess.Data.Models.EF.FloorName", b =>
+                {
+                    b.HasOne("DataAccess.Data.Models.EF.Mission", "Mission")
+                        .WithMany("FloorNames")
+                        .HasForeignKey("MissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Mission");
+                });
+
             modelBuilder.Entity("DataAccess.Data.Models.EF.Foliage", b =>
                 {
                     b.HasOne("DataAccess.Data.Models.EF.Mission", "Mission")
@@ -896,7 +933,7 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("DataAccess.Data.Models.EF.Mission", b =>
                 {
                     b.HasOne("DataAccess.Data.Models.EF.Location", "Location")
-                        .WithMany()
+                        .WithMany("Missions")
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -972,8 +1009,15 @@ namespace DataAccess.Migrations
                     b.Navigation("Vertices");
                 });
 
+            modelBuilder.Entity("DataAccess.Data.Models.EF.Location", b =>
+                {
+                    b.Navigation("Missions");
+                });
+
             modelBuilder.Entity("DataAccess.Data.Models.EF.Mission", b =>
                 {
+                    b.Navigation("FloorNames");
+
                     b.Navigation("Variants");
                 });
 

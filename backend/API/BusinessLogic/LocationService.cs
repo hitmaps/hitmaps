@@ -1,5 +1,6 @@
 ﻿using DataAccess.Data;
 using DataAccess.Data.Models.EF;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.BusinessLogic;
 
@@ -14,7 +15,11 @@ public class LocationService : ILocationService
 
     public List<Location> GetLocations(string game)
     {
-        return dbContext.Locations.Where(x => x.Game.Slug == game).ToList();
+        return dbContext.Locations
+            .Include(x => x.Missions.Where(mission => (mission.AvailableAt == null || mission.AvailableAt <= DateTime.UtcNow) &&
+                                                      (mission.ExpiresAt == null || mission.ExpiresAt > DateTime.UtcNow)))
+                .ThenInclude(x => x.Variants)
+            .Where(x => x.Game.Slug == game).ToList();
     }
 
     public Location GetLocation(string game, string slug)
