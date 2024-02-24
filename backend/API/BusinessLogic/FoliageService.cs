@@ -1,4 +1,5 @@
-﻿using DataAccess.Data;
+﻿using API.Controllers.RequestModels;
+using DataAccess.Data;
 using DataAccess.Data.Models.EF;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,5 +30,31 @@ public class FoliageService : IFoliageService
             .Include(x => x.Vertices)
             .Where(x => x.Mission.Id == missionData.Id)
             .ToList();
+    }
+
+    public Foliage CreateFoliage(CreateFoliageModel createFoliageModel)
+    {
+        var mission = dbContext.Missions.First(x => x.Id == createFoliageModel.MissionId);
+        var foliage = new Foliage
+        {
+            Mission = mission,
+            Level = createFoliageModel.Level,
+            Vertices = createFoliageModel.Vertices.Select(x => new FoliageVertex
+            {
+                Latitude = x.Split(",")[0],
+                Longitude = x.Split(",")[1]
+            }).ToList()
+        };
+        dbContext.Update(foliage);
+        dbContext.SaveChanges();
+
+        return foliage;
+    }
+
+    public void DeleteFoliage(int foliageId)
+    {
+        var foliage = dbContext.Foliage.First(x => x.Id == foliageId);
+        dbContext.Remove(foliage);
+        dbContext.SaveChanges();
     }
 }
