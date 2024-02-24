@@ -93,4 +93,16 @@ public class NodeService : INodeService
         
         return TransformAndPersist(editNodeModel, node);
     }
+
+    public void DeleteNode(int nodeId)
+    {
+        var node = dbContext.Nodes
+            .Include(x => x.Variants)
+            .First(x => x.Id == nodeId);
+        node.Variants.Clear();
+        dbContext.Update(node);
+        dbContext.SaveChanges();
+        dbContext.Remove(node);
+        dbContext.SaveChanges();
+    }
 }

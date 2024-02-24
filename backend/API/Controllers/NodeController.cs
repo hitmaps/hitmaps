@@ -68,4 +68,13 @@ public class NodeController : ApiControllerBase
             Token = authenticationService.RefreshToken(GetCurrentUserId())
         });
     }
+
+    [Authorize]
+    [HttpDelete]
+    [Route("nodes/{nodeId:int}")]
+    public IActionResult DeleteNode(int nodeId)
+    {
+        nodeService.DeleteNode(nodeId);
+        return NoContent();
+    }
 }
