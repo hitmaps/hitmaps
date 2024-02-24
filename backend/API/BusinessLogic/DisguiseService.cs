@@ -1,4 +1,5 @@
-﻿using DataAccess.Data;
+﻿using API.Controllers.RequestModels;
+using DataAccess.Data;
 using DataAccess.Data.Models.EF;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,5 +36,33 @@ public class DisguiseService : IDisguiseService
             .FirstOrDefault(x => x.Id == disguiseId);
         
         return disguise?.DisguiseAreas ?? new List<DisguiseArea>();
+    }
+
+    public DisguiseArea CreateDisguiseArea(CreateDisguiseAreaModel createDisguiseAreaModel)
+    {
+        var disguise = dbContext.Disguises.First(x => x.Id == createDisguiseAreaModel.DisguiseId);
+        var disguiseArea = new DisguiseArea
+        {
+            Disguise = disguise,
+            Level = createDisguiseAreaModel.Level,
+            Type = createDisguiseAreaModel.Type,
+            Vertices = createDisguiseAreaModel.Vertices.Select(x => new DisguiseAreaVertex
+            {
+                Latitude = x.Split(",")[0],
+                Longitude = x.Split(",")[1]
+            }).ToList()
+        };
+
+        dbContext.Update(disguiseArea);
+        dbContext.SaveChanges();
+
+        return disguiseArea;
+    }
+
+    public void DeleteDisguiseArea(int areaId)
+    {
+        var disguiseArea = dbContext.DisguiseAreas.First(x => x.Id == areaId);
+        dbContext.Remove(disguiseArea);
+        dbContext.SaveChanges();
     }
 }

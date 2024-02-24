@@ -16,6 +16,7 @@ public class HitmapsDbContext : DbContext
     public DbSet<Node> Nodes { get; set; }
     public DbSet<NodeCategory> NodeCategories { get; set; }
     public DbSet<Disguise> Disguises { get; set; }
+    public DbSet<DisguiseArea> DisguiseAreas { get; set; }
     public DbSet<Ledge> Ledges { get; set; }
     public DbSet<Foliage> Foliage { get; set; }
     public DbSet<Template> Templates { get; set; }
