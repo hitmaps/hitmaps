@@ -80,9 +80,9 @@
                     accessToken: hashParameters['access_token']
                 }
             }).then(resp => {
-                if (resp.data !== null) {
-                    this.error = resp.data.messages[0].icon;
-                } else if (resp.token !== null) {
+                if (resp.message) {
+                    this.error = resp.message;
+                } else if (resp.token) {
                     localStorage.setItem('token', resp.token);
 
                     let redirectLocation = '/';

@@ -2,12 +2,12 @@
 const config = useRuntimeConfig();
 const route = useRoute();
 
-const { data: gameData } = await useFetch(`${config.public.apiDomain}/api/v1/games/${route.params.game}`);
-const { pending: locationsPending, data: locations } = await useFetch(`${config.public.apiDomain}/api/v1/games/${route.params.game}/locations`, {
+const { data: gameData } = await useFetch(`${config.public.apiDomain}/api/games/${route.params.game}`);
+const { pending: locationsPending, data: locations } = await useFetch(`${config.public.apiDomain}/api/games/${route.params.game}/locations`, {
     lazy: true,
     server: false
 });
-const game = gameData.value[0];
+const game = gameData.value;
 
 //region SEO
 useSeoMeta({
@@ -32,7 +32,6 @@ useSeoMeta({
                     <img :src="game.logoUrl" class="img-fluid" :alt="`${game.fullName} Logo`">
                     <h2>{{ game.tagline }}</h2>
                 </div>
-<!--                <div class="row loading" v-if="locationsPending && !locations">-->
                 <div class="row loading" v-if="locationsPending && !locations">
                     <div class="loader">
                         <loader />

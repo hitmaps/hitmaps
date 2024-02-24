@@ -296,7 +296,7 @@ export default {
         }
     },
     mounted() {
-        $fetch(`${this.apiDomain}/api/v1/editor/icons`).then(resp => {
+        $fetch(`${this.apiDomain}/api/editor/icons`).then(resp => {
             const dropdownGroups = [];
             for (const [key, items] of Object.entries(resp)) {
                 const dropdownGroup = {
@@ -319,7 +319,7 @@ export default {
 
             this.icons = dropdownGroups;
         });
-        $fetch(`${this.apiDomain}/api/v1/editor/templates`).then(resp => {
+        $fetch(`${this.apiDomain}/api/editor/templates`).then(resp => {
             const dropdownGroups = [];
             for (const [key, items] of Object.entries(resp)) {
                 // noinspection JSUnresolvedReference
