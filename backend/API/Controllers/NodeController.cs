@@ -75,6 +75,13 @@ public class NodeController : ApiControllerBase
     public IActionResult DeleteNode(int nodeId)
     {
         nodeService.DeleteNode(nodeId);
-        return NoContent();
+        return Ok(new AuthenticatedViewModel<dynamic>
+        {
+            Data = new
+            {
+                Message = "Node deleted!"
+            },
+            Token = authenticationService.RefreshToken(GetCurrentUserId())
+        });
     }
 }

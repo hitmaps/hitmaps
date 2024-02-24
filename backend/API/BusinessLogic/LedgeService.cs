@@ -1,4 +1,5 @@
-﻿using DataAccess.Data;
+﻿using API.Controllers.RequestModels;
+using DataAccess.Data;
 using DataAccess.Data.Models.EF;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,5 +30,31 @@ public class LedgeService : ILedgeService
             .Include(x => x.Vertices)
             .Where(x => x.Mission.Id == missionData.Id)
             .ToList();
+    }
+
+    public Ledge CreateLedge(CreateLedgeModel createLedgeModel)
+    {
+        var mission = dbContext.Missions.First(x => x.Id == createLedgeModel.MissionId);
+        var ledge = new Ledge
+        {
+            Mission = mission,
+            Level = createLedgeModel.Level,
+            Vertices = createLedgeModel.Vertices.Select(x => new LedgeVertex
+            {
+                Latitude = x.Split(",")[0],
+                Longitude = x.Split(",")[1]
+            }).ToList()
+        };
+        dbContext.Update(ledge);
+        dbContext.SaveChanges();
+
+        return ledge;
+    }
+
+    public void DeleteLedge(int ledgeId)
+    {
+        var ledge = dbContext.Ledges.First(x => x.Id == ledgeId);
+        dbContext.Remove(ledge);
+        dbContext.SaveChanges();
     }
 }
