@@ -1,5 +1,6 @@
 using System.Text;
 using API.BusinessLogic;
+using API.BusinessLogic.Authentication;
 using API.BusinessLogic.Discord;
 using DataAccess.Data;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -30,9 +31,10 @@ builder.Services.AddScoped<IFoliageService, FoliageService>();
 builder.Services.AddScoped<ITemplateService, TemplateService>();
 builder.Services.AddScoped<IIconService, IconService>();
 builder.Services.AddScoped<IElusiveTargetService, ElusiveTargetService>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddSingleton<HttpClientWrapper>();
 builder.Services.AddSingleton<IDiscordService, DiscordService>();
-builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
 builder.Services.AddAuthentication("Bearer").AddJwtBearer(o =>
 {
     o.TokenValidationParameters = new TokenValidationParameters

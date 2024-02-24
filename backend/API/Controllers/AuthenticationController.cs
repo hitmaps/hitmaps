@@ -1,4 +1,5 @@
 ﻿using API.BusinessLogic;
+using API.BusinessLogic.Authentication;
 using API.BusinessLogic.Discord;
 using API.Controllers.Models;
 using API.Controllers.RequestModels;
@@ -10,11 +11,13 @@ public class AuthenticationController : ApiControllerBase
 {
     private readonly IDiscordService discordService;
     private readonly IAuthenticationService authenticationService;
+    private readonly IUserService userService;
 
-    public AuthenticationController(IDiscordService discordService, IAuthenticationService authenticationService)
+    public AuthenticationController(IDiscordService discordService, IAuthenticationService authenticationService, IUserService userService)
     {
         this.discordService = discordService;
         this.authenticationService = authenticationService;
+        this.userService = userService;
     }
 
     [HttpPost]
@@ -38,10 +41,11 @@ public class AuthenticationController : ApiControllerBase
                 Message = "error-not-in-server"
             });
         }
-        
-        return Ok(new AuthenticatedViewModel
+
+        var user = userService.GetUser(guildUser);
+        return Ok(new AuthenticatedViewModel<object>
         {
-            Token = authenticationService.GenerateToken(guildUser)
+            Token = authenticationService.GenerateToken(user)
         });
     }
 }

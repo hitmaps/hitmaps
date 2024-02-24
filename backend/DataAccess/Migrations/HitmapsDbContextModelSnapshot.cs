@@ -820,6 +820,22 @@ namespace DataAccess.Migrations
                     b.ToTable("Template", (string)null);
                 });
 
+            modelBuilder.Entity("DataAccess.Data.Models.EF.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<decimal>("DiscordId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User", (string)null);
+                });
+
             modelBuilder.Entity("DataAccess.Data.Models.EF.Disguise", b =>
                 {
                     b.HasOne("DataAccess.Data.Models.EF.Mission", "Mission")

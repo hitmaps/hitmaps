@@ -21,6 +21,7 @@ public class HitmapsDbContext : DbContext
     public DbSet<Template> Templates { get; set; }
     public DbSet<Icon> Icons { get; set; }
     public DbSet<ElusiveTarget> ElusiveTargets { get; set; }
+    public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -48,5 +49,6 @@ public class HitmapsDbContext : DbContext
         modelBuilder.Entity<Icon>().ToTable("Icon");
         modelBuilder.Entity<ElusiveTarget>().ToTable("ElusiveTarget");
         modelBuilder.Entity<FloorName>().ToTable("FloorName");
+        modelBuilder.Entity<User>().ToTable("User");
     }
 }
