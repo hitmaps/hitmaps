@@ -11,4 +11,5 @@ public interface IDisguiseService
     DisguiseArea CreateDisguiseArea(CreateDisguiseAreaModel createDisguiseAreaModel);
     void DeleteDisguiseArea(int areaId);
     List<DisguiseArea> CopyDisguiseAreas(CopyDisguiseAreasModel copyDisguiseAreasModel);
+    DisguiseArea ConvertDisguiseArea(int areaId);
 }

@@ -71,4 +71,18 @@ public class DisguiseAreaController : ApiControllerBase
             Token = authenticationService.RefreshToken(GetCurrentUserId())
         });
     }
+
+    [Authorize]
+    [HttpPatch]
+    [Route("disguise-areas/{areaId:int}/convert")]
+    public IActionResult ConvertDisguiseArea(int areaId)
+    {
+        var disguiseArea = disguiseService.ConvertDisguiseArea(areaId);
+
+        return Ok(new AuthenticatedViewModel<DisguiseAreaViewModel>
+        {
+            Data = DisguiseAreaViewModel.FromDbModel(disguiseArea),
+            Token = authenticationService.RefreshToken(GetCurrentUserId())
+        });
+    }
 }

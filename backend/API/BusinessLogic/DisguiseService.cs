@@ -100,4 +100,20 @@ public class DisguiseService : IDisguiseService
 
         return destinationDisguise.DisguiseAreas;
     }
+
+    public DisguiseArea ConvertDisguiseArea(int areaId)
+    {
+        var disguiseArea = dbContext.DisguiseAreas
+            .Include(x => x.Disguise)
+            .Include(x => x.Vertices)
+            .First(x => x.Id == areaId);
+        disguiseArea.Type = disguiseArea.Type == DisguiseArea.TypeTrespassing
+            ? DisguiseArea.TypeHostile
+            : DisguiseArea.TypeTrespassing;
+
+        dbContext.Update(disguiseArea);
+        dbContext.SaveChanges();
+
+        return disguiseArea;
+    }
 }
