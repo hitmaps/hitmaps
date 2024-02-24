@@ -551,10 +551,11 @@ export default {
                     variantIds: this.createEditNodeModel.variantIds
                 }
             }).then(resp => {
-                const response = JSON.parse(resp.data.value);
+                const response = resp.data.value;
                 this.$emit('item-created', response.data);
                 this.$toastr.s('Item saved!');
             }).catch(err => {
+                console.error(err);
                 this.$toastr.e('Changes failed to save!');
             });
         },
