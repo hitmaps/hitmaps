@@ -1,4 +1,5 @@
 ﻿using API.Controllers.RequestModels;
+using API.Controllers.RequestModels.DisguiseAreas;
 using DataAccess.Data;
 using DataAccess.Data.Models.EF;
 using Microsoft.EntityFrameworkCore;
@@ -64,5 +65,39 @@ public class DisguiseService : IDisguiseService
         var disguiseArea = dbContext.DisguiseAreas.First(x => x.Id == areaId);
         dbContext.Remove(disguiseArea);
         dbContext.SaveChanges();
+    }
+
+    public List<DisguiseArea> CopyDisguiseAreas(CopyDisguiseAreasModel copyDisguiseAreasModel)
+    {
+        var sourceDisguiseAreas = dbContext.Disguises
+            .AsNoTracking()
+            .Include(x => x.DisguiseAreas)
+            .ThenInclude(x => x.Vertices)
+            .First(x => x.Id == copyDisguiseAreasModel.OriginalDisguise)
+            .DisguiseAreas;
+        var destinationDisguise = dbContext.Disguises
+            .Include(x => x.DisguiseAreas)
+            .ThenInclude(x => x.Vertices)
+            .First(x => x.Id == copyDisguiseAreasModel.TargetDisguise);
+        destinationDisguise.DisguiseAreas.Clear();
+
+        foreach (var disguiseArea in sourceDisguiseAreas)
+        {
+            destinationDisguise.DisguiseAreas.Add(new DisguiseArea
+            {
+                Level = disguiseArea.Level,
+                Type = disguiseArea.Type,
+                Vertices = disguiseArea.Vertices.Select(x => new DisguiseAreaVertex
+                {
+                    Latitude = x.Latitude,
+                    Longitude = x.Longitude
+                }).ToList()
+            });
+        }
+
+        dbContext.Update(destinationDisguise);
+        dbContext.SaveChanges();
+
+        return destinationDisguise.DisguiseAreas;
     }
 }

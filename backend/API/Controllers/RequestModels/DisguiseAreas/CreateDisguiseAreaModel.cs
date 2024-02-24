@@ -1,4 +1,4 @@
-﻿namespace API.Controllers.RequestModels;
+﻿namespace API.Controllers.RequestModels.DisguiseAreas;
 
 public class CreateDisguiseAreaModel
 {
