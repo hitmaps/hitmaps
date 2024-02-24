@@ -110,6 +110,71 @@ namespace DataAccess.Migrations
                     b.ToTable("DisguiseAreaVertex", (string)null);
                 });
 
+            modelBuilder.Entity("DataAccess.Data.Models.EF.ElusiveTarget", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("BeginsAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Briefing")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("ComingNotificationSent")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("EndNotificationSent")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("EndsAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("FiveDaysLeftNotificationSent")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("MissionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("OneDayLeftNotificationSent")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PlayableNotificationSent")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Reactivated")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SevenDaysLeftNotificationSent")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ThreeDaysLeftNotificationSent")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("VideoBriefingUrl")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MissionId");
+
+                    b.ToTable("ElusiveTarget", (string)null);
+                });
+
             modelBuilder.Entity("DataAccess.Data.Models.EF.Foliage", b =>
                 {
                     b.Property<int>("Id")
@@ -760,6 +825,17 @@ namespace DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("DisguiseArea");
+                });
+
+            modelBuilder.Entity("DataAccess.Data.Models.EF.ElusiveTarget", b =>
+                {
+                    b.HasOne("DataAccess.Data.Models.EF.Mission", "Mission")
+                        .WithMany()
+                        .HasForeignKey("MissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Mission");
                 });
 
             modelBuilder.Entity("DataAccess.Data.Models.EF.Foliage", b =>

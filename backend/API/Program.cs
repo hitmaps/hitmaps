@@ -26,6 +26,7 @@ builder.Services.AddScoped<ILedgeService, LedgeService>();
 builder.Services.AddScoped<IFoliageService, FoliageService>();
 builder.Services.AddScoped<ITemplateService, TemplateService>();
 builder.Services.AddScoped<IIconService, IconService>();
+builder.Services.AddScoped<IElusiveTargetService, ElusiveTargetService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

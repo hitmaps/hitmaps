@@ -1,4 +1,5 @@
 ﻿using API.BusinessLogic;
+using API.Controllers.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -16,13 +17,13 @@ public class GameController : ApiControllerBase
     [Route("games")]
     public IActionResult GetGames()
     {
-        return Ok(gameService.GetGames());
+        return Ok(gameService.GetGames().Select(GameViewModel.FromDbModel).ToList());
     }
 
     [HttpGet]
     [Route("games/{slug}")]
     public IActionResult GetGame(string slug)
     {
-        return Ok(gameService.GetGame(slug));
+        return Ok(GameViewModel.FromDbModel(gameService.GetGame(slug)));
     }
 }
