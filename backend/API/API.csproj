@@ -20,7 +20,9 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="SixLabors.ImageSharp" Version="3.1.2" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+        <PackageReference Include="TweetinviAPI" Version="5.0.4" />
     </ItemGroup>
 
     <ItemGroup>

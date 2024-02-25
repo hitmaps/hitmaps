@@ -2,6 +2,7 @@ using System.Text;
 using API.BusinessLogic;
 using API.BusinessLogic.Authentication;
 using API.BusinessLogic.Discord;
+using API.BusinessLogic.Firebase;
 using DataAccess.Data;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,8 @@ builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddSingleton<HttpClientWrapper>();
 builder.Services.AddSingleton<IDiscordService, DiscordService>();
+builder.Services.AddSingleton<IFirebaseClient, FirebaseClient>();
+builder.Services.AddSingleton<IImageService, ImageService>();
 builder.Services.AddAuthentication("Bearer").AddJwtBearer(o =>
 {
     o.TokenValidationParameters = new TokenValidationParameters
