@@ -218,7 +218,7 @@ export default defineComponent({
             }
             //endregion
 
-            const topic = `hitmaps-${this.environment}-requestType`;
+            const topic = `hitmaps-${this.environment}-${requestType}`;
             if (sendRequest) {
                 //
                 useAuthenticatedFetch(`${this.apiDomain}/api/notifications`, {
