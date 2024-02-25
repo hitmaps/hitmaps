@@ -628,7 +628,7 @@ export default defineComponent({
                     body: data
                 }).then(resp => {
                     this.vertices = [];
-                    this.ledges.push(this.buildLedgeForMap(JSON.parse(resp.data.value).data));
+                    this.ledges.push(this.buildLedgeForMap(resp.data.value.data));
                     this.$toastr.s('Ledge saved!');
                     this.map.removeLayer(this.workingLayer);
                     this.workingLayer = null;
@@ -643,7 +643,7 @@ export default defineComponent({
                     body: data
                 }).then(resp => {
                     this.vertices = [];
-                    this.foliage.push(this.buildFoliageForMap(JSON.parse(resp.data.value).data));
+                    this.foliage.push(this.buildFoliageForMap(resp.data.value.data));
                     this.$toastr.s('Foliage saved!');
                     this.map.removeLayer(this.workingLayer);
                     this.workingLayer = null;
@@ -661,7 +661,7 @@ export default defineComponent({
                     body: data
                 }).then(resp => {
                     this.vertices = [];
-                    this.disguiseAreas[this.currentDisguise.id].push(this.buildDisguiseAreaForMap(JSON.parse(resp.data.value).data));
+                    this.disguiseAreas[this.currentDisguise.id].push(this.buildDisguiseAreaForMap(resp.data.value.data));
                     this.$toastr.s('Disguise area saved!');
                     this.map.removeLayer(this.workingLayer);
                     this.workingLayer = null;
