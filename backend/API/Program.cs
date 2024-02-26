@@ -1,10 +1,14 @@
 using System.Text;
+using API.Batch.PushElusiveTargetStatus;
 using API.BusinessLogic;
 using API.BusinessLogic.Authentication;
 using API.BusinessLogic.Discord;
 using API.BusinessLogic.Firebase;
 using API.BusinessLogic.X;
+using API.Filters;
 using DataAccess.Data;
+using Hangfire;
+using Hangfire.SqlServer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
@@ -59,6 +63,20 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
+builder.Services.AddHangfire(configuration => configuration
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UseSqlServerStorage(builder.Configuration.GetConnectionString("Hitmaps"), new SqlServerStorageOptions
+    {
+        CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+        QueuePollInterval = TimeSpan.Zero,
+        UseRecommendedIsolationLevel = true,
+        DisableGlobalLocks = true,
+        SchemaName = "Hangfire"
+    }));
+builder.Services.AddHangfireServer();
 
 var app = builder.Build();
 
@@ -71,6 +89,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseHangfireDashboard(options: new DashboardOptions
+{
+    IsReadOnlyFunc = _ => true,
+    Authorization = new []
+    {
+        new AllowAllHangfireFilter()
+    }
+});
+
 // Apply EF migrations if in production, as we use command line otherwise
 if (app.Environment.IsProduction())
 {
@@ -78,6 +105,14 @@ if (app.Environment.IsProduction())
     var db = scope.ServiceProvider.GetRequiredService<HitmapsDbContext>();
     db.Database.Migrate();
     app.UseExceptionHandler("/error");
+    
+    // Hangfire jobs
+    var firebaseClient = scope.ServiceProvider.GetRequiredService<IFirebaseClient>();
+    var imageService = scope.ServiceProvider.GetRequiredService<IImageService>();
+    var makeshiftXClient = scope.ServiceProvider.GetRequiredService<MakeshiftXClient>();
+    RecurringJob.AddOrUpdate("hitmaps:Batch.PushElusiveTargetStatus",
+        () => new PushElusiveTargetStatus(db, builder.Configuration, firebaseClient, imageService, makeshiftXClient).ProgramLogicAsync(),
+        Cron.Hourly);
 }
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions
