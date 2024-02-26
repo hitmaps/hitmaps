@@ -1,18 +1,21 @@
 ﻿using API.BusinessLogic;
 using API.BusinessLogic.Firebase;
-using API.Controllers.Models;
+using API.BusinessLogic.X;
 using DataAccess.Data;
 using DataAccess.Data.Models.EF;
 using Tweetinvi;
+using Tweetinvi.Parameters;
 
 namespace API.Batch.PushElusiveTargetStatus;
 
 public class PushElusiveTargetStatus
 {
     private readonly HitmapsDbContext dbContext;
-    private readonly TwitterClient twitterClient;
+    private readonly TwitterClient xClient;
     private readonly IFirebaseClient firebaseClient;
     private readonly IImageService imageService;
+    private readonly IConfiguration configuration;
+    private readonly MakeshiftXClient makeshiftXClient;
     private readonly string environment;
 
     private const string IconUrl = "https://www.hitmaps.com/android-chrome-256x256.png";
@@ -20,13 +23,16 @@ public class PushElusiveTargetStatus
     public PushElusiveTargetStatus(HitmapsDbContext dbContext, 
         IConfiguration configuration, 
         IFirebaseClient firebaseClient, 
-        IImageService imageService)
+        IImageService imageService,
+        MakeshiftXClient makeshiftXClient)
     {
         this.dbContext = dbContext;
         this.firebaseClient = firebaseClient;
         this.imageService = imageService;
+        this.configuration = configuration;
+        this.makeshiftXClient = makeshiftXClient;
         environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.ToLowerInvariant() ?? "development";
-        twitterClient = new TwitterClient(configuration["X:ConsumerKey"],
+        xClient = new TwitterClient(configuration["X:ConsumerKey"],
             configuration["X:ConsumerSecret"],
             configuration["X:AccessToken"],
             configuration["X:AccessTokenSecret"]);
@@ -98,7 +104,7 @@ public class PushElusiveTargetStatus
         }
 
         await SendPushNotification(elusiveTarget, pushNotificationData, firebaseEnvironment);
-        // TODO X Post
+        await SendXPost(elusiveTarget, pushNotificationData);
 
         elusiveTarget.ComingNotificationSent = true;
         dbContext.Update(elusiveTarget);
@@ -121,12 +127,12 @@ public class PushElusiveTargetStatus
             firebaseEnvironment = BuildTopicName($"{environment}-reactivation", "playable");
         }
 
-        imageService.BuildCompositeEtImage(
+        var compositePath = imageService.BuildCompositeEtImage(
             GetBaseImagePath(elusiveTarget.ImageUrl),
             "mission-active.png",
             $"{elusiveTarget.Id}-playable.png");
         await SendPushNotification(elusiveTarget, pushNotificationData, firebaseEnvironment);
-        // TODO X Post
+        await SendXPost(elusiveTarget, pushNotificationData, compositePath);
 
         elusiveTarget.PlayableNotificationSent = true;
         dbContext.Update(elusiveTarget);
@@ -148,12 +154,12 @@ public class PushElusiveTargetStatus
             firebaseEnvironment = BuildTopicName($"{environment}-reactivation", "7");
         }
 
-        imageService.BuildCompositeEtImage(
+        var compositePath = imageService.BuildCompositeEtImage(
             GetBaseImagePath(elusiveTarget.ImageUrl),
             "7-days-remaining.png",
             $"{elusiveTarget.Id}-7.png");
         await SendPushNotification(elusiveTarget, pushNotificationData, firebaseEnvironment);
-        // TODO X Post
+        await SendXPost(elusiveTarget, pushNotificationData, compositePath);
 
         elusiveTarget.SevenDaysLeftNotificationSent = true;
         dbContext.Update(elusiveTarget);
@@ -175,12 +181,12 @@ public class PushElusiveTargetStatus
             firebaseEnvironment = BuildTopicName($"{environment}-reactivation", "5");
         }
 
-        imageService.BuildCompositeEtImage(
+        var compositePath = imageService.BuildCompositeEtImage(
             GetBaseImagePath(elusiveTarget.ImageUrl),
             "5-days-remaining.png",
             $"{elusiveTarget.Id}-5.png");
         await SendPushNotification(elusiveTarget, pushNotificationData, firebaseEnvironment);
-        // TODO X Post
+        await SendXPost(elusiveTarget, pushNotificationData, compositePath);
 
         elusiveTarget.FiveDaysLeftNotificationSent = true;
         dbContext.Update(elusiveTarget);
@@ -202,12 +208,12 @@ public class PushElusiveTargetStatus
             firebaseEnvironment = BuildTopicName($"{environment}-reactivation", "3");
         }
 
-        imageService.BuildCompositeEtImage(
+        var compositePath = imageService.BuildCompositeEtImage(
             GetBaseImagePath(elusiveTarget.ImageUrl),
             "3-days-remaining.png",
             $"{elusiveTarget.Id}-3.png");
         await SendPushNotification(elusiveTarget, pushNotificationData, firebaseEnvironment);
-        // TODO X Post
+        await SendXPost(elusiveTarget, pushNotificationData, compositePath);
 
         elusiveTarget.ThreeDaysLeftNotificationSent = true;
         dbContext.Update(elusiveTarget);
@@ -229,12 +235,12 @@ public class PushElusiveTargetStatus
             firebaseEnvironment = BuildTopicName($"{environment}-reactivation", "1");
         }
 
-        imageService.BuildCompositeEtImage(
+        var compositePath = imageService.BuildCompositeEtImage(
             GetBaseImagePath(elusiveTarget.ImageUrl),
             "1-day-remaining.png",
             $"{elusiveTarget.Id}-1.png");
         await SendPushNotification(elusiveTarget, pushNotificationData, firebaseEnvironment);
-        // TODO X Post
+        await SendXPost(elusiveTarget, pushNotificationData, compositePath);
 
         elusiveTarget.OneDayLeftNotificationSent = true;
         dbContext.Update(elusiveTarget);
@@ -256,7 +262,6 @@ public class PushElusiveTargetStatus
         }
 
         await SendPushNotification(elusiveTarget, pushNotificationData, firebaseEnvironment);
-        // TODO X Post
 
         elusiveTarget.EndNotificationSent = true;
         dbContext.Update(elusiveTarget);
@@ -279,5 +284,15 @@ public class PushElusiveTargetStatus
         pushModel.IconUrl ??= IconUrl;
         
         await firebaseClient.SendElusiveTargetMessageAsync(firebaseEnvironment, pushModel);
+    }
+
+    private async Task SendXPost(ElusiveTarget target, ElusiveTargetPush pushModel, string? imageFilePath = null)
+    {
+        imageFilePath ??= Path.Join(target.ImageUrl
+            .Replace("https://media.hitmaps.com", configuration["MediaLibraryRoot"]).Split("/"));
+
+        var imageBinary = await File.ReadAllBytesAsync(imageFilePath);
+        var uploadedImage = await xClient.Upload.UploadTweetImageAsync(imageBinary);
+        await makeshiftXClient.PostToXAsync(pushModel.Body, uploadedImage.Id!.Value);
     }
 }

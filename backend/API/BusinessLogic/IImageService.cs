@@ -2,5 +2,5 @@
 
 public interface IImageService
 {
-    void BuildCompositeEtImage(string basePath, string overlayPath, string compositeName);
+    string BuildCompositeEtImage(string basePath, string overlayPath, string compositeName);
 }

@@ -15,13 +15,13 @@ public class ImageService : IImageService
         mediaLibraryRoot = configuration["MediaLibraryRoot"];
     }
     
-    public void BuildCompositeEtImage(string basePath, string overlayPath, string compositeName)
+    public string BuildCompositeEtImage(string basePath, string overlayPath, string compositeName)
     {
         var fullCompositePath = Path.Join($"{mediaLibraryRoot}/img/hitmaps-custom/elusive-target-overlays/composites/{compositeName}".Split("/"));
         if (File.Exists(fullCompositePath))
         {
             // Nothing to do; composite already exists
-            return;
+            return fullCompositePath;
         }
 
         var fullBasePath = Path.Join($"{mediaLibraryRoot}/{basePath}".Split("/"));
@@ -37,6 +37,7 @@ public class ImageService : IImageService
             .DrawImage(img2, new Point(0,0), 1f));
         
         output.Save(fullCompositePath);
+        return fullCompositePath;
     }
 
     private static void VerifyPath(string path)
