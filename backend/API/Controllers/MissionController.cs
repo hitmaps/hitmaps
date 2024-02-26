@@ -38,4 +38,20 @@ public class MissionController : ApiControllerBase
         
         return Ok(MissionViewModel.FromDbModel(mission));
     }
+
+    [HttpGet]
+    [Route("games/{game}/locations/{location}/missions/{slug}/ogimage.png")]
+    public IActionResult GetOgImage(string game, string location, string slug)
+    {
+        try
+        {
+            var imagePath = missionService.GetOgImagePath(game, location, slug);
+            return PhysicalFile(imagePath, "image/png");
+        }
+        catch (MissionNotFoundException)
+        {
+            return NotFound();
+        }
+        
+    }
 }

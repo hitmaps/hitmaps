@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using DataAccess.Data.Models.EF;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
@@ -48,5 +49,31 @@ public class ImageService : IImageService
         }
 
         throw new Exception($"Could not find path: {path}");
+    }
+
+    public string BuildOgImage(Mission mission)
+    {
+        var fullCompositePath = Path.Join($"{mediaLibraryRoot}/img/hitmaps-custom/mission-ogimages/{mission.Slug}{mission.Id}.png".Split("/"));
+        if (File.Exists(fullCompositePath))
+        {
+            // Nothing to do; composite already exists
+            return fullCompositePath;
+        }
+
+        //mediaLibraryRoot
+        var fullBasePath = Path.Join(mission.BackgroundUrl.Replace("https://media.hitmaps.com", mediaLibraryRoot).Split("/"));
+        var fullOverlayPath = Path.Join($"{mediaLibraryRoot}/img/hitmaps-custom/ogimage-overlay.png".Split("/"));
+        VerifyPath(fullBasePath);
+        VerifyPath(fullOverlayPath);
+
+        using var img1 = Image.Load<Rgba32>(fullBasePath);
+        using var img2 = Image.Load<Rgba32>(fullOverlayPath);
+        using var output = new Image<Rgba32>(1920, 1080);
+        output.Mutate(o => o
+            .DrawImage(img1, new Point(0,0), 1f)
+            .DrawImage(img2, new Point(0,0), 1f));
+        
+        output.Save(fullCompositePath);
+        return fullCompositePath;
     }
 }
