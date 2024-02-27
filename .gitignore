@@ -19,13 +19,3 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
-
-# PHP-specific ignores
-.idea/
-/api/vendor/
-/api/Config/Constants.php
-/api/Config/Settings.php
-/api/Config/JwtConfig.php
-/api/Config/firebase-service-account.json
-/api/phinx.yml
-/api/maps/
