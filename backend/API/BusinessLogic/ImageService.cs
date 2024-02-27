@@ -18,15 +18,15 @@ public class ImageService : IImageService
     
     public string BuildCompositeEtImage(string basePath, string overlayPath, string compositeName)
     {
-        var fullCompositePath = Path.Join($"{mediaLibraryRoot}/img/hitmaps-custom/elusive-target-overlays/composites/{compositeName}".Split("/"));
+        var fullCompositePath = Path.Join(GetPathParts($"{mediaLibraryRoot}/img/hitmaps-custom/elusive-target-overlays/composites/{compositeName}"));
         if (File.Exists(fullCompositePath))
         {
             // Nothing to do; composite already exists
             return fullCompositePath;
         }
 
-        var fullBasePath = Path.Join($"{mediaLibraryRoot}/{basePath}".Split("/"));
-        var fullOverlayPath = Path.Join($"{mediaLibraryRoot}/img/hitmaps-custom/elusive-target-overlays/{overlayPath}".Split("/"));
+        var fullBasePath = Path.Join(GetPathParts($"{mediaLibraryRoot}/{basePath}"));
+        var fullOverlayPath = Path.Join(GetPathParts($"{mediaLibraryRoot}/img/hitmaps-custom/elusive-target-overlays/{overlayPath}"));
         VerifyPath(fullBasePath);
         VerifyPath(fullOverlayPath);
 
@@ -41,6 +41,18 @@ public class ImageService : IImageService
         return fullCompositePath;
     }
 
+    private static string[] GetPathParts(string path)
+    {
+        var reappendFrontSlash = path[0] == '/';
+        var parts = path.Split("/");
+        if (reappendFrontSlash)
+        {
+            parts[0] = $"/{parts[0]}";
+        }
+
+        return parts;
+    }
+
     private static void VerifyPath(string path)
     {
         if (File.Exists(path))
@@ -53,7 +65,7 @@ public class ImageService : IImageService
 
     public string BuildOgImage(Mission mission)
     {
-        var fullCompositePath = Path.Join($"{mediaLibraryRoot}/img/hitmaps-custom/mission-ogimages/{mission.Slug}{mission.Id}.png".Split("/"));
+        var fullCompositePath = Path.Join(GetPathParts($"{mediaLibraryRoot}/img/hitmaps-custom/mission-ogimages/{mission.Slug}{mission.Id}.png"));
         if (File.Exists(fullCompositePath))
         {
             // Nothing to do; composite already exists
@@ -61,8 +73,8 @@ public class ImageService : IImageService
         }
 
         //mediaLibraryRoot
-        var fullBasePath = Path.Join(mission.BackgroundUrl.Replace("https://media.hitmaps.com", mediaLibraryRoot).Split("/"));
-        var fullOverlayPath = Path.Join($"{mediaLibraryRoot}/img/hitmaps-custom/ogimage-overlay.png".Split("/"));
+        var fullBasePath = Path.Join(GetPathParts(mission.BackgroundUrl.Replace("https://media.hitmaps.com", mediaLibraryRoot)));
+        var fullOverlayPath = Path.Join(GetPathParts($"{mediaLibraryRoot}/img/hitmaps-custom/ogimage-overlay.png"));
         VerifyPath(fullBasePath);
         VerifyPath(fullOverlayPath);
 
