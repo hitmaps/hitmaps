@@ -296,7 +296,7 @@ export default {
         }
     },
     mounted() {
-        $fetch(`${this.apiDomain}/api/v1/editor/icons`).then(resp => {
+        $fetch(`${this.apiDomain}/api/editor/icons`).then(resp => {
             const dropdownGroups = [];
             for (const [key, items] of Object.entries(resp)) {
                 const dropdownGroup = {
@@ -319,7 +319,7 @@ export default {
 
             this.icons = dropdownGroups;
         });
-        $fetch(`${this.apiDomain}/api/v1/editor/templates`).then(resp => {
+        $fetch(`${this.apiDomain}/api/editor/templates`).then(resp => {
             const dropdownGroups = [];
             for (const [key, items] of Object.entries(resp)) {
                 // noinspection JSUnresolvedReference
@@ -551,10 +551,11 @@ export default {
                     variantIds: this.createEditNodeModel.variantIds
                 }
             }).then(resp => {
-                const response = JSON.parse(resp.data.value);
+                const response = resp.data.value;
                 this.$emit('item-created', response.data);
                 this.$toastr.s('Item saved!');
             }).catch(err => {
+                console.error(err);
                 this.$toastr.e('Changes failed to save!');
             });
         },

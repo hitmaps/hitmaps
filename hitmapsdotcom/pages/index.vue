@@ -338,7 +338,6 @@ import {useLazyFetch} from "#app";
 
 const config = useRuntimeConfig();
 const { t } = useI18n();
-
 const { data, pending: gamesPending } = await useFetch(`${config.public.apiDomain}/api/web/home`);
 const games = data.value.games;
 const elusiveTargets = data.value.elusiveTargets;

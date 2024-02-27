@@ -8,17 +8,17 @@ export default defineComponent({
         const config = useRuntimeConfig();
         const route = useRoute();
 
-        const gamePromise = useFetch(`${config.public.apiDomain}/api/v1/games/${route.params.game}`);
+        const gamePromise = useFetch(`${config.public.apiDomain}/api/games/${route.params.game}`);
 
-        const missionPromise = useFetch(`${config.public.apiDomain}/api/v1/games/${route.params.game}` +
+        const missionPromise = useFetch(`${config.public.apiDomain}/api/games/${route.params.game}` +
             `/locations/${route.params.location}` +
             `/missions/${route.params.mission}`);
 
         missionPromise.then(resp => {
-            const ogImage = `${config.public.apiDomain}/api/v1/games/${route.params.game}` +
+            const ogImage = `${config.public.apiDomain}/api/games/${route.params.game}` +
                 `/locations/${route.params.location}` +
-                `/missions/${route.params.mission}/ogimage`;
-            const mission = resp.data.value[0].name;
+                `/missions/${route.params.mission}/ogimage.png`;
+            const mission = resp.data.value.name;
             useSeoMeta({
                 title: mission,
                 ogTitle: Utils.siteTitle(mission),
@@ -40,10 +40,10 @@ export default defineComponent({
         const config = this.$config;
 
         this.gamePromise.then(resp => {
-            this.game = resp.data.value[0];
+            this.game = resp.data.value;
         });
         this.missionPromise.then(resp => {
-            this.mission = resp.data.value[0];
+            this.mission = resp.data.value;
             this.currentFloor = this.mission.startingFloorNumber;
             this.currentVariant = this.$route.query.variant ?
                 this.mission.variants.find(v => v.slug === this.$route.query.variant) :
@@ -54,7 +54,7 @@ export default defineComponent({
             this.metadataLoaded = true;
             //@formatter:off
             const nodesPromise = useFetch(
-                `${config.public.apiDomain}/api/v2/games/${this.$route.params.game}`+
+                `${config.public.apiDomain}/api/games/${this.$route.params.game}`+
                 `/locations/${this.$route.params.location}`+
                 `/missions/${this.$route.params.mission}/nodes`, {
                     lazy: true,
@@ -82,7 +82,7 @@ export default defineComponent({
                 });
 
             const disguisesPromise = useFetch(
-                `${config.public.apiDomain}/api/v2/games/${this.$route.params.game}`+
+                `${config.public.apiDomain}/api/games/${this.$route.params.game}`+
                 `/locations/${this.$route.params.location}`+
                 `/missions/${this.$route.params.mission}/disguises`, {
                     lazy: true,
@@ -90,7 +90,7 @@ export default defineComponent({
                 }).then(resp => this.disguises = resp.data.value.disguises);
 
             const ledgesPromise = useFetch(
-                `${config.public.apiDomain}/api/v2/games/${this.$route.params.game}`+
+                `${config.public.apiDomain}/api/games/${this.$route.params.game}`+
                 `/locations/${this.$route.params.location}`+
                 `/missions/${this.$route.params.mission}/ledges`, {
                     lazy: true,
@@ -102,7 +102,7 @@ export default defineComponent({
                     this.$nextTick(_ => this.ledges.forEach(ledge => ledge.polyline.addTo(this.map)));
                 });
             const foliagePromise = useFetch(
-                `${config.public.apiDomain}/api/v2/games/${this.$route.params.game}`+
+                `${config.public.apiDomain}/api/games/${this.$route.params.game}`+
                 `/locations/${this.$route.params.location}`+
                 `/missions/${this.$route.params.mission}/foliage`, {
                     lazy: true,
@@ -628,7 +628,7 @@ export default defineComponent({
                     body: data
                 }).then(resp => {
                     this.vertices = [];
-                    this.ledges.push(this.buildLedgeForMap(JSON.parse(resp.data.value).data));
+                    this.ledges.push(this.buildLedgeForMap(resp.data.value.data));
                     this.$toastr.s('Ledge saved!');
                     this.map.removeLayer(this.workingLayer);
                     this.workingLayer = null;
@@ -643,7 +643,7 @@ export default defineComponent({
                     body: data
                 }).then(resp => {
                     this.vertices = [];
-                    this.foliage.push(this.buildFoliageForMap(JSON.parse(resp.data.value).data));
+                    this.foliage.push(this.buildFoliageForMap(resp.data.value.data));
                     this.$toastr.s('Foliage saved!');
                     this.map.removeLayer(this.workingLayer);
                     this.workingLayer = null;
@@ -661,7 +661,7 @@ export default defineComponent({
                     body: data
                 }).then(resp => {
                     this.vertices = [];
-                    this.disguiseAreas[this.currentDisguise.id].push(this.buildDisguiseAreaForMap(JSON.parse(resp.data.value).data));
+                    this.disguiseAreas[this.currentDisguise.id].push(this.buildDisguiseAreaForMap(resp.data.value.data));
                     this.$toastr.s('Disguise area saved!');
                     this.map.removeLayer(this.workingLayer);
                     this.workingLayer = null;
@@ -713,7 +713,7 @@ export default defineComponent({
                 return;
             }
 
-            useAuthenticatedFetch(`${this.apiDomain}/api/v2/games/${this.$route.params.game}`+
+            useAuthenticatedFetch(`${this.apiDomain}/api/games/${this.$route.params.game}`+
                 `/locations/${this.$route.params.location}`+
                 `/missions/${this.$route.params.mission}` +
                 `/disguise-areas/${disguise.id}`)
