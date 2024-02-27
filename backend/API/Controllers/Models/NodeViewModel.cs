@@ -29,7 +29,7 @@ public class NodeViewModel
             MissionId = node.Mission.Id,
             Type = node.Type,
             Icon = node.Icon,
-            Name = node.Name,
+            Name = node.Name ?? string.Empty,
             Target = node.Target,
             Level = node.Level,
             Latitude = node.Latitude,
