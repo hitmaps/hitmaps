@@ -39,7 +39,7 @@ function hideBriefingModal() {
 function initCarouselInterval() {
     return setInterval(() => {
         forceIndex(selectedElusiveTargetIndex.value + 1, false)
-    }, 9999999999999);
+    }, 5000);
 }
 
 function forceIndex(index, resetCarousel = true) {
