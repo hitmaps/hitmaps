@@ -2,15 +2,27 @@
 const props = defineProps({
     upcomingMatchInfo: Array
 });
+const { t } = useI18n();
+
+const showRandomMaps = ref(false);
+
+function toggleRandomMaps() {
+    showRandomMaps.value = !showRandomMaps.value;
+}
 </script>
 
 <template>
     <div class="row dashboard" v-for="eventInfo in upcomingMatchInfo">
         <div class="tournament col-lg">
-            <div class="tournament-info">
-                <div class="text">
+            <div class="tournament-info row">
+                <div class="text col-lg-10 col-sm-12">
                     <h1>{{ eventInfo.event.name }}</h1>
                     <h2>Upcoming Matches</h2>
+                </div>
+                <div class="toggler justify-content-end col-lg-2 col-sm-12">
+                    <button class="btn square-button btn-dark" @click="toggleRandomMaps">
+                        {{ showRandomMaps ? t('community-event.hide-random-maps') : t('community-event.show-random-maps') }}
+                    </button>
                 </div>
             </div>
             <div class="row d-none d-lg-flex d-xl-flex" style="border-bottom: 2px solid #dee2e6; border-top: 1px solid #dee2e6; padding: .75rem;">
@@ -37,12 +49,13 @@ const props = defineProps({
                 <div class="row"
                      style="border-top: 1px solid #dee2e6; padding: .75rem;">
                     <div class="col-lg-3 col-12">
-                        <span>{{ matchup.competitors[0].challongeName }} vs
+                        <icon class="d-lg-none" name="fa6-solid:users"/>
+                        {{ matchup.competitors[0].challongeName }} vs
                                     {{ matchup.competitors[1].challongeName }}
-                        </span>
                     </div>
                     <div class="col-lg-3 col-12">
-                        <div v-for="map in matchup.maps.filter(x => x.selectionType === 'Pick')">
+                        <div v-for="map in matchup.maps.filter(x => x.selectionType !== 'Ban' && (x.selectionType === 'Pick' || showRandomMaps))">
+                            <icon class="d-lg-none" name="fa6-regular:map"/>
                             {{ map.missionLocation }} - {{ map.missionName }}
                         </div>
                     </div>
@@ -54,7 +67,7 @@ const props = defineProps({
                     </div>
                     <div class="col-lg-3 col-12">
                         <template v-if="matchup.cast">
-                            <i class="fab fa-fw fa-twitch d-lg-none"></i>
+                            <icon class="d-lg-none" name="fa6-solid:microphone-lines"/>
                             <a :href="matchup.cast.mainCasterUrl" target="_blank">
                                 {{ matchup.cast.mainCaster.name }}
                                 <template v-if="matchup.cast.cocasters.length" v-for="cocaster in matchup.cast.cocasters">
@@ -70,14 +83,15 @@ const props = defineProps({
 </template>
 
 <style scoped lang="scss">
+.square-button {
+    border-radius: 0;
+}
+
 .dashboard {
     margin: 20px;
     padding-left: 20px;
     padding-right: 20px;
     background: $content-background;
-
-    h1 {
-    }
 
     .tournament {
         display: flex;
@@ -96,6 +110,7 @@ const props = defineProps({
             .text {
                 display: inline-block;
                 text-transform: uppercase;
+                flex-grow: 1;
 
                 h1 {
                     font-size: 2.5rem;
@@ -106,6 +121,11 @@ const props = defineProps({
                     font-size: 1.5rem;
                     margin-bottom: 0;
                 }
+            }
+
+            .toggler {
+                display: flex;
+                align-items: flex-end;
             }
         }
 

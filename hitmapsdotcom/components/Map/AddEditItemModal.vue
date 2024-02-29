@@ -520,20 +520,6 @@ export default {
             }
         },
         createMarker() {
-            console.log({
-                missionId: this.mission.id,
-                icon: this.createEditNodeModel.icon,
-                category: this.createEditNodeModel.category.element,
-                name: this.createEditNodeModel.name,
-                quantity: this.createEditNodeModel.quantity,
-                targetAction: this.createEditNodeModel.targetAction,
-                level: this.currentLevel,
-                latitude: this.clickedPoint.lat,
-                longitude: this.clickedPoint.lng,
-                image: this.createEditNodeModel.image,
-                notes: this.createEditNodeModel.notes,
-                variantIds: this.createEditNodeModel.variantIds
-            });
             useAuthenticatedFetch(`${this.apiDomain}/api/nodes`, {
                 method: 'POST',
                 body: {

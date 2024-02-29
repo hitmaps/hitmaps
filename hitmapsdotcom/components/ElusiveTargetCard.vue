@@ -39,7 +39,7 @@ function hideBriefingModal() {
 function initCarouselInterval() {
     return setInterval(() => {
         forceIndex(selectedElusiveTargetIndex.value + 1, false)
-    }, 5000);
+    }, 9999999999999);
 }
 
 function forceIndex(index, resetCarousel = true) {
@@ -283,70 +283,6 @@ function forceIndex(index, resetCarousel = true) {
 .mobile-et {
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
 }
-/*.single-game {
-    display: flex;
-    flex-direction: column;
-    color: white;
-
-    a {
-        display: flex;
-        text-decoration: none;
-        flex-grow: 1;
-
-        &:hover {
-            .game-card .game-info {
-                background: $game-button-background-hover;
-
-                i {
-                    background: $game-button-text;
-                    color: $card-footer-background-hover;
-                }
-            }
-        }
-
-        .game-card {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            margin-left: -15px;
-            margin-right: -15px;
-            text-decoration: none;
-
-            > p:first-child {
-                flex-grow: 1;
-            }
-
-            .game-info {
-                padding: 15px;
-                background: rgba(29, 40, 52, .7);
-                color: #fff;
-                text-shadow: none;
-                display: flex;
-
-                .image {
-                    display: inline-block;
-                    vertical-align: top;
-                    margin-right: 5px;
-                }
-
-                .text {
-                    display: inline-block;
-                    text-transform: uppercase;
-                    flex-grow: 1;
-
-                    h2 {
-                        font-size: 1rem;
-                        margin-bottom: 0;
-                    }
-
-                    h1 {
-                        font-size: 1.5rem;
-                        margin-bottom: 0;
-                    }
-                }
-            }
-        }
-    }
-}*/
 </style>

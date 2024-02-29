@@ -194,7 +194,6 @@ export default {
     },
     watch: {
         zoomControl: function() {
-            console.log(this.zoomControl);
         }
     },
     computed: {

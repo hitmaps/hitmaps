@@ -115,7 +115,9 @@
         "title": "Community Event",
         "signups-close-in": "Signups Close in",
         "more-info": "More Info",
-        "upcoming-matches-colon": "Upcoming Matches:"
+        "upcoming-matches-colon": "Upcoming Matches:",
+        "show-random-maps": "Show Random Maps",
+        "hide-random-maps": "Hide Random Maps"
     },
     "elusive-target-icon": "Elusive Target Icon",
     "home-icon": "Home Icon",

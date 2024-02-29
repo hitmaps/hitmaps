@@ -4,7 +4,6 @@ import { ScrollSpy } from 'bootstrap'
 export default defineNuxtPlugin(nuxtApp => {
     nuxtApp.vueApp.directive('scrollspy', {
         beforeMount(el, binding) {
-            console.log(binding.value);
             //@ts-ignore
             nextTick(() => {
                 const scrollspy = new ScrollSpy(el, {
@@ -12,8 +11,6 @@ export default defineNuxtPlugin(nuxtApp => {
                     offset: 20
                 });
                 //@ts-ignore
-                console.log(scrollspy);
-
             });
         }
     });

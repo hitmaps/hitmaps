@@ -1,10 +1,10 @@
 <template>
-    <div v-if="days < 2">
+    <template v-if="days < 2">
         {{ twoDigits(hours) }}:{{ twoDigits(minutes) }}:{{ twoDigits(seconds) }}
-    </div>
-    <div v-else>
+    </template>
+    <template v-else>
         {{ $t('elusive-target.n-days', { days: days }) }}
-    </div>
+    </template>
 </template>
 
 <script>

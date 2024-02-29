@@ -48,13 +48,14 @@ function hideBriefingModal() {
                         <game-icon icon="timed" font-style="normal" />
                     </div>
                     <div class="text timer" :class="{ 'not-playable': new Date(elusiveTarget.beginningTime) > new Date() }">
-                        <div class="target-arrives">{{ $t('elusive-target.target-arrives') }}</div>
-                        <countdown class="elusive-countdown" :date="new Date(elusiveTarget.beginningTime) >
+                        <h4 class="target-arrives">{{ $t('elusive-target.target-arrives') }}</h4>
+                        <h3>
+                            <countdown class="elusive-countdown" :date="new Date(elusiveTarget.beginningTime) >
                                         new Date()
                                             ? elusiveTarget.beginningTime
                                             : elusiveTarget.endingTime"
-                        />
-
+                            />
+                        </h3>
                     </div>
                     <game-icon @click="showBriefingModal"
                                icon="background"
@@ -129,12 +130,12 @@ a {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            /*min-height: 70px;*/
             padding-top: 10px;
             padding-bottom: 10px;
 
             .upper {
                 display: flex;
+                margin-bottom: 10px;
             }
 
             .countdown {
@@ -142,7 +143,6 @@ a {
 
                 .timer {
                     .target-arrives {
-                        line-height: 0;
                         display: none;
                     }
 

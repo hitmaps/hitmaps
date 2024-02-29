@@ -16,7 +16,6 @@ export default defineNuxtPlugin(nuxtApp => {
                 }
 
                 const momentDate = moment(date).tz(actualTimezone as string);
-                console.log(actualTimezone);
                 return actualRelativeFormat ?
                     `${momentDate.format(actualRelativeFormat)} (${momentDate.fromNow()})` :
                     momentDate.format(format);
