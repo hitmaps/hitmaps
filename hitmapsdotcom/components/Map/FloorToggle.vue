@@ -57,11 +57,12 @@ export default {
             }
 
             this.floorNames = {};
-            for (var i = this.mission.highestFloorNumber; i >= this.mission.lowestFloorNumber; i--) {
-                if (this.mission.floorNames[i]) {
+            for (let i = this.mission.highestFloorNumber; i >= this.mission.lowestFloorNumber; i--) {
+                const floorName = this.mission.floorNames.find(x => x.floorNumber === i);
+                if (floorName) {
                     this.floorNames[i] = {
-                        header: this.isNewFloorType(this.$t(this.mission.floorNames[i].nameKey)) ? this.lastFloorType : undefined,
-                        value: this.getFormattedFloorName(this.$t(this.mission.floorNames[i].nameKey))
+                        header: this.isNewFloorType(this.$t(floorName.nameKey)) ? this.lastFloorType : undefined,
+                        value: this.getFormattedFloorName(this.$t(floorName.nameKey))
                     }
                 } else {
                     this.floorNames[i] = {

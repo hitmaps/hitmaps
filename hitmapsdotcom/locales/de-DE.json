@@ -368,135 +368,135 @@
         "a-personal-contract": {
             "gardens": "Gärten",
             "greenhouse": "Gewächshaus",
-            "mansion-ground-floor": "Villa|1. Stock",
-            "mansion-second-floor": "Villa|2. Stock",
-            "diana": "Villa|Diana"
+            "mansion-ground-floor": "Villa{'|'}1. Stock",
+            "mansion-second-floor": "Villa{'|'}2. Stock",
+            "diana": "Villa{'|'}Diana"
         },
         "the-king-of-chinatown": {
-            "ground": "Chinatown Zentrum|Erdgeschoss",
-            "second-floor": "Chinatown Zentrum|2. Stock"
+            "ground": "Chinatown Zentrum{'|'}Erdgeschoss",
+            "second-floor": "Chinatown Zentrum{'|'}2. Stock"
         },
         "terminus": {
-            "sewers": "Terminus Hotel|Abwasserkanal",
-            "basement": "Terminus Hotel|Keller",
-            "ground": "Terminus Hotel|Erdgeschoss",
-            "7-floor": "Obergeschoss|7. Stock",
-            "8-floor": "Obergeschoss|8. Stock"
+            "sewers": "Terminus Hotel{'|'}Abwasserkanal",
+            "basement": "Terminus Hotel{'|'}Keller",
+            "ground": "Terminus Hotel{'|'}Erdgeschoss",
+            "7-floor": "Obergeschoss{'|'}7. Stock",
+            "8-floor": "Obergeschoss{'|'}8. Stock"
         },
         "run-for-your-life": {
-            "hotel-room": "Brennendes Hotel|Hotel-Zimmer",
-            "hotel-roof": "Brennendes Hotel|Hotel Dach",
-            "library-first-floor": "Bibliothek|1 Stock",
-            "library-second-floor": "Bibliothek|2 Stock",
-            "library-third-floor": "Bibliothek|3 Stock",
-            "library-fourth-floor": "Bibliothek|4 Stock",
+            "hotel-room": "Brennendes Hotel{'|'}Hotel-Zimmer",
+            "hotel-roof": "Brennendes Hotel{'|'}Hotel Dach",
+            "library-first-floor": "Bibliothek{'|'}1 Stock",
+            "library-second-floor": "Bibliothek{'|'}2 Stock",
+            "library-third-floor": "Bibliothek{'|'}3 Stock",
+            "library-fourth-floor": "Bibliothek{'|'}4 Stock",
             "pigeon-coop": "Taubenschlag",
             "shangri-la": "Shangri-la",
-            "train-first-floor": "Bahnhof|Erstes Obergeschoss",
-            "train-second-floor": "Bahnhof|Zweites Obergeschoss"
+            "train-first-floor": "Bahnhof{'|'}Erstes Obergeschoss",
+            "train-second-floor": "Bahnhof{'|'}Zweites Obergeschoss"
         },
         "hunter-and-hunted": {
-            "courtyard-tunnels": "Hof|Tunnel",
-            "courtyard-ground": "Hof|Boden",
-            "club-first-floor": "Der Vixen Club|Keller",
-            "club-second-floor": "Der Vixen Club|1. Stock",
-            "club-third-floor": "Der Vixen Club|2. Stock",
-            "dressing-room-first-floor": "Ankleidezimmer|1 Stock",
-            "dressing-room-second-floor": "Ankleidezimmer|2 Stock",
-            "derelict-first-floor": "Heruntergekommenes Gebäude|1. Stock",
-            "derelict-second-floor": "Heruntergekommenes Gebäude|2. Stock",
-            "store-first-floor": "Gemischtwarenladen|1. Stock",
-            "store-second-floor": "Gemischtwarenladen|2. Stock",
-            "store-third-floor": "Gemischtwarenladen|3. Stock",
-            "chinese-new-year-first-floor": "Chinesisches Neujahr|Keller",
-            "chinese-new-year-second-floor": "Chinesisches Neujahr|1 Stock",
+            "courtyard-tunnels": "Hof{'|'}Tunnel",
+            "courtyard-ground": "Hof{'|'}Boden",
+            "club-first-floor": "Der Vixen Club{'|'}Keller",
+            "club-second-floor": "Der Vixen Club{'|'}1. Stock",
+            "club-third-floor": "Der Vixen Club{'|'}2. Stock",
+            "dressing-room-first-floor": "Ankleidezimmer{'|'}1 Stock",
+            "dressing-room-second-floor": "Ankleidezimmer{'|'}2 Stock",
+            "derelict-first-floor": "Heruntergekommenes Gebäude{'|'}1. Stock",
+            "derelict-second-floor": "Heruntergekommenes Gebäude{'|'}2. Stock",
+            "store-first-floor": "Gemischtwarenladen{'|'}1. Stock",
+            "store-second-floor": "Gemischtwarenladen{'|'}2. Stock",
+            "store-third-floor": "Gemischtwarenladen{'|'}3. Stock",
+            "chinese-new-year-first-floor": "Chinesisches Neujahr{'|'}Keller",
+            "chinese-new-year-second-floor": "Chinesisches Neujahr{'|'}1 Stock",
             "loading-area": "Ladebereich"
         },
         "rosewood": {
             "victorias-ward": "Victoria's Station",
-            "hallways-first-floor": "Waisenhaushallen|1. Stock",
-            "hallways-second-floor": "Waisenhaushallen|2. Stock",
+            "hallways-first-floor": "Waisenhaushallen{'|'}1. Stock",
+            "hallways-second-floor": "Waisenhaushallen{'|'}2. Stock",
             "central-heating": "Zentralheizung"
         },
         "welcome-to-hope": {
             "great-balls-of-fire": "Große Feuerbälle"
         },
         "birdies-gift": {
-            "gun-shop-ground-floor": "Waffenladen|1 Stock",
-            "gun-shop-second-floor": "Waffenladen|2 Stock"
+            "gun-shop-ground-floor": "Waffenladen{'|'}1 Stock",
+            "gun-shop-second-floor": "Waffenladen{'|'}2 Stock"
         },
         "shaving-lenny": {
-            "streets-of-hope-first-floor": "Straßen der Hoffnung|1 Stock",
-            "streets-of-hope-second-floor": "Straßen der Hoffnung|2 Stock",
-            "barbershop-first-floor": "Friseurladen|1. Stock",
-            "barbershop-second-floor": "Friseurladen|2. Stock"
+            "streets-of-hope-first-floor": "Straßen der Hoffnung{'|'}1 Stock",
+            "streets-of-hope-second-floor": "Straßen der Hoffnung{'|'}2 Stock",
+            "barbershop-first-floor": "Friseurladen{'|'}1. Stock",
+            "barbershop-second-floor": "Friseurladen{'|'}2. Stock"
         },
         "end-of-the-road": {
             "the-desert": "Die Wüste"
         },
         "dexter-industries": {
             "dead-end": "Sackgasse",
-            "old-mill-first-floor": "Alte Mühle|1 Stock",
-            "old-mill-second-floor": "Alte Mühle|2 Stock",
-            "descent-floor-1": "Abstieg|1. Stock",
-            "descent-floor-2": "Abstieg|2. Stock",
-            "descent-floor-3": "Abstieg|3. Stock",
-            "descent-floor-4": "Abstieg|4. Stock",
-            "descent-floor-5": "Abstieg|5. Stock",
-            "descent-floor-6": "Abstieg|6. Stock",
-            "factory-floor-1": "Fabrik Anlage|1 Stock",
-            "factory-floor-2": "Fabrik Anlage|2 Stock",
-            "factory-floor-3": "Fabrik Anlage|3 Stock"
+            "old-mill-first-floor": "Alte Mühle{'|'}1 Stock",
+            "old-mill-second-floor": "Alte Mühle{'|'}2 Stock",
+            "descent-floor-1": "Abstieg{'|'}1. Stock",
+            "descent-floor-2": "Abstieg{'|'}2. Stock",
+            "descent-floor-3": "Abstieg{'|'}3. Stock",
+            "descent-floor-4": "Abstieg{'|'}4. Stock",
+            "descent-floor-5": "Abstieg{'|'}5. Stock",
+            "descent-floor-6": "Abstieg{'|'}6. Stock",
+            "factory-floor-1": "Fabrik Anlage{'|'}1 Stock",
+            "factory-floor-2": "Fabrik Anlage{'|'}2 Stock",
+            "factory-floor-3": "Fabrik Anlage{'|'}3 Stock"
         },
         "death-factory": {
-            "test-facility-floor-1": "Testanlage|1. Stock",
-            "test-facility-floor-2": "Testanlage|2. Stock",
-            "test-facility-floor-3": "Testanlage|3. Stock",
-            "test-facility-top": "Testanlage|Obergeschosss",
+            "test-facility-floor-1": "Testanlage{'|'}1. Stock",
+            "test-facility-floor-2": "Testanlage{'|'}2. Stock",
+            "test-facility-floor-3": "Testanlage{'|'}3. Stock",
+            "test-facility-top": "Testanlage{'|'}Obergeschosss",
             "decontamination": "Dekontamination",
-            "rnd-b3": "R&D|Keller3",
-            "rnd-b1": "R&D|Keller1",
-            "rnd-floor-1": "R&D|1. Stock"
+            "rnd-b3": "R&D{'|'}Keller3",
+            "rnd-b1": "R&D{'|'}Keller1",
+            "rnd-floor-1": "R&D{'|'}1. Stock"
         },
         "fight-night": {
-            "arena-floor-1": "Die Arena|1 Stock",
-            "arena-floor-2": "Die Arena|2 Stock",
-            "arena-floor-3": "Die Arena|3 Stock",
+            "arena-floor-1": "Die Arena{'|'}1 Stock",
+            "arena-floor-2": "Die Arena{'|'}2 Stock",
+            "arena-floor-3": "Die Arena{'|'}3 Stock",
             "backstage": "Hangar des Patrioten"
         },
         "attack-of-the-saints": {
-            "parking-floor-1": "Parkplatz|1 Stock",
-            "parking-floor-2": "Parkplatz|2 Stock",
+            "parking-floor-1": "Parkplatz{'|'}1 Stock",
+            "parking-floor-2": "Parkplatz{'|'}2 Stock",
             "reception": "Rezeption",
             "cornfield": "Maisfeld"
         },
         "skurkys-law": {
-            "courthouse-floor-1": "Gerichtgebäude|1 Stock",
-            "courthouse-floor-2": "Gerichtgebäude|2 Stock",
+            "courthouse-floor-1": "Gerichtgebäude{'|'}1 Stock",
+            "courthouse-floor-2": "Gerichtgebäude{'|'}2 Stock",
             "holding-cells": "Arrestzelle",
-            "prison-floor-1": "Gefängnis|1 Stock",
-            "prison-floor-2": "Gefängnis|2 Stock"
+            "prison-floor-1": "Gefängnis{'|'}1 Stock",
+            "prison-floor-2": "Gefängnis{'|'}2 Stock"
         },
         "operation-sledgehammer": {
             "county-jail": "Bezirksgefängnis",
             "outgunned": "Unterlegen",
             "burn": "Brennen",
-            "hope-fair-floor-1": "Hoffnungs-Messe|1. Stock",
-            "hope-fair-floor-2": "Hoffnungs-Messe|2. Stock"
+            "hope-fair-floor-1": "Hoffnungs-Messe{'|'}1. Stock",
+            "hope-fair-floor-2": "Hoffnungs-Messe{'|'}2. Stock"
         },
         "one-of-a-kind": {
-            "floor-1": "Schneiderei|Keller",
-            "floor-2": "Schneiderei|1 Stock"
+            "floor-1": "Schneiderei{'|'}Keller",
+            "floor-2": "Schneiderei{'|'}1 Stock"
         },
         "blackwater-park": {
             "blackwater-park": "Blackwater Park",
-            "penthouse-floor-1": "Penthouse|1. Stock",
-            "penthouse-floor-2": "Penthouse|2. Stock"
+            "penthouse-floor-1": "Penthouse{'|'}1. Stock",
+            "penthouse-floor-2": "Penthouse{'|'}2. Stock"
         },
         "countdown": {
-            "roof-floor-1": "Blackwater Dach|1. Stock",
-            "roof-floor-2": "Blackwater Dach|2. Stock",
-            "roof-floor-3": "Blackwater Dach|3. Stock"
+            "roof-floor-1": "Blackwater Dach{'|'}1. Stock",
+            "roof-floor-2": "Blackwater Dach{'|'}2. Stock",
+            "roof-floor-3": "Blackwater Dach{'|'}3. Stock"
         },
         "absolution": {
             "cemetery-entrance": "Friedhof Eingang",
@@ -507,8 +507,8 @@
     "hitman3": {
         "untouchable": {
             "lab": "Laborbereich",
-            "pre-bar": "Miliz-Zone|Anfang der Bar",
-            "post-bar": "Miliz-Zone|Nach Bar zu Büros",
+            "pre-bar": "Miliz-Zone{'|'}Anfang der Bar",
+            "post-bar": "Miliz-Zone{'|'}Nach Bar zu Büros",
             "offices": "Büros"
         }
     }

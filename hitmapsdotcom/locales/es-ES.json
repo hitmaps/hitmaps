@@ -368,135 +368,135 @@
         "a-personal-contract": {
             "gardens": "Jardines",
             "greenhouse": "Invernadero",
-            "mansion-ground-floor": "Mansion|1st Floor",
-            "mansion-second-floor": "Mansion|2nd Floor",
-            "diana": "Mansión|Diana"
+            "mansion-ground-floor": "Mansion{'|'}1st Floor",
+            "mansion-second-floor": "Mansion{'|'}2nd Floor",
+            "diana": "Mansión{'|'}Diana"
         },
         "the-king-of-chinatown": {
-            "ground": "Plaza del Barrio Chino|Suelo",
-            "second-floor": "Plaza del Barrio Chino|2do Piso"
+            "ground": "Plaza del Barrio Chino{'|'}Suelo",
+            "second-floor": "Plaza del Barrio Chino{'|'}2do Piso"
         },
         "terminus": {
-            "sewers": "Hotel Terminus|Alcantarillas",
-            "basement": "Hotel Terminus|Sótano",
-            "ground": "Hotel Terminus|Suelo",
-            "7-floor": "Pisos Superiores|7mo Piso",
-            "8-floor": "Pisos Superiores|8vo Piso"
+            "sewers": "Hotel Terminus{'|'}Alcantarillas",
+            "basement": "Hotel Terminus{'|'}Sótano",
+            "ground": "Hotel Terminus{'|'}Suelo",
+            "7-floor": "Pisos Superiores{'|'}7mo Piso",
+            "8-floor": "Pisos Superiores{'|'}8vo Piso"
         },
         "run-for-your-life": {
-            "hotel-room": "Hotel Quemandose|Habitación del Hotel",
-            "hotel-roof": "Hotel Quemandose|Techo del Hotel",
-            "library-first-floor": "Biblioteca|1er Piso",
-            "library-second-floor": "Biblioteca|2do Piso",
-            "library-third-floor": "Biblioteca|3er Piso",
-            "library-fourth-floor": "Biblioteca|4to Piso",
+            "hotel-room": "Hotel Quemandose{'|'}Habitación del Hotel",
+            "hotel-roof": "Hotel Quemandose{'|'}Techo del Hotel",
+            "library-first-floor": "Biblioteca{'|'}1er Piso",
+            "library-second-floor": "Biblioteca{'|'}2do Piso",
+            "library-third-floor": "Biblioteca{'|'}3er Piso",
+            "library-fourth-floor": "Biblioteca{'|'}4to Piso",
             "pigeon-coop": "Gallinero",
             "shangri-la": "Shangri-La",
-            "train-first-floor": "Estación de Trenes|1er Piso",
-            "train-second-floor": "Estación de Trenes|2do Piso"
+            "train-first-floor": "Estación de Trenes{'|'}1er Piso",
+            "train-second-floor": "Estación de Trenes{'|'}2do Piso"
         },
         "hunter-and-hunted": {
-            "courtyard-tunnels": "Patio|Túneles",
-            "courtyard-ground": "Patio|Suelo",
-            "club-first-floor": "Vixen Club|Basement",
-            "club-second-floor": "Vixen Club|1st Floor",
-            "club-third-floor": "Vixen Club|2nd Floor",
-            "dressing-room-first-floor": "Vestidores|1er Piso",
-            "dressing-room-second-floor": "Vestidores|2do Piso",
-            "derelict-first-floor": "Edificio Abandonado|1er Piso",
-            "derelict-second-floor": "Edificio Abandonado|2do Piso",
-            "store-first-floor": "Tienda|1er Piso",
-            "store-second-floor": "Tienda|2do Piso",
-            "store-third-floor": "Tienda|3er Piso",
-            "chinese-new-year-first-floor": "Chinese New Year|Basement",
-            "chinese-new-year-second-floor": "Chinese New Year|1st Floor",
+            "courtyard-tunnels": "Patio{'|'}Túneles",
+            "courtyard-ground": "Patio{'|'}Suelo",
+            "club-first-floor": "Vixen Club{'|'}Basement",
+            "club-second-floor": "Vixen Club{'|'}1st Floor",
+            "club-third-floor": "Vixen Club{'|'}2nd Floor",
+            "dressing-room-first-floor": "Vestidores{'|'}1er Piso",
+            "dressing-room-second-floor": "Vestidores{'|'}2do Piso",
+            "derelict-first-floor": "Edificio Abandonado{'|'}1er Piso",
+            "derelict-second-floor": "Edificio Abandonado{'|'}2do Piso",
+            "store-first-floor": "Tienda{'|'}1er Piso",
+            "store-second-floor": "Tienda{'|'}2do Piso",
+            "store-third-floor": "Tienda{'|'}3er Piso",
+            "chinese-new-year-first-floor": "Chinese New Year{'|'}Basement",
+            "chinese-new-year-second-floor": "Chinese New Year{'|'}1st Floor",
             "loading-area": "Área de Carga"
         },
         "rosewood": {
             "victorias-ward": "Sala de Victoria",
-            "hallways-first-floor": "Salas del Orfanato|1er Piso",
-            "hallways-second-floor": "Salas del Orfanato|2do Piso",
+            "hallways-first-floor": "Salas del Orfanato{'|'}1er Piso",
+            "hallways-second-floor": "Salas del Orfanato{'|'}2do Piso",
             "central-heating": "Calefacción Central"
         },
         "welcome-to-hope": {
             "great-balls-of-fire": "Grandes Bolas de Fuego"
         },
         "birdies-gift": {
-            "gun-shop-ground-floor": "Tienda de Armas|1er Piso",
-            "gun-shop-second-floor": "Tienda de Armas|2do Piso"
+            "gun-shop-ground-floor": "Tienda de Armas{'|'}1er Piso",
+            "gun-shop-second-floor": "Tienda de Armas{'|'}2do Piso"
         },
         "shaving-lenny": {
-            "streets-of-hope-first-floor": "Calles de Hope|1er Piso",
-            "streets-of-hope-second-floor": "Calles de Hope|2do Piso",
-            "barbershop-first-floor": "Barbería|1er Piso",
-            "barbershop-second-floor": "Barbería|2do Piso"
+            "streets-of-hope-first-floor": "Calles de Hope{'|'}1er Piso",
+            "streets-of-hope-second-floor": "Calles de Hope{'|'}2do Piso",
+            "barbershop-first-floor": "Barbería{'|'}1er Piso",
+            "barbershop-second-floor": "Barbería{'|'}2do Piso"
         },
         "end-of-the-road": {
             "the-desert": "El Desierto"
         },
         "dexter-industries": {
             "dead-end": "Callejón sin Salida",
-            "old-mill-first-floor": "Molino Viejo|1er Piso",
-            "old-mill-second-floor": "Molino Viejo|2do Piso",
-            "descent-floor-1": "Descenso|1er Piso",
-            "descent-floor-2": "Descenso|2do Piso",
-            "descent-floor-3": "Descenso|3er Piso",
-            "descent-floor-4": "Descenso|4to Piso",
-            "descent-floor-5": "Descenso|5to Piso",
-            "descent-floor-6": "Descenso|6to Piso",
-            "factory-floor-1": "Recinto de la Fábrica|1er Piso",
-            "factory-floor-2": "Recinto de la Fábrica|2do Piso",
-            "factory-floor-3": "Recinto de la Fábrica|3er Piso"
+            "old-mill-first-floor": "Molino Viejo{'|'}1er Piso",
+            "old-mill-second-floor": "Molino Viejo{'|'}2do Piso",
+            "descent-floor-1": "Descenso{'|'}1er Piso",
+            "descent-floor-2": "Descenso{'|'}2do Piso",
+            "descent-floor-3": "Descenso{'|'}3er Piso",
+            "descent-floor-4": "Descenso{'|'}4to Piso",
+            "descent-floor-5": "Descenso{'|'}5to Piso",
+            "descent-floor-6": "Descenso{'|'}6to Piso",
+            "factory-floor-1": "Recinto de la Fábrica{'|'}1er Piso",
+            "factory-floor-2": "Recinto de la Fábrica{'|'}2do Piso",
+            "factory-floor-3": "Recinto de la Fábrica{'|'}3er Piso"
         },
         "death-factory": {
-            "test-facility-floor-1": "Instalación de Pruebas|1er Piso",
-            "test-facility-floor-2": "Instalación de Pruebas|2do Piso",
-            "test-facility-floor-3": "Instalación de Pruebas|3er Piso",
-            "test-facility-top": "Instalación de Pruebas|Parte Superior de la Instalación de Pruebas",
+            "test-facility-floor-1": "Instalación de Pruebas{'|'}1er Piso",
+            "test-facility-floor-2": "Instalación de Pruebas{'|'}2do Piso",
+            "test-facility-floor-3": "Instalación de Pruebas{'|'}3er Piso",
+            "test-facility-top": "Instalación de Pruebas{'|'}Parte Superior de la Instalación de Pruebas",
             "decontamination": "Descontaminación",
-            "rnd-b3": "I+D|B3",
-            "rnd-b1": "I+D|B1",
-            "rnd-floor-1": "I+D|1er Piso"
+            "rnd-b3": "I+D{'|'}B3",
+            "rnd-b1": "I+D{'|'}B1",
+            "rnd-floor-1": "I+D{'|'}1er Piso"
         },
         "fight-night": {
-            "arena-floor-1": "La Arena|1er Piso",
-            "arena-floor-2": "La Arena|2do Piso",
-            "arena-floor-3": "La Arena|3er Piso",
+            "arena-floor-1": "La Arena{'|'}1er Piso",
+            "arena-floor-2": "La Arena{'|'}2do Piso",
+            "arena-floor-3": "La Arena{'|'}3er Piso",
             "backstage": "Hangar del Patriota"
         },
         "attack-of-the-saints": {
-            "parking-floor-1": "Estacionamiento|1er Piso",
-            "parking-floor-2": "Estacionamiento|2do Piso",
+            "parking-floor-1": "Estacionamiento{'|'}1er Piso",
+            "parking-floor-2": "Estacionamiento{'|'}2do Piso",
             "reception": "Recepción",
             "cornfield": "Maizal"
         },
         "skurkys-law": {
-            "courthouse-floor-1": "Juzgado|1er Piso",
-            "courthouse-floor-2": "Juzgado|2do Piso",
+            "courthouse-floor-1": "Juzgado{'|'}1er Piso",
+            "courthouse-floor-2": "Juzgado{'|'}2do Piso",
             "holding-cells": "Posesión de Celdas",
-            "prison-floor-1": "Prisión|1er Piso",
-            "prison-floor-2": "Prisión|2do Piso"
+            "prison-floor-1": "Prisión{'|'}1er Piso",
+            "prison-floor-2": "Prisión{'|'}2do Piso"
         },
         "operation-sledgehammer": {
             "county-jail": "Cárcel del Condado",
             "outgunned": "Dominado",
             "burn": "Incendio",
-            "hope-fair-floor-1": "Feria de Hope|1er Piso",
-            "hope-fair-floor-2": "Feria de Hope|2do Piso"
+            "hope-fair-floor-1": "Feria de Hope{'|'}1er Piso",
+            "hope-fair-floor-2": "Feria de Hope{'|'}2do Piso"
         },
         "one-of-a-kind": {
-            "floor-1": "Tailor Shop|Basement",
-            "floor-2": "Tailor Shop|1st Floor"
+            "floor-1": "Tailor Shop{'|'}Basement",
+            "floor-2": "Tailor Shop{'|'}1st Floor"
         },
         "blackwater-park": {
             "blackwater-park": "Parque Blackwater",
-            "penthouse-floor-1": "Ático|1er Piso",
-            "penthouse-floor-2": "Ático|2do Piso"
+            "penthouse-floor-1": "Ático{'|'}1er Piso",
+            "penthouse-floor-2": "Ático{'|'}2do Piso"
         },
         "countdown": {
-            "roof-floor-1": "Techo de Blackwater|1er Piso",
-            "roof-floor-2": "Techo de Blackwater|2do Piso",
-            "roof-floor-3": "Techo de Blackwater|3er Piso"
+            "roof-floor-1": "Techo de Blackwater{'|'}1er Piso",
+            "roof-floor-2": "Techo de Blackwater{'|'}2do Piso",
+            "roof-floor-3": "Techo de Blackwater{'|'}3er Piso"
         },
         "absolution": {
             "cemetery-entrance": "Entrada al Cementerio",
@@ -507,8 +507,8 @@
     "hitman3": {
         "untouchable": {
             "lab": "Lab Area",
-            "pre-bar": "Militia Zone|Beginning to Bar",
-            "post-bar": "Militia Zone|After Bar to Offices",
+            "pre-bar": "Militia Zone{'|'}Beginning to Bar",
+            "post-bar": "Militia Zone{'|'}After Bar to Offices",
             "offices": "Offices"
         }
     }
