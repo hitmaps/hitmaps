@@ -27,21 +27,30 @@
                     </div>
                     <div class="col-sm-1"></div>
                     <div class="col-sm-3">
-                        <patron name="Some Random Person" tier="Assassin" legacy/>
+                        <patron name="Flo" tier="Master Assassin"/>
                     </div>
                     <div class="col-sm-1"></div>
                     <div class="col-sm-3">
-                        <patron name="ChromeX" tier="Assassin" legacy />
+                        <patron name="Some Random Person" tier="Assassin" legacy/>
                     </div>
                 </div>
                 <br>
                 <div class="row">
+                    <div class="col-sm-3">
+                        <patron name="ChromeX" tier="Assassin" legacy />
+                    </div>
+                    <div class="col-sm-1"></div>
                     <div class="col-sm-3">
                         <patron name="ThatObserver" tier="Assassin" legacy />
                     </div>
                     <div class="col-sm-1"></div>
                     <div class="col-sm-3">
                         <patron name="AgentSnail47" tier="Agent" legacy />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <patron name="ARcheR X" tier="Initiate" legacy />
                     </div>
                 </div>
             </div>
