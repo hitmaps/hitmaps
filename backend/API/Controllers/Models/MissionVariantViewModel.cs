@@ -11,6 +11,8 @@ public class MissionVariantViewModel
     public string Icon { get; set; } = null!;
     public string Slug { get; set; } = null!;
     public bool Default { get; set; }
+    public string TileUrl { get; set; } = null!;
+    public bool ShowOnLocationsScreen { get; set; }
 
     public static MissionVariantViewModel FromDbModel(MissionVariant variant)
     {
@@ -22,7 +24,9 @@ public class MissionVariantViewModel
             Visible = variant.Visible,
             Icon = variant.Icon,
             Slug = variant.Slug,
-            Default = variant.Default
+            Default = variant.Default,
+            TileUrl = variant.TileUrl,
+            ShowOnLocationsScreen = variant.ShowOnLocationsScreen
         };
     }
 }
