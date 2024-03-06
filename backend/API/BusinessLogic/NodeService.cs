@@ -31,6 +31,7 @@ public class NodeService : INodeService
             .Include(x => x.Mission)
             .Include(x => x.Variants)
             .Where(x => x.Mission.Id == missionData.Id)
+            .AsSplitQuery()
             .ToList();
         //@formatter:on
         var nodeCategories = dbContext.NodeCategories
