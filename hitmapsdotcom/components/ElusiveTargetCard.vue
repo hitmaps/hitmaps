@@ -25,7 +25,10 @@ const uuid = uuidv4();
 
 const briefingModal = ref(null);
 
-let carouselInterval = initCarouselInterval();
+let carouselInterval;
+onMounted(() => {
+    carouselInterval = initCarouselInterval();
+});
 
 function showBriefingModal(elusive) {
     briefingElusiveTarget.value = elusive;

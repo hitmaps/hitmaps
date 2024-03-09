@@ -47,7 +47,9 @@
                 <button class="navbar-toggler"
                         @click="showLocaleModal"
                         type="button">
-                    <country-flag :country="countryFlag" size="small" v-tooltip:top="$t('language-modal.change-language')" />
+                    <client-only>
+                        <country-flag :country="countryFlag" size="small" v-tooltip:top="$t('language-modal.change-language')" />
+                    </client-only>
                 </button>
             </div>
         </div>
@@ -65,7 +67,9 @@
                 </div>
                 <div class="control-buttons">
                     <control-button @click="showLocaleModal">
-                        <country-flag :country="countryFlag" size="small" v-tooltip:top="$t('language-modal.change-language')" />
+                        <client-only>
+                            <country-flag :country="countryFlag" size="small" v-tooltip:top="$t('language-modal.change-language')" />
+                        </client-only>
                     </control-button>
                     <template v-if="loggedIn">
                         <control-button v-if="showDebug()"

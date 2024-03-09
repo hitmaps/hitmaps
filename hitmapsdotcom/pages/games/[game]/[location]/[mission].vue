@@ -8,13 +8,9 @@ export default defineComponent({
         const config = useRuntimeConfig();
         const route = useRoute();
 
-        const gamePromise = useFetch(`${config.public.apiDomain}/api/games/${route.params.game}`);
-
-        const missionPromise = useFetch(`${config.public.apiDomain}/api/games/${route.params.game}` +
+        useFetch(`${config.public.apiDomain}/api/games/${route.params.game}` +
             `/locations/${route.params.location}` +
-            `/missions/${route.params.mission}`);
-
-        missionPromise.then(resp => {
+            `/missions/${route.params.mission}`).then(resp => {
             const ogImage = `${config.public.apiDomain}/api/games/${route.params.game}` +
                 `/locations/${route.params.location}` +
                 `/missions/${route.params.mission}/ogimage.png`;
@@ -31,26 +27,33 @@ export default defineComponent({
         });
 
         return {
-            gamePromise,
-            missionPromise,
             apiDomain: config.public.apiDomain
         };
     },
     mounted() {
         const config = this.$config;
+        const route = useRoute();
 
-        this.gamePromise.then(resp => {
-            this.game = resp.data.value;
+        const gamePromise = $fetch(`${config.public.apiDomain}/api/games/${route.params.game}`, {
+            server: false
         });
-        this.missionPromise.then(resp => {
-            this.mission = resp.data.value;
+        gamePromise.then(resp => {
+            this.game = resp;
+        });
+        const missionPromise = $fetch(`${config.public.apiDomain}/api/games/${route.params.game}` +
+            `/locations/${route.params.location}` +
+            `/missions/${route.params.mission}`, {
+            server: false
+        });
+        missionPromise.then(resp => {
+            this.mission = resp;
             this.currentFloor = this.mission.startingFloorNumber;
             this.currentVariant = this.$route.query.variant ?
                 this.mission.variants.find(v => v.slug === this.$route.query.variant) :
                 this.mission.variants.find(v => v.default);
         });
 
-        Promise.all([this.gamePromise, this.missionPromise]).then(_ => {
+        Promise.all([gamePromise, missionPromise]).then(_ => {
             this.metadataLoaded = true;
             //@formatter:off
             const nodesPromise = useFetch(
@@ -73,7 +76,7 @@ export default defineComponent({
                             maxZoom: this.mission.maxZoom,
                             minZoom: this.mission.minZoom,
                             crs: L.CRS.Simple,
-                            renderer: this.mission.svg ? L.svg() : L.canvas(),
+                            renderer: /*this.mission.svg ? L.svg() :*/ L.canvas(),
                             maxBounds: this.mapBounds,
                             layers: Object.values(this.mapLayers)
                         }).setView(L.latLng(this.mission.mapCenterLatitude, this.mission.mapCenterLongitude), this.mission.minZoom);
@@ -134,7 +137,7 @@ export default defineComponent({
                             5: '1.2em'
                         };
 
-                        $('.area-icon').css('font-size', fonts[zoomLevel]);
+                        document.querySelector('.area-icon').style.fontSize = fonts[zoomLevel];
                     });
                 });
             });

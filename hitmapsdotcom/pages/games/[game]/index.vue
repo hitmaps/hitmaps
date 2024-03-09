@@ -38,7 +38,7 @@ useSeoMeta({
                     </div>
                 </div>
                 <template v-else>
-                    <nav id="scrollspy" class="navbar locations"
+                    <nav class="navbar locations"
                          style="background: url('https://media.hitmaps.com/img/hitman3/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover">
                         <ul class="nav">
                             <li v-if="locations.length > 0" class="nav-item">
@@ -59,7 +59,7 @@ useSeoMeta({
                             </li>
                         </ul>
                     </nav>
-                    <div v-scrollspy="`#scrollspy`">
+                    <div>
                         <div v-for="location in locations" :key="location.id" class="location"
                              v-bind:style="{
                     background:

@@ -23,7 +23,55 @@ export default defineNuxtConfig({
             redirectOn: 'root'
         },
         strategy: 'no_prefix',
-        vueI18n: './i18n.config.ts'
+        langDir: 'locales',
+        locales: [
+            {
+                code: 'de-DE',
+                file: 'de-DE.json'
+            },
+            {
+                code: 'en-US',
+                file: 'en-US.json'
+            },
+            {
+                code: 'es-ES',
+                file: 'es-ES.json'
+            },
+            {
+                code: 'fr-FR',
+                file: 'fr-FR.json'
+            },
+            {
+                code: 'it-IT',
+                file: 'it-IT.json'
+            },
+            {
+                code: 'ja-JP',
+                file: 'ja-JP.json'
+            },
+            {
+                code: 'pl-PL',
+                file: 'pl-PL.json'
+            },
+            {
+                code: 'pt-BR',
+                file: 'pt-BR.json'
+            },
+            {
+                code: 'ru-RU',
+                file: 'ru-RU.json'
+            },
+            {
+                code: 'zh-CN',
+                file: 'zh-CN.json'
+            },
+            {
+                code: 'zh-TW',
+                file: 'zh-TW.json'
+            }
+        ],
+        vueI18n: './i18n.config.ts',
+        defaultLocale: 'en-US'
     },
     //@ts-ignore
     googleFonts: {

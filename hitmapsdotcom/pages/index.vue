@@ -313,10 +313,10 @@
                         <div class="col-sm-3">
                             <patron name="Ashton" tier="Silent Assassin"/>
                         </div>
-                    </div>
-                    <div class="col-sm-1"></div>
-                    <div class="col-sm-3">
-                        <patron name="Flo" tier="Master Assassin" />
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-3">
+                            <patron name="Flo" tier="Master Assassin" />
+                        </div>
                     </div>
                 </div>
             </div>
