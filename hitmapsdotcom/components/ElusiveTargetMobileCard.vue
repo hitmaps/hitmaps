@@ -50,7 +50,7 @@ function hideBriefingModal() {
                     <div class="text timer" :class="{ 'not-playable': new Date(elusiveTarget.beginningTime) > new Date() }">
                         <h4 class="target-arrives">{{ $t('elusive-target.target-arrives') }}</h4>
                         <h3>
-                            <countdown class="elusive-countdown" :date="new Date(elusiveTarget.beginningTime) >
+                            <countdown :date="new Date(elusiveTarget.beginningTime) >
                                         new Date()
                                             ? elusiveTarget.beginningTime
                                             : elusiveTarget.endingTime"

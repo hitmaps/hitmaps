@@ -1,7 +1,7 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import {useFirebaseApp} from "vuefire";
-import {getMessaging, getToken, Messaging} from "@firebase/messaging";
+import {getMessaging, getToken, type Messaging} from "@firebase/messaging";
 import {useAuthenticatedFetch} from "~/composables/useAuthenticatedFetch";
 
 export default defineComponent({
@@ -228,7 +228,7 @@ export default defineComponent({
                         state: subscribing ? 'SUBSCRIBING' : 'UNSUBSCRIBING',
                         topic: topic
                     }
-                }).then(res => {
+                }).then(_ => {
                     window.localStorage.setItem(`${this.token}|${topic}`, subscribing ? '1' : '0');
                     // Reset new vs previous
                     //region New

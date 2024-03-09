@@ -1,15 +1,20 @@
 <template>
-    <template v-if="days < 2">
+    <div :class="textClass" v-if="days < 2">
         {{ twoDigits(hours) }}:{{ twoDigits(minutes) }}:{{ twoDigits(seconds) }}
-    </template>
-    <template v-else>
+    </div>
+    <div :class="textClass" v-else>
         {{ $t('elusive-target.n-days', { days: days }) }}
-    </template>
+    </div>
 </template>
 
 <script>
 export default {
     props: {
+        textClass: {
+            type: String,
+            required: false,
+            default: ''
+        },
         date: {
             type: String,
             required: true,

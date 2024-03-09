@@ -537,8 +537,7 @@ export default {
                     variantIds: this.createEditNodeModel.variantIds
                 }
             }).then(resp => {
-                const response = resp.data.value;
-                this.$emit('item-created', response.data);
+                this.$emit('item-created', resp.data);
                 this.$toastr.s('Item saved!');
             }).catch(err => {
                 console.error(err);
@@ -563,8 +562,7 @@ export default {
                     variantIds: this.createEditNodeModel.variantIds
                 }
             }).then(resp => {
-                const response = resp.data.value;
-                this.$emit('item-updated', response.data);
+                this.$emit('item-updated', resp.data);
                 this.$toastr.s('Item updated!');
             }).catch(err => {
                 console.log(err);

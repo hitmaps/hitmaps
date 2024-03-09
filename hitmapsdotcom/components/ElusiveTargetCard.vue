@@ -74,7 +74,7 @@ function forceIndex(index, resetCarousel = true) {
                             </div>
                             <div class="text timer" :class="{ 'not-playable': new Date(selectedElusiveTarget.beginningTime) > new Date() }">
                                 <div class="target-arrives">{{ $t('elusive-target.target-arrives') }}</div>
-                                <countdown class="elusive-countdown" :date="new Date(selectedElusiveTarget.beginningTime) >
+                                <countdown text-class="elusive-countdown" :date="new Date(selectedElusiveTarget.beginningTime) >
                                     new Date()
                                         ? selectedElusiveTarget.beginningTime
                                         : selectedElusiveTarget.endingTime"

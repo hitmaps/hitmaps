@@ -56,19 +56,16 @@ export default defineComponent({
         Promise.all([gamePromise, missionPromise]).then(_ => {
             this.metadataLoaded = true;
             //@formatter:off
-            const nodesPromise = useFetch(
+            const nodesPromise = $fetch(
                 `${config.public.apiDomain}/api/games/${this.$route.params.game}`+
                 `/locations/${this.$route.params.location}`+
-                `/missions/${this.$route.params.mission}/nodes`, {
-                    lazy: true,
-                    server: false
-                }).then(resp => {
-                    this.topLevelCategories = resp.data.value.topLevelCategories;
-                    this.nodes = resp.data.value.nodes;
+                `/missions/${this.$route.params.mission}/nodes`).then(resp => {
+                    this.topLevelCategories = resp.topLevelCategories;
+                    this.nodes = resp.nodes;
                     this.nodes.forEach(node => {
                         this.buildNodeForMap(node);
                     });
-                    this.categories = resp.data.value.categories;
+                    this.categories = resp.categories;
                     this.mapLayers = this.buildMapLayers();
 
                     this.$nextTick(() => {
@@ -84,34 +81,25 @@ export default defineComponent({
                     });
                 });
 
-            const disguisesPromise = useFetch(
+            const disguisesPromise = $fetch(
                 `${config.public.apiDomain}/api/games/${this.$route.params.game}`+
                 `/locations/${this.$route.params.location}`+
-                `/missions/${this.$route.params.mission}/disguises`, {
-                    lazy: true,
-                    server: false
-                }).then(resp => this.disguises = resp.data.value.disguises);
+                `/missions/${this.$route.params.mission}/disguises`).then(resp => this.disguises = resp.disguises);
 
-            const ledgesPromise = useFetch(
+            const ledgesPromise = $fetch(
                 `${config.public.apiDomain}/api/games/${this.$route.params.game}`+
                 `/locations/${this.$route.params.location}`+
-                `/missions/${this.$route.params.mission}/ledges`, {
-                    lazy: true,
-                    server: false
-                }).then(resp => {
-                    this.ledges = resp.data.value.ledges;
+                `/missions/${this.$route.params.mission}/ledges`).then(resp => {
+                    this.ledges = resp.ledges;
                     this.ledges.forEach(ledge => this.buildLedgeForMap(ledge));
 
                     this.$nextTick(_ => this.ledges.forEach(ledge => ledge.polyline.addTo(this.map)));
                 });
-            const foliagePromise = useFetch(
+            const foliagePromise = $fetch(
                 `${config.public.apiDomain}/api/games/${this.$route.params.game}`+
                 `/locations/${this.$route.params.location}`+
-                `/missions/${this.$route.params.mission}/foliage`, {
-                    lazy: true,
-                    server: false
-                }).then(resp => {
-                    this.foliage = resp.data.value.foliage;
+                `/missions/${this.$route.params.mission}/foliage`).then(resp => {
+                    this.foliage = resp.foliage;
                     this.foliage.forEach(foliage => this.buildFoliageForMap(foliage));
 
                     this.$nextTick(_ => this.foliage.forEach(foliage => foliage.polygon.addTo(this.map)));
@@ -631,7 +619,7 @@ export default defineComponent({
                     body: data
                 }).then(resp => {
                     this.vertices = [];
-                    this.ledges.push(this.buildLedgeForMap(resp.data.value.data));
+                    this.ledges.push(this.buildLedgeForMap(resp.data));
                     this.$toastr.s('Ledge saved!');
                     this.map.removeLayer(this.workingLayer);
                     this.workingLayer = null;
@@ -646,7 +634,7 @@ export default defineComponent({
                     body: data
                 }).then(resp => {
                     this.vertices = [];
-                    this.foliage.push(this.buildFoliageForMap(resp.data.value.data));
+                    this.foliage.push(this.buildFoliageForMap(resp.data));
                     this.$toastr.s('Foliage saved!');
                     this.map.removeLayer(this.workingLayer);
                     this.workingLayer = null;
@@ -664,7 +652,7 @@ export default defineComponent({
                     body: data
                 }).then(resp => {
                     this.vertices = [];
-                    this.disguiseAreas[this.currentDisguise.id].push(this.buildDisguiseAreaForMap(resp.data.value.data));
+                    this.disguiseAreas[this.currentDisguise.id].push(this.buildDisguiseAreaForMap(resp.data));
                     this.$toastr.s('Disguise area saved!');
                     this.map.removeLayer(this.workingLayer);
                     this.workingLayer = null;
@@ -721,7 +709,7 @@ export default defineComponent({
                 `/missions/${this.$route.params.mission}` +
                 `/disguise-areas/${disguise.id}`)
                 .then(resp => {
-                    this.disguiseAreas[disguise.id] = resp.data.value.disguiseAreas;
+                    this.disguiseAreas[disguise.id] = resp.disguiseAreas;
                     this.disguiseAreas[disguise.id].forEach(area => this.buildDisguiseAreaForMap(area));
                     this.currentDisguise = disguise;
                 }).catch(err => {

@@ -15,7 +15,7 @@
     "@types/bootstrap": "^5.2.6",
     "@types/node": "^18.16.19",
     "nuxt": "^3.6.3",
-    "nuxt-icon": "^0.5.0",
+    "nuxt-icon": "^0.6.9",
     "nuxt3-leaflet": "^1.0.12",
     "typescript": "^5.1.6",
     "vue-country-flag-next": "2.3.2"
@@ -25,14 +25,14 @@
     "@popperjs/core": "^2.11.8",
     "axios": "^1.6.2",
     "bootstrap": "5.3.3",
-    "firebase": "10.5.2",
+    "firebase": "10.8.1",
     "just-clone": "6.2.0",
     "moment-timezone": "^0.5.45",
-    "nuxt-vuefire": "0.4.0",
+    "nuxt-vuefire": "1.0.2",
     "sass": "^1.69.5",
     "uuid": "^9.0.0",
     "vue-toastr": "3.0.5",
     "vue3-cookies": "^1.0.6",
-    "vuefire": "3.1.17"
+    "vuefire": "3.1.23"
   }
 }

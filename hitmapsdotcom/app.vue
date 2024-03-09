@@ -32,25 +32,25 @@
                 </div>
                 <div class="col-md-6 text-end">
                     <nuxt-link to="/about">
-                        <footer-icon-stack icon="fa6-solid:circle-info" :tooltip-text="$t('footer.about')"/>
+                        <footer-icon-stack icon-name="fa6-solid:circle-info" :tooltip-text="$t('footer.about')"/>
                     </nuxt-link>
                     <a href="https://discord.gg/RssFsajjjX" target="_blank">
-                        <footer-icon-stack icon="fa6-brands:discord" :tooltip-text="$t('footer.join-the-discord')"/>
+                        <footer-icon-stack icon-name="fa6-brands:discord" :tooltip-text="$t('footer.join-the-discord')"/>
                     </a>
                     <a
                         href="https://hitmanstat.us"
                         target="_blank"
                         data-toggle="tooltip">
-                        <footer-icon-stack icon="fa6-solid:user-tie" :tooltip-text="$t('footer.hitman-status')"/>
+                        <footer-icon-stack icon-name="fa6-solid:user-tie" :tooltip-text="$t('footer.hitman-status')"/>
                     </a>
                     <a href="https://twitter.com/hitmapsdotcom" target="_blank">
-                        <footer-icon-stack icon="fa6-brands:x-twitter" :tooltip-text="$t('footer.twitter')"/>
+                        <footer-icon-stack icon-name="fa6-brands:x-twitter" :tooltip-text="$t('footer.twitter')"/>
                     </a>
                     <a href="https://www.ko-fi.com/mrmike227"
                        target="_blank"
                        data-toggle="tooltip"
                        class="patreon-button">
-                        <footer-icon-stack icon="cib:ko-fi" :tooltip-text="$t('footer.ko-fi')"/>
+                        <footer-icon-stack icon-name="cib:ko-fi" :tooltip-text="$t('footer.ko-fi')"/>
                     </a>
                 </div>
             </div>

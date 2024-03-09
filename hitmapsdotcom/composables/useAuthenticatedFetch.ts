@@ -33,5 +33,5 @@ export function useAuthenticatedFetch<T> (url: string | (() => string), _options
     const params = defu(_options, defaults);
 
     // @ts-ignore
-    return useFetch(url, params)
+    return $fetch(url, params)
 }

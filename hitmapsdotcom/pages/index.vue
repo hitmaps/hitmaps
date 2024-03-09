@@ -351,7 +351,7 @@ const { pending: tournamentPending, data: tournamentData } = await useLazyFetch(
     server: false
 });
 watch(tournamentData, (newData) => {
-    tournamentsInfo.value = new TournamentsInfo(newData)
+    tournamentsInfo.value = new TournamentsInfo(newData);
 });
 
 const notificationModal = ref(null);

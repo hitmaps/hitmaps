@@ -1,10 +1,10 @@
-<script setup lang="ts">
+<script setup>
     const props = defineProps({
         tooltipText: {
             type: String,
             required: true
         },
-        icon: {
+        iconName: {
             type: String,
             required: true
         },
@@ -19,8 +19,8 @@
 <template>
     <div class="icon-stack" v-tooltip:top="tooltipText">
         <icon class="square icon" name="fa6-solid:square"/>
-        <div class="inner icon" :class="props.inverse ? 'inverse' : ''">
-            <icon :name="props.icon"/>
+        <div class="inner icon" :class="inverse ? 'inverse' : ''">
+            <icon :name="iconName"/>
         </div>
     </div>
 </template>

@@ -89,7 +89,7 @@ export default {
                 method: 'POST',
                 body: data
             }).then(resp => {
-                this.$emit('replace-disguise-areas', resp.data.value);
+                this.$emit('replace-disguise-areas', resp);
                 this.$toastr.s('Disguise areas copied!');
             }).catch(err => {
                 console.error(err);
