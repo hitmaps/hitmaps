@@ -12,7 +12,7 @@ const props = defineProps({
 defineEmits(['notificationModal']);
 
 const { t } = useI18n();
-const selectedElusiveTarget = ref(props.elusiveTargets[0]);
+const selectedElusiveTarget = ref(props.elusiveTargets.length ? props.elusiveTargets[0] : getComingSoonElusive());
 const mobileElusiveTarget = computed(() => [selectedElusiveTarget]);
 const selectedElusiveTargetIndex = ref(0);
 const briefingElusiveTarget = ref({
@@ -55,6 +55,20 @@ function forceIndex(index, resetCarousel = true) {
     selectedElusiveTarget.value = props.elusiveTargets[selectedElusiveTargetIndex.value];
 }
 
+function getComingSoonElusive() {
+    return {
+        comingSoon: true,
+        name: t('elusive-target.coming-soon'),
+        missionUrl: null,
+        briefing: null,
+        videoBriefingUrl: null,
+        beginningTime: null,
+        endingTime: null,
+        tileUrl: 'https://media.hitmaps.com/img/hitman3/actors/elusive-targets/coming-soon.jpg',
+        reactivated: false
+    }
+}
+
 
 </script>
 
@@ -81,7 +95,8 @@ function forceIndex(index, resetCarousel = true) {
                                 />
 
                             </div>
-                            <game-icon @click="showBriefingModal(selectedElusiveTarget)"
+                            <game-icon v-if="selectedElusiveTarget.briefing"
+                                       @click="showBriefingModal(selectedElusiveTarget)"
                                        onclick="return false"
                                        icon="background"
                                        font-style="normal"
