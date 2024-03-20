@@ -27,7 +27,9 @@ const briefingModal = ref(null);
 
 let carouselInterval;
 onMounted(() => {
-    carouselInterval = initCarouselInterval();
+    if (props.elusiveTargets.length) {
+        carouselInterval = initCarouselInterval();
+    }
 });
 
 function showBriefingModal(elusive) {
