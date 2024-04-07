@@ -50,6 +50,10 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-3">
+                        <patron name="illum503" tier="Agent" />
+                    </div>
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-3">
                         <patron name="ARcheR X" tier="Initiate" legacy />
                     </div>
                 </div>
