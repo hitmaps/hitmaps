@@ -565,5 +565,97 @@
             "post-bar": "Militia Zone{'|'}After Bar to Offices",
             "offices": "Offices"
         }
+    },
+    "blood-money": {
+        "death-of-a-showman": {
+            "inside": "Amusement Park{'|'}Inside",
+            "outside": "Amusement Park{'|'}Outside"
+        },
+        "a-vintage-year": {
+            "hanger": "Hanger",
+            "hacienda-1": "Hacienda{'|'}1st Floor",
+            "hacienda-2": "Hacienda{'|'}2nd Floor",
+            "guard-hanger": "Guard House Hanger",
+            "winery-cellar": "Winery Cellar",
+            "outside": "Outside"
+        },
+        "curtains-down": {
+            "basement": "Opera House{'|'}Basement",
+            "first-floor": "Opera House{'|'}1st Floor",
+            "second-floor": "Opera House{'|'}2nd Floor",
+            "third-floor": "Opera House{'|'}3rd Floor"
+        },
+        "flatline": {
+            "outside": "Outside",
+            "main-building-basement": "Main Building{'|'}Basement",
+            "main-building-first": "Main Building{'|'}1st Floor",
+            "main-building-second": "Main Building{'|'}2nd Floor",
+            "medical-wing": "Medical Wing{'|'}Medical Wing",
+            "medical-wing-tunnel": "Medical Wing{'|'}Tunnel"
+        },
+        "a-new-life": {
+            "outside": "Neighborhood{'|'}Outside",
+            "basement": "Neighborhood{'|'}Basement",
+            "first": "Neighborhood{'|'}1st Floor",
+            "second": "Neighborhood{'|'}2nd Floor"
+        },
+        "murder-of-crows": {
+            "streets": "Streets and Back Alleys",
+            "basement": "Shops and Restauransts{'|'}Basement",
+            "first": "Shops and Restauransts{'|'}1st Floor",
+            "second": "Shops and Restauransts{'|'}2nd Floor",
+            "third": "Shops and Restauransts{'|'}3rd Floor"
+        },
+        "you-better-watch-out": {
+            "pier-outside": "Pier{'|'}Outside",
+            "pier-inside": "Pier{'|'}Inside",
+            "main-house-first": "Main House{'|'}1st Floor",
+            "main-house-second": "Main House{'|'}2nd Floor",
+            "main-house-balcony": "Main House{'|'}Balcony",
+            "helipad": "Helipad",
+            "staff-floor": "Staff{'|'}Staff Floor",
+            "staff-terrace": "Staff{'|'}Staff Terrace",
+            "studio-floor": "Studio Floor"
+        },
+        "death-on-the-mississippi": {
+            "first-deck": "Decks{'|'}1st Deck, Engine Room",
+            "second-deck": "Decks{'|'}2nd Deck, Staff Quarters",
+            "third-deck": "Decks{'|'}3rd Deck, Cabin Deck",
+            "fourth-deck": "Decks{'|'}4th Deck, Restaurant Deck",
+            "fifth-deck": "Decks{'|'}5th Deck, Gators Private Deck"
+        },
+        "till-death-do-us-part": {
+            "outside": "Outside",
+            "first": "Mansion{'|'}1st Floor",
+            "second": "Mansion{'|'}2nd Floor",
+            "attic": "Mansion{'|'}Attic"
+        },
+        "a-house-of-cards": {
+            "casino": "Casino",
+            "outside": "Outside",
+            "lobby": "Lobby{'|'}1st Floor",
+            "seventh": "Casino{'|'}7th Floor",
+            "eighth": "Casino{'|'}8th Floor"
+        },
+        "a-dance-with-the-devil": {
+            "basement": "Basement",
+            "ground-floor": "Ground Floor and Garage",
+            "atrium": "Atrium",
+            "top-floor": "Top Floor"
+        },
+        "amendment-xxv": {
+            "east-wing-outside": "East Wing{'|'}Outside",
+            "east-wing-inside": "East Wing{'|'}Inside",
+            "east-wing-rooftop": "East Wing{'|'}Rooftop",
+            "main-building-first": "Main Building{'|'}1st Floor",
+            "main-building-second": "Main Building{'|'}2nd Floor",
+            "west-wing-outside": "West Wing{'|'}Outside",
+            "west-wing-first": "West Wing{'|'}1st Floor",
+            "west-wing-second": "West Wing{'|'}2nd Floor",
+            "west-wing-rooftop": "West Wing{'|'}Rooftop"
+        },
+        "requiem": {
+            "church-grounds": "Church Grounds"
+        }
     }
 }
