@@ -810,7 +810,7 @@ export default defineComponent({
                           :current-variant="currentVariant"
                           @change-floor="onChangeFloor"
             />
-            <div :class="`hm-editor-${editorState.toLowerCase()}`" id="map"></div>
+            <div :class="`hm-editor-${editorState.toLowerCase()} game-${game?.slug}`" id="map"></div>
             <sidebar v-if="metadataLoaded && mapDataLoaded"
                      ref="sidebar"
                      :game="game"
@@ -878,6 +878,10 @@ export default defineComponent({
     top: 0;
     width: 100%;
     height: 100%;
+
+    &.game-blood-money {
+        background: #3F4E47;
+    }
 
     &.hm-editor-items {
         cursor: crosshair !important;
