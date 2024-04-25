@@ -647,6 +647,7 @@
             "east-wing-outside": "East Wing{'|'}Outside",
             "east-wing-inside": "East Wing{'|'}Inside",
             "east-wing-rooftop": "East Wing{'|'}Rooftop",
+            "main-building-basement": "Main Building{'|'}Basement",
             "main-building-first": "Main Building{'|'}1st Floor",
             "main-building-second": "Main Building{'|'}2nd Floor",
             "west-wing-outside": "West Wing{'|'}Outside",
