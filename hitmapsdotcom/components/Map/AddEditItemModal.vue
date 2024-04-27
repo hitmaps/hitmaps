@@ -61,6 +61,30 @@
                                         :elements="icons" />
                     </div>
                 </div>
+                <div v-if="pickPassageDestinationAllowed">
+                    <div class="form-group row">
+                        <label :for="`${uid}-destination-floor`" class="col-sm-2 col-form-label">
+                            {{ $t('map.destination-floor') }}
+                        </label>
+                        <div class="col-sm-10">
+                            <select name="destination-floor"
+                                    :id="`${uid}-destination-floor`"
+                                    v-model="createEditNodeModel.passageDestinationFloor"
+                                    class="form-select">
+                                <option value="">
+                                    -- {{ $t('map.none') }} --
+                                </option>
+                                <option v-for="floorInfo in floorNames" :value="floorInfo.index" :disabled="floorInfo.index === currentLevel">
+                                    <template v-if="floorInfo.header">{{ floorInfo.header }} /</template>
+                                    {{ floorInfo.value }}
+                                </option>
+                            </select>
+                            <small class="form-text text-muted">
+                                {{ $t('map.destination-floor-note') }}
+                            </small>
+                        </div>
+                    </div>
+                </div>
                 <div v-if="currentCategory">
                     <div class="form-group row" v-if="currentCategory.element.requireName">
                         <label :for="`${uid}-name`" class="col-sm-2 col-form-label">
@@ -273,7 +297,8 @@ export default {
                 targetAction: '',
                 image: '',
                 notes: [],
-                variantIds: []
+                variantIds: [],
+                passageDestinationFloor: ''
             },
             createEditNodeModel: {
                 category: null,
@@ -283,7 +308,8 @@ export default {
                 targetAction: '',
                 image: '',
                 notes: [],
-                variantIds: []
+                variantIds: [],
+                passageDestinationFloor: ''
             },
             groupedCategories: [],
             icons: [],
@@ -292,7 +318,8 @@ export default {
             selectedTemplate: null,
             currentCategory: null,
             previousCategory: null,
-            uid: this.uuid
+            uid: this.uuid,
+            floorNames: {}
         }
     },
     mounted() {
@@ -344,6 +371,7 @@ export default {
 
             this.templates = dropdownGroups;
         });
+        this.buildLevelNames();
     },
     computed: {
         pickIconAllowed() {
@@ -355,9 +383,54 @@ export default {
                 'ledge',
                 'foliage',
                 'starting-location'].includes(this.currentCategory.element.subgroup);
+        },
+        pickPassageDestinationAllowed() {
+            if (!this.currentCategory) {
+                return false;
+            }
+
+            return ['Stairwell', 'Passage', 'Ways Up/Down'].includes(this.currentCategory.element.group);
         }
     },
     methods: {
+        buildLevelNames() {
+            if (this.mission === undefined) {
+                console.error('RIP');
+                return;
+            }
+
+            this.floorNames = {};
+            for (let i = this.mission.highestFloorNumber; i >= this.mission.lowestFloorNumber; i--) {
+                const floorName = this.mission.floorNames.find(x => x.floorNumber === i);
+                if (floorName) {
+                    this.floorNames[i] = {
+                        index: i,
+                        header: this.getFloorHeader(this.$t(floorName.nameKey)),
+                        value: this.getFormattedFloorName(this.$t(floorName.nameKey)),
+                    }
+                } else {
+                    this.floorNames[i] = {
+                        index: i,
+                        header: undefined,
+                        value: this.$t('map.level-number', { levelNumber: i })
+                    }
+                }
+            }
+        },
+        getFloorHeader(level) {
+            if (level.includes('|')) {
+                return level.split('|')[0];
+            }
+
+            return null;
+        },
+        getFormattedFloorName(level) {
+            if (level.includes('|')) {
+                return level.split('|')[1];
+            }
+
+            return level;
+        },
         buildTemplateElements() {
             const dropdownGroups = [];
             for (const [key, items] of Object.entries(this.templates)) {
@@ -433,6 +506,7 @@ export default {
                     }
                 });
                 this.createEditNodeModel.variantIds = this.node.variants;
+                this.createEditNodeModel.passageDestinationFloor = this.node.passageDestinationFloor ?? '';
             }
         },
         selectCategory() {
@@ -447,6 +521,9 @@ export default {
                 ((this.previousCategory.element.requireAction !== this.currentCategory.element.requireAction) ||
                     (this.previousCategory.element.requireTarget !== this.currentCategory.element.requireTarget))) {
                 this.createEditNodeModel.targetAction = '';
+            }
+            if (!this.pickPassageDestinationAllowed) {
+                this.createEditNodeModel.passageDestinationFloor = '';
             }
             this.selectedIcon = this.icons.flatMap(x => x.groupItems).find(x => x.value === this.createEditNodeModel.icon);
             this.previousCategory = this.currentCategory;
@@ -534,7 +611,10 @@ export default {
                     longitude: this.clickedPoint.lng,
                     image: this.createEditNodeModel.image,
                     notes: this.createEditNodeModel.notes,
-                    variantIds: this.createEditNodeModel.variantIds
+                    variantIds: this.createEditNodeModel.variantIds,
+                    passageDestinationFloor: this.createEditNodeModel.passageDestinationFloor === '' ?
+                        null :
+                        parseInt(this.createEditNodeModel.passageDestinationFloor)
                 }
             }).then(resp => {
                 this.$emit('item-created', resp.data);
@@ -559,7 +639,8 @@ export default {
                     longitude: this.node.longitude,
                     image: this.createEditNodeModel.image,
                     notes: this.createEditNodeModel.notes,
-                    variantIds: this.createEditNodeModel.variantIds
+                    variantIds: this.createEditNodeModel.variantIds,
+                    passageDestinationFloor: this.createEditNodeModel.passageDestinationFloor === '' ? null : parseInt(this.createEditNodeModel.passageDestinationFloor)
                 }
             }).then(resp => {
                 this.$emit('item-updated', resp.data);
