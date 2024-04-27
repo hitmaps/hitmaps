@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections;
+using System.Globalization;
 using API.Controllers.RequestModels.Nodes;
 using DataAccess.Data;
 using DataAccess.Data.Models.EF;
@@ -72,6 +73,8 @@ public class NodeService : INodeService
             Text = x.Text!,
             Type = x.Type
         }).ToList();
+        node.PassageDestinationFloor = NodeAllowsPassageDestinationFloor(node) ? nodeModel.PassageDestinationFloor : null;
+        node.CreatedAt = DateTime.UtcNow;
         
         if (node.Image != null && !node.Image.StartsWith("https://media.hitmaps.com"))
         {
@@ -81,6 +84,13 @@ public class NodeService : INodeService
         dbContext.Update(node);
         dbContext.SaveChanges();
         return node;
+    }
+
+    private static bool NodeAllowsPassageDestinationFloor(Node node)
+    {
+        var allowedGroups = new List<string> { "Stairwell", "Ways Up/Down", "Passage" };
+
+        return allowedGroups.Contains(node.Group);
     }
 
     public Node EditNode(int nodeId, CreateEditNodeModel editNodeModel)
