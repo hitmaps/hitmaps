@@ -275,8 +275,11 @@
             "Navigation|Exit Location": "Exit Location",
             "Navigation|Agency Pickup": "Agency Pickup",
             "Navigation|Stairwell": "Stairwell",
+            "Navigation|Stairwell-with-destination": "Stairwell to {destination}",
             "Navigation|Passage": "Passage",
+            "Navigation|Passage-with-destination": "Passage to {destination}",
             "Navigation|Ways Up/Down": "Ways Up/Down",
+            "Navigation|Ways Up/Down-with-destination": "Ways Up/Down to {destination}",
             "Navigation|Ledge": "Ledge",
             "Navigation|Foliage": "Foliage",
             "Navigation|Area": "Area",
@@ -324,6 +327,8 @@
         "blank-notes": "Any notes with blank text will not be added to the node",
         "category": "Category",
         "icon": "Icon",
+        "destination-floor": "Destination Floor",
+        "destination-floor-note": "If this stairwell, passage, or way up/down results on 47 being on a different floor, select the destination floor.",
         "name": "Name",
         "image-url": "Image URL",
         "image-url-note": "Images must be linked to https://media.hitmaps.com",
@@ -363,7 +368,8 @@
         "other-variants": "Other Mission Variants",
         "convert-to-x": "Convert to {type}",
         "freelancer-note": "Due to the random nature of some item spawns, your game may only contain some Freelancer-specific items mapped.",
-        "includes-freelancer": "Includes Freelancer"
+        "includes-freelancer": "Includes Freelancer",
+        "jump-to-floor": "Jump to {floor}"
     },
     "profile": {
         "profile": "Profile",

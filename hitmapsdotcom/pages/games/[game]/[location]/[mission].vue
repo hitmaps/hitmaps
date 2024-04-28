@@ -55,6 +55,7 @@ export default defineComponent({
 
         Promise.all([gamePromise, missionPromise]).then(_ => {
             this.metadataLoaded = true;
+            this.buildLevelNames();
             //@formatter:off
             const nodesPromise = $fetch(
                 `${config.public.apiDomain}/api/games/${this.$route.params.game}`+
@@ -125,7 +126,10 @@ export default defineComponent({
                             5: '1.2em'
                         };
 
-                        document.querySelector('.area-icon').style.fontSize = fonts[zoomLevel];
+                        const areas = document.querySelector('.area-icon');
+                        if (areas) {
+                            areas.style.fontSize = fonts[zoomLevel];
+                        }
                     });
                 });
             });
@@ -144,6 +148,7 @@ export default defineComponent({
             disguiseAreas: {},
             ledges: [],
             foliage: [],
+            floorNames: {},
             //region Map-specific
             currentFloor: 0,
             map: null,
@@ -178,8 +183,12 @@ export default defineComponent({
                     id: node.id
                 },
                 riseOnHover: true
-            }).on('click', _ => {
-                this.renderItemDetailsModal(node);
+            }).on('click', e => {
+                if (node.passageDestinationFloor !== null && this.editorState === 'OFF' && e.originalEvent.pointerType === 'mouse') {
+                    this.onChangeFloor(node.passageDestinationFloor);
+                } else {
+                    this.renderItemDetailsModal(node);
+                }
             }).on('dragend', _ => {
                 this.nodeForMoving = node;
                 this.$refs.moveNodeModal.showModal();
@@ -363,6 +372,26 @@ export default defineComponent({
             switch (node.subgroup) {
                 case 'up-stair':
                     tooltip = this.$t('map.groups.Navigation|Stairwell');
+
+                    if (node.passageDestinationFloor !== null) {
+                        const floorName = this.floorNames[node.passageDestinationFloor];
+                        const destination = floorName.header ? `${floorName.header} / ${floorName.value}` : floorName.value;
+                        tooltip = this.$t('map.groups.Navigation|Stairwell-with-destination', { destination: destination});
+                    }
+                    break;
+                case 'up-pipe':
+                    if (node.passageDestinationFloor !== null) {
+                        const floorName = this.floorNames[node.passageDestinationFloor];
+                        const destination = floorName.header ? `${floorName.header} / ${floorName.value}` : floorName.value;
+                        tooltip = this.$t('map.groups.Navigation|Ways Up/Down-with-destination', { destination: destination});
+                    }
+                    break;
+                case 'passage':
+                    if (node.passageDestinationFloor !== null) {
+                        const floorName = this.floorNames[node.passageDestinationFloor];
+                        const destination = floorName.header ? `${floorName.header} / ${floorName.value}` : floorName.value;
+                        tooltip = this.$t('map.groups.Navigation|Passage-with-destination', { destination: destination});
+                    }
                     break;
                 case 'blend-in':
                     tooltip = node.name === 'Any Disguise' ?
@@ -397,6 +426,44 @@ export default defineComponent({
                 .replace(/>/g, "&gt;")
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;"));
+        },
+        buildLevelNames() {
+            if (this.mission === undefined) {
+                console.error('RIP');
+                return;
+            }
+
+            this.floorNames = {};
+            for (let i = this.mission.highestFloorNumber; i >= this.mission.lowestFloorNumber; i--) {
+                const floorName = this.mission.floorNames.find(x => x.floorNumber === i);
+                if (floorName) {
+                    this.floorNames[i] = {
+                        index: i,
+                        header: this.getFloorHeader(this.$t(floorName.nameKey)),
+                        value: this.getFormattedFloorName(this.$t(floorName.nameKey)),
+                    }
+                } else {
+                    this.floorNames[i] = {
+                        index: i,
+                        header: undefined,
+                        value: this.$t('map.level-number', { levelNumber: i })
+                    }
+                }
+            }
+        },
+        getFloorHeader(level) {
+            if (level.includes('|')) {
+                return level.split('|')[0];
+            }
+
+            return null;
+        },
+        getFormattedFloorName(level) {
+            if (level.includes('|')) {
+                return level.split('|')[1];
+            }
+
+            return level;
         },
         renderItemDetailsModal(node) {
             this.nodeForModal = node;
@@ -850,9 +917,11 @@ export default defineComponent({
                         :logged-in="loggedIn"
                         :game="game"
                         :editor-state="editorState"
+                        :floor-names="floorNames"
                         ref="nodePopup"
                         @delete-node="deleteNode"
-                        @edit-node="prepareEditor" />
+                        @edit-node="prepareEditor"
+                        @change-floor="onChangeFloor" />
             <add-edit-item-modal ref="addEditItemModal"
                                  v-if="mission"
                                  :top-level-categories="topLevelCategories"
