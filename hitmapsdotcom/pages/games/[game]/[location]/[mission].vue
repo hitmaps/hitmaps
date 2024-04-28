@@ -183,8 +183,8 @@ export default defineComponent({
                     id: node.id
                 },
                 riseOnHover: true
-            }).on('click', _ => {
-                if (node.passageDestinationFloor !== null && this.editorState === 'OFF') {
+            }).on('click', e => {
+                if (node.passageDestinationFloor !== null && this.editorState === 'OFF' && e.originalEvent.pointerType === 'mouse') {
                     this.onChangeFloor(node.passageDestinationFloor);
                 } else {
                     this.renderItemDetailsModal(node);
@@ -917,9 +917,11 @@ export default defineComponent({
                         :logged-in="loggedIn"
                         :game="game"
                         :editor-state="editorState"
+                        :floor-names="floorNames"
                         ref="nodePopup"
                         @delete-node="deleteNode"
-                        @edit-node="prepareEditor" />
+                        @edit-node="prepareEditor"
+                        @change-floor="onChangeFloor" />
             <add-edit-item-modal ref="addEditItemModal"
                                  v-if="mission"
                                  :top-level-categories="topLevelCategories"

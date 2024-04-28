@@ -33,6 +33,10 @@
             </div>
         </div>
         <template v-slot:modal-footer>
+            <game-button v-if="node && node.passageDestinationFloor !== null" @click="jumpFloor">
+                <game-icon icon="arrow-right" font-style="normal"/>
+                {{ $t('map.jump-to-floor', { floor: floorNameDisplay }) }}
+            </game-button>
             <template v-if="loggedIn && editorState === 'ITEMS'">
                 <div class="edit-delete-buttons">
                     <div class="edit">
@@ -71,6 +75,7 @@ export default {
     props: {
         game: Object,
         node: Object,
+        floorNames: Object,
         loggedIn: Boolean,
         editorState: String
     },
@@ -186,6 +191,11 @@ export default {
                 default:
                     return 'corrupt';
             }
+        },
+        floorNameDisplay() {
+            const floorName = this.floorNames[this.node.passageDestinationFloor];
+
+            return floorName.header ? `${floorName.header} / ${floorName.value}` : floorName.value;
         }
     },
     methods: {
@@ -226,6 +236,10 @@ export default {
         },
         hideModal() {
             this.$refs['popover-modal'].hideModal();
+        },
+        jumpFloor() {
+            this.$emit('change-floor', this.node.passageDestinationFloor);
+            this.hideModal();
         }
     }
 }
