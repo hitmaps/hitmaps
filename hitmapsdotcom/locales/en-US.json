@@ -607,10 +607,10 @@
         },
         "murder-of-crows": {
             "streets": "Streets and Back Alleys",
-            "basement": "Shops and Restauransts{'|'}Basement",
-            "first": "Shops and Restauransts{'|'}1st Floor",
-            "second": "Shops and Restauransts{'|'}2nd Floor",
-            "third": "Shops and Restauransts{'|'}3rd Floor"
+            "basement": "Shops and Restaurants{'|'}Basement",
+            "first": "Shops and Restaurants{'|'}1st Floor",
+            "second": "Shops and Restaurants{'|'}2nd Floor",
+            "third": "Shops and Restaurants{'|'}3rd Floor"
         },
         "you-better-watch-out": {
             "pier-outside": "Pier{'|'}Outside",
