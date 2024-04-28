@@ -578,11 +578,11 @@
             "outside": "Amusement Park{'|'}Outside"
         },
         "a-vintage-year": {
-            "hanger": "Hanger",
+            "hangar": "Hangar",
             "hacienda-1": "Hacienda{'|'}1st Floor",
             "hacienda-2": "Hacienda{'|'}2nd Floor",
-            "guard-hanger": "Guard House Hanger",
-            "winery-cellar": "Winery Cellar",
+            "guard-house": "Guard House",
+            "wine-cellar": "Wine Cellar",
             "outside": "Outside"
         },
         "curtains-down": {
