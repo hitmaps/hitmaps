@@ -18,6 +18,7 @@ public class NodeViewModel
     public List<NodeNoteViewModel> Notes { get; set; } = new();
     public string? Image { get; set; }
     public int Quantity { get; set; }
+    public int? PassageDestinationFloor { get; set; }
     public bool Searchable { get; set; }
     public List<int> Variants { get; set; } = new();
 
@@ -39,6 +40,7 @@ public class NodeViewModel
             Notes = node.Notes.Select(NodeNoteViewModel.FromDbModel).ToList(),
             Image = node.Image,
             Quantity = node.Quantity,
+            PassageDestinationFloor = node.PassageDestinationFloor,
             Searchable = node.Searchable,
             Variants = node.Variants.Select(x => x.Id).ToList()
         };

@@ -28,6 +28,7 @@ public class Node
     [MaxLength(255)]
     public string? Image { get; set; }
     public int Quantity { get; set; }
+    public int? PassageDestinationFloor { get; set; }
     public List<MissionVariant> Variants { get; set; } = new();
     public List<NodeNote> Notes { get; set; } = new();
 }

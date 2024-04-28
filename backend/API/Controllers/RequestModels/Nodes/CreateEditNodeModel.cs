@@ -12,6 +12,7 @@ public class CreateEditNodeModel
     public string? TargetAction { get; set; }
     public string? Image { get; set; }
     public int? Quantity { get; set; }
+    public int? PassageDestinationFloor { get; set; }
     public List<int> VariantIds { get; set; } = new();
     public List<NoteModel> Notes { get; set; } = new();
 }
