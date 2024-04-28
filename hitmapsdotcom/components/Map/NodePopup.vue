@@ -33,10 +33,6 @@
             </div>
         </div>
         <template v-slot:modal-footer>
-            <game-button v-if="node && node.passageDestinationFloor !== null" @click="jumpFloor">
-                <game-icon icon="arrow-right" font-style="normal"/>
-                {{ $t('map.jump-to-floor', { floor: floorNameDisplay }) }}
-            </game-button>
             <template v-if="loggedIn && editorState === 'ITEMS'">
                 <div class="edit-delete-buttons">
                     <div class="edit">
@@ -57,6 +53,10 @@
                     </div>
                 </div>
             </template>
+            <game-button v-if="node && node.passageDestinationFloor !== null" @click="jumpFloor">
+                <game-icon icon="arrow-right" font-style="normal"/>
+                {{ $t('map.jump-to-floor', { floor: floorNameDisplay }) }}
+            </game-button>
             <game-button data-dismiss="modal" @click="hideModal">
                 <game-icon icon="failed" font-style="normal"/>
                 {{ $t('form.close') }}
