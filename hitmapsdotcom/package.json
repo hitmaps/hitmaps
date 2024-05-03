@@ -12,6 +12,7 @@
     "@nuxt/devtools": "latest",
     "@nuxtjs/google-fonts": "^3.1.1",
     "@nuxtjs/i18n": "^8.0.0-rc.9",
+    "@nuxtjs/plausible": "^1.0.0",
     "@types/bootstrap": "^5.2.6",
     "@types/node": "^18.16.19",
     "nuxt": "^3.6.3",

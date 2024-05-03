@@ -34,7 +34,7 @@
                 <li>
                     <strong>(hitmaps.com) Basic Account Information:</strong> We ask for basic information from you in
                     order to set up your account. For example, when you log in via Discord, we will collect and store
-                    your unique Discord ID and email address, so we can properly identify you in the future.
+                    your unique Discord ID so we can properly identify you in the future.
                 </li>
                 <li>
                     <strong>(tournaments.hitmaps.com) Basic Account Information:</strong> We ask for basic information from
@@ -44,6 +44,7 @@
                         <li>Unique Discord Identifier</li>
                         <li>Country of Residence</li>
                         <li>Twitch <i>or</i> YouTube Channel Name</li>
+                        <li>Time Zone</li>
                     </ul>
                 </li>
             </ul>
@@ -68,12 +69,6 @@
                     <strong>Location Information:</strong> We may determine the approximate location of your device from
                     your IP address. We collect and use this information to, for example, calculate how many people
                     visit our Services from certain geographic regions.
-                </li>
-                <li>
-                    <strong>Information from Cookies &amp; Other Technologies:</strong> A cookie is a string of
-                    information that a website stores on a visitor’s computer, and that the visitor’s browser provides
-                    to the website each time the visitor returns. HITMAPS uses cookies to help us identify and track
-                    visitors, usage, and access preferences for our Services.
                 </li>
             </ul>
             <p>
@@ -226,9 +221,9 @@
             <h3>List of Sub-processors</h3>
             <p>HITMAPS uses the following products/services (which are all GDPR compliant):</p>
             <ul>
-                <li><strong>Digital Ocean:</strong> for storing data.</li>
-                <li><strong>PayPal:</strong> for facilitating one-time "support the site" payments.</li>
-                <li><strong>Google Analytics:</strong> for analyzing the browsing behavior of our users and visitors.</li>
+                <li><strong>Hetnzer and Vultr:</strong> for storing data.</li>
+                <li><strong>PayPal, Stripe, and Ko-fi:</strong> for facilitating one-time and recurring "support the site" payments.</li>
+                <li><strong>Plausible:</strong> for analyzing the browsing behavior of our users and visitors. Please note that HITMAPS hosts its own Plausible instance, available at <a href="https://analytics.hitmaps.com/hitmaps.com/">https://analytics.hitmaps.com/hitmaps.com/</a></li>
             </ul>
             <h2>Privacy Policy Changes</h2>
             <p>
@@ -236,17 +231,16 @@
                 and in HITMAPS' sole discretion. HITMAPS encourages visitors to frequently check this page for any
                 changes to its Privacy Policy.
             </p>
-            <div class="innerText"><br />Last Edited on 2021-04-07</div>
+            <div class="innerText"><br />Last Edited on 2024-05-02</div>
             <p>Prior Versions:</p>
             <ul>
+                <li><a href="https://gitlab.com/hitmaps/hitmaps/-/raw/058be74d8f6024065c2a0ade35c1de4399048532/hitmapsdotcom/pages/privacy-policy.vue">2021-04-07 to 2024-05-03</a></li>
                 <li><a href="https://gitlab.com/hitmaps/hitmaps/raw/e26e1d858c423c9aae67e57a29921972d33e73a3/src/views/PrivacyPolicy.vue">2019-11-07 to 2021-04-07</a></li>
                 <li><a href="https://gitlab.com/hitmaps/hitmaps/raw/034635c6d616a5dd502b25399ea6114230ebb04f/src/views/PrivacyPolicy.vue">2019-07-29 to 2019-11-07</a></li>
                 <li><a href="https://gitlab.com/hitmaps/hitmaps/raw/f9e9c8340994ec81660ea6e7a26b95ae39eaf0a5/src/views/PrivacyPolicy.vue">2018-12-09 to 2019-07-29</a></li>
             </ul>
             <p>
-                This "Privacy Policy" is based on UptimeRobot's Privacy Policy, the geniuses who monitor this site to
-                let us know whenever HITMAPS goes down, and also powers
-                <a href="https://status.hitmaps.com">https://status.hitmaps.com</a>.
+                This "Privacy Policy" is based on UptimeRobot's Privacy Policy.
             </p>
         </div>
         <div class="home-button">

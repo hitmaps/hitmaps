@@ -7,7 +7,8 @@ export default defineNuxtConfig({
         'nuxt-icon',
         'nuxt-vuefire',
         'nuxt3-leaflet',
-        '@nuxtjs/google-fonts'
+        '@nuxtjs/google-fonts',
+        '@nuxtjs/plausible'
     ],
     components: [
         {
@@ -91,6 +92,11 @@ export default defineNuxtConfig({
             appId: "1:458558604415:web:9c0365be0363486339ab4a",
             measurementId: "G-PEY4KPF9WM"
         }
+    },
+    //@ts-ignore
+    plausible: {
+        domain: process.env.ENABLE_ANALYTICS === '1' ? 'hitmaps.com' : 'localhost',
+        apiHost: 'https://analytics.hitmaps.com'
     },
     devtools: {enabled: true},
     css: [
