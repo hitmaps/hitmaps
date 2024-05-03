@@ -95,7 +95,7 @@ export default defineNuxtConfig({
     },
     //@ts-ignore
     plausible: {
-        domain: process.env.ENABLE_ANALYTICS === '1' ? 'hitmaps.com' : 'localhost',
+        domain: process.env.ENABLE_ANALYTICS ?? 'localhost',
         apiHost: 'https://analytics.hitmaps.com'
     },
     devtools: {enabled: true},
