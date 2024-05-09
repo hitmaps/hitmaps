@@ -7,7 +7,7 @@ stages:
   - Utilities
 
 Docker Production:
-  image: docker:19.03.1
+  image: docker:stable
   stage: Prod Deploy
   environment:
     name: Production Frontend
@@ -15,7 +15,7 @@ Docker Production:
   only:
     - master
   services:
-    - docker:19.03.1-dind
+    - docker:dind
   before_script:
     - export DOCKER_REGISTRY_USER=$CI_REGISTRY_USER # built-in GitLab Registry User
     - export DOCKER_REGISTRY_PASSWORD=$CI_REGISTRY_PASSWORD # built-in GitLab Registry Password
@@ -35,7 +35,7 @@ Docker Production:
     - docker run caprover/cli-caprover:2.2.3 caprover deploy --caproverUrl $CAPROVER_URL --appToken $CAPROVER_APP_TOKEN --caproverApp $CAPROVER_APP --imageName $CONTAINER_FULL_IMAGE_NAME_WITH_TAG
 
 Docker Stage:
-  image: docker:19.03.1
+  image: docker:stable
   stage: Stage Deploy
   environment:
     name: Staging Frontend
@@ -43,7 +43,7 @@ Docker Stage:
   only:
     - stage
   services:
-    - docker:19.03.1-dind
+    - docker:dind
   before_script:
     - export DOCKER_REGISTRY_USER=$CI_REGISTRY_USER # built-in GitLab Registry User
     - export DOCKER_REGISTRY_PASSWORD=$CI_REGISTRY_PASSWORD # built-in GitLab Registry Password
