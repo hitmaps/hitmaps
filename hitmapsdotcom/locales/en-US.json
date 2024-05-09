@@ -615,13 +615,13 @@
         "you-better-watch-out": {
             "pier-outside": "Pier{'|'}Outside",
             "pier-inside": "Pier{'|'}Inside",
-            "main-house-first": "Main House{'|'}1st Floor",
-            "main-house-second": "Main House{'|'}2nd Floor",
-            "main-house-balcony": "Main House{'|'}Balcony",
-            "helipad": "Helipad",
             "staff-floor": "Staff{'|'}Staff Floor",
             "staff-terrace": "Staff{'|'}Staff Terrace",
-            "studio-floor": "Studio Floor"
+            "main-house-balcony": "Main House{'|'}Balcony",
+            "main-house-first": "Main House{'|'}1st Floor",
+            "main-house-second": "Main House{'|'}2nd Floor",
+            "studio-floor": "Studio Floor",
+            "helipad": "Helipad"
         },
         "death-on-the-mississippi": {
             "first-deck": "Decks{'|'}1st Deck, Engine Room",
