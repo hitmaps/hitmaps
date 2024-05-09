@@ -640,8 +640,8 @@
             "casino": "Casino",
             "outside": "Outside",
             "lobby": "Lobby{'|'}1st Floor",
-            "seventh": "Casino{'|'}7th Floor",
-            "eighth": "Casino{'|'}8th Floor"
+            "seventh": "Hotel{'|'}7th Floor",
+            "eighth": "Hotel{'|'}8th Floor"
         },
         "a-dance-with-the-devil": {
             "basement": "Basement",
