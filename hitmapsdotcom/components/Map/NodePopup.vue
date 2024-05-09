@@ -310,6 +310,7 @@ export default {
             border-top: dotted 1px #fff;
             margin-top: 15px;
             padding-top: 10px;
+            white-space: pre;
         }
 
         .target {
