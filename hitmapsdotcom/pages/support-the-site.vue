@@ -27,7 +27,7 @@
                     </div>
                     <div class="col-sm-1"></div>
                     <div class="col-sm-3">
-                        <patron name="Flo" tier="Master Assassin"/>
+                        <patron name="Sailor Assassin" tier="Silent Assassin"/>
                     </div>
                     <div class="col-sm-1"></div>
                     <div class="col-sm-3">
