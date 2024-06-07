@@ -8,9 +8,9 @@ const { t } = useI18n();
 <template>
     <div class="single-game d-none d-lg-flex">
         <nuxt-link :to="`/games/${game.slug}`">
-            <div class="card game" :style="`background: url('${game.tileUrl}') center center / cover no-repeat`">
+            <div class="card game" :style="`background: url('https://www.hitmaps.com/cdn-cgi/image/format=auto/${game.tileUrl}') center center / cover no-repeat`">
                 <div style="position: relative; flex-grow: 1">
-                    <img :src="game.tileUrl" class="card-img-top" alt="">
+                    <img :src="`https://www.hitmaps.com/cdn-cgi/image/format=auto/${game.tileUrl}`" class="card-img-top" alt="">
                     <div class="card-img-overlay d-flex flex-column justify-content-end"
                          style="padding: 0"></div>
                 </div>

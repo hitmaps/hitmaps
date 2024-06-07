@@ -66,7 +66,7 @@ function getComingSoonElusive() {
         videoBriefingUrl: null,
         beginningTime: null,
         endingTime: null,
-        tileUrl: 'https://media.hitmaps.com/img/hitman3/actors/elusive-targets/coming-soon.jpg',
+        tileUrl: 'https://www.hitmaps.com/cdn-cgi/image/format=auto/https://media.hitmaps.com/img/hitman3/actors/elusive-targets/coming-soon.jpg',
         reactivated: false
     }
 }

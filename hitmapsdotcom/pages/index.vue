@@ -4,7 +4,7 @@
     </Head>
     <div
         class="content"
-        style="background: url('https://media.hitmaps.com/img/hitman3/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
+        style="background: url('https://www.hitmaps.com/cdn-cgi/image/format=auto/https://media.hitmaps.com/img/hitman3/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover"
     >
         <home-navbar/>
         <header class="container-fluid">
@@ -88,7 +88,7 @@
         <div class="patreon game-mode community-server" id="game-modes-roulette">
             <div class="row roulette">
                 <div class="col-lg-4">
-                    <img src="https://media.hitmaps.com/img/hitmaps-custom/roulette-logo.png" class="img-fluid" alt="HITMAPS Roulette Logo">
+                    <img src="https://www.hitmaps.com/cdn-cgi/image/format=auto/https://media.hitmaps.com/img/hitmaps-custom/roulette-logo.png" class="img-fluid" alt="HITMAPS Roulette Logo">
                     <div class="row">
                         <div class="col-xs-12 available-on">
                             <span class="badge bg-success">
@@ -109,7 +109,7 @@
                             </span>
                         </div>
                         <div class="col-xs-12">
-                            <img src="https://media.hitmaps.com/img/hitmaps-custom/sample-website-spin.png?w=500" class="img-fluid" alt="Screenshot of Website Spin">
+                            <img src="https://www.hitmaps.com/cdn-cgi/image/format=auto,width=500/https://media.hitmaps.com/img/hitmaps-custom/sample-website-spin.png" class="img-fluid" alt="Screenshot of Website Spin">
                         </div>
                     </div>
                 </div>
@@ -162,7 +162,7 @@
                             </span>
                         </div>
                         <div class="col-xs-12">
-                            <img src="https://media.hitmaps.com/img/hitman3/gamemodes/briefing_ghostmode.jpg?w=500" alt="Ghost Mode Image" class="img-fluid">
+                            <img src="https://www.hitmaps.com/cdn-cgi/image/format=auto,width=500/https://media.hitmaps.com/img/hitman3/gamemodes/briefing_ghostmode.jpg" alt="Ghost Mode Image" class="img-fluid">
                         </div>
                     </div>
                 </div>
@@ -223,7 +223,7 @@
                             </span>
                         </div>
                         <div class="col-xs-12">
-                            <img src="https://media.hitmaps.com/img/hitmaps-custom/taskmaster-screenshot.jpg?w=500" alt="Ghost Mode Image" class="img-fluid">
+                            <img src="https://www.hitmaps.com/cdn-cgi/image/format=auto,width=500/https://media.hitmaps.com/img/hitmaps-custom/taskmaster-screenshot.jpg" alt="Taskmaster Image" class="img-fluid">
                         </div>
                     </div>
                 </div>
@@ -276,7 +276,7 @@
             <div class="row">
                 <div class="col-md-6 partner">
                     <div class="image">
-                        <img src="https://media.hitmaps.com/img/hitmaps-custom/f7sc-logo.png" style="width: 128px; height: 128px;" alt="F7SC Logo">
+                        <img src="https://www.hitmaps.com/cdn-cgi/image/format=auto/https://media.hitmaps.com/img/hitmaps-custom/f7sc-logo.png" style="width: 128px; height: 128px;" alt="F7SC Logo">
                     </div>
                     <div class="text">
                         <h3>{{ $t('partnership.f7sc.header') }}</h3>
@@ -289,7 +289,7 @@
                 </div>
                 <div class="col-md-6 partner">
                     <div class="image">
-                        <img src="https://media.hitmaps.com/img/hitmaps-custom/rrstats-logo.png" style="width: 128px; height: 128px;" alt="RRStats Logo">
+                        <img src="https://www.hitmaps.com/cdn-cgi/image/format=auto/https://media.hitmaps.com/img/hitmaps-custom/rrstats-logo.png" style="width: 128px; height: 128px;" alt="RRStats Logo">
                     </div>
                     <div class="text">
                         <h3>{{ $t('partnership.rr-stats.header') }}</h3>
