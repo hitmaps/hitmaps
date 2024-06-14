@@ -2,13 +2,14 @@
 #  template: Dependency-Scanning.gitlab-ci.yml
 
 stages:
+  - Prod Build
   - Prod Deploy
   - Stage Deploy
   - Utilities
 
-Docker Production US:
+Production Build:
   image: docker:stable
-  stage: Prod Deploy
+  stage: Prod Build
   environment:
     name: Production Frontend
     url: https://www.hitmaps.com
@@ -31,6 +32,27 @@ Docker Production US:
     - docker tag built-image-name "$CONTAINER_FULL_IMAGE_NAME_WITH_TAG"
     - docker push "$CONTAINER_FULL_IMAGE_NAME_WITH_TAG"
     - echo $CONTAINER_FULL_IMAGE_NAME_WITH_TAG
+    - echo "CONTAINER_FULL_IMAGE_NAME_WITH_TAG=$CONTAINER_FULL_IMAGE_NAME_WITH_TAG" >> build.env
+  artifacts:
+    reports:
+      dotenv: build.env
+
+Docker Production US:
+  image: docker:stable
+  stage: Prod Deploy
+  environment:
+    name: Production Frontend
+    url: https://www.hitmaps.com
+  only:
+    - master
+  services:
+    - docker:dind
+  before_script:
+    - export DOCKER_REGISTRY_USER=$CI_REGISTRY_USER # built-in GitLab Registry User
+    - export DOCKER_REGISTRY_PASSWORD=$CI_REGISTRY_PASSWORD # built-in GitLab Registry Password
+    - export DOCKER_REGISTRY_URL=$CI_REGISTRY # built-in GitLab Registry URL
+    - docker login -u "$DOCKER_REGISTRY_USER" -p "$DOCKER_REGISTRY_PASSWORD" $DOCKER_REGISTRY_URL # Instructs GitLab to login to its registry
+  script:
     - echo "Deploying on CapRover..."
     - docker run caprover/cli-caprover:2.2.3 caprover deploy --caproverUrl $CAPROVER_URL --appToken $CAPROVER_APP_TOKEN --caproverApp $CAPROVER_APP --imageName $CONTAINER_FULL_IMAGE_NAME_WITH_TAG
 
@@ -48,17 +70,8 @@ Docker Production EU:
     - export DOCKER_REGISTRY_USER=$CI_REGISTRY_USER # built-in GitLab Registry User
     - export DOCKER_REGISTRY_PASSWORD=$CI_REGISTRY_PASSWORD # built-in GitLab Registry Password
     - export DOCKER_REGISTRY_URL=$CI_REGISTRY # built-in GitLab Registry URL
-    - export COMMIT_HASH=$CI_COMMIT_SHA # Your current commit sha
-    - export IMAGE_NAME_WITH_REGISTRY_PREFIX=$CI_REGISTRY_IMAGE # Your repository prefixed with GitLab Registry URL
     - docker login -u "$DOCKER_REGISTRY_USER" -p "$DOCKER_REGISTRY_PASSWORD" $DOCKER_REGISTRY_URL # Instructs GitLab to login to its registry
   script:
-    - echo "Building..." # MAKE SURE NO SPACE ON EITHER SIDE OF = IN THE FOLLOWING LINE
-    - cd hitmapsdotcom/
-    - export CONTAINER_FULL_IMAGE_NAME_WITH_TAG=$IMAGE_NAME_WITH_REGISTRY_PREFIX/frontend:$COMMIT_HASH
-    - docker build -f ./Dockerfile --pull -t built-image-name .
-    - docker tag built-image-name "$CONTAINER_FULL_IMAGE_NAME_WITH_TAG"
-    - docker push "$CONTAINER_FULL_IMAGE_NAME_WITH_TAG"
-    - echo $CONTAINER_FULL_IMAGE_NAME_WITH_TAG
     - echo "Deploying on CapRover..."
     - docker run caprover/cli-caprover:2.2.3 caprover deploy --caproverUrl $CAPROVER_URL --appToken $CAPROVER_APP_TOKEN --caproverApp $CAPROVER_APP --imageName $CONTAINER_FULL_IMAGE_NAME_WITH_TAG
 
