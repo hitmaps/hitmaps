@@ -32,7 +32,7 @@ Production Build:
     - docker tag built-image-name "$CONTAINER_FULL_IMAGE_NAME_WITH_TAG"
     - docker push "$CONTAINER_FULL_IMAGE_NAME_WITH_TAG"
     - echo $CONTAINER_FULL_IMAGE_NAME_WITH_TAG
-    - echo "CONTAINER_FULL_IMAGE_NAME_WITH_TAG=$CONTAINER_FULL_IMAGE_NAME_WITH_TAG" >> build.env
+    - echo "CONTAINER_FULL_IMAGE_NAME_WITH_TAG=$CONTAINER_FULL_IMAGE_NAME_WITH_TAG" >> ../build.env
   artifacts:
     reports:
       dotenv: build.env
