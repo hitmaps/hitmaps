@@ -8,12 +8,12 @@ stages:
 
 
 docker-build:
-  image: docker:19.03.1
+  image: docker:stable
   stage: release
   only:
     - master
   services:
-    - docker:19.03.1-dind
+    - docker:dind
   before_script:
     - export DOCKER_REGISTRY_USER=$CI_REGISTRY_USER # built-in GitLab Registry User
     - export DOCKER_REGISTRY_PASSWORD=$CI_REGISTRY_PASSWORD # built-in GitLab Registry Password
