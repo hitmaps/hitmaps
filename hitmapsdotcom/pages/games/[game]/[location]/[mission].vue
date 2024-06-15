@@ -265,9 +265,9 @@ export default defineComponent({
         },
         buildMapLayers() {
             const allLayers = {};
-            // 1. Sniper Assassin (only one level - 0)
+            // 1. Sniper Assassin (only one level - satellite)
             if (!this.mission.svg) {
-                allLayers[0] = L.tileLayer(this.imageTileUrl.replace('{floorNumber}', '0'), {
+                allLayers[0] = L.tileLayer(this.imageTileUrl.replace('{floorNumber}', 'satellite'), {
                     noWrap: true,
                     minZoom: this.mission.minZoom,
                     maxZoom: this.mission.maxZoom
@@ -283,7 +283,7 @@ export default defineComponent({
 
             // 3. Satellite layer (if present)
             if (this.mission.satelliteView) {
-                allLayers[-99] = L.tileLayer(this.imageTileUrl.replace('{floorNumber}', '-99'), {
+                allLayers[-99] = L.tileLayer(this.imageTileUrl.replace('{floorNumber}', 'satellite'), {
                     noWrap: true,
                     minZoom: this.mission.minZoom,
                     maxZoom: this.mission.maxZoom
@@ -830,8 +830,7 @@ export default defineComponent({
               return '';
             }
 
-            // TODO Change URL
-            return `https://legacyapi.hitmaps.com/api/maps/${this.mission.mapFolderName}/tiles/{floorNumber}/{z}/{x}/{y}.png`;
+            return `https://media.hitmaps.com/img/${this.game.slug}/maps/${this.mission.mapFolderName}/{floorNumber}/{z}/{x}/{y}.png`;
         },
         loggedIn() {
             if (localStorage.getItem('token') != null) {
