@@ -8,7 +8,8 @@ export default defineNuxtConfig({
         'nuxt-vuefire',
         'nuxt3-leaflet',
         '@nuxtjs/google-fonts',
-        '@nuxtjs/plausible'
+        '@nuxtjs/plausible',
+        'dayjs-nuxt'
     ],
     components: [
         {
@@ -96,6 +97,9 @@ export default defineNuxtConfig({
     //@ts-ignore
     plausible: {
         apiHost: 'https://analytics.hitmaps.com'
+    },
+    dayjs: {
+        plugins: ['timezone']
     },
     devtools: {enabled: true},
     css: [
