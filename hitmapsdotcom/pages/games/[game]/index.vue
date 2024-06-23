@@ -84,7 +84,7 @@ useSeoMeta({
                                     <div v-for="mission in location.missions" :key="mission.id"
                                          class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
                                         <nuxt-link :to="`/games/${route.params.game}/${location.slug}/${mission.slug}`">
-                                            <div class="card mission" :style="`background: url('${mission.tileUrl}') center center / cover no-repeat`">
+                                            <div class="card mission" :style="`background: url('https://www.hitmaps.com/cdn-cgi/image/format=auto/${mission.tileUrl}') center center / cover no-repeat`">
                                                 <div style="position: relative">
                                                     <img :src="`https://www.hitmaps.com/cdn-cgi/image/format=auto/${mission.tileUrl}`" class="card-img-top" :alt="$t('mission-image')">
                                                     <div class="card-img-overlay d-flex flex-column justify-content-end"
