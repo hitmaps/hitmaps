@@ -273,7 +273,7 @@ function buildMapLayers() {
 
     // 3. Satellite layer (if present)
     if (mission.value.satelliteView) {
-        allLayers[-99] = L.tileLayer(imageTileUrl.replace('{floorNumber}', 'satellite'), {
+        allLayers[-99] = L.tileLayer(imageTileUrl.value.replace('{floorNumber}', 'satellite'), {
             noWrap: true,
             minZoom: mission.value.minZoom,
             maxZoom: mission.value.maxZoom
