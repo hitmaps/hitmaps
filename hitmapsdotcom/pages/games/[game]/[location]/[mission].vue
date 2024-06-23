@@ -45,7 +45,8 @@ const ledges = ref([]);
 const foliage = ref([]);
 const floorNames = ref({});
 const currentFloor = ref(0);
-const map = ref(null);
+let map = null;
+const currentZoom = ref(null);
 const nodeForModal = ref(null);
 const nodeForEditing = ref(null);
 const nodeForMoving = ref(null);
@@ -72,6 +73,7 @@ onMounted(() => {
     });
     missionPromise.then(resp => {
         mission.value = resp;
+        currentZoom.value = mission.value.minZoom;
         currentFloor.value = mission.value.startingFloorNumber;
         currentVariant.value = route.query.variant ?
             mission.value.variants.find(v => v.slug === route.query.variant) :
@@ -81,11 +83,11 @@ onMounted(() => {
     Promise.all([gamePromise, missionPromise]).then(_ => {
         metadataLoaded.value = true;
         buildLevelNames();
-        map.value = L.map('map', {
+        map = L.map('map', {
             maxZoom: mission.value.maxZoom,
             minZoom: mission.value.minZoom,
             crs: L.CRS.Simple,
-            renderer: mission.value.svg ? L.svg() : L.canvas(),
+            renderer: /*mission.value.svg ? L.svg() :*/ L.canvas(),
             maxBounds: mapBounds.value,
             layers: Object.values(mapLayers)
         }).setView(L.latLng(mission.value.mapCenterLatitude, mission.value.mapCenterLongitude), mission.value.minZoom);
@@ -103,7 +105,7 @@ onMounted(() => {
             mapLayers = buildMapLayers();
 
             nextTick(() => {
-                nodes.value.forEach(node => node.marker.addTo(map.value));
+                nodes.value.forEach(node => node.marker.addTo(map));
             });
         });
 
@@ -119,7 +121,7 @@ onMounted(() => {
             ledges.value = resp.ledges;
             ledges.value.forEach(ledge => buildLedgeForMap(ledge));
 
-            nextTick(_ => ledges.value.forEach(ledge => ledge.polyline.addTo(map.value)));
+            nextTick(_ => ledges.value.forEach(ledge => ledge.polyline.addTo(map)));
         });
         const foliagePromise = $fetch(
             `${config.public.apiDomain}/api/games/${route.params.game}`+
@@ -128,7 +130,7 @@ onMounted(() => {
             foliage.value = resp.foliage;
             foliage.value.forEach(foliage => buildFoliageForMap(foliage));
 
-            nextTick(_ => foliage.value.forEach(foliage => foliage.polygon.addTo(map.value)));
+            nextTick(_ => foliage.value.forEach(foliage => foliage.polygon.addTo(map)));
         });
         //@formatter:on
 
@@ -138,12 +140,13 @@ onMounted(() => {
                 mapDataLoaded.value = true;
 
                 // Bind map listeners
-                map.value.on('click', addMarker);
-                map.value.on('pm:drawstart', initDraw);
-                map.value.on('pm:create', pmLayer);
-                map.value.on('pm:drawend', endDraw);
-                map.value.on('zoomend', () => {
-                    let zoomLevel = map.value.getZoom();
+                map.on('click', addMarker);
+                map.on('pm:drawstart', initDraw);
+                map.on('pm:create', pmLayer);
+                map.on('pm:drawend', endDraw);
+                map.on('zoomend', () => {
+                    let zoomLevel = map.getZoom();
+                    currentZoom.value = zoomLevel;
 
                     const fonts = {
                         3: '.8em',
@@ -289,30 +292,30 @@ function updateActiveMapState() {
 }
 function updateActiveMapLayer() {
     // 1. Deactivate all map layers
-    range(mission.value.lowestFloorNumber, mission.value.highestFloorNumber).forEach(x => map.value.removeLayer(mapLayers[x]));
+    range(mission.value.lowestFloorNumber, mission.value.highestFloorNumber).forEach(x => map.removeLayer(mapLayers[x]));
 
     // 2. Activate the current one
-    map.value.addLayer(mapLayers[currentFloor.value]);
+    map.addLayer(mapLayers[currentFloor.value]);
 }
 function updateActiveDisguiseLayer(oldDisguise) {
     // 1. Remove old disguise if need be
     if (oldDisguise) {
-        disguiseAreas[oldDisguise.id].forEach(area => area.polygon.removeFrom(map.value));
+        disguiseAreas[oldDisguise.id].forEach(area => area.polygon.removeFrom(map));
     }
 
     if (currentDisguise.value) {
         // 2. Remove all current disguise layers for the current disguise
-        disguiseAreas[currentDisguise.value.id].forEach(area => area.polygon.removeFrom(map.value));
+        disguiseAreas[currentDisguise.value.id].forEach(area => area.polygon.removeFrom(map));
 
         // 3. Add current disguise layers for the current disguise + level
-        disguiseAreas[currentDisguise.value.id].filter(area => area.level === currentFloor.value).forEach(area => area.polygon.addTo(map.value));
+        disguiseAreas[currentDisguise.value.id].filter(area => area.level === currentFloor.value).forEach(area => area.polygon.addTo(map));
     }
 }
 function updateNodeMarkers() {
     // 1. Remove all items from the map
     nodes.value.forEach(node => node.marker._icon.style.display = 'none');
-    ledges.value.forEach(ledge => ledge.polyline.removeFrom(map.value));
-    foliage.value.forEach(foliage => foliage.polygon.removeFrom(map.value));
+    ledges.value.forEach(ledge => ledge.polyline.removeFrom(map));
+    foliage.value.forEach(foliage => foliage.polygon.removeFrom(map));
 
     // 3. [OVERRIDE] Mark nodes as "visible" if they are part of a search result
     nodes.value.filter(node => node.searchResult).forEach(node => node.visible = true);
@@ -330,9 +333,9 @@ function updateNodeMarkers() {
 
     // 5. Handle showing/hiding ledges/foliage
     ledges.value.filter(ledge => ledge.level === currentFloor.value && ledge.visible)
-        .forEach(ledge => ledge.polyline.addTo(map.value));
+        .forEach(ledge => ledge.polyline.addTo(map));
     foliage.value.filter(foliage => foliage.level === currentFloor.value && foliage.visible)
-        .forEach(foliage => foliage.polygon.addTo(map.value));
+        .forEach(foliage => foliage.polygon.addTo(map));
 
     // Make sure the counters and highlights for the level select are updated
     /*if (floorToggleRef.value) {
@@ -487,24 +490,24 @@ function prepareEditor(nodeId) {
 }
 function deleteNode(nodeId) {
     const node = nodes.value.find(x => x.id === nodeId);
-    node.marker.removeFrom(map.value);
+    node.marker.removeFrom(map);
     ArrayHelpers.deleteElement(nodes.value, node);
 }
 function onItemCreated(node) {
     nodes.value.push(node);
     buildNodeForMap(node);
     // We're in the editor, so enable dragging right away
-    node.marker.addTo(map.value);
+    node.marker.addTo(map);
     node.marker.dragging.enable();
     updateNodeMarkers();
     addEditItemModalRef.value.hideModal();
 }
 function onItemUpdated(node) {
-    nodeForEditing.value.marker.removeFrom(map.value);
+    nodeForEditing.value.marker.removeFrom(map);
     ArrayHelpers.deleteElement(nodes.value, nodeForEditing.value);
     nodes.value.push(node);
     buildNodeForMap(node);
-    node.marker.addTo(map.value);
+    node.marker.addTo(map);
     updateNodeMarkers();
     addEditItemModalRef.value.hideModal();
 }
@@ -581,10 +584,10 @@ function onShowTopLevelCategory(type) {
     updateNodeMarkers();
 }
 function onZoomIn() {
-    map.value.setZoom(map.value.getZoom() + 1);
+    map.setZoom(map.getZoom() + 1);
 }
 function onZoomOut() {
-    map.value.setZoom(map.value.getZoom() - 1);
+    map.setZoom(map.getZoom() - 1);
 }
 function onMasterEditToggle() {
     if (editorState.value === 'OFF') {
@@ -611,16 +614,16 @@ function onLaunchEditor(newEditorState) {
 }
 function toggleDraw(state) {
     if (state === 'OFF') {
-        map.value.pm.disableDraw('Line');
-        map.value.pm.disableDraw('Polygon');
+        map.pm.disableDraw('Line');
+        map.pm.disableDraw('Polygon');
         return;
     }
 
-    if (map.value.pm.Draw[state]._enabled) {
-        map.value.pm.disableDraw(state);
+    if (map.pm.Draw[state]._enabled) {
+        map.pm.disableDraw(state);
         polyActive.value = false;
     } else {
-        map.value.pm.enableDraw(state, {
+        map.pm.enableDraw(state, {
             snappable: false
         });
         polyActive.value = true;
@@ -678,7 +681,7 @@ function endDraw(e) {
             vertices = [];
             ledges.value.push(buildLedgeForMap(resp.data));
             toastr.s('Ledge saved!');
-            map.value.removeLayer(workingLayer);
+            map.removeLayer(workingLayer);
             workingLayer = null;
             polyActive.value = false;
             updateNodeMarkers();
@@ -693,7 +696,7 @@ function endDraw(e) {
             vertices = [];
             foliage.value.push(buildFoliageForMap(resp.data));
             toastr.s('Foliage saved!');
-            map.value.removeLayer(workingLayer);
+            map.removeLayer(workingLayer);
             workingLayer = null;
             polyActive.value = false;
             updateNodeMarkers();
@@ -711,7 +714,7 @@ function endDraw(e) {
             vertices = [];
             disguiseAreas[currentDisguise.value.id].push(buildDisguiseAreaForMap(resp.data));
             toastr.s('Disguise area saved!');
-            map.value.removeLayer(workingLayer);
+            map.removeLayer(workingLayer);
             workingLayer = null;
             polyActive.value = false;
             disguiseRegionType = null;
@@ -724,13 +727,13 @@ function endDraw(e) {
 }
 function onPolyDeleted() {
     if (deletionItemType.value === 'ledge') {
-        deletionItem.value.polyline.removeFrom(map.value);
+        deletionItem.value.polyline.removeFrom(map);
         ArrayHelpers.deleteElement(ledges.value, deletionItem.value);
     } else if (deletionItemType.value === 'foliage') {
-        deletionItem.value.polygon.removeFrom(map.value);
+        deletionItem.value.polygon.removeFrom(map);
         ArrayHelpers.deleteElement(foliage.value, deletionItem.value);
     } else if (deletionItemType.value === 'disguise-area') {
-        deletionItem.value.polygon.removeFrom(map.value);
+        deletionItem.value.polygon.removeFrom(map);
         ArrayHelpers.deleteElement(disguiseAreas[currentDisguise.value.id], deletionItem.value);
     }
 
@@ -741,7 +744,7 @@ function onPolyDeleted() {
     manageDisguiseAreaModalRef.value.hideModal();
 }
 function onDisguiseAreaConverted() {
-    deletionItem.value.polygon.removeFrom(map.value);
+    deletionItem.value.polygon.removeFrom(map);
     deletionItem.value.type = deletionItem.value.type === 'trespassing' ? 'hostile' : 'trespassing';
     disguiseAreas[currentDisguise.value.id].push(buildDisguiseAreaForMap(deletionItem.value));
     deletionItemType.value = null;
@@ -781,7 +784,7 @@ function onReplaceDisguiseAreas(newDisguiseAreas) {
     }
 
     const disguiseId = newDisguiseAreas[0].disguiseId;
-    disguiseAreas[disguiseId].forEach(area => area.polygon.removeFrom(map.value));
+    disguiseAreas[disguiseId].forEach(area => area.polygon.removeFrom(map));
     disguiseAreas[disguiseId] = newDisguiseAreas;
     disguiseAreas[disguiseId].forEach(area => buildDisguiseAreaForMap(area));
     updateActiveDisguiseLayer();
@@ -837,14 +840,14 @@ const loggedIn = computed(() => {
 //endregion
 //region Watchers
 watch(currentFloor, () => {
-    if (!map.value) {
+    if (!map) {
         return;
     }
 
     updateActiveMapState();
 });
 watch(currentDisguise, (_, old) => {
-    if (!map.value) {
+    if (!map) {
         return;
     }
 
@@ -888,7 +891,7 @@ const moveNodeModalRef = ref(null);
                      :disguises="disguises"
                      :max-zoom-level="mission.maxZoom"
                      :min-zoom-level="mission.minZoom"
-                     :current-zoom-level="map.getZoom()"
+                     :current-zoom-level="currentZoom"
                      :editor-state="editorState"
                      :drawing-active="polyActive"
                      :current-disguise="currentDisguise"
