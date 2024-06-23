@@ -1,867 +1,865 @@
-<script>
-import {defineComponent} from 'vue'
+<script setup>
 import {useAuthenticatedFetch} from "~/composables/useAuthenticatedFetch";
 
-export default defineComponent({
-    name: "[mission].vue",
-    setup() {
-        const config = useRuntimeConfig();
-        const route = useRoute();
+const config = useRuntimeConfig();
+const { t } = useI18n();
+const route = useRoute();
 
-        useFetch(`${config.public.apiDomain}/api/games/${route.params.game}` +
-            `/locations/${route.params.location}` +
-            `/missions/${route.params.mission}`).then(resp => {
-            const ogImage = `${config.public.apiDomain}/api/games/${route.params.game}` +
-                `/locations/${route.params.location}` +
-                `/missions/${route.params.mission}/ogimage.png`;
-            const mission = resp.data.value.name;
-            useSeoMeta({
-                title: mission,
-                ogTitle: Utils.siteTitle(mission),
-                ogImage: ogImage,
-                twitterImage: ogImage,
-                description: `View item locations, disguises, and more for ${mission}`,
-                ogDescription: `View item locations, disguises, and more for ${mission}`,
-                twitterDescription: `View item locations, disguises, and more for ${mission}`
+// TODO Remove this once I find a different toast library
+const app = getCurrentInstance();
+const toastr = app.appContext.config.globalProperties.$toastr;
+
+//region SEO
+const missionInfo = await $fetch(`${config.public.apiDomain}/api/games/${route.params.game}` +
+    `/locations/${route.params.location}` +
+    `/missions/${route.params.mission}`);
+const ogImage = `${config.public.apiDomain}/api/games/${route.params.game}` +
+    `/locations/${route.params.location}` +
+    `/missions/${route.params.mission}/ogimage.png`;
+const missionName = missionInfo.name;
+useSeoMeta({
+    title: missionName,
+    ogTitle: Utils.siteTitle(missionName),
+    ogImage: ogImage,
+    twitterImage: ogImage,
+    description: `View item locations, disguises, and more for ${missionName}`,
+    ogDescription: `View item locations, disguises, and more for ${missionName}`,
+    twitterDescription: `View item locations, disguises, and more for ${missionName}`
+});
+//endregion
+//region Data
+let disguiseAreas = {};
+let mapLayers = {};
+let vertices = [];
+let workingLayer = null;
+let disguiseRegionType = null;
+const metadataLoaded = ref(false);
+const mapDataLoaded = ref(false);
+const game = ref(null);
+const mission = ref(null);
+const nodes = ref([]);
+const categories = ref([]);
+const topLevelCategories = ref([]);
+const disguises = ref([]);
+const ledges = ref([]);
+const foliage = ref([]);
+const floorNames = ref({});
+const currentFloor = ref(0);
+const map = ref(null);
+const nodeForModal = ref(null);
+const nodeForEditing = ref(null);
+const nodeForMoving = ref(null);
+const clickedPoint = ref(null);
+const currentDisguise = ref(null);
+const currentVariant = ref(null);
+const editorState = ref('OFF');
+const polyActive = ref(false);
+const deletionItem = ref(null);
+const deletionItemType = ref(null);
+//endregion
+//region Mounted
+onMounted(() => {
+    const gamePromise = $fetch(`${config.public.apiDomain}/api/games/${route.params.game}`, {
+        server: false
+    });
+    gamePromise.then(resp => {
+        game.value = resp;
+    });
+    const missionPromise = $fetch(`${config.public.apiDomain}/api/games/${route.params.game}` +
+        `/locations/${route.params.location}` +
+        `/missions/${route.params.mission}`, {
+        server: false
+    });
+    missionPromise.then(resp => {
+        mission.value = resp;
+        currentFloor.value = mission.value.startingFloorNumber;
+        currentVariant.value = route.query.variant ?
+            mission.value.variants.find(v => v.slug === route.query.variant) :
+            mission.value.variants.find(v => v.default);
+    });
+
+    Promise.all([gamePromise, missionPromise]).then(_ => {
+        metadataLoaded.value = true;
+        buildLevelNames();
+        map.value = L.map('map', {
+            maxZoom: mission.value.maxZoom,
+            minZoom: mission.value.minZoom,
+            crs: L.CRS.Simple,
+            renderer: mission.value.svg ? L.svg() : L.canvas(),
+            maxBounds: mapBounds.value,
+            layers: Object.values(mapLayers)
+        }).setView(L.latLng(mission.value.mapCenterLatitude, mission.value.mapCenterLongitude), mission.value.minZoom);
+        //@formatter:off
+        const nodesPromise = $fetch(
+            `${config.public.apiDomain}/api/games/${route.params.game}`+
+            `/locations/${route.params.location}`+
+            `/missions/${route.params.mission}/nodes`).then(resp => {
+            topLevelCategories.value = resp.topLevelCategories;
+            nodes.value = resp.nodes;
+            nodes.value.forEach(node => {
+                buildNodeForMap(node);
+            });
+            categories.value = resp.categories;
+            mapLayers = buildMapLayers();
+
+            nextTick(() => {
+                nodes.value.forEach(node => node.marker.addTo(map.value));
             });
         });
 
-        return {
-            apiDomain: config.public.apiDomain
-        };
-    },
-    mounted() {
-        const config = this.$config;
-        const route = useRoute();
+        const disguisesPromise = $fetch(
+            `${config.public.apiDomain}/api/games/${route.params.game}`+
+            `/locations/${route.params.location}`+
+            `/missions/${route.params.mission}/disguises`).then(resp => disguises.value = resp.disguises);
 
-        const gamePromise = $fetch(`${config.public.apiDomain}/api/games/${route.params.game}`, {
-            server: false
+        const ledgesPromise = $fetch(
+            `${config.public.apiDomain}/api/games/${route.params.game}`+
+            `/locations/${route.params.location}`+
+            `/missions/${route.params.mission}/ledges`).then(resp => {
+            ledges.value = resp.ledges;
+            ledges.value.forEach(ledge => buildLedgeForMap(ledge));
+
+            nextTick(_ => ledges.value.forEach(ledge => ledge.polyline.addTo(map.value)));
         });
-        gamePromise.then(resp => {
-            this.game = resp;
+        const foliagePromise = $fetch(
+            `${config.public.apiDomain}/api/games/${route.params.game}`+
+            `/locations/${route.params.location}`+
+            `/missions/${route.params.mission}/foliage`).then(resp => {
+            foliage.value = resp.foliage;
+            foliage.value.forEach(foliage => buildFoliageForMap(foliage));
+
+            nextTick(_ => foliage.value.forEach(foliage => foliage.polygon.addTo(map.value)));
         });
-        const missionPromise = $fetch(`${config.public.apiDomain}/api/games/${route.params.game}` +
-            `/locations/${route.params.location}` +
-            `/missions/${route.params.mission}`, {
-            server: false
-        });
-        missionPromise.then(resp => {
-            this.mission = resp;
-            this.currentFloor = this.mission.startingFloorNumber;
-            this.currentVariant = this.$route.query.variant ?
-                this.mission.variants.find(v => v.slug === this.$route.query.variant) :
-                this.mission.variants.find(v => v.default);
-        });
+        //@formatter:on
 
-        Promise.all([gamePromise, missionPromise]).then(_ => {
-            this.metadataLoaded = true;
-            this.buildLevelNames();
-            //@formatter:off
-            const nodesPromise = $fetch(
-                `${config.public.apiDomain}/api/games/${this.$route.params.game}`+
-                `/locations/${this.$route.params.location}`+
-                `/missions/${this.$route.params.mission}/nodes`).then(resp => {
-                    this.topLevelCategories = resp.topLevelCategories;
-                    this.nodes = resp.nodes;
-                    this.nodes.forEach(node => {
-                        this.buildNodeForMap(node);
-                    });
-                    this.categories = resp.categories;
-                    this.mapLayers = this.buildMapLayers();
+        Promise.all([nodesPromise, disguisesPromise, ledgesPromise, foliagePromise]).then(_ => {
+            nextTick(() => {
+                updateActiveMapState();
+                mapDataLoaded.value = true;
 
-                    this.$nextTick(() => {
-                        this.map = L.map('map', {
-                            maxZoom: this.mission.maxZoom,
-                            minZoom: this.mission.minZoom,
-                            crs: L.CRS.Simple,
-                            renderer: /*this.mission.svg ? L.svg() :*/ L.canvas(),
-                            maxBounds: this.mapBounds,
-                            layers: Object.values(this.mapLayers)
-                        }).setView(L.latLng(this.mission.mapCenterLatitude, this.mission.mapCenterLongitude), this.mission.minZoom);
-                        this.nodes.forEach(node => node.marker.addTo(this.map));
-                    });
-                });
+                // Bind map listeners
+                map.value.on('click', addMarker);
+                map.value.on('pm:drawstart', initDraw);
+                map.value.on('pm:create', pmLayer);
+                map.value.on('pm:drawend', endDraw);
+                map.value.on('zoomend', () => {
+                    let zoomLevel = map.value.getZoom();
 
-            const disguisesPromise = $fetch(
-                `${config.public.apiDomain}/api/games/${this.$route.params.game}`+
-                `/locations/${this.$route.params.location}`+
-                `/missions/${this.$route.params.mission}/disguises`).then(resp => this.disguises = resp.disguises);
+                    const fonts = {
+                        3: '.8em',
+                        4: '1em',
+                        5: '1.2em'
+                    };
 
-            const ledgesPromise = $fetch(
-                `${config.public.apiDomain}/api/games/${this.$route.params.game}`+
-                `/locations/${this.$route.params.location}`+
-                `/missions/${this.$route.params.mission}/ledges`).then(resp => {
-                    this.ledges = resp.ledges;
-                    this.ledges.forEach(ledge => this.buildLedgeForMap(ledge));
-
-                    this.$nextTick(_ => this.ledges.forEach(ledge => ledge.polyline.addTo(this.map)));
-                });
-            const foliagePromise = $fetch(
-                `${config.public.apiDomain}/api/games/${this.$route.params.game}`+
-                `/locations/${this.$route.params.location}`+
-                `/missions/${this.$route.params.mission}/foliage`).then(resp => {
-                    this.foliage = resp.foliage;
-                    this.foliage.forEach(foliage => this.buildFoliageForMap(foliage));
-
-                    this.$nextTick(_ => this.foliage.forEach(foliage => foliage.polygon.addTo(this.map)));
-                });
-            //@formatter:on
-
-            Promise.all([nodesPromise, disguisesPromise, ledgesPromise, foliagePromise]).then(_ => {
-                this.$nextTick(() => {
-                    this.updateActiveMapState();
-                    this.mapDataLoaded = true;
-
-                    // Bind map listeners
-                    this.map.on('click', this.addMarker);
-                    this.map.on('pm:drawstart', this.initDraw);
-                    this.map.on('pm:create', this.pmLayer);
-                    this.map.on('pm:drawend', this.endDraw);
-                    this.map.on('zoomend', () => {
-                        let zoomLevel = this.map.getZoom();
-
-                        const fonts = {
-                            3: '.8em',
-                            4: '1em',
-                            5: '1.2em'
-                        };
-
-                        const areas = document.querySelector('.area-icon');
-                        if (areas) {
-                            areas.style.fontSize = fonts[zoomLevel];
-                        }
-                    });
+                    const areas = document.querySelector('.area-icon');
+                    if (areas) {
+                        areas.style.fontSize = fonts[zoomLevel];
+                    }
                 });
             });
         });
-    },
-    data() {
-        return {
-            metadataLoaded: false,
-            mapDataLoaded: false,
-            game: null,
-            mission: null,
-            nodes: [],
-            categories: [],
-            topLevelCategories: [],
-            disguises: [],
-            disguiseAreas: {},
-            ledges: [],
-            foliage: [],
-            floorNames: {},
-            //region Map-specific
-            currentFloor: 0,
-            map: null,
-            mapLayers: {},
-            nodeForModal: null,
-            nodeForEditing: null,
-            nodeForMoving: null,
-            clickedPoint: null,
-            vertices: [],
-            workingLayer: null,
-            currentDisguise: null,
-            currentVariant: null,
-            //endregion
-            //region Editor-specific
-            editorState: 'OFF',
-            disguiseRegionType: null,
-            polyActive: false,
-            deletionItem: null,
-            deletionItemType: null
-            //endregion
+    });
+});
+//endregion
+//region Methods
+//region Map-building
+function buildNodeForMap(node) {
+    node.latLng = L.latLng(node.latitude, node.longitude);
+    node.visible = true;
+    node.searchResult = false;
+    node.marker = new L.marker([node.latitude, node.longitude], {
+        icon: buildIcon(node),
+        custom: {
+            id: node.id
+        },
+        riseOnHover: true
+    }).on('click', e => {
+        if (node.passageDestinationFloor !== null && editorState.value === 'OFF' && e.originalEvent.pointerType === 'mouse') {
+            onChangeFloor(node.passageDestinationFloor);
+        } else {
+            renderItemDetailsModal(node);
         }
-    },
-    methods: {
-        //region Map-building
-        buildNodeForMap(node) {
-            node.latLng = L.latLng(node.latitude, node.longitude);
-            node.visible = true;
-            node.searchResult = false;
-            node.marker = new L.marker([node.latitude, node.longitude], {
-                icon: this.buildIcon(node),
-                custom: {
-                    id: node.id
-                },
-                riseOnHover: true
-            }).on('click', e => {
-                if (node.passageDestinationFloor !== null && this.editorState === 'OFF' && e.originalEvent.pointerType === 'mouse') {
-                    this.onChangeFloor(node.passageDestinationFloor);
-                } else {
-                    this.renderItemDetailsModal(node);
-                }
-            }).on('dragend', _ => {
-                this.nodeForMoving = node;
-                this.$refs.moveNodeModal.showModal();
-            });
+    }).on('dragend', _ => {
+        nodeForMoving.value = node;
+        moveNodeModalRef.value.showModal();
+    });
 
-            this.bindTooltip(node);
-        },
-        buildLedgeForMap(ledge) {
-            ledge.visible = true;
-            const formattedVertices = ledge.vertices.map(vertexPair => [vertexPair.split(',')[0], vertexPair.split(',')[1]]);
-            ledge.polyline = L.polyline(formattedVertices, {
-                color: '#fff',
-                weight: 4,
-                opacity: .75,
-                custom: {
-                    id: ledge.id
-                }
-            }).bindTooltip(this.$t('map.groups.Navigation|Ledge'), {sticky: true})
-                .on('click', () => this.displayConfirmPolyDeletionModal(ledge, 'ledge'));
-
-            return ledge;
-        },
-        displayConfirmPolyDeletionModal(ledgeFoliage, type) {
-            // Can't delete either if their respective editor isn't enabled
-            if (!((this.editorState === 'LEDGES' && type === 'ledge') ||
-                (this.editorState === 'FOLIAGE' && type === 'foliage') ||
-                (this.editorState === 'DISGUISE-REGIONS' && type === 'disguise-area'))) {
-                return;
-            }
-
-            if (this.editorState === 'LEDGES') {
-                this.deletionItemType = 'ledge';
-            } else if (this.editorState === 'FOLIAGE') {
-                this.deletionItemType = 'foliage';
-            } else if (this.editorState === 'DISGUISE-REGIONS') {
-                this.deletionItemType = 'disguise-area';
-            } else {
-                return;
-            }
-
-            this.deletionItem = ledgeFoliage;
-
-            if (this.editorState === 'DISGUISE-REGIONS') {
-                this.$nextTick(() => this.$refs.manageDisguiseAreaModal.showModal());
-            } else {
-                this.$nextTick(() => this.$refs.deleteEntityModal.showModal());
-            }
-        },
-        buildFoliageForMap(foliage) {
-            foliage.visible = true;
-            const formattedVertices = foliage.vertices.map(vertexPair => [vertexPair.split(',')[0], vertexPair.split(',')[1]]);
-            foliage.polygon = L.polygon(formattedVertices, {
-                color: '#248f24',
-                weight: 4,
-                opacity: .75,
-                custom: {
-                    id: foliage.id
-                }
-            }).bindTooltip(this.$t('map.groups.Navigation|Foliage'), {sticky: true}).on('click', () => this.displayConfirmPolyDeletionModal(foliage, 'foliage'));
-
-            return foliage;
-        },
-        buildDisguiseAreaForMap(disguiseArea) {
-            const formattedVertices = disguiseArea.vertices.map(vertexPair => [vertexPair.split(',')[0], vertexPair.split(',')[1]]);
-            disguiseArea.polygon = L.polygon(formattedVertices, {
-                color: disguiseArea.type === 'trespassing' ? 'yellow' : '#f00',
-                stroke: false,
-                weight: 4,
-                opacity: .75
-            }).bindTooltip(disguiseArea.type === 'trespassing' ? this.$t('map.trespassing') : this.$t('map.hostile-area'), {sticky: true})
-                .on('click', () => this.displayConfirmPolyDeletionModal(disguiseArea, 'disguise-area'));
-
-            return disguiseArea;
-        },
-        buildMapLayers() {
-            const allLayers = {};
-            // 1. Sniper Assassin (only one level - satellite)
-            if (!this.mission.svg) {
-                allLayers[0] = L.tileLayer(this.imageTileUrl.replace('{floorNumber}', 'satellite'), {
-                    noWrap: true,
-                    minZoom: this.mission.minZoom,
-                    maxZoom: this.mission.maxZoom
-                });
-            }
-
-            // 2. SVG Layers for everything else
-            if (this.mission.svg) {
-                for (let i = this.mission.lowestFloorNumber; i <= this.mission.highestFloorNumber; i++) {
-                    allLayers[i] = L.imageOverlay(`${this.svgMapUrl}${i}.svg`, this.layerBounds);
-                }
-            }
-
-            // 3. Satellite layer (if present)
-            if (this.mission.satelliteView) {
-                allLayers[-99] = L.tileLayer(this.imageTileUrl.replace('{floorNumber}', 'satellite'), {
-                    noWrap: true,
-                    minZoom: this.mission.minZoom,
-                    maxZoom: this.mission.maxZoom
-                });
-            }
-
-            return allLayers;
-        },
-        updateActiveMapState() {
-            this.updateActiveMapLayer();
-            this.updateActiveDisguiseLayer();
-            this.updateNodeMarkers();
-        },
-        updateActiveMapLayer() {
-            // 1. Deactivate all map layers
-            this.range(this.mission.lowestFloorNumber, this.mission.highestFloorNumber).forEach(x => this.map.removeLayer(this.mapLayers[x]));
-
-            // 2. Activate the current one
-            this.map.addLayer(this.mapLayers[this.currentFloor]);
-        },
-        updateActiveDisguiseLayer(oldDisguise) {
-            // 1. Remove old disguise if need be
-            if (oldDisguise) {
-                this.disguiseAreas[oldDisguise.id].forEach(area => area.polygon.removeFrom(this.map));
-            }
-
-            if (this.currentDisguise) {
-                // 2. Remove all current disguise layers for the current disguise
-                this.disguiseAreas[this.currentDisguise.id].forEach(area => area.polygon.removeFrom(this.map));
-
-                // 3. Add current disguise layers for the current disguise + level
-                this.disguiseAreas[this.currentDisguise.id].filter(area => area.level === this.currentFloor).forEach(area => area.polygon.addTo(this.map));
-            }
-        },
-        updateNodeMarkers() {
-            // 1. Remove all items from the map
-            this.nodes.forEach(node => node.marker._icon.style.display = 'none');
-            this.ledges.forEach(ledge => ledge.polyline.removeFrom(this.map));
-            this.foliage.forEach(foliage => foliage.polygon.removeFrom(this.map));
-
-            // 3. [OVERRIDE] Mark nodes as "visible" if they are part of a search result
-            this.nodes.filter(node => node.searchResult).forEach(node => node.visible = true);
-
-            // 4. Add all visible nodes to map if they're on the current level and for the current variant
-            this.nodes.filter(node => node.level === this.currentFloor && node.visible && node.variants.includes(this.currentVariant.id)).forEach(node => {
-                node.marker._icon.style.display = 'block';
-
-                if (node.searchResult) {
-                    node.marker._icon.classList.add('search-result')
-                } else {
-                    node.marker._icon.classList.remove('search-result');
-                }
-            });
-
-            // 5. Handle showing/hiding ledges/foliage
-            this.ledges.filter(ledge => ledge.level === this.currentFloor && ledge.visible)
-                .forEach(ledge => ledge.polyline.addTo(this.map));
-            this.foliage.filter(foliage => foliage.level === this.currentFloor && foliage.visible)
-                .forEach(foliage => foliage.polygon.addTo(this.map));
-
-            // Make sure the counters and highlights for the level select are updated
-            if (this.$refs.floorToggle) {
-                this.$refs.floorToggle.$forceUpdate();
-            }
-            if (this.$refs.sidebar) {
-                this.$refs.sidebar.$forceUpdate();
-            }
-        },
-        buildIcon(node) {
-            return node.icon === 'area' ?
-                new L.DivIcon({
-                    className: 'area-icon',
-                    html: node.name.replace(/(?:\r\n|\r|\n)/g, '<br>')
-                }) :
-                L.icon({
-                    iconUrl: `/img/map-icons/${node.icon}.png`,
-                    iconSize: [32, 32],
-                    iconAnchor: [16, 16],
-                    popupAnchor: [0, 0]
-                });
-        },
-        bindTooltip(node) {
-            let tooltip = node.name !== '' ? node.name : '';
-
-
-            switch (node.subgroup) {
-                case 'up-stair':
-                    tooltip = this.$t('map.groups.Navigation|Stairwell');
-
-                    if (node.passageDestinationFloor !== null) {
-                        const floorName = this.floorNames[node.passageDestinationFloor];
-                        const destination = floorName.header ? `${floorName.header} / ${floorName.value}` : floorName.value;
-                        tooltip = this.$t('map.groups.Navigation|Stairwell-with-destination', { destination: destination});
-                    }
-                    break;
-                case 'up-pipe':
-                    if (node.passageDestinationFloor !== null) {
-                        const floorName = this.floorNames[node.passageDestinationFloor];
-                        const destination = floorName.header ? `${floorName.header} / ${floorName.value}` : floorName.value;
-                        tooltip = this.$t('map.groups.Navigation|Ways Up/Down-with-destination', { destination: destination});
-                    }
-                    break;
-                case 'passage':
-                    if (node.passageDestinationFloor !== null) {
-                        const floorName = this.floorNames[node.passageDestinationFloor];
-                        const destination = floorName.header ? `${floorName.header} / ${floorName.value}` : floorName.value;
-                        tooltip = this.$t('map.groups.Navigation|Passage-with-destination', { destination: destination});
-                    }
-                    break;
-                case 'blend-in':
-                    tooltip = node.name === 'Any Disguise' ?
-                        this.$t('map.groups.Points of Interest|Blend In') :
-                        this.$t('map.blend-in-as', { disguiseName: node.name });
-                    break;
-                case 'locked-door':
-                case 'conceal-item':
-                case 'hiding-spot':
-                case 'destroy-evidence':
-                case 'weapon-crate':
-                case 'camera':
-                case 'frisk':
-                    tooltip = node.group;
-                    break;
-                case 'area':
-                    // Don't show tooltips for areas
-                    tooltip = '';
-                    break;
-            }
-
-            if (tooltip === '') {
-                return;
-            }
-
-            if (node.quantity > 1) {
-                tooltip += ` (x${node.quantity})`;
-            }
-
-            node.marker.bindTooltip(tooltip.replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;"));
-        },
-        buildLevelNames() {
-            if (this.mission === undefined) {
-                console.error('RIP');
-                return;
-            }
-
-            this.floorNames = {};
-            for (let i = this.mission.highestFloorNumber; i >= this.mission.lowestFloorNumber; i--) {
-                const floorName = this.mission.floorNames.find(x => x.floorNumber === i);
-                if (floorName) {
-                    this.floorNames[i] = {
-                        index: i,
-                        header: this.getFloorHeader(this.$t(floorName.nameKey)),
-                        value: this.getFormattedFloorName(this.$t(floorName.nameKey)),
-                    }
-                } else {
-                    this.floorNames[i] = {
-                        index: i,
-                        header: undefined,
-                        value: this.$t('map.level-number', { levelNumber: i })
-                    }
-                }
-            }
-        },
-        getFloorHeader(level) {
-            if (level.includes('|')) {
-                return level.split('|')[0];
-            }
-
-            return null;
-        },
-        getFormattedFloorName(level) {
-            if (level.includes('|')) {
-                return level.split('|')[1];
-            }
-
-            return level;
-        },
-        renderItemDetailsModal(node) {
-            this.nodeForModal = node;
-            this.$refs.nodePopup.resetDeletionState();
-
-            this.$nextTick(() => {
-                this.$refs.nodePopup.showModal();
-            });
-        },
-        addMarker(event) {
-            if (this.editorState !== 'ITEMS') {
-                return;
-            }
-
-            this.nodeForEditing = null;
-            this.clickedPoint = event.latlng;
-
-            this.$nextTick(_ => {
-                this.$refs.addEditItemModal.initializeAddEditModal();
-                this.$refs.addEditItemModal.showModal();
-            });
-        },
-        prepareEditor(nodeId) {
-            this.nodeForEditing = this.nodes.find(node => node.id === nodeId);
-            this.$refs.addEditItemModal.initializeAddEditModal();
-
-            this.$nextTick(_ => {
-                this.$refs.addEditItemModal.initializeAddEditModal();
-                this.$refs.addEditItemModal.showModal();
-            });
-        },
-        deleteNode(nodeId) {
-            const node = this.nodes.find(x => x.id === nodeId);
-            node.marker.removeFrom(this.map);
-            ArrayHelpers.deleteElement(this.nodes, node);
-        },
-        onItemCreated(node) {
-            this.nodes.push(node);
-            this.buildNodeForMap(node);
-            // We're in the editor, so enable dragging right away
-            node.marker.addTo(this.map);
-            node.marker.dragging.enable();
-            this.updateNodeMarkers();
-            this.$refs.addEditItemModal.hideModal();
-        },
-        onItemUpdated(node) {
-            this.nodeForEditing.marker.removeFrom(this.map);
-            ArrayHelpers.deleteElement(this.nodes, this.nodeForEditing);
-            this.nodes.push(node);
-            this.buildNodeForMap(node);
-            node.marker.addTo(this.map);
-            this.updateNodeMarkers();
-            this.$refs.addEditItemModal.hideModal();
-        },
-        //endregion
-        range(min, max) {
-            return Utils.range(min, max);
-        },
-        //region Event listeners
-        onChangeFloor(newFloor) {
-            this.currentFloor = newFloor;
-        },
-        onHideAll() {
-            this.nodes.forEach(node => node.visible = false);
-            this.ledges.forEach(ledge => ledge.visible = false);
-            this.foliage.forEach(foliage => foliage.visible = false);
-            this.updateActiveMapState();
-        },
-        onShowAll() {
-            this.nodes.forEach(node => node.visible = true);
-            this.ledges.forEach(ledge => ledge.visible = true);
-            this.foliage.forEach(foliage => foliage.visible = true);
-            this.updateActiveMapState();
-        },
-        onSearchItem(itemKey) {
-            this.nodes.forEach(node => node.searchResult = false);
-
-            if (itemKey !== null) {
-                const splitKey = itemKey.split('|');
-                this.nodes.filter(node => node.group === splitKey[0] && node.name === splitKey[1]).forEach(node => node.searchResult = true);
-            }
-
-            this.updateNodeMarkers();
-        },
-        onHideCategory(category) {
-            if (category.subgroup === 'ledge') {
-                this.ledges.forEach(ledge => ledge.visible = false);
-            } else if (category.subgroup === 'foliage') {
-                this.foliage.forEach(foliage => foliage.visible = false);
-            } else {
-                this.nodes.filter(node => node.type === category.type && node.group === category.group).forEach(node => node.visible = false);
-            }
-
-            this.updateNodeMarkers();
-        },
-        onShowCategory(category) {
-            if (category.subgroup === 'ledge') {
-                this.ledges.forEach(ledge => ledge.visible = true);
-            } else if (category.subgroup === 'foliage') {
-                this.foliage.forEach(foliage => foliage.visible = true);
-            } else {
-                this.nodes.filter(node => node.type === category.type && node.group === category.group).forEach(node => node.visible = true);
-            }
-
-            this.updateNodeMarkers();
-        },
-        onHideTopLevelCategory(type) {
-          this.nodes.filter(node => node.type === type).forEach(node => node.visible = false);
-
-          if (type === 'Navigation') {
-              this.ledges.forEach(ledge => ledge.visible = false);
-              this.foliage.forEach(foliage => foliage.visible = false);
-          }
-
-          this.updateNodeMarkers();
-        },
-        onShowTopLevelCategory(type) {
-          this.nodes.filter(node => node.type === type).forEach(node => node.visible = true);
-
-          if (type === 'Navigation') {
-            this.ledges.forEach(ledge => ledge.visible = true);
-            this.foliage.forEach(foliage => foliage.visible = true);
-          }
-
-          this.updateNodeMarkers();
-        },
-        onZoomIn() {
-            this.map.setZoom(this.map.getZoom() + 1);
-        },
-        onZoomOut() {
-            this.map.setZoom(this.map.getZoom() - 1);
-        },
-        onMasterEditToggle() {
-            if (this.editorState === 'OFF') {
-                this.editorState = 'MENU';
-            } else {
-                this.editorState = 'OFF';
-                this.toggleDraw('OFF');
-                this.nodes.forEach(node => node.marker.dragging.disable());
-            }
-        },
-        onLaunchEditor(editorState) {
-            this.editorState = editorState;
-
-            if (this.editorState === 'MENU') {
-                this.toggleDraw('OFF');
-            }
-
-            // Update node "draggability"
-            if (this.editorState === 'ITEMS') {
-                this.nodes.forEach(node => node.marker.dragging.enable());
-            } else {
-                this.nodes.forEach(node => node.marker.dragging.disable());
-            }
-        },
-        toggleDraw(state) {
-            if (state === 'OFF') {
-                this.map.pm.disableDraw('Line');
-                this.map.pm.disableDraw('Polygon');
-                return;
-            }
-
-            if (this.map.pm.Draw[state]._enabled) {
-                this.map.pm.disableDraw(state);
-                this.polyActive = false;
-            } else {
-                this.map.pm.enableDraw(state, {
-                  snappable: false
-                });
-                this.polyActive = true;
-            }
-
-            let toastMessage = this.polyActive ? 'Drawing tools enabled' : 'Drawing tools disabled';
-            this.$toastr.i(toastMessage);
-        },
-        onEnableLedgeCreation() {
-            this.toggleDraw('Line');
-        },
-        onEnableFoliageCreation() {
-            this.toggleDraw('Polygon');
-        },
-        onEnableDisguiseRegionCreation(regionType) {
-            if (this.disguiseRegionType !== null && this.disguiseRegionType !== regionType) {
-                // We'll need to disable and re-enable to switch type
-                this.toggleDraw('Polygon');
-            }
-            if (this.disguiseRegionType !== null && this.disguiseRegionType === regionType) {
-                // Toggling the same one disables, so just null it out.
-                this.disguiseRegionType = null;
-            } else {
-                this.disguiseRegionType = regionType;
-            }
-
-            this.toggleDraw('Polygon');
-        },
-        initDraw(e) {
-            e.workingLayer.on('pm:vertexadded', e => {
-                this.vertices.push([e.latlng.lat, e.latlng.lng])
-            });
-        },
-        pmLayer(e) {
-            this.workingLayer = e.layer;
-        },
-        endDraw(e) {
-            if (this.vertices.length === 0) {
-                return;
-            }
-
-            const data = {
-                vertices: [],
-                missionId: this.mission.id,
-                level: this.currentFloor
-            };
-            this.vertices.forEach(element => {
-                data.vertices.push(`${element[0]},${element[1]}`);
-            });
-            if (e.shape === 'Line') {
-                useAuthenticatedFetch(`${this.apiDomain}/api/ledges`, {
-                    method: 'POST',
-                    body: data
-                }).then(resp => {
-                    this.vertices = [];
-                    this.ledges.push(this.buildLedgeForMap(resp.data));
-                    this.$toastr.s('Ledge saved!');
-                    this.map.removeLayer(this.workingLayer);
-                    this.workingLayer = null;
-                    this.polyActive = false;
-                    this.updateNodeMarkers();
-                }).catch(_ => {
-                    this.$toastr.e('Error occurred when saving ledge!');
-                });
-            } else if (this.editorState === 'FOLIAGE') {
-                useAuthenticatedFetch(`${this.apiDomain}/api/foliage`, {
-                    method: 'POST',
-                    body: data
-                }).then(resp => {
-                    this.vertices = [];
-                    this.foliage.push(this.buildFoliageForMap(resp.data));
-                    this.$toastr.s('Foliage saved!');
-                    this.map.removeLayer(this.workingLayer);
-                    this.workingLayer = null;
-                    this.polyActive = false;
-                    this.updateNodeMarkers();
-                }).catch(_ => {
-                    this.$toastr.e('Error occurred when saving foliage!');
-                });
-            } else if (this.editorState === 'DISGUISE-REGIONS') {
-                data.disguiseId = this.currentDisguise.id;
-                data.type = this.disguiseRegionType;
-
-                useAuthenticatedFetch(`${this.apiDomain}/api/disguise-areas`, {
-                    method: 'POST',
-                    body: data
-                }).then(resp => {
-                    this.vertices = [];
-                    this.disguiseAreas[this.currentDisguise.id].push(this.buildDisguiseAreaForMap(resp.data));
-                    this.$toastr.s('Disguise area saved!');
-                    this.map.removeLayer(this.workingLayer);
-                    this.workingLayer = null;
-                    this.polyActive = false;
-                    this.disguiseRegionType = null;
-                    this.updateActiveDisguiseLayer();
-                }).catch(err => {
-                    console.error(err);
-                    this.$toastr.e('Error occurred when saving disguise area!');
-                });
-            }
-        },
-        onPolyDeleted() {
-            if (this.deletionItemType === 'ledge') {
-                this.deletionItem.polyline.removeFrom(this.map);
-                ArrayHelpers.deleteElement(this.ledges, this.deletionItem);
-            } else if (this.deletionItemType === 'foliage') {
-                this.deletionItem.polygon.removeFrom(this.map);
-                ArrayHelpers.deleteElement(this.foliage, this.deletionItem);
-            } else if (this.deletionItemType === 'disguise-area') {
-                this.deletionItem.polygon.removeFrom(this.map);
-                ArrayHelpers.deleteElement(this.disguiseAreas[this.currentDisguise.id], this.deletionItem);
-            }
-
-            this.deletionItemType = null;
-            this.deletionItem = null;
-            this.updateNodeMarkers();
-            this.$refs.deleteEntityModal.hideModal();
-            this.$refs.manageDisguiseAreaModal.hideModal();
-        },
-        onDisguiseAreaConverted() {
-            this.deletionItem.polygon.removeFrom(this.map);
-            this.deletionItem.type = this.deletionItem.type === 'trespassing' ? 'hostile' : 'trespassing';
-            this.disguiseAreas[this.currentDisguise.id].push(this.buildDisguiseAreaForMap(this.deletionItem));
-            this.deletionItemType = null;
-            this.deletionItem = null;
-            this.updateNodeMarkers();
-            this.updateActiveDisguiseLayer();
-            this.$refs.manageDisguiseAreaModal.hideModal();
-        },
-        onDisguiseSelected(disguise) {
-            // Disable disguise editor tools if they're enabled. You can't change a disguise mid-polygon.
-            if (this.disguiseRegionType) {
-                this.onEnableDisguiseRegionCreation(this.disguiseRegionType);
-            }
-
-            if (disguise === 'NONE' || this.disguiseAreas[disguise.id]) {
-                this.currentDisguise = disguise === 'NONE' ? null : disguise;
-                return;
-            }
-
-            useAuthenticatedFetch(`${this.apiDomain}/api/games/${this.$route.params.game}`+
-                `/locations/${this.$route.params.location}`+
-                `/missions/${this.$route.params.mission}` +
-                `/disguise-areas/${disguise.id}`)
-                .then(resp => {
-                    this.disguiseAreas[disguise.id] = resp.disguiseAreas;
-                    this.disguiseAreas[disguise.id].forEach(area => this.buildDisguiseAreaForMap(area));
-                    this.currentDisguise = disguise;
-                }).catch(err => {
-                    console.error(err);
-                    this.$toastr.e('Failed to retrieve disguise regions!');
-                });
-        },
-        onReplaceDisguiseAreas(disguiseAreas) {
-            if (!disguiseAreas.length) {
-                // No actual regions, so nothing to do
-                return;
-            }
-
-            const disguiseId = disguiseAreas[0].disguiseId;
-            this.disguiseAreas[disguiseId].forEach(area => area.polygon.removeFrom(this.map));
-            this.disguiseAreas[disguiseId] = disguiseAreas;
-            this.disguiseAreas[disguiseId].forEach(area => this.buildDisguiseAreaForMap(area));
-            this.updateActiveDisguiseLayer();
-        },
-        onVariantSelected(variant) {
-            this.currentVariant = variant;
-            this.updateActiveMapState();
+    bindTooltip(node);
+}
+function buildLedgeForMap(ledge) {
+    ledge.visible = true;
+    const formattedVertices = ledge.vertices.map(vertexPair => [vertexPair.split(',')[0], vertexPair.split(',')[1]]);
+    ledge.polyline = L.polyline(formattedVertices, {
+        color: '#fff',
+        weight: 4,
+        opacity: .75,
+        custom: {
+            id: ledge.id
         }
-        //endregion
-    },
-    computed: {
-        mapBounds() {
-            return [
-                this.mission.topLeftCoordinate.split(','),
-                this.mission.bottomRightCoordinate.split(',')
-            ];
-        },
-        layerBounds() {
-            return [
-                this.mission.boundingBoxTopLeft.split(','),
-                this.mission.boundingBoxBottomRight.split(',')
-            ];
-        },
-        showDebug() {
-            return import.meta.env.VITE_SHOW_DEBUG === 'true';
-        },
-        svgMapUrl() {
-            if (this.game === undefined || this.mission === undefined) {
-                return '';
-            }
+    }).bindTooltip(t('map.groups.Navigation|Ledge'), {sticky: true})
+        .on('click', () => displayConfirmPolyDeletionModal(ledge, 'ledge'));
 
-            return `https://media.hitmaps.com/img/${this.game.slug}/maps/${this.mission.mapFolderName}/`;
-        },
-        imageTileUrl() {
-            if (!this.mission) {
-              return '';
-            }
+    return ledge;
+}
+function displayConfirmPolyDeletionModal(ledgeFoliage, type) {
+    // Can't delete either if their respective editor isn't enabled
+    if (!((editorState.value === 'LEDGES' && type === 'ledge') ||
+        (editorState.value === 'FOLIAGE' && type === 'foliage') ||
+        (editorState.value === 'DISGUISE-REGIONS' && type === 'disguise-area'))) {
+        return;
+    }
 
-            return `https://media.hitmaps.com/img/${this.game.slug}/maps/${this.mission.mapFolderName}/{floorNumber}/{z}/{x}/{y}.png`;
-        },
-        loggedIn() {
-            if (localStorage.getItem('token') != null) {
-                var data = JSON.parse(
-                    atob(localStorage.getItem('token').split('.')[1])
-                );
-                var now = new Date();
-                if (new Date(data.exp * 1000).getTime() - now.getTime() > 0) {
-                    return true;
-                }
-            }
-            return false;
+    if (editorState.value === 'LEDGES') {
+        deletionItemType.value = 'ledge';
+    } else if (editorState.value === 'FOLIAGE') {
+        deletionItemType.value = 'foliage';
+    } else if (editorState.value === 'DISGUISE-REGIONS') {
+        deletionItemType.value = 'disguise-area';
+    } else {
+        return;
+    }
+
+    deletionItem.value = ledgeFoliage;
+
+    if (editorState.value === 'DISGUISE-REGIONS') {
+        nextTick(() => manageDisguiseAreaModalRef.value.showModal());
+    } else {
+        nextTick(() => deleteEntityModalRef.value.showModal());
+    }
+}
+function buildFoliageForMap(foliage) {
+    foliage.visible = true;
+    const formattedVertices = foliage.vertices.map(vertexPair => [vertexPair.split(',')[0], vertexPair.split(',')[1]]);
+    foliage.polygon = L.polygon(formattedVertices, {
+        color: '#248f24',
+        weight: 4,
+        opacity: .75,
+        custom: {
+            id: foliage.id
         }
-    },
-    watch: {
-        currentFloor() {
-            if (!this.map) {
-                return;
-            }
+    }).bindTooltip(t('map.groups.Navigation|Foliage'), {sticky: true}).on('click', () => displayConfirmPolyDeletionModal(foliage, 'foliage'));
 
-            this.updateActiveMapState();
-        },
-        currentDisguise(_, old) {
-            if (!this.map) {
-                return;
-            }
+    return foliage;
+}
+function buildDisguiseAreaForMap(disguiseArea) {
+    const formattedVertices = disguiseArea.vertices.map(vertexPair => [vertexPair.split(',')[0], vertexPair.split(',')[1]]);
+    disguiseArea.polygon = L.polygon(formattedVertices, {
+        color: disguiseArea.type === 'trespassing' ? 'yellow' : '#f00',
+        stroke: false,
+        weight: 4,
+        opacity: .75
+    }).bindTooltip(disguiseArea.type === 'trespassing' ? t('map.trespassing') : t('map.hostile-area'), {sticky: true})
+        .on('click', () => displayConfirmPolyDeletionModal(disguiseArea, 'disguise-area'));
 
-            this.updateActiveDisguiseLayer(old);
+    return disguiseArea;
+}
+function buildMapLayers() {
+    const allLayers = {};
+    // 1. Sniper Assassin (only one level - satellite)
+    if (!mission.value.svg) {
+        allLayers[0] = L.tileLayer(imageTileUrl.value.replace('{floorNumber}', 'satellite'), {
+            noWrap: true,
+            minZoom: mission.value.minZoom,
+            maxZoom: mission.value.maxZoom
+        });
+    }
+
+    // 2. SVG Layers for everything else
+    if (mission.value.svg) {
+        for (let i = mission.value.lowestFloorNumber; i <= mission.value.highestFloorNumber; i++) {
+            allLayers[i] = L.imageOverlay(`${svgMapUrl.value}${i}.svg`, layerBounds.value);
         }
     }
-})
+
+    // 3. Satellite layer (if present)
+    if (mission.value.satelliteView) {
+        allLayers[-99] = L.tileLayer(imageTileUrl.value.replace('{floorNumber}', 'satellite'), {
+            noWrap: true,
+            minZoom: mission.value.minZoom,
+            maxZoom: mission.value.maxZoom
+        });
+    }
+
+    return allLayers;
+}
+function updateActiveMapState() {
+    updateActiveMapLayer();
+    updateActiveDisguiseLayer();
+    updateNodeMarkers();
+}
+function updateActiveMapLayer() {
+    // 1. Deactivate all map layers
+    range(mission.value.lowestFloorNumber, mission.value.highestFloorNumber).forEach(x => map.value.removeLayer(mapLayers[x]));
+
+    // 2. Activate the current one
+    map.value.addLayer(mapLayers[currentFloor.value]);
+}
+function updateActiveDisguiseLayer(oldDisguise) {
+    // 1. Remove old disguise if need be
+    if (oldDisguise) {
+        disguiseAreas[oldDisguise.id].forEach(area => area.polygon.removeFrom(map.value));
+    }
+
+    if (currentDisguise.value) {
+        // 2. Remove all current disguise layers for the current disguise
+        disguiseAreas[currentDisguise.value.id].forEach(area => area.polygon.removeFrom(map.value));
+
+        // 3. Add current disguise layers for the current disguise + level
+        disguiseAreas[currentDisguise.value.id].filter(area => area.level === currentFloor.value).forEach(area => area.polygon.addTo(map.value));
+    }
+}
+function updateNodeMarkers() {
+    // 1. Remove all items from the map
+    nodes.value.forEach(node => node.marker._icon.style.display = 'none');
+    ledges.value.forEach(ledge => ledge.polyline.removeFrom(map.value));
+    foliage.value.forEach(foliage => foliage.polygon.removeFrom(map.value));
+
+    // 3. [OVERRIDE] Mark nodes as "visible" if they are part of a search result
+    nodes.value.filter(node => node.searchResult).forEach(node => node.visible = true);
+
+    // 4. Add all visible nodes to map if they're on the current level and for the current variant
+    nodes.value.filter(node => node.level === currentFloor.value && node.visible && node.variants.includes(currentVariant.value.id)).forEach(node => {
+        node.marker._icon.style.display = 'block';
+
+        if (node.searchResult) {
+            node.marker._icon.classList.add('search-result')
+        } else {
+            node.marker._icon.classList.remove('search-result');
+        }
+    });
+
+    // 5. Handle showing/hiding ledges/foliage
+    ledges.value.filter(ledge => ledge.level === currentFloor.value && ledge.visible)
+        .forEach(ledge => ledge.polyline.addTo(map.value));
+    foliage.value.filter(foliage => foliage.level === currentFloor.value && foliage.visible)
+        .forEach(foliage => foliage.polygon.addTo(map.value));
+
+    // Make sure the counters and highlights for the level select are updated
+    /*if (floorToggleRef.value) {
+        floorToggleRef.value.$forceUpdate();
+    }
+    if (sidebarRef.value) {
+        sidebarRef.value.$forceUpdate();
+    }*/
+}
+function buildIcon(node) {
+    return node.icon === 'area' ?
+        new L.DivIcon({
+            className: 'area-icon',
+            html: node.name.replace(/(?:\r\n|\r|\n)/g, '<br>')
+        }) :
+        L.icon({
+            iconUrl: `/img/map-icons/${node.icon}.png`,
+            iconSize: [32, 32],
+            iconAnchor: [16, 16],
+            popupAnchor: [0, 0]
+        });
+}
+function bindTooltip(node) {
+    let tooltip = node.name !== '' ? node.name : '';
+
+
+    switch (node.subgroup) {
+        case 'up-stair':
+            tooltip = t('map.groups.Navigation|Stairwell');
+
+            if (node.passageDestinationFloor !== null) {
+                const floorName = floorNames.value[node.passageDestinationFloor];
+                const destination = floorName.header ? `${floorName.header} / ${floorName.value}` : floorName.value;
+                tooltip = t('map.groups.Navigation|Stairwell-with-destination', { destination: destination});
+            }
+            break;
+        case 'up-pipe':
+            if (node.passageDestinationFloor !== null) {
+                const floorName = floorNames.value[node.passageDestinationFloor];
+                const destination = floorName.header ? `${floorName.header} / ${floorName.value}` : floorName.value;
+                tooltip = t('map.groups.Navigation|Ways Up/Down-with-destination', { destination: destination});
+            }
+            break;
+        case 'passage':
+            if (node.passageDestinationFloor !== null) {
+                const floorName = floorNames.value[node.passageDestinationFloor];
+                const destination = floorName.header ? `${floorName.header} / ${floorName.value}` : floorName.value;
+                tooltip = t('map.groups.Navigation|Passage-with-destination', { destination: destination});
+            }
+            break;
+        case 'blend-in':
+            tooltip = node.name === 'Any Disguise' ?
+                t('map.groups.Points of Interest|Blend In') :
+                t('map.blend-in-as', { disguiseName: node.name });
+            break;
+        case 'locked-door':
+        case 'conceal-item':
+        case 'hiding-spot':
+        case 'destroy-evidence':
+        case 'weapon-crate':
+        case 'camera':
+        case 'frisk':
+            tooltip = node.group;
+            break;
+        case 'area':
+            // Don't show tooltips for areas
+            tooltip = '';
+            break;
+    }
+
+    if (tooltip === '') {
+        return;
+    }
+
+    if (node.quantity > 1) {
+        tooltip += ` (x${node.quantity})`;
+    }
+
+    node.marker.bindTooltip(tooltip.replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;"));
+}
+function buildLevelNames() {
+    if (mission.value === undefined) {
+        console.error('RIP');
+        return;
+    }
+
+    floorNames.value = {};
+    for (let i = mission.value.highestFloorNumber; i >= mission.value.lowestFloorNumber; i--) {
+        const floorName = mission.value.floorNames.find(x => x.floorNumber === i);
+        if (floorName) {
+            floorNames.value[i] = {
+                index: i,
+                header: getFloorHeader(t(floorName.nameKey)),
+                value: getFormattedFloorName(t(floorName.nameKey)),
+            }
+        } else {
+            floorNames.value[i] = {
+                index: i,
+                header: undefined,
+                value: t('map.level-number', { levelNumber: i })
+            }
+        }
+    }
+}
+function getFloorHeader(level) {
+    if (level.includes('|')) {
+        return level.split('|')[0];
+    }
+
+    return null;
+}
+function getFormattedFloorName(level) {
+    if (level.includes('|')) {
+        return level.split('|')[1];
+    }
+
+    return level;
+}
+function renderItemDetailsModal(node) {
+    nodeForModal.value = node;
+    nodePopupRef.value.resetDeletionState();
+
+    nextTick(() => {
+        nodePopupRef.value.showModal();
+    });
+}
+function addMarker(event) {
+    if (editorState.value !== 'ITEMS') {
+        return;
+    }
+
+    nodeForEditing.value = null;
+    clickedPoint.value = event.latlng;
+
+    nextTick(_ => {
+        addEditItemModalRef.value.initializeAddEditModal();
+        addEditItemModalRef.value.showModal();
+    });
+}
+function prepareEditor(nodeId) {
+    nodeForEditing.value = nodes.value.find(node => node.id === nodeId);
+    addEditItemModalRef.value.initializeAddEditModal();
+
+    nextTick(_ => {
+        addEditItemModalRef.value.initializeAddEditModal();
+        addEditItemModalRef.value.showModal();
+    });
+}
+function deleteNode(nodeId) {
+    const node = nodes.value.find(x => x.id === nodeId);
+    node.marker.removeFrom(map.value);
+    ArrayHelpers.deleteElement(nodes.value, node);
+}
+function onItemCreated(node) {
+    nodes.value.push(node);
+    buildNodeForMap(node);
+    // We're in the editor, so enable dragging right away
+    node.marker.addTo(map.value);
+    node.marker.dragging.enable();
+    updateNodeMarkers();
+    addEditItemModalRef.value.hideModal();
+}
+function onItemUpdated(node) {
+    nodeForEditing.value.marker.removeFrom(map.value);
+    ArrayHelpers.deleteElement(nodes.value, nodeForEditing.value);
+    nodes.value.push(node);
+    buildNodeForMap(node);
+    node.marker.addTo(map.value);
+    updateNodeMarkers();
+    addEditItemModalRef.value.hideModal();
+}
+//endregion
+function range(min, max) {
+    return Utils.range(min, max);
+}
+//region Event listeners
+function onChangeFloor(newFloor) {
+    currentFloor.value = newFloor;
+}
+function onHideAll() {
+    nodes.value.forEach(node => node.visible = false);
+    ledges.value.forEach(ledge => ledge.visible = false);
+    foliage.value.forEach(foliage => foliage.visible = false);
+    updateActiveMapState();
+}
+function onShowAll() {
+    nodes.value.forEach(node => node.visible = true);
+    ledges.value.forEach(ledge => ledge.visible = true);
+    foliage.value.forEach(foliage => foliage.visible = true);
+    updateActiveMapState();
+}
+function onSearchItem(itemKey) {
+    nodes.value.forEach(node => node.searchResult = false);
+
+    if (itemKey !== null) {
+        const splitKey = itemKey.split('|');
+        nodes.value.filter(node => node.group === splitKey[0] && node.name === splitKey[1]).forEach(node => node.searchResult = true);
+    }
+
+    updateNodeMarkers();
+}
+function onHideCategory(category) {
+    if (category.subgroup === 'ledge') {
+        ledges.value.forEach(ledge => ledge.visible = false);
+    } else if (category.subgroup === 'foliage') {
+        foliage.value.forEach(foliage => foliage.visible = false);
+    } else {
+        nodes.value.filter(node => node.type === category.type && node.group === category.group).forEach(node => node.visible = false);
+    }
+
+    updateNodeMarkers();
+}
+function onShowCategory(category) {
+    if (category.subgroup === 'ledge') {
+        ledges.value.forEach(ledge => ledge.visible = true);
+    } else if (category.subgroup === 'foliage') {
+        foliage.value.forEach(foliage => foliage.visible = true);
+    } else {
+        nodes.value.filter(node => node.type === category.type && node.group === category.group).forEach(node => node.visible = true);
+    }
+
+    updateNodeMarkers();
+}
+function onHideTopLevelCategory(type) {
+    nodes.value.filter(node => node.type === type).forEach(node => node.visible = false);
+
+    if (type === 'Navigation') {
+        ledges.value.forEach(ledge => ledge.visible = false);
+        foliage.value.forEach(foliage => foliage.visible = false);
+    }
+
+    updateNodeMarkers();
+}
+function onShowTopLevelCategory(type) {
+    nodes.value.filter(node => node.type === type).forEach(node => node.visible = true);
+
+    if (type === 'Navigation') {
+        ledges.value.forEach(ledge => ledge.visible = true);
+        foliage.value.forEach(foliage => foliage.visible = true);
+    }
+
+    updateNodeMarkers();
+}
+function onZoomIn() {
+    map.value.setZoom(map.value.getZoom() + 1);
+}
+function onZoomOut() {
+    map.value.setZoom(map.value.getZoom() - 1);
+}
+function onMasterEditToggle() {
+    if (editorState.value === 'OFF') {
+        editorState.value = 'MENU';
+    } else {
+        editorState.value = 'OFF';
+        toggleDraw('OFF');
+        nodes.value.forEach(node => node.marker.dragging.disable());
+    }
+}
+function onLaunchEditor(newEditorState) {
+    editorState.value = newEditorState;
+
+    if (editorState.value === 'MENU') {
+        toggleDraw('OFF');
+    }
+
+    // Update node "draggability"
+    if (editorState.value === 'ITEMS') {
+        nodes.value.forEach(node => node.marker.dragging.enable());
+    } else {
+        nodes.value.forEach(node => node.marker.dragging.disable());
+    }
+}
+function toggleDraw(state) {
+    if (state === 'OFF') {
+        map.value.pm.disableDraw('Line');
+        map.value.pm.disableDraw('Polygon');
+        return;
+    }
+
+    if (map.value.pm.Draw[state]._enabled) {
+        map.value.pm.disableDraw(state);
+        polyActive.value = false;
+    } else {
+        map.value.pm.enableDraw(state, {
+            snappable: false
+        });
+        polyActive.value = true;
+    }
+
+    let toastMessage = polyActive.value ? 'Drawing tools enabled' : 'Drawing tools disabled';
+    toastr.i(toastMessage);
+}
+function onEnableLedgeCreation() {
+    toggleDraw('Line');
+}
+function onEnableFoliageCreation() {
+    toggleDraw('Polygon');
+}
+function onEnableDisguiseRegionCreation(regionType) {
+    if (disguiseRegionType !== null && disguiseRegionType !== regionType) {
+        // We'll need to disable and re-enable to switch type
+        toggleDraw('Polygon');
+    }
+    if (disguiseRegionType !== null && disguiseRegionType === regionType) {
+        // Toggling the same one disables, so just null it out.
+        disguiseRegionType = null;
+    } else {
+        disguiseRegionType = regionType;
+    }
+
+    toggleDraw('Polygon');
+}
+function initDraw(e) {
+    e.workingLayer.on('pm:vertexadded', e => {
+        vertices.push([e.latlng.lat, e.latlng.lng])
+    });
+}
+function pmLayer(e) {
+    workingLayer = e.layer;
+}
+function endDraw(e) {
+    if (vertices.length === 0) {
+        return;
+    }
+
+    const data = {
+        vertices: [],
+        missionId: mission.value.id,
+        level: currentFloor.value
+    };
+    vertices.forEach(element => {
+        data.vertices.push(`${element[0]},${element[1]}`);
+    });
+    if (e.shape === 'Line') {
+        useAuthenticatedFetch(`${config.public.apiDomain}/api/ledges`, {
+            method: 'POST',
+            body: data
+        }).then(resp => {
+            vertices = [];
+            ledges.value.push(buildLedgeForMap(resp.data));
+            toastr.s('Ledge saved!');
+            map.value.removeLayer(workingLayer);
+            workingLayer = null;
+            polyActive.value = false;
+            updateNodeMarkers();
+        }).catch(_ => {
+            toastr.e('Error occurred when saving ledge!');
+        });
+    } else if (editorState.value === 'FOLIAGE') {
+        useAuthenticatedFetch(`${config.public.apiDomain}/api/foliage`, {
+            method: 'POST',
+            body: data
+        }).then(resp => {
+            vertices = [];
+            foliage.value.push(buildFoliageForMap(resp.data));
+            toastr.s('Foliage saved!');
+            map.value.removeLayer(workingLayer);
+            workingLayer = null;
+            polyActive.value = false;
+            updateNodeMarkers();
+        }).catch(_ => {
+            toastr.e('Error occurred when saving foliage!');
+        });
+    } else if (editorState.value === 'DISGUISE-REGIONS') {
+        data.disguiseId = currentDisguise.value.id;
+        data.type = disguiseRegionType;
+
+        useAuthenticatedFetch(`${config.public.apiDomain}/api/disguise-areas`, {
+            method: 'POST',
+            body: data
+        }).then(resp => {
+            vertices = [];
+            disguiseAreas[currentDisguise.value.id].push(buildDisguiseAreaForMap(resp.data));
+            toastr.s('Disguise area saved!');
+            map.value.removeLayer(workingLayer);
+            workingLayer = null;
+            polyActive.value = false;
+            disguiseRegionType = null;
+            updateActiveDisguiseLayer();
+        }).catch(err => {
+            console.error(err);
+            toastr.e('Error occurred when saving disguise area!');
+        });
+    }
+}
+function onPolyDeleted() {
+    if (deletionItemType.value === 'ledge') {
+        deletionItem.value.polyline.removeFrom(map.value);
+        ArrayHelpers.deleteElement(ledges.value, deletionItem.value);
+    } else if (deletionItemType.value === 'foliage') {
+        deletionItem.value.polygon.removeFrom(map.value);
+        ArrayHelpers.deleteElement(foliage.value, deletionItem.value);
+    } else if (deletionItemType.value === 'disguise-area') {
+        deletionItem.value.polygon.removeFrom(map.value);
+        ArrayHelpers.deleteElement(disguiseAreas[currentDisguise.value.id], deletionItem.value);
+    }
+
+    deletionItemType.value = null;
+    deletionItem.value = null;
+    updateNodeMarkers();
+    deleteEntityModalRef.value.hideModal();
+    manageDisguiseAreaModalRef.value.hideModal();
+}
+function onDisguiseAreaConverted() {
+    deletionItem.value.polygon.removeFrom(map.value);
+    deletionItem.value.type = deletionItem.value.type === 'trespassing' ? 'hostile' : 'trespassing';
+    disguiseAreas[currentDisguise.value.id].push(buildDisguiseAreaForMap(deletionItem.value));
+    deletionItemType.value = null;
+    deletionItem.value = null;
+    updateNodeMarkers();
+    updateActiveDisguiseLayer();
+    manageDisguiseAreaModalRef.value.hideModal();
+}
+function onDisguiseSelected(disguise) {
+    // Disable disguise editor tools if they're enabled. You can't change a disguise mid-polygon.
+    if (disguiseRegionType) {
+        onEnableDisguiseRegionCreation(disguiseRegionType);
+    }
+
+    if (disguise === 'NONE' || disguiseAreas[disguise.id]) {
+        currentDisguise.value = disguise === 'NONE' ? null : disguise;
+        return;
+    }
+
+    useAuthenticatedFetch(`${config.public.apiDomain}/api/games/${route.params.game}`+
+        `/locations/${route.params.location}`+
+        `/missions/${route.params.mission}` +
+        `/disguise-areas/${disguise.id}`)
+        .then(resp => {
+            disguiseAreas[disguise.id] = resp.disguiseAreas;
+            disguiseAreas[disguise.id].forEach(area => buildDisguiseAreaForMap(area));
+            currentDisguise.value = disguise;
+        }).catch(err => {
+        console.error(err);
+        toastr.e('Failed to retrieve disguise regions!');
+    });
+}
+function onReplaceDisguiseAreas(newDisguiseAreas) {
+    if (!newDisguiseAreas.length) {
+        // No actual regions, so nothing to do
+        return;
+    }
+
+    const disguiseId = newDisguiseAreas[0].disguiseId;
+    disguiseAreas[disguiseId].forEach(area => area.polygon.removeFrom(map.value));
+    disguiseAreas[disguiseId] = newDisguiseAreas;
+    disguiseAreas[disguiseId].forEach(area => buildDisguiseAreaForMap(area));
+    updateActiveDisguiseLayer();
+}
+function onVariantSelected(variant) {
+    currentVariant.value = variant;
+    updateActiveMapState();
+}
+//endregion
+//endregion
+//region Computed
+const mapBounds = computed(() => {
+    return [
+        mission.value.topLeftCoordinate.split(','),
+        mission.value.bottomRightCoordinate.split(',')
+    ];
+});
+const layerBounds = computed(() => {
+    return [
+        mission.value.boundingBoxTopLeft.split(','),
+        mission.value.boundingBoxBottomRight.split(',')
+    ];
+});
+const showDebug = computed(() => {
+    return process.env.SHOW_DEBUG === 'true';
+});
+const svgMapUrl = computed(() => {
+    if (game.value === undefined || mission.value === undefined) {
+        return '';
+    }
+
+    return `https://media.hitmaps.com/img/${game.value.slug}/maps/${mission.value.mapFolderName}/`;
+});
+const imageTileUrl = computed(() => {
+    if (!mission.value) {
+        return '';
+    }
+
+    return `https://media.hitmaps.com/img/${game.value.slug}/maps/${mission.value.mapFolderName}/{floorNumber}/{z}/{x}/{y}.png`;
+});
+const loggedIn = computed(() => {
+    if (localStorage.getItem('token') != null) {
+        const data = JSON.parse(
+            atob(localStorage.getItem('token').split('.')[1])
+        );
+        const now = new Date();
+        if (new Date(data.exp * 1000).getTime() - now.getTime() > 0) {
+            return true;
+        }
+    }
+    return false;
+});
+//endregion
+//region Watchers
+watch(currentFloor, () => {
+    if (!map.value) {
+        return;
+    }
+
+    updateActiveMapState();
+});
+watch(currentDisguise, (_, old) => {
+    if (!map.value) {
+        return;
+    }
+
+    updateActiveDisguiseLayer(old);
+});
+//endregion
+//region Old Refs
+const floorToggleRef = ref(null);
+const sidebarRef = ref(null);
+const nodePopupRef = ref(null);
+const addEditItemModalRef = ref(null);
+const deleteEntityModalRef = ref(null);
+const manageDisguiseAreaModalRef = ref(null);
+const moveNodeModalRef = ref(null);
+//endregion
 </script>
 
 <template>
@@ -869,7 +867,7 @@ export default defineComponent({
     <client-only>
         <div>
             <floor-toggle v-if="metadataLoaded && mapDataLoaded"
-                          ref="floorToggle"
+                          ref="floorToggleRef"
                           :mission="mission"
                           :current-floor="currentFloor"
                           :nodes="nodes"
@@ -878,7 +876,7 @@ export default defineComponent({
             />
             <div :class="`hm-editor-${editorState.toLowerCase()} game-${game?.slug}`" id="map"></div>
             <sidebar v-if="metadataLoaded && mapDataLoaded"
-                     ref="sidebar"
+                     ref="sidebarRef"
                      :game="game"
                      :mission="mission"
                      :logged-in="loggedIn"
@@ -917,11 +915,11 @@ export default defineComponent({
                         :game="game"
                         :editor-state="editorState"
                         :floor-names="floorNames"
-                        ref="nodePopup"
+                        ref="nodePopupRef"
                         @delete-node="deleteNode"
                         @edit-node="prepareEditor"
                         @change-floor="onChangeFloor" />
-            <add-edit-item-modal ref="addEditItemModal"
+            <add-edit-item-modal ref="addEditItemModalRef"
                                  v-if="mission"
                                  :top-level-categories="topLevelCategories"
                                  :categories="categories"
@@ -931,10 +929,17 @@ export default defineComponent({
                                  :mission="mission"
                                  @item-created="onItemCreated"
                                  @item-updated="onItemUpdated" />
-            <delete-entity-modal ref="deleteEntityModal" :entity="deletionItem" :entity-type="deletionItemType" @item-deleted="onPolyDeleted" />
-            <manage-disguise-area-modal ref="manageDisguiseAreaModal" :entity="deletionItem" @item-deleted="onPolyDeleted" @item-converted="onDisguiseAreaConverted" />
-            <move-node-modal ref="moveNodeModal" :node="nodeForMoving" />
+            <delete-entity-modal ref="deleteEntityModalRef" :entity="deletionItem" :entity-type="deletionItemType" @item-deleted="onPolyDeleted" />
+            <manage-disguise-area-modal ref="manageDisguiseAreaModalRef" :entity="deletionItem" @item-deleted="onPolyDeleted" @item-converted="onDisguiseAreaConverted" />
+            <move-node-modal ref="moveNodeModalRef" :node="nodeForMoving" />
         </div>
+<!--        <div>
+
+
+
+
+
+        </div>-->
     </client-only>
 </template>
 
