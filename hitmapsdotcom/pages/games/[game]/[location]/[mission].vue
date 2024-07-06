@@ -816,7 +816,7 @@ const svgMapUrl = computed(() => {
         return '';
     }
 
-    return `https://www.hitmaps.com/cdn-cgi/image/format=auto/https://media.hitmaps.com/img/${game.value.slug}/maps/${mission.value.mapFolderName}/`;
+    return `https://www.hitmaps.com/cdn-cgi/image//https://media.hitmaps.com/img/${game.value.slug}/maps/${mission.value.mapFolderName}/`;
 });
 const imageTileUrl = computed(() => {
     if (!mission.value) {
