@@ -13,8 +13,9 @@
                 <h1>{{ $t('interactive-maps-for-hitman') }}</h1>
             </div>
         </header>
-        <div class="container-fluid" v-if="!gamesPending">
-            <div class="row dashboard" id="games">
+        <div class="container-fluid">
+            <loader v-if="gamesPending"/>
+            <div class="row dashboard" id="games" v-else>
                 <div class="col-lg-4 section">
                     <div class="heading">
                         <hr class="bar">
@@ -22,9 +23,9 @@
                         <hr class="bar">
                     </div>
                     <div class="game-cards">
-                        <game-card v-for="game in games.filter(x => ['hitman','hitman2','hitman3'].includes(x.slug))"
+                        <game-card v-for="game in homepageInfo.games.filter(x => ['hitman','hitman2','hitman3'].includes(x.slug))"
                                    :game="game" />
-                        <game-card v-for="game in games.filter(x => ['sniper-assassin'].includes(x.slug))"
+                        <game-card v-for="game in homepageInfo.games.filter(x => ['sniper-assassin'].includes(x.slug))"
                                    :game="game" />
                     </div>
                 </div>
@@ -35,8 +36,8 @@
                         <hr class="bar">
                     </div>
                     <div class="game-cards">
-                        <single-game-card
-                            v-for="game in games.filter(x => ['absolution'].includes(x.slug))"
+                        <game-card
+                            v-for="game in homepageInfo.games.filter(x => ['absolution','blood-money'].includes(x.slug))"
                             :game="game" />
                     </div>
                 </div>
@@ -48,7 +49,7 @@
                     </div>
                     <loader v-if="tournamentPending"/>
                     <div class="game-cards" v-else>
-                        <elusive-target-card :elusive-targets="elusiveTargets"
+                        <elusive-target-card :elusive-targets="homepageInfo.elusiveTargets"
                                              :force-small-cards="!tournamentPending && tournamentsInfo.hasEvents()"
                                              @notification-modal="showNotificationModal" />
                         <client-only v-if="!tournamentPending && tournamentsInfo.hasEvents()">
@@ -342,9 +343,14 @@ import {useLazyFetch} from "#app";
 
 const config = useRuntimeConfig();
 const { t } = useI18n();
-const { data, pending: gamesPending } = await useFetch(`${config.public.apiDomain}/api/web/home`);
-const games = data.value.games;
-const elusiveTargets = data.value.elusiveTargets;
+const homepageInfo = ref(null);
+const { data: homepageData, pending: gamesPending } = await useFetch(`${config.public.apiDomain}/api/web/home`, {
+    lazy: true,
+    server: false
+});
+watch(homepageData, (newData) => {
+    homepageInfo.value = newData;
+})
 
 const tournamentsInfo = ref(new TournamentsInfo());
 const { pending: tournamentPending, data: tournamentData } = await useLazyFetch(`${config.public.tournamentsDomain}/api/hitmaps-homepage-info`, {

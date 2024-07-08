@@ -3,15 +3,12 @@ const props = defineProps({
     game: Object
 });
 
-const cssVars = reactive({
-    '--game-tile-url': props.game.tileUrl
-});
 const { t } = useI18n();
 </script>
 
 <template>
     <nuxt-link v-bind="$attrs" :to="`/games/${game.slug}`">
-        <div class="row game-card" :style="cssVars">
+        <div class="row game-card">
             <div class="col-xl-4 d-none d-xl-block" :style="`background: url(https://www.hitmaps.com/cdn-cgi/image/format=auto/${game.tileUrl}) no-repeat center center; background-size: cover`"></div>
             <div class="col-xl-8 game-info" :style="`background: rgba(0, 0, 0, .3) url(https://www.hitmaps.com/cdn-cgi/image/format=auto/${game.tileUrl}) no-repeat center center; background-size: cover`">
                 <div class="image">
@@ -19,7 +16,8 @@ const { t } = useI18n();
                 </div>
                 <div class="text">
                     <h4>{{ t("game-type." + game.type) }}</h4>
-                    <h3>{{ game.fullName }}</h3>
+                    <h3 class="regular">{{ game.fullName }}</h3>
+                    <h3 class="mobile">{{ game.fullName.replaceAll(/.+: (.+)/g, '$1') }}</h3>
                 </div>
             </div>
         </div>
@@ -46,6 +44,10 @@ a {
     .game-card {
         margin: 0;
         flex-grow: 1;
+
+        @media (min-width: 1200px) {
+            min-height: 93px;
+        }
 
         .game-info {
             @media (min-width: 1200px) {
@@ -77,6 +79,22 @@ a {
                 h3 {
                     font-size: 1.5rem;
                     margin-bottom: 0;
+
+                    &.regular {
+                        display: none;
+                    }
+                    &.mobile {
+                        display: block;
+                    }
+
+                    @media(min-width: 1200px) {
+                        &.regular {
+                            display: block;
+                        }
+                        &.mobile {
+                            display: none;
+                        }
+                    }
                 }
             }
         }
