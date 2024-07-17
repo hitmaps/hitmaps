@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Rollbar;
+using Rollbar.NetCore.AspNet;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,6 +80,13 @@ builder.Services.AddHangfire(configuration => configuration
     }));
 builder.Services.AddHangfireServer();
 
+ConfigureRollbarInfrastructure();
+builder.Services.AddRollbarLogger(loggerOptions =>
+{
+    loggerOptions.Filter =
+        (_, loglevel) => loglevel >= LogLevel.Warning;
+});
+
 var app = builder.Build();
 
 app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().WithExposedHeaders("*"));
@@ -126,3 +135,20 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+void ConfigureRollbarInfrastructure()
+{
+    RollbarInfrastructureConfig config = new RollbarInfrastructureConfig(
+        builder.Configuration["RollbarAccessToken"],
+        builder.Configuration["RollbarEnvironment"]
+    );
+    RollbarDataSecurityOptions dataSecurityOptions = new RollbarDataSecurityOptions();
+    dataSecurityOptions.ScrubFields = new[]
+    {
+        "url",
+        "method",
+    };
+    config.RollbarLoggerConfig.RollbarDataSecurityOptions.Reconfigure(dataSecurityOptions);
+
+    RollbarInfrastructure.Instance.Init(config);
+}
