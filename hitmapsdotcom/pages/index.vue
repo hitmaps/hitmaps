@@ -312,10 +312,6 @@
                     <p>{{ $t('ko-fi.ko-fi-supporters-description') }}</p>
                     <div class="row">
                         <div class="col-sm-3">
-                            <patron name="Ashton" tier="Silent Assassin"/>
-                        </div>
-                        <div class="col-sm-1"></div>
-                        <div class="col-sm-3">
                             <patron name="Sailor Assassin" tier="Silent Assassin" />
                         </div>
                     </div>
