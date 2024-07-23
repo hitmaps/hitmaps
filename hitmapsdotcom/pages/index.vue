@@ -188,7 +188,7 @@
                         <div class="col">
                             <p><b>HITMAN™ World of Assassination</b></p>
                             <ul>
-                                <li>Hawke's Bay (<a href="https://www.nexusmods.com/hitman3/mods/303" target="_blank">via mod<icon name="fa6-solid:arrow-up-right-from-square"/></a>)</li>
+                                <li>Hawke's Bay</li>
                                 <li>Miami</li>
                                 <li>Santa Fortuna</li>
                             </ul>
