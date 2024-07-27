@@ -37,12 +37,12 @@ const metadataLoaded = ref(false);
 const mapDataLoaded = ref(false);
 const game = ref(null);
 const mission = ref(null);
-const nodes = ref([]);
+const nodes = shallowRef([]);
 const categories = ref([]);
 const topLevelCategories = ref([]);
 const disguises = ref([]);
-const ledges = ref([]);
-const foliage = ref([]);
+const ledges = shallowRef([]);
+const foliage = shallowRef([]);
 const floorNames = ref({});
 const currentFloor = ref(0);
 let map = null;
@@ -313,7 +313,7 @@ function updateActiveDisguiseLayer(oldDisguise) {
 }
 function updateNodeMarkers() {
     // 1. Remove all items from the map
-    nodes.value.forEach(node => node.marker._icon.style.display = 'none');
+    nodes.value.filter(node => node.marker._icon !== null).forEach(node => node.marker._icon.style.display = 'none');
     ledges.value.forEach(ledge => ledge.polyline.removeFrom(map));
     foliage.value.forEach(foliage => foliage.polygon.removeFrom(map));
 
@@ -321,7 +321,7 @@ function updateNodeMarkers() {
     nodes.value.filter(node => node.searchResult).forEach(node => node.visible = true);
 
     // 4. Add all visible nodes to map if they're on the current level and for the current variant
-    nodes.value.filter(node => node.level === currentFloor.value && node.visible && node.variants.includes(currentVariant.value.id)).forEach(node => {
+    nodes.value.filter(node => node.marker._icon !== null && node.level === currentFloor.value && node.visible && node.variants.includes(currentVariant.value.id)).forEach(node => {
         node.marker._icon.style.display = 'block';
 
         if (node.searchResult) {
@@ -504,12 +504,16 @@ function onItemCreated(node) {
 }
 function onItemUpdated(node) {
     nodeForEditing.value.marker.removeFrom(map);
-    ArrayHelpers.deleteElement(nodes.value, nodeForEditing.value);
+    ArrayHelpers.deleteElementByFilter(nodes.value, x => x.id === node.id);
     nodes.value.push(node);
     buildNodeForMap(node);
     node.marker.addTo(map);
-    updateNodeMarkers();
-    addEditItemModalRef.value.hideModal();
+    node.marker.dragging.enable();
+
+    nextTick(() => {
+        updateNodeMarkers();
+        addEditItemModalRef.value.hideModal();
+    });
 }
 //endregion
 function range(min, max) {
@@ -728,13 +732,13 @@ function endDraw(e) {
 function onPolyDeleted() {
     if (deletionItemType.value === 'ledge') {
         deletionItem.value.polyline.removeFrom(map);
-        ArrayHelpers.deleteElement(ledges.value, deletionItem.value);
+        ArrayHelpers.deleteElementByFilter(ledges.value, x => x.id === deletionItem.value.id);
     } else if (deletionItemType.value === 'foliage') {
         deletionItem.value.polygon.removeFrom(map);
-        ArrayHelpers.deleteElement(foliage.value, deletionItem.value);
+        ArrayHelpers.deleteElementByFilter(foliage.value, x => x.id === deletionItem.value.id);
     } else if (deletionItemType.value === 'disguise-area') {
         deletionItem.value.polygon.removeFrom(map);
-        ArrayHelpers.deleteElement(disguiseAreas[currentDisguise.value.id], deletionItem.value);
+        ArrayHelpers.deleteElementByFilter(disguiseAreas[currentDisguise.value.id], x => x.id === deletionItem.value.id);
     }
 
     deletionItemType.value = null;
