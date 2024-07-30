@@ -338,12 +338,12 @@ function updateNodeMarkers() {
         .forEach(foliage => foliage.polygon.addTo(map));
 
     // Make sure the counters and highlights for the level select are updated
-    /*if (floorToggleRef.value) {
+    if (floorToggleRef.value) {
         floorToggleRef.value.$forceUpdate();
     }
     if (sidebarRef.value) {
         sidebarRef.value.$forceUpdate();
-    }*/
+    }
 }
 function buildIcon(node) {
     return node.icon === 'area' ?
