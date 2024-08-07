@@ -88,7 +88,12 @@ function hideBriefingModal() {
                             Do you play it safe? Takes longer, but you wouldn't have to restart. Or do you play it risky to get
                             that awesome time, with the potential of a lot of restarts?
                         </p>
-                        <alert type="info">Matches start on <b>May 10</b>!</alert>
+                        <alert type="info">
+                            <ul style="list-style: none">
+                                <li>Registration ends at <b>{{ $dayjs(eventInfo.isoRegistrationEndDate).format('ddd, D MMM h:mm A ') + Utils.getTimeZoneAbbreviation() }}</b></li>
+                                <li>Matches run until <b>{{ $dayjs(eventInfo.isoEventEndDate).format('ddd, D MMM') }}</b></li>
+                            </ul>
+                        </alert>
                     </div>
                 </div>
                 <template v-slot:modal-footer>
