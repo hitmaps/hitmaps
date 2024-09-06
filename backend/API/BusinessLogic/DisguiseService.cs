@@ -27,6 +27,8 @@ public class DisguiseService : IDisguiseService
 
         return dbContext.Disguises
             .Where(x => x.Mission.Id == missionData.Id)
+            .OrderBy(x => x.Order)
+            .ThenBy(x => x.Name)
             .ToList();
     }
 
