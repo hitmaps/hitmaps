@@ -22,7 +22,9 @@ public class LocationService : ILocationService
             .Include(x => x.Missions.Where(mission => (mission.AvailableAt == null || mission.AvailableAt <= DateTime.UtcNow) &&
                                                       (mission.ExpiresAt == null || mission.ExpiresAt > DateTime.UtcNow)))
                 .ThenInclude(x => x.FloorNames)
-            .Where(x => x.Game.Slug == game).ToList();
+            .Where(x => x.Game.Slug == game)
+            .OrderBy(x => x.Order)
+            .ToList();
     }
 
     public Location GetLocation(string game, string slug)

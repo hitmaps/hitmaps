@@ -22,7 +22,7 @@ public class LocationWithMissionsViewModel
             Order = location.Order,
             Slug = location.Slug,
             BackgroundUrl = location.BackgroundUrl,
-            Missions = location.Missions.Select(MissionViewModel.FromDbModel).ToList()
+            Missions = location.Missions.OrderBy(x => x.Order).Select(MissionViewModel.FromDbModel).ToList()
         };
     }
 }
