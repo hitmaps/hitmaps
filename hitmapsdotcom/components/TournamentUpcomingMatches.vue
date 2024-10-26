@@ -50,8 +50,11 @@ function toggleRandomMaps() {
                      style="border-top: 1px solid #dee2e6; padding: .75rem;">
                     <div class="col-lg-3 col-12">
                         <icon class="d-lg-none" name="fa6-solid:users"/>
+                        <country-flag :country="matchup.competitors[0].countryCode"/>
                         {{ matchup.competitors[0].challongeName }} vs
                                     {{ matchup.competitors[1].challongeName }}
+
+                        <country-flag :country="matchup.competitors[1].countryCode"/>
                     </div>
                     <div class="col-lg-3 col-12">
                         <div v-for="map in matchup.maps.filter(x => x.selectionType !== 'Ban' && (x.selectionType === 'Pick' || showRandomMaps))">
