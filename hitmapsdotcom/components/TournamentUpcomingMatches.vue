@@ -66,7 +66,7 @@ function toggleRandomMaps() {
                         <icon class="d-lg-none" name="fa6-regular:calendar-days"/>
                         {{ $dayjs(matchup.matchScheduledAt).format('ddd, D MMM') }}
                         | <icon class="d-lg-none" name="fa6-regular:clock"/>
-                        {{ $dayjs(matchup.matchScheduledAt).format('h:mm A ') + Utils.getTimeZoneAbbreviation() }}
+                        {{ $dayjs(matchup.matchScheduledAt).format('h:mm A ') + Utils.getTimeZoneAbbreviation(matchup.matchScheduledAt) }}
                     </div>
                     <div class="col-lg-3 col-12">
                         <template v-if="matchup.cast">

@@ -13,12 +13,15 @@ export default class Utils {
         return titleChunk ? `${titleChunk} | HITMAPS™` : 'HITMAPS™';
     }
 
-    static getTimeZoneAbbreviation(): string {
+    static getTimeZoneAbbreviation(date: string|undefined|null): string {
         const resolvedOptions = new Intl.DateTimeFormat().resolvedOptions();
+        const numberedDate = date === null || date === undefined ?
+            Date.now() :
+            new Date(date).getTime();
 
         return new Intl.DateTimeFormat(resolvedOptions.locale, {
             timeZone: resolvedOptions.timeZone,
             timeZoneName: 'short'
-        }).format(Date.now()).split(' ')[1];
+        }).format(numberedDate).split(' ')[1];
     }
 }
