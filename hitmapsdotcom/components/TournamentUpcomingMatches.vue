@@ -59,7 +59,10 @@ function toggleRandomMaps() {
                     <div class="col-lg-3 col-12">
                         <div v-for="map in matchup.maps.filter(x => x.selectionType !== 'Ban' && (x.selectionType === 'Pick' || showRandomMaps))">
                             <icon class="d-lg-none" name="fa6-regular:map"/>
-                            {{ map.missionLocation }} - {{ map.missionName }}
+                            <template v-if="map.missionLocation === null"><i>[REDACTED]</i></template>
+                            <template v-else>
+                                {{ map.missionLocation }} - {{ map.missionName }}
+                            </template>
                         </div>
                     </div>
                     <div class="col-lg-3 col-12">
