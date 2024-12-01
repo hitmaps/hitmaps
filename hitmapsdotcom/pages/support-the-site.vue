@@ -20,44 +20,20 @@
                 Become a Supporter
             </a>
             <h4>Current Supporters:</h4>
-            <div class="col-sm-12">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <patron name="Sailor Assassin" tier="Silent Assassin"/>
-                    </div>
-                    <div class="col-sm-1"></div>
-                    <div class="col-sm-3">
-                        <patron name="Some Random Person" tier="Assassin" legacy/>
-                    </div>
-                    <div class="col-sm-1"></div>
-                    <div class="col-sm-3">
-                        <patron name="ThatObserver" tier="Assassin" legacy />
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col-sm-3">
-                        <patron name="AgentSnail47" tier="Agent" legacy />
-                    </div>
-                    <div class="col-sm-1"></div>
-                    <div class="col-sm-3">
-                        <patron name="illum503" tier="Agent" />
-                    </div>
-                    <div class="col-sm-1"></div>
-                    <div class="col-sm-3">
-                        <patron name="ARcheR X" tier="Initiate" legacy />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-3">
-                        <patron name="BionicleFactory" tier="Initiate" />
-                    </div>
+            <div v-if="supportersPending"><i>Loading...</i></div>
+            <div v-else-if="!supporters.length"><i>No recurring supporters at this time 🙁</i></div>
+            <div class="row supporters" v-else>
+                <div class="col-md-4 col-sm-12" v-for="supporter in recurringContributors">
+                    <patron :name="supporter.name" :tier="supporter.tier" :legacy="supporter.legacy"/>
                 </div>
             </div>
             <h4>One-Time Contributors:</h4>
-            <ul>
-                <li>Frote7 - 47.00 USD</li>
-                <li>Billy_Rizzle - 25.00 USD</li>
+            <p v-if="supportersPending"><i>Loading...</i></p>
+            <p v-else-if="!oneTimeSupporters.length"><i>No one-time supporters at this time 🙁</i></p>
+            <ul v-else>
+                <li v-for="supporter in oneTimeSupporters">
+                    {{ supporter.name }} - {{ formatCurrency(supporter.oneTimeContributions) }}
+                </li>
             </ul>
             <h3 style="margin-top: 20px;">PayPal</h3>
             <p>
@@ -66,21 +42,21 @@
             </p>
             <p>Previous Donors (contribution amounts are cumulative):</p>
             <ul>
-                <li>David Thompson - 50.00 USD</li>
-                <li>Alexander White - 40.00 USD</li>
-                <li>Finikyu - 25.00 USD</li>
-                <li>Frote7 - 21.23 USD</li>
-                <li>TimothyMark - 10.47 USD</li>
-                <li>GKPunk - 10.00 USD</li>
-                <li>Jonathan Rokosz - 10.00 USD</li>
-                <li>Spencer Sabet - 6.00 USD</li>
-                <li>Brian McKenzie - 5.55 USD</li>
-                <li>srm022 - 5.00 USD</li>
-                <li>Derek Ashel - 5.00 USD</li>
-                <li>Esther de Bruin - 5.00 USD</li>
-                <li>Somdy Alafac - 5.00 USD</li>
-                <li>Gabriel Caballero - 4.70 USD</li>
-                <li>Nikjojo - 3.00 USD</li>
+                <li>David Thompson - {{ formatCurrency(50) }}</li>
+                <li>Alexander White - {{ formatCurrency(40) }}</li>
+                <li>Finikyu - {{ formatCurrency(25) }}</li>
+                <li>Frote7 - {{ formatCurrency(21.23) }}</li>
+                <li>TimothyMark - {{ formatCurrency(10.47) }}</li>
+                <li>GKPunk - {{ formatCurrency(10) }}</li>
+                <li>Jonathan Rokosz - {{ formatCurrency(10) }}</li>
+                <li>Spencer Sabet - {{ formatCurrency(6) }}</li>
+                <li>Brian McKenzie - {{ formatCurrency(5.55) }}</li>
+                <li>srm022 - {{ formatCurrency(5) }}</li>
+                <li>Derek Ashel - {{ formatCurrency(5) }}</li>
+                <li>Esther de Bruin - {{ formatCurrency(5) }}</li>
+                <li>Somdy Alafac - {{ formatCurrency(5) }}</li>
+                <li>Gabriel Caballero - {{ formatCurrency(4.7) }}</li>
+                <li>Nikjojo - {{ formatCurrency(3) }}</li>
             </ul>
         </div>
         <div class="home-button">
@@ -99,6 +75,41 @@
 useSeoMeta({
     ogTitle: () => Utils.siteTitle('Support the Site')
 });
+
+const config = useRuntimeConfig();
+const supporters = ref(null);
+const { data: supportersData, pending: supportersPending } = await useFetch(`${config.public.apiDomain}/api/supporters`, {
+    lazy: true,
+    server: false
+});
+watch(supportersData, newData => {
+    supporters.value = newData.data;
+    console.log(supporters.value);
+});
+
+const recurringContributors = computed(() => {
+    if (!supporters.value) {
+        return [];
+    }
+
+    return supporters.value.filter(x => x.recurringContributor);
+});
+const oneTimeSupporters = computed(() => {
+    if (!supporters.value) {
+        return [];
+    }
+
+    return supporters.value.filter(x => !x.recurringContributor);
+});
+
+function formatCurrency(value) {
+    return Intl.NumberFormat(undefined, {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(value);
+}
 //endregion
 </script>
 
@@ -149,6 +160,10 @@ useSeoMeta({
                     background: $support-the-site-hover;
                 }
             }
+        }
+
+        .supporters > div {
+            margin-bottom: 10px;
         }
     }
 }

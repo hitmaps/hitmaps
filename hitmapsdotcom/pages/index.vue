@@ -310,11 +310,15 @@
                         {{ $t('ko-fi.ko-fi-supporters') }}
                     </h1>
                     <p>{{ $t('ko-fi.ko-fi-supporters-description') }}</p>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <patron name="Sailor Assassin" tier="Silent Assassin" />
+                    <template v-if="homepageInfo">
+                        <p v-if="!homepageInfo.homepageSupporters.length"><i>No supporters at "Master Assassin" or higher found</i></p>
+                        <div class="row" v-else>
+                            <div class="col-sm-3">
+                                <patron name="Sailor Assassin" tier="Silent Assassin" />
+                            </div>
                         </div>
-                    </div>
+                    </template>
+                    <template v-else><i>Loading...</i></template>
                 </div>
             </div>
             <div class="row">

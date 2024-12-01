@@ -1,12 +1,12 @@
 <template>
-    <div>
+    <div class="supporter">
         <template v-if="link">
             <a :href="link">
                 <div class="row patron-card">
-                    <div v-if="image" class="col-3 patron-image"
+                    <div v-if="image && false" class="col-3 patron-image"
                          :style="`background: url('${image}') center center / cover no-repeat`">
                     </div>
-                    <div class="name-and-tier" :class="image ? 'col-9' : 'col-12'">
+                    <div class="name-and-tier">
                         <p class="patron-name">{{ name }}</p>
                         <p>{{ tier }}</p>
                     </div>
@@ -14,11 +14,11 @@
             </a>
         </template>
         <template v-else>
-            <div class="row patron-card">
-                <div v-if="image" class="col-3 patron-image"
+            <div class="patron-card">
+                <div v-if="image && false" class="col-3 patron-image"
                      :style="`background: url('${image}') center center / cover no-repeat`">
                 </div>
-                <div class="name-and-tier" :class="image ? 'col-9' : 'col-12'">
+                <div class="name-and-tier">
                     <p class="patron-name">{{ name }}</p>
                     <p class="tier">{{ tier }}</p>
                     <p v-if="legacy"><i>Legacy Patreon Supporter</i></p>
@@ -50,34 +50,39 @@ a {
     color: white;
 }
 
-.patron-card {
-    .patron-image {
-        text-align: right;
+.supporter {
+    background: rgba(255, 255, 255, .1);
 
-        img {
-            height: 100px;
-            max-height: 100px;
-        }
-    }
+    .patron-card {
+        padding-left: 10px;
 
-    .name-and-tier {
-        background: rgba(255, 255, 255, .1);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+        .patron-image {
+            text-align: right;
 
-        .patron-name {
-            font-weight: bolder;
-            font-size: 1.4rem;
-            margin-bottom: 0;
+            img {
+                height: 100px;
+                max-height: 100px;
+            }
         }
 
-        .tier {
-            font-weight: 200;
-        }
+        .name-and-tier {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
 
-        p {
-            margin-bottom: 0;
+            .patron-name {
+                font-weight: bolder;
+                font-size: 1.4rem;
+                margin-bottom: 0;
+            }
+
+            .tier {
+                font-weight: 200;
+            }
+
+            p {
+                margin-bottom: 0;
+            }
         }
     }
 }
