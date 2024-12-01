@@ -80,12 +80,12 @@ builder.Services.AddHangfire(configuration => configuration
     }));
 builder.Services.AddHangfireServer();
 
-ConfigureRollbarInfrastructure();
+/*ConfigureRollbarInfrastructure();
 builder.Services.AddRollbarLogger(loggerOptions =>
 {
     loggerOptions.Filter =
         (_, loglevel) => loglevel >= LogLevel.Warning;
-});
+});*/
 
 var app = builder.Build();
 
