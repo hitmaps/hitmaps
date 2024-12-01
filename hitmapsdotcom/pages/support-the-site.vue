@@ -24,7 +24,7 @@
             <div v-else-if="!supporters.length"><i>No recurring supporters at this time 🙁</i></div>
             <div class="row supporters" v-else>
                 <div class="col-md-4 col-sm-12" v-for="supporter in recurringContributors">
-                    <patron :name="supporter.name" :tier="supporter.tier" :legacy="supporter.legacy"/>
+                    <patron :name="supporter.name" :tier="supporter.tier" :legacy="supporter.legacySupporter"/>
                 </div>
             </div>
             <h4>One-Time Contributors:</h4>

@@ -314,7 +314,7 @@
                         <p v-if="!homepageInfo.homepageSupporters.length"><i>No supporters at "Master Assassin" or higher found</i></p>
                         <div class="row" v-else>
                             <div class="col-sm-3" v-for="supporter in homepageInfo.homepageSupporters">
-                                <patron :name="supporter.name" :tier="supporter.tier" :legacy="supporter.legacy"/>
+                                <patron :name="supporter.name" :tier="supporter.tier" :legacy="supporter.legacySupporter"/>
                             </div>
                         </div>
                     </template>
