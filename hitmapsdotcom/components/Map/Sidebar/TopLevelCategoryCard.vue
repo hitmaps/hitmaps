@@ -33,7 +33,7 @@
                         <div class="name"
                              @click="onCategoryLevelClick(category)"
                              :class="{ 'map-hidden': isCategoryHidden(category) }">
-                            <img :src="`/img/map-icons/${category.icon}.png`"
+                            <img :src="`https://media.hitmaps.com/img/hitmaps-custom/site/map-icons/${category.icon}.png`"
                                  :alt="`${category.group} Icon`"
                                  class="img-fluid">
                             <span>{{ $t(`map.groups.${topLevelCategoryName}|${category.group}`, category.group) }}</span>

@@ -352,7 +352,7 @@ function buildIcon(node) {
             html: node.name.replace(/(?:\r\n|\r|\n)/g, '<br>')
         }) :
         L.icon({
-            iconUrl: `/img/map-icons/${node.icon}.png`,
+            iconUrl: `https://media.hitmaps.com/img/hitmaps-custom/site/map-icons/${node.icon}.png`,
             iconSize: [32, 32],
             iconAnchor: [16, 16],
             popupAnchor: [0, 0]
