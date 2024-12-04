@@ -9,7 +9,7 @@
         <home-navbar/>
         <header class="container-fluid">
             <div class="text-center site-header">
-                <img src="/img/png/logos/hitmaps.png" class="img-fluid" alt="HITMAPS Logo">
+                <img src="https://media.hitmaps.com/img/hitmaps-custom/site/png/logos/hitmaps.png" class="img-fluid" alt="HITMAPS Logo">
                 <h1>{{ $t('interactive-maps-for-hitman') }}</h1>
             </div>
         </header>

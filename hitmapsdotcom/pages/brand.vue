@@ -33,27 +33,27 @@
                 <div class="col logo-type">
                     <h4>Full Logo</h4>
                     <div class="faux-transparency">
-                        <img src="/img/png/logos/hitmaps.png" class="img-fluid">
+                        <img src="https://media.hitmaps.com/img/hitmaps-custom/site/png/logos/hitmaps.png" class="img-fluid">
                     </div>
                     <div class="download-links">
-                        <a href="/img/png/logos/hitmaps.png" target="_blank">.PNG</a>
+                        <a href="https://media.hitmaps.com/img/hitmaps-custom/site/png/logos/hitmaps.png" target="_blank">.PNG</a>
                         &nbsp;&bullet;&nbsp;
-                        <a href="/img/webp/logos/hitmaps.webp" target="_blank">.WEBP</a>
+                        <a href="https://media.hitmaps.com/img/hitmaps-custom/site/webp/logos/hitmaps.webp" target="_blank">.WEBP</a>
                         &nbsp;&bullet;&nbsp;
-                        <a href="/img/svg/logos/hitmaps.svg" target="_blank" download>.SVG</a>
+                        <a href="https://media.hitmaps.com/img/hitmaps-custom/site/svg/logos/hitmaps.svg" target="_blank" download>.SVG</a>
                     </div>
                 </div>
                 <div class="col logo-type">
                     <h4>HITMAPS&trade; "H"</h4>
                     <div class="faux-transparency">
-                        <img src="/img/png/logos/hitmaps-h.png" class="img-fluid">
+                        <img src="https://media.hitmaps.com/img/hitmaps-custom/site/png/logos/hitmaps-h.png" class="img-fluid">
                     </div>
                     <div class="download-links">
-                        <a href="/img/png/logos/hitmaps-h.png" target="_blank">.PNG</a>
+                        <a href="https://media.hitmaps.com/img/hitmaps-custom/site/png/logos/hitmaps-h.png" target="_blank">.PNG</a>
                         &nbsp;&bullet;&nbsp;
-                        <a href="/img/webp/logos/hitmaps-h.webp" target="_blank">.WEBP</a>
+                        <a href="https://media.hitmaps.com/img/hitmaps-custom/site/webp/logos/hitmaps-h.webp" target="_blank">.WEBP</a>
                         &nbsp;&bullet;&nbsp;
-                        <a href="/img/svg/logos/hitmaps-h.svg" target="_blank" download>.SVG</a>
+                        <a href="https://media.hitmaps.com/img/hitmaps-custom/site/svg/logos/hitmaps-h.svg" target="_blank" download>.SVG</a>
                     </div>
                 </div>
             </div>

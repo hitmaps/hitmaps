@@ -335,7 +335,7 @@ export default {
                     const dropdownItem = {
                         element: item,
                         value: item.icon,
-                        display: `<img height="24" width="24" src="/img/map-icons/${item.icon}.png" alt="${item.altText} Icon"> ${item.altText}`,
+                        display: `<img height="24" width="24" src="https://media.hitmaps.com/img/hitmaps-custom/site/map-icons/${item.icon}.png" alt="${item.altText} Icon"> ${item.altText}`,
                         html: true
                     };
                     dropdownGroup.groupItems.push(dropdownItem);
@@ -468,7 +468,7 @@ export default {
                     const dropdownItem = {
                         element: category,
                         value: category.group,
-                        display: `<img height="24" width="24" src="/img/map-icons/${category.icon}.png" alt="${category.group} Icon"> ${category.group}`,
+                        display: `<img height="24" width="24" src="https://media.hitmaps.com/img/hitmaps-custom/site/map-icons/${category.icon}.png" alt="${category.group} Icon"> ${category.group}`,
                         html: true
                     }
                     dropdownGroup.groupItems.push(dropdownItem);

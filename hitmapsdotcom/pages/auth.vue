@@ -6,7 +6,7 @@
         <header class="row">
             <div class="col text-center site-header">
                 <nuxt-link to="/">
-                    <img src="/img/png/logos/hitmaps.png" class="img-fluid" alt="HITMAPS logo" />
+                    <img src="https://media.hitmaps.com/img/hitmaps-custom/site/png/logos/hitmaps.png" class="img-fluid" alt="HITMAPS logo" />
                 </nuxt-link>
                 <h1>{{ $t('interactive-maps-for-hitman') }}</h1>
             </div>

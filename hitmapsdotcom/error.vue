@@ -12,7 +12,7 @@ const handleError = () => {
     <NuxtLayout>
         <div class="body" style="background: url('https://www.hitmaps.com/cdn-cgi/image/format=auto/https://media.hitmaps.com/img/hitman3/backgrounds/menu_bg.jpg')">
             <div class="not-found" v-if="error.statusCode === 404">
-                <img class="img-fluid" src="/img/404.gif" :alt="$t('404.janus-being-attacked')">
+                <img class="img-fluid" src="https://media.hitmaps.com/img/hitmaps-custom/site/404.gif" :alt="$t('404.janus-being-attacked')">
                 <h1>Ope!</h1>
                 <h2>{{ error.message }}</h2>
                 <p>{{ $t('404.image-caption') }}</p>

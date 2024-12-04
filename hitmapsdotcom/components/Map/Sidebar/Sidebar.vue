@@ -3,7 +3,7 @@
         <div class="mobile-header">
             <div class="logo">
                 <nuxt-link to="/">
-                    <img src="/img/png/logos/hitmaps-h.png" class="img-fluid d-block d-md-none" alt="HITMAPS Logo"/>
+                    <img src="https://media.hitmaps.com/img/hitmaps-custom/site/png/logos/hitmaps-h.png" class="img-fluid d-block d-md-none" alt="HITMAPS Logo"/>
                 </nuxt-link>
             </div>
             <div class="header-buttons">
@@ -56,7 +56,7 @@
         <div class="navbar-collapse">
             <div class="header d-none d-md-block">
                 <nuxt-link to="/">
-                    <img src="/img/png/logos/hitmaps.png" class="img-fluid" alt="HITMAPS Logo"/>
+                    <img src="https://media.hitmaps.com/img/hitmaps-custom/site/png/logos/hitmaps.png" class="img-fluid" alt="HITMAPS Logo"/>
                 </nuxt-link>
             </div>
             <editor-header v-if="editorState !== 'OFF' && editorState !== 'MENU'" :editor-state="editorState"/>
