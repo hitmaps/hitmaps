@@ -1,6 +1,6 @@
 <template>
     <div class="search-box" :class="searchedItem ? 'item-selected' : ''">
-        <div class="dropdown bootstrap-select" role="menu" v-on="{ 'hide.bs.dropdown': dropdownClose }">
+        <div class="dropdown bootstrap-select" role="menu" v-on="{ 'hide.bs.dropdown': dropdownClose, 'show.bs.dropdown': focusFormControl, }">
             <button class="btn btn-secondary dropdown-toggle control-button" type="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
                 <icon class="magnifier" name="fa6-solid:magnifying-glass"/>
@@ -11,7 +11,7 @@
             </button>
             <div class="dropdown-menu">
                 <div class="search-input">
-                    <input class="form-control" v-model="searchBox">
+                    <input ref="formControl" class="form-control" v-model="searchBox">
                 </div>
                 <div class="dropdown-options">
                     <template v-for="(items, key) in searchResults" :key="key">
@@ -36,6 +36,7 @@
 
 <script>
 import {v4 as uuidv4} from "uuid";
+import { nextTick } from "vue";
 export default {
     name: "ItemSearch",
     props: {
@@ -91,7 +92,12 @@ export default {
         },
         dropdownClose() {
             this.searchBox = '';
-        }
+        },
+        focusFormControl() {
+            nextTick(() => {
+                this.$refs.formControl.focus();
+            });
+        },
     },
     watch: {
         searchedItem() {
