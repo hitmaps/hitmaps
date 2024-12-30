@@ -10,7 +10,7 @@ const handleError = () => {
 </script>
 <template>
     <NuxtLayout>
-        <div class="body" style="background: url('https://www.hitmaps.com/cdn-cgi/image/format=auto/https://media.hitmaps.com/img/hitman3/backgrounds/menu_bg.jpg')">
+        <div class="body" style="background: url('https://media.hitmaps.com/img/hitman3/backgrounds/menu_bg.jpg')">
             <div class="not-found" v-if="error.statusCode === 404">
                 <img class="img-fluid" src="https://media.hitmaps.com/img/hitmaps-custom/site/404.gif" :alt="$t('404.janus-being-attacked')">
                 <h1>Ope!</h1>
@@ -18,7 +18,7 @@ const handleError = () => {
                 <p>{{ $t('404.image-caption') }}</p>
             </div>
             <div class="error" v-else>
-                <img class="img-fluid" src="https://www.hitmaps.com/cdn-cgi/image/format=auto/https://media.hitmaps.com/img/hitman3/challenges/opulent/break_serverracks.jpg" alt="Haven Server Failure">
+                <img class="img-fluid" src="https://media.hitmaps.com/img/hitman3/challenges/opulent/break_serverracks.jpg" alt="Haven Server Failure">
                 <h1>{{ error.statusCode }}</h1>
                 <h2>{{ error.message }}</h2>
                 <p>It looks like something went terribly wrong and your request failed.  Please try your request again.</p>

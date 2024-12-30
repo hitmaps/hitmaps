@@ -26,10 +26,10 @@ useSeoMeta({
     <client-only>
         <div
             class="content"
-            style="background: url('https://www.hitmaps.com/cdn-cgi/image/format=auto/https://media.hitmaps.com/img/hitman3/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover">
+            style="background: url('https://media.hitmaps.com/img/hitman3/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover">
             <div class="site-container" v-if="game != null">
                 <div class="text-center logo">
-                    <img :src="`https://www.hitmaps.com/cdn-cgi/image/format=auto/${game.logoUrl}`" class="img-fluid" :alt="`${game.fullName} Logo`">
+                    <img :src="game.logoUrl" class="img-fluid" :alt="`${game.fullName} Logo`">
                     <h2>{{ game.tagline }}</h2>
                 </div>
                 <div class="row loading" v-if="locationsPending && !locations">
@@ -39,7 +39,7 @@ useSeoMeta({
                 </div>
                 <template v-else>
                     <nav class="navbar locations"
-                         style="background: url('https://www.hitmaps.com/cdn-cgi/image/format=auto/https://media.hitmaps.com/img/hitman3/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover">
+                         style="background: url('https://media.hitmaps.com/img/hitman3/backgrounds/menu_bg.jpg') no-repeat center center fixed; background-size: cover">
                         <ul class="nav">
                             <li v-if="locations.length > 0" class="nav-item">
                                 <nuxt-link to="/" class="nav-link" data-target="#">
@@ -63,7 +63,7 @@ useSeoMeta({
                         <div v-for="location in locations" :key="location.id" class="location"
                              v-bind:style="{
                     background:
-                        'url(https://www.hitmaps.com/cdn-cgi/image/format=auto/' + location.backgroundUrl + ') no-repeat center center fixed',
+                        'url(' + location.backgroundUrl + ') no-repeat center center fixed',
                     backgroundSize: 'cover'
                 }">
                             <div class="header">
@@ -84,9 +84,9 @@ useSeoMeta({
                                     <div v-for="mission in location.missions" :key="mission.id"
                                          class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
                                         <nuxt-link :to="`/games/${route.params.game}/${location.slug}/${mission.slug}`">
-                                            <div class="card mission" :style="`background: url('https://www.hitmaps.com/cdn-cgi/image/format=auto/${mission.tileUrl}') center center / cover no-repeat`">
+                                            <div class="card mission" :style="`background: url('${mission.tileUrl}') center center / cover no-repeat`">
                                                 <div style="position: relative">
-                                                    <img :src="`https://www.hitmaps.com/cdn-cgi/image/format=auto/${mission.tileUrl}`" class="card-img-top" :alt="$t('mission-image')">
+                                                    <img :src="mission.tileUrl" class="card-img-top" :alt="$t('mission-image')">
                                                     <div class="card-img-overlay d-flex flex-column justify-content-end"
                                                          style="padding: 0"></div>
                                                 </div>

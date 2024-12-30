@@ -1,8 +1,8 @@
 <template>
     <div class="overlay"
-         :style="'background: #ccc url(https://www.hitmaps.com/cdn-cgi/image/format=auto/' + mission.backgroundUrl + ') no-repeat; background-size: cover'">
-        <div class="overlay-container" :style="`background: url('https://www.hitmaps.com/cdn-cgi/image/format=auto/${mission.tileUrl}') center center / cover no-repeat`">
-            <img class="img-fluid" :src="`https://www.hitmaps.com/cdn-cgi/image/format=auto,width=693,height=517/${mission.tileUrl}`" alt="Mission Thumbnail" style="visibility: hidden"/>
+         :style="'background: #ccc url(' + mission.backgroundUrl + ') no-repeat; background-size: cover'">
+        <div class="overlay-container" :style="`background: url('${mission.tileUrl}') center center / cover no-repeat`">
+            <img class="img-fluid" :src="`${mission.tileUrl}?w=693&h=517`" alt="Mission Thumbnail" style="visibility: hidden"/>
             <div class="footer">
                 <div class="footer-image">
                     <game-icon icon="mission" font-style="normal"/>

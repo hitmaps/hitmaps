@@ -9,8 +9,8 @@ const { t } = useI18n();
 <template>
     <nuxt-link v-bind="$attrs" :to="`/games/${game.slug}`">
         <div class="row game-card">
-            <div class="col-xl-4 d-none d-xl-block" :style="`background: url(https://www.hitmaps.com/cdn-cgi/image/format=auto/${game.tileUrl}) no-repeat center center; background-size: cover`"></div>
-            <div class="col-xl-8 game-info" :style="`background: rgba(0, 0, 0, .3) url(https://www.hitmaps.com/cdn-cgi/image/format=auto/${game.tileUrl}) no-repeat center center; background-size: cover`">
+            <div class="col-xl-4 d-none d-xl-block" :style="`background: url(${game.tileUrl}) no-repeat center center; background-size: cover`"></div>
+            <div class="col-xl-8 game-info" :style="`background: rgba(0, 0, 0, .3) url(${game.tileUrl}) no-repeat center center; background-size: cover`">
                 <div class="image">
                     <game-icon :icon="game.icon" font-style="normal" />
                 </div>

@@ -24,7 +24,7 @@
                 <div class="card-body disguises">
                     <div class="row">
                         <div class="col-12" @click="changeDisguise('NONE')">
-                            <div class="disguise" style="background: #fff url('https://www.hitmaps.com/cdn-cgi/image/format=auto/https://media.hitmaps.com/img/hitman3/ui/tiles/any_disguise.jpg') center center / auto no-repeat">
+                            <div class="disguise" style="background: #fff url('https://media.hitmaps.com/img/hitman3/ui/tiles/any_disguise.jpg') center center / auto no-repeat">
                                 <p>{{ $t('map.none') }}</p>
                             </div>
                         </div>

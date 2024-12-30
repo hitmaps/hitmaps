@@ -2,7 +2,7 @@
     <modal id="popover-modal" ref="popover-modal" tabindex="-1" flush>
         <div v-if="node" class="popover-content">
             <div class="image" v-if="node.image">
-                <img :src="`https://www.hitmaps.com/cdn-cgi/image/format=auto/${node.image}`" class="img-fluid">
+                <img :src="node.image" class="img-fluid">
             </div>
             <div class="details" :class="node.image ? '' : 'no-image'">
                 <div class="icon-and-details">
@@ -107,9 +107,9 @@ export default {
 
             let backgroundCss;
             if (this.game.slug === 'absolution') {
-                backgroundCss = `background-image: url('https://www.hitmaps.com/cdn-cgi/image/format=auto/${this.node.image}'), radial-gradient(#69696a, #171718)`;
+                backgroundCss = `background-image: url('${this.node.image}'), radial-gradient(#69696a, #171718)`;
             } else {
-                backgroundCss = `background: url('https://www.hitmaps.com/cdn-cgi/image/format=auto/${this.node.image}') center center / cover no-repeat`;
+                backgroundCss = `background: url('${this.node.image}') center center / cover no-repeat`;
             }
 
             return backgroundCss;

@@ -26,8 +26,8 @@ function hideBriefingModal() {
 <template>
     <a v-bind="$attrs" href="#" @click="showModal">
         <div class="row game-card">
-            <div class="col-xl-4 d-none d-xl-block" :style="`background: url(https://www.hitmaps.com/cdn-cgi/image/format=auto/${eventInfo.tileUrl}) no-repeat center center; background-size: cover`"></div>
-            <div class="col-xl-8 game-info" :style="`background: rgba(0, 0, 0, .3) url(https://www.hitmaps.com/cdn-cgi/image/format=auto/${eventInfo.tileUrl}) no-repeat center center; background-size: cover`">
+            <div class="col-xl-4 d-none d-xl-block" :style="`background: url(${eventInfo.tileUrl}) no-repeat center center; background-size: cover`"></div>
+            <div class="col-xl-8 game-info" :style="`background: rgba(0, 0, 0, .3) url(${eventInfo.tileUrl}) no-repeat center center; background-size: cover`">
                 <div class="upper">
                     <div class="image">
                         <game-icon icon="challenge" font-style="normal" />
