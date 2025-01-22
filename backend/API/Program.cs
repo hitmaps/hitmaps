@@ -6,16 +6,16 @@ using API.BusinessLogic.Discord;
 using API.BusinessLogic.Firebase;
 using API.BusinessLogic.X;
 using API.Filters;
+using Asp.Versioning;
 using DataAccess.Data;
 using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.AspNetCore.OpenApi;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Rollbar;
-using Rollbar.NetCore.AspNet;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -67,6 +67,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
 builder.Services.AddHangfire(configuration => configuration
     .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+    .UseFilter(new AutomaticRetryAttribute { Attempts = 0 })
     .UseSimpleAssemblyNameTypeSerializer()
     .UseRecommendedSerializerSettings()
     .UseSqlServerStorage(builder.Configuration.GetConnectionString("Hitmaps"), new SqlServerStorageOptions
@@ -94,8 +95,14 @@ app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().WithExpose
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwagger(options =>
+    {
+        options.RouteTemplate = "/openapi/{documentName}.json";
+    });
+    app.MapScalarApiReference(options =>
+    {
+        options.EndpointPathPrefix = "/docs/{documentName}";
+    });
 }
 
 app.UseHangfireDashboard(options: new DashboardOptions
