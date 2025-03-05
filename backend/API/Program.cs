@@ -126,9 +126,10 @@ if (app.Environment.IsProduction())
     var firebaseClient = scope.ServiceProvider.GetRequiredService<IFirebaseClient>();
     var imageService = scope.ServiceProvider.GetRequiredService<IImageService>();
     var makeshiftXClient = scope.ServiceProvider.GetRequiredService<MakeshiftXClient>();
-    RecurringJob.AddOrUpdate("hitmaps:Batch.PushElusiveTargetStatus",
+    /*RecurringJob.AddOrUpdate("hitmaps:Batch.PushElusiveTargetStatus",
         () => new PushElusiveTargetStatus(db, builder.Configuration, firebaseClient, imageService, makeshiftXClient).ProgramLogicAsync(),
-        Cron.Hourly);
+        Cron.Hourly);*/
+    RecurringJob.RemoveIfExists("hitmaps:Batch.PushElusiveTargetStatus");
 }
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions
