@@ -94,9 +94,7 @@ function toggleRandomMaps() {
 }
 
 .dashboard {
-    margin: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
+    margin: 20px 0;
     background: $content-background;
 
     .tournament {

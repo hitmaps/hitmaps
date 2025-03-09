@@ -11,9 +11,9 @@
     </Head>
     <NuxtPage/>
     <footer v-if="isNotInMap()">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col">
                     <h4>&copy; 2018 - {{ currentYear }} hitmaps.com</h4>
                     <p style="margin-bottom: 0">
                         <i18n-t keypath="footer.disclaimer">
@@ -30,7 +30,7 @@
                         </i18n-t>
                     </p>
                 </div>
-                <div class="col-md-6 text-end">
+                <div class="col text-end">
                     <nuxt-link to="/about">
                         <footer-icon-stack icon-name="fa6-solid:circle-info" :tooltip-text="$t('footer.about')"/>
                     </nuxt-link>
@@ -55,12 +55,12 @@
                 </div>
             </div>
             <div class="row legal">
-                <div class="col-sm-2">
+                <div class="col">
                     <span class="language-switcher">
                         <locale-modal/>
                     </span>
                 </div>
-                <div class="col-sm-10 text-end">
+                <div class="col text-end">
                     <span class="footer-link">
                         <icon name="fa-solid:gavel"/>
                         <nuxt-link to="/terms-of-use">
@@ -110,6 +110,9 @@ function isNotInMap() {
 }
 </script>
 <style lang="scss" scoped>
+.container-fluid {
+    max-width: 1920px;
+}
 .footer-link {
     a {
         text-decoration: none;
