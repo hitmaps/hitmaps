@@ -10,6 +10,7 @@ const { t } = useI18n();
 const uuid = uuidv4();
 
 const briefingModal = ref(null);
+const filterCss = computed(() => new Date(elusiveTarget.value.beginningTime) > new Date() ? 'filter: grayscale(1)' : '');
 
 function showBriefingModal() {
     briefingModal.value.showModal();
@@ -23,8 +24,8 @@ function hideBriefingModal() {
 <template>
     <a v-bind="$attrs" href="#">
         <div class="row game-card">
-            <div class="col-xl-4 d-none d-xl-block" :style="`background: url(${elusiveTarget.tileUrl}) no-repeat center center; background-size: cover`"></div>
-            <div class="col-xl-8 game-info" :style="`background: rgba(0, 0, 0, .3) url(${elusiveTarget.tileUrl}) no-repeat center center; background-size: cover`">
+            <div class="col-xl-4 d-none d-xl-block" :style="`background: url(${elusiveTarget.tileUrl}) no-repeat center center; background-size: cover; ${filterCss}`"></div>
+            <div class="col-xl-8 game-info" :style="`background: rgba(0, 0, 0, .3) url(${elusiveTarget.tileUrl}) no-repeat center center; background-size: cover;`">
                 <div class="upper">
                     <div class="image">
                         <game-icon icon="elusive" font-style="normal" />

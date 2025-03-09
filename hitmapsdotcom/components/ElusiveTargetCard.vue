@@ -32,6 +32,8 @@ onMounted(() => {
     }
 });
 
+const filterCss = computed(() => new Date(selectedElusiveTarget.value.beginningTime) > new Date() ? 'filter: grayscale(1)' : '');
+
 function showBriefingModal(elusive) {
     briefingElusiveTarget.value = elusive;
     briefingModal.value.showModal();
@@ -77,7 +79,7 @@ function getComingSoonElusive() {
 <template>
     <div class="single-game d-none d-lg-flex" v-if="!forceSmallCards">
         <a :href="selectedElusiveTarget.missionUrl ?? '#'">
-            <div class="card game" :style="`background: url('${selectedElusiveTarget.tileUrl}') center center / cover no-repeat`">
+            <div class="card game" :style="`background: url('${selectedElusiveTarget.tileUrl}') center center / cover no-repeat; ${filterCss}`">
                 <div style="position: relative; flex-grow: 1">
                     <div class="card-img-overlay d-flex flex-column justify-content-end"
                          style="padding: 0"></div>
