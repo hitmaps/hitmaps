@@ -221,9 +221,9 @@
             <h3>List of Sub-processors</h3>
             <p>HITMAPS uses the following products/services (which are all GDPR compliant):</p>
             <ul>
-                <li><strong>Hetnzer and Vultr:</strong> for storing data.</li>
+                <li><strong>Netcup:</strong> for storing data.</li>
                 <li><strong>PayPal, Stripe, and Ko-fi:</strong> for facilitating one-time and recurring "support the site" payments.</li>
-                <li><strong>Plausible:</strong> for analyzing the browsing behavior of our users and visitors. Please note that HITMAPS hosts its own Plausible instance, available at <a href="https://analytics.hitmaps.com/hitmaps.com/">https://analytics.hitmaps.com/hitmaps.com/</a></li>
+                <li><strong>Umami:</strong> for analyzing the browsing behavior of our users and visitors. Please note that HITMAPS hosts its own Umami instance, available at <a href="https://analytics.hitmaps.com/hitmaps.com/">https://analytics.hitmaps.com/hitmaps.com/</a></li>
             </ul>
             <h2>Privacy Policy Changes</h2>
             <p>
@@ -231,9 +231,10 @@
                 and in HITMAPS' sole discretion. HITMAPS encourages visitors to frequently check this page for any
                 changes to its Privacy Policy.
             </p>
-            <div class="innerText"><br />Last Edited on 2024-05-02</div>
+            <div class="innerText"><br />Last Edited on 2025-03-23</div>
             <p>Prior Versions:</p>
             <ul>
+                <li><a href="https://gitlab.com/hitmaps/hitmaps/-/raw/058be74d8f6024065c2a0ade35c1de4399048532/hitmapsdotcom/pages/privacy-policy.vue">2024-05-03 to 2025-03-23</a></li>
                 <li><a href="https://gitlab.com/hitmaps/hitmaps/-/raw/058be74d8f6024065c2a0ade35c1de4399048532/hitmapsdotcom/pages/privacy-policy.vue">2021-04-07 to 2024-05-03</a></li>
                 <li><a href="https://gitlab.com/hitmaps/hitmaps/raw/e26e1d858c423c9aae67e57a29921972d33e73a3/src/views/PrivacyPolicy.vue">2019-11-07 to 2021-04-07</a></li>
                 <li><a href="https://gitlab.com/hitmaps/hitmaps/raw/034635c6d616a5dd502b25399ea6114230ebb04f/src/views/PrivacyPolicy.vue">2019-07-29 to 2019-11-07</a></li>
