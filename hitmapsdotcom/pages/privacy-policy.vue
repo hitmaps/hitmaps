@@ -223,7 +223,7 @@
             <ul>
                 <li><strong>Netcup:</strong> for storing data.</li>
                 <li><strong>PayPal, Stripe, and Ko-fi:</strong> for facilitating one-time and recurring "support the site" payments.</li>
-                <li><strong>Umami:</strong> for analyzing the browsing behavior of our users and visitors. Please note that HITMAPS hosts its own Umami instance, available at <a href="https://analytics.hitmaps.com/hitmaps.com/">https://analytics.hitmaps.com/hitmaps.com/</a></li>
+                <li><strong>Umami:</strong> for analyzing the browsing behavior of our users and visitors. Please note that HITMAPS hosts its own Umami instance, available at <a href="https://analytics.hitmaps.com/share/9GuDVEczKVafocjA/www.hitmaps.com">https://analytics.hitmaps.com/share/9GuDVEczKVafocjA/www.hitmaps.com</a></li>
             </ul>
             <h2>Privacy Policy Changes</h2>
             <p>
@@ -234,7 +234,7 @@
             <div class="innerText"><br />Last Edited on 2025-03-23</div>
             <p>Prior Versions:</p>
             <ul>
-                <li><a href="https://gitlab.com/hitmaps/hitmaps/-/raw/058be74d8f6024065c2a0ade35c1de4399048532/hitmapsdotcom/pages/privacy-policy.vue">2024-05-03 to 2025-03-23</a></li>
+                <li><a href="https://gitlab.com/hitmaps/hitmaps/-/blob/c0f6913cd9dba32e2a39442ef7ffc0ce8ff2f74a/hitmapsdotcom/pages/privacy-policy.vue">2024-05-03 to 2025-03-23</a></li>
                 <li><a href="https://gitlab.com/hitmaps/hitmaps/-/raw/058be74d8f6024065c2a0ade35c1de4399048532/hitmapsdotcom/pages/privacy-policy.vue">2021-04-07 to 2024-05-03</a></li>
                 <li><a href="https://gitlab.com/hitmaps/hitmaps/raw/e26e1d858c423c9aae67e57a29921972d33e73a3/src/views/PrivacyPolicy.vue">2019-11-07 to 2021-04-07</a></li>
                 <li><a href="https://gitlab.com/hitmaps/hitmaps/raw/034635c6d616a5dd502b25399ea6114230ebb04f/src/views/PrivacyPolicy.vue">2019-07-29 to 2019-11-07</a></li>
