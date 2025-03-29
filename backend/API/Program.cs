@@ -91,14 +91,14 @@ builder.Services.AddRollbarLogger(loggerOptions =>
 var app = builder.Build();
 
 app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().WithExposedHeaders("*"));
+app.UseSwagger(options =>
+{
+    options.RouteTemplate = "/openapi/{documentName}.json";
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger(options =>
-    {
-        options.RouteTemplate = "/openapi/{documentName}.json";
-    });
     app.MapScalarApiReference(options =>
     {
         options.EndpointPathPrefix = "/docs/{documentName}";
