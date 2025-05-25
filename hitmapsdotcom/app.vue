@@ -25,7 +25,7 @@
                     <p>
                         <i18n-t keypath="footer.developed-by">
                             <template v-slot:mikeKochLink>
-                                <a href="https://mikeko.ch" target="_blank">Mike Koch</a>
+                                <a href="https://mrmike.dev" target="_blank">MrMike</a>
                             </template>
                         </i18n-t>
                     </p>
