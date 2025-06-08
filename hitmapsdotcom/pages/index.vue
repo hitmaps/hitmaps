@@ -76,7 +76,7 @@
                         <p>
                             <i18n-t keypath="custom-game-modes.download-instructions">
                                 <template v-slot:serverPatcher>
-                                    <a href="https://gitlab.com/grappigegovert/localghost/-/jobs/artifacts/master/download?job=build_patcher" target="_blank">{{ $t('custom-game-modes.server-patcher') }}</a>
+                                    <a href="https://gitlab.com/hitmaps/hitman-server-patcher/-/jobs/artifacts/master/download?job=build_patcher" target="_blank">{{ $t('custom-game-modes.server-patcher') }}</a>
                                 </template>
                                 <template v-slot:serverUrl>
                                     <code>gm.hitmaps.com</code>
