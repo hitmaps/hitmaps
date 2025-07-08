@@ -14,7 +14,7 @@ public class GameService : IGameService
 
     public List<Game> GetGames()
     {
-        return dbContext.Games.ToList();
+        return dbContext.Games.Where(x => !x.Slug.StartsWith("redacted")).ToList();
     }
 
     public Game GetGame(string slug)
