@@ -271,9 +271,9 @@ function buildMapLayers() {
             allLayers[i] = L.imageOverlay(`${svgMapUrl.value}${i}.svg`, layerBounds.value);
         }
     } else {
-        // 3. PNG Layers
+        // 3. WEBP Layers
         for (let i = mission.value.lowestFloorNumber; i <= mission.value.highestFloorNumber; i++) {
-            allLayers[i] = L.imageOverlay(`${svgMapUrl.value}${i}.png`, layerBounds.value);
+            allLayers[i] = L.imageOverlay(`${svgMapUrl.value}${i}.webp`, layerBounds.value);
         }
     }
 
