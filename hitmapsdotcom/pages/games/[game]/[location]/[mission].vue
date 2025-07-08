@@ -258,23 +258,27 @@ function buildDisguiseAreaForMap(disguiseArea) {
 }
 function buildMapLayers() {
     const allLayers = {};
-    // 1. Sniper Assassin (only one level - satellite)
-    if (!mission.value.svg) {
+    if (!mission.value.svg && route.params.game === 'sniper-assassin') {
+        // 1. Sniper Assassin (only one level - satellite)
         allLayers[0] = L.tileLayer(imageTileUrl.value.replace('{floorNumber}', 'satellite'), {
             noWrap: true,
             minZoom: mission.value.minZoom,
             maxZoom: mission.value.maxZoom
         });
-    }
-
-    // 2. SVG Layers for everything else
-    if (mission.value.svg) {
+    } else if (mission.value.svg) {
+        // 2. SVG Layers
         for (let i = mission.value.lowestFloorNumber; i <= mission.value.highestFloorNumber; i++) {
             allLayers[i] = L.imageOverlay(`${svgMapUrl.value}${i}.svg`, layerBounds.value);
         }
+    } else {
+        // 3. PNG Layers
+        for (let i = mission.value.lowestFloorNumber; i <= mission.value.highestFloorNumber; i++) {
+            allLayers[i] = L.imageOverlay(`${svgMapUrl.value}${i}.png`, layerBounds.value);
+        }
     }
 
-    // 3. Satellite layer (if present)
+
+    // 4. Satellite layer (if present)
     if (mission.value.satelliteView) {
         allLayers[-99] = L.tileLayer(imageTileUrl.value.replace('{floorNumber}', 'satellite'), {
             noWrap: true,
