@@ -273,7 +273,7 @@ function buildMapLayers() {
     } else {
         // 3. WEBP/PNG Layers
         for (let i = mission.value.lowestFloorNumber; i <= mission.value.highestFloorNumber; i++) {
-            allLayers[i] = L.imageOverlay(`${svgMapUrl.value}${i}.png`, layerBounds.value);
+            allLayers[i] = L.imageOverlay(`https://mediadirect.hitmaps.com/img/${game.value.slug}/maps/${mission.value.mapFolderName}/${i}.png`, layerBounds.value);
         }
     }
 
