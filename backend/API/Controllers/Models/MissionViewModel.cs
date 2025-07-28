@@ -32,7 +32,8 @@ public class MissionViewModel
     public List<MissionVariantViewModel> Variants { get; set; } = new();
     public string BackgroundUrl { get; set; } = null!;
     public string TileUrl { get; set; } = null!;
-    public bool Svg { get; set; }
+    public string TileType { get; set; } = null!;
+    public bool Svg => TileType == "svg";
     public int MinZoom { get; set; }
     public int MaxZoom { get; set; }
     [Obsolete("Use BoundingBoxTopLeftCoordinateLatitude/Longitude instead")]
@@ -97,7 +98,7 @@ public class MissionViewModel
             Variants = mission.Variants.Select(MissionVariantViewModel.FromDbModel).ToList(),
             BackgroundUrl = mission.BackgroundUrl,
             TileUrl = mission.TileUrl,
-            Svg = mission.Svg,
+            TileType = mission.TileType,
             MinZoom = mission.MinZoom,
             MaxZoom = mission.MaxZoom,
             BoundingBoxTopLeft = $"{mission.BoundingBoxTopLeftLatitude},{mission.BoundingBoxTopLeftLongitude}",

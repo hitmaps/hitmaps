@@ -40,7 +40,10 @@ public class Mission
     public string TileUrl { get; set; } = null!;
     [MaxLength(255)]
     public string BackgroundUrl { get; set; } = null!;
-    public bool Svg { get; set; }
+
+    [MaxLength(10)]
+    public string TileType { get; set; } = null!;
+    public bool Svg => TileType == "svg";
     public int MinZoom { get; set; }
     public int MaxZoom { get; set; }
     [MaxLength(30)]
