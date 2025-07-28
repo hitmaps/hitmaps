@@ -258,14 +258,14 @@ function buildDisguiseAreaForMap(disguiseArea) {
 }
 function buildMapLayers() {
     const allLayers = {};
-    if (!mission.value.svg && route.params.game === 'sniper-assassin') {
+    if (mission.value.tileType === 'tile' && route.params.game === 'sniper-assassin') {
         // 1. Sniper Assassin (only one level - satellite)
         allLayers[0] = L.tileLayer(imageTileUrl.value.replace('{floorNumber}', 'satellite'), {
             noWrap: true,
             minZoom: mission.value.minZoom,
             maxZoom: mission.value.maxZoom
         });
-    } else if (mission.value.svg) {
+    } else if (mission.value.tileType === 'svg') {
         // 2. SVG Layers
         for (let i = mission.value.lowestFloorNumber; i <= mission.value.highestFloorNumber; i++) {
             allLayers[i] = L.imageOverlay(`${svgMapUrl.value}${i}.svg`, layerBounds.value);
@@ -273,7 +273,7 @@ function buildMapLayers() {
     } else {
         // 3. WEBP/PNG Layers
         for (let i = mission.value.lowestFloorNumber; i <= mission.value.highestFloorNumber; i++) {
-            allLayers[i] = L.imageOverlay(`https://mediadirect.hitmaps.com/img/${game.value.slug}/maps/${mission.value.mapFolderName}/${i}.png`, layerBounds.value);
+            allLayers[i] = L.imageOverlay(`https://mediadirect.hitmaps.com/img/${game.value.slug}/maps/${mission.value.mapFolderName}/${i}.${mission.value.tileType}`, layerBounds.value);
         }
     }
 
