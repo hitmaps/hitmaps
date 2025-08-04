@@ -664,5 +664,62 @@
         "requiem": {
             "church-grounds": "Church Grounds"
         }
+    },
+    "codename-47": {
+        "kowloon-triads-in-gang-war": {
+            "outside": "Outside"
+        },
+        "ambush-at-the-wang-fou-restaurant": {
+            "outside": "Outside"
+        },
+        "the-massacre-at-cheung-chau-fish-restaurant": {
+            "outside": "Outside",
+            "inside": "Inside"
+        },
+        "the-lee-hong-assassination": {
+            "outside": "Outside{'|'}Outside",
+            "inside-3": "Inside{'|'}3rd Floor",
+            "inside-2": "Inside{'|'}2nd Floor",
+            "inside-1": "Inside{'|'}1st Floor"
+        },
+        "find-the-uwa-tribe": {
+            "jungle": "Jungle"
+        },
+        "the-jungle-god": {
+            "jungle": "Jungle"
+        },
+        "say-hello-to-my-little-friend": {
+            "jungle": "Jungle",
+            "mansion-3": "Mansion{'|'}3rd Floor",
+            "mansion-2": "Mansion{'|'}2nd Floor",
+            "mansion-1": "Mansion{'|'}1st Floor"
+        },
+        "traditions-of-the-trade": {
+            "outside": "Outside",
+            "hotel-3": "Hotel{'|'}3rd Floor",
+            "hotel-2": "Hotel{'|'}2nd Floor",
+            "hotel-1": "Hotel{'|'}1st Floor"
+        },
+        "gunrunners-paradise": {
+            "harbor": "Harbor"
+        },
+        "plutonium-runs-loose": {
+            "harbor": "Harbor",
+            "boat-bridge": "Boat{'|'}Bridge",
+            "boat-above-deck": "Boat{'|'}Above Deck",
+            "boat-main-deck": "Boat{'|'}Main Deck",
+            "boat-1-deck": "Boat{'|'}1st Deck",
+            "boat-2-deck": "Boat{'|'}2nd Deck",
+            "boat-3-deck": "Boat{'|'}3rd Deck"
+        },
+        "the-setup": {
+            "outside": "Outside",
+            "inside-3": "Inside{'|'}3rd Floor",
+            "inside-2": "Inside{'|'}2nd Floor",
+            "inside-1": "Inside{'|'}1st Floor"
+        },
+        "meet-your-brother": {
+            "laboratory": "Laboratory"
+        }
     }
 }
