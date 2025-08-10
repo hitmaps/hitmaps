@@ -21,8 +21,9 @@ public class ElusiveTargetService : IElusiveTargetService
                 .ThenInclude(x => x.Location)
                     .ThenInclude(x => x.Game)
             .Where(x => x.EndsAt > DateTime.UtcNow)
-            .OrderBy(x => x.EndsAt)
-            .ThenByDescending(x => x.Id)
+            .OrderBy(x => x.BeginsAt >= DateTime.UtcNow)
+            .ThenBy(x => x.BeginsAt < DateTime.UtcNow ? x.EndsAt : x.BeginsAt)
+            .ThenBy(x => x.Id)
             .ToList();
         //@formatter:on
     }
