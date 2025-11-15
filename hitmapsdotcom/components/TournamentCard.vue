@@ -71,7 +71,7 @@ function hideBriefingModal() {
                    :modal-title="eventInfo.name"
                    ref="modalContent">
                 <div class="row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-12" v-if="eventInfo.eventType === 'roulette-rivals'">
                         <p>
                             In Roulette Rivals you go head-to-head against another player in main missions. Once a mission is selected,
                             an admin will spin the roulette.
@@ -87,6 +87,30 @@ function hideBriefingModal() {
                         <p>
                             Do you play it safe? Takes longer, but you wouldn't have to restart. Or do you play it risky to get
                             that awesome time, with the potential of a lot of restarts?
+                        </p>
+                        <alert type="info">
+                            <ul style="list-style: none">
+                                <li>Registration ends at <b>{{ $dayjs(eventInfo.isoRegistrationEndDate).format('ddd, D MMM h:mm A ') + Utils.getTimeZoneAbbreviation() }}</b></li>
+                                <li>Matches run until <b>{{ $dayjs(eventInfo.isoEventEndDate).format('ddd, D MMM') }}</b></li>
+                            </ul>
+                        </alert>
+                    </div>
+                    <div class="col-sm-12" v-else-if="eventInfo.eventType === 'ghost-mode'">
+                        <p>
+                            Have you ever wondered what it would be like to face off against another assassin?
+                            Same starting point, same starting time, same starting targets. In Ghost mode, the first player
+                            with five eliminations is the winner. Targets are randomly selected every time, so no duel will be the same.
+                        </p>
+                        <p>
+                            Since you start off with no equipment, you'll need to improvise - find ghost crates and grab disguises as you go.
+                            If your opponent scores a kill, you'll have limited time to react. Will you risk blowing your cover? Be careful; a spotted kill does not count.
+                        </p>
+                        <p>
+                            In Ghost Mode, you exist in separate realities, so a messy, chaotic approach on your end does not affect your opponent.
+                            Quite the contrary, while you're busy cleaning up or running for your life, your opponent is free to advance like a ghost.
+                        </p>
+                        <p>
+                            Be cunning, be creative, be ruthless. Good luck.
                         </p>
                         <alert type="info">
                             <ul style="list-style: none">
