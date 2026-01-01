@@ -1,4 +1,4 @@
-image: mcr.microsoft.com/dotnet/sdk:8.0
+image: mcr.microsoft.com/dotnet/sdk:10.0
 include:
   - template: Jobs/SAST.gitlab-ci.yml
 
@@ -8,8 +8,9 @@ stages:
 
 
 docker-build:
-  image: docker:stable
+  image: docker:28.5.2
   stage: release
+  environment: $CI_COMMIT_BRANCH
   only:
     - master
   services:
@@ -21,12 +22,17 @@ docker-build:
     - export COMMIT_HASH=$CI_COMMIT_SHA # Your current commit sha
     - export IMAGE_NAME_WITH_REGISTRY_PREFIX=$CI_REGISTRY_IMAGE # Your repository prefixed with GitLab Registry URL
     - docker login -u "$DOCKER_REGISTRY_USER" -p "$DOCKER_REGISTRY_PASSWORD" $DOCKER_REGISTRY_URL # Instructs GitLab to login to its registry
+    - apk add --no-cache curl
   script:
     - echo "Building..." # MAKE SURE NO SPACE ON EITHER SIDE OF = IN THE FOLLOWING LINE
-    - export CONTAINER_FULL_IMAGE_NAME_WITH_TAG=$IMAGE_NAME_WITH_REGISTRY_PREFIX/api:$COMMIT_HASH
+    - export CONTAINER_FULL_IMAGE_NAME=$IMAGE_NAME_WITH_REGISTRY_PREFIX/api
+    - export CONTAINER_FULL_IMAGE_NAME_WITH_TAG=$CONTAINER_FULL_IMAGE_NAME:$COMMIT_HASH
     - docker build -f ./API/Dockerfile --pull -t built-image-name .
     - docker tag built-image-name "$CONTAINER_FULL_IMAGE_NAME_WITH_TAG"
+    - docker tag built-image-name "$CONTAINER_FULL_IMAGE_NAME:$CI_COMMIT_BRANCH"
     - docker push "$CONTAINER_FULL_IMAGE_NAME_WITH_TAG"
     - echo $CONTAINER_FULL_IMAGE_NAME_WITH_TAG
-    - echo "Deploying on CapRover..."
-    - docker run caprover/cli-caprover:2.2.3 caprover deploy --caproverUrl $CAPROVER_URL --appToken $CAPROVER_APP_TOKEN --caproverApp $CAPROVER_APP --imageName $CONTAINER_FULL_IMAGE_NAME_WITH_TAG
+    - docker push "$CONTAINER_FULL_IMAGE_NAME:$CI_COMMIT_BRANCH"
+    - echo $CONTAINER_FULL_IMAGE_NAME:$CI_COMMIT_BRANCH
+    - echo "Deploying on Dokploy..."
+    - 'curl -X POST "$DOKPLOY_URL/api/application.deploy" -H "accept: application/json" -H "x-api-key: $DOKPLOY_TOKEN" -H "Content-Type: application/json" -d "{\"applicationId\": \"$DOKPLOY_APPLICATION_ID\"}"'
