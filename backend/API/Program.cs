@@ -99,10 +99,7 @@ app.UseSwagger(options =>
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapScalarApiReference(options =>
-    {
-        options.EndpointPathPrefix = "/docs/{documentName}";
-    });
+    app.MapScalarApiReference(endpointPrefix: "/docs/");
 }
 
 app.UseHangfireDashboard(options: new DashboardOptions
