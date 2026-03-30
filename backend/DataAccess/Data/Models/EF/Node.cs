@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using DataAccess.Data.Models.EF.Walkthrough;
 
 namespace DataAccess.Data.Models.EF;
 
@@ -31,4 +32,5 @@ public class Node
     public int? PassageDestinationFloor { get; set; }
     public List<MissionVariant> Variants { get; set; } = new();
     public List<NodeNote> Notes { get; set; } = new();
+    public List<WalkthroughStep> WalkthroughSteps { get; set; } = new();
 }

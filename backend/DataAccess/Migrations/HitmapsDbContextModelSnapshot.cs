@@ -17,7 +17,7 @@ namespace DataAccess.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.11")
+                .HasAnnotation("ProductVersion", "10.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -888,6 +888,70 @@ namespace DataAccess.Migrations
                     b.ToTable("User", (string)null);
                 });
 
+            modelBuilder.Entity("DataAccess.Data.Models.EF.Walkthrough.Walkthrough", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("MissionVariantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MissionVariantId");
+
+                    b.ToTable("Walkthrough", "Walkthrough");
+                });
+
+            modelBuilder.Entity("DataAccess.Data.Models.EF.Walkthrough.WalkthroughStep", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("WalkthroughId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WalkthroughId");
+
+                    b.ToTable("WalkthroughStep", "Walkthrough");
+                });
+
+            modelBuilder.Entity("DataAccess.Data.Models.EF.Walkthrough.WalkthroughStepToNode", b =>
+                {
+                    b.Property<int>("NodeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WalkthroughStepId")
+                        .HasColumnType("int");
+
+                    b.HasKey("NodeId", "WalkthroughStepId");
+
+                    b.HasIndex("WalkthroughStepId");
+
+                    b.ToTable("WalkthroughStepToNode", "Walkthrough");
+                });
+
             modelBuilder.Entity("DataAccess.Data.Models.EF.Disguise", b =>
                 {
                     b.HasOne("DataAccess.Data.Models.EF.Mission", "Mission")
@@ -1053,6 +1117,43 @@ namespace DataAccess.Migrations
                     b.HasOne("DataAccess.Data.Models.EF.MissionVariant", null)
                         .WithMany()
                         .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DataAccess.Data.Models.EF.Walkthrough.Walkthrough", b =>
+                {
+                    b.HasOne("DataAccess.Data.Models.EF.MissionVariant", "MissionVariant")
+                        .WithMany()
+                        .HasForeignKey("MissionVariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MissionVariant");
+                });
+
+            modelBuilder.Entity("DataAccess.Data.Models.EF.Walkthrough.WalkthroughStep", b =>
+                {
+                    b.HasOne("DataAccess.Data.Models.EF.Walkthrough.Walkthrough", "Walkthrough")
+                        .WithMany()
+                        .HasForeignKey("WalkthroughId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Walkthrough");
+                });
+
+            modelBuilder.Entity("DataAccess.Data.Models.EF.Walkthrough.WalkthroughStepToNode", b =>
+                {
+                    b.HasOne("DataAccess.Data.Models.EF.Node", null)
+                        .WithMany()
+                        .HasForeignKey("NodeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DataAccess.Data.Models.EF.Walkthrough.WalkthroughStep", null)
+                        .WithMany()
+                        .HasForeignKey("WalkthroughStepId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

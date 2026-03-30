@@ -1,4 +1,5 @@
 using DataAccess.Data.Models.EF;
+using DataAccess.Data.Models.EF.Walkthrough;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Data;
@@ -24,6 +25,7 @@ public class HitmapsDbContext : DbContext
     public DbSet<ElusiveTarget> ElusiveTargets { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Supporter> Supporters { get; set; }
+    public DbSet<Walkthrough> Walkthroughs { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -38,6 +40,13 @@ public class HitmapsDbContext : DbContext
                 l => l.HasOne<MissionVariant>().WithMany().HasForeignKey(e => e.VariantId).OnDelete(DeleteBehavior.Restrict),
                 r => r.HasOne<Node>().WithMany().HasForeignKey(e => e.NodeId).OnDelete(DeleteBehavior.Restrict)
             );
+        modelBuilder.Entity<Node>().ToTable("Node")
+            .HasMany(x => x.WalkthroughSteps)
+            .WithMany(x => x.Nodes)
+            .UsingEntity<WalkthroughStepToNode>(
+                l => l.HasOne<WalkthroughStep>().WithMany().HasForeignKey(e => e.WalkthroughStepId).OnDelete(DeleteBehavior.Restrict),
+                r => r.HasOne<Node>().WithMany().HasForeignKey(e => e.NodeId).OnDelete(DeleteBehavior.Restrict)
+            ).ToTable("WalkthroughStepToNode", "Walkthrough");
         modelBuilder.Entity<NodeNote>().ToTable("NodeNote");
         modelBuilder.Entity<NodeCategory>().ToTable("NodeCategory");
         modelBuilder.Entity<Disguise>().ToTable("Disguise");
@@ -53,5 +62,7 @@ public class HitmapsDbContext : DbContext
         modelBuilder.Entity<FloorName>().ToTable("FloorName");
         modelBuilder.Entity<User>().ToTable("User");
         modelBuilder.Entity<Supporter>().ToTable("Supporter");
+        modelBuilder.Entity<Walkthrough>().ToTable("Walkthrough", "Walkthrough");
+        modelBuilder.Entity<WalkthroughStep>().ToTable("WalkthroughStep", "Walkthrough");
     }
 }
