@@ -3,6 +3,12 @@ const config = useRuntimeConfig();
 const route = useRoute();
 
 const gameSlug = route.params.game;
+
+if (gameSlug === 'hitman-go') {
+    await navigateTo('https://www.hitmaps.com/games/hitman-go2', { external: true });
+    return;
+}
+
 const {data: gameData} = await useFetch(`${config.public.apiDomain}/api/games/${gameSlug}`);
 const {
     pending: locationsPending,
