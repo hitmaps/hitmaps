@@ -4,7 +4,7 @@ const route = useRoute();
 
 const gameSlug = route.params.game;
 
-if (gameSlug === 'hitman-go') {
+if (gameSlug === 'hitmango') {
     await navigateTo('https://www.hitmaps.com/games/hitman-go2', { external: true });
 }
 
