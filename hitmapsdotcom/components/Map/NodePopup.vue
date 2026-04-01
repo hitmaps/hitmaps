@@ -33,7 +33,7 @@
             </div>
         </div>
         <template v-slot:modal-footer>
-            <template v-if="loggedIn && editorState === 'ITEMS'">
+            <template v-if="loggedIn && (editorState === 'ITEMS' || editorState === 'HITMANGO-POINTS' || editorState === 'WALKTHROUGHS')">
                 <div class="edit-delete-buttons">
                     <div class="edit">
                         <game-button data-dismiss="modal" @click="$emit('edit-node', node.id)">

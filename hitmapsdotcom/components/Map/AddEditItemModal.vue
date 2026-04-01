@@ -5,7 +5,7 @@
            tabindex="-1"
            role="dialog"
            fullscreen>
-        <div class="row">
+        <div class="row" v-if="editorState === 'ITEMS' || editorState === 'WALKTHROUGHS'">
             <div class="col-md-12">
                 <div class="alert alert-dark" style="font-size: .8em">
                     {{ $t('map.please-indicate-when-adding') }}
@@ -101,7 +101,7 @@
                             </small>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row" v-if="editorState === 'ITEMS'">
                         <label :for="`${uid}-quantity`" class="col-sm-2 col-form-label">
                             {{ $t('map.quantity') }}
                         </label>
@@ -146,7 +146,7 @@
                             </small>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row" v-if="editorState === 'ITEMS'">
                         <label :for="`${uid}-image`" class="col-sm-2 col-form-label">
                             {{ $t('map.image-url') }}
                         </label>
@@ -163,7 +163,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-12">
+            <div class="col-lg-6 col-md-12" v-if="editorState === 'ITEMS'">
                 <h3>{{ $t('map.notes') }}</h3>
                 <div id="suggest-notes">
                     <div v-for="(note, index) in createEditNodeModel.notes" :key="note.type" class="note" :class="note.type">
@@ -276,7 +276,8 @@ export default {
         currentLevel: Number,
         clickedPoint: Object,
         // Only used as a starting point. We won't ever modify this directly
-        node: Object
+        node: Object,
+        editorState: String
     },
     setup() {
         const uuid = uuidv4();
@@ -382,7 +383,8 @@ export default {
             return !['exit-location',
                 'ledge',
                 'foliage',
-                'starting-location'].includes(this.currentCategory.element.subgroup);
+                'starting-location',
+                'hitmango-point'].includes(this.currentCategory.element.subgroup);
         },
         pickPassageDestinationAllowed() {
             if (!this.currentCategory) {
@@ -507,6 +509,15 @@ export default {
                 });
                 this.createEditNodeModel.variantIds = this.node.variants;
                 this.createEditNodeModel.passageDestinationFloor = this.node.passageDestinationFloor ?? '';
+            } else if (this.mission.variants.length === 1) {
+                this.defaultCreateEditNodeModel.variantIds.push(this.mission.variants[0].id);
+            }
+
+            if (this.editorState === 'HITMANGO-POINTS') {
+                const navigationCategory = this.groupedCategories.find(x => x.groupName === 'Navigation');
+
+                this.currentCategory = navigationCategory.groupItems.find(x => x.element.subgroup === 'hitmango-point');
+                this.selectCategory();
             }
         },
         selectCategory() {

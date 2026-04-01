@@ -57,6 +57,9 @@ const editorState = ref('OFF');
 const polyActive = ref(false);
 const deletionItem = ref(null);
 const deletionItemType = ref(null);
+
+const hitmanGoSelectedWalkthrough = ref(null);
+const hitmanGoSelectedWalkthroughStep = ref(null);
 //endregion
 //region Mounted
 onMounted(() => {
@@ -321,32 +324,46 @@ function updateNodeMarkers() {
     ledges.value.forEach(ledge => ledge.polyline.removeFrom(map));
     foliage.value.forEach(foliage => foliage.polygon.removeFrom(map));
 
-    // 3. [OVERRIDE] Mark nodes as "visible" if they are part of a search result
-    nodes.value.filter(node => node.searchResult).forEach(node => node.visible = true);
+    if (game.value.slug === 'hitman-go') {
+        if (hitmanGoSelectedWalkthrough.value) {
+            console.log(hitmanGoSelectedWalkthroughStep.value.nodeIds);
+            // 2. If a walkthrough is selected, show nodes for the step we're on
+            nodes.value.filter(node => node.marker._icon !== null && hitmanGoSelectedWalkthroughStep.value.nodeIds.includes(node.id)).forEach(node => {
+                node.marker._icon.style.display = 'block';
+            });
 
-    // 4. Add all visible nodes to map if they're on the current level and for the current variant
-    nodes.value.filter(node => node.marker._icon !== null && node.level === currentFloor.value && node.visible && node.variants.includes(currentVariant.value.id)).forEach(node => {
-        node.marker._icon.style.display = 'block';
-
-        if (node.searchResult) {
-            node.marker._icon.classList.add('search-result')
         } else {
-            node.marker._icon.classList.remove('search-result');
+            // 3. If no step is selected, choose the first step from the first walkthrough (starting position)
         }
-    });
+    } else {
+        alert('hi?');
+        // 2. [OVERRIDE] Mark nodes as "visible" if they are part of a search result
+        nodes.value.filter(node => node.searchResult).forEach(node => node.visible = true);
 
-    // 5. Handle showing/hiding ledges/foliage
-    ledges.value.filter(ledge => ledge.level === currentFloor.value && ledge.visible)
-        .forEach(ledge => ledge.polyline.addTo(map));
-    foliage.value.filter(foliage => foliage.level === currentFloor.value && foliage.visible)
-        .forEach(foliage => foliage.polygon.addTo(map));
+        // 3. Add all visible nodes to map if they're on the current level and for the current variant
+        nodes.value.filter(node => node.marker._icon !== null && node.level === currentFloor.value && node.visible && node.variants.includes(currentVariant.value.id)).forEach(node => {
+            node.marker._icon.style.display = 'block';
 
-    // Make sure the counters and highlights for the level select are updated
-    if (floorToggleRef.value) {
-        floorToggleRef.value.$forceUpdate();
-    }
-    if (sidebarRef.value) {
-        sidebarRef.value.$forceUpdate();
+            if (node.searchResult) {
+                node.marker._icon.classList.add('search-result')
+            } else {
+                node.marker._icon.classList.remove('search-result');
+            }
+        });
+
+        // 4. Handle showing/hiding ledges/foliage
+        ledges.value.filter(ledge => ledge.level === currentFloor.value && ledge.visible)
+            .forEach(ledge => ledge.polyline.addTo(map));
+        foliage.value.filter(foliage => foliage.level === currentFloor.value && foliage.visible)
+            .forEach(foliage => foliage.polygon.addTo(map));
+
+        // Make sure the counters and highlights for the level select are updated
+        if (floorToggleRef.value) {
+            floorToggleRef.value.$forceUpdate();
+        }
+        if (sidebarRef.value) {
+            sidebarRef.value.$forceUpdate();
+        }
     }
 }
 function buildIcon(node) {
@@ -471,7 +488,7 @@ function renderItemDetailsModal(node) {
     });
 }
 function addMarker(event) {
-    if (editorState.value !== 'ITEMS') {
+    if (editorState.value !== 'ITEMS' && editorState.value !== 'HITMANGO-POINTS') {
         return;
     }
 
@@ -614,12 +631,20 @@ function onLaunchEditor(newEditorState) {
     }
 
     // Update node "draggability"
-    if (editorState.value === 'ITEMS') {
+    if (editorState.value === 'ITEMS' || editorState.value === 'HITMANGO-POINTS' || editorState.value === 'WALKTHROUGHS') {
         nodes.value.forEach(node => node.marker.dragging.enable());
     } else {
         nodes.value.forEach(node => node.marker.dragging.disable());
     }
 }
+
+function onLaunchStepEditor(walkthrough, step) {
+    hitmanGoSelectedWalkthrough.value = walkthrough;
+    hitmanGoSelectedWalkthroughStep.value = step;
+
+    updateActiveMapState();
+}
+
 function toggleDraw(state) {
     if (state === 'OFF') {
         map.pm.disableDraw('Line');
@@ -877,7 +902,7 @@ const moveNodeModalRef = ref(null);
     <splash-screen v-if="metadataLoaded && !mapDataLoaded" :mission="mission" />
     <client-only>
         <div>
-            <floor-toggle v-if="metadataLoaded && mapDataLoaded"
+            <floor-toggle v-if="metadataLoaded && mapDataLoaded && game.slug !== 'hitman-go'"
                           ref="floorToggleRef"
                           :mission="mission"
                           :current-floor="currentFloor"
@@ -920,7 +945,8 @@ const moveNodeModalRef = ref(null);
                      @enable-region-creation="onEnableDisguiseRegionCreation"
                      @disguise-selected="onDisguiseSelected"
                      @replace-disguise-areas="onReplaceDisguiseAreas"
-                     @variant-selected="onVariantSelected" />
+                     @variant-selected="onVariantSelected"
+                     @launch-step-editor="onLaunchStepEditor" />
             <node-popup :node="nodeForModal"
                         :logged-in="loggedIn"
                         :game="game"
@@ -938,19 +964,13 @@ const moveNodeModalRef = ref(null);
                                  :current-level="currentFloor"
                                  :node="nodeForEditing"
                                  :mission="mission"
+                                 :editor-state="editorState"
                                  @item-created="onItemCreated"
                                  @item-updated="onItemUpdated" />
             <delete-entity-modal ref="deleteEntityModalRef" :entity="deletionItem" :entity-type="deletionItemType" @item-deleted="onPolyDeleted" />
             <manage-disguise-area-modal ref="manageDisguiseAreaModalRef" :entity="deletionItem" @item-deleted="onPolyDeleted" @item-converted="onDisguiseAreaConverted" />
             <move-node-modal ref="moveNodeModalRef" :node="nodeForMoving" />
         </div>
-<!--        <div>
-
-
-
-
-
-        </div>-->
     </client-only>
 </template>
 
@@ -967,7 +987,8 @@ const moveNodeModalRef = ref(null);
         background: #3F4E47;
     }
 
-    &.hm-editor-items {
+    &.hm-editor-items,
+    &.hm-editor-hitmango-points {
         cursor: crosshair !important;
     }
 

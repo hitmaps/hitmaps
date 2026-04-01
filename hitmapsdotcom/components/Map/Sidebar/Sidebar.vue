@@ -17,7 +17,8 @@
                         aria-label="Toggle variant selection box">
                     <game-icon :icon="currentVariant.icon" font-style="solid"/>
                 </button>
-                <button class="navbar-toggler"
+                <button v-if="game.slug !== 'hitman-go'"
+                        class="navbar-toggler"
                         type="button"
                         data-bs-toggle="collapse"
                         data-bs-target="#search-item-toggle"
@@ -26,7 +27,8 @@
                         aria-label="Toggle search box">
                     <icon name="fa:search"/>
                 </button>
-                <button class="navbar-toggler"
+                <button v-if="game.slug !== 'hitman-go'"
+                        class="navbar-toggler"
                         type="button"
                         data-bs-toggle="collapse"
                         data-bs-target="#disguises-toggle"
@@ -35,7 +37,8 @@
                         aria-label="Toggle disguises box">
                     <icon name="fa6-regular:user"/>
                 </button>
-                <button class="navbar-toggler"
+                <button v-if="game.slug !== 'hitman-go'"
+                        class="navbar-toggler"
                         type="button"
                         data-bs-toggle="collapse"
                         data-bs-target="#floors-and-layers-toggle"
@@ -61,7 +64,7 @@
             </div>
             <editor-header v-if="editorState !== 'OFF' && editorState !== 'MENU'" :editor-state="editorState"/>
             <div class="map-control d-none d-md-flex">
-                <div id="map-control-buttons">
+                <div v-if="game.slug !== 'hitman-go'" id="map-control-buttons">
                     <control-button @click="$emit('zoom-in')" :class="currentZoomLevel === maxZoomLevel ? 'disabled' : ''">+</control-button>
                     <control-button @click="$emit('zoom-out')" :class="currentZoomLevel === minZoomLevel ? 'disabled' : ''">-</control-button>
                 </div>
@@ -108,32 +111,39 @@
                                               :logged-in="loggedIn"
                                               @variant-selected="onVariantSelected" />
                 </div>
-                <div class="navbar-collapse collapse show" id="search-item-toggle">
-                    <item-search :searchable-nodes="getSearchableNodes()" @search-item="onSearchItem" />
-                </div>
-                <div class="collapse navbar-collapse" id="disguises-toggle">
-                    <disguise-dropdown :game="game"
-                                       :mission="mission"
-                                       :disguises="disguises"
-                                       :current-disguise="currentDisguise"
-                                       @disguise-selected="onDisguiseSelected" />
-                </div>
-                <div class="collapse navbar-collapse" id="floors-and-layers-toggle">
-                    <hide-select-all @hide-all="$emit('hide-all')" @show-all="$emit('show-all')" />
-                    <top-level-category-card v-for="topLevelCategory in topLevelCategories"
-                                             :key="topLevelCategory"
-                                             :top-level-category-name="topLevelCategory"
-                                             :categories="categories.filter(x => x.type === topLevelCategory)"
-                                             :nodes="nodes.filter(x => x.type === topLevelCategory)"
-                                             :ledges="ledges"
-                                             :foliage="foliage"
-                                             @hide-category="onHideCategory"
-                                             @show-category="onShowCategory"
-                                             @hide-top-level-category="onHideTopLevelCategory"
-                                             @show-top-level-category="onShowTopLevelCategory" />
-                </div>
+                <template v-if="game.slug !== 'hitman-go'">
+                    <div class="navbar-collapse collapse show" id="search-item-toggle">
+                        <item-search :searchable-nodes="getSearchableNodes()" @search-item="onSearchItem" />
+                    </div>
+                    <div class="collapse navbar-collapse" id="disguises-toggle">
+                        <disguise-dropdown :game="game"
+                                           :mission="mission"
+                                           :disguises="disguises"
+                                           :current-disguise="currentDisguise"
+                                           @disguise-selected="onDisguiseSelected" />
+                    </div>
+                    <div class="collapse navbar-collapse" id="floors-and-layers-toggle">
+                        <hide-select-all @hide-all="$emit('hide-all')" @show-all="$emit('show-all')" />
+                        <top-level-category-card v-for="topLevelCategory in topLevelCategories"
+                                                 :key="topLevelCategory"
+                                                 :top-level-category-name="topLevelCategory"
+                                                 :categories="categories.filter(x => x.type === topLevelCategory)"
+                                                 :nodes="nodes.filter(x => x.type === topLevelCategory)"
+                                                 :ledges="ledges"
+                                                 :foliage="foliage"
+                                                 @hide-category="onHideCategory"
+                                                 @show-category="onShowCategory"
+                                                 @hide-top-level-category="onHideTopLevelCategory"
+                                                 @show-top-level-category="onShowTopLevelCategory" />
+                    </div>
+                </template>
+                <template v-else>
+                    <walkthroughs :mission-variant-id="currentVariant.id" />
+                    <!-- Walkthroughs -->
+                </template>
             </div>
             <edit-landing v-if="editorState === 'MENU'"
+                          :game-slug="game.slug"
                           :nodes-only="mission.missionType === 'Sniper Assassin'"
                           @launch-editor="onLaunchEditor" />
             <edit-items v-if="editorState === 'ITEMS'"
@@ -154,6 +164,10 @@
                                    @enable-region-creation="onEnableRegionCreation"
                                    @launch-editor="onLaunchEditor"
                                    @replace-disguise-areas="onReplaceDisguiseAreas" />
+            <edit-level-points v-if="editorState === 'HITMANGO-POINTS'" @launch-editor="onLaunchEditor" />
+            <edit-walkthroughs v-if="editorState === 'WALKTHROUGHS'"
+                               :mission-variant-id="currentVariant.id"
+                               @launch-step-editor="onLaunchStepEditor" />
         </div>
         <locale-modal ref="localeModal" flag-size="hidden" />
     </nav>
@@ -161,10 +175,13 @@
 
 <script>
 import {useCookies} from "vue3-cookies";
+import EditWalkthroughs from "~/components/Map/Sidebar/Editing/EditWalkthroughs.vue";
+import EditLevelPoints from "~/components/Map/Sidebar/Editing/EditLevelPoints.vue";
 
 
 export default {
     name: "Sidebar",
+    components: {EditLevelPoints, EditWalkthroughs},
     props: {
         game: Object,
         mission: Object,
@@ -301,6 +318,9 @@ export default {
         },
         onVariantSelected(variant) {
             this.$emit('variant-selected', variant);
+        },
+        onLaunchStepEditor(walkthrough, step) {
+            this.$emit('launch-step-editor', walkthrough, step);
         }
         //endregion
     }

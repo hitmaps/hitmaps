@@ -37,7 +37,7 @@
                     </div>
                     <div class="game-cards">
                         <game-card
-                            v-for="game in homepageInfo.games.filter(x => ['absolution','blood-money','codename-47'].includes(x.slug))"
+                            v-for="game in homepageInfo.games.filter(x => ['absolution','blood-money','codename-47','hitman-go'].includes(x.slug))"
                             :game="game" />
                     </div>
                 </div>

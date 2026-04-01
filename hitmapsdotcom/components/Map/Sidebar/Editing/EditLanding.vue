@@ -1,37 +1,53 @@
 <template>
     <div class="edit-menu">
         <h3>{{ $t('map.what-would-you-like-to-do') }}</h3>
-        <div class="editor-button" @click="$emit('launch-editor', 'ITEMS')">
-            <h3>
-                <icon name="fa6-solid:location-dot"/>
-                {{ $t('map.add-remove-items') }}
-            </h3>
-        </div>
-        <div v-if="!nodesOnly" class="editor-button" @click="$emit('launch-editor', 'LEDGES')">
-            <h3>
-                <icon name="fa6-solid:bezier-curve"/>
-                {{ $t('map.add-remove-ledges') }}
-            </h3>
-        </div>
-        <div v-if="!nodesOnly" class="editor-button" @click="$emit('launch-editor', 'FOLIAGE')">
-            <h3>
-                <icon name="fa6-solid:leaf"/>
-                {{ $t('map.add-remove-foliage') }}
-            </h3>
-        </div>
-        <div v-if="!nodesOnly"
-             class="editor-button"
-             @click="$emit('launch-editor', 'DISGUISE-REGIONS')">
-            <h3>
-                <icon name="fa6-regular:user"/>
-                {{ $t('map.manage-disguise-areas') }}
-            </h3>
-        </div>
-        <i18n-t keypath="map.click-icon-to-close" tag="p">
-            <template v-slot:pencilIcon>
-                <icon name="fa6-solid:pencil"/>
-            </template>
-        </i18n-t>
+        <template v-if="gameSlug === 'hitman-go'">
+            <div class="editor-button" @click="$emit('launch-editor', 'HITMANGO-POINTS')">
+                <h3>
+                    <icon name="fa6-solid:location-dot"/>
+                    [!] Edit Level Points
+                </h3>
+            </div>
+            <div class="editor-button" @click="$emit('launch-editor', 'WALKTHROUGHS')">
+                <h3>
+                    <icon name="fa6-solid:leaf"/>
+                    [!] Edit Walkthroughs
+                </h3>
+            </div>
+        </template>
+        <template v-else>
+            <div class="editor-button" @click="$emit('launch-editor', 'ITEMS')">
+                <h3>
+                    <icon name="fa6-solid:location-dot"/>
+                    {{ $t('map.add-remove-items') }}
+                </h3>
+            </div>
+            <div v-if="!nodesOnly" class="editor-button" @click="$emit('launch-editor', 'LEDGES')">
+                <h3>
+                    <icon name="fa6-solid:bezier-curve"/>
+                    {{ $t('map.add-remove-ledges') }}
+                </h3>
+            </div>
+            <div v-if="!nodesOnly" class="editor-button" @click="$emit('launch-editor', 'FOLIAGE')">
+                <h3>
+                    <icon name="fa6-solid:leaf"/>
+                    {{ $t('map.add-remove-foliage') }}
+                </h3>
+            </div>
+            <div v-if="!nodesOnly"
+                 class="editor-button"
+                 @click="$emit('launch-editor', 'DISGUISE-REGIONS')">
+                <h3>
+                    <icon name="fa6-regular:user"/>
+                    {{ $t('map.manage-disguise-areas') }}
+                </h3>
+            </div>
+            <i18n-t keypath="map.click-icon-to-close" tag="p">
+                <template v-slot:pencilIcon>
+                    <icon name="fa6-solid:pencil"/>
+                </template>
+            </i18n-t>
+        </template>
     </div>
 </template>
 
@@ -39,7 +55,8 @@
 export default {
     name: "EditLanding",
     props: {
-        nodesOnly: Boolean
+        nodesOnly: Boolean,
+        gameSlug: String
     }
 }
 </script>

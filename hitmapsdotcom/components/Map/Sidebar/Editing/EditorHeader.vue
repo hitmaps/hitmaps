@@ -16,6 +16,14 @@
             <i class="fas fa-fw fa-user-tie"></i>
             {{ $t('map.manage-disguise-areas') }}
         </h3>
+        <h3 v-else-if="editorState === 'HITMANGO-POINTS'">
+            <i class="fas fa-fw fa-location-dot"></i>
+            [!] Edit Level Points
+        </h3>
+        <h3 v-else-if="editorState === 'WALKTHROUGHS'">
+            <i class="fas fa-fw fa-map"></i>
+            [!] Edit Walkthroughs
+        </h3>
     </div>
 </template>
 
