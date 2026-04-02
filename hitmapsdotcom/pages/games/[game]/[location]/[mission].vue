@@ -336,7 +336,6 @@ function updateNodeMarkers() {
             // 3. If no step is selected, choose the first step from the first walkthrough (starting position)
         }
     } else {
-        alert('hi?');
         // 2. [OVERRIDE] Mark nodes as "visible" if they are part of a search result
         nodes.value.filter(node => node.searchResult).forEach(node => node.visible = true);
 

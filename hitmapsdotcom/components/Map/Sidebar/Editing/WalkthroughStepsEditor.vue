@@ -37,6 +37,20 @@ async function deleteWalkthroughStep(step: any, index: number): Promise<void> {
 function launchEditor(step: any): void {
     emit('launch-step-editor', step);
 }
+
+async function move(currentIndex: number, direction: string): Promise<void> {
+    savingChanges.value = true;
+    ArrayHelpers.moveElement(walkthrough.steps, currentIndex, direction === 'UP' ? currentIndex - 1 : currentIndex + 1);
+
+    await $fetch(`${config.public.apiDomain}/api/walkthroughs/${walkthrough.id}/steps/reorder`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+            stepIds: walkthrough.steps.map((step: any) => step.id)
+        })
+    });
+    savingChanges.value = false;
+    walkthrough.steps.forEach((step: any, index: number) => step.order = index);
+}
 </script>
 
 <template>
@@ -50,12 +64,12 @@ function launchEditor(step: any): void {
             {{ step.title }}
             <div class="row">
                 <div class="col-md-6 d-grid">
-                    <button :disabled="savingChanges" class="btn btn-block btn-warning" @click="launchEditor(step)"><icon name="fa6-solid:pencil" /> !Edit</button>
-                    <button :disabled="savingChanges" class="btn btn-block btn-secondary"><icon name="fa6-solid:arrow-up" /> !Move Up</button>
+                    <button :disabled="savingChanges" class="btn btn-block btn-warning" @click="launchEditor(step)"><icon name="fa6-solid:pencil" /> Edit</button>
+                    <button :disabled="savingChanges" class="btn btn-block btn-danger" @click="deleteWalkthroughStep(step, index)"><icon name="fa6-solid:trash" /> Delete</button>
                 </div>
                 <div class="col-md-6 d-grid">
-                    <button :disabled="savingChanges" class="btn btn-block btn-danger" @click="deleteWalkthroughStep(step, index)"><icon name="fa6-solid:trash" /> Delete</button>
-                    <button :disabled="savingChanges" class="btn btn-block btn-secondary"><icon name="fa6-solid:arrow-down" /> !Move Down</button>
+                    <button :style="index > 0 ? '' : 'visibility: hidden'" :disabled="savingChanges" class="btn btn-block btn-secondary" @click="move(index, 'UP')"><icon name="fa6-solid:arrow-up" /> Move Up</button>
+                    <button :style="index < walkthrough.steps.length - 1 ? '' : 'visibility: hidden'" :disabled="savingChanges" class="btn btn-block btn-secondary" @click="move(index, 'DOWN')"><icon name="fa6-solid:arrow-down" /> Move Down</button>
                 </div>
             </div>
         </div>

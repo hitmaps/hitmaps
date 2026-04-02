@@ -5,13 +5,13 @@
             <div class="editor-button" @click="$emit('launch-editor', 'HITMANGO-POINTS')">
                 <h3>
                     <icon name="fa6-solid:location-dot"/>
-                    [!] Edit Level Points
+                    Edit Level Points
                 </h3>
             </div>
             <div class="editor-button" @click="$emit('launch-editor', 'WALKTHROUGHS')">
                 <h3>
                     <icon name="fa6-solid:leaf"/>
-                    [!] Edit Walkthroughs
+                    Edit Walkthroughs
                 </h3>
             </div>
         </template>

@@ -50,7 +50,7 @@ function onLaunchStepEditor(step: any): void {
     <div class="walkthroughs-menu">
         <template v-if="editingWalkthrough === null">
             <p>
-                [!] Create, edit, reorder, or delete walkthroughs.
+                Create, edit, reorder, or delete walkthroughs.
             </p>
             <div class="editor-button" v-for="(walkthrough, index) in walkthroughs">
                 {{ walkthrough.name }}

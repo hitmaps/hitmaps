@@ -5,251 +5,306 @@
            tabindex="-1"
            role="dialog"
            fullscreen>
-        <div class="row" v-if="editorState === 'ITEMS' || editorState === 'WALKTHROUGHS'">
-            <div class="col-md-12">
-                <div class="alert alert-dark" style="font-size: .8em">
-                    {{ $t('map.please-indicate-when-adding') }}
-                    <ul>
-                        <li>{{ $t('map.required-items') }}</li>
-                        <li>{{ $t('map.suspicious-items') }}</li>
-                        <li>{{ $t('map.information-items') }}</li>
-                        <li>{{ $t('map.in-game-description-items') }}</li>
-                        <li>{{ $t('map.blank-notes') }}</li>
-                    </ul>
-                </div>
-                <div v-show="mission.missionType !== 'Sniper Assassin'">
-                    <h3>{{ $t('map.apply-template') }}</h3>
-                    <div class="form-group row">
-                        <label :for="`${uid}-template`" class="col sm-2 col-form-label">
-                            {{ $t('map.template') }}
-                        </label>
-                        <div class="col-sm-10">
-                            <fancy-dropdown ref="templatePicker"
-                                            @change="applyTemplate"
-                                            v-model="selectedTemplate"
-                                            :elements="templates"/>
-                        </div>
+        <template v-if="editorState === 'WALKTHROUGHS'">
+            <div class="alert alert-dark">Select the Hitman: GO piece to add/update.</div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="editor-button" :class="createEditNodeModel.icon === 'dot-red' ? 'selected' : ''" @click="selectHitmanGoPiece('empty')">
+                        <img src="https://media.hitmaps.com/img/hitmaps-custom/site/map-icons/dot-red.png" alt="Empty Space">
+                        Empty Space
                     </div>
-                    <hr />
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="editor-button" :class="createEditNodeModel.icon === 'unique-npc' ? 'selected' : ''" @click="selectHitmanGoPiece('agent-47')">
+                        <img src="https://media.hitmaps.com/img/hitmaps-custom/site/map-icons/unique-npc.png" alt="Agent 47">
+                        Agent 47
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="editor-button" :class="createEditNodeModel.icon === 'blue-npc' ? 'selected' : ''" @click="selectHitmanGoPiece('static-guard')">
+                        <img src="https://media.hitmaps.com/img/hitmaps-custom/site/map-icons/blue-npc.png" alt="Static Guard">
+                        Static (Blue) Guard
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="editor-button" :class="createEditNodeModel.icon === 'yellow-npc' ? 'selected' : ''" @click="selectHitmanGoPiece('patrol-guard')">
+                        <img src="https://media.hitmaps.com/img/hitmaps-custom/site/map-icons/yellow-npc.png" alt="Patrol Guard">
+                        Patrol (Yellow) Guard
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="editor-button" :class="createEditNodeModel.icon === 'gray-npc' ? 'selected' : ''" @click="selectHitmanGoPiece('gray-guard')">
+                        <img src="https://media.hitmaps.com/img/hitmaps-custom/site/map-icons/gray-npc.png" alt="Gray Guard">
+                        Pair (Gray) Guards
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="editor-button" :class="createEditNodeModel.icon === 'teal-npc' ? 'selected' : ''" @click="selectHitmanGoPiece('teal-guard')">
+                        <img src="https://media.hitmaps.com/img/hitmaps-custom/site/map-icons/teal-npc.png" alt="Teal Guard">
+                        Turning (Teal) Guard
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="editor-button" :class="createEditNodeModel.icon === 'gold-npc' ? 'selected' : ''" @click="selectHitmanGoPiece('gold-guard')">
+                        <img src="https://media.hitmaps.com/img/hitmaps-custom/site/map-icons/gold-npc.png" alt="Teal Guard">
+                        Circling (Gold) Guard
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="editor-button" :class="createEditNodeModel.icon === 'guard-dog' ? 'selected' : ''" @click="selectHitmanGoPiece('guard-dog')">
+                        <img src="https://media.hitmaps.com/img/hitmaps-custom/site/map-icons/guard-dog.png" alt="Guard Dog">
+                        Guard Dog
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6 col-md-12">
-                <h3>Item Info</h3>
-                <div class="form-group row">
-                    <label :for="`${uid}-subgroup`" class="col-sm-2 col-form-label">
-                        {{ $t('map.category') }}
-                    </label>
-                    <div class="col-sm-10">
-                        <fancy-dropdown @change="selectCategory"
-                                        v-model="currentCategory"
-                                        :elements="groupedCategories"/>
-                        <small v-if="currentCategory"
-                               class="form-text text-muted"
-                               id="note-help-text">
-                            {{ currentCategory.note }}
-                        </small>
+        </template>
+        <template v-else>
+            <div class="row" v-if="editorState === 'ITEMS'">
+                <div class="col-md-12">
+                    <div class="alert alert-dark" style="font-size: .8em">
+                        {{ $t('map.please-indicate-when-adding') }}
+                        <ul>
+                            <li>{{ $t('map.required-items') }}</li>
+                            <li>{{ $t('map.suspicious-items') }}</li>
+                            <li>{{ $t('map.information-items') }}</li>
+                            <li>{{ $t('map.in-game-description-items') }}</li>
+                            <li>{{ $t('map.blank-notes') }}</li>
+                        </ul>
+                    </div>
+                    <div v-show="mission.missionType !== 'Sniper Assassin'">
+                        <h3>{{ $t('map.apply-template') }}</h3>
+                        <div class="form-group row">
+                            <label :for="`${uid}-template`" class="col sm-2 col-form-label">
+                                {{ $t('map.template') }}
+                            </label>
+                            <div class="col-sm-10">
+                                <fancy-dropdown ref="templatePicker"
+                                                @change="applyTemplate"
+                                                v-model="selectedTemplate"
+                                                :elements="templates"/>
+                            </div>
+                        </div>
+                        <hr />
                     </div>
                 </div>
-                <div v-if="pickIconAllowed" class="form-group row" id="icon-form-group">
-                    <label :for="`${uid}-icon`" class="col-sm-2 col-form-label">
-                        {{ $t('map.icon') }}
-                    </label>
-                    <div class="col-sm-10 icon-dropdown">
-                        <fancy-dropdown v-model="selectedIcon"
-                                        :elements="icons" />
-                    </div>
-                </div>
-                <div v-if="pickPassageDestinationAllowed">
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <h3>Item Info</h3>
                     <div class="form-group row">
-                        <label :for="`${uid}-destination-floor`" class="col-sm-2 col-form-label">
-                            {{ $t('map.destination-floor') }}
+                        <label :for="`${uid}-subgroup`" class="col-sm-2 col-form-label">
+                            {{ $t('map.category') }}
                         </label>
                         <div class="col-sm-10">
-                            <select name="destination-floor"
-                                    :id="`${uid}-destination-floor`"
-                                    v-model="createEditNodeModel.passageDestinationFloor"
-                                    class="form-select">
-                                <option value="">
-                                    -- {{ $t('map.none') }} --
-                                </option>
-                                <option v-for="floorInfo in floorNames" :value="floorInfo.index" :disabled="floorInfo.index === currentLevel">
-                                    <template v-if="floorInfo.header">{{ floorInfo.header }} /</template>
-                                    {{ floorInfo.value }}
-                                </option>
-                            </select>
-                            <small class="form-text text-muted">
-                                {{ $t('map.destination-floor-note') }}
+                            <fancy-dropdown @change="selectCategory"
+                                            v-model="currentCategory"
+                                            :elements="groupedCategories"/>
+                            <small v-if="currentCategory"
+                                   class="form-text text-muted"
+                                   id="note-help-text">
+                                {{ currentCategory.note }}
                             </small>
                         </div>
                     </div>
-                </div>
-                <div v-if="currentCategory">
-                    <div class="form-group row" v-if="currentCategory.element.requireName">
-                        <label :for="`${uid}-name`" class="col-sm-2 col-form-label">
-                            {{ $t('map.name') }}
+                    <div v-if="pickIconAllowed" class="form-group row" id="icon-form-group">
+                        <label :for="`${uid}-icon`" class="col-sm-2 col-form-label">
+                            {{ $t('map.icon') }}
                         </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-10 icon-dropdown">
+                            <fancy-dropdown v-model="selectedIcon"
+                                            :elements="icons" />
+                        </div>
+                    </div>
+                    <div v-if="pickPassageDestinationAllowed">
+                        <div class="form-group row">
+                            <label :for="`${uid}-destination-floor`" class="col-sm-2 col-form-label">
+                                {{ $t('map.destination-floor') }}
+                            </label>
+                            <div class="col-sm-10">
+                                <select name="destination-floor"
+                                        :id="`${uid}-destination-floor`"
+                                        v-model="createEditNodeModel.passageDestinationFloor"
+                                        class="form-select">
+                                    <option value="">
+                                        -- {{ $t('map.none') }} --
+                                    </option>
+                                    <option v-for="floorInfo in floorNames" :value="floorInfo.index" :disabled="floorInfo.index === currentLevel">
+                                        <template v-if="floorInfo.header">{{ floorInfo.header }} /</template>
+                                        {{ floorInfo.value }}
+                                    </option>
+                                </select>
+                                <small class="form-text text-muted">
+                                    {{ $t('map.destination-floor-note') }}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="currentCategory">
+                        <div class="form-group row" v-if="currentCategory.element.requireName">
+                            <label :for="`${uid}-name`" class="col-sm-2 col-form-label">
+                                {{ $t('map.name') }}
+                            </label>
+                            <div class="col-sm-10">
                             <textarea type="text"
                                       name="name"
                                       v-model="createEditNodeModel.name"
                                       :id="`${uid}-name`"
                                       class="form-control"></textarea>
-                            <small class="form-text text-muted">
-                                {{ $t('map.name-note') }}
-                            </small>
+                                <small class="form-text text-muted">
+                                    {{ $t('map.name-note') }}
+                                </small>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row" v-if="editorState === 'ITEMS'">
-                        <label :for="`${uid}-quantity`" class="col-sm-2 col-form-label">
-                            {{ $t('map.quantity') }}
-                        </label>
-                        <div class="col-sm-10">
-                            <select name="quantity"
-                                    :id="`${uid}-quantity`"
-                                    v-model="createEditNodeModel.quantity"
-                                    class="form-select">
-                                <option v-for="n in 10" :value="n">
-                                    {{ n }}
-                                </option>
-                            </select>
+                        <div class="form-group row" v-if="editorState === 'ITEMS'">
+                            <label :for="`${uid}-quantity`" class="col-sm-2 col-form-label">
+                                {{ $t('map.quantity') }}
+                            </label>
+                            <div class="col-sm-10">
+                                <select name="quantity"
+                                        :id="`${uid}-quantity`"
+                                        v-model="createEditNodeModel.quantity"
+                                        class="form-select">
+                                    <option v-for="n in 10" :value="n">
+                                        {{ n }}
+                                    </option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row" v-if="currentCategory.element.requireAction">
-                        <label :for="`${uid}-action`" class="col-sm-2 col-form-label">
-                            {{ $t('map.action') }}
-                        </label>
-                        <div class="col-sm-10">
-                            <input type="text"
-                                   name="action"
-                                   :id="`${uid}-action`"
-                                   v-model="createEditNodeModel.targetAction"
-                                   class="form-control" />
-                            <small class="form-text text-muted">
-                                {{ $t('map.action-note') }}
-                            </small>
+                        <div class="form-group row" v-if="currentCategory.element.requireAction">
+                            <label :for="`${uid}-action`" class="col-sm-2 col-form-label">
+                                {{ $t('map.action') }}
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text"
+                                       name="action"
+                                       :id="`${uid}-action`"
+                                       v-model="createEditNodeModel.targetAction"
+                                       class="form-control" />
+                                <small class="form-text text-muted">
+                                    {{ $t('map.action-note') }}
+                                </small>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row" v-if="currentCategory.element.requireTarget">
-                        <label :for="`${uid}-target`" class="col-sm-2 col-form-label">
-                            {{ $t('map.target') }}
-                        </label>
-                        <div class="col-sm-10">
-                            <input type="text"
-                                   name="target"
-                                   :id="`${uid}-target`"
-                                   v-model="createEditNodeModel.targetAction"
-                                   class="form-control" />
-                            <small class="form-text text-muted">
-                                {{ $t('map.target-note') }}
-                            </small>
+                        <div class="form-group row" v-if="currentCategory.element.requireTarget">
+                            <label :for="`${uid}-target`" class="col-sm-2 col-form-label">
+                                {{ $t('map.target') }}
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text"
+                                       name="target"
+                                       :id="`${uid}-target`"
+                                       v-model="createEditNodeModel.targetAction"
+                                       class="form-control" />
+                                <small class="form-text text-muted">
+                                    {{ $t('map.target-note') }}
+                                </small>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row" v-if="editorState === 'ITEMS'">
-                        <label :for="`${uid}-image`" class="col-sm-2 col-form-label">
-                            {{ $t('map.image-url') }}
-                        </label>
-                        <div class="col-sm-10">
-                            <input type="text"
-                                   name="image"
-                                   :id="`${uid}-image`"
-                                   v-model="createEditNodeModel.image"
-                                   class="form-control">
-                            <small class="form-text text-muted">
-                                {{ $t('map.image-url-note') }}
-                            </small>
+                        <div class="form-group row" v-if="editorState === 'ITEMS'">
+                            <label :for="`${uid}-image`" class="col-sm-2 col-form-label">
+                                {{ $t('map.image-url') }}
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text"
+                                       name="image"
+                                       :id="`${uid}-image`"
+                                       v-model="createEditNodeModel.image"
+                                       class="form-control">
+                                <small class="form-text text-muted">
+                                    {{ $t('map.image-url-note') }}
+                                </small>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-6 col-md-12" v-if="editorState === 'ITEMS'">
-                <h3>{{ $t('map.notes') }}</h3>
-                <div id="suggest-notes">
-                    <div v-for="(note, index) in createEditNodeModel.notes" :key="note.type" class="note" :class="note.type">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <div class="d-grid" v-if="index !== 0">
-                                    <button class="btn btn-block btn-light move-arrow"
-                                            @click="modifyNote('UP', index)">
-                                        <icon name="fa6-solid:arrow-up"/>
-                                        Move Up
-                                    </button>
-                                </div>
-                                <div class="d-grid" v-if="index !== createEditNodeModel.notes.length - 1">
-                                    <button class="btn btn-block btn-light move-arrow"
-                                            @click="modifyNote('DOWN', index)">
-                                        <icon name="fa6-solid:arrow-down"/>
-                                        Move Down
-                                    </button>
-                                </div>
-                                <div class="d-grid">
-                                    <button class="btn btn-block btn-danger delete-button" @click="modifyNote('DELETE', index)">
-                                        <icon name="fa6-solid:trash"/>
-                                        Remove
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-sm-9">
-                                <div class="form-group row">
-                                    <label for="note-type[]" class="col-sm-2 col-form-label">
-                                        {{ $t('map.type') }}
-                                    </label>
-                                    <div class="col-sm-10">
-                                        <select v-model="note.type"
-                                                class="form-select"
-                                                name="note-type[]">
-                                            <option value="requirement">
-                                                {{ $t('map.requirement') }}
-                                            </option>
-                                            <option value="warning">
-                                                {{ $t('map.warning') }}
-                                            </option>
-                                            <option value="info">
-                                                {{ $t('map.information') }}
-                                            </option>
-                                            <option value="description">
-                                                {{ $t('map.description') }}
-                                            </option>
-                                        </select>
+                <div class="col-lg-6 col-md-12" v-if="editorState === 'ITEMS'">
+                    <h3>{{ $t('map.notes') }}</h3>
+                    <div id="suggest-notes">
+                        <div v-for="(note, index) in createEditNodeModel.notes" :key="note.type" class="note" :class="note.type">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="d-grid" v-if="index !== 0">
+                                        <button class="btn btn-block btn-light move-arrow"
+                                                @click="modifyNote('UP', index)">
+                                            <icon name="fa6-solid:arrow-up"/>
+                                            Move Up
+                                        </button>
+                                    </div>
+                                    <div class="d-grid" v-if="index !== createEditNodeModel.notes.length - 1">
+                                        <button class="btn btn-block btn-light move-arrow"
+                                                @click="modifyNote('DOWN', index)">
+                                            <icon name="fa6-solid:arrow-down"/>
+                                            Move Down
+                                        </button>
+                                    </div>
+                                    <div class="d-grid">
+                                        <button class="btn btn-block btn-danger delete-button" @click="modifyNote('DELETE', index)">
+                                            <icon name="fa6-solid:trash"/>
+                                            Remove
+                                        </button>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="note-text[]" class="col-sm-2 col-form-label">
-                                        {{ $t('map.text') }}
-                                    </label>
-                                    <div class="col-sm-10">
+                                <div class="col-sm-9">
+                                    <div class="form-group row">
+                                        <label for="note-type[]" class="col-sm-2 col-form-label">
+                                            {{ $t('map.type') }}
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select v-model="note.type"
+                                                    class="form-select"
+                                                    name="note-type[]">
+                                                <option value="requirement">
+                                                    {{ $t('map.requirement') }}
+                                                </option>
+                                                <option value="warning">
+                                                    {{ $t('map.warning') }}
+                                                </option>
+                                                <option value="info">
+                                                    {{ $t('map.information') }}
+                                                </option>
+                                                <option value="description">
+                                                    {{ $t('map.description') }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="note-text[]" class="col-sm-2 col-form-label">
+                                            {{ $t('map.text') }}
+                                        </label>
+                                        <div class="col-sm-10">
                                                 <textarea name="note-text[]"
                                                           v-model="note.text"
                                                           class="form-control"></textarea>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group row" style="margin-top: 10px">
-                    <div class="col">
-                        <button type="button"
-                                @click="createEditNodeModel.notes.push({})"
-                                id="add-note-button"
-                                class="btn btn-dark">
-                            <icon name="fa6-solid:circle-plus"/>
-                            {{ $t('map.add-another-note') }}
-                        </button>
+                    <div class="form-group row" style="margin-top: 10px">
+                        <div class="col">
+                            <button type="button"
+                                    @click="createEditNodeModel.notes.push({})"
+                                    id="add-note-button"
+                                    class="btn btn-dark">
+                                <icon name="fa6-solid:circle-plus"/>
+                                {{ $t('map.add-another-note') }}
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <h3>{{ $t('map.mission-variants') }}</h3>
-                <div class="form-group" v-for="variant in mission.variants">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" :id="`${uid}-variant-${variant.id}`" :value="variant.id" v-model="createEditNodeModel.variantIds">
-                        <label class="form-check-label" :for="`${uid}-variant-${variant.id}`">
-                            {{ variant.name }}
-                        </label>
+                    <h3>{{ $t('map.mission-variants') }}</h3>
+                    <div class="form-group" v-for="variant in mission.variants">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" :id="`${uid}-variant-${variant.id}`" :value="variant.id" v-model="createEditNodeModel.variantIds">
+                            <label class="form-check-label" :for="`${uid}-variant-${variant.id}`">
+                                {{ variant.name }}
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </template>
         <template v-slot:modal-footer>
             <game-button type="button" data-dismiss="modal" @click="hideModal">
                 <game-icon icon="failed" font-style="normal" />
@@ -661,6 +716,44 @@ export default {
                 this.$toastr.e('Changes failed to save!');
             });
         },
+        selectHitmanGoPiece(pieceType) {
+            switch (pieceType) {
+                case 'empty':
+                    this.createEditNodeModel.icon = 'dot-red';
+                    this.createEditNodeModel.name = '';
+                    break;
+                case 'agent-47':
+                    this.createEditNodeModel.icon = 'unique-npc';
+                    this.createEditNodeModel.name = 'Agent 47';
+                    break;
+                case 'gray-guard':
+                    this.createEditNodeModel.icon = 'gray-npc';
+                    this.createEditNodeModel.name = 'Pair (Gray) Guards';
+                    break;
+                case 'teal-guard':
+                    this.createEditNodeModel.icon = 'teal-npc';
+                    this.createEditNodeModel.name = 'Turning (Teal) Guard';
+                    break;
+                case 'guard-dog':
+                    this.createEditNodeModel.icon = 'guard-dog';
+                    this.createEditNodeModel.name = 'Guard Dog';
+                    break;
+                case 'patrol-guard':
+                    this.createEditNodeModel.icon = 'yellow-npc';
+                    this.createEditNodeModel.name = 'Patrol (Yellow) Guard';
+                    break;
+                case 'gold-guard':
+                    this.createEditNodeModel.icon = 'gold-npc';
+                    this.createEditNodeModel.name = 'Circling (Gold) Guard';
+                    break;
+                case 'static-guard':
+                    this.createEditNodeModel.icon = 'blue-npc';
+                    this.createEditNodeModel.name = 'Static (Blue) Guard';
+                    break;
+                default:
+                    alert('Invalid piece type');
+            }
+        },
         showModal() {
             this.$refs.innerModal.showModal();
         },
@@ -753,6 +846,31 @@ button {
 #suggest-notes {
     .d-grid + .d-grid {
         margin-top: .5rem;
+    }
+}
+
+.editor-button {
+    border-radius: 3px;
+    background: rgba(22, 24, 29, 0.75);
+    color: #fff;
+    box-shadow: none;
+    border: solid 2px #2a2d31;
+    opacity: 0.85;
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 20px;
+    text-align: left;
+
+    h3 {
+        font-size: 1.25rem;
+    }
+
+    &.selected,
+    &:hover,
+    &:active {
+        border-color: #fff;
+        opacity: 1;
+        cursor: pointer;
     }
 }
 </style>
