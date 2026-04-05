@@ -6,7 +6,7 @@ const config = useRuntimeConfig();
 const { missionVariantId } = defineProps<{
     missionVariantId: number
 }>();
-const emit = defineEmits(['launch-step-editor']);
+const emit = defineEmits(['launch-step-editor', 'walkthrough-step-created']);
 
 const walkthroughs = ref<any>([]);
 const newWalkthroughName = ref<string>('');
@@ -44,6 +44,10 @@ async function deleteWalkthrough(walkthroughId: number, index: number): Promise<
 function onLaunchStepEditor(step: any): void {
     emit('launch-step-editor', editingWalkthrough.value, step);
 }
+
+function onWalkthroughStepCreated(step: any): void {
+    emit('walkthrough-step-created', editingWalkthrough.value, step);
+}
 </script>
 
 <template>
@@ -75,7 +79,10 @@ function onLaunchStepEditor(step: any): void {
             </div>
         </template>
         <template v-else>
-            <walkthrough-steps-editor :walkthrough="editingWalkthrough" @close-walkthrough-steps-editor="editingWalkthrough = null" @launch-step-editor="onLaunchStepEditor" />
+            <walkthrough-steps-editor :walkthrough="editingWalkthrough"
+                                      @close-walkthrough-steps-editor="editingWalkthrough = null"
+                                      @launch-step-editor="onLaunchStepEditor"
+                                      @walkthrough-step-created="onWalkthroughStepCreated" />
         </template>
     </div>
 </template>

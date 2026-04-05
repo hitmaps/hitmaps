@@ -644,6 +644,16 @@ function onLaunchStepEditor(walkthrough, step) {
     updateActiveMapState();
 }
 
+function onWalkthroughStepCreated(walkthrough, step) {
+    step.nodes.forEach(node => {
+        nodes.value.push(node);
+        buildNodeForMap(node);
+        node.marker.addTo(map);
+        node.marker.dragging.enable();
+        updateNodeMarkers();
+    });
+}
+
 function toggleDraw(state) {
     if (state === 'OFF') {
         map.pm.disableDraw('Line');
@@ -945,7 +955,8 @@ const moveNodeModalRef = ref(null);
                      @disguise-selected="onDisguiseSelected"
                      @replace-disguise-areas="onReplaceDisguiseAreas"
                      @variant-selected="onVariantSelected"
-                     @launch-step-editor="onLaunchStepEditor" />
+                     @launch-step-editor="onLaunchStepEditor"
+                     @walkthrough-step-created="onWalkthroughStepCreated" />
             <node-popup :node="nodeForModal"
                         :logged-in="loggedIn"
                         :game="game"

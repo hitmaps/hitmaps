@@ -167,7 +167,8 @@
             <edit-level-points v-if="editorState === 'HITMANGO-POINTS'" @launch-editor="onLaunchEditor" />
             <edit-walkthroughs v-if="editorState === 'WALKTHROUGHS'"
                                :mission-variant-id="currentVariant.id"
-                               @launch-step-editor="onLaunchStepEditor" />
+                               @launch-step-editor="onLaunchStepEditor"
+                               @walkthrough-step-created="onWalkthroughStepCreated" />
         </div>
         <locale-modal ref="localeModal" flag-size="hidden" />
     </nav>
@@ -321,6 +322,9 @@ export default {
         },
         onLaunchStepEditor(walkthrough, step) {
             this.$emit('launch-step-editor', walkthrough, step);
+        },
+        onWalkthroughStepCreated(walkthrough, step) {
+            this.$emit('walkthrough-step-created', walkthrough, step);
         }
         //endregion
     }

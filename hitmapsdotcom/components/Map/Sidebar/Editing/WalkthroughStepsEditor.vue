@@ -5,7 +5,7 @@ const config = useRuntimeConfig();
 const { walkthrough } = defineProps<{
     walkthrough: any
 }>();
-const emit = defineEmits(['close-walkthrough-steps-editor', 'launch-step-editor']);
+const emit = defineEmits(['close-walkthrough-steps-editor', 'launch-step-editor', 'walkthrough-step-created']);
 
 const newStepName = ref<string>('');
 const savingChanges = ref<boolean>(false);
@@ -22,6 +22,7 @@ async function createWalkthroughStep(): Promise<void> {
     walkthrough.steps.push((newWalkthroughStep as any).data);
     newStepName.value = '';
     savingChanges.value = false;
+    emit('walkthrough-step-created', (newWalkthroughStep as any).data);
 }
 
 async function deleteWalkthroughStep(step: any, index: number): Promise<void> {
