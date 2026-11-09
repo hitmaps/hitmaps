@@ -222,6 +222,7 @@
         "miami": "Miami"
     },
     "map": {
+        "saving-drawing": "Saving drawing...",
         "level-number": "Level {levelNumber}",
         "satellite": "Satellite",
         "toggle-navigation": "Toggle navigation",

@@ -55,6 +55,7 @@ const currentDisguise = ref(null);
 const currentVariant = ref(null);
 const editorState = ref('OFF');
 const polyActive = ref(false);
+const pendingDrawingSaves = ref(0);
 const deletionItem = ref(null);
 const deletionItemType = ref(null);
 //endregion
@@ -632,7 +633,8 @@ function toggleDraw(state) {
         polyActive.value = false;
     } else {
         map.pm.enableDraw(state, {
-            snappable: false
+            snappable: false,
+            snapDistance: 0
         });
         polyActive.value = true;
     }
@@ -682,6 +684,7 @@ function endDraw(e) {
         data.vertices.push(`${element[0]},${element[1]}`);
     });
     if (e.shape === 'Line') {
+        pendingDrawingSaves.value++;
         useAuthenticatedFetch(`${config.public.apiDomain}/api/ledges`, {
             method: 'POST',
             body: data
@@ -695,8 +698,11 @@ function endDraw(e) {
             updateNodeMarkers();
         }).catch(_ => {
             toastr.e('Error occurred when saving ledge!');
+        }).finally(() => {
+            pendingDrawingSaves.value--;
         });
     } else if (editorState.value === 'FOLIAGE') {
+        pendingDrawingSaves.value++;
         useAuthenticatedFetch(`${config.public.apiDomain}/api/foliage`, {
             method: 'POST',
             body: data
@@ -710,11 +716,14 @@ function endDraw(e) {
             updateNodeMarkers();
         }).catch(_ => {
             toastr.e('Error occurred when saving foliage!');
+        }).finally(() => {
+            pendingDrawingSaves.value--;
         });
     } else if (editorState.value === 'DISGUISE-REGIONS') {
         data.disguiseId = currentDisguise.value.id;
         data.type = disguiseRegionType;
 
+        pendingDrawingSaves.value++;
         useAuthenticatedFetch(`${config.public.apiDomain}/api/disguise-areas`, {
             method: 'POST',
             body: data
@@ -730,6 +739,8 @@ function endDraw(e) {
         }).catch(err => {
             console.error(err);
             toastr.e('Error occurred when saving disguise area!');
+        }).finally(() => {
+            pendingDrawingSaves.value--;
         });
     }
 }
@@ -886,6 +897,12 @@ const moveNodeModalRef = ref(null);
                           @change-floor="onChangeFloor"
             />
             <div :class="`hm-editor-${editorState.toLowerCase()} game-${game?.slug}`" id="map"></div>
+            <div role="status" aria-live="polite" aria-atomic="true">
+                <div v-if="pendingDrawingSaves > 0" class="drawing-save-status">
+                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    <span>{{ $t('map.saving-drawing') }}</span>
+                </div>
+            </div>
             <sidebar v-if="metadataLoaded && mapDataLoaded"
                      ref="sidebarRef"
                      :game="game"
@@ -955,6 +972,22 @@ const moveNodeModalRef = ref(null);
 </template>
 
 <style lang="scss" scoped>
+.drawing-save-status {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    border: 2px solid #fff;
+    border-radius: 3px;
+    background: rgba(22, 24, 29, 0.9);
+    color: #fff;
+    pointer-events: none;
+}
+
 #map {
     z-index: 0;
     position: fixed;
@@ -1020,6 +1053,10 @@ const moveNodeModalRef = ref(null);
 
     &:deep(.node-hidden) {
         display: none;
+    }
+
+    &:deep(.marker-icon) {
+        background: transparent;
     }
 }
 </style>
