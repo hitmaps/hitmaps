@@ -99,8 +99,7 @@ public partial class Program
                 {
                     Title = "HITMAPS API",
                     Version = "v1",
-                    Description =
-                        "Public HITMAPS HTTP API. Endpoints that require a bearer token, site routes under /api/web, and device notification subscribe are omitted."
+                    Description = "Public HITMAPS HTTP API."
                 };
                 document.Servers =
                 [
