@@ -2,6 +2,7 @@
 
 namespace API.Controllers.Models;
 
+/// <summary>A disguise that can be worn on a mission.</summary>
 public class DisguiseViewModel
 {
     public int Id { get; set; }

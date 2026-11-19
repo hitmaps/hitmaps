@@ -1,5 +1,6 @@
 ﻿namespace API.Controllers.Models;
 
+/// <summary>Markers and categories for one mission map.</summary>
 public class MissionNodesViewModel
 {
     public List<string> TopLevelCategories { get; private set; } = new()

@@ -18,8 +18,12 @@ public class HomepageController : ApiControllerBase
         this.dbContext = dbContext;
     }
 
+    /// <summary>Gets the data shown on the HITMAPS homepage.</summary>
+    /// <response code="200">Games, active elusive targets, the environment name, and featured supporters.</response>
     [HttpGet]
     [Route("web/home")]
+    [Tags("Site")]
+    [ProducesResponseType<HomepageViewModel>(StatusCodes.Status200OK)]
     public IActionResult GetHomepageInfo()
     {
         return Ok(new HomepageViewModel

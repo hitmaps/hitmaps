@@ -2,6 +2,7 @@
 
 namespace API.Controllers.Models;
 
+/// <summary>A HITMAPS game, such as HITMAN 3.</summary>
 public class GameViewModel
 {
     public int Id { get; set; }

@@ -19,8 +19,17 @@ public class NodeController : ApiControllerBase
         this.authenticationService = authenticationService;
     }
 
+    /// <summary>Lists map markers and marker categories for a mission.</summary>
+    /// <param name="game">Game slug, such as <c>hitman3</c>.</param>
+    /// <param name="location">Location slug, such as <c>paris</c>.</param>
+    /// <param name="mission">Mission slug.</param>
+    /// <response code="200">Markers and the categories used to group them.</response>
+    /// <response code="404">No mission matches the slug.</response>
     [HttpGet]
     [Route("games/{game}/locations/{location}/missions/{mission}/nodes")]
+    [Tags("Map")]
+    [ProducesResponseType<MissionNodesViewModel>(StatusCodes.Status200OK)]
+    [ProducesResponseType<MessageResponse>(StatusCodes.Status404NotFound)]
     public IActionResult GetNodes(string game, string location, string mission)
     {
         try
@@ -34,9 +43,9 @@ public class NodeController : ApiControllerBase
         }
         catch (MissionNotFoundException e)
         {
-            return NotFound(new
+            return NotFound(new MessageResponse
             {
-                e.Message
+                Message = e.Message
             });
         }
     }

@@ -2,6 +2,7 @@
 
 namespace API.Controllers.Models;
 
+/// <summary>Editor items split into the three sidebar groups.</summary>
 public class TopLevelCategoryParentViewModel<T>
 {
     [JsonPropertyName("Weapons and Tools")]

@@ -2,6 +2,7 @@
 
 namespace API.Controllers.Models;
 
+/// <summary>Display name for one floor of a mission map.</summary>
 public class FloorNameViewModel
 {
     public int Id { get; set; }

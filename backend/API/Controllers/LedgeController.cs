@@ -18,13 +18,22 @@ public class LedgeController : ApiControllerBase
         this.authenticationService = authenticationService;
     }
 
+    /// <summary>Lists ledge regions for a mission map.</summary>
+    /// <param name="game">Game slug, such as <c>hitman3</c>.</param>
+    /// <param name="location">Location slug, such as <c>paris</c>.</param>
+    /// <param name="mission">Mission slug.</param>
+    /// <response code="200">Ledge polygons. Each vertex is <c>latitude,longitude</c>.</response>
+    /// <response code="404">No mission matches the slug.</response>
     [HttpGet]
     [Route("games/{game}/locations/{location}/missions/{mission}/ledges")]
+    [Tags("Map")]
+    [ProducesResponseType<LedgeListResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<MessageResponse>(StatusCodes.Status404NotFound)]
     public IActionResult GetLedges(string game, string location, string mission)
     {
         try
         {
-            return Ok(new
+            return Ok(new LedgeListResponse
             {
                 Ledges = ledgeService.GetLedges(game, location, mission)
                     .Select(LedgeViewModel.FromDbModel)
@@ -33,9 +42,9 @@ public class LedgeController : ApiControllerBase
         }
         catch (MissionNotFoundException e)
         {
-            return NotFound(new
+            return NotFound(new MessageResponse
             {
-                e.Message
+                Message = e.Message
             });
         }
     }
