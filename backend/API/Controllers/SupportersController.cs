@@ -13,10 +13,14 @@ public class SupportersController : ApiControllerBase
         this.dbContext = dbContext;
     }
 
+    /// <summary>Lists people who support HITMAPS.</summary>
+    /// <response code="200">Supporters ordered by display order, then one-time contributions, then name.</response>
     [HttpGet("supporters")]
+    [Tags("Site")]
+    [ProducesResponseType<SupporterListResponse>(StatusCodes.Status200OK)]
     public IActionResult GetSupporters()
     {
-        return Ok(new
+        return Ok(new SupporterListResponse
         {
             Data = dbContext.Supporters
                 .OrderBy(x => x.Order)

@@ -2,6 +2,7 @@
 
 namespace API.Controllers.Models;
 
+/// <summary>One way to play a mission, such as the main story or Freelancer.</summary>
 public class MissionVariantViewModel
 {
     public int Id { get; set; }

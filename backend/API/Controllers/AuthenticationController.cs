@@ -20,14 +20,23 @@ public class AuthenticationController : ApiControllerBase
         this.userService = userService;
     }
 
+    /// <summary>Exchanges a Discord access token for a HITMAPS bearer token.</summary>
+    /// <param name="loginModel">Discord token type and access token.</param>
+    /// <response code="200">
+    /// A bearer token when the Discord user is an editor on the HITMAPS server.
+    /// Otherwise a message of <c>error-discord-auth</c> or <c>error-not-in-server</c>.
+    /// This endpoint does not require a HITMAPS token.
+    /// </response>
     [HttpPost]
     [Route("web/user/login")]
+    [Tags("Authentication")]
+    [ProducesResponseType<AuthenticatedViewModel<object>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
     {
         var discordInfo = await discordService.VerifyTokenAsync(loginModel.TokenType, loginModel.AccessToken);
         if (discordInfo == null)
         {
-            return Ok(new
+            return Ok(new MessageResponse
             {
                 Message = "error-discord-auth"
             });
@@ -36,7 +45,7 @@ public class AuthenticationController : ApiControllerBase
         var guildUser = await discordService.VerifyServerMembershipAndEditorRoleAsync(ulong.Parse(discordInfo));
         if (guildUser == null)
         {
-            return Ok(new
+            return Ok(new MessageResponse
             {
                 Message = "error-not-in-server"
             });
