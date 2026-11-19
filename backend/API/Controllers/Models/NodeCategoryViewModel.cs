@@ -2,6 +2,7 @@
 
 namespace API.Controllers.Models;
 
+/// <summary>A category that groups map markers in the sidebar.</summary>
 public class NodeCategoryViewModel
 {
     public int Id { get; set; }

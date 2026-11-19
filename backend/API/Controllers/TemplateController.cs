@@ -13,8 +13,12 @@ public class TemplateController : ApiControllerBase
         this.templateService = templateService;
     }
 
+    /// <summary>Lists map-editor marker templates, grouped for the editor sidebar.</summary>
+    /// <response code="200">Templates under Weapons and Tools, Points of Interest, and Navigation.</response>
     [HttpGet]
     [Route("editor/templates")]
+    [Tags("Editor")]
+    [ProducesResponseType<TopLevelCategoryParentViewModel<TemplateViewModel>>(StatusCodes.Status200OK)]
     public IActionResult GetTemplates()
     {
         var templates = templateService.GetAllTemplates();

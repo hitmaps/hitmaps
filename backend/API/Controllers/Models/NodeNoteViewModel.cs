@@ -2,6 +2,7 @@
 
 namespace API.Controllers.Models;
 
+/// <summary>A note attached to a map marker.</summary>
 public class NodeNoteViewModel
 {
     public int Id { get; set; }

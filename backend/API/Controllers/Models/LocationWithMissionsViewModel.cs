@@ -2,6 +2,7 @@
 
 namespace API.Controllers.Models;
 
+/// <summary>A location plus the missions that are available there right now.</summary>
 public class LocationWithMissionsViewModel
 {
     public int Id { get; set; }

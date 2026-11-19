@@ -18,13 +18,22 @@ public class FoliageController : ApiControllerBase
         this.authenticationService = authenticationService;
     }
 
+    /// <summary>Lists foliage regions for a mission map.</summary>
+    /// <param name="game">Game slug, such as <c>hitman3</c>.</param>
+    /// <param name="location">Location slug, such as <c>paris</c>.</param>
+    /// <param name="mission">Mission slug.</param>
+    /// <response code="200">Foliage polygons. Each vertex is <c>latitude,longitude</c>.</response>
+    /// <response code="404">No mission matches the slug.</response>
     [HttpGet]
     [Route("games/{game}/locations/{location}/missions/{mission}/foliage")]
+    [Tags("Map")]
+    [ProducesResponseType<FoliageListResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<MessageResponse>(StatusCodes.Status404NotFound)]
     public IActionResult GetFoliage(string game, string location, string mission)
     {
         try
         {
-            return Ok(new
+            return Ok(new FoliageListResponse
             {
                 Foliage = foliageService.GetFoliage(game, location, mission)
                     .Select(FoliageViewModel.FromDbModel)
@@ -33,9 +42,9 @@ public class FoliageController : ApiControllerBase
         }
         catch (MissionNotFoundException e)
         {
-            return NotFound(new
+            return NotFound(new MessageResponse
             {
-                e.Message
+                Message = e.Message
             });
         }
     }

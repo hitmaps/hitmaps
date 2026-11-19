@@ -2,6 +2,7 @@
 
 namespace API.Controllers.Models;
 
+/// <summary>A preset the map editor uses when creating a marker.</summary>
 public class TemplateViewModel
 {
     public int Id { get; set; }

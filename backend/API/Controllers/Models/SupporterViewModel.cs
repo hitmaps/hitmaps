@@ -2,6 +2,7 @@
 
 namespace API.Controllers.Models;
 
+/// <summary>A person listed on the HITMAPS supporters page.</summary>
 public class SupporterViewModel
 {
     public string Name { get; set; } = null!;

@@ -2,6 +2,7 @@
 
 namespace API.Controllers.Models;
 
+/// <summary>A marker on a mission map.</summary>
 public class NodeViewModel
 {
     public int Id { get; set; }

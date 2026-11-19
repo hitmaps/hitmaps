@@ -2,6 +2,7 @@
 
 namespace API.Controllers.Models;
 
+/// <summary>An icon the map editor can place on a marker.</summary>
 public class IconViewModel
 {
     public int Id { get; set; }

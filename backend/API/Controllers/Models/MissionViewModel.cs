@@ -3,6 +3,7 @@ using DataAccess.Data.Models.EF;
 
 namespace API.Controllers.Models;
 
+/// <summary>A mission map, including coordinates, floors, and variants.</summary>
 public class MissionViewModel
 {
     public int Id { get; set; }

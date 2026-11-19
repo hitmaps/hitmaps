@@ -2,6 +2,7 @@
 
 namespace API.Controllers.Models;
 
+/// <summary>A destination in a game, such as Paris.</summary>
 public class LocationViewModel
 {
     public int Id { get; set; }

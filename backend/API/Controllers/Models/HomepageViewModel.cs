@@ -1,5 +1,6 @@
 ﻿namespace API.Controllers.Models;
 
+/// <summary>Payload for the HITMAPS homepage.</summary>
 public class HomepageViewModel
 {
     public List<GameViewModel> Games { get; set; } = new();

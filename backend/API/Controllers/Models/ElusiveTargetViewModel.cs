@@ -3,6 +3,7 @@ using DataAccess.Data.Models.EF;
 
 namespace API.Controllers.Models;
 
+/// <summary>An elusive target that is currently active.</summary>
 public class ElusiveTargetViewModel
 {
     public int Id { get; set; }
