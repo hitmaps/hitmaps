@@ -31,10 +31,11 @@ public class OpenApiDocumentTests
         var paths = root.GetProperty("paths");
         var pathNames = paths.EnumerateObject().Select(path => path.Name).ToList();
         Assert.That(pathNames, Does.Contain("/api/games"));
-        Assert.That(pathNames, Does.Contain("/api/web/home"));
-        Assert.That(pathNames, Does.Contain("/api/web/user/login"));
-        Assert.That(pathNames, Does.Contain("/api/notifications"));
         Assert.That(pathNames, Does.Contain("/api/games/{game}/locations/{location}/missions/{mission}/nodes"));
+        Assert.That(pathNames, Does.Not.Contain("/api/web/home"));
+        Assert.That(pathNames, Does.Not.Contain("/api/web/user/login"));
+        Assert.That(pathNames, Does.Not.Contain("/api/notifications"));
+        Assert.That(pathNames.Any(path => path.StartsWith("/api/web", StringComparison.OrdinalIgnoreCase)), Is.False);
         Assert.That(pathNames, Does.Not.Contain("/api/nodes"));
         Assert.That(pathNames, Does.Not.Contain("/api/disguise-areas"));
         Assert.That(pathNames, Does.Not.Contain("/api/disguise-areas/copy"));
@@ -53,10 +54,7 @@ public class OpenApiDocumentTests
         Assert.That(gameSchema.GetProperty("description").GetString(), Does.Contain("HITMAPS game"));
         Assert.That(gameSchema.GetProperty("properties").TryGetProperty("slug", out _), Is.True);
         Assert.That(schemas.TryGetProperty("CreateEditNodeModel", out _), Is.False);
-        Assert.That(schemas.TryGetProperty("LoginModel", out _), Is.True);
-        var loginSchema = paths.GetProperty("/api/web/user/login").GetProperty("post")
-            .GetProperty("responses").GetProperty("200").GetProperty("content")
-            .GetProperty("application/json").GetProperty("schema");
-        Assert.That(loginSchema.GetProperty("$ref").GetString(), Does.Contain("AuthenticatedViewModel"));
+        Assert.That(schemas.TryGetProperty("LoginModel", out _), Is.False);
+        Assert.That(schemas.TryGetProperty("NotificationRequestModel", out _), Is.False);
     }
 }

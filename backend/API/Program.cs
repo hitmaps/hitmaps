@@ -80,7 +80,19 @@ public partial class Program
         builder.Services.AddOpenApi(options =>
         {
             options.ShouldInclude = description =>
-                !description.ActionDescriptor.EndpointMetadata.OfType<IAuthorizeData>().Any();
+            {
+                if (description.ActionDescriptor.EndpointMetadata.OfType<IAuthorizeData>().Any())
+                    return false;
+
+                var path = "/" + (description.RelativePath ?? string.Empty).TrimStart('/');
+                if (path.StartsWith("/api/web", StringComparison.OrdinalIgnoreCase))
+                    return false;
+                if (path.Equals("/api/notifications", StringComparison.OrdinalIgnoreCase)
+                    || path.StartsWith("/api/notifications/", StringComparison.OrdinalIgnoreCase))
+                    return false;
+
+                return true;
+            };
             options.AddDocumentTransformer((document, _, _) =>
             {
                 document.Info = new OpenApiInfo
@@ -88,7 +100,7 @@ public partial class Program
                     Title = "HITMAPS API",
                     Version = "v1",
                     Description =
-                        "Public HITMAPS HTTP API. This document lists only endpoints that do not require authentication."
+                        "Public HITMAPS HTTP API. Endpoints that require a bearer token, site routes under /api/web, and device notification subscribe are omitted."
                 };
                 document.Servers =
                 [
